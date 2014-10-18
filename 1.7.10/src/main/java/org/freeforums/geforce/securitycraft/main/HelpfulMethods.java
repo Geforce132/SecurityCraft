@@ -357,16 +357,6 @@ public class HelpfulMethods {
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 	}
 	
-	public static void sendMessageToAllPlayers(String par1, EnumChatFormatting par2){
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par1, new Object[0]);
-    	
-		if(par2 != null){
-    		chatcomponenttranslation.getChatStyle().setColor(par2);
-    	}
-    	
-		MinecraftServer.getServer().addChatMessage(chatcomponenttranslation);
-	}
-	
 	public static void closePlayerScreen(EntityPlayer par1){
 		Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);
 		Minecraft.getMinecraft().setIngameFocus();
