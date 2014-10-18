@@ -14,10 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -342,9 +342,9 @@ public class HelpfulMethods {
 	}
 	
 	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
-        	ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
-        	chatcomponenttranslation.getChatStyle().setColor(par3);
-        	par1ICommandSender.addChatMessage(chatcomponenttranslation);
+        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
+        chatcomponenttranslation.getChatStyle().setColor(par3);
+        par1ICommandSender.addChatMessage(chatcomponenttranslation);
 	}
 	
 	public static void sendMessageToPlayer(EntityPlayer par1EntityPlayer, String par2, EnumChatFormatting par3){
@@ -443,14 +443,6 @@ public class HelpfulMethods {
 		}
 	}
 	
-	public static Block getBlockPlayerIsStandingOn(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		int i = MathHelper.floor_double(par5EntityPlayer.posX);
-		int j = MathHelper.floor_double(par5EntityPlayer.boundingBox.minY - 1);
-		int k = MathHelper.floor_double(par5EntityPlayer.posZ);
-		
-		return par1World.getBlock(i, j, k);
-	}
-	
 	public static boolean doesMobHavePotionEffect(EntityLivingBase mob, Potion potion){
 		Iterator iterator = mob.getActivePotionEffects().iterator();
 
@@ -467,16 +459,6 @@ public class HelpfulMethods {
 		
 		return false;
 	}
-	
-//	private static void walkingOnWaterCode(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-//		Material m = HelpfulMethods.getBlockPlayerIsStandingOn(par1World, par2, par3, par4, par5EntityPlayer).getMaterial();
-//		
-//		if(m == Material.water && par5EntityPlayer.motionY < 0.0D){
-//			par5EntityPlayer.posY += -par5EntityPlayer.motionY;
-//			par5EntityPlayer.motionY = 0.0D;
-//			par5EntityPlayer.fallDistance = 0.0F;
-//		}
-//	}
 	
 //	private static void bookCode(){
 //		ItemStack book = new ItemStack(Items.written_book);

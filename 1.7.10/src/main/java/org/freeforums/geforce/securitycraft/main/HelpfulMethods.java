@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -341,9 +342,9 @@ public class HelpfulMethods {
 	}
 	
 	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
-        	ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
-        	chatcomponenttranslation.getChatStyle().setColor(par3);
-        	par1ICommandSender.addChatMessage(chatcomponenttranslation);
+        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
+        chatcomponenttranslation.getChatStyle().setColor(par3);
+        par1ICommandSender.addChatMessage(chatcomponenttranslation);
 	}
 	
 	public static void sendMessageToPlayer(EntityPlayer par1EntityPlayer, String par2, EnumChatFormatting par3){
@@ -354,6 +355,16 @@ public class HelpfulMethods {
     	}
     	
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
+	}
+	
+	public static void sendMessageToAllPlayers(String par1, EnumChatFormatting par2){
+		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par1, new Object[0]);
+    	
+		if(par2 != null){
+    		chatcomponenttranslation.getChatStyle().setColor(par2);
+    	}
+    	
+		MinecraftServer.getServer().addChatMessage(chatcomponenttranslation);
 	}
 	
 	public static void closePlayerScreen(EntityPlayer par1){

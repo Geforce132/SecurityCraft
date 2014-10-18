@@ -45,25 +45,11 @@ public class ScheduleUpdate{
 					outputStream.writeInt(x);
 					outputStream.writeInt(y);
 					outputStream.writeInt(z);
-					outputStream.writeInt(passcode);
-					
-					
-
+					outputStream.writeInt(passcode);	
 				}catch(IOException e){
 					e.printStackTrace();
 				}
-				
-				//TODO
-				/*
-				Packet250CustomPayload packet = new Packet250CustomPayload();
-				packet.channel = "ReverseBlock";
-				packet.data = BOS.toByteArray();
-				packet.length = BOS.size();
-				BlockKeypad.playerObj.sendQueue.addToSendQueue(packet);
-				*/
-
-				
-				
+		
 				timer.cancel();
 			}
 		}

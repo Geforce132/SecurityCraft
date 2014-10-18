@@ -40,14 +40,13 @@ public class BlockLaserBlock extends BlockContainer{
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
     	((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
-    	
-        if(!par1World.isRemote){
+
+    	if(!par1World.isRemote){
         	this.setLaser(par1World, par2, par3, par4);
         }
 
     }
 
-    @SuppressWarnings("static-access")
     private void setLaser(World par1World, int par2, int par3, int par4) {
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
@@ -137,7 +136,6 @@ public class BlockLaserBlock extends BlockContainer{
     	}
     }
     
-    @SuppressWarnings("static-access")
     public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
     	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);

@@ -1,16 +1,16 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authors": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+"modid": "securitycraft",
+"name": "SecurityCraft",
+"description": "Adds a load of things to keep your house safe with.\nIf you like this mod, hit the green arrow\nin the corner of the forum thread!\nPlease visit the URL above for help. \n \nMessage of the update: \nCheck out the SecurityCraft Trello board!",
+"version": "v1.6.1",
+"mcversion": "${mcversion}",
+"url": "",
+"updateUrl": "",
+"authorList": ["Geforce"],
+"credits": "Thanks to all of you guys for your support!",
+"logoFile": "",
+"screenshots": [],
+"dependencies": []
 }
 ]

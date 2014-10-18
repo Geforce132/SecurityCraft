@@ -24,6 +24,7 @@ public class GuiKeypadSetup extends GuiContainer
 {
     private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntityKeypad keypadInventory;
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', ''};
 
 	
     private GuiTextField textboxKeycode;
@@ -75,14 +76,24 @@ public class GuiKeypadSetup extends GuiContainer
     
     
     protected void keyTyped(char par1, int par2){
-		if(this.textboxKeycode.textboxKeyTyped(par1, par2)){
-			//this.mc.thePlayer.sendQueue.addToSendQueue(new Packet250CustomPayload("MC|ItemName", this.textboxKeycode.getText().getBytes()));
-		}
-		
-		else{
+		if(this.textboxKeycode.isFocused() && isValidChar(par1)){
+			this.textboxKeycode.textboxKeyTyped(par1, par2);
+		}else{
 			super.keyTyped(par1, par2);
 		}
 	
+	}
+    
+    private boolean isValidChar(char par1) {
+		for(int x = 1; x <= this.allowedChars.length; x++){
+			if(par1 == this.allowedChars[x - 1]){
+				return true;
+			}else{
+				continue;
+			}
+		}
+		
+		return false;
 	}
     
     protected void mouseClicked(int par1, int par2, int par3){

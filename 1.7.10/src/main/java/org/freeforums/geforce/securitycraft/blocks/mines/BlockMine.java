@@ -30,7 +30,6 @@ public class BlockMine extends BlockContainer{
 	
 	public BlockMine(Material par1Material, boolean cut) {
 		super(par1Material);
-		//this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.125F, 1.0F);
 		 float f = 0.2F;
 		 float g = 0.1F;
 		 this.cut = cut;
@@ -185,7 +184,6 @@ public class BlockMine extends BlockContainer{
 
 	private void explode(World par1World, int par2, int par3, int par4) {
 		if(!cut){
-			//HelpfulMethods.destroyBlock(par1World, par2, par3, par4, false);
 			par1World.func_147480_a(par2, par3, par4, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
 				this.newExplosion((Entity)null, (double) par2, (double) par3, (double) par4,  1.0F, true, true, par1World);
@@ -206,7 +204,6 @@ public class BlockMine extends BlockContainer{
         }else{
             explosion.isFlaming = false;
         }
-        //explosion.isFlaming = par9;
         explosion.isSmoking = par10;
         explosion.doExplosionA();
         

@@ -70,11 +70,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			code2 = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
 		}
 
-		if(code == code1){
+		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code == code1){
 			new ScheduleUpdate(3, x, y, z, code);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
-		}else if(code == code2){
+		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code == code2){
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getChestInventory(getWorld(par1EntityPlayer), x, y, z)); //((TileEntityKeypadChest) getWorld().getTileEntity(x, y, z))
 			return null;
