@@ -17,9 +17,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 public class SCIRCBot extends PircBot{
-	
-	private boolean canVoiceUsersChat = false;
-	
+		
 	public SCIRCBot(String par1String){
 		this.setName(par1String);
 	}
@@ -31,12 +29,16 @@ public class SCIRCBot extends PircBot{
 	
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     	for(User user: this.getUsers(channel)){
-    		if(channel.matches("#GeforceMods") && ((user.hasVoice() && this.canVoiceUsersChat) || user.isOp()) && (message.startsWith(this.getNick() + ":") || (message.startsWith(this.getNick() + ",")))){
-    			sendMessageToPlayer(EnumChatFormatting.YELLOW + sender + " replyed with: " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+    		if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith(this.getNick() + ":") || (message.startsWith(this.getNick() + ",")))){
+    			sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayerFromName((this.getNick().replace("SCUser_", ""))).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
     		}
     	}
     }
 	
+    /**
+     * Not working yet!
+     */
+    @Deprecated
     protected void onPrivateMessage(String sender, String login, String hostname, String message) {
     	if(sender.matches("Cadbury") && message.toLowerCase().contains("more messages waiting")){
     		this.sendMessage("Cadbury", "$showtell");
@@ -52,15 +54,6 @@ public class SCIRCBot extends PircBot{
     		sendMessageToPlayer(EnumChatFormatting.YELLOW + "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
     	}
     }
-    
-    protected void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
-    	if(!this.canVoiceUsersChat && channel.matches("#GeforceMods") && topic.contains("+vc-allowed")){
-    		this.canVoiceUsersChat = true;
-    	}else if(this.canVoiceUsersChat && channel.matches("#GeforceMods") && !topic.contains("+vc-allowed")){
-    		this.canVoiceUsersChat = false;
-    	}
-    }
-
     
     private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
     	ChatComponentTranslation component = new ChatComponentTranslation(par1String, new Object[0]);
@@ -80,15 +73,4 @@ public class SCIRCBot extends PircBot{
         }
     }
     
-    
-    
-//    if(showTell.toLowerCase().contains("more messages waiting")){
-//		Scanner scanner = new Scanner(message);
-//		
-//		scanner.useDelimiter("--");
-//		scanner.next();
-//		System.out.println(scanner.next());
-//	}
-
-	
 }
