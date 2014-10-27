@@ -110,6 +110,7 @@ public class ConfigurationHandler{
 	public static double alarmSoundVolume;
 	public static int cageTrapTextureIndex;
 	public static int empRadius;
+	public static int portableRadarDelay;
 	
 	public String currentHackIndex = "";
 	public boolean ableToContinueHacking = true;
@@ -259,11 +260,12 @@ public class ConfigurationHandler{
         laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
         alarmTickDelay = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2).getInt(2);
         alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 1.0D).getDouble(1.0D);
+        portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
         disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
-
+        
         //cageTrapTextureIndex = config.get("Options", "cage-trap-block-texture (enter a block's id to use it's texture on the cage trap. Using the id '9999' will use the default cage trap texture)", 9999).getInt(9999);
         //empRadius = config.get("Options", "emp-radius(factors-of-ten-only)", 51).getInt(51);
 

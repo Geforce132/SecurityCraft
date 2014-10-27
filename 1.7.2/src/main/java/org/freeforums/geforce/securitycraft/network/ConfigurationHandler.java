@@ -110,7 +110,8 @@ public class ConfigurationHandler{
 	public static double alarmSoundVolume;
 	public static int cageTrapTextureIndex;
 	public static int empRadius;
-	
+	public static int portableRadarDelay;
+
 	public String currentHackIndex = "";
 	public boolean ableToContinueHacking = true;
 	public boolean hackingFailed = false;
@@ -259,6 +260,7 @@ public class ConfigurationHandler{
         laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
         alarmTickDelay = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2).getInt(2);
         alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 1.0D).getDouble(1.0D);
+        portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);

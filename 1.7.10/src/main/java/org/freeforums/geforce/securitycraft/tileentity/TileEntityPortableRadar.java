@@ -10,6 +10,8 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
 	private String customName;
 	private boolean EMPed = false;
 	
+	private int cooldown = 0;
+	
 	
 	/**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
@@ -17,10 +19,12 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
      */
     public void updateEntity()
     {
-        if (this.worldObj.getTotalWorldTime() % 80L == 0L)
-        {
-            this.worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.portableRadar, 20);
-        }
+    	this.cooldown++;
+        
+    	if(cooldown == mod_SecurityCraft.configHandler.portableRadarDelay){
+    		this.worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.portableRadar, 1);
+    		this.cooldown = 0;
+    	}
     }
     
     /**
@@ -43,6 +47,10 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
         if (par1NBTTagCompound.hasKey("customName")){
         	this.customName = par1NBTTagCompound.getString("customName");
         }
+        
+        if (par1NBTTagCompound.hasKey("cooldown")){
+        	this.cooldown = par1NBTTagCompound.getInteger("cooldown");
+        }
     }
 
     /**
@@ -53,6 +61,7 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setString("owner", this.username);
         par1NBTTagCompound.setBoolean("emped", this.EMPed);
+        par1NBTTagCompound.setInteger("cooldown", this.cooldown);
         
         if(this.customName != null && !this.customName.isEmpty()){
         	par1NBTTagCompound.setString("customName", this.customName);

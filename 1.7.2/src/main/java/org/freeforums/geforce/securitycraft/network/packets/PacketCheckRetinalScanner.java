@@ -87,8 +87,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 		int[] posXYZ = getBlockInFront(getWorld(par1EntityPlayer), par1EntityPlayer, 1);
 		
+        if(getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]) != mod_SecurityCraft.retinalScanner || getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) == null || !(getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) instanceof TileEntityOwnable) || ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner() == null){
+			return null;
+		}
 		
-		if(getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]) == mod_SecurityCraft.retinalScanner && posXYZ[5] > 1 && posXYZ[5] < 6 && getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) != null && getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) instanceof TileEntityOwnable && ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner() != null && ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName)){
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName)){
 			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(posXYZ[1], posXYZ[2], posXYZ[3], posXYZ[5] + 5, 3);
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(posXYZ[1], posXYZ[2], posXYZ[3], getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]), 60);
 			
@@ -98,12 +101,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 				mod_SecurityCraft.network.sendTo(new PacketCUpdateCooldown(250), (EntityPlayerMP) par1EntityPlayer);
 				mod_SecurityCraft.eventHandler.setCooldown(250);
 			}	
-		}else if(getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]) == mod_SecurityCraft.retinalScanner){
+		}else if(posXYZ[5] > 1 && posXYZ[5] < 6 && !((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName)){
 			if(mod_SecurityCraft.eventHandler.getCooldown() <= 0){
 				ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("[" + par1EntityPlayer.getCommandSenderName() + "] Unknown player, denying access...", new Object[0]);
 				par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 				mod_SecurityCraft.network.sendTo(new PacketCUpdateCooldown(250), (EntityPlayerMP) par1EntityPlayer);
-				//mod_SecurityCraft.eventHandler.setCooldown(250);
 			}
 		}
 		
