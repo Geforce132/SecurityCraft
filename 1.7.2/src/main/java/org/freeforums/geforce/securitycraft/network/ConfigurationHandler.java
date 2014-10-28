@@ -445,6 +445,10 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStone, 4), new Object[]{
 			" C ", "CSC", " C ", 'C', Blocks.cobblestone, 'S', Blocks.stone
 		});
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.fence_gate
+		});
 				
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.StoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.Mine});
