@@ -70,22 +70,21 @@ public class GuiKeycardSetup extends GuiContainer{
 	 }
 	 
 	 protected void actionPerformed(GuiButton guibutton){
-			switch(guibutton.id){
-				case 0:
-					this.updateButtonText();
-					break;
-					
-				case 1:
-					this.saveLVs();
-					break;
-			}
-			
+		switch(guibutton.id){
+			case 0:
+				this.updateButtonText();
+				break;
+				
+			case 1:
+				this.saveLVs();
+				break;
+		}
 	 }
 
 	private void saveLVs() {
-		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(BlockKeycardReader.lastKeypadX, BlockKeycardReader.lastKeypadY, BlockKeycardReader.lastKeypadZ, this.lvOfSecurity));
+		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.lvOfSecurity));
 		
-		HelpfulMethods.closePlayerScreen(BlockKeycardReader.playerObj);
+		HelpfulMethods.closePlayerScreen();
 	}
 
 }

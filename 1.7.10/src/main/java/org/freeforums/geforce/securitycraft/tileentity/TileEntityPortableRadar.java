@@ -1,10 +1,10 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityPortableRadar extends TileEntitySCTE {
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+public class TileEntityPortableRadar extends CustomizableSCTE {
 	
 	private String username;
 	private String customName;
@@ -95,6 +95,10 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
 	
 	public boolean hasCustomName(){
 		return (this.customName != null && !this.customName.isEmpty()) ? true : false;
+	}
+
+	public int getNumberOfCustomizableOptions() {
+		return 1;
 	}
 
 }

@@ -1,7 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,10 +15,21 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
 public class BlockKeypadChest extends BlockChest{
 
-	public BlockKeypadChest(int par1) {
+	public BlockKeypadChest(int par1){
 		super(par1);
+		
+		Field material = ReflectionHelper.findField(Block.class, "blockMaterial");
+		try{
+			material.set(this, Material.iron);
+		}catch(IllegalArgumentException e){
+			e.printStackTrace();
+		}catch(IllegalAccessException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**

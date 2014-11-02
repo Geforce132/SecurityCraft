@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeycardSetup;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypad;
@@ -18,12 +19,15 @@ import org.freeforums.geforce.securitycraft.containers.ContainerRemoteAccessMine
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScannerSetup;
 import org.freeforums.geforce.securitycraft.containers.ContainerSecurityCamera;
+import org.freeforums.geforce.securitycraft.tileentity.CustomOwnableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -31,6 +35,8 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
+	
+	public static final int amountOfGUIs = 13;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
@@ -84,6 +90,10 @@ public class GuiHandler implements IGuiHandler {
     		
     	case 13:
     		return new ContainerKeypadChest(player.inventory, (TileEntityKeypadChest) tile_entity);
+    	
+    		
+    	case 100:
+        	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
     	
     	default:
         	return null;
@@ -142,6 +152,10 @@ public class GuiHandler implements IGuiHandler {
     		
     	case 13:
     		return new GuiKeypadChest(player.inventory, (TileEntityKeypadChest) tile_entity);
+    		
+    		
+    	case 100:
+    		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
     		
     	default:
         	return null;

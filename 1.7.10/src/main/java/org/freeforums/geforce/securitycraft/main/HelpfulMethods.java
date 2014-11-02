@@ -357,7 +357,7 @@ public class HelpfulMethods {
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 	}
 	
-	public static void closePlayerScreen(EntityPlayer par1){
+	public static void closePlayerScreen(){
 		Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);
 		Minecraft.getMinecraft().setIngameFocus();
 	}

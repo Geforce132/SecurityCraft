@@ -131,7 +131,7 @@ public class GuiRetinalScanner extends GuiContainer{
 			
 			
 			//System.out.println(scanner.findInLine(P.getCommandSenderName()));
-			HelpfulMethods.closePlayerScreen(P);
+			HelpfulMethods.closePlayerScreen();
 			
 		}
 			

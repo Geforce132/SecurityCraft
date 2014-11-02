@@ -88,23 +88,6 @@ public class BlockRetinalScanner extends BlockContainer{
         }                       
     }
     
-//    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-//    	if(par1World.isRemote){
-//    		return;
-//    	}
-//    	
-//    	
-//    	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
-//    		if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner() != null && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner().matches(par5EntityPlayer.getCommandSenderName())){
-//				HelpfulMethods.destroyBlock(par1World, par2, par3, par4, true);
-//    			return;
-//			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner() != null && !((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner().matches(par5EntityPlayer.getCommandSenderName())){
-//	    		HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner() + ".", EnumChatFormatting.RED);
-//	    		return;
-//	    	}
-//    	}
-//    }
-    
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */

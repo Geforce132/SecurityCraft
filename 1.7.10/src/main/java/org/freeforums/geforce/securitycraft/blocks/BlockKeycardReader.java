@@ -25,14 +25,7 @@ import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("static-access")
 public class BlockKeycardReader extends BlockContainer{
-
-	public static int lastKeypadX;
-	public static int lastKeypadY;
-	public static int lastKeypadZ;
-	public static World worldServerObj;
-	public static EntityPlayer playerObj;
 
 	@SideOnly(Side.CLIENT)
     private IIcon keypadIconTop;
@@ -45,91 +38,67 @@ public class BlockKeycardReader extends BlockContainer{
 		super(par2Material);
 	}
 	
-	 @SideOnly(Side.CLIENT)
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2)
+    {
+    	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
+    		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
+    	}else{
+    		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront));
+    	}
+    }
 
-	    /**
-	     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	     */
-	    public IIcon getIcon(int par1, int par2)
-	    {
-	    	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
-	    		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
-	    	}else{
-	    		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront));
-	    	}
-	    }
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
+	@SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister)
+    {
+    	this.blockIcon = par1IconRegister.registerIcon("furnace_side");
+        this.keypadIconTop = par1IconRegister.registerIcon("furnace_top");
+        this.keypadIconFront = par1IconRegister.registerIcon("securitycraft:keycardReaderFront");
+        this.keypadIconFrontActive = par1IconRegister.registerIcon("stone");
+    }
+	    	     
+    /**
+     * Called when the block is placed in the world.
+     */
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-	    @SideOnly(Side.CLIENT)
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        
+        if (l == 0)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);      
+        }
 
-	    /**
-	     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-	     * is the only chance you get to register icons.
-	     */
-	    public void registerBlockIcons(IIconRegister par1IconRegister)
-	    {
-	    	this.blockIcon = par1IconRegister.registerIcon("furnace_side");
-	        this.keypadIconTop = par1IconRegister.registerIcon("furnace_top");
-	        this.keypadIconFront = par1IconRegister.registerIcon("securitycraft:keycardReaderFront");
-	        this.keypadIconFrontActive = par1IconRegister.registerIcon("stone");
-	    }
-	    
-	    
-	    
-	    /**
-	     * Called when the block is placed in the world.
-	     */
-	    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-	    {
-	        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        if (l == 1)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);        
+        }
 
-	        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
-	        
-	        if (l == 0)
-	        {
-	            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-	            
-	        }
+        if (l == 2)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+        }
 
-	        if (l == 1)
-	        {
-	            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-	            
-
-
-	        }
-
-	        if (l == 2)
-	        {
-	            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-	            
-
-
-	        }
-
-	        if (l == 3)
-	        {
-	            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-	            
-	            
-
-	         }else{
-	    		return;
-	         }
-	    }
+        if (l == 3)
+        {
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);                     
+        }else{
+    		return;
+        }
+    }
 	    	
-
-	
-	public TileEntity createNewTileEntity(World world, int par2) {
-		return new TileEntityKeycardReader();
-	}
-
-
 	public void insertCard(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
 		
 		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)){
-			//System.out.println(par1World.getBlockMetadata(par2, par3, par4) + " | " + (par1World.getBlockMetadata(par2, par3, par4)) + 5);
-			//par1World.setBlockMetadataWithNotify(par2, par3, par4, (par1World.getBlockMetadata(par2, par3, par4) + 5), 3);
 			((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).setIsProvidingPower(true);
 			new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, meta);
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
@@ -144,65 +113,27 @@ public class BlockKeycardReader extends BlockContainer{
 	}
 	
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		this.worldServerObj = par1World;
-		this.lastKeypadX = par2;
-    	this.lastKeypadY = par3;
-    	this.lastKeypadZ = par4;
-    	this.playerObj = par5EntityPlayer;
-    	
     	if(par1World.isRemote){
     		return true;
     	}
     	
     	if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 0)).getItem() || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 1).getItem()) || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 2).getItem())){
-    		if(((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).getPassLV() == 0){
-		    	
+    		if(((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).getPassLV() == 0){    	
 		    	par5EntityPlayer.openGui(mod_SecurityCraft.instance, 4, par1World, par2, par3, par4);
 		    	return true;
-	    	
     		}
     	
     	}
     	
 		return false;
-    	
     }
     
-//    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-//    	if(par1World.isRemote){
-//    		return;
-//    	}
-//    	
-//    	
-//    	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
-//    		if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner() != null && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner().matches(par5EntityPlayer.getCommandSenderName())){
-//				HelpfulMethods.destroyBlock(par1World, par2, par3, par4, true);
-//    			return;
-//			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner() != null && !((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner().matches(par5EntityPlayer.getCommandSenderName())){
-//	    		HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner() + ".", EnumChatFormatting.RED);
-//	    		return;
-//	    	}
-//    	}
-//    }
-
-  
-	/**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
-    	return true;
-    }
-    
-    @SideOnly(Side.CLIENT)
-
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        
-            if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getIsProvidingPower()){
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random){
+        if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getIsProvidingPower()){
             double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
             double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
             double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
@@ -215,11 +146,9 @@ public class BlockKeycardReader extends BlockContainer{
             par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
             par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
             par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-        }
-        
+        } 
     }
     
- 
     /**
      * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
@@ -233,5 +162,18 @@ public class BlockKeycardReader extends BlockContainer{
     		return 0;
     	}
     }
+    
+    /**
+     * Can this block provide power. Only wire currently seems to have this change based on its state.
+     */
+    public boolean canProvidePower()
+    {
+    	return true;
+    }
+    
+    public TileEntity createNewTileEntity(World world, int par2) {
+		return new TileEntityKeycardReader();
+	}
+
 
 }

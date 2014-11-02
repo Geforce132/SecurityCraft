@@ -46,6 +46,7 @@ import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
 import org.freeforums.geforce.securitycraft.items.ItemReinforcedDoor;
 import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
 import org.freeforums.geforce.securitycraft.items.ItemTestItem;
+import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
@@ -64,6 +65,8 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLeve
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateClient;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
+import org.freeforums.geforce.securitycraft.tileentity.CustomOwnableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -219,7 +222,7 @@ public class ConfigurationHandler{
 	  
 		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCTechnical).setTextureName("securitycraft:doorReinforcedIron");
 	    
-		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover").setTextureName("securitycraft:universalBlockRemover");
+		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover").setTextureName("securitycraft:universalBlockRemover");
 		
 		mod_SecurityCraft.remoteAccessMine = new ItemRemoteAccess(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine").setTextureName("securitycraft:remoteAccessDoor").setMaxStackSize(1);
 		
@@ -227,6 +230,7 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.fLavaBucket = new ItemModifiedBucket(mod_SecurityCraft.bogusLava).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("bucketFLava").setTextureName("securitycraft:bucketFLava");
 
+		mod_SecurityCraft.universalBlockModifier = new ItemUniversalBlockModifier().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockModifier").setTextureName("securitycraft:universalBlockModifier");
 	}
 	
 	public void setupDebuggingBlocks(){
@@ -320,7 +324,8 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.remoteAccessMine, mod_SecurityCraft.remoteAccessMine.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.fWaterBucket, mod_SecurityCraft.fWaterBucket.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.fLavaBucket, mod_SecurityCraft.fLavaBucket.getUnlocalizedName().substring(5));
-
+		GameRegistry.registerItem(mod_SecurityCraft.universalBlockModifier, mod_SecurityCraft.universalBlockModifier.getUnlocalizedName().substring(5));
+		
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
@@ -335,7 +340,9 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityLogger.class, "usernameLogger");
 		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
 		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
-		
+		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
+		GameRegistry.registerTileEntity(CustomOwnableSCTE.class, "customOwnableSCTE");
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
 			"III", "III", "III", 'I', Blocks.stone_button
 		});
