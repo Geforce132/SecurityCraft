@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -8,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public abstract class CustomizableSCTE extends TileEntitySCTE implements IInventory{
+public abstract class CustomizableSCTE extends TileEntityOwnable implements IInventory{
 	
 	private ItemStack[] itemStacks = new ItemStack[getNumberOfCustomizableOptions()];
 	
@@ -28,7 +29,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
             {
                 this.itemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
-        }
+        }      
     }
 	
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
@@ -47,7 +48,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
             }
         }
 
-        par1NBTTagCompound.setTag("Items", nbttaglist);
+        par1NBTTagCompound.setTag("Items", nbttaglist);           
     }
 	
 	public int getSizeInventory() {
@@ -137,6 +138,26 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() instanceof ItemModule ? true : false;
+	}
+	
+	public ItemStack getModule(EnumCustomModules module){
+		for(int i = 0; i < this.itemStacks.length; i++){
+			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
+				return this.itemStacks[i];
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean hasModule(EnumCustomModules module){
+		for(int i = 0; i < this.itemStacks.length; i++){
+			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public abstract int getNumberOfCustomizableOptions();

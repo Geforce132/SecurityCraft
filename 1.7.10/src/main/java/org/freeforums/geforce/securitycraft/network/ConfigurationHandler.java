@@ -43,12 +43,14 @@ import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.items.ItemReinforcedDoor;
 import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
 import org.freeforums.geforce.securitycraft.items.ItemTestItem;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -65,7 +67,6 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLeve
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateClient;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
-import org.freeforums.geforce.securitycraft.tileentity.CustomOwnableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
@@ -79,6 +80,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
@@ -231,6 +233,12 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.fLavaBucket = new ItemModifiedBucket(mod_SecurityCraft.bogusLava).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("bucketFLava").setTextureName("securitycraft:bucketFLava");
 
 		mod_SecurityCraft.universalBlockModifier = new ItemUniversalBlockModifier().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockModifier").setTextureName("securitycraft:universalBlockModifier");
+	
+		mod_SecurityCraft.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setUnlocalizedName("redstoneModule");
+		
+		mod_SecurityCraft.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setUnlocalizedName("whitelistModule");
+		
+		mod_SecurityCraft.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true).setUnlocalizedName("blacklistModule");
 	}
 	
 	public void setupDebuggingBlocks(){
@@ -325,7 +333,10 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.fWaterBucket, mod_SecurityCraft.fWaterBucket.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.fLavaBucket, mod_SecurityCraft.fLavaBucket.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.universalBlockModifier, mod_SecurityCraft.universalBlockModifier.getUnlocalizedName().substring(5));
-		
+		GameRegistry.registerItem(mod_SecurityCraft.redstoneModule, mod_SecurityCraft.redstoneModule.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.whitelistModule, mod_SecurityCraft.whitelistModule.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.blacklistModule, mod_SecurityCraft.blacklistModule.getUnlocalizedName().substring(5));
+
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
@@ -338,10 +349,10 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityEmpedWire.class, "empedWire");
 		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");
 		GameRegistry.registerTileEntity(TileEntityLogger.class, "usernameLogger");
+		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, "retinalScanner");
 		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
 		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
-		GameRegistry.registerTileEntity(CustomOwnableSCTE.class, "customOwnableSCTE");
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
 			"III", "III", "III", 'I', Blocks.stone_button

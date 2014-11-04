@@ -28,6 +28,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
@@ -130,6 +131,11 @@ public class ForgeEventHandler {
 		}else{
 			if(event.action == Action.RIGHT_CLICK_BLOCK && isCustomizableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z)) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier){
 				event.setCanceled(true);
+				
+				if(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner().matches(event.entityPlayer.getCommandSenderName())){
+					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner() + ".", EnumChatFormatting.RED);
+					return;
+				}
 				
 				event.entityPlayer.openGui(mod_SecurityCraft.instance, 100, event.entityPlayer.worldObj, event.x, event.y, event.z);	
 				return;
@@ -294,7 +300,7 @@ public class ForgeEventHandler {
     }
 	
 	private boolean isCustomizableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.portableRadar){
+    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.retinalScanner){
     		return true;
     	}else{
     		return false;

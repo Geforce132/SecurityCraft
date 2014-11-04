@@ -16,11 +16,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
@@ -78,11 +80,15 @@ public class BlockPortableRadar extends BlockContainer implements ICustomizable{
             Iterator iterator = list.iterator();
             EntityPlayer entityplayer;
             
-            while (iterator.hasNext())
-            {
-            	
-            	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername());
-                
+            if(list.isEmpty()){
+            	if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && par1World.getBlockMetadata(par2, par3, par4) == 1){
+            		this.togglePowerOutput(par1World, par2, par3, par4, false);
+            		return;
+                }
+            }
+
+            while (iterator.hasNext()){      
+            	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername());            
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
@@ -92,15 +98,19 @@ public class BlockPortableRadar extends BlockContainer implements ICustomizable{
                 	}else{
                 		HelpfulMethods.sendMessageToPlayer(entityplayermp, "xxxxxxxxxx",  EnumChatFormatting.OBFUSCATED);
                 	}
+                }   
+                
+                if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE)){
+                	this.togglePowerOutput(par1World, par2, par3, par4, true);
                 }
-
             }
+            
+            
 
         }
     }
 
-	
-    private boolean isOwnerOnline(String username) {
+	private boolean isOwnerOnline(String username) {
     	if(MinecraftServer.getServer().getConfigurationManager().func_152612_a(username) != null){
     		return true;
     	}else{
@@ -109,7 +119,17 @@ public class BlockPortableRadar extends BlockContainer implements ICustomizable{
     		
     	
     }
-    
+
+    private void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
+		if(par5){
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+		}else{
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 3);
+		}
+		
+		HelpfulMethods.updateAndNotify(par1World, par2, par3, par4, par1World.getBlock(par2, par3, par4), 1, false);
+	}
+        
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister){
     	this.sidesIcon = par1IconRegister.registerIcon("securitycraft:portableRadarSides");
@@ -124,6 +144,19 @@ public class BlockPortableRadar extends BlockContainer implements ICustomizable{
 
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).setUsername(((EntityPlayer)par5EntityLivingBase).getCommandSenderName());
+    }
+	
+    public boolean canProvidePower()
+    {
+        return true;
+    }
+    
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
+    	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1){
+    		return 15;
+    	}else{
+    		return 0;
+    	}
     }
 
 

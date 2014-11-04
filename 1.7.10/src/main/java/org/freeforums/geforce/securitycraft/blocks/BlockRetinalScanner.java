@@ -13,12 +13,15 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockRetinalScanner extends BlockContainer{
+public class BlockRetinalScanner extends BlockContainer implements ICustomizable{
 	
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconTop;
@@ -124,7 +127,11 @@ public class BlockRetinalScanner extends BlockContainer{
     }
     
     public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityOwnable();
+		return new TileEntityRetinalScanner();
+	}
+
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 	
 

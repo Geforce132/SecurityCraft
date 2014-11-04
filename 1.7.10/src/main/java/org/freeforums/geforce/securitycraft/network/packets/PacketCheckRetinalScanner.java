@@ -11,7 +11,10 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -91,7 +94,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			return null;
 		}
 		
-		if(posXYZ[5] > 1 && posXYZ[5] < 6 && ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName)){
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName) || ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(getWorld(par1EntityPlayer), posXYZ[1], posXYZ[2], posXYZ[3], EnumCustomModules.WHITELIST).contains(playerName))){
 			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(posXYZ[1], posXYZ[2], posXYZ[3], posXYZ[5] + 5, 3);
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(posXYZ[1], posXYZ[2], posXYZ[3], getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]), 60);
 			

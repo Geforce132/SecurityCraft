@@ -11,11 +11,13 @@ import net.minecraftforge.common.config.Configuration;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockEMPedWire;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
+import org.freeforums.geforce.securitycraft.commands.CommandModule;
 import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
 import org.freeforums.geforce.securitycraft.commands.CommandSCLog;
 import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
@@ -122,6 +124,11 @@ public class mod_SecurityCraft {
     public static Item fWaterBucket;
     public static Item fLavaBucket;
     public static Item universalBlockModifier;
+    
+    //Modules
+    public static ItemModule redstoneModule;
+    public static ItemModule whitelistModule;
+    public static ItemModule blacklistModule;
 
     public static Item testItem;
     
@@ -133,6 +140,7 @@ public class mod_SecurityCraft {
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){
     	event.registerServerCommand(new CommandSCHelp());
+    	event.registerServerCommand(new CommandModule());
     	if(this.debuggingMode){
     		event.registerServerCommand(new CommandSCLog());
     	}

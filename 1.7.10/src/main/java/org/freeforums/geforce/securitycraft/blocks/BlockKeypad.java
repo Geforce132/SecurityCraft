@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +18,9 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -24,7 +28,7 @@ import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer{
+public class BlockKeypad extends BlockContainer implements ICustomizable{
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -98,6 +102,17 @@ public class BlockKeypad extends BlockContainer{
     			this.playerServerObj = (EntityPlayerMP) par5EntityPlayer;
     			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(par2, par3, par4);
     			this.openCodeServer = TEK.getKeypadCode();
+    			
+    			if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+    				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
+    				new ScheduleUpdate(3, par2, par3, par4, ((TileEntityKeypad) par1World.getTileEntity(par2, par3, par4)).getKeypadCode());
+    				return true;
+    			}
+    			
+    			if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+    				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this keypad.", EnumChatFormatting.RED);
+    				return true;
+    			}
     		
     			if(TEK.getKeypadCode() == 0){
     				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, par2, par3, par4);
@@ -251,5 +266,9 @@ public class BlockKeypad extends BlockContainer{
     {
         return new TileEntityKeypad();
     }
+
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+	}
 
 }

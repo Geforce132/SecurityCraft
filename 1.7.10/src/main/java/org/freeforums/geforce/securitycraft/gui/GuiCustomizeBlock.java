@@ -3,8 +3,6 @@ package org.freeforums.geforce.securitycraft.gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ContainerFurnace;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
@@ -15,9 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiCustomizeBlock extends GuiContainer
-{
-    private static final ResourceLocation guiTexture = new ResourceLocation("textures/gui/container/furnace.png");
+public class GuiCustomizeBlock extends GuiContainer{
     private CustomizableSCTE tileEntity;
 
     public GuiCustomizeBlock(InventoryPlayer par1InventoryPlayer, CustomizableSCTE par2TileEntity)
@@ -39,7 +35,7 @@ public class GuiCustomizeBlock extends GuiContainer
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(guiTexture);
+        this.mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);

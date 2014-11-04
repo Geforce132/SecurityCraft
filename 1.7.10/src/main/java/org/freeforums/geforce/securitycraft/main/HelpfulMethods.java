@@ -1,6 +1,8 @@
 package org.freeforums.geforce.securitycraft.main;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import net.minecraft.block.Block;
@@ -21,6 +23,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
@@ -458,6 +463,38 @@ public class HelpfulMethods {
 		}
 		
 		return false;
+	}
+	
+	public static EntityPlayer getPlayerFromName(String par1){
+    	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+    	Iterator iterator = players.iterator();
+    	
+    	while(iterator.hasNext()){
+    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+    		if(tempPlayer.getCommandSenderName().matches(par1)){
+    			return tempPlayer;
+    		}
+    	}
+    	
+    	return null;
+    }
+
+	public static List<String> getPlayersFromModule(World par1World, int par2, int par3, int par4, EnumCustomModules module) {
+		List<String> list = new ArrayList<String>();
+		
+		CustomizableSCTE te = (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4);
+		
+		if(te.hasModule(module)){
+			ItemStack item = te.getModule(module);
+						
+			for(int i = 1; i <= 10; i++){
+				if(item.stackTagCompound.getString("Player" + i) != null && !item.stackTagCompound.getString("Player" + i).isEmpty()){
+					list.add(item.stackTagCompound.getString("Player" + i));
+				}
+			}
+		}
+		
+		return list;
 	}
 	
 //	private static void bookCode(){

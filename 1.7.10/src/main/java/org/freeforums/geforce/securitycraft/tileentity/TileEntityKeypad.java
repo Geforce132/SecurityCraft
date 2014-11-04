@@ -1,10 +1,9 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 @SuppressWarnings("unused")
-public class TileEntityKeypad extends TileEntityOwnable{
+public class TileEntityKeypad extends CustomizableSCTE{
 	
 	
 	private int passcode;
@@ -49,10 +48,9 @@ public class TileEntityKeypad extends TileEntityOwnable{
             this.passcode = par1NBTTagCompound.getInteger("passcode");
         }
     }
-  
-    
-    
-    
-    
 
+	public int getNumberOfCustomizableOptions() {
+		return 2;
+	}       
+ 
 }

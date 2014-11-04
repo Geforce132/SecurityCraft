@@ -38,4 +38,8 @@ item.keycardThree.name=Level 3 Keycard
 item.bucketFWater.name=Bucket Of Fake Water
 item.bucketFLava.name=Bucket Of Fake Lava
 item.remoteAccessMine.name=Mine Remote Access Tool
+item.universalBlockModifier.name=Universal Block Modifier
+item.redstoneModule.name=Redstone Module
+item.whitelistModule.name=Whitelist Module
+item.blacklistModule.name=Blacklist Module
 

@@ -19,7 +19,6 @@ import org.freeforums.geforce.securitycraft.containers.ContainerRemoteAccessMine
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScannerSetup;
 import org.freeforums.geforce.securitycraft.containers.ContainerSecurityCamera;
-import org.freeforums.geforce.securitycraft.tileentity.CustomOwnableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -27,7 +26,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
