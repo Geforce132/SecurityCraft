@@ -18,14 +18,19 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
+import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockKeycardReader extends BlockContainer{
+public class BlockKeycardReader extends BlockContainer implements ICustomizable{
 
 	@SideOnly(Side.CLIENT)
     private IIcon keypadIconTop;
@@ -97,6 +102,8 @@ public class BlockKeycardReader extends BlockContainer{
 	    	
 	public void insertCard(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
+		
+		if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
 		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)){
 			((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).setIsProvidingPower(true);
@@ -173,6 +180,10 @@ public class BlockKeycardReader extends BlockContainer{
     
     public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityKeycardReader();
+	}
+
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
 
 

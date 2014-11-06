@@ -305,7 +305,7 @@ public class BlockLaserBlock extends BlockContainer{
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityOwnable();
 	}
-
+	
  
 //    @SideOnly(Side.CLIENT)
 //

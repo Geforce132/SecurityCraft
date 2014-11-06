@@ -17,9 +17,7 @@ public class TileEntityInventoryScanner extends TileEntityOwnable implements IIn
 	
 	public void updateEntity(){
 		super.updateEntity();
-		
-		//mod_SecurityCraft.log(getOwner() + " | " + (this.worldObj.isRemote ? "CLIENT" : "SERVER") + " | (" + xCoord + ", " + yCoord + ", " + zCoord + ")" );
-		
+				
     	if(cooldown > 0){
     		cooldown--;
     	}else{

@@ -4,6 +4,7 @@ public enum EnumCustomModules {
 	
 	REDSTONE,
 	WHITELIST,
-	BLACKLIST;
+	BLACKLIST,
+	HARMING;
 
 }

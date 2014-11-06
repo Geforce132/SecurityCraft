@@ -74,7 +74,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code == code1){
 			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
-			new ScheduleUpdate(3, x, y, z, code);
+			new ScheduleUpdate(getWorld(par1EntityPlayer), 3, x, y, z, code);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code == code2){

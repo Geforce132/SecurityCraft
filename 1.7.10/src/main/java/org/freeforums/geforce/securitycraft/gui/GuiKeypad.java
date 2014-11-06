@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -85,7 +86,7 @@ public class GuiKeypad extends GuiContainer
     protected void keyTyped(char par1, int par2){
 		if(this.isValidChar(par1)){
 			if(this.canAddNumberToString(par1)){
-				BlockKeypad.playerObj.playSound("random.click", 0.15F, 1.0F);
+				Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 				this.currentString += par1;
 				this.setTextboxCensoredText(this.textboxKeycode, currentString);
 				this.checkCode(this.currentString);
@@ -258,41 +259,7 @@ public class GuiKeypad extends GuiContainer
 	}
 
 	private void checkCode(String par1String) {
-		ByteArrayOutputStream BOS = new ByteArrayOutputStream(16);
-		DataOutputStream outputStream = new DataOutputStream(BOS);
-		
-		try{
-			outputStream.writeInt(Integer.parseInt(par1String));
-			outputStream.writeInt(BlockKeypad.lastKeypadX);
-			outputStream.writeInt(BlockKeypad.lastKeypadY);
-			outputStream.writeInt(BlockKeypad.lastKeypadZ);
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		
-		//PacketCheckKeypadCode packet = new PacketCheckKeypadCode(BlockKeypad.lastKeypadX, BlockKeypad.lastKeypadY, BlockKeypad.lastKeypadZ, Integer.parseInt(par1String));
-		mod_SecurityCraft.network.sendToServer(new PacketCheckKeypadCode(BlockKeypad.lastKeypadX, BlockKeypad.lastKeypadY, BlockKeypad.lastKeypadZ, Integer.parseInt(par1String)));
-		//mod_SecurityCraft.packetPipeline.sendToServer(packet);
-		
-		/*
-		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "GetPass";
-		packet.data = BOS.toByteArray();
-		packet.length = BOS.size();
-		
-		PacketDispatcher.sendPacketToServer(packet);
-		*/
-		
-		
-		
-
-		}
+		mod_SecurityCraft.network.sendToServer(new PacketCheckKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, Integer.parseInt(par1String)));		
+	}
 	
-	
-	
-	
-	
-	
-
 }

@@ -24,7 +24,6 @@ public class ItemModule extends Item{
 		
 		this.setMaxStackSize(1);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
-		this.setTextureName("securitycraft:" + this.getUnlocalizedName());
 	}
 	
 	@SideOnly(Side.CLIENT)

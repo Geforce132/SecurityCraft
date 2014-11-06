@@ -42,4 +42,5 @@ item.universalBlockModifier.name=Universal Block Modifier
 item.redstoneModule.name=Redstone Module
 item.whitelistModule.name=Whitelist Module
 item.blacklistModule.name=Blacklist Module
+item.harmingModule.name=Harming Module
 

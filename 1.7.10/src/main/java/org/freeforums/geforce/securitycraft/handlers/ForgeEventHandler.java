@@ -300,7 +300,7 @@ public class ForgeEventHandler {
     }
 	
 	private boolean isCustomizableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.retinalScanner){
+    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.keycardReader){
     		return true;
     	}else{
     		return false;

@@ -129,6 +129,7 @@ public class mod_SecurityCraft {
     public static ItemModule redstoneModule;
     public static ItemModule whitelistModule;
     public static ItemModule blacklistModule;
+    public static ItemModule harmingModule;
 
     public static Item testItem;
     

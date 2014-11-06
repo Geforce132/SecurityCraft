@@ -2,7 +2,7 @@ package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityKeycardReader extends TileEntityOwnable{
+public class TileEntityKeycardReader extends CustomizableSCTE{
 
 	private int passLV = 0;
 	private boolean isGivingPower = false;
@@ -51,5 +51,9 @@ public class TileEntityKeycardReader extends TileEntityOwnable{
         
         
     }
+
+	public int getNumberOfCustomizableOptions() {
+		return 2;
+	}
     
 }

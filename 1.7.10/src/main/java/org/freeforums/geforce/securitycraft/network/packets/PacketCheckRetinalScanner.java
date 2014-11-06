@@ -94,7 +94,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			return null;
 		}
 		
-		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName) || ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(getWorld(par1EntityPlayer), posXYZ[1], posXYZ[2], posXYZ[3], EnumCustomModules.WHITELIST).contains(playerName))){
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName) || HelpfulMethods.checkForModule(getWorld(par1EntityPlayer), posXYZ[1], posXYZ[2], posXYZ[3], par1EntityPlayer, EnumCustomModules.WHITELIST))){
 			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(posXYZ[1], posXYZ[2], posXYZ[3], posXYZ[5] + 5, 3);
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(posXYZ[1], posXYZ[2], posXYZ[3], getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]), 60);
 			

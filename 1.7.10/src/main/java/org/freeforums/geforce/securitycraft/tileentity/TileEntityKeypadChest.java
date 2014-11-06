@@ -3,7 +3,7 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 
-public class TileEntityKeypadChest extends TileEntityChest{
+public class TileEntityKeypadChest extends TileEntityChest {
 	
 	private int passcode;
     private String owner;

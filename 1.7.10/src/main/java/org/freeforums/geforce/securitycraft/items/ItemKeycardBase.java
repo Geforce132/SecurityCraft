@@ -7,12 +7,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -113,7 +118,7 @@ public class ItemKeycardBase extends Item{
             }
             else
             {      	
-            	if(par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5){
+            	if(par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5){              
             		((BlockKeycardReader)mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
             	}
             	

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -27,7 +28,12 @@ import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
+import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -488,13 +494,52 @@ public class HelpfulMethods {
 			ItemStack item = te.getModule(module);
 						
 			for(int i = 1; i <= 10; i++){
-				if(item.stackTagCompound.getString("Player" + i) != null && !item.stackTagCompound.getString("Player" + i).isEmpty()){
+				if(item.stackTagCompound != null && item.stackTagCompound.getString("Player" + i) != null && !item.stackTagCompound.getString("Player" + i).isEmpty()){
 					list.add(item.stackTagCompound.getString("Player" + i));
 				}
 			}
 		}
 		
 		return list;
+	}
+	
+	//TODO
+	public static boolean checkForModule(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, EnumCustomModules module){
+		TileEntity te = par1World.getTileEntity(par2, par3, par4);
+		
+		if(te == null || !(te instanceof CustomizableSCTE)){ return false; }
+		
+		if(te instanceof TileEntityKeypad){
+			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
+				new ScheduleUpdate(par1World, 3, par2, par3, par4, ((TileEntityKeypad) te).getKeypadCode());
+				return true;
+			}
+			
+			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this keypad.", EnumChatFormatting.RED);
+				return true;
+			}
+		}else if(te instanceof TileEntityKeycardReader){
+			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
+				((TileEntityKeycardReader) te).setIsProvidingPower(true);
+				new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
+				par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par1World.getBlock(par2, par3, par4));
+				return true;
+			}
+			
+			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this reader.", EnumChatFormatting.RED);
+				return true;
+			}
+		}else if(te instanceof TileEntityRetinalScanner){
+			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 //	private static void bookCode(){
