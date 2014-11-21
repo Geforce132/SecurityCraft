@@ -23,13 +23,12 @@ import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockPortableRadar extends BlockContainer implements ICustomizable{
+public class BlockPortableRadar extends BlockContainer{
 
 	@SideOnly(Side.CLIENT)
 	private IIcon topIcon;
@@ -164,8 +163,4 @@ public class BlockPortableRadar extends BlockContainer implements ICustomizable{
 		return new TileEntityPortableRadar();
 	}
 
-	public EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.REDSTONE};
-	}
-	
 }

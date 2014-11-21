@@ -19,18 +19,14 @@ import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
-import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockKeycardReader extends BlockContainer implements ICustomizable{
+public class BlockKeycardReader extends BlockContainer{
 
 	@SideOnly(Side.CLIENT)
     private IIcon keypadIconTop;
@@ -181,10 +177,5 @@ public class BlockKeycardReader extends BlockContainer implements ICustomizable{
     public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityKeycardReader();
 	}
-
-	public EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
-	}
-
 
 }

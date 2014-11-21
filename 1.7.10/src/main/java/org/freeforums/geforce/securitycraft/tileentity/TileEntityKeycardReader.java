@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityKeycardReader extends CustomizableSCTE{
@@ -52,8 +54,8 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
         
     }
 
-	public int getNumberOfCustomizableOptions() {
-		return 2;
+	protected EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
     
 }

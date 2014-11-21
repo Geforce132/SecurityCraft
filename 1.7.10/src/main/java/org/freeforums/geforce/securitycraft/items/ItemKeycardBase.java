@@ -85,7 +85,7 @@ public class ItemKeycardBase extends Item{
     	}else if(par1ItemStack.getItemDamage() == 2){
     		return "item.keycardThree";
     	}else{
-    		return "item.null";
+    		return "item.nullItem";
     	}
 
     }

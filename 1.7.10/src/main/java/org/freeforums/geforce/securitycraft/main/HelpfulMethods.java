@@ -12,6 +12,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -377,6 +378,76 @@ public class HelpfulMethods {
 		par1World.func_147480_a(par2, par3, par4, par5);
 	}
 	
+	public static void checkForBlockAndInsertModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		for(int i = 1; i <= range; i++){
+			if(dir.equalsIgnoreCase("x+")){
+				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2 + i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("x-")){
+				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2 - i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y+")){
+				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3 + i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y-")){
+				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3 - i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z+")){
+				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 + i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z-")){
+				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 - i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void checkInAllDirsAndInsertModule(World par1World, int par2, int par3, int par4, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
+	}
+	
+	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){
+		for(int i = 0; i < inventory.getSizeInventory(); i++){
+			if(inventory.getStackInSlot(i) != null){
+				if(inventory.getStackInSlot(i) == item){
+					return inventory.getStackInSlot(i);
+				}
+			}
+		}
+		
+		return null;
+	}
+
+	
 	public static boolean isActiveBeacon(World par1World, int beaconX, int beaconY, int beaconZ){
 		if(par1World.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon){
 			float f = ((TileEntityBeacon) par1World.getTileEntity(beaconX, beaconY, beaconZ)).func_146002_i();
@@ -503,25 +574,24 @@ public class HelpfulMethods {
 		return list;
 	}
 	
-	//TODO
 	public static boolean checkForModule(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, EnumCustomModules module){
 		TileEntity te = par1World.getTileEntity(par2, par3, par4);
 		
 		if(te == null || !(te instanceof CustomizableSCTE)){ return false; }
 		
 		if(te instanceof TileEntityKeypad){
-			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
 				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
-				new ScheduleUpdate(par1World, 3, par2, par3, par4, ((TileEntityKeypad) te).getKeypadCode());
+				new ScheduleUpdate(par1World, 3, par2, par3, par4);
 				return true;
 			}
 			
-			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
 				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this keypad.", EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
-			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
 				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
 				((TileEntityKeycardReader) te).setIsProvidingPower(true);
 				new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
@@ -529,12 +599,16 @@ public class HelpfulMethods {
 				return true;
 			}
 			
-			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
 				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this reader.", EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){
-			if(((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				return true;
+			}
+		}else if(te instanceof TileEntityInventoryScanner){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
 				return true;
 			}
 		}

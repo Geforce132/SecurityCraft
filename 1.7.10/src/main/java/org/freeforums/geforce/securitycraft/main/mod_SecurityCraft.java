@@ -6,6 +6,7 @@ import java.util.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
@@ -68,6 +69,7 @@ public class mod_SecurityCraft {
 	private GuiHandler GuiHandler = new GuiHandler();
 	
 	private SCIRCBot ircBot;
+	private NBTTagCompound savedModule;
 	
 	public static Configuration configFile;
 	//public CCTVBase cctvPlugin = new CCTVBase();
@@ -112,6 +114,7 @@ public class mod_SecurityCraft {
 	public static Block alarmLit;
 	public static Block reinforcedStone;
 	public static Block reinforcedFencegate;
+	public static Block reinforcedWoodPlanks;
 
 	public static BlockEMPedWire empedWire;
 	
@@ -130,6 +133,7 @@ public class mod_SecurityCraft {
     public static ItemModule whitelistModule;
     public static ItemModule blacklistModule;
     public static ItemModule harmingModule;
+    public static ItemModule smartModule;
 
     public static Item testItem;
     
@@ -220,6 +224,14 @@ public class mod_SecurityCraft {
 
 	public void setIrcBot(SCIRCBot ircBot) {
 		this.ircBot = ircBot;
+	}
+
+	public NBTTagCompound getSavedModule() {
+		return savedModule;
+	}
+
+	public void setSavedModule(NBTTagCompound savedModule) {
+		this.savedModule = savedModule;
 	}
 
 	

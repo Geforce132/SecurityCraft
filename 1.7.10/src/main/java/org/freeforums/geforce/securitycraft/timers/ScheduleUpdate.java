@@ -14,15 +14,14 @@ public class ScheduleUpdate{
 		private int y;
 		private int z;
 		private int metadata;
-		private int passcode;
-		public ScheduleUpdate(World par1World, int seconds, int par3, int par4, int par5, int par6){
+
+		public ScheduleUpdate(World par1World, int seconds, int par3, int par4, int par5){
 			timer = new Timer();
 			timer.schedule(new RemindTask(), seconds*1000); //TODO 60
 			world = par1World;
 			x = par3;
 			y = par4;
 			z = par5;
-			passcode = par6;
 
 			if(world.getBlock(par3, par4, par5) == mod_SecurityCraft.Keypad){
 				metadata = world.getBlockMetadata(par3, par4 , par5);

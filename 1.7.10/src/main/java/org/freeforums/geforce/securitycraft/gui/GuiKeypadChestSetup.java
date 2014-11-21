@@ -23,6 +23,7 @@ public class GuiKeypadChestSetup extends GuiContainer
 {
     private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntityKeypadChest keypadInventory;
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', ''};
 
 	
     private GuiTextField textboxKeycode;
@@ -49,7 +50,7 @@ public class GuiKeypadChestSetup extends GuiContainer
 		this.textboxKeycode.setTextColor(-1);
 		this.textboxKeycode.setDisabledTextColour(-1);
 		this.textboxKeycode.setEnableBackgroundDrawing(true);
-		this.textboxKeycode.setMaxStringLength(9);
+		this.textboxKeycode.setMaxStringLength(11);
 				
 		this.updateButtonText();
     }
@@ -65,27 +66,33 @@ public class GuiKeypadChestSetup extends GuiContainer
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.textboxKeycode.drawTextBox();
-		//this.updateButtonText();
 		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);
-	
     }
 
-	protected void keyTyped(char par1, int par2){
-		if(this.textboxKeycode.textboxKeyTyped(par1, par2)){
-			//this.mc.thePlayer.sendQueue.addToSendQueue(new Packet250CustomPayload("MC|ItemName", this.textboxKeycode.getText().getBytes()));
-		}
-		
-		else{
+    protected void keyTyped(char par1, int par2){
+		if(this.textboxKeycode.isFocused() && isValidChar(par1)){
+			this.textboxKeycode.textboxKeyTyped(par1, par2);
+		}else{
 			super.keyTyped(par1, par2);
 		}
 	
 	}
     
+    private boolean isValidChar(char par1) {
+		for(int x = 1; x <= this.allowedChars.length; x++){
+			if(par1 == this.allowedChars[x - 1]){
+				return true;
+			}else{
+				continue;
+			}
+		}
+		
+		return false;
+	}
+    
     protected void mouseClicked(int par1, int par2, int par3){
 		super.mouseClicked(par1, par2, par3);
 		this.textboxKeycode.mouseClicked(par1, par2, par3);
-		
-
 	}
     
     /**
@@ -99,52 +106,34 @@ public class GuiKeypadChestSetup extends GuiContainer
     /**
      * Draw the background layer for the GuiContainer (everything behind the items)
      */
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-    {
+    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
-        
+        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);     
     }
     
     private void updateButtonText(){
-
        this.saveAndContinueButton.displayString = !this.flag ? "Save & continue." : "Invalid code!";
-
-   }
-    
-	
-
-	
+    }	
     
 	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 		case 0:
-			try{
-							
-				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, Integer.parseInt(this.textboxKeycode.getText())));
-								
+			try{							
+				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.textboxKeycode.getText()));						
 			}catch(Exception e){
 				this.flag  = true;
 				this.updateButtonText();
 				e.printStackTrace();
 				return;
-			}
-		
+			}	
 		      
-			 Minecraft.getMinecraft().thePlayer.closeScreen();
-			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 13, Minecraft.getMinecraft().theWorld, keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord);
+			Minecraft.getMinecraft().thePlayer.closeScreen();
+			Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 13, Minecraft.getMinecraft().theWorld, keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord);
 		    
-			}
-		}	
-	
-	
-	
-	
-	
-	
+		}
+	}	
 
 }

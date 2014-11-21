@@ -5,16 +5,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,11 +57,17 @@ public class BlockLaser extends Block{
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 + i, par3, par4);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock, 2, 3); //TODO
+					par1World.setBlockMetadataWithNotify(par2 + i, par3, par4, 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock);
-
+					
+					if(par1World.getTileEntity(par2 + i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+		    			//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -66,11 +76,17 @@ public class BlockLaser extends Block{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 - i, par3, par4);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					par1World.setBlockMetadataWithNotify(par2 - i, par3, par4, 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock);
 
+					if(par1World.getTileEntity(par2 - i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -79,11 +95,17 @@ public class BlockLaser extends Block{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3, par4 + i);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock, 2, 3);
+					par1World.setBlockMetadataWithNotify(par2, par3, par4 + i, 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock);
 
+					if(par1World.getTileEntity(par2, par3, par4 + i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -92,11 +114,17 @@ public class BlockLaser extends Block{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3, par4 - i);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock, 2, 3);
+					par1World.setBlockMetadataWithNotify(par2, par3, par4 - i, 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock);
 
+					if(par1World.getTileEntity(par2, par3, par4 - i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -105,11 +133,17 @@ public class BlockLaser extends Block{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 + i, par4);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					par1World.setBlockMetadataWithNotify(par2, par3 + i, par4 , 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock);
 
+					if(par1World.getTileEntity(par2, par3 + i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -118,12 +152,17 @@ public class BlockLaser extends Block{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 - i, par4);
 				if(id == mod_SecurityCraft.LaserBlock){
-					par1World.setBlock(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					//par1World.setBlock(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock, 2, 3);
+					par1World.setBlockMetadataWithNotify(par2, par3 - i, par4 , 2, 3);
 					par1World.notifyBlocksOfNeighborChange(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock);
 					par1World.scheduleBlockUpdate(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock, 50);
 					par1World.notifyBlocksOfNeighborChange(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock);
 
-
+					if(par1World.getTileEntity(par2, par3 - i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(EnumCustomModules.HARMING)){
+						float f = ((EntityLivingBase) par5Entity).getHealth();
+						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						//((EntityLivingBase) par5Entity).setHealth(f - 0.5F);
+					}
 				}else{
 					continue;
 				}
@@ -135,7 +174,8 @@ public class BlockLaser extends Block{
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
-    public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
+    @SuppressWarnings("static-access")
+	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
     	if(!par1World.isRemote){
     		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){

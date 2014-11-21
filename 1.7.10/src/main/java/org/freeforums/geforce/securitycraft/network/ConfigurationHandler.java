@@ -29,6 +29,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedFenceGate;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedGlass;
+import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedWood;
 import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
 import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
 import org.freeforums.geforce.securitycraft.blocks.BlockUnbreakableBars;
@@ -40,6 +41,7 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
 import org.freeforums.geforce.securitycraft.entity.EntityEMP;
 import org.freeforums.geforce.securitycraft.entity.EntityEMPBackup;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
+import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
@@ -74,6 +76,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanne
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -193,6 +196,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.reinforcedStone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("reinforcedStone").setBlockTextureName("securitycraft:reinforcedStone");
 	
 		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("reinforcedFenceGate");
+		
+		mod_SecurityCraft.reinforcedWoodPlanks = new BlockReinforcedWood(Material.wood).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("reinforcedPlanks").setBlockTextureName("securitycraft:reinforcedPlanks");
 	}
 	
 	public void setupMines(){
@@ -239,8 +244,10 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setUnlocalizedName("whitelistModule").setTextureName("securitycraft:whitelistModule");
 		
 		mod_SecurityCraft.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true).setUnlocalizedName("blacklistModule").setTextureName("securitycraft:blacklistModule");
-		
+				
 		mod_SecurityCraft.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setUnlocalizedName("harmingModule").setTextureName("securitycraft:harmingModule");
+		
+		mod_SecurityCraft.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setUnlocalizedName("smartModule").setTextureName("securitycraft:smartModule");
 	}
 	
 	public void setupDebuggingBlocks(){
@@ -326,7 +333,8 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.alarmLit, mod_SecurityCraft.alarmLit.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStone, mod_SecurityCraft.reinforcedStone.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedFencegate, mod_SecurityCraft.reinforcedFencegate.getUnlocalizedName().substring(5));
-		
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class, mod_SecurityCraft.reinforcedWoodPlanks.getUnlocalizedName().substring(5));
+
 		GameRegistry.registerItem(mod_SecurityCraft.Codebreaker, mod_SecurityCraft.Codebreaker.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.universalBlockRemover, mod_SecurityCraft.universalBlockRemover.getUnlocalizedName().substring(5));
@@ -339,10 +347,12 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.whitelistModule, mod_SecurityCraft.whitelistModule.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.blacklistModule, mod_SecurityCraft.blacklistModule.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.harmingModule, mod_SecurityCraft.harmingModule.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.smartModule, mod_SecurityCraft.smartModule.getUnlocalizedName().substring(5));
 
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
+		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "reinforcedDoor");
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
 		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
@@ -463,7 +473,7 @@ public class ConfigurationHandler{
 			"GGG", "GNG", "GRG", 'G', Blocks.glass, 'R', Items.redstone, 'N', Blocks.noteblock
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStone, 4), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStone, 5), new Object[]{
 			" C ", "CSC", " C ", 'C', Blocks.cobblestone, 'S', Blocks.stone
 		});
 		

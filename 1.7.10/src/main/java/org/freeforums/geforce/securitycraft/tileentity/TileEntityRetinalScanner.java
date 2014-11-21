@@ -1,10 +1,12 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {
 
-	public int getNumberOfCustomizableOptions() {
-		return 1;
+	protected EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
 }

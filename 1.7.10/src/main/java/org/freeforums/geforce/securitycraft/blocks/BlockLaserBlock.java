@@ -13,6 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.relauncher.Side;
@@ -271,10 +272,7 @@ public class BlockLaserBlock extends BlockContainer{
     {
         if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2){
         	par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
-        }
-        
-            
-        
+        }                      
     }
     
     @SideOnly(Side.CLIENT)
@@ -303,7 +301,7 @@ public class BlockLaserBlock extends BlockContainer{
     }
 
 	public TileEntity createNewTileEntity(World par1World, int par2) {
-		return new TileEntityOwnable();
+		return new TileEntityLaserBlock();
 	}
 	
  

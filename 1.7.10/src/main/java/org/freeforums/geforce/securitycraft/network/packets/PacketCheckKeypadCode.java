@@ -21,19 +21,21 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketCheckKeypadCode implements IMessage{
 	
-	private int x, y, z, code;
+	private int x, y, z;
+	private String code;
 	
 	public PacketCheckKeypadCode(){
 		
 	}
 	
-	public PacketCheckKeypadCode(int par1, int par2, int par3, int code){
+	public PacketCheckKeypadCode(int par1, int par2, int par3, String code){
 		this.x = par1;
 		this.y = par2;
 		this.z = par3;
@@ -44,14 +46,14 @@ public class PacketCheckKeypadCode implements IMessage{
 		x = par1ByteBuf.readInt();
 		y = par1ByteBuf.readInt();
 		z = par1ByteBuf.readInt();
-		code = par1ByteBuf.readInt();
+		code = ByteBufUtils.readUTF8String(par1ByteBuf);
 	}
 
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
 		par1ByteBuf.writeInt(z);
-		par1ByteBuf.writeInt(code);
+		ByteBufUtils.writeUTF8String(par1ByteBuf, code);
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCheckKeypadCode, IMessage>{
@@ -60,24 +62,25 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int x = packet.x;
 		int y = packet.y;
 		int z = packet.z;
-		int code = packet.code;
+		String code = packet.code;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 	
 		
-		int code1 = -1;
-		int code2 = -1;
+		String code1 = "";
+		String code2 = "";
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad){
 			code1 = ((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest){
 			code2 = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
 		}
 
-		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code == code1){
+		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code.matches(code1)){
 			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
-			new ScheduleUpdate(getWorld(par1EntityPlayer), 3, x, y, z, code);
+			new ScheduleUpdate(getWorld(par1EntityPlayer), 3, x, y, z);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
-		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code == code2){
+		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code.matches(code2)){
+			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getChestInventory(getWorld(par1EntityPlayer), x, y, z)); //((TileEntityKeypadChest) getWorld().getTileEntity(x, y, z))
 			return null;

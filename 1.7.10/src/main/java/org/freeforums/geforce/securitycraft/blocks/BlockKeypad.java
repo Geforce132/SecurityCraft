@@ -3,14 +3,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -19,8 +16,6 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.ICustomizable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -28,7 +23,7 @@ import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer implements ICustomizable{
+public class BlockKeypad extends BlockContainer{
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -67,24 +62,28 @@ public class BlockKeypad extends BlockContainer implements ICustomizable{
     	if(par1World.isRemote){
     		return true;
     	}else{
+    		if(par1World.getBlockMetadata(par2, par3, par4) > 6 && par1World.getBlockMetadata(par2, par3, par4) < 11){
+    			return false;
+    		}
+    		
     		if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
     			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(par2, par3, par4);
     			
     			if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
     				return true;
     			}
-    		
-    			if(TEK.getKeypadCode() == 0){
-    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, par2, par3, par4);
-    			}else{
+    			    		
+    			if(TEK.getKeypadCode() != null && !TEK.getKeypadCode().isEmpty()){
     				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 0, par1World, par2, par3, par4);
+    			}else{
+    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, par2, par3, par4);
     			}
     			
     			return true;       		
         	}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
         		if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
-    				if(((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != 0 && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
-    					new ScheduleUpdate(par1World, 3, par2, par3, par4, ((TileEntityKeypad) par1World.getTileEntity(par2, par3, par4)).getKeypadCode());
+    				if(!((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty() && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
+    					new ScheduleUpdate(par1World, 3, par2, par3, par4);
     				}
     			}else{	
     				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
@@ -220,9 +219,5 @@ public class BlockKeypad extends BlockContainer implements ICustomizable{
     {
         return new TileEntityKeypad();
     }
-
-	public EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
-	}
 
 }

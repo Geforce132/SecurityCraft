@@ -37,18 +37,19 @@ public class BlockKeypadChest extends BlockChest{
      */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
-        if (par1World.isRemote)
-        {
+        if (par1World.isRemote){
             return true;
-        }
-        else
-        {
+        }else{
             IInventory iinventory = this.func_149951_m(par1World, par2, par3, par4);
 
-            if (iinventory != null)
-            {         
+            if (iinventory != null){ 
+            	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
+            		par5EntityPlayer.displayGUIChest(iinventory);
+            		return true;
+            	}
+            	
             	if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest){
-            		if(((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != 0){
+            		if(((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != null && !((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty()){
             			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 13, par1World, par2, par3, par4);
             		}else{
             			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 12, par1World, par2, par3, par4);

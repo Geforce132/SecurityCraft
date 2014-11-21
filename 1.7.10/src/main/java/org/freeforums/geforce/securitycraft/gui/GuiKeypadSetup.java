@@ -52,7 +52,7 @@ public class GuiKeypadSetup extends GuiContainer
 		this.textboxKeycode.setTextColor(-1);
 		this.textboxKeycode.setDisabledTextColour(-1);
 		this.textboxKeycode.setEnableBackgroundDrawing(true);
-		this.textboxKeycode.setMaxStringLength(9);
+		this.textboxKeycode.setMaxStringLength(11);
 		
 		
 		
@@ -70,9 +70,7 @@ public class GuiKeypadSetup extends GuiContainer
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.textboxKeycode.drawTextBox();
-		//this.updateButtonText();
 		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
-		
     }
     
     
@@ -132,7 +130,7 @@ public class GuiKeypadSetup extends GuiContainer
 		switch(guibutton.id){
 		case 0:
 			try{					
-				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, Integer.parseInt(this.textboxKeycode.getText())));
+				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.textboxKeycode.getText()));
 			}catch(Exception e){
 				this.flag  = true;
 				this.updateButtonText();

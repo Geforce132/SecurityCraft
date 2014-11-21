@@ -1,20 +1,25 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 @SuppressWarnings("unused")
 public class TileEntityKeypad extends CustomizableSCTE{
 	
 	
-	private int passcode;
+	private String passcode;
 	private boolean isGettingHacked = false;
 	private int currentlyHackedLetterPos = 0;
 	
-    public int getKeypadCode(){
+    public String getKeypadCode(){
     	return passcode;
     }
     
-    public void setKeypadCode(int par1){
+    public void setKeypadCode(String par1){
     	passcode = par1;
     }
     
@@ -33,7 +38,10 @@ public class TileEntityKeypad extends CustomizableSCTE{
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("passcode", this.passcode);
+        
+        if(this.passcode != null && !this.passcode.isEmpty()){
+        	par1NBTTagCompound.setString("passcode", this.passcode);
+        }
     }
 
     /**
@@ -45,12 +53,16 @@ public class TileEntityKeypad extends CustomizableSCTE{
 
         if (par1NBTTagCompound.hasKey("passcode"))
         {
-            this.passcode = par1NBTTagCompound.getInteger("passcode");
+        	if(par1NBTTagCompound.getInteger("passcode") != 0){
+        		this.passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+        	}else{
+        		this.passcode = par1NBTTagCompound.getString("passcode");
+        	}
         }
     }
 
-	public int getNumberOfCustomizableOptions() {
-		return 2;
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}       
  
 }

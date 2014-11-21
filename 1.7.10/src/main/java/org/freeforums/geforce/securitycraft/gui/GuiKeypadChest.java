@@ -60,7 +60,7 @@ public class GuiKeypadChest extends GuiContainer
 		this.textboxKeycode.setTextColor(-1);
 		this.textboxKeycode.setDisabledTextColour(-1);
 		this.textboxKeycode.setEnableBackgroundDrawing(true);
-		this.textboxKeycode.setMaxStringLength(9);
+		this.textboxKeycode.setMaxStringLength(11);
     }
     
     public void onGuiClosed(){
@@ -81,34 +81,14 @@ public class GuiKeypadChest extends GuiContainer
     
     protected void keyTyped(char par1, int par2){
 		if(this.isValidChar(par1)){
-			if(this.canAddNumberToString(par1)){
-				Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-				this.currentString += par1;
-				//this.textboxKeycode.setText(currentString);
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				this.checkCode(this.currentString);
-			}
-		}
-		
-		else{
+			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			this.currentString += par1;
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);			
+		}else{
 			super.keyTyped(par1, par2);
 		}
-	
 	}
-    
-    private boolean canAddNumberToString(char par1){
-    	
-    	String tempString = this.currentString;
-    	
-    	try{
-    		tempString += par1;
-    		return Integer.parseInt(tempString) > Integer.MAX_VALUE ? false : true;
-    		
-    	}catch(NumberFormatException e){
-    		e.printStackTrace();
-    		return false;
-    	}
-    }
     
     private boolean isValidChar(char par1) {
 		for(int x = 1; x <= this.allowedChars.length; x++){
@@ -152,101 +132,62 @@ public class GuiKeypadChest extends GuiContainer
 	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 		case 0:
-			if(this.canAddNumberToString('0')){
-				this.currentString += "0";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-
+			this.currentString += "0";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);
 			break;
 		case 1:
-			if(this.canAddNumberToString('1')){
-				this.currentString += "1";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-
+			this.currentString += "1";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);			
 			break;
 		case 2:
-			if(this.canAddNumberToString('2')){
-				this.currentString += "2";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "2";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);				
 			break;
 		case 3:
-			if(this.canAddNumberToString('3')){
-				this.currentString += "3";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "3";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);		
 			break;
 		case 4:
-			if(this.canAddNumberToString('4')){
-				this.currentString += "4";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "4";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);						
 			break;
 		case 5:
-			if(this.canAddNumberToString('5')){
-				this.currentString += "5";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "5";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);			
 			break;	
 		case 6:
-			if(this.canAddNumberToString('6')){
-				this.currentString += "6";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "6";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);		
 			break;
 		case 7:
-			if(this.canAddNumberToString('7')){
-				this.currentString += "7";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "7";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);			
 			break;
 		case 8:
-			if(this.canAddNumberToString('8')){
-				this.currentString += "8";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "8";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);	
 			break;
 		case 9:
-			if(this.canAddNumberToString('9')){
-				this.currentString += "9";
-				this.setTextboxCensoredText(textboxKeycode, currentString);
-				//this.textboxKeycode.setText(currentString);
-				this.checkCode(this.currentString);
-			}
-			
+			this.currentString += "9";
+			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.checkCode(this.currentString);	
 			break;
 		
-			}
 		}
+	}
+
 
 	private void checkCode(String par1String) {
-		mod_SecurityCraft.network.sendToServer(new PacketCheckKeypadCode(this.keypadInventory.xCoord, this.keypadInventory.yCoord, this.keypadInventory.zCoord, Integer.parseInt(par1String)));
+		mod_SecurityCraft.network.sendToServer(new PacketCheckKeypadCode(this.keypadInventory.xCoord, this.keypadInventory.yCoord, this.keypadInventory.zCoord, par1String));
 
 	}
 	

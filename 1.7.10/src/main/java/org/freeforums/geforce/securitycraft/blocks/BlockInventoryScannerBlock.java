@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -69,653 +70,93 @@ public class BlockInventoryScannerBlock extends Block{
     /**
      * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
      */
-    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
-    {
-    	
-        if (par5Entity instanceof EntityPlayer && !par1World.isRemote)
-        {
-        	
-        	if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(0) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(0));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(1) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(1));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(2) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(2));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(3) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(3));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(4) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(4));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(5) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(5));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(6) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(6));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(7) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(7));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(8) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(8));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(9) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(9));
-						}
-					}
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(0) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(0));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(1) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(1));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(2) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(2));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(3) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(3));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(4) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(4));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(5) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(5));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(6) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(6));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(7) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(7));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(8) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(8));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(9) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(9));
-						}
-					}
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(0) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(0));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(1) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(1));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(2) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(2));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(3) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(3));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(4) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(4));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(5) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(5));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(6) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(6));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(7) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(7));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(8) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(8));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(9) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(9));
-						}
-					}
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(0) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(0));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(1) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(1));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(2) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(2));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(3) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(3));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(4) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(4));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(5) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(5));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(6) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(6));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(7) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(7));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(8) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(8));
-						}
-					}
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(9) != null){
-					
-					for(int i = 1; i <= ((EntityPlayer) par5Entity).inventory.mainInventory.length; i++){
-						if(((EntityPlayer) par5Entity).inventory.mainInventory[i - 1] != null){
-							checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(9));
-						}
-					}
-				}
-        	}
-        	
-        	
-        	
-        	
-        //-_-_-_-_-_-_-_-*****************
-        //-_-_-_-_-_-_-_-*****************
-        //-_-_-_-_-_-_-_-*****************
-        	
-        	
-        	
-        	
-        }else if(par5Entity instanceof EntityItem  && !par1World.isRemote){
-        	if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(0) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(0));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(1) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(1));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(2) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(2));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(3) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(3));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(4) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(4));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(5) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(5));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(6) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(6));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(7) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(7));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(8) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(8));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(9) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlot(9));
-					}
-					
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityInventoryScanner){
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(0) != null){
-					
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(0));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(1) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(1));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(2) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(2));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(3) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(3));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(4) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(4));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(5) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(5));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(6) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(6));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(7) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(7));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(8) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(8));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(9) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlot(9));
-					}
-					
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityInventoryScanner){
-        		if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(0) != null){
-					
-        			if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(0));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(1) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(1));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(2) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(2));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(3) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(3));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(4) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(4));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(5) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(5));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(6) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(6));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(7) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(7));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(8) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(8));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 - 1)).getStackInSlot(9) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlot(9));
-					}
-					
-				}
-        	}
-        	
-        	//--------
-        	else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityInventoryScanner){
-        		if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(0) != null){
-					
-        			if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(0));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(1) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(1));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(2) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(2));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(3) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(3));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(4) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(4));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(5) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(5));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(6) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(6));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(7) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(7));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(8) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(8));
-					}
-					
-				}
-				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 , par3, par4 + 1)).getStackInSlot(9) != null){
-
-					if(((EntityItem) par5Entity).getEntityItem() != null){
-						checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlot(9));
-					}
-					
-				}
-        	}
-        }       
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
+    	if(par1World.isRemote){
+    		return;
+    	}else{
+	        if(par5Entity instanceof EntityPlayer){   	        	
+	        	if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityInventoryScanner){    
+		        	if(HelpfulMethods.checkForModule(par1World, par2 - 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+	        		for(int i = 0; i < 10; i++){
+	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i) != null){       				
+	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i));
+	        					}       					
+	        				}
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityInventoryScanner){
+		        	if(HelpfulMethods.checkForModule(par1World, par2 + 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+	        		for(int i = 0; i < 10; i++){
+	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i) != null){       				
+	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i));
+	        					}       					
+	        				}
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityInventoryScanner){
+		        	if(HelpfulMethods.checkForModule(par1World, par2, par3, par4 - 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+	        		for(int i = 0; i < 10; i++){
+	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i) != null){       				
+	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i));
+	        					}       					
+	        				}
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityInventoryScanner){
+		        	if(HelpfulMethods.checkForModule(par1World, par2, par3, par4 + 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+	        		for(int i = 0; i < 10; i++){
+	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i) != null){       				
+	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i));
+	        					}       					
+	        				}
+	        			}
+	        		}
+	        	}
+	        //******************************************
+	        }else if(par5Entity instanceof EntityItem){
+	        	if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityInventoryScanner){
+	        		for(int i = 0; i < 10; i++){
+	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i) != null){       				
+	        				if(((EntityItem) par5Entity).getEntityItem() != null){
+	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i));
+	        				}       					
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityInventoryScanner){
+	        		for(int i = 0; i < 10; i++){
+	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i) != null){       				
+	        				if(((EntityItem) par5Entity).getEntityItem() != null){
+	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i));
+	        				}       					
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityInventoryScanner){
+	        		for(int i = 0; i < 10; i++){
+	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i) != null){       				
+	        				if(((EntityItem) par5Entity).getEntityItem() != null){
+	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i));
+	        				}       					
+	        			}
+	        		}
+	        	}else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityInventoryScanner){
+	        		for(int i = 0; i < 10; i++){
+	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i) != null){       				
+	        				if(((EntityItem) par5Entity).getEntityItem() != null){
+	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i));
+	        				}       					
+	        			}
+	        		}
+	        	}
+	        }      
+    	}
     }
     
     public void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
