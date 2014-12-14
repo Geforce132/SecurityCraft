@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "securitycraft:keycardReader" },
+        "facing=south": { "model": "securitycraft:keycardReader", "y": 180 },
+        "facing=west":  { "model": "securitycraft:keycardReader", "y": 270 },
+        "facing=east":  { "model": "securitycraft:keycardReader", "y": 90 }
+    }
+}
