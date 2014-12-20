@@ -1,22 +1,22 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -29,14 +29,15 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScannerBlock;
 
-public class BlockInventoryScannerBlock extends Block{
+public class BlockInventoryScannerBlock extends BlockContainer{
     
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockInventoryScannerBlock(Material par2Material) {
 		super(par2Material);
-		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
+		//this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
 
 	}
 
@@ -57,6 +58,10 @@ public class BlockInventoryScannerBlock extends Block{
         return false;
     }
     
+    public int getRenderType(){
+    	return 3;
+    }
+    
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
@@ -70,101 +75,93 @@ public class BlockInventoryScannerBlock extends Block{
         	}
     	}
     }
+      
+    public static void checkForPlayer(World par1World, BlockPos pos, Entity par5Entity){
+    	if(par5Entity instanceof EntityPlayer){   	        	
+        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
+	        	if(HelpfulMethods.checkForModule(par1World, pos.west(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        		for(int i = 0; i < 10; i++){
+        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
+        					}       					
+        				}
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(par1World, pos.east(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        		for(int i = 0; i < 10; i++){
+        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
+        					}       					
+        				}
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(par1World, pos.north(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        		for(int i = 0; i < 10; i++){
+        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
+        					}       					
+        				}
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(par1World, pos.south(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        		for(int i = 0; i < 10; i++){
+        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
+        					}       					
+        				}
+        			}
+        		}
+        	}
+        //******************************************
+        }else if(par5Entity instanceof EntityItem){
+        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
+        		for(int i = 0; i < 10; i++){
+        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) par5Entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
+        				}       					
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
+        		for(int i = 0; i < 10; i++){
+        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) par5Entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
+        				}       					
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
+        		for(int i = 0; i < 10; i++){
+        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) par5Entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
+        				}       					
+        			}
+        		}
+        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
+        		for(int i = 0; i < 10; i++){
+        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) par5Entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
+        				}       					
+        			}
+        		}
+        	}
+        }
+    }  
     
-    
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-    	if(par1World.isRemote){
-    		return;
-    	}else{
-	        if(par5Entity instanceof EntityPlayer){   	        	
-	        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
-		        	if(HelpfulMethods.checkForModule(par1World, pos.west(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
-	        		for(int i = 0; i < 10; i++){
-	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
-	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
-	        					}       					
-	        				}
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, pos.east(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
-	        		for(int i = 0; i < 10; i++){
-	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
-	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
-	        					}       					
-	        				}
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, pos.north(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
-	        		for(int i = 0; i < 10; i++){
-	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
-	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
-	        					}       					
-	        				}
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, pos.south(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
-	        		for(int i = 0; i < 10; i++){
-	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
-	        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-	        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
-	        					}       					
-	        				}
-	        			}
-	        		}
-	        	}
-	        //******************************************
-	        }else if(par5Entity instanceof EntityItem){
-	        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
-	        		for(int i = 0; i < 10; i++){
-	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
-	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
-	        				}       					
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
-	        		for(int i = 0; i < 10; i++){
-	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
-	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
-	        				}       					
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
-	        		for(int i = 0; i < 10; i++){
-	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
-	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
-	        				}       					
-	        			}
-	        		}
-	        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
-	        		for(int i = 0; i < 10; i++){
-	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
-	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
-	        				}       					
-	        			}
-	        		}
-	        	}
-	        }      
-    	}
-    }
-    
-    public void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
+    public static void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
 //    	Block block = null;
 //		Item item = null;
 //		boolean flag = false;
@@ -189,7 +186,7 @@ public class BlockInventoryScannerBlock extends Block{
 //			
 //            item = (Item)Item.itemRegistry.getObject(par3);
 //        }
-		
+		System.out.println("Running");
 		if(par2TileEntity.getType().matches("redstone")){
 			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
 				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
@@ -201,7 +198,7 @@ public class BlockInventoryScannerBlock extends Block{
 						
 						mod_SecurityCraft.log("Running te update");
 						par2TileEntity.setCooldown(60);
-						this.checkAndUpdateTEAppropriately(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity);
+						checkAndUpdateTEAppropriately(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity);
 						HelpfulMethods.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity.getWorld().getBlockState(par2TileEntity.getPos()).getBlock(), 1, true);
 						mod_SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: " + Utils.getFormattedCoordinates(par2TileEntity.getPos()));
 					}
@@ -223,14 +220,14 @@ public class BlockInventoryScannerBlock extends Block{
 		}
     }
     
-    public void checkEntity(EntityItem par1EntityItem, ItemStack par2){
+    public static void checkEntity(EntityItem par1EntityItem, ItemStack par2){
 		if(par1EntityItem.getEntityItem().getItem() == par2.getItem()){
 			par1EntityItem.setDead();
 		}
 		
     }
     
-    private void checkAndUpdateTEAppropriately(World par1World, BlockPos pos, TileEntityInventoryScanner par5TileEntityIS) {
+    private static void checkAndUpdateTEAppropriately(World par1World, BlockPos pos, TileEntityInventoryScanner par5TileEntityIS) {
     	mod_SecurityCraft.log("Updating te");
 		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && Utils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && Utils.getBlock(par1World, pos.west()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setShouldProvidePower(true);
@@ -249,7 +246,7 @@ public class BlockInventoryScannerBlock extends Block{
 			HelpfulMethods.updateAndNotify(par1World, pos.north(2), Utils.getBlock(par1World, pos), 1, true);
 
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && Utils.getBlock(par1World, pos.south(2)) == this && Utils.getBlock(par1World, pos.south()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
+		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && Utils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && Utils.getBlock(par1World, pos.south()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setCooldown(60);
 			HelpfulMethods.updateAndNotify(par1World, pos.south(2), Utils.getBlock(par1World, pos), 1, true);
@@ -290,7 +287,7 @@ public class BlockInventoryScannerBlock extends Block{
     
     public IBlockState getStateFromMeta(int meta)
     {    
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 5]);     
+        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);     
     }
 
     public int getMetaFromState(IBlockState state)
@@ -312,5 +309,9 @@ public class BlockInventoryScannerBlock extends Block{
     {
         return null;
     }
+
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityInventoryScannerBlock();
+	}
    
 }

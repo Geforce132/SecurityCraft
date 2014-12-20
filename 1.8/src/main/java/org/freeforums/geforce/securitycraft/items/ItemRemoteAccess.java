@@ -29,7 +29,7 @@ public class ItemRemoteAccess extends Item{
 	
 	public TileEntityMineLoc[] tEList = new TileEntityMineLoc[6];
 	
-	private Block[] allowedBlocks = {mod_SecurityCraft.Mine, mod_SecurityCraft.MineCut};
+	private Block[] allowedBlocks = {mod_SecurityCraft.Mine};
 	
 	public static ItemRemoteAccess activeRemote;
 	public static EntityPlayer playerObj;
@@ -38,6 +38,10 @@ public class ItemRemoteAccess extends Item{
 	public ItemRemoteAccess(int par1) {
 		super();
 		this.remoteAccessVarity = par1;
+	}
+	
+	public boolean isFull3D(){
+		return true;
 	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){

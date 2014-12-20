@@ -69,7 +69,7 @@ public class BlockCageTrap extends Block{
 				HelpfulMethods.setBlockInBox(par1World, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
 
 				par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getName() + " was captured in a trap at" + Utils.getFormattedCoordinates(pos)));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getName() + " was captured in a trap at " + Utils.getFormattedCoordinates(pos)));
 
 			}
 		}
@@ -85,7 +85,7 @@ public class BlockCageTrap extends Block{
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
 	{
 		return this.deactivated ? HelpfulMethods.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : HelpfulMethods.getItemFromBlock(this);
 	}

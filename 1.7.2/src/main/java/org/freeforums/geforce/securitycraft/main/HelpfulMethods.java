@@ -1,6 +1,8 @@
 package org.freeforums.geforce.securitycraft.main;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import net.minecraft.block.Block;
@@ -10,19 +12,29 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
+import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -357,7 +369,7 @@ public class HelpfulMethods {
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 	}
 	
-	public static void closePlayerScreen(EntityPlayer par1){
+	public static void closePlayerScreen(){
 		Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);
 		Minecraft.getMinecraft().setIngameFocus();
 	}
@@ -365,6 +377,82 @@ public class HelpfulMethods {
 	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
 		par1World.func_147480_a(par2, par3, par4, par5);
 	}
+	
+	public static String removeLastChar(String par1){
+		if(par1 == null || par1.isEmpty()){ return ""; }
+		
+		return par1.substring(0, par1.length() - 1);
+	}
+	
+	public static void checkForBlockAndInsertModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		for(int i = 1; i <= range; i++){
+			if(dir.equalsIgnoreCase("x+")){
+				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2 + i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("x-")){
+				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2 - i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y+")){
+				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3 + i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y-")){
+				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3 - i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z+")){
+				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 + i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z-")){
+				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).insertModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 - i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void checkInAllDirsAndInsertModule(World par1World, int par2, int par3, int par4, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
+	}
+	
+	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){
+		for(int i = 0; i < inventory.getSizeInventory(); i++){
+			if(inventory.getStackInSlot(i) != null){
+				if(inventory.getStackInSlot(i) == item){
+					return inventory.getStackInSlot(i);
+				}
+			}
+		}
+		
+		return null;
+	}
+
 	
 	public static boolean isActiveBeacon(World par1World, int beaconX, int beaconY, int beaconZ){
 		if(par1World.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon){
@@ -454,6 +542,80 @@ public class HelpfulMethods {
 				return true;
 			}else{
 				continue;
+			}
+		}
+		
+		return false;
+	}
+	
+	public static EntityPlayer getPlayerFromName(String par1){
+    	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+    	Iterator iterator = players.iterator();
+    	
+    	while(iterator.hasNext()){
+    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+    		if(tempPlayer.getCommandSenderName().matches(par1)){
+    			return tempPlayer;
+    		}
+    	}
+    	
+    	return null;
+    }
+
+	public static List<String> getPlayersFromModule(World par1World, int par2, int par3, int par4, EnumCustomModules module) {
+		List<String> list = new ArrayList<String>();
+		
+		CustomizableSCTE te = (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4);
+		
+		if(te.hasModule(module)){
+			ItemStack item = te.getModule(module);
+						
+			for(int i = 1; i <= 10; i++){
+				if(item.stackTagCompound != null && item.stackTagCompound.getString("Player" + i) != null && !item.stackTagCompound.getString("Player" + i).isEmpty()){
+					list.add(item.stackTagCompound.getString("Player" + i));
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	public static boolean checkForModule(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, EnumCustomModules module){
+		TileEntity te = par1World.getTileEntity(par2, par3, par4);
+		
+		if(te == null || !(te instanceof CustomizableSCTE)){ return false; }
+		
+		if(te instanceof TileEntityKeypad){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
+				new ScheduleUpdate(par1World, 3, par2, par3, par4);
+				return true;
+			}
+			
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this keypad.", EnumChatFormatting.RED);
+				return true;
+			}
+		}else if(te instanceof TileEntityKeycardReader){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
+				((TileEntityKeycardReader) te).setIsProvidingPower(true);
+				new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
+				par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par1World.getBlock(par2, par3, par4));
+				return true;
+			}
+			
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName())){
+				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this reader.", EnumChatFormatting.RED);
+				return true;
+			}
+		}else if(te instanceof TileEntityRetinalScanner){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				return true;
+			}
+		}else if(te instanceof TileEntityInventoryScanner){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName())){
+				return true;
 			}
 		}
 		

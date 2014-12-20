@@ -1,25 +1,26 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityPortableRadar extends TileEntitySCTE {
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
+public class TileEntityPortableRadar extends CustomizableSCTE {
 	
 	private String username;
 	private String customName;
 	private boolean EMPed = false;
 	
 	private int cooldown = 0;
-
-    
+	
+	
 	/**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
     public void updateEntity()
     {
-        this.cooldown++;
+    	this.cooldown++;
         
     	if(cooldown == mod_SecurityCraft.configHandler.portableRadarDelay){
     		this.worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.portableRadar, 1);
@@ -62,7 +63,7 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
         par1NBTTagCompound.setString("owner", this.username);
         par1NBTTagCompound.setBoolean("emped", this.EMPed);
         par1NBTTagCompound.setInteger("cooldown", this.cooldown);
-
+        
         if(this.customName != null && !this.customName.isEmpty()){
         	par1NBTTagCompound.setString("customName", this.customName);
         }
@@ -95,6 +96,10 @@ public class TileEntityPortableRadar extends TileEntitySCTE {
 	
 	public boolean hasCustomName(){
 		return (this.customName != null && !this.customName.isEmpty()) ? true : false;
+	}
+
+	protected EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.REDSTONE};
 	}
 
 }

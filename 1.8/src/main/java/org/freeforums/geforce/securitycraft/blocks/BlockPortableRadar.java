@@ -57,6 +57,10 @@ public class BlockPortableRadar extends BlockContainer{
     {
         return false;
     }
+    
+    public int getRenderType(){
+    	return 3;
+    }
      
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         this.addEffectsToPlayers(par1World, pos, state); 

@@ -4,6 +4,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -12,6 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 import cpw.mods.fml.relauncher.Side;
@@ -30,22 +32,22 @@ public class BlockSecurityCamera extends BlockContainer{
 	
 	
 	
+    @SideOnly(Side.CLIENT)
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    @SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2)
+    public IIcon getIcon(int par1, int par2)
     {
     	return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront)); 	
     }
 
+    @SideOnly(Side.CLIENT)
 
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
-    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("cobblestone");
@@ -53,6 +55,20 @@ public class BlockSecurityCamera extends BlockContainer{
         this.keypadIconTop = par1IconRegister.registerIcon("cobblestone");
     }
     
+    /**
+     * Called upon block activation (right click on the block.)
+     */
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
+    	if(par1World.isRemote){
+    		return true;
+    	}else{
+    	
+    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 10, par1World, par2, par3, par4);
+    		
+    		return true;
+    	}
+    }
+	    
     /**
      * Called when the block is placed in the world.
      */
@@ -102,7 +118,7 @@ public class BlockSecurityCamera extends BlockContainer{
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).isDetectingPlayer() ? 15 : 0;
+        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasPlayer() ? 15 : 0;
     	//return 15;
     }
     
@@ -112,7 +128,7 @@ public class BlockSecurityCamera extends BlockContainer{
      */
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).isDetectingPlayer() ? 15 : 0;
+        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasPlayer() ? 15 : 0;
     	//return 15;
     }
 

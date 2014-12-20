@@ -2,10 +2,9 @@ package org.freeforums.geforce.securitycraft.items;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class ItemTestItem extends ItemUsable{
 
@@ -17,7 +16,7 @@ public class ItemTestItem extends ItemUsable{
 		if(par3World.isRemote){			
 			return true;			
 		}else{
-			//System.out.println(HelpfulMethods.doesPlayerHavePotionEffect(par2EntityPlayer, Potion.invisibility));
+			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par3World, par4, par5, par6);
 			return true;
 		}
 	}	

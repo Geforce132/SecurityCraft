@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -51,7 +52,7 @@ public class GuiKeypadSetup extends GuiContainer
 		this.textboxKeycode.setTextColor(-1);
 		this.textboxKeycode.setDisabledTextColour(-1);
 		this.textboxKeycode.setEnableBackgroundDrawing(true);
-		this.textboxKeycode.setMaxStringLength(9);
+		this.textboxKeycode.setMaxStringLength(11);
 		
 		
 		
@@ -69,9 +70,7 @@ public class GuiKeypadSetup extends GuiContainer
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.textboxKeycode.drawTextBox();
-		//this.updateButtonText();
 		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
-		
     }
     
     
@@ -121,45 +120,27 @@ public class GuiKeypadSetup extends GuiContainer
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        int i1;
-        
     }
     
     private void updateButtonText(){
-
        this.saveAndContinueButton.displayString = !this.flag ? "Save & continue." : "Invalid code!";
-
-   }
-    
-	
-
-	
-    
-	protected void actionPerformed(GuiButton guibutton){
+    }
+   
+    protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 		case 0:
-			try{		
-				BlockKeypad.openCodeServer = Integer.parseInt(this.textboxKeycode.getText());
-			
-				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(BlockKeypad.lastKeypadX, BlockKeypad.lastKeypadY, BlockKeypad.lastKeypadZ, Integer.parseInt(this.textboxKeycode.getText())));
+			try{					
+				mod_SecurityCraft.network.sendToServer(new PacketSetKeypadCode(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.textboxKeycode.getText()));
 			}catch(Exception e){
 				this.flag  = true;
 				this.updateButtonText();
 				e.printStackTrace();
 				return;
 			}
-		
-		      
-			 BlockKeypad.playerObj.closeScreen();
-			 BlockKeypad.playerObj.openGui(mod_SecurityCraft.instance, 0, BlockKeypad.worldObj, BlockKeypad.lastKeypadX, BlockKeypad.lastKeypadY, BlockKeypad.lastKeypadZ);
 		    
-			}
-		}	
-	
-	
-	
-	
-	
-	
+			Minecraft.getMinecraft().thePlayer.closeScreen();
+			Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 0, keypadInventory.getWorldObj(), keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord);	
+		}
+	}	
 
 }

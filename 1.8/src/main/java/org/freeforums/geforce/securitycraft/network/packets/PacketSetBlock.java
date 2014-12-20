@@ -11,18 +11,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSetBlock implements IMessage{
 	
-	private int x, y, z;
+	private int x, y, z, meta;
 	private String blockID;
 	
 	public PacketSetBlock(){
 		
 	}
 	
-	public PacketSetBlock(int x, int y, int z, String id){
+	public PacketSetBlock(int x, int y, int z, String id, int meta){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.blockID = id;
+		this.meta = meta;
 	}
 	
 	public void toBytes(ByteBuf par1ByteBuf) {
@@ -30,6 +31,7 @@ public class PacketSetBlock implements IMessage{
 		par1ByteBuf.writeInt(y);
 		par1ByteBuf.writeInt(z);
 		ByteBufUtils.writeUTF8String(par1ByteBuf, blockID);
+		par1ByteBuf.writeInt(meta);
 	}
 
 	public void fromBytes(ByteBuf par1ByteBuf) {
@@ -37,6 +39,7 @@ public class PacketSetBlock implements IMessage{
 		this.y = par1ByteBuf.readInt();
 		this.z = par1ByteBuf.readInt();
 		this.blockID = ByteBufUtils.readUTF8String(par1ByteBuf);
+		this.meta = par1ByteBuf.readInt();
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
@@ -46,10 +49,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int y = packet.y;
 		int z = packet.z;
 		String blockID = packet.blockID;
+		int meta = packet.meta;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 	
 		Block block = (Block)Block.blockRegistry.getObject(blockID);
-		getWorld(par1EntityPlayer).setBlockState(new BlockPos(x, y, z), block.getDefaultState());
+		getWorld(par1EntityPlayer).setBlockState(new BlockPos(x, y, z), block.getStateFromMeta(meta));
 		
 		return null;
 	}

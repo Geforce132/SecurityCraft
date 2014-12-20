@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
@@ -9,13 +10,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,8 +26,9 @@ import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaser;
 
-public class BlockLaser extends Block{
+public class BlockLaser extends BlockContainer{
 	
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
 
@@ -42,11 +43,22 @@ public class BlockLaser extends Block{
         return null;
     }
 	
-	public boolean isOpaqueCube(){
-		return false;	
-	}
+	@SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer()
+    {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 	
 	/**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+    
+    /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     public boolean isNormalCube()
@@ -54,11 +66,22 @@ public class BlockLaser extends Block{
         return false;
     }
     
+    public boolean isFullCube()
+    {
+        return false;
+    }
     
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity) {
+    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    {
+        return true;
+    }  
+    
+    public int getRenderType(){
+    	return 3;
+    }
+    
+    public static void checkForPlayer(World par1World, BlockPos pos, Entity par5Entity) {
+        Utils.checkIfRunning(par5Entity);
         if(!par1World.isRemote && par5Entity instanceof EntityLivingBase && !HelpfulMethods.doesMobHavePotionEffect((EntityLivingBase) par5Entity, Potion.invisibility)){	
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.east(i));
@@ -155,11 +178,10 @@ public class BlockLaser extends Block{
 					continue;
 				}
 			}
-        }
-    }
-    
-    
-    /**
+        }		
+	}
+
+	/**
      * Called right before the block is destroyed by a player.  Args: world, pos, state
      */
     @SuppressWarnings("static-access")
@@ -257,6 +279,8 @@ public class BlockLaser extends Block{
         {
     		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
         }
+        
+        System.out.println(((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue());
     } 
     
     public IBlockState getStateFromMeta(int meta)
@@ -283,5 +307,9 @@ public class BlockLaser extends Block{
     {
         return null;
     }
+
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityLaser();
+	}
 
 }

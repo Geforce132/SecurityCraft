@@ -3,22 +3,22 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 
-public class TileEntityKeypadChest extends TileEntityChest{
+public class TileEntityKeypadChest extends TileEntityChest {
 	
-	private int passcode;
-	private String owner;
-	
+	private String passcode;
+    private String owner;
+
 	public TileEntityKeypadChest adjacentChestZNeg;
     public TileEntityKeypadChest adjacentChestXPos;
     public TileEntityKeypadChest adjacentChestXNeg;
     public TileEntityKeypadChest adjacentChestZPos;
 
 	
-	public int getKeypadCode(){
+	public String getKeypadCode(){
     	return passcode;
     }
     
-    public void setKeypadCode(int par1){
+    public void setKeypadCode(String par1){
     	passcode = par1;
     }
     
@@ -36,7 +36,10 @@ public class TileEntityKeypadChest extends TileEntityChest{
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("passcode", this.passcode);
+        
+        if(this.passcode != null && !this.passcode.isEmpty()){
+        	par1NBTTagCompound.setString("passcode", this.passcode);
+        }
         
         if(this.owner != null && this.owner != ""){
         	par1NBTTagCompound.setString("owner", this.owner);
@@ -52,7 +55,11 @@ public class TileEntityKeypadChest extends TileEntityChest{
 
         if (par1NBTTagCompound.hasKey("passcode"))
         {
-            this.passcode = par1NBTTagCompound.getInteger("passcode");
+        	if(par1NBTTagCompound.getInteger("passcode") != 0){
+        		this.passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+        	}else{
+        		this.passcode = par1NBTTagCompound.getString("passcode");
+        	}
         }
         
         if (par1NBTTagCompound.hasKey("owner"))
@@ -60,8 +67,6 @@ public class TileEntityKeypadChest extends TileEntityChest{
             this.owner = par1NBTTagCompound.getString("owner");
         }
     }
-    
-   
     
     /**
      * Returns the name of the inventory

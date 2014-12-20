@@ -52,7 +52,6 @@ public class BlockActiveLaser extends Block{
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
-    @SuppressWarnings("static-access")
     public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
     	if(!par1World.isRemote){

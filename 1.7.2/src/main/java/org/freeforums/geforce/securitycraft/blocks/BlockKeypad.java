@@ -3,11 +3,9 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -17,6 +15,7 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -30,17 +29,7 @@ public class BlockKeypad extends BlockContainer{
 		super(par2Material);
 
 	}
-		
-	/**
-	 * Our world object.
-	 */
-	
-	public static World worldObj;
-    
-	public static int lastKeypadX;
-	public static int lastKeypadY;
-	public static int lastKeypadZ;
-	
+    	
 	@SideOnly(Side.CLIENT)
     private IIcon keypadIconTop;
     @SideOnly(Side.CLIENT)
@@ -48,19 +37,7 @@ public class BlockKeypad extends BlockContainer{
     @SideOnly(Side.CLIENT)
     private IIcon keypadIconFrontActive;
     
-    
-	public static World worldServerObj;
 	public static boolean canSend = true;
-	public static EntityClientPlayerMP playerObj;
-
-	public static long openCodeServer;
-
-	public static EntityPlayerMP playerServerObj;
-	
-	
-    
-    
-    
 
     
 	/**
@@ -82,48 +59,39 @@ public class BlockKeypad extends BlockContainer{
     
     @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-    	this.lastKeypadX = par2;
-    	this.lastKeypadY = par3;
-    	this.lastKeypadZ = par4;
-
-    	if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
-    		if(par1World.isRemote){
-    			this.worldObj = par1World;
-    			this.playerObj = (EntityClientPlayerMP) par5EntityPlayer;	
-
-    			return true;
-    		}else{
-    
-    			this.worldServerObj = par1World;
-    			this.playerServerObj = (EntityPlayerMP) par5EntityPlayer;
-    			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(par2, par3, par4);
-    			this.openCodeServer = TEK.getKeypadCode();
-    		
-    			if(TEK.getKeypadCode() == 0){
-    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, par2, par3, par4);
-    			}else{
-    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 0, par1World, par2, par3, par4);
-    			}
-    			return true;
-    		}
+    	if(par1World.isRemote){
+    		return true;
     	}else{
-    		if(!par1World.isRemote){
-    			if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
-    	        	this.worldServerObj = par1World;
-    	        	
-    				if(((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != 0 && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
-    					new ScheduleUpdate(3, par2, par3, par4, ((TileEntityKeypad) par1World.getTileEntity(par2, par3, par4)).getKeypadCode(), par5EntityPlayer.worldObj);
+    		if(par1World.getBlockMetadata(par2, par3, par4) > 6 && par1World.getBlockMetadata(par2, par3, par4) < 11){
+    			return false;
+    		}
+    		
+    		if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
+    			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(par2, par3, par4);
+    			
+    			if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+    				return true;
+    			}
+    			    		
+    			if(TEK.getKeypadCode() != null && !TEK.getKeypadCode().isEmpty()){
+    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 0, par1World, par2, par3, par4);
+    			}else{
+    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, par2, par3, par4);
+    			}
+    			
+    			return true;       		
+        	}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
+        		if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
+    				if(!((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty() && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
+    					new ScheduleUpdate(par1World, 3, par2, par3, par4);
     				}
     			}else{	
     				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
-    			}
-    			
-
-    		}
-    		
-    		return true;
+    			}	
+        	}     	    	     	
     	}
-    	            	    	     	
+
+    	return false;
     }
     
     /**

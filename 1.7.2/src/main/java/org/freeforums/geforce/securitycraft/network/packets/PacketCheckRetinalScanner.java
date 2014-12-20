@@ -11,7 +11,10 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -87,11 +90,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 		int[] posXYZ = getBlockInFront(getWorld(par1EntityPlayer), par1EntityPlayer, 1);
 		
-        if(getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]) != mod_SecurityCraft.retinalScanner || getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) == null || !(getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) instanceof TileEntityOwnable) || ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner() == null){
+		if(getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]) != mod_SecurityCraft.retinalScanner || getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) == null || !(getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3]) instanceof TileEntityOwnable) || ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner() == null){
 			return null;
 		}
 		
-		if(posXYZ[5] > 1 && posXYZ[5] < 6 && ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName)){
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwner().matches(playerName) || HelpfulMethods.checkForModule(getWorld(par1EntityPlayer), posXYZ[1], posXYZ[2], posXYZ[3], par1EntityPlayer, EnumCustomModules.WHITELIST))){
 			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(posXYZ[1], posXYZ[2], posXYZ[3], posXYZ[5] + 5, 3);
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(posXYZ[1], posXYZ[2], posXYZ[3], getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]), 60);
 			

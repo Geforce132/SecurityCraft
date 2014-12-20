@@ -1,7 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,10 +15,21 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
 public class BlockKeypadChest extends BlockChest{
 
-	public BlockKeypadChest(int par1) {
+	public BlockKeypadChest(int par1){
 		super(par1);
+		
+		Field material = ReflectionHelper.findField(Block.class, "blockMaterial");
+		try{
+			material.set(this, Material.iron);
+		}catch(IllegalArgumentException e){
+			e.printStackTrace();
+		}catch(IllegalAccessException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -23,18 +37,19 @@ public class BlockKeypadChest extends BlockChest{
      */
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
-        if (par1World.isRemote)
-        {
+        if (par1World.isRemote){
             return true;
-        }
-        else
-        {
+        }else{
             IInventory iinventory = this.func_149951_m(par1World, par2, par3, par4);
 
-            if (iinventory != null)
-            {         
+            if (iinventory != null){ 
+            	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
+            		par5EntityPlayer.displayGUIChest(iinventory);
+            		return true;
+            	}
+            	
             	if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest){
-            		if(((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != 0){
+            		if(((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != null && !((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty()){
             			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 13, par1World, par2, par3, par4);
             		}else{
             			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 12, par1World, par2, par3, par4);
@@ -72,9 +87,8 @@ public class BlockKeypadChest extends BlockChest{
      * their own) Args: x, y, z, neighbor Block
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block)
-    {    	
+    {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5Block);
-        
         TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)par1World.getTileEntity(par2, par3, par4);
 
         if (tileentitychest != null)

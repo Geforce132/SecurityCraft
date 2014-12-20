@@ -49,31 +49,31 @@ public class GuiInventoryScanner extends GuiContainer
 		}
     }
     
-//    public void drawScreen(int par1, int par2, float par3){
-//		super.drawScreen(par1, par2, par3);
-//		GL11.glDisable(GL11.GL_LIGHTING);
-//		
-//		if(!this.buttonList.isEmpty()){
-//			if(((GuiButton)this.buttonList.get(0)).displayString.matches("Check inventory.")){
-//				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
-//				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
-//				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83, this.height / 2 - 3, 4210752);
-//				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83, this.height / 2 + 7, 4210752);
-//			}else{
-//				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
-//				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
-//				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83, this.height / 2 - 3, 4210752);
-//				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83, this.height / 2 + 7, 4210752);	
-//			}
-//		}else{
-//			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
-//				this.fontRendererObj.drawString("This scanner is set to:", 130, 75, 4210752);
-//				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? "Check inventory." : "Emit redstone."), 130, 85, 4210752);
-//				
-//			}
-//		}
-//	
-//  }
+    public void drawScreen(int par1, int par2, float par3){
+		super.drawScreen(par1, par2, par3);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		
+		if(!this.buttonList.isEmpty()){
+			if(((GuiButton)this.buttonList.get(0)).displayString.matches("Check inventory.")){
+				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
+				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
+				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83, this.height / 2 - 3, 4210752);
+				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83, this.height / 2 + 7, 4210752);
+			}else{
+				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
+				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
+				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83, this.height / 2 - 3, 4210752);
+				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83, this.height / 2 + 7, 4210752);	
+			}
+		}else{
+			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
+				this.fontRendererObj.drawString("This scanner is set to:", 130, 75, 4210752);
+				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? "Check inventory." : "Emit redstone."), 130, 85, 4210752);
+				
+			}
+		}
+	
+  }
     
     public void onGuiClosed(){
     	flag = false;
@@ -125,25 +125,25 @@ public class GuiInventoryScanner extends GuiContainer
         
         GL11.glDisable(GL11.GL_LIGHTING);
 		
-		if(!this.buttonList.isEmpty()){
-			if(((GuiButton)this.buttonList.get(0)).displayString.matches("Check inventory.")){
-				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
-				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
-				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83, this.height / 2 - 3, 4210752);
-				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83, this.height / 2 + 7, 4210752);
-			}else{
-				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
-				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
-				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83, this.height / 2 - 3, 4210752);
-				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83, this.height / 2 + 7, 4210752);	
-			}
-		}else{
-			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
-				this.fontRendererObj.drawString("This scanner is set to:", 130, 75, 4210752);
-				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? "Check inventory." : "Emit redstone."), 130, 85, 4210752);
-				
-			}
-		}
+//		if(!this.buttonList.isEmpty()){
+//			if(((GuiButton)this.buttonList.get(0)).displayString.matches("Check inventory.")){
+//				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
+//				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
+//				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83, this.height / 2 - 3, 4210752);
+//				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83, this.height / 2 + 7, 4210752);
+//			}else{
+//				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 23, 4210752);
+//				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 13, 4210752);
+//				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83, this.height / 2 - 3, 4210752);
+//				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83, this.height / 2 + 7, 4210752);	
+//			}
+//		}else{
+//			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
+//				this.fontRendererObj.drawString("This scanner is set to:", 130, 75, 4210752);
+//				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? "Check inventory." : "Emit redstone."), 130, 85, 4210752);
+//				
+//			}
+//		}
     }
 	
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {

@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -18,11 +19,32 @@ import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
-public class BlockBouncingBetty extends BlockMine{
+public class BlockBouncingBetty extends Block{
 
 	public BlockBouncingBetty(Material par2Material) {
-		super(par2Material, false);
+		super(par2Material);
 		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
+	}
+	
+	 /**
+     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+     */
+    public boolean isOpaqueCube()
+    {
+        return false;
+    }
+	
+	/**
+     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+     */
+    public boolean isNormalCube()
+    {
+        return false;
+    } 
+	
+	public int getRenderType(){
+		return 3;
 	}
     
     /**
@@ -39,12 +61,7 @@ public class BlockBouncingBetty extends BlockMine{
   public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity)
    {
 	   if(par5Entity instanceof EntityLivingBase){
-		   par1World.setBlockToAir(pos);
-		   EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), (EntityLivingBase) par5Entity);
-		   entitytntprimed.fuse = 15;
-	   	   entitytntprimed.motionY = 0.50D;
-	   	   par1World.spawnEntityInWorld(entitytntprimed);
-	   	   par1World.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
+		   this.explode(par1World, pos, (EntityLivingBase) par5Entity);
 	   }else{
 		   return;
 	   }
@@ -57,18 +74,15 @@ public class BlockBouncingBetty extends BlockMine{
    public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer)
    {
 	   if(par5EntityPlayer instanceof EntityLivingBase){
-		   par1World.setBlockToAir(pos);
-		   EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), (EntityLivingBase) par5EntityPlayer);
-		   entitytntprimed.fuse = 15;
-	   	   entitytntprimed.motionY = 0.50D;
-	   	   par1World.spawnEntityInWorld(entitytntprimed);
-	   	   par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
+		   this.explode(par1World, pos, par5EntityPlayer);
 	   }else{
 		   return;
 	   }
    }
    
-   public void explode(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer){
+   public void explode(World par1World, BlockPos pos, EntityLivingBase par5EntityPlayer){
+	   if(par1World.isRemote){ return; }
+	   
 	   par1World.setBlockToAir(pos);
 	   EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), (EntityLivingBase) par5EntityPlayer);
 	   entitytntprimed.fuse = 15;

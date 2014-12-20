@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -248,7 +249,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void insertModule(EnumCustomModules module){
 		for(int i = 0; i < this.itemStacks.length; i++){
 			if(this.itemStacks[i] == null && module != null){
-				this.itemStacks[i] = new ItemStack(module.getCorrespondingStack()); //TODO HelpfulMethods.getModuleFromType(module)
+				this.itemStacks[i] = new ItemStack(HelpfulMethods.getItemFromModule(module)); 
 				break;
 			}else if(this.itemStacks[i] != null && module == null){
 				this.itemStacks[i] = null;

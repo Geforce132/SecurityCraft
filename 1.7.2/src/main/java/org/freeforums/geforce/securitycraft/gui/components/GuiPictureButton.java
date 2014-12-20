@@ -16,21 +16,19 @@ public class GuiPictureButton extends GuiButton{
 	
 	private final RenderItem itemRenderer;
 	private Block blockToRender;
-	private int metadata;
-	//private Item itemToRender;
+	private Item itemToRender;
+	public String extraData;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem par7, Block blockToRender, int metadata) {
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem par7, ItemStack itemToRender, String extraData) {
 		super(id, xPos, yPos, width, height, displayString);
 		this.itemRenderer = par7;
-		this.metadata = metadata;
+		this.extraData = extraData;
 		
-		if(blockToRender != null && blockToRender.getUnlocalizedName().startsWith("tile.")){
-			this.blockToRender = blockToRender;
+		if(itemToRender != null && itemToRender.getItem().getUnlocalizedName().startsWith("tile.")){
+			this.blockToRender = Block.getBlockFromItem(itemToRender.getItem());
+		}else{
+			this.itemToRender = itemToRender.getItem();
 		}
-		
-		//else{
-		//	this.itemToRender = itemToRender.getItem();
-		//}
 	}
 	
 	/**
@@ -53,17 +51,15 @@ public class GuiPictureButton extends GuiButton{
                        
             if(this.blockToRender != null){
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
-	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.blockToRender, 1, this.metadata), this.xPosition + 2, this.yPosition + 2);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.blockToRender, 1, this.metadata), this.xPosition + 2, this.yPosition + 2);
+	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 2);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 2);
+            }else{
+ 	            GL11.glEnable(GL11.GL_LIGHTING);
+	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
+	            GL11.glDisable(GL11.GL_LIGHTING);
             }
-            
-//            else{
-// 	            GL11.glEnable(GL11.GL_LIGHTING);
-//	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
-//	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
-//	            GL11.glDisable(GL11.GL_LIGHTING);
-//            }
 
             this.mouseDragged(par1, par2, par3);
 
@@ -85,23 +81,16 @@ public class GuiPictureButton extends GuiButton{
         }
     }
     
-    public void setDisplayBlock(Block blockToRender, int metadata){
+    public void setDisplayItem(ItemStack par1ItemStack){
     	this.blockToRender = null;
-    	this.metadata = 0;
-    	//this.itemToRender = null;
-		if(blockToRender.getUnlocalizedName().startsWith("tile.")){
-    		this.blockToRender = blockToRender;
-    		this.metadata = metadata;
+    	this.itemToRender = null;
+		//if(this.itemToRender != null && par1ItemStack.getUnlocalizedName().startsWith("tile.")){
+		if(par1ItemStack.getUnlocalizedName().startsWith("tile.")){
+    		this.blockToRender = Block.getBlockFromItem(par1ItemStack.getItem());
+		}else{
+			this.itemToRender = par1ItemStack.getItem();
 		}
-		
-//		else{
-//			this.itemToRender = par1ItemStack.getItem();
-//		}
 
-    }
-    
-    public Block getDisplayBlock(){
-    	return this.blockToRender;
     }
 
 }

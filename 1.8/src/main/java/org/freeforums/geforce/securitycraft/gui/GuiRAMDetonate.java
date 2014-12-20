@@ -94,7 +94,7 @@ public class GuiRAMDetonate extends GuiContainer{
     protected void actionPerformed(GuiButton guibutton){  
     	int[] coords = this.item.getTagCompound().getIntArray("mine" + (guibutton.id + 1));
     	
-    	if(Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() == mod_SecurityCraft.Mine || Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() == mod_SecurityCraft.MineCut){
+    	if(Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() == mod_SecurityCraft.Mine){
     		mod_SecurityCraft.network.sendToServer(new PacketCreateExplosion(coords[0], coords[1], coords[2]));
     	}
 		

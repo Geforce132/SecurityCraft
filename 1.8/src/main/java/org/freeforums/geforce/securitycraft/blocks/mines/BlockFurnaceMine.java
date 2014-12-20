@@ -2,6 +2,8 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -47,7 +49,12 @@ public class BlockFurnaceMine extends BlockFurnace{
 
 	private void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
-		par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+		
+		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
+		}else{
+			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+		}
 
 	}
 	

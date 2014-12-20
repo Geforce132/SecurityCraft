@@ -7,91 +7,79 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderTnTCompact extends Render{
-	
-    public RenderTnTCompact(RenderManager manager)
+
+    public RenderTnTCompact(RenderManager p_i46134_1_)
     {
-    	super(manager);
+        super(p_i46134_1_);
         this.shadowSize = 0.5F;
     }
 
-    public void renderPrimedTNT(EntityTnTCompact par1EntityTNTPrimed, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityTnTCompact entity, double x, double y, double z, float p_76986_8_, float partialTicks)
     {
-    	BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
         float f2;
 
-        if ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F < 10.0F)
+        if ((float)entity.fuse - partialTicks + 1.0F < 10.0F)
         {
-            f2 = 1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 10.0F;
-
-            if (f2 < 0.0F)
-            {
-                f2 = 0.0F;
-            }
-
-            if (f2 > 1.0F)
-            {
-                f2 = 1.0F;
-            }
-
+            f2 = 1.0F - ((float)entity.fuse - partialTicks + 1.0F) / 10.0F;
+            f2 = MathHelper.clamp_float(f2, 0.0F, 1.0F);
             f2 *= f2;
             f2 *= f2;
             float f3 = 1.0F + f2 * 0.3F;
-            GL11.glScalef(f3, f3, f3);
+            GlStateManager.scale(f3, f3, f3);
         }
 
-        f2 = (1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
-        this.bindEntityTexture(par1EntityTNTPrimed);
-        blockrendererdispatcher.renderBlockBrightness(mod_SecurityCraft.bouncingBetty.getDefaultState(), par1EntityTNTPrimed.getBrightness(par9));
+        f2 = (1.0F - ((float)entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
+        this.bindEntityTexture(entity);
+        GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+        blockrendererdispatcher.renderBlockBrightness(mod_SecurityCraft.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
+        GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
-        if (par1EntityTNTPrimed.fuse / 5 % 2 == 0)
+        if (entity.fuse / 5 % 2 == 0)
         {
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, f2);
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(770, 772);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
+            GlStateManager.doPolygonOffset(-3.0F, -3.0F);
+            GlStateManager.enablePolygonOffset();
             blockrendererdispatcher.renderBlockBrightness(mod_SecurityCraft.bouncingBetty.getDefaultState(), 1.0F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.doPolygonOffset(0.0F, 0.0F);
+            GlStateManager.disablePolygonOffset();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableBlend();
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
         }
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+        super.doRender(entity, x, y, z, p_76986_8_, partialTicks);
     }
 
-    protected ResourceLocation func_110808_a(EntityTnTCompact par1EntityTNTPrimed)
+    protected ResourceLocation func_180563_a(EntityTnTCompact p_180563_1_)
     {
         return TextureMap.locationBlocksTexture;
     }
 
-    /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
+    protected ResourceLocation getEntityTexture(Entity entity)
     {
-        return this.func_110808_a((EntityTnTCompact)par1Entity);
+        return this.func_180563_a((EntityTnTCompact)entity);
     }
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float partialTicks)
     {
-        this.renderPrimedTNT((EntityTnTCompact)par1Entity, par2, par4, par6, par8, par9);
+        this.doRender((EntityTnTCompact)entity, x, y, z, p_76986_8_, partialTicks);
     }
 }

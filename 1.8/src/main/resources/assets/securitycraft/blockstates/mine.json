@@ -1,7 +1,6 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:mine" }
-        ]
+        "deactivated=false": { "model": "securitycraft:mine" },
+        "deactivated=true": { "model": "securitycraft:mineCut" }
     }
 }

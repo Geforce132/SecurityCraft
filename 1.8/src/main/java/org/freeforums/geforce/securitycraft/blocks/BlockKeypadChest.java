@@ -33,6 +33,7 @@ public class BlockKeypadChest extends BlockChest{
 		}catch(IllegalAccessException e){
 			e.printStackTrace();
 		}
+		
 	}
 	
 	/**

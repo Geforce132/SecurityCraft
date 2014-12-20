@@ -24,7 +24,7 @@ public class TileEntityLogger extends TileEntitySCTE {
 			
 		double d0 = (double)(mod_SecurityCraft.configHandler.usernameLoggerSearchRadius);
 		
-		AxisAlignedBB axisalignedbb = AxisAlignedBB.getAABBPool().getAABB((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(d0, d0, d0);
+		AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(d0, d0, d0);
         List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
         Iterator iterator = list.iterator();
         EntityPlayer entityplayer;

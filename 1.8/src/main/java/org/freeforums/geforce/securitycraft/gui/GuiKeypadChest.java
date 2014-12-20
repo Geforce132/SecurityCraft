@@ -32,7 +32,7 @@ public class GuiKeypadChest extends GuiContainer
 	private TileEntityKeypadChest keypadInventory;
 	private GuiTextField textboxKeycode;
 	private String currentString = "";
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9'};
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', ''};
 	public static int code;
     public GuiKeypadChest(InventoryPlayer par1InventoryPlayer, TileEntityKeypadChest par2TileEntityFurnace)
     {
@@ -79,11 +79,16 @@ public class GuiKeypadChest extends GuiContainer
     }
     
     protected void keyTyped(char par1, int par2) throws IOException{
-		if(this.isValidChar(par1)){
+    	if(this.isValidChar(par1) && par1 != ''){
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.currentString += par1;
-			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			this.checkCode(this.currentString);			
+		}else if(this.isValidChar(par1) && par1 == ''){
+			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.setTextboxCensoredText(this.textboxKeycode, currentString);
+			this.checkCode(this.currentString);
 		}else{
 			super.keyTyped(par1, par2);
 		}

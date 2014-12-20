@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -56,6 +55,10 @@ public class BlockAlarm extends BlockContainer {
     {
         return false;
     }
+    
+    public int getRenderType(){
+    	return 3;
+    }
 	
 	/**
      * Called whenever the block is added into the world. Args: world, x, y, z
@@ -74,31 +77,6 @@ public class BlockAlarm extends BlockContainer {
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack p_149689_6_)
     {
     	((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
-    	
-    	Block block = par1World.getBlockState(pos.north()).getBlock();
-        Block block1 = par1World.getBlockState(pos.south()).getBlock();
-        Block block2 = par1World.getBlockState(pos.west()).getBlock();
-        Block block3 = par1World.getBlockState(pos.east()).getBlock();
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-
-        if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-        {
-            enumfacing = EnumFacing.SOUTH;
-        }
-        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-        {
-            enumfacing = EnumFacing.NORTH;
-        }
-        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-        {
-            enumfacing = EnumFacing.EAST;
-        }
-        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-        {
-            enumfacing = EnumFacing.WEST;
-        }
-
-        par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
     }
 	
 	/**
@@ -114,15 +92,6 @@ public class BlockAlarm extends BlockContainer {
     		par1World.scheduleUpdate(pos, state.getBlock(), 5);
         }
     }
-    
-//    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
-//    {
-//        if(par1World.isRemote){
-//        	return;
-//        }else{
-//        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par2, par3, par4, ""));
-//        }
-//    }
 	
 	/**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
@@ -168,14 +137,25 @@ public class BlockAlarm extends BlockContainer {
         return Item.getItemFromBlock(mod_SecurityCraft.alarm);
     }
     
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public IBlockState getStateForEntityRender(IBlockState state)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+    }
+
     public IBlockState getStateFromMeta(int meta)
-    {   
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);    
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);    
     }
 
     public int getMetaFromState(IBlockState state)
-    {
-        return ((EnumFacing) state.getValue(FACING)).getIndex();
+    {   	
+    	return ((EnumFacing) state.getValue(FACING)).getIndex(); 	
     }
     
     protected BlockState createBlockState()

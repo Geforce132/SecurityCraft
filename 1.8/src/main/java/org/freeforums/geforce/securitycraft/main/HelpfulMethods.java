@@ -6,12 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,16 +20,15 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -395,6 +391,22 @@ public class HelpfulMethods {
 		}
 		
 		return false;
+	}
+
+	public static ItemModule getItemFromModule(EnumCustomModules module) { //TODO Add any new modules to this list!
+		if(module == EnumCustomModules.REDSTONE){
+			return mod_SecurityCraft.redstoneModule;
+		}else if(module == EnumCustomModules.WHITELIST){
+			return mod_SecurityCraft.whitelistModule;
+		}else if(module == EnumCustomModules.BLACKLIST){
+			return mod_SecurityCraft.blacklistModule;
+		}else if(module == EnumCustomModules.HARMING){
+			return mod_SecurityCraft.harmingModule;
+		}else if(module == EnumCustomModules.SMART){
+			return mod_SecurityCraft.smartModule;
+		}else{
+			return null;
+		}
 	}
 	
 //	private static void bookCode(){

@@ -233,8 +233,5 @@ public class mod_SecurityCraft {
 	public void setSavedModule(NBTTagCompound savedModule) {
 		this.savedModule = savedModule;
 	}
-
 	
-	
-		
 }

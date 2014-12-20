@@ -1,33 +1,27 @@
 package org.freeforums.geforce.securitycraft.entity;
 
-import net.minecraft.client.model.ModelChest;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
-public class ItemKeypadChestRenderer implements IItemRenderer {
+public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 
-	private ModelChest chestModel;
-	
-	public ItemKeypadChestRenderer(){
+	public void renderByItem(ItemStack item) {
+		Block block = Block.getBlockFromItem(item.getItem());
+		 
+		if (block == mod_SecurityCraft.keypadChest)
+        {
+            TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
+        }
+        else
+        {
+            super.renderByItem(item);
+        }
 		
-		chestModel = new ModelChest();
-		
 	}
 	
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
-	}
-
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-		return true;
-	}
-
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
-
-	}
-
 }

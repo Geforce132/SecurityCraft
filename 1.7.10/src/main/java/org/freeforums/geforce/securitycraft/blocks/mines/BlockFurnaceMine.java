@@ -58,8 +58,12 @@ public class BlockFurnaceMine extends Block{
 
 	private void explode(World par1World, int par2, int par3, int par4) {
 		par1World.func_147480_a(par2, par3, par4, false);
-		//this.newExplosion((Entity)null, (double) par2, (double) par3 + 3, (double) par4,  5.0F, true, true, par1World);
-		par1World.createExplosion((Entity)null, par2, par3, par4, 5.0F, true);
+        
+        if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+            par1World.createExplosion((Entity)null, par2, par3, par4, 2.5F, true);
+        }else{
+            par1World.createExplosion((Entity)null, par2, par3, par4, 5.0F, true);
+        }
 
 	}
 	

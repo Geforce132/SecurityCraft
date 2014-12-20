@@ -24,13 +24,13 @@ public class BlockOwnable extends BlockContainer {
     }
 	
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	if(par1World.isRemote){
-    		return;
-    	}else{
+    	//if(par1World.isRemote){ //TODO
+    	//	return;
+    	//}else{
     		if(par5EntityLivingBase instanceof EntityPlayer){
     			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
     		}
-    	}
+    	//}
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

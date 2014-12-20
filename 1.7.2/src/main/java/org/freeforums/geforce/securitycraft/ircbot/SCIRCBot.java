@@ -29,12 +29,12 @@ public class SCIRCBot extends PircBot{
 	
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     	for(User user: this.getUsers(channel)){
-    		if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith(this.getNick() + ":") || (message.startsWith(this.getNick() + ",")))){
+    		if(channel.matches("#GeforceMods") && (user.hasVoice()|| user.isOp()) && message.startsWith((this.getNick() + ":"))){
     			sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayerFromName((this.getNick().replace("SCUser_", ""))).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
     		}
     	}
     }
-	
+    
     /**
      * Not working yet!
      */
@@ -61,7 +61,7 @@ public class SCIRCBot extends PircBot{
     }
     
     private EntityPlayer getPlayerFromName(String name){
-    	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name);
+    	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name); //MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name);
 
         if (entityplayermp == null)
         {
@@ -72,5 +72,5 @@ public class SCIRCBot extends PircBot{
             return entityplayermp;
         }
     }
-    
+   
 }

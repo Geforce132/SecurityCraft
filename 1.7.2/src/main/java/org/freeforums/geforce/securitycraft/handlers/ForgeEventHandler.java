@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,12 +21,14 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
@@ -36,6 +39,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -110,12 +114,11 @@ public class ForgeEventHandler {
 		
 	}
 	
-	@SubscribeEvent
-	public void onWorldExited(Unload event){
+	@SubscribeEvent //TODO I used the Unload event before.
+	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
 		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot() != null){
 			mod_SecurityCraft.instance.getIrcBot().disconnect();
 			mod_SecurityCraft.instance.setIrcBot(null);
-
 		}
 			
 	}
@@ -125,6 +128,18 @@ public class ForgeEventHandler {
 		if(event.entityPlayer.worldObj.isRemote){
 			return;
 		}else{
+			if(event.action == Action.RIGHT_CLICK_BLOCK && isCustomizableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z)) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier){
+				event.setCanceled(true);
+				
+				if(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner().matches(event.entityPlayer.getCommandSenderName())){
+					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwner() + ".", EnumChatFormatting.RED);
+					return;
+				}
+				
+				event.entityPlayer.openGui(mod_SecurityCraft.instance, 100, event.entityPlayer.worldObj, event.x, event.y, event.z);	
+				return;
+			}
+			
 			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == mod_SecurityCraft.portableRadar && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == Items.name_tag && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
 				
@@ -148,9 +163,11 @@ public class ForgeEventHandler {
 					if(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == mod_SecurityCraft.LaserBlock){
 						event.entityPlayer.worldObj.func_147480_a(event.x, event.y, event.z, true);
 						BlockLaserBlock.destroyAdjecentLasers(event.world, event.x, event.y, event.z);
+						event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 					}else{
 						event.entityPlayer.worldObj.func_147480_a(event.x, event.y, event.z, true);
 						event.entityPlayer.worldObj.removeTileEntity(event.x, event.y, event.z);
+						event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 					}
 				}
 			}else if(event.action == Action.RIGHT_CLICK_BLOCK && isOwnableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z)) && event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) instanceof TileEntityKeypadChest && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
@@ -173,6 +190,20 @@ public class ForgeEventHandler {
         	mod_SecurityCraft.configFile.save();
         }
     }
+	
+	@SubscribeEvent
+	public void onBlockBroken(BreakEvent event){
+		if(!event.world.isRemote){
+			if(event.world.getTileEntity(event.x, event.y, event.z) != null && event.world.getTileEntity(event.x, event.y, event.z) instanceof CustomizableSCTE){
+				for(int i = 0; i < ((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).getNumberOfCustomizableOptions(); i++){
+					if(((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).itemStacks[i] != null){
+						EntityItem item = new EntityItem(event.world, (double) event.x, (double) event.y, (double) event.z, ((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).itemStacks[i]);
+						event.world.spawnEntityInWorld(item);
+					}
+				}
+			}
+		}
+	}
 	
 	private ItemStack fillBucket(World world, MovingObjectPosition position){
 		Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
@@ -252,6 +283,8 @@ public class ForgeEventHandler {
 				if(player.getCommandSenderName().matches(TERD2.getOwner())){
 					par1World.func_147480_a(par2, par3, par4, false);
     				notifyPlayers(player.getCommandSenderName(), player, par2, par3, par4);
+					player.getCurrentEquippedItem().damageItem(1, player);
+
     			}else{
         			sendChatMessageTo(player, TERD2);
     			}
@@ -263,6 +296,7 @@ public class ForgeEventHandler {
 					par1World.func_147480_a(par2, par3, par4, false);
 					
 					notifyPlayers(player.getCommandSenderName(), player, par2, par3, par4);
+					player.getCurrentEquippedItem().damageItem(1, player);
 				}else{
 					sendChatMessageTo(player, TERD);
 				}
@@ -271,7 +305,15 @@ public class ForgeEventHandler {
 	}
 	
 	private boolean isOwnableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest){
+    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedWoodPlanks){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+	
+	private boolean isCustomizableBlock(Block par1Block){
+    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.inventoryScanner){
     		return true;
     	}else{
     		return false;

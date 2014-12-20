@@ -32,7 +32,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 
-public class BlockKeycardReader extends BlockContainer{
+public class BlockKeycardReader extends BlockOwnable{
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     
@@ -48,7 +48,7 @@ public class BlockKeycardReader extends BlockContainer{
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        ((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+        super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
         
         Block block = par1World.getBlockState(pos.north()).getBlock();
         Block block1 = par1World.getBlockState(pos.south()).getBlock();

@@ -1,12 +1,12 @@
 package org.freeforums.geforce.securitycraft.entity;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLCommonHandler;
+
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

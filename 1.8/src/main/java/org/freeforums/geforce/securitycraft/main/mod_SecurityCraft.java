@@ -81,8 +81,7 @@ public class mod_SecurityCraft {
 	public static Block Laser;
 	public static Block Keypad;
 	public static Block LaserActive;
-	public static BlockMine Mine;
-	public static BlockMine MineCut;
+	public static Block Mine;
 	public static Block DirtMine;
 	public static Block StoneMine;
 	public static Block CobblestoneMine;
@@ -97,7 +96,7 @@ public class mod_SecurityCraft {
     public static Block bogusWaterFlowing;
     public static Block keycardReader;
     public static Block ironTrapdoor;
-    public static BlockMine bouncingBetty;
+    public static Block bouncingBetty;
     //public static Block doorbell;
     public static Block inventoryScanner;
     public static Block inventoryScannerField;

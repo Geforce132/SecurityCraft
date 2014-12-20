@@ -26,9 +26,14 @@ public class BlockTrackMine extends BlockRailBase{
 	public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z)
     {
 		HelpfulMethods.destroyBlock(world, x, y, z, false);
-		world.createExplosion(cart, x, y + 1, z, 8.0F, true);
+        
+        if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+            world.createExplosion(cart, x, y + 1, z, 4.0F, true);
+        }else{
+            world.createExplosion(cart, x, y + 1, z, 8.0F, true);
+        }
+        
 		cart.setDead();
-
     }    
 
     @SideOnly(Side.CLIENT)

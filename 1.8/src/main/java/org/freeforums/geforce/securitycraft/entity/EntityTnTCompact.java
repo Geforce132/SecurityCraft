@@ -96,7 +96,7 @@ public class EntityTnTCompact extends Entity
     private void explode()
     {
         float f = 6.0F;
-        
+               
         if(mod_SecurityCraft.configHandler.smallerMineExplosion){
         	this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (f / 2), true);
         }else{

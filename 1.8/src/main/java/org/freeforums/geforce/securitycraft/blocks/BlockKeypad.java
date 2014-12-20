@@ -43,7 +43,6 @@ public class BlockKeypad extends BlockContainer{
     
     @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	System.out.println(par1World.isRemote + " | " + ((Boolean) state.getValue(POWERED)).booleanValue());
     	if(par1World.isRemote){
     		return true;
     	}else{
@@ -59,10 +58,8 @@ public class BlockKeypad extends BlockContainer{
     			}
     			    		
     			if(TEK.getKeypadCode() != null && !TEK.getKeypadCode().isEmpty()){
-    				System.out.println("Oppening 0");
     				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 0, par1World, pos.getX(), pos.getY(), pos.getZ());
     			}else{
-    				System.out.println("Oppening 1");
     				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, pos.getX(), pos.getY(), pos.getZ());
     			}
     			

@@ -5,6 +5,9 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -29,13 +32,12 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
 public class BlockMine extends BlockContainer{
 	
-	public boolean cut;
+	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 	
-	public BlockMine(Material par1Material, boolean cut) {
+	public BlockMine(Material par1Material) {
 		super(par1Material);
 		 float f = 0.2F;
 		 float g = 0.1F;
-		 this.cut = cut;
 		 this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
 	}
 	
@@ -55,6 +57,10 @@ public class BlockMine extends BlockContainer{
     {
         return false;
     } 
+    
+    public int getRenderType(){
+    	return 3;
+    }
  
     /**
     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
@@ -81,8 +87,9 @@ public class BlockMine extends BlockContainer{
 	   }
    }
    
-   public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
-	   this.explode(par1World, pos);
+   public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+	   this.explode(world, pos);
+	   return super.removedByPlayer(world, pos, player, willHarvest);
    }
    
    public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
@@ -93,10 +100,10 @@ public class BlockMine extends BlockContainer{
 			   this.explode(par1World, pos);
 			   return false;
 		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.shears){
-			   Utils.setBlock(par1World, pos, mod_SecurityCraft.MineCut);
+			   par1World.setBlockState(pos, mod_SecurityCraft.Mine.getDefaultState().withProperty(DEACTIVATED, true));
 			   return true;
 		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
-			   Utils.setBlock(par1World, pos, mod_SecurityCraft.Mine);
+			   par1World.setBlockState(pos, mod_SecurityCraft.Mine.getDefaultState().withProperty(DEACTIVATED, false));
 			   return true;
 		   }else{
 			   return false;	   		
@@ -168,7 +175,9 @@ public class BlockMine extends BlockContainer{
    }
     
 	private void explode(World par1World, BlockPos pos) {
-		if(!cut){
+		if(par1World.isRemote){ return; }
+		
+		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
 			par1World.destroyBlock(pos, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
 				par1World.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 1.0F, true);
@@ -211,6 +220,21 @@ public class BlockMine extends BlockContainer{
 	public Item getItem(World par1World, BlockPos pos){
 		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
+	
+	public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
+    }
+    
+    protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {DEACTIVATED});
+    }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityMineLoc();

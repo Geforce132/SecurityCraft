@@ -1,24 +1,27 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import java.util.Iterator;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerBlock;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
 {
-	private ItemStack[] inventoryContents = new ItemStack[21]; //TODO 19
+	private ItemStack[] inventoryContents = new ItemStack[21]; 
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 	
-	public void update(){ //TODO
-		super.update();
-				
+	public void update(){ 						
     	if(cooldown > 0){
     		cooldown--;
     	}else{

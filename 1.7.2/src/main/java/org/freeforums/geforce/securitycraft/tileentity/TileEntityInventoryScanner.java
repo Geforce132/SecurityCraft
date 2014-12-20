@@ -7,20 +7,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
-public class TileEntityInventoryScanner extends TileEntityOwnable implements IInventory
+public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
 {
-	private ItemStack[] inventoryContents = new ItemStack[19];
+	private ItemStack[] inventoryContents = new ItemStack[21]; //TODO 19
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 	
 	public void updateEntity(){
 		super.updateEntity();
-		
-		//mod_SecurityCraft.log(getOwner() + " | " + (this.worldObj.isRemote ? "CLIENT" : "SERVER") + " | (" + xCoord + ", " + yCoord + ", " + zCoord + ")" );
-		
+				
     	if(cooldown > 0){
     		cooldown--;
     	}else{
@@ -82,40 +80,6 @@ public class TileEntityInventoryScanner extends TileEntityOwnable implements IIn
         par1NBTTagCompound.setString("type", type);
         
     }
-	
-	public String getType(){
-		return type;
-	}
-	
-	public void setType(String type){
-		this.type = type;
-	}
-
-	public boolean shouldProvidePower() {
-		return (this.type.matches("redstone") && this.isProvidingPower) ? true : false;
-	}
-
-	public void setShouldProvidePower(boolean isProvidingPower) {
-		this.isProvidingPower = isProvidingPower;
-	}
-
-	public int getCooldown() {
-		return cooldown;
-	}
-
-	public void setCooldown(int cooldown) {
-		this.cooldown = cooldown;
-	}
-	
-	public ItemStack[] getContents(){
-		return inventoryContents;
-	}
-	
-	public void setContents(ItemStack[] contents){
-		this.inventoryContents = contents;
-	}
-
-    //-----------------------
     
 	public int getSizeInventory() {
 		return 19;
@@ -174,6 +138,14 @@ public class TileEntityInventoryScanner extends TileEntityOwnable implements IIn
 	public ItemStack getStackInSlot(int var1) {
 		return this.inventoryContents[var1];
 	}
+	
+	/**
+	 * Copy of getStackInSlot which doesn't get overrided by CustomizableSCTE.
+	 */
+	
+	public ItemStack getStackInSlotCopy(int var1) {
+		return this.inventoryContents[var1];
+	}
 
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.inventoryContents[par1] = par2ItemStack;
@@ -184,10 +156,6 @@ public class TileEntityInventoryScanner extends TileEntityOwnable implements IIn
         }
 
         this.markDirty();
-	}
-
-	public String getInventoryName() {
-		return "Protected chest";
 	}
 
 	public boolean hasCustomInventoryName() {
@@ -209,6 +177,85 @@ public class TileEntityInventoryScanner extends TileEntityOwnable implements IIn
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return true;
 	}
+	
+	public String getType(){
+		return type;
+	}
+	
+	public void setType(String type){
+		this.type = type;
+	}
 
+	public boolean shouldProvidePower() {
+		return (this.type.matches("redstone") && this.isProvidingPower) ? true : false;
+	}
+
+	public void setShouldProvidePower(boolean isProvidingPower) {
+		this.isProvidingPower = isProvidingPower;
+	}
+
+	public int getCooldown() {
+		return cooldown;
+	}
+
+	public void setCooldown(int cooldown) {
+		this.cooldown = cooldown;
+	}
+	
+	public ItemStack[] getContents(){
+		return inventoryContents;
+	}
+	
+	public void setContents(ItemStack[] contents){
+		this.inventoryContents = contents;
+	}
+	
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
+		if(!this.getWorldObj().isRemote){
+			if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
+				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
+				}
+			}
+		}
+	}
+	
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
+		if(!this.getWorldObj().isRemote){
+			if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
+				}
+			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
+				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
+					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
+				}
+			}
+		}
+	}
+
+	protected EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART};
+	}
     
 }

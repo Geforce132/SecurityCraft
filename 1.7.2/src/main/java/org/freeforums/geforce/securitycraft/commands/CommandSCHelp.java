@@ -136,11 +136,11 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			int[] positions = {Integer.parseInt(par1String[1]), Integer.parseInt(par1String[2]), Integer.parseInt(par1String[3])};
 			World world = icommandsender.getEntityWorld();
 			
-			if(world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad && ((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode() == Integer.parseInt(par1String[4])){
-				((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).setKeypadCode(Integer.parseInt(par1String[5]));
+			if(world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad && ((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4])){
+				((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).setKeypadCode(par1String[5]);
 				HelpfulMethods.sendMessage(icommandsender, "Changed keypad's (at X:" + positions[0] + " Y:" + positions[1] + " Z:" + positions[2] + ") code from " + Integer.parseInt(par1String[4]) + " to " + Integer.parseInt(par1String[5]) + ".", EnumChatFormatting.GREEN);
 			}
-			else if((world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad  && ((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode() != Integer.parseInt(par1String[4])) || (world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.keypadChest  && ((TileEntityKeypadChest)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode() != Integer.parseInt(par1String[4]))){
+			else if((world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad  && !((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4])) || (world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.keypadChest  && !((TileEntityKeypadChest)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4]))){
 				HelpfulMethods.sendMessage(icommandsender, par1String[3] + " is not the passcode for this block.", EnumChatFormatting.RED);
 			}
 			else if(world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.Keypad && world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.keypadChest){
