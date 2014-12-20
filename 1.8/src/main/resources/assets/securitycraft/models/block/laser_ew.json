@@ -1,0 +1,30 @@
+{
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "securitycraft:blocks/aniLaser",
+        "laser": "securitycraft:blocks/aniLaser"
+    },
+    "elements": [
+        {
+            "from": [-1,5,5],
+            "to": [17,11,11],
+            "faces": {
+                "up": {
+                    "uv": [-1.0,-1.0,17.0,17.0],
+                    "texture": "#laser"
+                },
+                "down": {
+                    "uv": [-1.0,-1.0,17.0,17.0],
+                    "texture": "#laser"
+                },
+                "north": {
+                    "texture": "#laser"
+                },
+                "south": {
+                    "texture": "#laser"
+                }
+            }
+        }
+    ]
+}
