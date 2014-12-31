@@ -1,0 +1,21 @@
+{
+    "variants": {
+        "facing=north,open=false,cooking=false": { "model": "securitycraft:ppf_n_closed_unpowered" },
+        "facing=north,open=true,cooking=true": { "model": "securitycraft:ppf_n_open_powered" },
+        "facing=north,open=true,cooking=false": { "model": "securitycraft:ppf_n_open_unpowered" },
+        "facing=north,open=false,cooking=true": { "model": "securitycraft:ppf_n_closed_powered" },
+        "facing=south,open=false,cooking=false": { "model": "securitycraft:ppf_s_closed_unpowered" },
+        "facing=south,open=true,cooking=true": { "model": "securitycraft:ppf_s_open_powered" },
+        "facing=south,open=true,cooking=false": { "model": "securitycraft:ppf_s_open_unpowered" },
+        "facing=south,open=false,cooking=true": { "model": "securitycraft:ppf_s_closed_powered" },
+        "facing=west,open=false,cooking=false": { "model": "securitycraft:ppf_w_closed_unpowered" },
+        "facing=west,open=true,cooking=true": { "model": "securitycraft:ppf_w_open_powered" },
+        "facing=west,open=true,cooking=false": { "model": "securitycraft:ppf_w_open_unpowered" },
+        "facing=west,open=false,cooking=true": { "model": "securitycraft:ppf_w_closed_powered" },
+        "facing=east,open=false,cooking=false": { "model": "securitycraft:ppf_e_closed_unpowered" },
+        "facing=east,open=true,cooking=true": { "model": "securitycraft:ppf_e_open_powered" },
+        "facing=east,open=true,cooking=false": { "model": "securitycraft:ppf_e_open_unpowered" },
+        "facing=east,open=false,cooking=true": { "model": "securitycraft:ppf_e_closed_powered" }
+        
+    }
+}

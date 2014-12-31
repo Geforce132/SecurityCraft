@@ -119,7 +119,9 @@ public class mod_SecurityCraft {
 	public static Block reinforcedPlanks_Jungle;
 	public static Block reinforcedPlanks_Acadia;
 	public static Block reinforcedPlanks_DarkOak;
-
+	public static Block keypadFurnace;
+	public static Block panicButton;
+	
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
@@ -132,6 +134,7 @@ public class mod_SecurityCraft {
     public static Item fWaterBucket;
     public static Item fLavaBucket;
     public static Item universalBlockModifier;
+    public static Item wireCutters;
     
     //Modules
     public static ItemModule redstoneModule;

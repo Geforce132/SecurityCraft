@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;

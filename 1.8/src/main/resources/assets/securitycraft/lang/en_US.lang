@@ -35,6 +35,7 @@ tile.reinforcedPlanks_Birch.name=Reinforced Birch Planks
 tile.reinforcedPlanks_Jungle.name=Reinforced Jungle Planks
 tile.reinforcedPlanks_Acadia.name=Reinforced Acadia Planks
 tile.reinforcedPlanks_DarkOak.name=Reinforced Dark Oak Planks
+tile.panicButton.name=Panic Button
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover
@@ -51,5 +52,6 @@ item.whitelistModule.name=Whitelist Module
 item.blacklistModule.name=Blacklist Module
 item.harmingModule.name=Harming Module
 item.smartModule.name=Smart Module
+item.wireCutters.name=Wire Cutters
 
 

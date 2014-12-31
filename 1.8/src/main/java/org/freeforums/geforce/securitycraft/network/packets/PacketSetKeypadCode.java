@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 
 public class PacketSetKeypadCode implements IMessage{
 	
@@ -54,7 +55,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypad){
 			((TileEntityKeypad) getWorld(player).getTileEntity(pos)).setKeypadCode(codeToSet);
-			System.out.println("Setting code to: " + codeToSet);
+		}else if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+			((TileEntityKeypadFurnace) getWorld(player).getTileEntity(pos)).setKeypadCode(codeToSet);
 		}else if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest){
 			((TileEntityKeypadChest) getWorld(player).getTileEntity(pos)).setKeypadCode(codeToSet);
 			this.checkForAdjecentChest(pos, codeToSet, player);

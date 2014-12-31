@@ -97,7 +97,7 @@ public class BlockMine extends BlockContainer{
 		   if(par5EntityPlayer.getCurrentEquippedItem() == null || !isInteractibleItem(par5EntityPlayer.getCurrentEquippedItem().getItem())){
 			   this.explode(par1World, par2, par3, par4);
 			   return false;
-		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.shears){
+		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters){
 			   par1World.setBlock(par2, par3, par4, mod_SecurityCraft.MineCut);
 			   return true;
 		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
@@ -110,7 +110,7 @@ public class BlockMine extends BlockContainer{
    }
    
    private boolean isInteractibleItem(Item item){
-	   if(item == Items.shears || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel){
+	   if(item == mod_SecurityCraft.wireCutters || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel){
 		   return true;
 	   }else{
 		   return false;

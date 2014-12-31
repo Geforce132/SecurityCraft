@@ -1,0 +1,30 @@
+{
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "elements": [
+        {
+            "from": [5,5,15],
+            "to": [11,11,16],
+            "faces": {
+                "up": {
+                    "texture": "missingtexture"
+                },
+                "down": {
+                    "texture": "missingtexture"
+                },
+                "west": {
+                    "texture": "missingtexture"
+                },
+                "east": {
+                    "texture": "missingtexture"
+                },
+                "north": {
+                    "texture": "missingtexture"
+                },
+                "south": {
+                    "texture": "missingtexture"
+                }
+            }
+        }
+    ]
+}

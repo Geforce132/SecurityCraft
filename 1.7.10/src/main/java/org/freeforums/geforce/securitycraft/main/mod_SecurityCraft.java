@@ -127,6 +127,7 @@ public class mod_SecurityCraft {
     public static Item fWaterBucket;
     public static Item fLavaBucket;
     public static Item universalBlockModifier;
+	public static Item wireCutters;
     
     //Modules
     public static ItemModule redstoneModule;

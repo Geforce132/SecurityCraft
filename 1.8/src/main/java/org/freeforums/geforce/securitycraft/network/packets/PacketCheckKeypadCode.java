@@ -9,10 +9,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,10 +24,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 public class PacketCheckKeypadCode implements IMessage{
@@ -73,10 +76,13 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 		String code1 = "";
 		String code2 = "";
+		String code3 = "";
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypad){
 			code1 = ((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(pos)).getKeypadCode();
 		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest){
 			code2 = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getKeypadCode();
+		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+			code3 = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).getKeypadCode();
 		}
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypad && code.matches(code1)){
@@ -88,6 +94,12 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getLockableContainer(getWorld(par1EntityPlayer), new BlockPos(x, y, z))); //((TileEntityKeypadChest) getWorld().getTileEntity(x, y, z))
+			return null;
+		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace && code.matches(code3)){
+			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			Utils.setBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN, true);
+			getWorld(par1EntityPlayer).scheduleUpdate(pos, getWorld(par1EntityPlayer).getBlockState(pos).getBlock(), 60);
+			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
 		}
 		

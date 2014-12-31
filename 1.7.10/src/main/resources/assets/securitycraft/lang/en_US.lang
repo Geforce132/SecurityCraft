@@ -50,5 +50,6 @@ item.whitelistModule.name=Whitelist Module
 item.blacklistModule.name=Blacklist Module
 item.harmingModule.name=Harming Module
 item.smartModule.name=Smart Module
+item.wireCutters.name=Wire Cutters
 
 

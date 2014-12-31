@@ -2,6 +2,8 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

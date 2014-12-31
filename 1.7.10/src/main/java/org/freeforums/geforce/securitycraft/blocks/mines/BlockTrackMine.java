@@ -3,14 +3,16 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
