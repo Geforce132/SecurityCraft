@@ -37,11 +37,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	private static final int[] slotsTop = new int[] {0};
     private static final int[] slotsBottom = new int[] {2, 1};
     private static final int[] slotsSides = new int[] {1};
-    private ItemStack[] furnaceItemStacks = new ItemStack[3];
-    private int furnaceBurnTime;
-    private int currentItemBurnTime;
-    private int cookTime;
-    private int totalCookTime;
+    public ItemStack[] furnaceItemStacks = new ItemStack[3];
+    public int furnaceBurnTime;
+    public int currentItemBurnTime;
+    public int cookTime;
+    public int totalCookTime;
     private String furnaceCustomName;
     private String passcode;
     

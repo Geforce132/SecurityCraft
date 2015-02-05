@@ -91,8 +91,8 @@ public class BlockInventoryScanner extends BlockContainer{
     		return true;
     	}else{
     		
-    		if(((TileEntityOwnable)par1World.getTileEntity(pos)).getOwner() != null){
-    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(pos.getX(), pos.getY(), pos.getZ(), ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwner(), true));
+    		if(((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerUUID() != null && ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerName() != null){
+    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(pos.getX(), pos.getY(), pos.getZ(), ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerUUID(), ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerName(), true));
     		}
     		
     		if(this.isFacingAnotherBlock(par1World, pos)){
@@ -109,7 +109,7 @@ public class BlockInventoryScanner extends BlockContainer{
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){    	
-        ((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());       
+        ((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());       
     	
     	Block block = par1World.getBlockState(pos.north()).getBlock();
         Block block1 = par1World.getBlockState(pos.south()).getBlock();

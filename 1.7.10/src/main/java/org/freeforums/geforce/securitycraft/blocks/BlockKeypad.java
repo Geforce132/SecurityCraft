@@ -27,7 +27,6 @@ public class BlockKeypad extends BlockContainer{
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
-
 	}
     	
 	@SideOnly(Side.CLIENT)
@@ -38,24 +37,6 @@ public class BlockKeypad extends BlockContainer{
     private IIcon keypadIconFrontActive;
     
 	public static boolean canSend = true;
-
-    
-	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
     
     @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
@@ -148,6 +129,10 @@ public class BlockKeypad extends BlockContainer{
      */
     public IIcon getIcon(int par1, int par2)
     {
+        if(par1 == 3 && par2 == 0){
+    		return this.keypadIconFront;
+    	}
+        
     	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
     		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
     	}else{
@@ -175,7 +160,7 @@ public class BlockKeypad extends BlockContainer{
     {
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
         if (l == 0)
         {

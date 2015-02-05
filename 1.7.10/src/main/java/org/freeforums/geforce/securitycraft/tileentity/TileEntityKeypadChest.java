@@ -6,7 +6,8 @@ import net.minecraft.tileentity.TileEntityChest;
 public class TileEntityKeypadChest extends TileEntityChest {
 	
 	private String passcode;
-    private String owner;
+    private String ownerUUID;
+    private String ownerName;
 
 	public TileEntityKeypadChest adjacentChestZNeg;
     public TileEntityKeypadChest adjacentChestXPos;
@@ -22,12 +23,17 @@ public class TileEntityKeypadChest extends TileEntityChest {
     	passcode = par1;
     }
     
-    public String getOwner(){
-    	return owner;
+    public String getOwnerUUID(){
+    	return ownerUUID;
     }
     
-    public void setOwner(String par1){
-    	owner = par1;
+    public String getOwnerName(){
+    	return ownerName;
+    }
+    
+    public void setOwner(String par1, String par2){
+    	ownerUUID = par1;
+    	ownerName = par2;
     }
     
     /**
@@ -41,8 +47,12 @@ public class TileEntityKeypadChest extends TileEntityChest {
         	par1NBTTagCompound.setString("passcode", this.passcode);
         }
         
-        if(this.owner != null && this.owner != ""){
-        	par1NBTTagCompound.setString("owner", this.owner);
+        if(this.ownerName != null && this.ownerName != ""){
+        	par1NBTTagCompound.setString("owner", this.ownerName);
+        }
+        
+        if(this.ownerUUID != null && this.ownerUUID != ""){
+        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
         }
     }
 
@@ -64,7 +74,12 @@ public class TileEntityKeypadChest extends TileEntityChest {
         
         if (par1NBTTagCompound.hasKey("owner"))
         {
-            this.owner = par1NBTTagCompound.getString("owner");
+            this.ownerName = par1NBTTagCompound.getString("owner");
+        }
+        
+        if (par1NBTTagCompound.hasKey("ownerUUID"))
+        {
+            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
         }
     }
     

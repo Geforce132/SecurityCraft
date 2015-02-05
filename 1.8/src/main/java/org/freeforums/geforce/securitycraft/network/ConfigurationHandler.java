@@ -45,6 +45,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
 import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
 import org.freeforums.geforce.securitycraft.blocks.BlockUnbreakableBars;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockBouncingBetty;
+import org.freeforums.geforce.securitycraft.blocks.mines.BlockClaymore;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
@@ -80,6 +81,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateClient;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -125,6 +127,7 @@ public class ConfigurationHandler{
 	public static int cageTrapTextureIndex;
 	public static int empRadius;
 	public static int portableRadarDelay;
+	public static int claymoreRange;
 	
 	public String currentHackIndex = "";
 	public boolean ableToContinueHacking = true;
@@ -173,7 +176,7 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.keycardReader = new BlockKeycardReader(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keycardReader");
 	    
-		mod_SecurityCraft.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setHardness(5.0F).setResistance(200F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedIronTrapdoor");
+		mod_SecurityCraft.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setBlockUnbreakable().setResistance(200F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedIronTrapdoor");
 
 		//mod_SecurityCraft.doorbell = new BlockDoorbell(2077, Material.rock).setHardness(2F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setTextureName("button").setUnlocalizedName("doorbell");
 
@@ -218,6 +221,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setUnlocalizedName("keypadFurnace");
 	
 		mod_SecurityCraft.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("panicButton");
+	
 	}
 	
 	public void setupMines(){
@@ -238,6 +242,8 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.trackMine = new BlockTrackMine().setHardness(!ableToBreakMines ? -1F : 0.7F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("trackMine");
 
 		mod_SecurityCraft.bouncingBetty = new BlockBouncingBetty(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("bouncingBetty");
+	
+		mod_SecurityCraft.claymore = new BlockClaymore(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("claymore");
 	}
 	
 	public void setupItems(){
@@ -302,8 +308,9 @@ public class ConfigurationHandler{
         usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
         laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
         alarmTickDelay = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2).getInt(2);
-        alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 1.0D).getDouble(1.0D);
+        alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D).getDouble(0.8D);
         portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
+        claymoreRange = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5).getInt(5);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
@@ -362,7 +369,8 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_DarkOak, mod_SecurityCraft.reinforcedPlanks_DarkOak.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.keypadFurnace, mod_SecurityCraft.keypadFurnace.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.panicButton, mod_SecurityCraft.panicButton.getUnlocalizedName().substring(5));
-		
+		GameRegistry.registerBlock(mod_SecurityCraft.claymore, mod_SecurityCraft.claymore.getUnlocalizedName().substring(5));
+
 		GameRegistry.registerItem(mod_SecurityCraft.Codebreaker, mod_SecurityCraft.Codebreaker.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.universalBlockRemover, mod_SecurityCraft.universalBlockRemover.getUnlocalizedName().substring(5));
@@ -402,6 +410,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
 		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
+		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
@@ -583,6 +592,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.unbreakableIronBars), 0, new ModelResourceLocation("securitycraft:reinforcedIronBars", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.portableRadar), 0, new ModelResourceLocation("securitycraft:portableRadar", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.alarm), 0, new ModelResourceLocation("securitycraft:alarm", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.usernameLogger), 0, new ModelResourceLocation("securitycraft:usernameLogger", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedFencegate), 0, new ModelResourceLocation("securitycraft:reinforcedFenceGate", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedPlanks_Oak), 0, new ModelResourceLocation("securitycraft:reinforcedPlanks_Oak", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedPlanks_Spruce), 0, new ModelResourceLocation("securitycraft:reinforcedPlanks_Spruce", "inventory"));
@@ -590,6 +600,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedPlanks_Jungle), 0, new ModelResourceLocation("securitycraft:reinforcedPlanks_Jungle", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedPlanks_Acadia), 0, new ModelResourceLocation("securitycraft:reinforcedPlanks_Acadia", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedPlanks_DarkOak), 0, new ModelResourceLocation("securitycraft:reinforcedPlanks_DarkOak", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.keypadChest), 0, new ModelResourceLocation("securitycraft:keypadChest", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.keypadFurnace), 0, new ModelResourceLocation("securitycraft:keypadFurnace", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.panicButton), 0, new ModelResourceLocation("securitycraft:panicButton", "inventory"));
 
@@ -611,6 +622,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.harmingModule, 0, new ModelResourceLocation("securitycraft:harmingModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.smartModule, 0, new ModelResourceLocation("securitycraft:smartModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.wireCutters, 0, new ModelResourceLocation("securitycraft:wireCutters", "inventory"));
+		
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.DirtMine), 0, new ModelResourceLocation("securitycraft:dirtMine", "inventory"));
@@ -621,6 +633,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.FurnaceMine), 0, new ModelResourceLocation("securitycraft:furnaceMine", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.trackMine), 0, new ModelResourceLocation("securitycraft:trackMine", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.bouncingBetty), 0, new ModelResourceLocation("securitycraft:bouncingBetty", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.claymore), 0, new ModelResourceLocation("securitycraft:claymore", "inventory"));
 
 	}
 

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadChest;
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -30,7 +31,7 @@ public class GuiKeypadChest extends GuiContainer
 	private TileEntityKeypadChest keypadInventory;
 	private GuiTextField textboxKeycode;
 	private String currentString = "";
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9'};
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', ''};
 	public static int code;
     public GuiKeypadChest(InventoryPlayer par1InventoryPlayer, TileEntityKeypadChest par2TileEntityFurnace)
     {
@@ -54,6 +55,7 @@ public class GuiKeypadChest extends GuiContainer
 		this.buttonList.add(new GuiButton(7, this.width / 2 - 38, this.height / 2 + 10, 20, 20, "7"));
 		this.buttonList.add(new GuiButton(8, this.width / 2 - 8, this.height / 2 + 10, 20, 20, "8"));
 		this.buttonList.add(new GuiButton(9, this.width / 2 + 22, this.height / 2 + 10, 20, 20, "9"));
+		this.buttonList.add(new GuiButton(10, this.width / 2 + 48, this.height / 2 + 30 + 10, 25, 20, "<-"));
 
 		this.textboxKeycode = new GuiTextField(this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 67, 77, 12);
 		
@@ -80,11 +82,16 @@ public class GuiKeypadChest extends GuiContainer
     
     
     protected void keyTyped(char par1, int par2){
-		if(this.isValidChar(par1)){
+    	if(this.isValidChar(par1) && par1 != ''){
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.currentString += par1;
-			this.setTextboxCensoredText(textboxKeycode, currentString);
+			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			this.checkCode(this.currentString);			
+		}else if(this.isValidChar(par1) && par1 == ''){
+			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.setTextboxCensoredText(this.textboxKeycode, currentString);
+			this.checkCode(this.currentString);
 		}else{
 			super.keyTyped(par1, par2);
 		}
@@ -180,6 +187,11 @@ public class GuiKeypadChest extends GuiContainer
 			this.currentString += "9";
 			this.setTextboxCensoredText(textboxKeycode, currentString);
 			this.checkCode(this.currentString);	
+			break;
+			
+		case 10:
+			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			break;
 		
 		}

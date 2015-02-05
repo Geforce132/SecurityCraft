@@ -15,7 +15,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	}
 
 	protected EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.HARMING};
+		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST};
 	}
 
 }

@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 
@@ -76,7 +78,7 @@ public class BlockAlarm extends BlockContainer {
      */
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack p_149689_6_)
     {
-    	((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+    	((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
     }
 	
 	/**
@@ -108,6 +110,7 @@ public class BlockAlarm extends BlockContainer {
     
     private void playSoundAndUpdate(World par1World, BlockPos pos){
     	if(par1World.isBlockIndirectlyGettingPowered(pos) > 0){
+        	Utils.checkIfRunning();
     		boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
     		if(!isPowered){

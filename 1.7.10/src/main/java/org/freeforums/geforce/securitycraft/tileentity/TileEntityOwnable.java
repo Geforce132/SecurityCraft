@@ -7,15 +7,21 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityOwnable extends TileEntitySCTE{
 	
+	private String ownerUUID;
 	private String owner;
 
 	
-	public String getOwner(){
+	public String getOwnerName(){
     	return owner;
     }
+	
+	public String getOwnerUUID(){
+    	return ownerUUID;
+    }
     
-    public void setOwner(String par1){
-    	owner = par1;
+    public void setOwner(String par1, String par2){
+    	ownerUUID = par1;
+    	owner = par2;
     }
     
     /**
@@ -26,6 +32,10 @@ public class TileEntityOwnable extends TileEntitySCTE{
         super.writeToNBT(par1NBTTagCompound);
         if(this.owner != null && this.owner != ""){
         	par1NBTTagCompound.setString("owner", this.owner);
+        }
+        
+        if(this.ownerUUID != null && this.ownerUUID != ""){
+        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
         }
     }
 
@@ -39,6 +49,11 @@ public class TileEntityOwnable extends TileEntitySCTE{
         if (par1NBTTagCompound.hasKey("owner"))
         {
             this.owner = par1NBTTagCompound.getString("owner");
+        }
+        
+        if (par1NBTTagCompound.hasKey("ownerUUID"))
+        {
+            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
         }
     }
     

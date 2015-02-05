@@ -14,7 +14,7 @@ public class CreativeTabSCTechnical extends CreativeTabs{
 	
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
-		return mod_SecurityCraft.remoteAccessMine;
+		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.usernameLogger);
 	}
 	
 	public String getTranslatedTabLabel(){

@@ -458,6 +458,12 @@ public class HelpfulMethods {
 		}
 	}
 	
+	public static String removeLastChar(String par1){
+		if(par1 == null || par1.isEmpty()){ return ""; }
+		
+		return par1.substring(0, par1.length() - 1);
+	}
+	
 	/**
 	 * Checks if the block at x, y, z is touching the specified block on any side.
 	 */
@@ -614,6 +620,18 @@ public class HelpfulMethods {
 		}
 		
 		return false;
+	}
+	
+	public static boolean toggleBoolean(boolean par1) {
+		boolean tempBoolean = par1;
+		
+		if(tempBoolean){
+			tempBoolean = false;
+		}else{
+			tempBoolean = true;
+		}
+		
+		return tempBoolean;
 	}
 	
 //	private static void bookCode(){

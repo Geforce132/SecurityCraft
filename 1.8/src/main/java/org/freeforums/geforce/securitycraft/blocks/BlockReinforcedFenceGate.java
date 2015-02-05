@@ -30,7 +30,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
     	
-    	((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+    	((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
     }
     
     public void breakBlock(World par1World, BlockPos pos, IBlockState state)

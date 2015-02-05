@@ -62,8 +62,7 @@ public class ItemReinforcedDoor extends Item
 	            {
 	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);
 	                TileEntityReinforcedDoor TERD = new TileEntityReinforcedDoor();
-                    TERD.setOwner(player.getName());
-                    world.setTileEntity(pos, TERD);
+                    TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
                     world.setTileEntity(pos, TERD);
 	                --stack.stackSize;
 	                return true;

@@ -191,6 +191,7 @@ public class BlockInventoryScannerBlock extends BlockContainer{
 			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
 				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
 					//if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem() || par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == Item.getItemFromBlock(par3.getItem())){
+					System.out.println("Running te update");
 					if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
 						if(!par2TileEntity.shouldProvidePower()){
 							par2TileEntity.setShouldProvidePower(true);

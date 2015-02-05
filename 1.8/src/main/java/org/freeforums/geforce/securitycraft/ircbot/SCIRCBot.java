@@ -30,9 +30,10 @@ public class SCIRCBot extends PircBot{
 	
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
     	for(User user: this.getUsers(channel)){
-    		if(channel.matches("#GeforceMods") && (user.hasVoice()|| user.isOp()) && message.startsWith((this.getNick() + ":"))){
+    		if(channel.matches("#GeforceMods") && (user.hasVoice()|| user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
     			try{
     				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayerFromName((this.getNick().replace("SCUser_", ""))).getName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+    				break;
     			}catch(PlayerNotFoundException e){
     				e.printStackTrace();
     			}

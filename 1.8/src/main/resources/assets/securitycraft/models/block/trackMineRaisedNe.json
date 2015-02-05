@@ -1,7 +1,7 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "#rail",
+        "particle": "securitycraft:blocks/rail_mine",
         "rail": "securitycraft:blocks/rail_mine"
     },
     "elements": [

@@ -184,12 +184,9 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);
 				}
 			}else if(par1String[0].matches("contact")){
-				if(mod_SecurityCraft.instance.getIrcBot() != null && !amIAway(mod_SecurityCraft.instance.getIrcBot())){
+				if(mod_SecurityCraft.instance.getIrcBot() != null){
 					mod_SecurityCraft.instance.getIrcBot().sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + "] Geforce: " + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
-				}else if(mod_SecurityCraft.instance.getIrcBot() != null && amIAway(mod_SecurityCraft.instance.getIrcBot())){
-					mod_SecurityCraft.instance.getIrcBot().sendMessage("#GeforceMods", "$tell Geforce (SC " + mod_SecurityCraft.getVersion() + ") " + getMessageFromArray(par1String, 1));
-					sendMessageToPlayer("I'm currently away. The offline messaging system of this bot is not implemented yet. When I get back, if you're connected to IRC, I'll be sure to reply to your message.", icommandsender);
 				}else{
 					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);
 				}
@@ -270,18 +267,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		}catch(PlayerNotFoundException e){
 			e.printStackTrace();
 		}
-	}
-	
-	private boolean amIAway(SCIRCBot par1SCIRCBot){
-		if(par1SCIRCBot.isConnected()){
-			for(User user : par1SCIRCBot.getUsers("#GeforceMods")){
-				if(user.getNick().matches("Geforce") && user.isOp()){
-					return false;
-				}
-			}
-		}
-		
-		return true;
 	}
 	
 	public int compareTo(Object par1Obj)

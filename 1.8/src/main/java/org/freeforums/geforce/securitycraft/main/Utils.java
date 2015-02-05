@@ -1,10 +1,9 @@
 package org.freeforums.geforce.securitycraft.main;
 
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
@@ -12,6 +11,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+
+import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class Utils {
 	
@@ -81,19 +86,83 @@ public class Utils {
 	public static Block getBlock(World par1World, int par2, int par3, int par4){
 		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getBlock();
 	}
-
+	
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value) {
-		ItemStack[] modules = null;
-		if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
-		}
-		
-		TileEntity tileEntity = par1World.getTileEntity(pos);
-		par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
-		par1World.setTileEntity(pos, tileEntity);
-		
-		if(modules != null){
-			((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = modules;
+		setBlockProperty(par1World, pos, property, value, false);
+	}
+
+
+	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
+		if(retainOldTileEntity){
+			ItemStack[] modules = null;
+			ItemStack[] inventory = null;
+			int[] times = new int[4];
+			String password = "";
+			String ownerUUID = "";
+			String ownerName = "";
+
+			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
+				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+				inventory = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).furnaceItemStacks;
+				times[0] = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).furnaceBurnTime;
+				times[1] = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).currentItemBurnTime;
+				times[2] = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).cookTime;
+				times[3] = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).totalCookTime;
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerUUID() != null){
+				ownerUUID = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerUUID();
+				ownerName = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerName();
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypad && ((TileEntityKeypad) par1World.getTileEntity(pos)).getKeypadCode() != null){
+				password = ((TileEntityKeypad) par1World.getTileEntity(pos)).getKeypadCode();
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getKeypadCode() != null){
+				password = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getKeypadCode();
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode() != null){
+				password = ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode();
+			}
+			
+			TileEntity tileEntity = par1World.getTileEntity(pos);
+			par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
+			par1World.setTileEntity(pos, tileEntity);
+			
+			if(modules != null){
+				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = modules;
+			}
+			
+			if(inventory != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).furnaceItemStacks = inventory;
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).furnaceBurnTime = times[0];
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).currentItemBurnTime = times[1];
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).cookTime = times[2];
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).totalCookTime = times[3];
+			}
+			
+			if(!ownerUUID.isEmpty() && !ownerName.isEmpty()){
+				((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
+			}
+			
+			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypad){
+				((TileEntityKeypad) par1World.getTileEntity(pos)).setKeypadCode(password);
+			}
+			
+			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).setKeypadCode(password);
+			}
+			
+			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
+				((TileEntityKeypadChest) par1World.getTileEntity(pos)).setKeypadCode(password);
+			}
+		}else{
+			par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 		}
 	}
 	
@@ -118,6 +187,14 @@ public class Utils {
 	
 	public static Comparable getBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property) {
 		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
+	}
+	
+	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {
+		return (EnumFacing) par1World.getBlockState(pos).getValue(property);
+	}
+	
+	public static EnumFacing getBlockProperty(World par1World, int par2, int par3, int par4, PropertyDirection property) {
+		return (EnumFacing) par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
 	}
 
 }

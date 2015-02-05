@@ -12,7 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class BlockPanicButton extends BlockButton implements ITileEntityProvider{
@@ -57,7 +56,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	if(par5EntityLivingBase instanceof EntityPlayer){
-			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
 		}
     }
     
@@ -86,74 +85,28 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         float f2 = (float)(flag ? 1 : 2) / 16.0F;
         float f3 = 0.125F;
         float f4 = 0.1875F;
-
-        System.out.println(BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]);
-        
+                      
         switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
         {
             case 1:
-                this.setBlockBounds(0.0F, 0.30F, 0.20F, f2, 0.70F, 0.80F);
+                this.setBlockBounds(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
                 break;
             case 2:
-                this.setBlockBounds(1.0F - f2, 0.30F, 0.20F, 1.0F, 0.70F, 0.80F);
+                this.setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
                 break;
             case 3:
-                this.setBlockBounds(0.3125F, 0.375F, 0.0F, 0.6875F, 0.625F, f2);
+                this.setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
                 break;
             case 4:
-                this.setBlockBounds(0.3125F, 0.375F, 1.0F - f2, 0.6875F, 0.625F, 1.0F);
+                this.setBlockBounds(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
                 break;
             case 5:
-                this.setBlockBounds(0.3125F, 0.0F, 0.375F, 0.6875F, 0.0F + f2, 0.625F);
+                this.setBlockBounds(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + f2, 0.700F);
                 break;
             case 6:
-                this.setBlockBounds(0.3125F, 1.0F - f2, 0.375F, 0.6875F, 1.0F, 0.625F);
+                this.setBlockBounds(0.175F, 1.0F - f2, 0.300F, 0.8225F, 1.0F, 0.700F);
         }
     }
-    
-//    @SideOnly(Side.CLIENT)
-//    public IBlockState getStateForEntityRender(IBlockState state)
-//    {
-//        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-//    }
-//
-//    public IBlockState getStateFromMeta(int meta)
-//    {
-//    	
-//        if(meta <= 5){
-//        	EnumFacing enumfacing = EnumFacing.getFront(meta);
-//
-//            if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-//            {
-//                enumfacing = EnumFacing.NORTH;
-//            }
-//            
-//        	return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, false);
-//        }else{
-//        	EnumFacing enumfacing = EnumFacing.getFront(meta - 6);
-//
-//            if (enumfacing.getAxis() == EnumFacing.Axis.Y)
-//            {
-//                enumfacing = EnumFacing.NORTH;
-//            }
-//            
-//        	return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(POWERED, true);
-//        }
-//    }
-//
-//    public int getMetaFromState(IBlockState state)
-//    {
-//    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
-//    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
-//    	}else{
-//    		return ((EnumFacing) state.getValue(FACING)).getIndex();
-//    	}
-//    }
-//
-//    protected BlockState createBlockState()
-//    {
-//        return new BlockState(this, new IProperty[] {FACING, POWERED});
-//    }
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();

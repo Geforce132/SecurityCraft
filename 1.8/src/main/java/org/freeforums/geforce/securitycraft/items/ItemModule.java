@@ -27,7 +27,12 @@ public class ItemModule extends Item{
 	
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add(nbtCanBeModified ? "Module is modifiable!" : "Module not modifiable!");
+		if(nbtCanBeModified){
+			par3List.add("Module is modifiable!");
+			par3List.add("Use /module to add players.");
+		}else{
+			par3List.add("Module is not modifiable!");
+		}
 		
 		if(module == EnumCustomModules.WHITELIST || module == EnumCustomModules.BLACKLIST){
 			par3List.add(" ");

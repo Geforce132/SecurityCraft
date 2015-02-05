@@ -69,7 +69,7 @@ public class BlockKeypadChest extends BlockChest{
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
         
-        ((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        ((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
         if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityKeypadChest){
         	((TileEntityKeypadChest)(par1World.getTileEntity(par2, par3, par4))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(par2 + 1, par3, par4)).getKeypadCode());

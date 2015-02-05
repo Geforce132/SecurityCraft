@@ -7,6 +7,7 @@ import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +39,7 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
     	if(p_149689_1_.isRemote){
     		return;
     	}else{
-    		((TileEntityOwnable) p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).setOwner(p_149689_5_.getCommandSenderName());
+    		((TileEntityOwnable) p_149689_1_.getTileEntity(p_149689_2_, p_149689_3_, p_149689_4_)).setOwner(((EntityPlayer) p_149689_5_).getGameProfile().getId(), p_149689_5_.getCommandSenderName());
     	}
     }
 

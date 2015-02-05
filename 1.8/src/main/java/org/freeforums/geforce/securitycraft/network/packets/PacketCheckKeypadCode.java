@@ -19,6 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -97,9 +98,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace && code.matches(code3)){
 			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
-			Utils.setBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN, true);
-			getWorld(par1EntityPlayer).scheduleUpdate(pos, getWorld(par1EntityPlayer).getBlockState(pos).getBlock(), 60);
-			((EntityPlayerMP) par1EntityPlayer).closeScreen();
+			if(!((Boolean) Utils.getBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN)).booleanValue()){
+				Utils.setBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN, true, true);
+			}
+			getWorld(par1EntityPlayer).playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+			par1EntityPlayer.openGui(mod_SecurityCraft.instance, 16, getWorld(par1EntityPlayer), pos.getX(), pos.getY(), pos.getZ());
 			return null;
 		}
 		

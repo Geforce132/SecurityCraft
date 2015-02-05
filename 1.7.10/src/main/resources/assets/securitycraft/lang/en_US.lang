@@ -35,6 +35,7 @@ tile.reinforcedPlanks_birch.name=Reinforced Birch Planks
 tile.reinforcedPlanks_jungle.name=Reinforced Jungle Planks
 tile.reinforcedPlanks_acacia.name=Reinforced Acacia Planks
 tile.reinforcedPlanks_darkoak.name=Reinforced Dark Oak Planks
+tile.panicButton.name=Panic Button
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover

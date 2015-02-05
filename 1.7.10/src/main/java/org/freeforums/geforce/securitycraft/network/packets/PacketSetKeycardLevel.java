@@ -1,7 +1,6 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -13,16 +12,18 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 public class PacketSetKeycardLevel implements IMessage{
 	
 	private int x, y, z, level;
+	private boolean exactCard;
 	
 	public PacketSetKeycardLevel(){
 		
 	}
 	
-	public PacketSetKeycardLevel(int x, int y, int z, int level){
+	public PacketSetKeycardLevel(int x, int y, int z, int level, boolean exactCard){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.level = level;
+		this.exactCard  = exactCard;
 	}
 
 	public void toBytes(ByteBuf par1ByteBuf) {
@@ -30,6 +31,7 @@ public class PacketSetKeycardLevel implements IMessage{
 		par1ByteBuf.writeInt(y);
 		par1ByteBuf.writeInt(z);
 		par1ByteBuf.writeInt(level);
+		par1ByteBuf.writeBoolean(exactCard);
 	}
 
 	public void fromBytes(ByteBuf par1ByteBuf) {
@@ -37,6 +39,7 @@ public class PacketSetKeycardLevel implements IMessage{
 		this.y = par1ByteBuf.readInt();
 		this.z = par1ByteBuf.readInt();
 		this.level = par1ByteBuf.readInt();
+		this.exactCard = par1ByteBuf.readBoolean();
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetKeycardLevel, IMessage> {
@@ -46,9 +49,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int y = packet.y;
 		int z = packet.z;
 		int level = packet.level;
+		boolean exactCard = packet.exactCard;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
 		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setPassLV(level);
+		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setRequiresExactKeycard(exactCard);
 		
 		return null;
 	}

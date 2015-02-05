@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
 
@@ -373,7 +374,7 @@ public class BlockReinforcedDoor extends BlockContainer
 
                 if ((flag1 || par5Block.canProvidePower()) && par5Block != this)
                 {
-                	if(hasActiveKeypadNextTo(par1World, par2, par3, par4) || hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4) || hasActiveReaderNextTo(par1World, par2, par3, par4) || hasActiveReaderNextTo(par1World, par2, par3 + 1, par4) || hasActiveScannerNextTo(par1World, par2, par3, par4) || hasActiveScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveLaserNextTo(par1World, par2, par3, par4) || hasActiveLaserNextTo(par1World, par2, par3 + 1, par4)){
+                	if(hasActiveKeypadNextTo(par1World, par2, par3, par4) || hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveReaderNextTo(par1World, par2, par3, par4) || hasActiveReaderNextTo(par1World, par2, par3 + 1, par4) || hasActiveScannerNextTo(par1World, par2, par3, par4) || hasActiveScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveLaserNextTo(par1World, par2, par3, par4) || hasActiveLaserNextTo(par1World, par2, par3 + 1, par4)){
                 		this.func_150014_a(par1World, par2, par3, par4, flag1);         
                 	}else if(!flag1){
                 		this.func_150014_a(par1World, par2, par3, par4, flag1);         
@@ -451,46 +452,25 @@ public class BlockReinforcedDoor extends BlockContainer
     	}
     }
     
-    private void checkForReinforcedDoor(World par1World, int par2, int par3, int par4, EntityPlayer player){
-		if(par1World.getBlockMetadata(par2, par3, par4) == 8){
-			TileEntityReinforcedDoor TERD = (TileEntityReinforcedDoor) par1World.getTileEntity(par2, par3, par4);
-			TileEntityReinforcedDoor TERD2 = null;
-			if(TERD == null){
-				TERD2 = (TileEntityReinforcedDoor) par1World.getTileEntity(par2, par3 + 1, par4);
-					
-				if(player.getCommandSenderName().matches(TERD2.getOwner())){
-					par1World.func_147480_a(par2, par3, par4, false);
-    				notifyPlayers(player.getCommandSenderName(), player, par2, par3, par4);
-    			}else{
-        			sendChatMessageTo(player, TERD2);
-    			}
-				return;
-			}
-			
-			if(TERD != null && TERD.getOwner() != null){
-				if(player.getCommandSenderName().matches(TERD.getOwner())){
-					par1World.func_147480_a(par2, par3, par4, false);
-					
-					notifyPlayers(player.getCommandSenderName(), player, par2, par3, par4);
-				}else{
-					sendChatMessageTo(player, TERD);
-				}
-			}
-		}
-	}
+    private boolean hasActiveInventoryScannerNextTo(World par1World, int par2, int par3, int par4){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).shouldProvidePower()){
+    		return true;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).shouldProvidePower()){
+    		return true;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).shouldProvidePower()){
+    		return true;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).shouldProvidePower()){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
     
     private void notifyPlayers(String username, EntityPlayer par2EntityPlayer, int par3, int par4, int par5) {
     	HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, username + " destroyed a reinforced door with a door remover at X: " + par3 + " Y: " + par4 + " Z: " + par5, null);
-
 	}
 
-	private void sendChatMessageTo(EntityPlayer par1EntityPlayer, TileEntityReinforcedDoor TERD){
-    	
-    	if(TERD.getOwner() != null && TERD.getOwner() != "null"){
-    		HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Im sorry, you can not remove this door. This door is owned by " + TERD.getOwner() + ".", EnumChatFormatting.RED);
-    	}
-    }
-
+	
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
     {
 		return mod_SecurityCraft.doorIndestructableIronItem;

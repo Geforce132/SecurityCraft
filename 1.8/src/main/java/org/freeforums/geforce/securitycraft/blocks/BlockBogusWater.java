@@ -26,6 +26,8 @@ public class BlockBogusWater extends BlockDynamicLiquid{
     {
     	par1World.setBlockState(pos, getStaticBlock(this.blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
     }
+    
+    
 
     public static BlockStaticLiquid getStaticBlock(Material materialIn)
     {

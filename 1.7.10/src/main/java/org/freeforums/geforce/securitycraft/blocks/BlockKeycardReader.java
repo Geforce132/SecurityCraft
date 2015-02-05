@@ -45,6 +45,10 @@ public class BlockKeycardReader extends BlockContainer{
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)
     {
+        if(par1 == 3 && par2 == 0){
+    		return this.keypadIconFront;
+    	}
+        
     	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
     		return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
     	}else{
@@ -71,7 +75,7 @@ public class BlockKeycardReader extends BlockContainer{
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
         if (l == 0)
         {
@@ -101,7 +105,7 @@ public class BlockKeycardReader extends BlockContainer{
 		
 		if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
-		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)){
+		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).setIsProvidingPower(true);
 			new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, meta);
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);

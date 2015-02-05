@@ -35,8 +35,8 @@ public class PacketSDebugField implements IMessage {
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSDebugField, IMessage> {
 
 	public IMessage onMessage(PacketSDebugField message, MessageContext ctx) {
-		String owner = ((TileEntityInventoryScanner)getWorld(ctx.getServerHandler().playerEntity).getTileEntity(new BlockPos(message.x, message.y, message.z))).getOwner();
-		System.out.println(owner);
+		String ownerName = ((TileEntityInventoryScanner)getWorld(ctx.getServerHandler().playerEntity).getTileEntity(new BlockPos(message.x, message.y, message.z))).getOwnerName();
+		System.out.println(ownerName);
 		return null;
 	}
 	

@@ -26,6 +26,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockLaser;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.blocks.BlockPanicButton;
 import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedFenceGate;
@@ -166,7 +167,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.bogusWater = new BlockBogusWaterBase(Material.water).setHardness(100.0F).setBlockName("bogusWater").setBlockTextureName("water_still");
 		mod_SecurityCraft.bogusWaterFlowing = new BlockBogusWater(Material.water).setHardness(0.0F).setBlockName("bogusWaterFlowing").setBlockTextureName("water_flow");
 		
-		mod_SecurityCraft.keycardReader = new BlockKeycardReader(Material.iron).setHardness(10F).setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keycardReader").setBlockTextureName("securitycraft:keycardReader");
+		mod_SecurityCraft.keycardReader = new BlockKeycardReader(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keycardReader").setBlockTextureName("securitycraft:keycardReader");
 	    
 		mod_SecurityCraft.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setHardness(5.0F).setResistance(200F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("ironTrapdoor").setBlockTextureName("securitycraft:ironTrapdoor");
 
@@ -199,6 +200,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("reinforcedFenceGate");
 		
 		mod_SecurityCraft.reinforcedWoodPlanks = new BlockReinforcedWood(Material.wood).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("reinforcedPlanks").setBlockTextureName("securitycraft:reinforcedPlanks");
+	
+		mod_SecurityCraft.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("panicButton");
 	}
 	
 	public void setupMines(){
@@ -283,7 +286,7 @@ public class ConfigurationHandler{
         usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
         laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
         alarmTickDelay = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2).getInt(2);
-        alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 1.0D).getDouble(1.0D);
+        alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D).getDouble(0.8D);
         portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
@@ -337,6 +340,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStone, mod_SecurityCraft.reinforcedStone.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedFencegate, mod_SecurityCraft.reinforcedFencegate.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class, mod_SecurityCraft.reinforcedWoodPlanks.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.panicButton, mod_SecurityCraft.panicButton.getUnlocalizedName().substring(5));
 
 		GameRegistry.registerItem(mod_SecurityCraft.Codebreaker, mod_SecurityCraft.Codebreaker.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));

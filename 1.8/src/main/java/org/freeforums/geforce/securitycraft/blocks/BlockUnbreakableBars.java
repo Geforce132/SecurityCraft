@@ -40,7 +40,7 @@ public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvid
     		return;
     	}else{
     		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+    			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
     		}
     	}
     }

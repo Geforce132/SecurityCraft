@@ -6,6 +6,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -13,7 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
@@ -41,7 +41,7 @@ public class BlockRetinalScanner extends BlockContainer{
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 
         if (l == 0)
         {
@@ -72,6 +72,10 @@ public class BlockRetinalScanner extends BlockContainer{
      */
     public IIcon getIcon(int par1, int par2)
     {
+        if(par1 == 3 && par2 == 0){
+    		return this.rtIconFront;
+    	}
+        
     	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
     		return par1 == 1 ? this.rtIconTop : (par1 == 0 ? this.rtIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.rtIconFrontActive));
     	}else{

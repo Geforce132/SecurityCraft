@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.util.UUID;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +13,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import com.google.common.base.Charsets;
+import com.mojang.authlib.GameProfile;
 
 public class BlockOwnable extends BlockContainer {
 
@@ -24,13 +29,10 @@ public class BlockOwnable extends BlockContainer {
     }
 	
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	//if(par1World.isRemote){ //TODO
-    	//	return;
-    	//}else{
-    		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
-    		}
-    	//}
+    	if(par5EntityLivingBase instanceof EntityPlayer){
+    		System.out.println(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString());
+    		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getName());
+    	}
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

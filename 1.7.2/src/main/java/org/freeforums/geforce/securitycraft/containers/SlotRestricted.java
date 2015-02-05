@@ -21,7 +21,7 @@ public class SlotRestricted extends Slot {
      */
     public boolean canTakeStack(EntityPlayer par1EntityPlayer)
     {
-    	return (inventoryScannerTE.getOwner() != null && inventoryScannerTE.getOwner().matches(par1EntityPlayer.getCommandSenderName()));
+    	return (inventoryScannerTE.getOwnerUUID() != null && inventoryScannerTE.getOwnerUUID().matches(par1EntityPlayer.getCommandSenderName()));
     }
     
     public void putStack(ItemStack p_75215_1_)

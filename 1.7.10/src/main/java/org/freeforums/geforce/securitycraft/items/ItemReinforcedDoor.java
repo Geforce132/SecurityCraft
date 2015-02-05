@@ -51,7 +51,7 @@ public class ItemReinforcedDoor extends Item
 	                    int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
 	                    placeDoorBlock(par3World, par4, par5, par6, i1, block);
 	                    TileEntityReinforcedDoor TERD = new TileEntityReinforcedDoor();
-	                    TERD.setOwner(par2EntityPlayer.getCommandSenderName());
+	                    TERD.setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
 	                    par3World.setTileEntity(par4, par5, par6, TERD);
 	                    par3World.setTileEntity(par4, par5 + 1, par6, TERD);
 	                    --par1ItemStack.stackSize;

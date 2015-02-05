@@ -15,20 +15,21 @@ public class PacketSetBlockMetadata implements IMessage{
 	private int blockMetadata;
 	private boolean shouldUpdateBlock;
 	private int amountOfTicks;
-	private String extraData;
+	private String extraOwnerUUID, extraOwnerName;
 	
 	public PacketSetBlockMetadata(){
 		
 	}
 
-	public PacketSetBlockMetadata(int x, int y, int z, int meta, boolean shouldUpdate, int amountOfTicks, String extraData){
+	public PacketSetBlockMetadata(int x, int y, int z, int meta, boolean shouldUpdate, int amountOfTicks, String extraOwnerUUID, String extraOwnerName){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.blockMetadata = meta;
 		this.shouldUpdateBlock = shouldUpdate;
 		this.amountOfTicks = amountOfTicks;
-		this.extraData = extraData;
+		this.extraOwnerUUID = extraOwnerUUID;
+		this.extraOwnerName = extraOwnerName;
 	}
 	
 	public void toBytes(ByteBuf par1ByteBuf) {
@@ -38,7 +39,8 @@ public class PacketSetBlockMetadata implements IMessage{
 		par1ByteBuf.writeInt(blockMetadata);
 		par1ByteBuf.writeBoolean(shouldUpdateBlock);
 		par1ByteBuf.writeInt(amountOfTicks);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, extraData);
+		ByteBufUtils.writeUTF8String(par1ByteBuf, extraOwnerUUID);
+		ByteBufUtils.writeUTF8String(par1ByteBuf, extraOwnerName);
 
 	}
 
@@ -49,7 +51,8 @@ public class PacketSetBlockMetadata implements IMessage{
 		this.blockMetadata = par1ByteBuf.readInt();
 		this.shouldUpdateBlock = par1ByteBuf.readBoolean();
 		this.amountOfTicks = par1ByteBuf.readInt();
-	    this.extraData = ByteBufUtils.readUTF8String(par1ByteBuf);
+	    this.extraOwnerUUID = ByteBufUtils.readUTF8String(par1ByteBuf);
+	    this.extraOwnerName = ByteBufUtils.readUTF8String(par1ByteBuf);
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlockMetadata, IMessage> { 
@@ -61,14 +64,15 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int blockMetadata = packet.blockMetadata;
 		boolean shouldUpdateBlock = packet.shouldUpdateBlock;
 		int amountOfTicks = packet.amountOfTicks;
-		String extraData = packet.extraData;
+		String extraOwnerUUID = packet.extraOwnerUUID;
+		String extraOwnerName = packet.extraOwnerName;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
 		getWorld(par1EntityPlayer).setBlockMetadataWithNotify(x, y, z, blockMetadata, 3);
 		
-		if(extraData != "" && getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null){
+		if(!extraOwnerUUID.isEmpty() && !extraOwnerName.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null){
 			if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityOwnable){
-				((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setOwner(extraData);
+				((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setOwner(extraOwnerUUID, extraOwnerName);
 			}
 		}
 		

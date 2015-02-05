@@ -15,18 +15,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class PacketCUpdateOwner implements IMessage {
 	
 	private int x, y, z;
-	private String owner;
+	private String owner, uuid;
 	private boolean checkForNull;
 	
 	public PacketCUpdateOwner(){
 		
 	}
 	
-	public PacketCUpdateOwner(int x, int y, int z, String owner, boolean checkForNull){
+	public PacketCUpdateOwner(int x, int y, int z, String owner, String uuid, boolean checkForNull){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.owner = owner;
+		this.uuid = uuid;
 		this.checkForNull = checkForNull;
 	}
 
@@ -35,6 +36,7 @@ public class PacketCUpdateOwner implements IMessage {
 		this.y = buf.readInt();
 		this.z = buf.readInt();
 		this.owner = ByteBufUtils.readUTF8String(buf);
+		this.uuid = ByteBufUtils.readUTF8String(buf);
 		this.checkForNull = buf.readBoolean();
 	}
 
@@ -43,6 +45,7 @@ public class PacketCUpdateOwner implements IMessage {
 		buf.writeInt(y);
 		buf.writeInt(z);
 		ByteBufUtils.writeUTF8String(buf, owner);
+		ByteBufUtils.writeUTF8String(buf, uuid);
 		buf.writeBoolean(checkForNull);
 	}
 	
@@ -50,11 +53,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCUpdateOwner message, MessageContext ctx) {
-		if(message.checkForNull && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) != null && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) instanceof TileEntityOwnable && ((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).getOwner() == null){
-			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.owner);
+		if(message.checkForNull && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) != null && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) instanceof TileEntityOwnable && ((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).getOwnerUUID() == null){
+			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.uuid, message.owner);
 			System.out.println("Sending owner to: " + message.owner);
 		}else if(!message.checkForNull){
-			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.owner);
+			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.uuid, message.owner);
 			System.out.println("Sending owner to: " + message.owner);
 		}
 		return null;

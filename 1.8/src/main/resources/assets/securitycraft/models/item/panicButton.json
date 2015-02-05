@@ -1,9 +1,9 @@
 {
-    "parent": "securitycraft:block/panicButton_n_unpowered",
+    "parent": "securitycraft:block/panicButton",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
+            "translation": [ 0, 1, -1.75 ],
             "scale": [ 0.375, 0.375, 0.375 ]
         }
     }

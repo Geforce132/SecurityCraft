@@ -21,7 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;

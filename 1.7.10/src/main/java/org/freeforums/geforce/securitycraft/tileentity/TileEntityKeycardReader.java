@@ -8,7 +8,8 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
 
 	private int passLV = 0;
 	private boolean isGivingPower = false;
-	
+	private boolean requiresExactKeycard = false;
+
 	
 	public int getPassLV(){
     	return passLV;
@@ -26,7 +27,13 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
     	isGivingPower = par1;
     }
     
+    public void setRequiresExactKeycard(boolean par1) {
+    	requiresExactKeycard = par1;
+	}
     
+    public boolean doesRequireExactKeycard() {
+    	return requiresExactKeycard;
+	}
     
     
     /**
@@ -36,7 +43,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("passLV", this.passLV);
-
+        par1NBTTagCompound.setBoolean("requiresExactKeycard", this.requiresExactKeycard);
     }
 
     /**
@@ -51,6 +58,10 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
             this.passLV = par1NBTTagCompound.getInteger("passLV");
         }
         
+        if (par1NBTTagCompound.hasKey("requiresExactKeycard"))
+        {
+            this.requiresExactKeycard = par1NBTTagCompound.getBoolean("requiresExactKeycard");
+        }    
         
     }
 

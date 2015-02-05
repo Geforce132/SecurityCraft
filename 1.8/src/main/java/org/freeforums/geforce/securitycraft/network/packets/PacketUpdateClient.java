@@ -13,16 +13,17 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
 public class PacketUpdateClient implements IMessage{
 	
 	private int x, y, z;
-	private String username;
+	private String uuid, username;
 	
 	public PacketUpdateClient(){
 		
 	}
 	
-	public PacketUpdateClient(int x, int y, int z, String username){
+	public PacketUpdateClient(int x, int y, int z, String uuid, String username){
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.uuid = uuid;
 		this.username = username;
 	}
 
@@ -30,6 +31,7 @@ public class PacketUpdateClient implements IMessage{
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
 		par1ByteBuf.writeInt(z);
+		ByteBufUtils.writeUTF8String(par1ByteBuf, uuid);
 		ByteBufUtils.writeUTF8String(par1ByteBuf, username);
 	}
 
@@ -37,7 +39,8 @@ public class PacketUpdateClient implements IMessage{
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
 		this.z = par1ByteBuf.readInt();
-		ByteBufUtils.readUTF8String(par1ByteBuf);
+		this.uuid = ByteBufUtils.readUTF8String(par1ByteBuf);
+		this.username = ByteBufUtils.readUTF8String(par1ByteBuf);
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateClient, IMessage> {
@@ -50,7 +53,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
 		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) != null && getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityReinforcedDoor){
-			((TileEntityReinforcedDoor) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setOwner(username);
+			((TileEntityReinforcedDoor) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setOwner(packet.uuid, username);
 		}
 		
 		return null;

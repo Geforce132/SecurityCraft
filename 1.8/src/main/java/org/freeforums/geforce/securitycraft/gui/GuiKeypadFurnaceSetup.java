@@ -101,7 +101,8 @@ public class GuiKeypadFurnaceSetup extends GuiContainer
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString("Password-protected furnace setup", this.xSize / 2 - this.fontRendererObj.getStringWidth("Password-protected chest setup") / 2, 6, 4210752);
+        this.fontRendererObj.drawString("Password-protected furnace", this.xSize / 2 - this.fontRendererObj.getStringWidth("Password-protected furnace") / 2, 6, 4210752);
+        this.fontRendererObj.drawString("setup", this.xSize / 2 - this.fontRendererObj.getStringWidth("setup") / 2, 18, 4210752);
     }
 
     /**

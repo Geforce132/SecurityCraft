@@ -79,7 +79,7 @@ public class BlockKeycardReader extends BlockOwnable{
 	public void insertCard(World par1World, BlockPos pos, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {		
 		if(HelpfulMethods.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
-		if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() != 0 && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)){
+		if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			if(((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) == 4 && par5ItemStack.getTagCompound() != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.getTagCompound().setInteger("Uses", par5ItemStack.getTagCompound().getInteger("Uses") - 1);
 				

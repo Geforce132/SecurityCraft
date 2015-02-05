@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/laser",
+    "parent": "securitycraft:block/laserSideways",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

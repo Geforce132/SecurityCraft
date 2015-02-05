@@ -11,11 +11,11 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +42,7 @@ public class BlockRetinalScanner extends BlockContainer{
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        ((TileEntityOwnable)par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+        ((TileEntityOwnable)par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
 
         Block block = par1World.getBlockState(pos.north()).getBlock();
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
@@ -77,9 +77,10 @@ public class BlockRetinalScanner extends BlockContainer{
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
     {
         if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
-        	String owner = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwner();
+        	String ownerUUID = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerUUID();
+        	String ownerName = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerName();
         	Utils.setBlockProperty(par1World, pos, POWERED, false);
-        	((TileEntityRetinalScanner) par1World.getTileEntity(pos)).setOwner(owner);
+        	((TileEntityRetinalScanner) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
         }                       
     }
     

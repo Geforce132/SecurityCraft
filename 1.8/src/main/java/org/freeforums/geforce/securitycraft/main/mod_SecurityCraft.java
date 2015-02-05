@@ -121,6 +121,7 @@ public class mod_SecurityCraft {
 	public static Block reinforcedPlanks_DarkOak;
 	public static Block keypadFurnace;
 	public static Block panicButton;
+	public static Block claymore;
 	
     //Items
     public static Item Codebreaker;

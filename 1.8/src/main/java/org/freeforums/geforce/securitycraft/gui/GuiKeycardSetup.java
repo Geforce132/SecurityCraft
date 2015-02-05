@@ -5,7 +5,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeycardSetup;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
@@ -14,12 +13,13 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLeve
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.lwjgl.opengl.GL11;
 
-//TODO
 public class GuiKeycardSetup extends GuiContainer{
 	
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntityKeycardReader keypadInventory;
 	private GuiButton lvOfSecurityButton;
+	private GuiButton requiresExactCardButton;
+	private boolean requiresExactCard = false;
 	private int lvOfSecurity = 0;
 
 	public GuiKeycardSetup(InventoryPlayer inventory, TileEntityKeycardReader tile_entity) {
@@ -31,7 +31,8 @@ public class GuiKeycardSetup extends GuiContainer{
     	super.initGui();
 
 		this.buttonList.add(this.lvOfSecurityButton = new GuiButton(0, this.width / 2 - (48 * 2 - 23), this.height / 2 + 20, 150, 20, ""));
-		this.buttonList.add(new GuiButton(1, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, "Save & continue."));
+		this.buttonList.add(this.requiresExactCardButton = new GuiButton(1, this.width / 2 - (48 * 2 - 11), this.height / 2 - 28, 125, 20, this.requiresExactCard ? "equal to" : "equal to or higher then"));
+		this.buttonList.add(new GuiButton(2, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, "Save & continue."));
 		
 		this.updateButtonText();
     }
@@ -42,12 +43,12 @@ public class GuiKeycardSetup extends GuiContainer{
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString("Keycard setup", this.xSize / 2 - this.fontRendererObj.getStringWidth("Keycard setup") / 2, 6, 4210752);
-        this.fontRendererObj.drawString("Select the level of security that", this.xSize / 2 - this.fontRendererObj.getStringWidth("Select the level of security that") / 2 - 2, 30 - 7, 4210752);
-        this.fontRendererObj.drawString("you want. Only players with a", this.xSize / 2 - this.fontRendererObj.getStringWidth("you want. Only players with a") / 2 - 11, 42 - 7, 4210752);
-        this.fontRendererObj.drawString("keycard with a security level", this.xSize / 2 - this.fontRendererObj.getStringWidth("keycard with a security level") / 2 - 10, 54 - 7, 4210752);
-        this.fontRendererObj.drawString("equal to or higher then the level", this.xSize / 2 - this.fontRendererObj.getStringWidth("equal to or higher then the level") / 2, 66 - 7, 4210752);
-        this.fontRendererObj.drawString("you select will be able to use", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 9, 78 - 7, 4210752);
-        this.fontRendererObj.drawString("this keycard reader.", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 10, 90 - 7, 4210752);
+        this.fontRendererObj.drawString("Select the level of security that", this.xSize / 2 - this.fontRendererObj.getStringWidth("Select the level of security that") / 2 - 2, 30 - 10, 4210752);
+        this.fontRendererObj.drawString("you want. Only players with a", this.xSize / 2 - this.fontRendererObj.getStringWidth("you want. Only players with a") / 2 - 11, 42 - 10, 4210752);
+        this.fontRendererObj.drawString("keycard with a security level", this.xSize / 2 - this.fontRendererObj.getStringWidth("keycard with a security level") / 2 - 10, 54 - 10, 4210752);
+        this.fontRendererObj.drawString("                        the level", this.xSize / 2 - this.fontRendererObj.getStringWidth("                 the level") / 2, 66 - 5, 4210752);
+        this.fontRendererObj.drawString("you select will be able to use", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 9, 78 - 1, 4210752);
+        this.fontRendererObj.drawString("this keycard reader.", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 10, 90 - 1, 4210752);
 
     }
 
@@ -66,8 +67,8 @@ public class GuiKeycardSetup extends GuiContainer{
 		 }else{
 			 this.lvOfSecurity = 1;
 			 this.lvOfSecurityButton.displayString = "Level of security needed: " + this.lvOfSecurity;
-
 		 }
+		 
 	 }
 	 
 	 protected void actionPerformed(GuiButton guibutton){
@@ -77,13 +78,18 @@ public class GuiKeycardSetup extends GuiContainer{
 				break;
 				
 			case 1:
+				this.requiresExactCard = HelpfulMethods.toggleBoolean(this.requiresExactCard);
+				this.requiresExactCardButton.displayString = this.requiresExactCard ? "equal to" : "equal to or higher then";
+				break;
+				
+			case 2:
 				this.saveLVs();
 				break;
 		}
 	 }
 
 	private void saveLVs() {
-		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), this.lvOfSecurity));
+		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), this.lvOfSecurity, this.requiresExactCard));
 		
 		Utils.closePlayerScreen();
 	}

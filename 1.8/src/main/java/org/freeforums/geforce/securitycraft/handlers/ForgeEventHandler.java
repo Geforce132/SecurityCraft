@@ -131,8 +131,8 @@ public class ForgeEventHandler {
 			if(event.action == Action.RIGHT_CLICK_BLOCK && isCustomizableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock()) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier){
 				event.setCanceled(true);
 				
-				if(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner().matches(event.entityPlayer.getName())){
-					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner() + ".", EnumChatFormatting.RED);
+				if(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
+					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() + ".", EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -152,8 +152,8 @@ public class ForgeEventHandler {
 			if(event.action == Action.RIGHT_CLICK_BLOCK && isOwnableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock()) && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && event.entityPlayer.worldObj.getTileEntity(event.pos) instanceof TileEntityOwnable && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
 				event.setCanceled(true);
 				
-				if(((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner() != null && !((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner().matches(event.entityPlayer.getName())){
-					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwner() + ".", EnumChatFormatting.RED);
+				if(((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
+					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -269,8 +269,8 @@ public class ForgeEventHandler {
     
     private void sendChatMessageTo(EntityPlayer par1EntityPlayer, TileEntityReinforcedDoor TERD){
     	
-    	if(TERD.getOwner() != null && TERD.getOwner() != "null"){
-    		HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Im sorry, you can not remove this door. This door is owned by " + TERD.getOwner() + ".", EnumChatFormatting.RED);
+    	if(TERD.getOwnerUUID() != null){
+    		HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Im sorry, you can not remove this door. This door is owned by " + TERD.getOwnerName() + ".", EnumChatFormatting.RED);
     	}
     }
 	
@@ -281,7 +281,7 @@ public class ForgeEventHandler {
 			if(TERD == null){
 				TERD2 = (TileEntityReinforcedDoor) par1World.getTileEntity(pos.up());
 					
-				if(player.getName().matches(TERD2.getOwner())){
+				if(player.getGameProfile().getId().toString().matches(TERD2.getOwnerUUID())){
 					par1World.destroyBlock(pos, false);
     				notifyPlayers(player.getName(), player, pos);
 					player.getCurrentEquippedItem().damageItem(1, player);
@@ -292,8 +292,8 @@ public class ForgeEventHandler {
 				return;
 			}
 			
-			if(TERD != null && TERD.getOwner() != null){
-				if(player.getName().matches(TERD.getOwner())){
+			if(TERD != null && TERD.getOwnerUUID() != null){
+				if(player.getGameProfile().getId().toString().matches(TERD.getOwnerUUID())){
 					par1World.destroyBlock(pos, false);
 					
 					notifyPlayers(player.getName(), player, pos);
@@ -306,7 +306,7 @@ public class ForgeEventHandler {
 	}
 	
 	private boolean isOwnableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor){
+    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace){
     		return true;
     	}else{
     		return false;

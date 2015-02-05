@@ -15,6 +15,7 @@ import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;

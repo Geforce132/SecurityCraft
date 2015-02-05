@@ -21,7 +21,7 @@ public class BlockOwnable extends BlockContainer {
     		return;
     	}else{
     		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId(), par5EntityLivingBase.getCommandSenderName());
     		}
     	}
     }

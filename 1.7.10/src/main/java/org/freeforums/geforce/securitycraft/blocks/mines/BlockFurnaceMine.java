@@ -143,6 +143,10 @@ public class BlockFurnaceMine extends Block{
      */
     public IIcon getIcon(int par1, int par2)
     {
+        if(par1 == 3 && par2 == 0){
+    		return this.furnaceIconFront;
+    	}
+        
         return par1 == 1 ? this.furnaceIconTop : (par1 == 0 ? this.furnaceIconTop : (par1 != par2 ? this.blockIcon : this.furnaceIconFront));
     }
     

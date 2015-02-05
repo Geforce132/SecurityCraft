@@ -44,7 +44,7 @@ public class GuiInventoryScanner extends GuiContainer
     	super.initGui();
     	Keyboard.enableRepeatEvents(true); 		
     		
-		if(playerObj.getName().matches(this.tileEntity.getOwner())){
+		if(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID())){
 			this.buttonList.add(this.typeButton = new GuiButton(0, this.width / 2 - 83, this.height / 2 - 48, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
 		}
     }
@@ -121,7 +121,7 @@ public class GuiInventoryScanner extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-        this.fontRendererObj.drawString(playerObj.getName().matches(this.tileEntity.getOwner()) ? (EnumChatFormatting.UNDERLINE + "Admin Mode") : (EnumChatFormatting.UNDERLINE + "View Mode"), 112, 6, 4210752);
+        this.fontRendererObj.drawString(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID()) ? (EnumChatFormatting.UNDERLINE + "Admin Mode") : (EnumChatFormatting.UNDERLINE + "View Mode"), 112, 6, 4210752);
         
         GL11.glDisable(GL11.GL_LIGHTING);
 		

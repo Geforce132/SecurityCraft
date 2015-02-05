@@ -1,25 +1,25 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerFurnace;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 
 @SideOnly(Side.CLIENT)
 public class GuiKeypadFurnaceInventory extends GuiContainer
 {
     private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
     private final InventoryPlayer playerInventory;
-    private IInventory tileFurnace;
+    private TileEntityKeypadFurnace tileFurnace;
 
-    public GuiKeypadFurnaceInventory(InventoryPlayer playerInv, IInventory furnaceInv)
+    public GuiKeypadFurnaceInventory(InventoryPlayer playerInv, TileEntityKeypadFurnace furnaceInv)
     {
         super(new ContainerFurnace(playerInv, furnaceInv));
         this.playerInventory = playerInv;
@@ -28,8 +28,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        String s = this.tileFurnace.getDisplayName().getUnformattedText();
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+        this.fontRendererObj.drawString("Protected Furnace", this.xSize / 2 - this.fontRendererObj.getStringWidth("Protected Furnace") / 2, 6, 4210752);
         this.fontRendererObj.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 
@@ -50,6 +49,11 @@ public class GuiKeypadFurnaceInventory extends GuiContainer
 
         i1 = this.func_175381_h(24);
         this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+    }
+    
+    public void onGuiClosed(){
+    	super.onGuiClosed();
+		mod_SecurityCraft.network.sendToServer(new PacketSetBlock(this.tileFurnace.getPos().getX(), this.tileFurnace.getPos().getY(), this.tileFurnace.getPos().getZ(), "securitycraft:keypadFurnace", this.mc.theWorld.getBlockState(this.tileFurnace.getPos()).getBlock().getMetaFromState(this.mc.theWorld.getBlockState(this.tileFurnace.getPos())) - 6));
     }
 
     private int func_175381_h(int p_175381_1_)

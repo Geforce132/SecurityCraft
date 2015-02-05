@@ -46,7 +46,7 @@ public class BlockLaser extends BlockContainer{
 	@SideOnly(Side.CLIENT)
     public EnumWorldBlockLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return EnumWorldBlockLayer.TRANSLUCENT;
     }
 	
 	/**
@@ -81,7 +81,6 @@ public class BlockLaser extends BlockContainer{
     }
     
     public static void checkForPlayer(World par1World, BlockPos pos, Entity par5Entity) {
-        Utils.checkIfRunning(par5Entity);
         if(!par1World.isRemote && par5Entity instanceof EntityLivingBase && !HelpfulMethods.doesMobHavePotionEffect((EntityLivingBase) par5Entity, Potion.invisibility)){	
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.east(i));
@@ -268,7 +267,7 @@ public class BlockLaser extends BlockContainer{
         else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 2)
         {
 
-    		this.setBlockBounds(0.250F, 0.300F, 0.000F, 0.750F, 0.700F, 1.000F);
+    		this.setBlockBounds(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
         }
         else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 3)
         {
@@ -280,7 +279,6 @@ public class BlockLaser extends BlockContainer{
     		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
         }
         
-        System.out.println(((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue());
     } 
     
     public IBlockState getStateFromMeta(int meta)

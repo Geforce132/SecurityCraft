@@ -3,12 +3,12 @@
     "ambientocclusion": false,
     "textures": {
         "portableRadarSides": "securitycraft:blocks/portableRadarSides",
-        "portableRadarTop": "securitycraft:blocks/portableRadarTop1",
-        "particle": "securitycraft:blocks/portableRadarSides"
+        "particle": "securitycraft:blocks/portableRadarSides",
+        "portableRadarTop": "securitycraft:blocks/portableRadarTop1"
     },
     "elements": [
         {
-            "from": [5,-1,5],
+            "from": [5,0,5],
             "to": [11,7,11],
             "faces": {
                 "up": {

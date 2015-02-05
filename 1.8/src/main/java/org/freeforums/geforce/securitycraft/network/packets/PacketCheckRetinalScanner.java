@@ -92,14 +92,15 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 		int[] posXYZ = getBlockInFront(getWorld(par1EntityPlayer), par1EntityPlayer, 1);
 		
-		if(getWorld(par1EntityPlayer).getBlockState(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])).getBlock() != mod_SecurityCraft.retinalScanner || getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])) == null || !(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])) instanceof TileEntityOwnable) || ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwner() == null){
+		if(getWorld(par1EntityPlayer).getBlockState(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])).getBlock() != mod_SecurityCraft.retinalScanner || getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])) == null || !(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3])) instanceof TileEntityOwnable) || ((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID() == null){
 			return null;
 		}
 			
-		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwner().matches(playerName) || HelpfulMethods.checkForModule(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), par1EntityPlayer, EnumCustomModules.WHITELIST))){
-        	String owner = ((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwner();
-			Utils.setBlockProperty(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), BlockRetinalScanner.POWERED, true);
-        	((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).setOwner(owner);
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString()) || HelpfulMethods.checkForModule(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), par1EntityPlayer, EnumCustomModules.WHITELIST))){
+        	String ownerUUID = ((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID();
+        	String ownerName = ((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerName();
+        	Utils.setBlockProperty(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), BlockRetinalScanner.POWERED, true);
+        	((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).setOwner(ownerUUID, ownerName);
 			getWorld(par1EntityPlayer).scheduleUpdate(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), mod_SecurityCraft.retinalScanner, 60);
 			
 			if(mod_SecurityCraft.eventHandler.getCooldown() <= 0){
@@ -108,7 +109,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 				mod_SecurityCraft.network.sendTo(new PacketCUpdateCooldown(250), (EntityPlayerMP) par1EntityPlayer);
 				mod_SecurityCraft.eventHandler.setCooldown(250);
 			}	
-		}else if(posXYZ[5] > 1 && posXYZ[5] < 6 && !((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwner().matches(playerName)){
+		}else if(posXYZ[5] > 1 && posXYZ[5] < 6 && !((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString())){
 			if(mod_SecurityCraft.eventHandler.getCooldown() <= 0){
 				ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("[" + par1EntityPlayer.getName() + "] Unknown player, denying access...", new Object[0]);
 				par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);

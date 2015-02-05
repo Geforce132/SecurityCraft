@@ -102,8 +102,8 @@ public class BlockInventoryScanner extends BlockContainer{
     		return true;
     	}else{
     		
-    		if(((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner() != null){
-    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(par2, par3, par4, ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner(), true));
+    		if(((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID() != null && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName() != null){
+    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(par2, par3, par4, ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID(), ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName(), true));
     		}
     		
     		if(this.isFacingAnotherBlock(par1World, par2, par3, par4)){
@@ -123,7 +123,7 @@ public class BlockInventoryScanner extends BlockContainer{
     {    	
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-        ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).setOwner(par5EntityLivingBase.getCommandSenderName());
+        ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
         if (l == 0)
         {
@@ -255,6 +255,10 @@ public class BlockInventoryScanner extends BlockContainer{
      */
     public IIcon getIcon(int par1, int par2)
     {
+        if(par1 == 3 && par2 == 0){
+    		return this.furnaceIconFront;
+    	}
+        
         return par1 == 1 ? this.furnaceIconTop : (par1 == 0 ? this.furnaceIconTop : (par1 != par2 ? this.blockIcon : this.furnaceIconFront));
     }
 

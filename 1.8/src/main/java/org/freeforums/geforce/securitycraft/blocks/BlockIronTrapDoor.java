@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -14,6 +12,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider{
 
 	public BlockIronTrapDoor(Material materialIn) {
@@ -21,7 +21,7 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	}
 	
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack){
-    	((TileEntityOwnable) worldIn.getTileEntity(pos)).setOwner(placer.getName());
+    	((TileEntityOwnable) worldIn.getTileEntity(pos)).setOwner(((EntityPlayer) placer).getGameProfile().getId().toString(), placer.getName());
     }
     
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){

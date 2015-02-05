@@ -115,6 +115,7 @@ public class mod_SecurityCraft {
 	public static Block reinforcedStone;
 	public static Block reinforcedFencegate;
 	public static Block reinforcedWoodPlanks;
+	public static Block panicButton;
 	
 	public static BlockEMPedWire empedWire;
 	
