@@ -42,6 +42,7 @@ item.universalBlockRemover.name=Universeller Block Entferner
 item.keycardOne.name=Level 1 Schlüsselkarte
 item.keycardTwo.name=Level 2 Schlüsselkarte
 item.keycardThree.name=Level 3 Schlüsselkarte
+item.limitedUseKeycard.name=Begrenzt benutzbare Schlüsselkarte
 item.bucketFWater.name=Eimer mit falschem Wasser
 item.bucketFLava.name=Eimer mit falscher Lava
 item.remoteAccessMine.name=Kabellose Minensteuerungseinheit
