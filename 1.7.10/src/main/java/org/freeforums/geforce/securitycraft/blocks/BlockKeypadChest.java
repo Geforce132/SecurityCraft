@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -21,15 +19,6 @@ public class BlockKeypadChest extends BlockChest{
 
 	public BlockKeypadChest(int par1){
 		super(par1);
-		
-		Field material = ReflectionHelper.findField(Block.class, "blockMaterial");
-		try{
-			material.set(this, Material.iron);
-		}catch(IllegalArgumentException e){
-			e.printStackTrace();
-		}catch(IllegalAccessException e){
-			e.printStackTrace();
-		}
 	}
 	
 	/**

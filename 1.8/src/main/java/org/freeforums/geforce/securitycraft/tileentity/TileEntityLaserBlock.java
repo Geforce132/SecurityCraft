@@ -13,7 +13,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	}
 	
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		HelpfulMethods.checkInAllDirsAndInsertModule(worldObj, pos, mod_SecurityCraft.LaserBlock, mod_SecurityCraft.configHandler.laserBlockRange, null, true);
+		HelpfulMethods.checkInAllDirsAndRemoveModule(worldObj, pos, mod_SecurityCraft.LaserBlock, mod_SecurityCraft.configHandler.laserBlockRange, module, true);
 	}
 
 	protected EnumCustomModules[] getCustomizableOptions() {

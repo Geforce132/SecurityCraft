@@ -622,6 +622,18 @@ public class HelpfulMethods {
 		return false;
 	}
 	
+	public static boolean toggleBoolean(boolean par1) {
+		boolean tempBoolean = par1;
+		
+		if(tempBoolean){
+			tempBoolean = false;
+		}else{
+			tempBoolean = true;
+		}
+		
+		return tempBoolean;
+	}
+	
 //	private static void bookCode(){
 //		ItemStack book = new ItemStack(Items.written_book);
 //		

@@ -42,6 +42,7 @@ item.universalBlockRemover.name=Universal Block Remover
 item.keycardOne.name=Level 1 Keycard
 item.keycardTwo.name=Level 2 Keycard
 item.keycardThree.name=Level 3 Keycard
+item.limitedUseKeycard.name=Limited Use Keycard
 item.bucketFWater.name=Bucket Of Fake Water
 item.bucketFLava.name=Bucket Of Fake Lava
 item.remoteAccessMine.name=Mine Remote Access Tool

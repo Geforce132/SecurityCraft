@@ -97,10 +97,11 @@ public class BlockMine extends BlockContainer{
 		   if(par5EntityPlayer.getCurrentEquippedItem() == null || !isInteractibleItem(par5EntityPlayer.getCurrentEquippedItem().getItem())){
 			   this.explode(par1World, par2, par3, par4);
 			   return false;
-		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters){
+		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Mine){
 			   par1World.setBlock(par2, par3, par4, mod_SecurityCraft.MineCut);
+			   par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
 			   return true;
-		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
+		   }else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.MineCut){
 			   par1World.setBlock(par2, par3, par4, mod_SecurityCraft.Mine);
 			   return true;
 		   }else{

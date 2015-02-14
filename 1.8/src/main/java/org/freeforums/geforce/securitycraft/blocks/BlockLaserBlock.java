@@ -280,7 +280,7 @@ public class BlockLaserBlock extends BlockContainer{
      */
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
-        	Utils.setBlockProperty(par1World, pos, POWERED, false);
+        	Utils.setBlockProperty(par1World, pos, POWERED, false, true);
         }                      
     }
     

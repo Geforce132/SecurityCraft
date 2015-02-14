@@ -107,7 +107,7 @@ public class BlockKeycardReader extends BlockContainer{
 		
 		if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
-		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)){
+		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			if(par5ItemStack.getItemDamage() == 3 && par5ItemStack.stackTagCompound != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.stackTagCompound.setInteger("Uses", par5ItemStack.stackTagCompound.getInteger("Uses") - 1);
 				

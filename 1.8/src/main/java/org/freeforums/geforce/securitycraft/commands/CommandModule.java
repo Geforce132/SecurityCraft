@@ -21,7 +21,7 @@ public class CommandModule extends CommandBase implements ICommand {
 
 	private List nicknames;
 
-	private final String usage = "/module add <playerName> OR /module copy OR /module paste";
+	private final String usage = "/module add <playerName> OR /module remove <playerName> OR /module copy OR /module paste";
 
 	public CommandModule() {
 		this.nicknames = new ArrayList();
@@ -87,7 +87,33 @@ public class CommandModule extends CommandBase implements ICommand {
 						player.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());				
 					}
 					
+					for(int i = 1; i <= 10; i++){
+						if(player.getCurrentEquippedItem().getTagCompound().hasKey("Player" + i) && player.getCurrentEquippedItem().getTagCompound().getString("Player" + i).matches(par2String[1])){
+							HelpfulMethods.sendMessageToPlayer(player, "The module you are holding already contains the player " + par2String[1] + ".", EnumChatFormatting.RED);
+							return;
+						}
+					}
+                    
 					player.getCurrentEquippedItem().getTagCompound().setString("Player" + getNextSlot(player.getCurrentEquippedItem().getTagCompound()), par2String[1]);
+					return;
+				}else{
+					HelpfulMethods.sendMessageToPlayer(player, "You must be holding the module you wish to modify!", EnumChatFormatting.RED);
+					return;
+				}
+			}else if(par2String[0].matches("remove")){
+				EntityPlayer player = HelpfulMethods.getPlayerFromName(par1ICommandSender.getName());
+				
+				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canBeModified()){			
+					if(player.getCurrentEquippedItem().getTagCompound() == null){
+						player.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());				
+					}
+					
+					for(int i = 1; i <= 10; i++){
+						if(player.getCurrentEquippedItem().getTagCompound().hasKey("Player" + i) && player.getCurrentEquippedItem().getTagCompound().getString("Player" + i).matches(par2String[1])){
+							player.getCurrentEquippedItem().getTagCompound().removeTag("Player" + i);
+						}
+					}
+					
 					return;
 				}else{
 					HelpfulMethods.sendMessageToPlayer(player, "You must be holding the module you wish to modify!", EnumChatFormatting.RED);

@@ -7,6 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -35,11 +36,12 @@ public class ItemKeycardBase extends Item{
 	 
 	@SideOnly(Side.CLIENT)
 	private IIcon keycardThreeIcon;
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon limitedUseKeycardIcon;
 
 	public ItemKeycardBase() {
-		//super();
 		this.setHasSubtypes(true);
-		//this.keycardLV = par1;
         this.setMaxDamage(0);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
@@ -57,7 +59,7 @@ public class ItemKeycardBase extends Item{
         par3List.add(new ItemStack(this, 1, 0));
         par3List.add(new ItemStack(this, 1, 1));
         par3List.add(new ItemStack(this, 1, 2));
-
+        par3List.add(new ItemStack(this, 1, 3));
     }
 	
 	/**
@@ -72,6 +74,8 @@ public class ItemKeycardBase extends Item{
         	return this.keycardTwoIcon;
         }else if(par1 == 2){
         	return this.keycardThreeIcon;
+        }else if(par1 == 3){
+        	return this.limitedUseKeycardIcon;
         }else{
         	return super.getIconFromDamage(par1);
         }
@@ -84,6 +88,8 @@ public class ItemKeycardBase extends Item{
     		return "item.keycardTwo";
     	}else if(par1ItemStack.getItemDamage() == 2){
     		return "item.keycardThree";
+    	}else if(par1ItemStack.getItemDamage() == 3){
+    		return "item.limitedUseKeycard";
     	}else{
     		return "item.nullItem";
     	}
@@ -94,12 +100,25 @@ public class ItemKeycardBase extends Item{
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        //super.registerIcons(par1IconRegister);
         this.keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
         this.keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
         this.keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
+        this.limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
 
     }
+    
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
+		if(par1ItemStack.getItemDamage() == 3){		
+			if(par1ItemStack.stackTagCompound == null){
+				par1ItemStack.stackTagCompound = new NBTTagCompound();
+				par1ItemStack.stackTagCompound.setInteger("Uses", 5);
+			}
+			
+			par3List.add("Uses remaining: " + par1ItemStack.stackTagCompound.getInteger("Uses"));			
+			
+		}
+	}
 	
 	/**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
@@ -118,7 +137,7 @@ public class ItemKeycardBase extends Item{
             }
             else
             {      	
-            	if(par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5){              
+            	if((par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5) && !((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getIsProvidingPower()){              
             		((BlockKeycardReader)mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
             	}
             	

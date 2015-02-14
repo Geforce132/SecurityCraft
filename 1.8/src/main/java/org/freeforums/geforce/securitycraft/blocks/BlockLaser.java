@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -85,14 +86,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.east(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.east(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.east(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.east(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.east(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.east(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.east(i), mod_SecurityCraft.LaserBlock, 50);
 					
 					if(par1World.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}
@@ -101,14 +106,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.west(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.west(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.west(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.west(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.west(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.west(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.west(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(par1World.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}
@@ -117,14 +126,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.south(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.south(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.south(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.south(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.south(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.south(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.south(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(par1World.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}
@@ -133,14 +146,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.north(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.north(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.north(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.north(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.north(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.north(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.north(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(par1World.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}
@@ -149,14 +166,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.up(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.up(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.up(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.up(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.up(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.up(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.up(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(par1World.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}
@@ -165,14 +186,18 @@ public class BlockLaser extends BlockContainer{
 			for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = Utils.getBlock(par1World, pos.down(i));
 				if(id == mod_SecurityCraft.LaserBlock){
-					if(((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.down(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
-					Utils.setBlockProperty(par1World, pos.down(i), BlockLaserBlock.POWERED, true);
+					if(par1World.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos.down(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getName())){ return; }
+					ItemStack[] modules = ((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).itemStacks;
+					Utils.setBlockProperty(par1World, pos.down(i), BlockLaserBlock.POWERED, true, true);
+					((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).itemStacks = modules;
 					par1World.notifyNeighborsOfStateChange(pos.down(i), mod_SecurityCraft.LaserBlock);
 					par1World.scheduleUpdate(pos.down(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(par1World.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.HARMING)){
 						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
 					}
+					
+					break;
 				}else{
 					continue;
 				}

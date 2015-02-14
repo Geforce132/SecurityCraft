@@ -183,6 +183,26 @@ public class BlockInventoryScanner extends BlockContainer{
     		}
     	}
     	
+    	if(state.getValue(FACING) == EnumFacing.NORTH && par1World.getBlockState(pos.south()).getBlock() == mod_SecurityCraft.inventoryScannerField){
+    		Utils.destroyBlock(par1World, pos.south(), false);
+    	}else if(state.getValue(FACING) == EnumFacing.SOUTH && par1World.getBlockState(pos.north()).getBlock() == mod_SecurityCraft.inventoryScannerField){
+    		Utils.destroyBlock(par1World, pos.north(), false);
+    	}else if(state.getValue(FACING) == EnumFacing.EAST && par1World.getBlockState(pos.west()).getBlock() == mod_SecurityCraft.inventoryScannerField){
+    		Utils.destroyBlock(par1World, pos.west(), false);
+    	}else if(state.getValue(FACING) == EnumFacing.WEST && par1World.getBlockState(pos.east()).getBlock() == mod_SecurityCraft.inventoryScannerField){
+    		Utils.destroyBlock(par1World, pos.east(), false);
+    	}
+    	
+    	if(state.getValue(FACING) == EnumFacing.NORTH && par1World.getBlockState(pos.south(2)).getBlock() == mod_SecurityCraft.inventoryScanner && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.SOUTH){
+    		HelpfulMethods.insertModule(par1World, pos.south(2), null);
+    	}else if(state.getValue(FACING) == EnumFacing.SOUTH && par1World.getBlockState(pos.north(2)).getBlock() == mod_SecurityCraft.inventoryScanner && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.NORTH){
+    		HelpfulMethods.insertModule(par1World, pos.north(2), null);
+    	}else if(state.getValue(FACING) == EnumFacing.EAST && par1World.getBlockState(pos.west(2)).getBlock() == mod_SecurityCraft.inventoryScanner && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.WEST){
+    		HelpfulMethods.insertModule(par1World, pos.west(2), null);
+    	}else if(state.getValue(FACING) == EnumFacing.WEST && par1World.getBlockState(pos.east(2)).getBlock() == mod_SecurityCraft.inventoryScanner && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.EAST){
+    		HelpfulMethods.insertModule(par1World, pos.east(2), null);
+    	}
+    	
     	par1World.removeTileEntity(pos);	
     	
     	super.breakBlock(par1World, pos, state);

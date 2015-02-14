@@ -122,7 +122,6 @@ public class BlockInventoryScanner extends BlockContainer{
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {    	
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
         ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
         if (l == 0)
@@ -185,19 +184,15 @@ public class BlockInventoryScanner extends BlockContainer{
     }
     
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){	
-//    	if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
-//    		HelpfulMethods.destroyBlock(par1World, par2 - 1, par3, par4, false);
-//    		
-//    	}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
-//    		HelpfulMethods.destroyBlock(par1World, par2 + 1, par3, par4, false);
-//
-//		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
-//			HelpfulMethods.destroyBlock(par1World, par2, par3, par4 - 1, false);
-//
-//    	}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
-//    		HelpfulMethods.destroyBlock(par1World, par2, par3, par4 + 1, false);
-//
-//    	}
+    	if(par6 == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
+    		HelpfulMethods.insertModule(par1World, par2 - 2, par3, par4, null);	
+    	}else if(par6 == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
+    		HelpfulMethods.insertModule(par1World, par2 + 2, par3, par4, null);	
+		}else if(par6 == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
+			HelpfulMethods.insertModule(par1World, par2, par3, par4 - 2, null);	
+    	}else if(par6 == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
+    		HelpfulMethods.insertModule(par1World, par2, par3, par4 + 2, null);	
+    	}
     	
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents().length; i++){
     		if(((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents()[i] != null){

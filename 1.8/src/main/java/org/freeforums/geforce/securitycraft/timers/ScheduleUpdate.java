@@ -29,7 +29,7 @@ public class ScheduleUpdate{
 			code = ((TileEntityKeypad) world.getTileEntity(new BlockPos(par3, par4, par5))).getKeypadCode();
 			
 			if(Utils.getBlock(par1World, par3, par4, par5) == mod_SecurityCraft.Keypad){
-				Utils.setBlockProperty(par1World, new BlockPos(par3, par4, par5), BlockKeypad.POWERED, true);
+				Utils.setBlockProperty(par1World, new BlockPos(par3, par4, par5), BlockKeypad.POWERED, true, true);
 				((TileEntityKeypad) world.getTileEntity(new BlockPos(par3, par4, par5))).setKeypadCode(code);
 				world.notifyNeighborsOfStateChange(new BlockPos(par3, par4, par5), mod_SecurityCraft.Keypad);
 			}
@@ -39,7 +39,7 @@ public class ScheduleUpdate{
 			public void run(){
 				if(Utils.getBlock(world, x, y, z) == mod_SecurityCraft.Keypad){
 					String code = ((TileEntityKeypad) world.getTileEntity(new BlockPos(x, y, z))).getKeypadCode();
-					Utils.setBlockProperty(world, new BlockPos(x, y, z), BlockKeypad.POWERED, false);
+					Utils.setBlockProperty(world, new BlockPos(x, y, z), BlockKeypad.POWERED, false, true);
 					((TileEntityKeypad) world.getTileEntity(new BlockPos(x, y, z))).setKeypadCode(code);
 					world.notifyNeighborsOfStateChange(new BlockPos(x, y, z), mod_SecurityCraft.Keypad);
 				}

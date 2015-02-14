@@ -10,6 +10,7 @@ import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -242,6 +243,41 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		
 		return null;
 	}
+	
+	//TODO Be sure to update this whenever a new module is added!
+		public static Item getModuleFromType(EnumCustomModules module){
+			if(module == EnumCustomModules.WHITELIST){
+				return mod_SecurityCraft.whitelistModule;
+			}else if(module == EnumCustomModules.BLACKLIST){
+				return mod_SecurityCraft.blacklistModule;
+			}else if(module == EnumCustomModules.HARMING){
+				return mod_SecurityCraft.harmingModule;
+			}else if(module == EnumCustomModules.SMART){
+				return mod_SecurityCraft.smartModule;
+			}else if(module == EnumCustomModules.REDSTONE){
+				return mod_SecurityCraft.redstoneModule;
+			}else{
+				return null;
+			}
+		}
+
+		//TODO Be sure to update this whenever a new module is added!
+		public static EnumCustomModules getTypeFromModule(ItemStack module){
+			if(module.getItem() == mod_SecurityCraft.whitelistModule){
+				return EnumCustomModules.WHITELIST;
+			}else if(module.getItem() == mod_SecurityCraft.blacklistModule){
+				return EnumCustomModules.BLACKLIST;
+			}else if(module.getItem() == mod_SecurityCraft.harmingModule){
+				return EnumCustomModules.HARMING;
+			}else if(module.getItem() == mod_SecurityCraft.smartModule){
+				return EnumCustomModules.SMART;
+			}else if(module.getItem() == mod_SecurityCraft.redstoneModule){
+				return EnumCustomModules.REDSTONE;
+			}else{
+				return null;
+			}
+		}
+
 	
 	/**
 	 * Inserts a generic copy of the given module type into the Customization inventory.

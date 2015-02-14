@@ -378,45 +378,49 @@ public class HelpfulMethods {
 		par1World.func_147480_a(par2, par3, par4, par5);
 	}
 	
-	public static void checkForBlockAndInsertModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+	public static void insertModule(World par1World, int par2, int par3, int par4, EnumCustomModules module){
+		((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).insertModule(module);
+	}
+	
+	public static void checkForBlockAndInsertModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		for(int i = 1; i <= range; i++){
 			if(dir.equalsIgnoreCase("x+")){
-				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(module)){
+				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2 + i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("x-")){
-				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(module)){
+				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2 - i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y+")){
-				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(module)){
+				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3 + i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y-")){
-				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(module)){
+				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3 - i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z+")){
-				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(module)){
+				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 + i, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z-")){
-				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(module)){
+				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 - i, blockToCheckFor, range, module, updateAdjecentBlocks);
@@ -426,13 +430,70 @@ public class HelpfulMethods {
 		}
 	}
 	
-	public static void checkInAllDirsAndInsertModule(World par1World, int par2, int par3, int par4, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+	public static void checkInAllDirsAndInsertModule(World par1World, int par2, int par3, int par4, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, par2, par3, par4, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
+	}
+	
+	public static void checkForBlockAndRemoveModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		for(int i = 1; i <= range; i++){
+			if(dir.equalsIgnoreCase("x+")){
+				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2 + i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("x-")){
+				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2 - i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y+")){
+				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2, par3 + i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y-")){
+				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2, par3 - i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z+")){
+				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2, par3, par4 + i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z-")){
+				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, par2, par3, par4 - i, blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void checkInAllDirsAndRemoveModule(World par1World, int par2, int par3, int par4, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
 	}
 	
 	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){

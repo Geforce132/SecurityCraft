@@ -20,7 +20,7 @@ public class GuiCustomizeBlock extends GuiContainer{
         super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
         this.tileEntity = par2TileEntity;
     }
-
+    
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */

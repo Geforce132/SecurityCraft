@@ -183,6 +183,14 @@ public class HelpfulMethods {
 		return par1.substring(0, par1.length() - 1);
 	}
 	
+	public static void insertModule(World par1World, BlockPos pos, EnumCustomModules module){
+		((CustomizableSCTE) par1World.getTileEntity(pos)).insertModule(module);
+	}
+	
+	public static void removeModule(World par1World, BlockPos pos, EnumCustomModules module){
+		((CustomizableSCTE) par1World.getTileEntity(pos)).removeModule(module);
+	}
+	
 	public static void checkForBlockAndInsertModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
 		for(int i = 1; i <= range; i++){
 			if(dir.equalsIgnoreCase("x+")){
@@ -238,6 +246,63 @@ public class HelpfulMethods {
 		checkForBlockAndInsertModule(par1World, pos, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, pos, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, pos, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
+	}
+	
+	public static void checkForBlockAndRemoveModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		for(int i = 1; i <= range; i++){
+			if(dir.equalsIgnoreCase("x+")){
+				if(par1World.getBlockState(pos.east(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, pos.east(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("x-")){
+				if(par1World.getBlockState(pos.west(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, pos.west(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y+")){
+				if(par1World.getBlockState(pos.up(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, pos.up(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("y-")){
+				if(par1World.getBlockState(pos.down(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).removeModule(module);
+					if(updateAdjecentBlocks){ 
+						checkInAllDirsAndRemoveModule(par1World, pos.down(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z+")){
+				if(par1World.getBlockState(pos.south(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, pos.south(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}else if(dir.equalsIgnoreCase("z-")){
+				if(par1World.getBlockState(pos.north(i)).getBlock() == blockToCheckFor && ((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(module)){
+					((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).removeModule(module);
+					if(updateAdjecentBlocks){
+						checkInAllDirsAndRemoveModule(par1World, pos.north(i), blockToCheckFor, range, module, updateAdjecentBlocks);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void checkInAllDirsAndRemoveModule(World par1World, BlockPos pos, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+		checkForBlockAndRemoveModule(par1World, pos, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, pos, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, pos, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, pos, "y-", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, pos, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
+		checkForBlockAndRemoveModule(par1World, pos, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
 	}
 	
 	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){

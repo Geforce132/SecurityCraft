@@ -34,10 +34,47 @@ public class ContainerCustomizeBlock extends Container{
         }
 	}
 	
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_)
+    public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
     {
-        Slot slot = (Slot)this.inventorySlots.get(p_82846_2_);
-        return slot != null ? slot.getStack() : null;
+    	ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(par2);
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (par2 < this.tileEntity.getSizeInventory())
+            {
+                if (!this.mergeItemStack(itemstack1, 0, 35, true))
+                {
+                    return null;
+                }else{
+                	this.tileEntity.onModuleRemoved(itemstack1, CustomizableSCTE.getTypeFromModule(itemstack1));
+                }
+            }
+            else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getOptions().contains(CustomizableSCTE.getTypeFromModule(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+            
+            if(itemstack1.stackSize == itemstack.stackSize){
+            	return null;
+            }
+            
+            slot.onPickupFromSlot(par1, itemstack1);
+        }
+
+        return itemstack;
     }
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
