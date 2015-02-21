@@ -20,7 +20,7 @@ public class CommandModule extends CommandBase implements ICommand {
 
 	private List nicknames;
 
-	private final String usage = "/module add <playerName> OR /module copy OR /module paste";
+	private final String usage = "/module add <playerName> OR /module remove <playerName> OR /module copy OR /module paste";
 
 	public CommandModule() {
 		this.nicknames = new ArrayList();
@@ -94,6 +94,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					}
 					
 					player.getCurrentEquippedItem().stackTagCompound.setString("Player" + getNextSlot(player.getCurrentEquippedItem().stackTagCompound), par2String[1]);
+					HelpfulMethods.sendMessageToPlayer(player, "Added " + par2String[1] + " to the held module.", EnumChatFormatting.GREEN);
 					return;
 				}else{
 					HelpfulMethods.sendMessageToPlayer(player, "You must be holding the module you wish to modify!", EnumChatFormatting.RED);
@@ -113,6 +114,7 @@ public class CommandModule extends CommandBase implements ICommand {
 						}
 					}
 					
+					HelpfulMethods.sendMessageToPlayer(player, "Removed " + par2String[1] + " from the held module.", EnumChatFormatting.GREEN);
 					return;
 				}else{
 					HelpfulMethods.sendMessageToPlayer(player, "You must be holding the module you wish to modify!", EnumChatFormatting.RED);

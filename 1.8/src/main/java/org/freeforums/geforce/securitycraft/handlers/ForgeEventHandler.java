@@ -34,6 +34,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -306,7 +307,7 @@ public class ForgeEventHandler {
 	}
 	
 	private boolean isOwnableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton){
+    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton || par1Block == mod_SecurityCraft.FurnaceMine || par1Block instanceof BlockOwnable){
     		return true;
     	}else{
     		return false;

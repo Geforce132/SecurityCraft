@@ -2,7 +2,6 @@ package org.freeforums.geforce.securitycraft.main;
 
 
 import java.util.Arrays;
-import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,12 +22,6 @@ import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -40,10 +33,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.server.FMLServerHandler;
 
 
 @Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.FORGEVERSION)
@@ -56,8 +46,8 @@ public class mod_SecurityCraft {
 	private static final String MOTU = "Thanks for all your suggestions!";
 	
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
-	//TODO ********************************* This is v1.7.2 for MC 1.7.10!
-	protected static final String VERSION = "v1.7.2";
+	//TODO ********************************* This is v1.7.3 for MC 1.7.10!
+	protected static final String VERSION = "v1.7.3";
 	protected static final String FORGEVERSION = "required-after:Forge@[10.13.0.1180,)";
 	
 	

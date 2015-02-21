@@ -64,6 +64,20 @@ public class SCIRCBot extends PircBot{
     	}
     }
     
+    protected void onKick(String channel, String user, String login, String hostname, String userKicked, String reason){
+    	if(mod_SecurityCraft.instance.getIrcBot() != null){
+			mod_SecurityCraft.instance.getIrcBot().disconnect();
+		}
+			
+		mod_SecurityCraft.instance.setIrcBot(null);
+		
+		try{
+			sendMessageToPlayer(EnumChatFormatting.RED + "You have been disconnected from EsperNet for reason: " + reason, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+		}catch(PlayerNotFoundException e){
+			e.printStackTrace();
+		}
+    }
+    
     private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
     	ChatComponentTranslation component = new ChatComponentTranslation(par1String, new Object[0]);
     	par2EntityPlayer.addChatComponentMessage(component);

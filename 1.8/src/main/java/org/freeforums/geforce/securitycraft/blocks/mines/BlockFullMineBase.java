@@ -17,13 +17,13 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-public class BlockFullMineBase extends BlockContainer{
+public class BlockFullMineBase extends BlockOwnable{
 
 	public BlockFullMineBase(Material par2Material) {
 		super(par2Material);
-
 	}
 
 	public int getRenderType(){
@@ -96,12 +96,12 @@ public class BlockFullMineBase extends BlockContainer{
 	 */
 	public int quantityDropped(Random par1Random)
 	{
-		return 0;
+		return 1;
 	}
 
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-		return null;
-	}
+	//public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+	//	return null;
+	//}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityFullMine();

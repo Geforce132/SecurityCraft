@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import net.minecraft.block.Block;
@@ -16,7 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends Block{
+public class BlockFullMineBase extends BlockOwnable{
 	
 	
 

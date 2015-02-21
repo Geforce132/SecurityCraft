@@ -126,7 +126,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        		for(int i = 0; i < 10; i++){
 	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i) != null){       				
 	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i));
+	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i));
 	        				}       					
 	        			}
 	        		}
@@ -134,7 +134,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        		for(int i = 0; i < 10; i++){
 	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i) != null){       				
 	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i));
+	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i));
 	        				}       					
 	        			}
 	        		}
@@ -142,7 +142,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        		for(int i = 0; i < 10; i++){
 	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i) != null){       				
 	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i));
+	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i));
 	        				}       					
 	        			}
 	        		}
@@ -150,7 +150,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        		for(int i = 0; i < 10; i++){
 	        			if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i) != null){       				
 	        				if(((EntityItem) par5Entity).getEntityItem() != null){
-	        					checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i));
+	        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i));
 	        				}       					
 	        			}
 	        		}

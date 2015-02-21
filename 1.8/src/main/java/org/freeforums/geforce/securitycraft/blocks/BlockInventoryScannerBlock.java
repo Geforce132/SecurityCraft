@@ -98,7 +98,7 @@ public class BlockInventoryScannerBlock extends BlockContainer{
     	}
     }
       
-    public static void checkForPlayer(World par1World, BlockPos pos, Entity par5Entity){
+    public static void checkForEntity(World par1World, BlockPos pos, Entity par5Entity){
     	if(par5Entity instanceof EntityPlayer){   	        	
         	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
 	        	if(HelpfulMethods.checkForModule(par1World, pos.west(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
