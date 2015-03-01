@@ -29,6 +29,9 @@ public class ItemKeycardBase extends Item{
 	//private int keycardLV;
 	
 	@SideOnly(Side.CLIENT)
+	private IIcon limitedUseKeycardIcon;
+	
+	@SideOnly(Side.CLIENT)
 	private IIcon keycardOneIcon;
 	 
 	@SideOnly(Side.CLIENT)
@@ -38,117 +41,114 @@ public class ItemKeycardBase extends Item{
 	private IIcon keycardThreeIcon;
 	
 	@SideOnly(Side.CLIENT)
-	private IIcon limitedUseKeycardIcon;
+	private IIcon keycardFourIcon;
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon keycardFiveIcon;
 
 	public ItemKeycardBase() {
 		this.setHasSubtypes(true);
-        this.setMaxDamage(0);
+        	this.setMaxDamage(0);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
 	
-	public int getKeycardLV(ItemStack par1ItemStack){
-		return (par1ItemStack.getItemDamage() + 1);
+	public int getKeycardLV(ItemStack par1ItemStack) {
+		return (par1ItemStack.getItemDamage());
 	}
 	
 	/**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
+	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+	 */
 	@SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1Item, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(this, 1, 0));
-        par3List.add(new ItemStack(this, 1, 1));
-        par3List.add(new ItemStack(this, 1, 2));
-        par3List.add(new ItemStack(this, 1, 3));
-    }
+	public void getSubItems(Item par1Item, CreativeTabs par2CreativeTabs, List par3List) {
+		par3List.add(new ItemStack(this, 1, 0));
+		par3List.add(new ItemStack(this, 1, 1));
+        	par3List.add(new ItemStack(this, 1, 2));
+        	par3List.add(new ItemStack(this, 1, 3));
+        	par3List.add(new ItemStack(this, 1, 4));
+        	par3List.add(new ItemStack(this, 1, 5));
+	}
 	
 	/**
-     * Gets an icon index based on an item's damage value
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1)
-    {
-        if(par1 == 0){
-        	return this.keycardOneIcon;
-        }else if(par1 == 1){
-        	return this.keycardTwoIcon;
-        }else if(par1 == 2){
-        	return this.keycardThreeIcon;
-        }else if(par1 == 3){
-        	return this.limitedUseKeycardIcon;
-        }else{
-        	return super.getIconFromDamage(par1);
-        }
-    }
+	 * Gets an icon index based on an item's damage value
+     	 */
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconFromDamage(int par1) {
+        	if (par1 == 0) {
+        		return this.limitedUseKeycardIcon;
+        	} else if (par1 == 1){
+        		return this.keycardOneIcon;
+        	} else if (par1 == 2){
+        		return this.keycardTwoIcon;
+        	} else if (par1 == 3){
+        		return this.keycardThreeIcon;
+        	} else if (par1 == 4) {
+        		return this.keycardFourIcon;
+        	} else if (par1 == 5) {
+        		return this.keycardFiveIcon;
+        	} else
+        		return super.getIconFromDamage(par1);
+	}
     
-    public String getUnlocalizedName(ItemStack par1ItemStack){
-    	if(par1ItemStack.getItemDamage() == 0){
-    		return "item.keycardOne";
-    	}else if(par1ItemStack.getItemDamage() == 1){
-    		return "item.keycardTwo";
-    	}else if(par1ItemStack.getItemDamage() == 2){
-    		return "item.keycardThree";
-    	}else if(par1ItemStack.getItemDamage() == 3){
-    		return "item.limitedUseKeycard";
-    	}else{
-    		return "item.nullItem";
+	 public String getUnlocalizedName(ItemStack par1ItemStack) {
+    		if (par1ItemStack.getItemDamage() == 0){
+    			return "item.limitedUseKeycard"";
+    		} else if (par1ItemStack.getItemDamage() == 1) {
+    			return "item.keycardOne";
+    		} else if (par1ItemStack.getItemDamage() == 2) {
+    			return "item.keycardTwo";
+    		} else if (par1ItemStack.getItemDamage() == 3) {
+    			return "item.keycardThree";
+    		} else if (par1ItemStack.getItemDamage() == 4) {
+    			return "item.keycardFour";
+    		} else if (par1ItemStack.getItemDamage() == 5) {
+    			return "item.keycardFive";
+    		} else 
+    			return "item.nullItem";
+
     	}
 
-    }
 
+    	@SideOnly(Side.CLIENT)
+    	public void registerIcons(IIconRegister par1IconRegister) {
+    		this.limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
+        	this.keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
+        	this.keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
+        	this.keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
+        	this.keycardFourIcon = par1IconRegister.registerIcon("securitycraft:lv4Keycard");
+        	this.keycardFiveIcon = par1IconRegister.registerIcon("securitycraft:lv5Keycard");
 
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
-        this.keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
-        this.keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
-        this.limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
-
-    }
+    	}
     
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
-		if(par1ItemStack.getItemDamage() == 3){		
-			if(par1ItemStack.stackTagCompound == null){
+    	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
+		if (par1ItemStack.getItemDamage() == 0) {		
+			if (par1ItemStack.stackTagCompound == null) {
 				par1ItemStack.stackTagCompound = new NBTTagCompound();
 				par1ItemStack.stackTagCompound.setInteger("Uses", 5);
 			}
-			
-			par3List.add("Uses remaining: " + par1ItemStack.stackTagCompound.getInteger("Uses"));			
-			
+			par3List.add("Uses remaining: " + par1ItemStack.stackTagCompound.getInteger("Uses"));
 		}
 	}
 	
 	/**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-    {
-        if (par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.keycardReader)
-        {
-            if (par3World.isRemote)
-            {
-            	if(((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getPassLV() > 0){
-            		((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).setIsProvidingPower(true);
+     	* Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
+     	* True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+     	*/
+    	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+        	if (par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.keycardReader) {
+        		if (par3World.isRemote) {
+            			if (((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getPassLV() > 0) {
+            				((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).setIsProvidingPower(true);
+            			}
+                	return true;
+        		}
+            	} else {	
+            		if ((par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5) && !((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getIsProvidingPower()) {              
+            			((BlockKeycardReader)mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
+            		}
+                	return true;
             	}
-                return true;
-            }
-            else
-            {      	
-            	if((par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5) && !((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getIsProvidingPower()){              
-            		((BlockKeycardReader)mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
-            	}
-            	
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
+    	}
 	
-
 }
