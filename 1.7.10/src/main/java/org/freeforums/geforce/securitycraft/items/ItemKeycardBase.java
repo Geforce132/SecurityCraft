@@ -92,7 +92,7 @@ public class ItemKeycardBase extends Item{
     
 	 public String getUnlocalizedName(ItemStack par1ItemStack) {
     		if (par1ItemStack.getItemDamage() == 0){
-    			return "item.limitedUseKeycard"";
+    			return "item.limitedUseKeycard";
     		} else if (par1ItemStack.getItemDamage() == 1) {
     			return "item.keycardOne";
     		} else if (par1ItemStack.getItemDamage() == 2) {
@@ -149,6 +149,7 @@ public class ItemKeycardBase extends Item{
             		}
                 	return true;
             	}
+			return false;
     	}
 	
 }
