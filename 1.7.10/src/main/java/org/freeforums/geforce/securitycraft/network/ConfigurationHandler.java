@@ -260,7 +260,7 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters").setTextureName("securitycraft:wireCutter");
 	
-		mod_SecurityCraft.keypadItem = new Item().setMaxStackSize(64).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem").setTextureName("securitycraft:keypadItem");
+		mod_SecurityCraft.keypadItem = new Item().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem").setTextureName("securitycraft:keypadItem");
 	}
 	
 	public void setupDebuggingBlocks(){
