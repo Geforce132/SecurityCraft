@@ -80,6 +80,7 @@ public class mod_SecurityCraft {
 	public static Block LaserBlock;
 	public static Block Laser;
 	public static Block Keypad;
+	public static Block keypadFrame;
 	public static Block LaserActive;
 	public static Block Mine;
 	public static Block DirtMine;
@@ -136,6 +137,7 @@ public class mod_SecurityCraft {
     public static Item fLavaBucket;
     public static Item universalBlockModifier;
     public static Item wireCutters;
+    public static Item keypadItem;
     
     //Modules
     public static ItemModule redstoneModule;

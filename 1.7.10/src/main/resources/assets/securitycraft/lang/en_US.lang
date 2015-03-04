@@ -2,6 +2,7 @@ tile.laserBlock.name=Laser Block
 tile.laser.name=Laser 
 tile.laserActive.name=Active Laser
 tile.keypad.name=Keypad
+tile.keypadFrame.name=Keypad Frame
 tile.ironDoorReinforced.name=Reinforced Door
 tile.keycardReader.name=Keycard Reader
 tile.ironTrapdoor.name=Iron Trapdoor
@@ -53,5 +54,4 @@ item.blacklistModule.name=Blacklist Module
 item.harmingModule.name=Harming Module
 item.smartModule.name=Smart Module
 item.wireCutters.name=Wire Cutters
-
-
+item.keypadItem.name=Key Panel

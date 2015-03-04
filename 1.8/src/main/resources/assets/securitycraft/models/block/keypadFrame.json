@@ -1,0 +1,107 @@
+{
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "stone": "blocks/stone",
+        "keypadFrameFront": "securitycraft:blocks/keypadFrameFront",
+        "particle": "blocks/stone"
+    },
+        "elements": [
+        {
+            "from": [0,0,1],
+            "to": [16,16,16],
+            "faces": {
+                "up": {
+                    "texture": "#stone"
+                },
+                "down": {
+                    "texture": "#stone"
+                },
+                "west": {
+                    "texture": "#stone"
+                },
+                "east": {
+                    "texture": "#stone"
+                },
+                "north": {
+                    "texture": "#keypadFrameFront"
+                },
+                "south": {
+                    "texture": "#stone"
+                }
+            }
+        },
+        {
+            "from": [0,14,0],
+            "to": [16,16,1],
+            "faces": {
+                "up": {
+                    "texture": "#stone"
+                },
+                "down": {
+                    "texture": "#keypadFrameFront"
+                },
+                "west": {
+                    "texture": "#stone"
+                },
+                "east": {
+                    "texture": "#stone"
+                },
+                "north": {
+                    "texture": "#stone"
+                }
+            }
+        },
+        {
+            "from": [0,0,0],
+            "to": [16,2,1],
+            "faces": {
+                "up": {
+                    "texture": "#keypadFrameFront"
+                },
+                "down": {
+                    "texture": "#stone"
+                },
+                "west": {
+                    "texture": "#stone"
+                },
+                "east": {
+                    "texture": "#stone"
+                },
+                "north": {
+                    "texture": "#stone"
+                }
+            }
+        },
+        {
+            "from": [14,2,0],
+            "to": [16,14,1],
+            "faces": {
+                "west": {
+                    "texture": "#keypadFrameFront"
+                },
+                "east": {
+                    "texture": "#stone"
+                },
+                "north": {
+                    "texture": "#stone"
+                }
+            }
+        },
+        {
+            "from": [0,2,0],
+            "to": [2,14,1],
+            "faces": {
+                "west": {
+                    "texture": "#stone"
+                },
+                "east": {
+                    "texture": "#keypadFrameFront"
+                },
+                "north": {
+                    "texture": "#stone"
+                }
+            }
+        }
+    ]
+}
