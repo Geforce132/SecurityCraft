@@ -2,7 +2,6 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -18,12 +16,18 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectableOwnable;
 
-public class BlockFullMineBase extends BlockOwnable{
+public class BlockFullMineBase extends BlockOwnable implements IIntersectable, IHelpInfo{
 
-	public BlockFullMineBase(Material par2Material) {
-		super(par2Material);
+	private final String mineName;
+	
+	public BlockFullMineBase(Material par1Material, String mineName) {
+		super(par1Material);
+		this.mineName = mineName;
 	}
 
 	public int getRenderType(){
@@ -35,24 +39,14 @@ public class BlockFullMineBase extends BlockOwnable{
 		return null;
 	}
 
-
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-		if(par1World.isRemote){
-			return;
-		}else{
-
-			if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem){
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+		if(!world.isRemote){
+			if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem){
 				return;
 			}else{
-				this.explode(par1World, pos);
+				this.explode(world, pos);
 			}
-
 		}
-
-
 	}
 
 	/**
@@ -99,13 +93,28 @@ public class BlockFullMineBase extends BlockOwnable{
 		return 1;
 	}
 
-	//public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-	//	return null;
-	//}
-
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityFullMine();
+		return new TileEntityIntersectableOwnable();
 	}
 
+	public String getHelpInfo() {
+		return "The " + mineName + " mine is a standard block mine. Walking into it or mining it will cause it to explode.";
+	}
+
+	public String[] getRecipe() {
+		if(mineName.matches("dirt")){
+			return new String[]{"The dirt mine requires: 1 dirt, 1 mine. This is a shapeless recipe."};
+		}else if(mineName.matches("stone")){
+			return new String[]{"The stone mine requires: 1 stone, 1 mine. This is a shapeless recipe."};
+		}else if(mineName.matches("cobblestone")){
+			return new String[]{"The cobblestone mine requires: 1 cobblestone, 1 mine. This is a shapeless recipe."};
+		}else if(mineName.matches("sand")){
+			return new String[]{"The sand mine requires: 1 sand, 1 mine. This is a shapeless recipe."};
+		}else if(mineName.matches("diamond ore")){
+			return new String[]{"The diamond ore mine requires: 1 diamond ore (use a Silk Touch-enchanted pickaxe), 1 mine. This is a shapeless recipe."};
+		}else{
+			return null;
+		}
+	}
 
 }

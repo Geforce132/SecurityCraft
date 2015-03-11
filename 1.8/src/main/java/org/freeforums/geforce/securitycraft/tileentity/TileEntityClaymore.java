@@ -6,17 +6,14 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
 
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockClaymore;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-public class TileEntityClaymore extends TileEntity implements IUpdatePlayerListBox{
+public class TileEntityClaymore extends TileEntitySCTE{
 
 	private double entityX = -1D;
 	private double entityY = -1D;
@@ -27,6 +24,10 @@ public class TileEntityClaymore extends TileEntity implements IUpdatePlayerListB
 		if(getWorld().isRemote){
 			return;
 		}else{		
+			if(!((Boolean) getWorld().getBlockState(getPos()).getValue(BlockClaymore.POWERED)).booleanValue()){
+				return;
+			}
+			
 			if(cooldown > 0){
 				cooldown--;
 				return;

@@ -45,6 +45,8 @@ item.universalBlockRemover.name=Universal Block Remover
 item.keycardLV1.name=Level 1 Keycard
 item.keycardLV2.name=Level 2 Keycard
 item.keycardLV3.name=Level 3 Keycard
+item.keycardLV4.name=Level 4 Keycard
+item.keycardLV5.name=Level 5 Keycard
 item.limitedUseKeycard.name=Limited Use Keycard
 item.bucketFWater.name=Bucket Of Fake Water
 item.bucketFLava.name=Bucket Of Fake Lava
@@ -57,3 +59,4 @@ item.harmingModule.name=Harming Module
 item.smartModule.name=Smart Module
 item.wireCutters.name=Wire Cutters
 item.keypadItem.name=Key Panel
+

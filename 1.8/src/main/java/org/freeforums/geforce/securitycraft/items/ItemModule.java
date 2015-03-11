@@ -2,17 +2,17 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModule extends Item{
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+public class ItemModule extends Item implements IHelpInfo {
 	
 	private final EnumCustomModules module;
 	private final boolean nbtCanBeModified;
@@ -54,6 +54,22 @@ public class ItemModule extends Item{
 	
 	public boolean canBeModified(){
 		return this.nbtCanBeModified;
+	}
+
+	//TODO Add the other module's info.
+	public String getHelpInfo() {
+		if(module == EnumCustomModules.WHITELIST){
+			return "The whitelist module can be used in the Laser Block, Keypad, Keycard Reader, Inventory Scanner, and Retinal Scanner to stop restrictions to that player. For example, adding a whitelist module with the player 'Jeb' added to a keypad will allow Jeb to use the keypad without knowing the keycode.";
+		}else if(module == EnumCustomModules.BLACKLIST){
+			return "The blacklist module can be used in the Keypad and the Keycard Reader to set restrictions on that player. For example, adding a blacklist module with the player 'Jeb' added to a keypad will stop Jeb from accessing the keypad's GUI.";
+		}else{
+			return null;
+		}
+	}
+	
+	//TODO Add the module's recipes.
+	public String[] getRecipe() {
+		return null;
 	}
 
 }

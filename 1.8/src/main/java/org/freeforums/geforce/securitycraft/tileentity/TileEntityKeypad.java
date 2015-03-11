@@ -2,14 +2,12 @@ package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 
 @SuppressWarnings("unused")
 public class TileEntityKeypad extends CustomizableSCTE{
-	
-	
+		
 	private String passcode;
-	private boolean isGettingHacked = false;
 	private int currentlyHackedLetterPos = 0;
 	
     public String getKeypadCode(){
@@ -19,15 +17,6 @@ public class TileEntityKeypad extends CustomizableSCTE{
     public void setKeypadCode(String par1){
     	passcode = par1;
     }
-    
-    public boolean isGettingHacked(){
-    	return isGettingHacked;
-    }
-    
-    public void setIsGettingHacked(boolean par1){
-    	isGettingHacked = par1;
-    }
-    
     
     /**
      * Writes a tile entity to NBT.
@@ -61,6 +50,5 @@ public class TileEntityKeypad extends CustomizableSCTE{
 	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
-	
 
 }

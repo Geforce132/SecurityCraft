@@ -8,7 +8,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -36,7 +35,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaser;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
-import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnableWithInfo;
 import org.freeforums.geforce.securitycraft.blocks.BlockPanicButton;
 import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
@@ -52,8 +51,8 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
-import org.freeforums.geforce.securitycraft.blocks.mines.TileEntityFullMine;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
@@ -62,10 +61,9 @@ import org.freeforums.geforce.securitycraft.items.ItemReinforcedDoor;
 import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
 import org.freeforums.geforce.securitycraft.items.ItemTestItem;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
-import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
+import org.freeforums.geforce.securitycraft.items.ItemWithInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -86,13 +84,13 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectableOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScannerBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaser;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
@@ -105,8 +103,8 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class ConfigurationHandler{
-	private int[] harmingPotions = {8268, 8236, 16460, 16428};
-	private int[] healingPotions = {8261, 8229, 16453, 16421};
+	private int[] harmingPotions = {8024, 8268, 8236, 16460, 16428};
+	private int[] healingPotions = {8197, 8261, 8229, 16453, 16421};
 	
 	public boolean allowCodebreakerItem;
 	public boolean allowDoorRemover;
@@ -115,12 +113,13 @@ public class ConfigurationHandler{
 	public boolean ableToCraftKeycard1;
 	public boolean ableToCraftKeycard2;
 	public boolean ableToCraftKeycard3;
+	public boolean ableToCraftKeycard4;
+	public boolean ableToCraftKeycard5;
 	public boolean ableToCraftLUKeycard;
 	public boolean smallerMineExplosion;
 	public boolean sayThanksMessage;
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
-	public boolean enableOldKeypadRecipe;
 
 	public static int fakePanelID = 1;
 	public static int portableRadarSearchRadius;
@@ -132,7 +131,8 @@ public class ConfigurationHandler{
 	public static int empRadius;
 	public static int portableRadarDelay;
 	public static int claymoreRange;
-	
+	public boolean useOldKeypadRecipe;
+
 	public String currentHackIndex = "";
 	public boolean ableToContinueHacking = true;
 	public boolean hackingFailed = false;
@@ -165,7 +165,7 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.Laser = new BlockLaser().setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laser");
 		
-		mod_SecurityCraft.Keypad = new BlockKeypad(Material.circuits).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypad");
+		mod_SecurityCraft.keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypad");
 				
 		mod_SecurityCraft.keypadFrame = new BlockKeypadFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadFrame");
 		
@@ -208,7 +208,7 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setUnlocalizedName("alarmLit");
 	
-		mod_SecurityCraft.reinforcedStone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedStone");
+		mod_SecurityCraft.reinforcedStone = new BlockOwnableWithInfo(Material.rock, "Reinforced stone are indestructible stone blocks. Only the person who placed who placed them down can destroy them using the Universal Block Remover.", new String[]{"Reinforced stone require: 4 cobblestone, 1 stone", " X ", "XYX", " X ", "X = cobblestone, Y = stone"}).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedStone");
 	
 		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedFenceGate");
 		
@@ -233,15 +233,15 @@ public class ConfigurationHandler{
 	public void setupMines(){
 		mod_SecurityCraft.Mine = new BlockMine(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("mine");
 				
-		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("dirtMine");
+		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground, "dirt").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("dirtMine");
 		
-		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setUnlocalizedName("stoneMine");
+		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock, "stone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setUnlocalizedName("stoneMine");
 		
-		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("cobblestoneMine");
+		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock, "cobblestone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("cobblestoneMine");
 		
-		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setUnlocalizedName("sandMine");
+		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand, "sand").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setUnlocalizedName("sandMine");
 		
-		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("diamondMine");
+		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock, "diamond ore").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("diamondMine");
 		
 		mod_SecurityCraft.FurnaceMine = new BlockFurnaceMine().setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("furnaceMine");
 				
@@ -261,11 +261,15 @@ public class ConfigurationHandler{
 
 		mod_SecurityCraft.keycardLV3 = new ItemKeycardBase(3).setUnlocalizedName("keycardLV3");
 	  
-		mod_SecurityCraft.limitedUseKeycard = new ItemKeycardBase(4).setUnlocalizedName("limitedUseKeycard");
+		mod_SecurityCraft.keycardLV4 = new ItemKeycardBase(4).setUnlocalizedName("keycardLV4");
+
+		mod_SecurityCraft.keycardLV5 = new ItemKeycardBase(5).setUnlocalizedName("keycardLV5");
+
+		mod_SecurityCraft.limitedUseKeycard = new ItemKeycardBase(6).setUnlocalizedName("limitedUseKeycard");
 
 		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	    
-		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
+		mod_SecurityCraft.universalBlockRemover = new ItemWithInfo("The universal block remover serves no other purpose except to break down alarms, retinal scanners, keypads, keycard readers, and any other 'reinforced' or 'ownable' block. Right-click the block to remove it.", new String[]{"The universal block remover requires: 2 iron ingots, 1 shears", "XYY", "   ", "   ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
 		
 		mod_SecurityCraft.remoteAccessMine = new ItemRemoteAccess(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine").setMaxStackSize(1);
 		
@@ -285,9 +289,9 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setUnlocalizedName("smartModule");
 		
-		mod_SecurityCraft.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters");
+		mod_SecurityCraft.wireCutters = new ItemWithInfo("Right-clicking a mine with the wire cutters will defuse it.", new String[]{"The wire cutters requires: 1 shears, 4 iron ingots", "XY ", "Y Y", " Y ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters");
 	
-		mod_SecurityCraft.keypadItem = new Item().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem");
+		mod_SecurityCraft.keypadItem = new ItemWithInfo("The key panel is used to craft a keypad.", new String[]{"The key panel requires: 1 weighted pressure plate (heavy), 8 stone button", "YYY", "YXY", "YYY", "X = weighted pressure plate (heavy), Y = stone button"}).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem");
 	}
 	
 	public void setupDebuggingBlocks(){
@@ -310,6 +314,8 @@ public class ConfigurationHandler{
         ableToCraftKeycard1 = mod_SecurityCraft.configFile.get("options", "Craftable level 1 keycard?", true).getBoolean(true);
         ableToCraftKeycard2 = mod_SecurityCraft.configFile.get("options", "Craftable level 2 keycard?", true).getBoolean(true);
         ableToCraftKeycard3 = mod_SecurityCraft.configFile.get("options", "Craftable level 3 keycard?", true).getBoolean(true);
+        ableToCraftKeycard4 = mod_SecurityCraft.configFile.get("options", "Craftable level 4 keycard?", true).getBoolean(true);
+        ableToCraftKeycard5 = mod_SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true).getBoolean(true);
         ableToCraftLUKeycard = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true).getBoolean(true);
         smallerMineExplosion = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false).getBoolean(false);
         
@@ -324,8 +330,8 @@ public class ConfigurationHandler{
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
         disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
-        enableOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Should enable old Keypad recipe (9 buttons)?", false).getBoolean(false);
-        
+        useOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false).getBoolean(false);
+
         //cageTrapTextureIndex = config.get("Options", "cage-trap-block-texture (enter a block's id to use it's texture on the cage trap. Using the id '9999' will use the default cage trap texture)", 9999).getInt(9999);
         //empRadius = config.get("Options", "emp-radius(factors-of-ten-only)", 51).getInt(51);
 
@@ -339,7 +345,7 @@ public class ConfigurationHandler{
 	public void setupGameRegistry(){
 		GameRegistry.registerBlock(mod_SecurityCraft.LaserBlock, mod_SecurityCraft.LaserBlock.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.Laser, mod_SecurityCraft.Laser.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.Keypad, mod_SecurityCraft.Keypad.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.keypad, mod_SecurityCraft.keypad.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.keypadFrame, mod_SecurityCraft.keypadFrame.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.Mine, mod_SecurityCraft.Mine.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.DirtMine, mod_SecurityCraft.DirtMine.getUnlocalizedName().substring(5));
@@ -357,7 +363,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.keycardReader, mod_SecurityCraft.keycardReader.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.ironTrapdoor, mod_SecurityCraft.ironTrapdoor.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.bouncingBetty, mod_SecurityCraft.bouncingBetty.getUnlocalizedName().substring(5));
-		//GameRegistry.registerBlock(mod_SecurityCraft.doorbell, "doorbell");
 		GameRegistry.registerBlock(mod_SecurityCraft.inventoryScanner, mod_SecurityCraft.inventoryScanner.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.inventoryScannerField, mod_SecurityCraft.inventoryScannerField.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.trackMine, mod_SecurityCraft.trackMine.getUnlocalizedName().substring(5));
@@ -388,6 +393,8 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.keycardLV1, mod_SecurityCraft.keycardLV1.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.keycardLV2, mod_SecurityCraft.keycardLV2.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.keycardLV3, mod_SecurityCraft.keycardLV3.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.keycardLV4, mod_SecurityCraft.keycardLV4.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.keycardLV5, mod_SecurityCraft.keycardLV5.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.limitedUseKeycard, mod_SecurityCraft.limitedUseKeycard.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.remoteAccessMine, mod_SecurityCraft.remoteAccessMine.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.fWaterBucket, mod_SecurityCraft.fWaterBucket.getUnlocalizedName().substring(5));
@@ -400,19 +407,18 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.smartModule, mod_SecurityCraft.smartModule.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.wireCutters, mod_SecurityCraft.wireCutters.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.keypadItem, mod_SecurityCraft.keypadItem.getUnlocalizedName().substring(5));
-		
+
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityIntersectable.class, "abstractIntersectable");
+		GameRegistry.registerTileEntity(TileEntityIntersectableOwnable.class, "abstractIO");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
 		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
-		GameRegistry.registerTileEntity(TileEntityLaser.class, "laser");
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "reinforcedDoor");
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
 		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
 		GameRegistry.registerTileEntity(TileEntityMineLoc.class, "mineLoc");
-		GameRegistry.registerTileEntity(TileEntityFullMine.class, "blockMine");
 		GameRegistry.registerTileEntity(TileEntityInventoryScannerBlock.class, "inventoryScannerField");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
 		GameRegistry.registerTileEntity(TileEntityEmpedWire.class, "empedWire");
@@ -425,9 +431,9 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
-		if(enableOldKeypadRecipe)
+		if(useOldKeypadRecipe)
 		{
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
 				"III", "III", "III", 'I', Blocks.stone_button
 			});
 		}
@@ -441,8 +447,8 @@ public class ConfigurationHandler{
 				"III", "IBI", "I I", 'I', Blocks.stone, 'B', Items.redstone
 			});
 			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
-				"III", "IBP", "III", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keypadItem
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
+				"III", "IBI", "IPI", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keypadItem
 			});
 		}
 		
@@ -496,6 +502,18 @@ public class ConfigurationHandler{
 			});
 		}
 		
+		if(ableToCraftKeycard4){
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV4), new Object[]{
+				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13)
+			});
+		}
+		
+		if(ableToCraftKeycard5){
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV5), new Object[]{
+				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5)
+			});
+		}
+		
 		if(ableToCraftLUKeycard){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.limitedUseKeycard), new Object[]{
 				"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage())
@@ -515,7 +533,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-			"IKI", "ICI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.Keypad, 'C', Blocks.chest
+			"IKI", "ICI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.keypad, 'C', Blocks.chest
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
@@ -607,7 +625,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.harmingModule, 1), new Object[]{
-			"III", "IPI", "ISI", 'I', Items.iron_ingot, 'P', Items.paper, 'S', new ItemStack(Items.skull, 1, 3)
+			"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.arrow
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.smartModule, 1), new Object[]{
@@ -615,7 +633,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
-			"IKI", "IFI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.Keypad, 'F', Blocks.furnace
+			"IKI", "IFI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.keypad, 'F', Blocks.furnace
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{
@@ -681,7 +699,7 @@ public class ConfigurationHandler{
 	@SideOnly(Side.CLIENT)
 	public void setupTextureRegistry() {
 		//Blocks 
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.keypadFrame), 0, new ModelResourceLocation("securitycraft:keypadFrame", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.reinforcedStone), 0, new ModelResourceLocation("securitycraft:reinforcedStone", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.LaserBlock), 0, new ModelResourceLocation("securitycraft:laserBlock", "inventory"));
@@ -718,6 +736,8 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keycardLV1, 0, new ModelResourceLocation("securitycraft:keycardLV1", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keycardLV2, 0, new ModelResourceLocation("securitycraft:keycardLV2", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keycardLV3, 0, new ModelResourceLocation("securitycraft:keycardLV3", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keycardLV4, 0, new ModelResourceLocation("securitycraft:keycardLV4", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keycardLV5, 0, new ModelResourceLocation("securitycraft:keycardLV5", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.limitedUseKeycard, 0, new ModelResourceLocation("securitycraft:limitedUseKeycard", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockRemover, 0, new ModelResourceLocation("securitycraft:universalBlockRemover", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockModifier, 0, new ModelResourceLocation("securitycraft:universalBlockModifier", "inventory"));
@@ -728,7 +748,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.smartModule, 0, new ModelResourceLocation("securitycraft:smartModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.wireCutters, 0, new ModelResourceLocation("securitycraft:wireCutters", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keypadItem, 0, new ModelResourceLocation("securitycraft:keypadItem", "inventory"));
-		
+
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HelpfulMethods.getItemFromBlock(mod_SecurityCraft.DirtMine), 0, new ModelResourceLocation("securitycraft:dirtMine", "inventory"));

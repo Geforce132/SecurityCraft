@@ -12,10 +12,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
-public class BlockKeypadChest extends BlockChest{
+public class BlockKeypadChest extends BlockChest implements IHelpInfo {
 
 	public BlockKeypadChest(int par1){
 		super(par1);	
@@ -94,5 +95,13 @@ public class BlockKeypadChest extends BlockChest{
     {
         return new TileEntityKeypadChest();
     }
+
+	public String getHelpInfo() {
+		return "The password-protected chest is equipped with a password locking system. Whenever the password is entered correctly, the chest's inventory will open.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The password-protected chest requires: 7 iron ingot, 1 keypad, 1 chest", "XYX", "XZX", "XXX", "X = iron ingot, Y = keypad, Z = chest"};
+	}
 
 }

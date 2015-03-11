@@ -5,10 +5,11 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-public class BlockTrackMine extends BlockRail{
+public class BlockTrackMine extends BlockRail implements IHelpInfo{
 	
 	public BlockTrackMine() {
 		super();
@@ -25,6 +26,14 @@ public class BlockTrackMine extends BlockRail{
 		}
 		
 		cart.setDead();
-    }    
+    }
+
+	public String getHelpInfo() {
+		return "The track mine explodes when a minecart passes on top of it.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The track mine requires: 6 iron ingots, 1 stick, 1 gunpowder", "X X", "XYX", "XZX", "X = iron ingot, Y = stick, Z = gunpowder"};
+	}    
 
 }

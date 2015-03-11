@@ -18,10 +18,11 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvider{
+public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvider, IHelpInfo {
 
 	public BlockReinforcedGlass(Material par1Material, boolean par2) {
 		super(par1Material, par2);
@@ -68,6 +69,14 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
+	}
+
+	public String getHelpInfo() {
+		return "Reinforced glass panes act the same as vanilla glass panes, except they are unbreakable.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"Reinforced glass panes require: 4 glass, 1 glass pane", " X ", "XYX", " X ", "X = glass pane, Y = glass"};
 	}
 
 }

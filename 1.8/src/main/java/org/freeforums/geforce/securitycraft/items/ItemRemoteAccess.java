@@ -21,7 +21,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
 @SuppressWarnings("static-access")
-public class ItemRemoteAccess extends Item{
+public class ItemRemoteAccess extends ItemWithInfo{
 
 	private final int remoteAccessVarity;
 	
@@ -36,7 +36,7 @@ public class ItemRemoteAccess extends Item{
 	public static World worldObj;
 
 	public ItemRemoteAccess(int par1) {
-		super();
+		super("The mine remote access tool will allow you to access mines remotely. Right-click on a mine to 'bind' it to the tool. Right-click in the air (with the tool equipped) to open the tool's GUI, which will allow you to activate, deactivate, or detonate any bound mines.", new String[]{"The mine remote access tool requires: 1 redstone torch, 1 diamond, 1 gold ingot, 1 stick", " R ", " DG", "S  ", "R = redstone torch, D = diamond, G = gold ingot, S = stick"});
 		this.remoteAccessVarity = par1;
 	}
 	

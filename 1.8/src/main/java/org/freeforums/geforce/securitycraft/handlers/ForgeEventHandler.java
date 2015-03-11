@@ -76,20 +76,6 @@ public class ForgeEventHandler {
     		return "";
     	}
     }
-
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void renderGameOverlay(RenderGameOverlayEvent event){
-//		if(mod_SecurityCraft.instance.configHandler.currentHackIndex != "" && !mod_SecurityCraft.instance.configHandler.hackingFailed){
-//			Minecraft.getMinecraft().fontRenderer.drawString(":Hacking:", 2, 2, 0xffffff);
-//			Minecraft.getMinecraft().fontRenderer.drawString(mod_SecurityCraft.instance.configHandler.currentHackIndex, 2, 12, 0xffffff);
-//		}else if(mod_SecurityCraft.instance.configHandler.hackingFailed){
-//			Minecraft.getMinecraft().fontRenderer.drawString(":Hacking failed:", 2, 2, 0xffffff);
-//			Minecraft.getMinecraft().fontRenderer.drawString("*Too far from keypad*", 2, 12, 0xffffff);
-//		}else{
-//			
-//		}
-	}
 	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
@@ -157,19 +143,15 @@ public class ForgeEventHandler {
 					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}
-				
-				if(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock() == mod_SecurityCraft.doorIndestructableIron){
-					checkForReinforcedDoor(event.entityPlayer.worldObj, event.pos, event.entityPlayer);
+
+				if(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock() == mod_SecurityCraft.LaserBlock){
+					event.entityPlayer.worldObj.destroyBlock(event.pos, true);
+					BlockLaserBlock.destroyAdjecentLasers(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
+					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}else{
-					if(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock() == mod_SecurityCraft.LaserBlock){
-						event.entityPlayer.worldObj.destroyBlock(event.pos, true);
-						BlockLaserBlock.destroyAdjecentLasers(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
-						event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
-					}else{
-						event.entityPlayer.worldObj.destroyBlock(event.pos, true);
-						event.entityPlayer.worldObj.removeTileEntity(event.pos);
-						event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
-					}
+					event.entityPlayer.worldObj.destroyBlock(event.pos, true);
+					event.entityPlayer.worldObj.removeTileEntity(event.pos);
+					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}
 			}else if(event.action == Action.RIGHT_CLICK_BLOCK && isOwnableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock()) && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && event.entityPlayer.worldObj.getTileEntity(event.pos) instanceof TileEntityKeypadChest && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
 				event.setCanceled(true);
@@ -248,7 +230,7 @@ public class ForgeEventHandler {
     	float playerPitch = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * f;
     	float playerYaw = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * f;
     	double playerPosX = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * f;
-    	double playerPosY = (par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * f + 1.6200000000000001D); //TODO
+    	double playerPosY = (par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * f + 1.6200000000000001D);
     	double playerPosZ = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * f;
     	Vec3 vecPlayer = new Vec3(playerPosX, playerPosY, playerPosZ);
     	float cosYaw = MathHelper.cos(-playerYaw * 0.01745329F - 3.141593F);
@@ -264,50 +246,8 @@ public class ForgeEventHandler {
 
     }
   
-    private void notifyPlayers(String username, EntityPlayer par2EntityPlayer, BlockPos pos) {
-    	HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, username + " destroyed a reinforced door with a universal block remover at X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ(), null);
-	}
-    
-    private void sendChatMessageTo(EntityPlayer par1EntityPlayer, TileEntityReinforcedDoor TERD){
-    	
-    	if(TERD.getOwnerUUID() != null){
-    		HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Im sorry, you can not remove this door. This door is owned by " + TERD.getOwnerName() + ".", EnumChatFormatting.RED);
-    	}
-    }
-	
-	private void checkForReinforcedDoor(World par1World, BlockPos pos, EntityPlayer player){
-		//if(par1World.getBlockMetadata(par2, par3, par4) == 8){ //TODO
-			TileEntityReinforcedDoor TERD = (TileEntityReinforcedDoor) par1World.getTileEntity(pos);
-			TileEntityReinforcedDoor TERD2 = null;
-			if(TERD == null){
-				TERD2 = (TileEntityReinforcedDoor) par1World.getTileEntity(pos.up());
-					
-				if(player.getGameProfile().getId().toString().matches(TERD2.getOwnerUUID())){
-					par1World.destroyBlock(pos, false);
-    				notifyPlayers(player.getName(), player, pos);
-					player.getCurrentEquippedItem().damageItem(1, player);
-
-    			}else{
-        			sendChatMessageTo(player, TERD2);
-    			}
-				return;
-			}
-			
-			if(TERD != null && TERD.getOwnerUUID() != null){
-				if(player.getGameProfile().getId().toString().matches(TERD.getOwnerUUID())){
-					par1World.destroyBlock(pos, false);
-					
-					notifyPlayers(player.getName(), player, pos);
-					player.getCurrentEquippedItem().damageItem(1, player);
-				}else{
-					sendChatMessageTo(player, TERD);
-				}
-			}
-		//}
-	}
-	
 	private boolean isOwnableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton || par1Block == mod_SecurityCraft.FurnaceMine || par1Block instanceof BlockOwnable){
+    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton || par1Block == mod_SecurityCraft.FurnaceMine || par1Block instanceof BlockOwnable){
     		return true;
     	}else{
     		return false;
@@ -315,7 +255,7 @@ public class ForgeEventHandler {
     }
 	
 	private boolean isCustomizableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.Keypad || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.inventoryScanner){
+    	if(par1Block == mod_SecurityCraft.portableRadar || par1Block == mod_SecurityCraft.keypad || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.inventoryScanner){
     		return true;
     	}else{
     		return false;

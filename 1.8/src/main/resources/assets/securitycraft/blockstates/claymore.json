@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": { "model": "securitycraft:claymore" },
-        "facing=south": { "model": "securitycraft:claymore", "y": 180 },
-        "facing=west":  { "model": "securitycraft:claymore", "y": 270 },
-        "facing=east":  { "model": "securitycraft:claymore", "y": 90 }
+        "facing=north,powered=false": { "model": "securitycraft:claymoreDefused" },
+        "facing=south,powered=false": { "model": "securitycraft:claymoreDefused", "y": 180 },
+        "facing=west,powered=false":  { "model": "securitycraft:claymoreDefused", "y": 270 },
+        "facing=east,powered=false":  { "model": "securitycraft:claymoreDefused", "y": 90 },
+        "facing=north,powered=true": { "model": "securitycraft:claymoreActive" },
+        "facing=south,powered=true": { "model": "securitycraft:claymoreActive", "y": 180 },
+        "facing=west,powered=true":  { "model": "securitycraft:claymoreActive", "y": 270 },
+        "facing=east,powered=true":  { "model": "securitycraft:claymoreActive", "y": 90 }
     }
 }

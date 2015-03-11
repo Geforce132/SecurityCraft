@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import java.util.UUID;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,9 +11,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import com.google.common.base.Charsets;
-import com.mojang.authlib.GameProfile;
 
 public class BlockOwnable extends BlockContainer {
 

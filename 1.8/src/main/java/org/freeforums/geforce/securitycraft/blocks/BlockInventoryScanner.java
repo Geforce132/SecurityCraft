@@ -16,14 +16,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -31,7 +30,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockInventoryScanner extends BlockContainer{
+public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     
@@ -272,6 +271,14 @@ public class BlockInventoryScanner extends BlockContainer{
 
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityInventoryScanner();
+	}
+
+	public String getHelpInfo() {
+		return "The inventory scanner is used by placing two scanners a block apart, facing each other. When placed correctly, a laser field should spawn between them. If a player walks through the field, any blocks or items entered in the scanner's GUI in the player's inventory will be deleted.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
 	}
 
 

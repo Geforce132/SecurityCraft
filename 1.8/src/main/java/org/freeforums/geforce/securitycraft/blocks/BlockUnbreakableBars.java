@@ -17,11 +17,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvider{
+public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvider, IHelpInfo {
 	
 	public BlockUnbreakableBars(Material par1Material, boolean par2) {
 		super(par1Material, par2);
@@ -76,6 +77,14 @@ public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvid
 
 	public TileEntity createNewTileEntity(World par1, int par2) {
 		return new TileEntityOwnable();
+	}
+
+	public String getHelpInfo() {
+		return "Reinforced iron bars act the same as vanilla iron bars, except they are unbreakable.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"Reinforced iron bars requires: 4 iron ingots, 1 iron bars", " X ", "XYX", " X ", "X = iron ingot, Y = iron bars"};
 	}
 
 }

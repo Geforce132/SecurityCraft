@@ -1,6 +1,6 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {

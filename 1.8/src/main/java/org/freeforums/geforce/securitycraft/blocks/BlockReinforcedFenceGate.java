@@ -11,9 +11,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider{
+public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IHelpInfo{
 	
 	public BlockReinforcedFenceGate(){
 		super();
@@ -48,6 +49,14 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
     
     public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
+	}
+
+	public String getHelpInfo() {
+		return "The reinforced iron fence gate acts the same as a vanilla fence gate, except it is unbreakable, and can only be opened with redstone power.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The reinforced iron fencegate requires: 4 iron ingots, 1 fencegate.", " X ", "XYX", " X ", "X = iron ingot, Y = fencegate"};
 	}
 
 }

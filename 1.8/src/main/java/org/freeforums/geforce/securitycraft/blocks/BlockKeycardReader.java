@@ -3,13 +3,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,21 +16,20 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 
-public class BlockKeycardReader extends BlockOwnable{
+public class BlockKeycardReader extends BlockOwnable implements IHelpInfo{
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     
@@ -80,7 +77,7 @@ public class BlockKeycardReader extends BlockOwnable{
 		if(HelpfulMethods.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
 		if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
-			if(((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) == 4 && par5ItemStack.getTagCompound() != null && !par6EntityPlayer.capabilities.isCreativeMode){
+			if(((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) == 6 && par5ItemStack.getTagCompound() != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.getTagCompound().setInteger("Uses", par5ItemStack.getTagCompound().getInteger("Uses") - 1);
 				
 				if(par5ItemStack.getTagCompound().getInteger("Uses") <= 0){
@@ -188,6 +185,14 @@ public class BlockKeycardReader extends BlockOwnable{
     
     public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityKeycardReader();
+	}
+
+	public String getHelpInfo() {
+		return "The keycard reader emits a 15-block redstone redstone signal if you insert a keycard with a security level equal to or higher then (as specified in the GUI) the level selected in the reader's GUI.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The keycard reader requires: 8 stone, 1 hopper", "XXX", "XYX", "XXX", "X = stone, Y = hopper"};
 	}
 
 }

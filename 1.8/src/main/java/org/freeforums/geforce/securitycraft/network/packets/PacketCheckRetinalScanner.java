@@ -17,10 +17,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 

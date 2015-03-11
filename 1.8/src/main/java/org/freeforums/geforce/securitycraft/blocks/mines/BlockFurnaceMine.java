@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
@@ -17,7 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFurnaceMine extends BlockFurnace{
+public class BlockFurnaceMine extends BlockFurnace implements IHelpInfo{
 
 	public BlockFurnaceMine() {
 		super(false);
@@ -81,5 +82,13 @@ public class BlockFurnaceMine extends BlockFurnace{
     {
         return new TileEntityOwnable();
     }
+
+	public String getHelpInfo() {
+		return "The furnace mine will explode when a player right-clicks on it.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The furnace mine requires: 1 furnace, 1 mine. This is a shapeless recipe."};
+	}
     
 }
