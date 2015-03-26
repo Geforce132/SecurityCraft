@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -136,13 +138,13 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	private boolean hasActiveKeypadNextTo(World par1World, BlockPos pos){
-    	if(Utils.getBlock(par1World, pos.east()) == mod_SecurityCraft.Keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.east(), BlockKeypad.POWERED)).booleanValue()){
+    	if(Utils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.east(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(Utils.getBlock(par1World, pos.west()) == mod_SecurityCraft.Keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.west(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(Utils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.west(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(Utils.getBlock(par1World, pos.south()) == mod_SecurityCraft.Keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.south(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(Utils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.south(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(Utils.getBlock(par1World, pos.north()) == mod_SecurityCraft.Keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(Utils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keypad && ((Boolean) Utils.getBlockProperty(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
     	}else{
     		return false;
@@ -182,8 +184,15 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     {
 		return mod_SecurityCraft.doorIndestructableIronItem;
     }
+	
+	public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    {
+		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.doorIndestructableIronItem;
+    }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityReinforcedDoor();
 	}
+
+	
 }

@@ -21,11 +21,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
-public class BlockRetinalScanner extends BlockContainer{
+public class BlockRetinalScanner extends BlockContainer implements IHelpInfo{
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -142,6 +143,14 @@ public class BlockRetinalScanner extends BlockContainer{
     
     public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner();
+	}
+
+	public String getHelpInfo() {
+		return "The retinal scanner emits a 15-block redstone signal when the owner of the block stands directly in front of it.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The retinal scanner requires: 8 stone, 1 eye of ender", "XXX", "XYX", "XXX", "X = stone, Y = eye of ender"};
 	}
 
 }

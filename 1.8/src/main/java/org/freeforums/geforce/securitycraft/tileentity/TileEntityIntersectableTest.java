@@ -1,16 +1,16 @@
-package org.freeforums.geforce.securitycraft.blocks.mines;
+package org.freeforums.geforce.securitycraft.tileentity;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class TileEntityFullMine extends TileEntityOwnable implements IUpdatePlayerListBox{
+public class TileEntityIntersectableTest extends TileEntity implements IUpdatePlayerListBox {
 
 	public void update() {
 		int i = this.pos.getX();
@@ -28,8 +28,12 @@ public class TileEntityFullMine extends TileEntityOwnable implements IUpdatePlay
         }
 	}
 	
-	public void run(EntityPlayer player) {
-		BlockFullMineBase.explode(getWorld(), getPos());
+	/**
+	 * Gets called when a player intersects the block's bounding box.
+	 */
+	
+	public void run(EntityPlayer player){
+		((IIntersectable) this.worldObj.getBlockState(getPos()).getBlock()).onEntityIntersected(this.worldObj, getPos(), player);
 	}
 
 }

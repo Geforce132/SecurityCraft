@@ -16,10 +16,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 
-public class BlockLogger extends BlockContainer{
+public class BlockLogger extends BlockContainer implements IHelpInfo {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -82,6 +83,14 @@ public class BlockLogger extends BlockContainer{
 
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
+	}
+
+	public String getHelpInfo() {
+		return "The username logger will log any player's name within 3 blocks when it is powered by redstone.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The inventory scanner requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
 	}
 
 }

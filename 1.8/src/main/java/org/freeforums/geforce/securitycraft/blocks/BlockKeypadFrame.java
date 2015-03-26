@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -12,13 +14,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeypadFrame extends BlockOwnable
-{
+public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
+	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
-	public BlockKeypadFrame(Material m)
+	public BlockKeypadFrame(Material par1Material)
 	{
-		super(m);
+		super(par1Material);
 	}
 	
     public boolean isOpaqueCube()
@@ -46,8 +48,10 @@ public class BlockKeypadFrame extends BlockOwnable
     {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
 
-        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+        if(enumfacing.getAxis() == EnumFacing.Axis.Y){
             enumfacing = EnumFacing.NORTH;
+        }
+        
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
     
@@ -60,4 +64,12 @@ public class BlockKeypadFrame extends BlockOwnable
     {
         return new BlockState(this, new IProperty[] {FACING});
     }
+
+	public String getHelpInfo() {
+		return "The keypad frame is used in the recipe when crafting a keypad.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The keypad frame requires: 9 stone buttons.", "XXX", "XYX", "X X", "X = stone, Y = redstone"};
+	}
 }

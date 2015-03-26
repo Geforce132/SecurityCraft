@@ -28,20 +28,20 @@ public class ScheduleUpdate{
 			z = par5;
 			code = ((TileEntityKeypad) world.getTileEntity(new BlockPos(par3, par4, par5))).getKeypadCode();
 			
-			if(Utils.getBlock(par1World, par3, par4, par5) == mod_SecurityCraft.Keypad){
+			if(Utils.getBlock(par1World, par3, par4, par5) == mod_SecurityCraft.keypad){
 				Utils.setBlockProperty(par1World, new BlockPos(par3, par4, par5), BlockKeypad.POWERED, true, true);
 				((TileEntityKeypad) world.getTileEntity(new BlockPos(par3, par4, par5))).setKeypadCode(code);
-				world.notifyNeighborsOfStateChange(new BlockPos(par3, par4, par5), mod_SecurityCraft.Keypad);
+				world.notifyNeighborsOfStateChange(new BlockPos(par3, par4, par5), mod_SecurityCraft.keypad);
 			}
 		}
 		class RemindTask extends TimerTask{
 
 			public void run(){
-				if(Utils.getBlock(world, x, y, z) == mod_SecurityCraft.Keypad){
+				if(Utils.getBlock(world, x, y, z) == mod_SecurityCraft.keypad){
 					String code = ((TileEntityKeypad) world.getTileEntity(new BlockPos(x, y, z))).getKeypadCode();
 					Utils.setBlockProperty(world, new BlockPos(x, y, z), BlockKeypad.POWERED, false, true);
 					((TileEntityKeypad) world.getTileEntity(new BlockPos(x, y, z))).setKeypadCode(code);
-					world.notifyNeighborsOfStateChange(new BlockPos(x, y, z), mod_SecurityCraft.Keypad);
+					world.notifyNeighborsOfStateChange(new BlockPos(x, y, z), mod_SecurityCraft.keypad);
 				}
 
 				timer.cancel();

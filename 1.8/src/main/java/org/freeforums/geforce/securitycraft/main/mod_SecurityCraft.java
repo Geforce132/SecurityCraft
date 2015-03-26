@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.main;
 
-
 import java.util.Arrays;
 
 import net.minecraft.block.Block;
@@ -25,7 +24,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.commands.CommandModule;
 import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
 import org.freeforums.geforce.securitycraft.commands.CommandSCLog;
@@ -35,7 +33,6 @@ import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
-
 
 @Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.FORGEVERSION)
 @SuppressWarnings({"static-access"})
@@ -47,8 +44,8 @@ public class mod_SecurityCraft {
 	private static final String MOTU = "Thanks for all your suggestions!";
     
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
-	//TODO ********************************* This is v1.7.3 for MC 1.8!
-	protected static final String VERSION = "v1.7.3";
+	//TODO ********************************* This is v1.7.4 for MC 1.8!
+	protected static final String VERSION = "v1.7.4";
 	protected static final String FORGEVERSION = "required-after:Forge@[11.14.0.1252,)";
 	
 	
@@ -79,7 +76,7 @@ public class mod_SecurityCraft {
 	//Blocks
 	public static Block LaserBlock;
 	public static Block Laser;
-	public static Block Keypad;
+	public static Block keypad;
 	public static Block keypadFrame;
 	public static Block LaserActive;
 	public static Block Mine;
@@ -98,7 +95,6 @@ public class mod_SecurityCraft {
     public static Block keycardReader;
     public static Block ironTrapdoor;
     public static Block bouncingBetty;
-    //public static Block doorbell;
     public static Block inventoryScanner;
     public static Block inventoryScannerField;
 	public static Block trackMine;
@@ -131,6 +127,8 @@ public class mod_SecurityCraft {
     public static Item keycardLV1;
     public static Item keycardLV2;
     public static Item keycardLV3;
+    public static Item keycardLV4;
+    public static Item keycardLV5;
     public static Item limitedUseKeycard;
     public static Item remoteAccessMine;
     public static Item fWaterBucket;

@@ -12,9 +12,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockPanicButton extends BlockButton implements ITileEntityProvider{
+public class BlockPanicButton extends BlockButton implements ITileEntityProvider, IHelpInfo {
 
 	public BlockPanicButton() {
 		super(false);
@@ -34,7 +35,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         {
         	worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)), 3);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+            worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.4D, "random.click", 0.3F, 0.6F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
         }
@@ -174,5 +175,13 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
             }
         }
     }
+
+	public String getHelpInfo() {
+		return "The panic button looks like a button, but works the same way as a lever.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The panic button requires: 3 iron ingots, 1 stone button, 1 redstone", " X ", "XYX", " Z ", "X = iron ingot, Y = stone button, Z = redstone"};
+	}
 
 }

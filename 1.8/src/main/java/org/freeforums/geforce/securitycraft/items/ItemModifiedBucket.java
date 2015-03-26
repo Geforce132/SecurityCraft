@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.items;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import net.minecraft.block.Block;
@@ -17,18 +18,18 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class ItemModifiedBucket extends ItemBucket{
+public class ItemModifiedBucket extends ItemBucket implements IHelpInfo{
 	
-	private Block isFull;
+	private Block containedBlock;
 
 	public ItemModifiedBucket(Block containedBlock) {
 		super(containedBlock);
-		this.isFull = containedBlock;
+		this.containedBlock = containedBlock;
 	}
 	
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
-        boolean flag = this.isFull == Blocks.air;
+        boolean flag = this.containedBlock == Blocks.air;
         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, flag);
 
         if (movingobjectposition == null)
@@ -75,7 +76,7 @@ public class ItemModifiedBucket extends ItemBucket{
                 }
                 else
                 {
-                    if (this.isFull == Blocks.air)
+                    if (this.containedBlock == Blocks.air)
                     {
                         return new ItemStack(Items.bucket);
                     }
@@ -119,5 +120,25 @@ public class ItemModifiedBucket extends ItemBucket{
             return emptyBuckets;
         }
     }
+
+	public String getHelpInfo() {
+		if(containedBlock == mod_SecurityCraft.bogusLava){
+			return "The fake lava acts the same as lava, except it heals you instead of hurting you.";
+		}else if(containedBlock == mod_SecurityCraft.bogusWater){
+			return "The fake water acts the same as water, expect it hurts you when touched.";
+		}else{
+			return null;
+		}
+	}
+
+	public String[] getRecipe() {
+		if(containedBlock == mod_SecurityCraft.bogusLava){
+			return new String[]{"The bucket of fake lava requires: 1 lava bucket, 1 healing potion.", "X", "Y", "   ", "X = healing potion, Y = lava bucket"};
+		}else if(containedBlock == mod_SecurityCraft.bogusWater){
+			return new String[]{"The bucket of fake water requires: 1 water bucket, 1 harming potion.", "X", "Y", "   ", "X = harming potion, Y = water bucket"};
+		}else{
+			return null;
+		}
+	}
 	
 }

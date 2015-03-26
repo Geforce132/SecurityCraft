@@ -23,8 +23,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -39,88 +39,34 @@ public class HelpfulMethods {
 	
 	public static void setBlockInBox(World par1World, int par2, int par3, int par4, Block par5){
 		Utils.setBlock(par1World, par2 + 1, par3 + 1, par4, par5); 
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 1, par4), par5, 1200);
-
     	Utils.setBlock(par1World, par2 + 1, par3 + 2, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 2, par4), par5, 1200);
-
     	Utils.setBlock(par1World, par2 + 1, par3 + 3, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 3, par4), par5, 1200);
-
     	Utils.setBlock(par1World, par2 + 1, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 1, par4 + 1), par5, 1200);
-
     	Utils.setBlock(par1World, par2 + 1, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 2, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 3, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 1, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 1, par4), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 2, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 2, par4), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 3, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 3, par4), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 1, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 2, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 3, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 1, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 2, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 3, par4 + 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 1, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 1, par4), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 2, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 2, par4), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 3, par4, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 3, par4), par5, 1200);
 
-		
 		Utils.setBlock(par1World, par2, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 1, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 2, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2, par3 + 3, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 1, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 2, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 + 1, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 + 1, par3 + 3, par4 - 1), par5, 1200);
-
 		
 		Utils.setBlock(par1World, par2 - 1, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 1, par4 - 1), par5, 1200);
-
 		Utils.setBlock(par1World, par2 - 1, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 2, par4 - 1), par5, 1200);
-
-		Utils.setBlock(par1World, par2 - 1, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleUpdate(new BlockPos(par2 - 1, par3 + 3, par4 - 1), par5, 1200);
-
+		Utils.setBlock(par1World, par2 - 1, par3 + 3, par4 - 1, par5);    
 	}
 	
 	/**
@@ -191,45 +137,45 @@ public class HelpfulMethods {
 		((CustomizableSCTE) par1World.getTileEntity(pos)).removeModule(module);
 	}
 	
-	public static void checkForBlockAndInsertModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+	public static void checkForBlockAndInsertModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		for(int i = 1; i <= range; i++){
 			if(dir.equalsIgnoreCase("x+")){
-				if(par1World.getBlockState(pos.east(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.east(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.east(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("x-")){
-				if(par1World.getBlockState(pos.west(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.west(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.west(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y+")){
-				if(par1World.getBlockState(pos.up(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.up(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.up(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y-")){
-				if(par1World.getBlockState(pos.down(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.down(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).insertModule(module);
 					if(updateAdjecentBlocks){ 
 						checkInAllDirsAndInsertModule(par1World, pos.down(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z+")){
-				if(par1World.getBlockState(pos.south(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.south(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.south(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z-")){
-				if(par1World.getBlockState(pos.north(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(module)){
+				if(par1World.getBlockState(pos.north(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.north(i), blockToCheckFor, range, module, updateAdjecentBlocks);
@@ -239,7 +185,7 @@ public class HelpfulMethods {
 		}
 	}
 	
-	public static void checkInAllDirsAndInsertModule(World par1World, BlockPos pos, Block blockToCheckFor, int range, EnumCustomModules module, boolean updateAdjecentBlocks){
+	public static void checkInAllDirsAndInsertModule(World par1World, BlockPos pos, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		checkForBlockAndInsertModule(par1World, pos, "x+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, pos, "x-", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndInsertModule(par1World, pos, "y+", blockToCheckFor, range, module, updateAdjecentBlocks);

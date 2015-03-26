@@ -10,20 +10,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class ItemReinforcedDoor extends Item
-{
+public class ItemReinforcedDoor extends Item implements IHelpInfo {
 	
     public ItemReinforcedDoor(Material p_i45334_1_)
     {
-        this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
@@ -60,10 +57,9 @@ public class ItemReinforcedDoor extends Item
 	            }
 	            else
 	            {
-	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);
-	                TileEntityReinforcedDoor TERD = new TileEntityReinforcedDoor();
-                    TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
-                    world.setTileEntity(pos, TERD);
+	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);                    //TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
+                    ((TileEntityOwnable) world.getTileEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName());
+	                ((TileEntityOwnable) world.getTileEntity(pos.up())).setOwner(player.getGameProfile().getId().toString(), player.getName());
 	                --stack.stackSize;
 	                return true;
 	            }
@@ -87,10 +83,19 @@ public class ItemReinforcedDoor extends Item
         }
 
         BlockPos blockpos3 = pos.up();
-        IBlockState iblockstate = door.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+        IBlockState iblockstate = mod_SecurityCraft.doorIndestructableIron.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
         worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
         worldIn.notifyNeighborsOfStateChange(pos, door);
         worldIn.notifyNeighborsOfStateChange(blockpos3, door);
     }
+    
+    public String getHelpInfo() {
+		return "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The reinforced iron door requires: 8 iron ingots, 1 iron door", "XXX", "XYX", "XXX", "X = iron ingot, Y = iron door"};
+	}
+	
 }

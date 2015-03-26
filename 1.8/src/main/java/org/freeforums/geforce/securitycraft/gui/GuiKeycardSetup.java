@@ -62,7 +62,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	
 	 private void updateButtonText(){
 		 this.lvOfSecurity++;
-		 if(this.lvOfSecurity <= 3){
+		 if(this.lvOfSecurity <= 5){
 			 this.lvOfSecurityButton.displayString = "Level of security needed: " + this.lvOfSecurity;
 		 }else{
 			 this.lvOfSecurity = 1;
@@ -79,7 +79,7 @@ public class GuiKeycardSetup extends GuiContainer{
 				
 			case 1:
 				this.requiresExactCard = HelpfulMethods.toggleBoolean(this.requiresExactCard);
-				this.requiresExactCardButton.displayString = this.requiresExactCard ? "equal to" : "equal to or higher then";
+				this.requiresExactCardButton.displayString = this.requiresExactCard ? "equal to" : "equal to or higher than";
 				break;
 				
 			case 2:

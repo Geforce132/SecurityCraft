@@ -1,10 +1,6 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
-import org.freeforums.geforce.securitycraft.main.Utils;
-
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
