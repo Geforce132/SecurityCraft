@@ -533,7 +533,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-			"IKI", "ICI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.keypad, 'C', Blocks.chest
+			"K", "R", "C", 'K', mod_SecurityCraft.keypadItem, 'R', Items.redstone, 'C', Blocks.chest
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
@@ -633,7 +633,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
-			"IKI", "IFI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.keypad, 'F', Blocks.furnace
+			"K", "R", "F", 'K', mod_SecurityCraft.keypadItem, 'R', Items.redstone, 'F', Blocks.furnace
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{

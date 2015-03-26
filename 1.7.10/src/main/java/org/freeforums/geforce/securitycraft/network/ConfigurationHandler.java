@@ -476,7 +476,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-			"IKI", "ICI", "III", 'I', Items.iron_ingot, 'K', mod_SecurityCraft.Keypad, 'C', Blocks.chest
+			"K", "R", "C", 'K', mod_SecurityCraft.keypadItem, 'R', Items.redstone, 'C', Blocks.chest
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
