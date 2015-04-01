@@ -58,7 +58,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
 
 		TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(x, y, z); //((TileEntityLogger) getWorld()
-		te.players[i] = username;
+		
+		if(te != null){
+			te.players[i] = username;
+		}
 		
 		return null;
 	}

@@ -24,7 +24,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 		if(getWorld().isRemote){
 			return;
 		}else{		
-			if(!((Boolean) getWorld().getBlockState(getPos()).getValue(BlockClaymore.POWERED)).booleanValue()){
+			if(((Boolean) getWorld().getBlockState(getPos()).getValue(BlockClaymore.DEACTIVATED)).booleanValue()){
 				return;
 			}
 			
@@ -35,7 +35,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			
 			if(cooldown == 0){
 				Utils.destroyBlock(getWorld(), getPos(), false);
-				getWorld().createExplosion((Entity) null, entityX, entityY, entityZ, 3.5F, true);
+				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
 				return;
 			}
 			

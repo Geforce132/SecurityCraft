@@ -2,25 +2,26 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
+import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 
-public class BlockBouncingBetty extends Block implements IHelpInfo{
+public class BlockBouncingBetty extends BlockExplosive implements IIntersectable, IHelpInfo {
 
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
@@ -62,11 +63,18 @@ public class BlockBouncingBetty extends Block implements IHelpInfo{
 	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity)
 	{
 		if(par5Entity instanceof EntityLivingBase){
-			this.explode(par1World, pos, (EntityLivingBase) par5Entity);
+			this.explode(par1World, pos);
 		}else{
 			return;
 		}
-
+	}
+	
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+		if(entity instanceof EntityLivingBase){
+			this.explode(world, pos);
+		}else{
+			return;
+		}
 	}
 
 	/**
@@ -75,33 +83,38 @@ public class BlockBouncingBetty extends Block implements IHelpInfo{
 	public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer)
 	{
 		if(par5EntityPlayer instanceof EntityLivingBase){
-			this.explode(par1World, pos, par5EntityPlayer);
+			this.explode(par1World, pos);
 		}else{
 			return;
 		}
 	}
+	
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {}
 
-	public void explode(World par1World, BlockPos pos, EntityLivingBase par5EntityPlayer){
+	public void activateMine(World world, BlockPos pos) {}
+
+	public void defuseMine(World world, BlockPos pos) {}
+	
+	public void explode(World par1World, BlockPos pos){
 		if(par1World.isRemote){ return; }
 
 		par1World.setBlockToAir(pos);
-		EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), (EntityLivingBase) par5EntityPlayer);
+		EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F));
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		par1World.spawnEntityInWorld(entitytntprimed);
-		par1World.playSoundAtEntity(entitytntprimed, "random.fuse", 1.0F, 1.0F);
+		par1World.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
 	}
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote){		 
+		if(par1World.isRemote){
 			return true;
-		}else{	   
+		}else{
 			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
-				this.explode(par1World, pos, par5EntityPlayer);
+				this.explode(par1World, pos);
 				return false;
 			}else{
-				this.setPosition((ItemRemoteAccess) par5EntityPlayer.getCurrentEquippedItem().getItem(), pos, (TileEntityMineLoc) par1World.getTileEntity(pos));
-				return false;
+				return false;	   		
 			}
 		}
 	}
@@ -114,24 +127,23 @@ public class BlockBouncingBetty extends Block implements IHelpInfo{
 		return HelpfulMethods.getItemFromBlock(this);
 	}
 
-
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
 		return HelpfulMethods.getItemFromBlock(this);
 	}
-
-	private void setPosition(ItemRemoteAccess par1Item, BlockPos pos, TileEntityMineLoc TEML) {	   
-		for(int x = 1; x <= par1Item.tEList.length; x++){
-			if(par1Item.tEList[x - 1] != null && par1Item.tEList[x - 1].getPos() == pos){
-				break;
-			}else if(par1Item.tEList[x - 1] == null){
-				par1Item.tEList[x - 1] = TEML;
-				break;
-			}
-		}
-
+	
+	public boolean isActive(World world, BlockPos pos) {
+		return true;
+	}
+	
+	public boolean isDefusable() {
+		return false;
+	}
+	
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 	public String getHelpInfo() {
@@ -141,5 +153,5 @@ public class BlockBouncingBetty extends Block implements IHelpInfo{
 	public String[] getRecipe() {
 		return new String[]{"The bouncing betty requires: 2 iron ingots, 1 gunpowder, 1 weighted pressure plate (heavy)", " X ", "YZY", "   ", "X = weighted pressure plate (heavy), Y = iron ingot, Z = gunpowder"};
 	}
-
+	
 }

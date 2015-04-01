@@ -106,15 +106,13 @@ public class BlockBogusLavaBase extends BlockStaticLiquid
     /**
      * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
      */
-   public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
-   {
-    	if(!par1World.isRemote){
-    		
-    		if(par5Entity instanceof EntityPlayer){
-    			((EntityPlayer) par5Entity).heal(4);
-    			((EntityPlayer) par5Entity).extinguish();
-    		}
-    	}
+   public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
+	   if(!par1World.isRemote){
+			if(par5Entity instanceof EntityPlayer){
+				((EntityPlayer) par5Entity).heal(4);
+				((EntityPlayer) par5Entity).extinguish();
+			}
+		}
    }
 
     /**

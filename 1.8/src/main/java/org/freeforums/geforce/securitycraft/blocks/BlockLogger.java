@@ -90,7 +90,7 @@ public class BlockLogger extends BlockContainer implements IHelpInfo {
 	}
 
 	public String[] getRecipe() {
-		return new String[]{"The inventory scanner requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
+		return new String[]{"The username logger requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
 	}
 
 }

@@ -1,9 +1,11 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -13,20 +15,51 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 
-public class BlockBogusLavaBase extends BlockStaticLiquid implements IIntersectable{
+public class BlockBogusLavaBase extends BlockStaticLiquid implements IIntersectable {
 
 	public BlockBogusLavaBase(Material p_i45429_1_){
 		super(p_i45429_1_);
 	}
+	
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    {
+        if (!this.checkForMixing(worldIn, pos, state))
+        {
+            this.updateLiquid(worldIn, pos, state);
+        }
+    }
+
+    private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
+    {
+        BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.blockMaterial);
+        worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
+        worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, this.tickRate(worldIn));
+    }
+    
+    public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
+    {
+        if (materialIn == Material.water)
+        {
+            return (BlockDynamicLiquid) mod_SecurityCraft.bogusWaterFlowing;
+        }
+        else if (materialIn == Material.lava)
+        {
+            return (BlockDynamicLiquid) mod_SecurityCraft.bogusLavaFlowing;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid material");
+        }
+    }
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
 		if(!par1World.isRemote){
-
 			if(par5Entity instanceof EntityPlayer){
 				((EntityPlayer) par5Entity).heal(4);
 				((EntityPlayer) par5Entity).extinguish();
@@ -49,7 +82,7 @@ public class BlockBogusLavaBase extends BlockStaticLiquid implements IIntersecta
 	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityIntersectable();
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 }

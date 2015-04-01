@@ -29,7 +29,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 
-public class BlockKeycardReader extends BlockOwnable implements IHelpInfo{
+public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     

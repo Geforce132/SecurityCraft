@@ -1,4 +1,4 @@
-tile.laserBlock.name=Bloc laser 
+﻿tile.laserBlock.name=Bloc laser 
 tile.laser.name=Laser 
 tile.laserActive.name=Laser actif
 tile.keypad.name=Clavier
@@ -42,6 +42,8 @@ item.universalBlockRemover.name=Déplaceur de bloc universel
 item.keycardOne.name=Carte niveau 1
 item.keycardTwo.name=Carte niveau 2
 item.keycardThree.name=Carte niveau 3
+item.keycardFour.name=Carte niveau 4
+item.keycardFive.name=Carte niveau 5
 item.limitedUseKeycard.name=Carte à usage limité
 item.bucketFWater.name=Seau de fausse eau
 item.bucketFLava.name=Seau de fausse lave

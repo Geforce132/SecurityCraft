@@ -13,13 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class BlockSecurityCamera extends BlockContainer{
@@ -29,19 +27,47 @@ public class BlockSecurityCamera extends BlockContainer{
 	public BlockSecurityCamera(Material par2Material) {
 		super(par2Material);
 	}
+	
+	public int getRenderType(){
+		return 3;
+	}
+	
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
+	public boolean isFullCube()
+	{
+		return false;
+	}
     
-    /**
+	/**
      * Called upon block activation (right click on the block.)
      */
     public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
     	if(par1World.isRemote){
     		return true;
     	}else{
-    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 10, par1World, pos.getX(), pos.getY(), pos.getZ()); 		
+    		this.mountCamera(par1World, pos, (EnumFacing) par1World.getBlockState(pos).getValue(FACING), par5EntityPlayer);
     		return true;
     	}
     }
 	    
+    private void mountCamera(World world, BlockPos pos, EnumFacing dir, EntityPlayer player) {
+		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, pos.getX(), pos.getY(), pos.getZ(), 1);
+		world.spawnEntityInWorld(dummyEntity);
+		player.mountEntity(dummyEntity);
+	}     
+	    
+    /**
+     * Can this block provide power. Only wire currently seems to have this change based on its state.
+     */
+    public boolean canProvidePower()
+    {
+        return true;
+    }
+    
     /**
      * Called when the block is placed in the world.
      */
@@ -71,36 +97,11 @@ public class BlockSecurityCamera extends BlockContainer{
 
         par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
        
-    }
-	    
-	    
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
-        return true;
-    }
+    }	 
     
-
-    /**
-     * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-     * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-     * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(pos)).hasPlayer() ? 15 : 0;
-    	//return 15;
-    }
-    
-    /**
-     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-     * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
-    {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(pos)).hasPlayer() ? 15 : 0;
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
     
     @SideOnly(Side.CLIENT)
@@ -109,13 +110,14 @@ public class BlockSecurityCamera extends BlockContainer{
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }
 
-    public IBlockState getStateFromMeta(int meta){   
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);       
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);
     }
 
     public int getMetaFromState(IBlockState state)
-    {
-        return ((EnumFacing) state.getValue(FACING)).getIndex();
+    {   	
+    	return ((EnumFacing) state.getValue(FACING)).getIndex();
     }
 
     protected BlockState createBlockState()

@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -15,8 +17,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockIronTrapDoor extends Block
-{
+public class BlockIronTrapDoor extends Block implements IHelpInfo {
+	
     /** Set this to allow trapdoors to remain free-floating */
     public static boolean disableValidation = false;
 
@@ -291,4 +293,13 @@ public class BlockIronTrapDoor extends Block
         if (disableValidation) return true;
         return p_150119_0_.getMaterial().isOpaque() && p_150119_0_.renderAsNormalBlock() || p_150119_0_ == Blocks.glowstone || p_150119_0_ instanceof BlockSlab || p_150119_0_ instanceof BlockStairs;
     }
+    
+    public String getHelpInfo() {
+		return "The iron trapdoor is the same as a vanilla trapdoor, except it can only be opened using a redstone signal.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The iron trapdoor requires: 8 iron ingots, 1 trapdoor", "XXX", "XYX", "XXX", "X = iron ingot, Y = trapdoor"};
+	}
+	
 }

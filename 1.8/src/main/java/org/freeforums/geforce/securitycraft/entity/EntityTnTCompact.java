@@ -1,7 +1,6 @@
 package org.freeforums.geforce.securitycraft.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -10,21 +9,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-public class EntityTnTCompact extends Entity
-{
+public class EntityTnTCompact extends Entity {
+	
     /** How long the fuse is */
     public int fuse;
-    private EntityLivingBase tntPlacedBy;
 
-    public EntityTnTCompact(World par1World)
-    {
+    public EntityTnTCompact(World par1World){
         super(par1World);
         this.preventEntitySpawning = true;
         this.setSize(0.500F, 0.200F);
     }
 
-    public EntityTnTCompact(World par1World, double par2, double par4, double par6, EntityLivingBase par8EntityLivingBase)
-    {
+    public EntityTnTCompact(World par1World, double par2, double par4, double par6){
         this(par1World);
         this.setPosition(par2, par4, par6);
         float f = (float)(Math.random() * Math.PI * 2.0D);
@@ -35,7 +31,6 @@ public class EntityTnTCompact extends Entity
         this.prevPosX = par2;
         this.prevPosY = par4;
         this.prevPosZ = par6;
-        this.tntPlacedBy = par8EntityLivingBase;
     }
 
     protected void entityInit() {}
@@ -126,11 +121,4 @@ public class EntityTnTCompact extends Entity
         return 0.0F;
     }
 
-    /**
-     * returns null or the entityliving it was placed or ignited by
-     */
-    public EntityLivingBase getTntPlacedBy()
-    {
-        return this.tntPlacedBy;
-    }
 }

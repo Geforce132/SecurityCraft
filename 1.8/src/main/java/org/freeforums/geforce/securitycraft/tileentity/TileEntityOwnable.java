@@ -9,20 +9,6 @@ public class TileEntityOwnable extends TileEntitySCTE{
 	
 	private String ownerUUID;
 	private String owner;
-
-	
-	public String getOwnerName(){
-    	return owner;
-    }
-	
-	public String getOwnerUUID(){
-    	return ownerUUID;
-    }
-    
-    public void setOwner(String par1, String par2){
-    	ownerUUID = par1;
-    	owner = par2;
-    }
     
     /**
      * Writes a tile entity to NBT.
@@ -36,7 +22,7 @@ public class TileEntityOwnable extends TileEntitySCTE{
         
         if(this.ownerUUID != null && this.ownerUUID != ""){
         	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
-        }
+        }  
     }
 
     /**
@@ -54,7 +40,7 @@ public class TileEntityOwnable extends TileEntitySCTE{
         if (par1NBTTagCompound.hasKey("ownerUUID"))
         {
             this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
-        }
+        }      
     }
     
     public Packet getDescriptionPacket() {                
@@ -65,6 +51,29 @@ public class TileEntityOwnable extends TileEntitySCTE{
     
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
+    }  
+    
+    public TileEntityOwnable intersectsEntities(){
+        intersectsEntities = true;
+        return this;
     }
-
+    
+    public String getOwnerName(){
+    	return owner;
+    }
+	
+	public String getOwnerUUID(){
+    	return ownerUUID;
+    }
+    
+    /**
+	 * 
+	 * @param par1 The owner's UUID.
+	 * @param par2 The owner's name.
+	 */
+    public void setOwner(String par1, String par2){
+    	ownerUUID = par1;
+    	owner = par2;
+    }
+  
 }

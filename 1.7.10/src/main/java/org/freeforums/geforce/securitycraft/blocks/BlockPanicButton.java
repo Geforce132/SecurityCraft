@@ -6,22 +6,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
+public class BlockPanicButton extends BlockButton implements ITileEntityProvider, IHelpInfo {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon buttonPowered;
@@ -38,7 +35,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	        if(worldIn.getBlockMetadata(par2, par3, par4) > 4 && worldIn.getBlockMetadata(par2, par3, par4) < 10){
 	        	worldIn.setBlockMetadataWithNotify(par2, par3, par4, worldIn.getBlockMetadata(par2, par3, par4) - 5, 3);
 	        	worldIn.markBlockForUpdate(par2, par3, par4);
-	            worldIn.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.6F);
+	            worldIn.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.4D, "random.click", 0.3F, 0.5F);
 	            worldIn.scheduleBlockUpdate(par2, par3, par4, this, 1);
 	            this.notifyNeighbors(worldIn, par2, par3, par4);
 	            return true;
@@ -158,6 +155,14 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityOwnable();
+	}
+	
+	public String getHelpInfo() {
+		return "The panic button looks like a button, but works the same way as a lever.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The panic button requires: 3 iron ingots, 1 stone button, 1 redstone", " X ", "XYX", " Z ", "X = iron ingot, Y = stone button, Z = redstone"};
 	}
 
 }

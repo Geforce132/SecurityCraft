@@ -9,7 +9,7 @@ import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-public class BlockTrackMine extends BlockRail implements IHelpInfo{
+public class BlockTrackMine extends BlockRail implements IHelpInfo {
 	
 	public BlockTrackMine() {
 		super();

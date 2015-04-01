@@ -198,7 +198,8 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
 	public String getHelpInfo() {
 		return "The keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.";
 	}
-
+    
+    //TODO Fix recipe.
 	public String[] getRecipe() {
 		return new String[]{"The keypad requires: 9 stone buttons.", "XXX", "XXX", "XXX", "X = stone button"};
 	}

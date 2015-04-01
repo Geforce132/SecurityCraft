@@ -19,7 +19,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class ItemKeycardBase extends Item implements IHelpInfo{
+public class ItemKeycardBase extends Item implements IHelpInfo {
 	
 	private final int level;
 		
@@ -97,6 +97,5 @@ public class ItemKeycardBase extends Item implements IHelpInfo{
 			return null;
 		}
 	}
-	
 
 }

@@ -1,9 +1,10 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 	
@@ -98,8 +99,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 		return (this.customName != null && !this.customName.isEmpty()) ? true : false;
 	}
 
-	protected EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.REDSTONE};
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};
 	}
 
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Redstone module:" + EnumChatFormatting.RESET + "\n\nAdding a redstone module to a portable radar will cause the radar to emit a redstone signal whenever a player is within range.", EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a portable radar will remove the whitelisted players from the radar's search."};
+	}
+	
 }

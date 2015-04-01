@@ -14,13 +14,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockRetinalScanner extends BlockContainer{
+public class BlockRetinalScanner extends BlockContainer implements IHelpInfo {
 	
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconTop;
@@ -131,6 +132,14 @@ public class BlockRetinalScanner extends BlockContainer{
     
     public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner();
+	}
+    
+    public String getHelpInfo() {
+		return "The retinal scanner emits a 15-block redstone signal when the owner of the block stands directly in front of it.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The retinal scanner requires: 8 stone, 1 eye of ender", "XXX", "XYX", "XXX", "X = stone, Y = eye of ender"};
 	}
 
 }

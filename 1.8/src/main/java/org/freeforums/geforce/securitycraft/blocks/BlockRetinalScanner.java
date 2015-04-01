@@ -26,7 +26,7 @@ import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
-public class BlockRetinalScanner extends BlockContainer implements IHelpInfo{
+public class BlockRetinalScanner extends BlockContainer implements IHelpInfo {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");

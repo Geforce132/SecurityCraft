@@ -51,13 +51,12 @@ public class GuiPictureButton extends GuiButton{
                        
             if(this.blockToRender != null){
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
-	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 2);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 2, "");
+	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 3);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 3, "");
             }else{
- 	            GL11.glEnable(GL11.GL_LIGHTING);
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1, "");
+	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2, "");
 	            GL11.glDisable(GL11.GL_LIGHTING);
             }
 
@@ -76,7 +75,6 @@ public class GuiPictureButton extends GuiButton{
             }
             
             this.drawCenteredString(var4, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, var6);
-
         
         }
     }

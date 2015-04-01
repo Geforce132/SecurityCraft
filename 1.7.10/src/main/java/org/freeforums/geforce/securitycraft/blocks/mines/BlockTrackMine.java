@@ -10,13 +10,14 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTrackMine extends BlockRailBase{
+public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
 
 	@SideOnly(Side.CLIENT)
     private IIcon theIcon;
@@ -87,6 +88,12 @@ public class BlockTrackMine extends BlockRailBase{
 		}
     }
 	
+    public String getHelpInfo() {
+		return "The track mine explodes when a minecart passes on top of it.";
+	}
 
+	public String[] getRecipe() {
+		return new String[]{"The track mine requires: 6 iron ingots, 1 stick, 1 gunpowder", "X X", "XYX", "XZX", "X = iron ingot, Y = stick, Z = gunpowder"};
+	} 
 
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class ItemReinforcedDoor extends Item
 {
@@ -50,10 +50,8 @@ public class ItemReinforcedDoor extends Item
 	                {
 	                    int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
 	                    placeDoorBlock(par3World, par4, par5, par6, i1, block);
-	                    TileEntityReinforcedDoor TERD = new TileEntityReinforcedDoor();
-	                    TERD.setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
-	                    par3World.setTileEntity(par4, par5, par6, TERD);
-	                    par3World.setTileEntity(par4, par5 + 1, par6, TERD);
+	                    ((TileEntityOwnable) par3World.getTileEntity(par4, par5, par6)).setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
+		                ((TileEntityOwnable) par3World.getTileEntity(par4, par5 + 1, par6)).setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
 	                    --par1ItemStack.stackSize;
 	                    return true;
 	                }

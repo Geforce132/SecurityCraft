@@ -59,7 +59,7 @@ public class BlockKeypadChest extends BlockChest implements IHelpInfo {
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
         
-        ((TileEntityKeypadChest) par1World.getTileEntity(pos)).setOwner(par5EntityLivingBase.getName());
+        ((TileEntityKeypadChest) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
         
         if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityKeypadChest){
         	((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(pos.east())).getKeypadCode());

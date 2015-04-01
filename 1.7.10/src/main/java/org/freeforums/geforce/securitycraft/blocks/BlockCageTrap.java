@@ -14,13 +14,14 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCageTrap extends Block{
+public class BlockCageTrap extends Block implements IHelpInfo {
 	
 	public final boolean deactivated;
 	private final int blockTextureIndex;
@@ -45,37 +46,24 @@ public class BlockCageTrap extends Block{
 	
 	
 	 public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		 
-		 	if(par1World.isRemote){
-	    		return;
-	    	}else{
-				 if(par5Entity instanceof EntityPlayer && !deactivated){
-			    		par1World.setBlock(par2, par3, par4, mod_SecurityCraft.deactivatedCageTrap);
-				    	par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.unbreakableIronBars, 1200);
+		 if(par1World.isRemote){
+			 return;
+		 }else{
+			 if(par5Entity instanceof EntityPlayer && !deactivated){
+				 par1World.setBlock(par2, par3, par4, mod_SecurityCraft.deactivatedCageTrap);
 
-			    		par1World.setBlock(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
-				    	par1World.scheduleBlockUpdate(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars, 1200);
+				 par1World.setBlock(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
+				 par1World.setBlock(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
+				 par1World.setBlock(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
+				 par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);	
+				 par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);	
 
-			    		par1World.setBlock(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
-				    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars, 1200);
+				 HelpfulMethods.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
 
-			    		par1World.setBlock(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
-				    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars, 1200);
-
-			    		par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);	
-				    	par1World.scheduleBlockUpdate(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars, 1200);
-
-			    		par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);	
-				    	par1World.scheduleBlockUpdate(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars, 1200);
-
-					 	HelpfulMethods.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
-		
-					 	par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-					 	//ChatMessageComponent.createFromText(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + HelpfulMethods.getFormattedCoordinates(par2, par3, par4))
-			    		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + HelpfulMethods.getFormattedCoordinates(par2, par3, par4)));
-			    		
-			    	}
-	    	}
+				 par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
+				 MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + HelpfulMethods.getFormattedCoordinates(par2, par3, par4)));
+			 }
+		 }
 	 }
 	 
 	 public IIcon getIcon(int par1, int par2){
@@ -111,5 +99,12 @@ public class BlockCageTrap extends Block{
 		 }
 	 }
 	 
-	 
+	public String getHelpInfo() {
+		return "The cage trap will spawn a 'cage' around any player who walks on top of it. (*needs textures & recipe*)";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The cage trap requires: 3 reinforced iron bars, 2 gold ingots, 1 redstone, 3 iron blocks", "WWW", "XYX", "ZZZ", "W = reinforced iron bars, X = gold ingot, Y = redstone, Z = iron block"};
+	}
+		
 }

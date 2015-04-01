@@ -234,6 +234,18 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {}
 	
+	public ArrayList<EnumCustomModules> getModules(){
+		ArrayList<EnumCustomModules> modules = new ArrayList<EnumCustomModules>();
+		
+		for(ItemStack stack : this.itemStacks){
+			if(stack != null && stack.getItem() instanceof ItemModule){
+				modules.add(((ItemModule) stack.getItem()).getModule());
+			}
+		}
+		
+		return modules;
+	}
+	
 	public ItemStack getModule(EnumCustomModules module){
 		for(int i = 0; i < this.itemStacks.length; i++){
 			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
@@ -357,6 +369,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return list;
 	}
 	
-	protected abstract EnumCustomModules[] getCustomizableOptions();
+	public abstract EnumCustomModules[] getCustomizableOptions();
+	
+	public abstract String[] getOptionDescriptions();
 	
 }

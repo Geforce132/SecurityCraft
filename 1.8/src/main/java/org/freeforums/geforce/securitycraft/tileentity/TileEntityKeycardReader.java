@@ -3,6 +3,7 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 public class TileEntityKeycardReader extends CustomizableSCTE{
 
@@ -65,8 +66,12 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
         
     }
 
-	protected EnumCustomModules[] getCustomizableOptions() {
+    public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+	}
+
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a keycard reader will allow players to use the reader using any keycard.", EnumChatFormatting.UNDERLINE + "Blacklist module:" + EnumChatFormatting.RESET + "\n\nAdding a blacklist module to a keycard reader will ban players from interacting with the reader."};
 	}
     
 }

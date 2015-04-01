@@ -4,14 +4,12 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 
 @SuppressWarnings("static-access")
 public class PacketCreateExplosion implements IMessage{
@@ -48,9 +46,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int z = packet.z;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
-		getWorld(par1EntityPlayer).destroyBlock(new BlockPos(x, y, z), false);
-		this.newExplosion((Entity)null, (double) x, (double) y, (double) z,  3.0F, true, true, getWorld(par1EntityPlayer));
-
+		//getWorld(par1EntityPlayer).destroyBlock(new BlockPos(x, y, z), false);
+		//this.newExplosion((Entity)null, (double) x, (double) y, (double) z,  3.0F, true, true, getWorld(par1EntityPlayer));
+		((IExplosive) getWorld(par1EntityPlayer).getBlockState(new BlockPos(x, y, z)).getBlock()).explode(getWorld(par1EntityPlayer), new BlockPos(x, y, z));
+		
 		return null;
 	}
 

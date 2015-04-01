@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -121,7 +122,15 @@ public class HelpfulMethods {
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 	}
 	
-	
+	public static EntityPlayerMP getPlayerByUUID(String uuid){
+		for(int i = 0; i < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); i++){
+			if(((EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(i)).getGameProfile().getId().toString().matches(uuid)){
+				return (EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(i);
+			}
+		}
+		
+		return null;
+	}
 	
 	public static String removeLastChar(String par1){
 		if(par1 == null || par1.isEmpty()){ return ""; }

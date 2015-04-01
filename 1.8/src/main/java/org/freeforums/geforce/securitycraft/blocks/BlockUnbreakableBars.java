@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,7 +28,7 @@ public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvid
 	
 	public BlockUnbreakableBars(Material par1Material, boolean par2) {
 		super(par1Material, par2);
-		
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Block.soundTypeMetal, 33);
 	}
 	
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {	

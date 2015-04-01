@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider, IHelpInfo{
+public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider, IHelpInfo {
 
 	public BlockIronTrapDoor(Material materialIn) {
 		super(materialIn);
@@ -53,6 +53,5 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	public String[] getRecipe() {
 		return new String[]{"The reinforced iron trapdoor requires: 8 iron ingots, 1 trapdoor", "XXX", "XYX", "XXX", "X = iron ingot, Y = trapdoor"};
 	}
-
     
 }

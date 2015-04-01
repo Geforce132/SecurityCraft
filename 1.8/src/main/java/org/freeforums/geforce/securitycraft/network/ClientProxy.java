@@ -13,7 +13,6 @@ import org.freeforums.geforce.securitycraft.entity.RenderTnTCompact;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChestRenderer;
 
-
 public class ClientProxy extends ServerProxy{
 	
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -20,9 +21,8 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLaserBlock extends BlockContainer{
-
-
+@SuppressWarnings("static-access")
+public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 	    
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
@@ -52,6 +52,7 @@ public class BlockLaserBlock extends BlockContainer{
     private void setLaser(World par1World, int par2, int par3, int par4) {
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air){
@@ -65,6 +66,7 @@ public class BlockLaserBlock extends BlockContainer{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air){
@@ -78,6 +80,7 @@ public class BlockLaserBlock extends BlockContainer{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air){
@@ -91,6 +94,7 @@ public class BlockLaserBlock extends BlockContainer{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air){
@@ -104,6 +108,7 @@ public class BlockLaserBlock extends BlockContainer{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air){
@@ -117,6 +122,7 @@ public class BlockLaserBlock extends BlockContainer{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air){
@@ -231,14 +237,6 @@ public class BlockLaserBlock extends BlockContainer{
     }
     
     /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
-        return true;
-    }
-    
-    /**
      * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
@@ -305,19 +303,12 @@ public class BlockLaserBlock extends BlockContainer{
 		return new TileEntityLaserBlock();
 	}
 	
- 
-//    @SideOnly(Side.CLIENT)
-//
-//    /**
-//     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-//     * is the only chance you get to register icons.
-//     */
-//    public void registerBlockIcons(IIconRegister par1IconRegister)
-//    {
-//        this.blockIcon = par1IconRegister.registerIcon("dispenser_front_vertical");
-//      
-//    }
-    
-    
+	public String getHelpInfo() {
+		return "The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.";
+	}
 
+	public String[] getRecipe() {
+		return new String[]{"The laser block requires: 7 stone, 1 block of redstone, 1 glass pane", "XXX", "XYX", "XZX", "X = stone, Y = block of redstone, Z = glass pane"};
+	}
+	
 }

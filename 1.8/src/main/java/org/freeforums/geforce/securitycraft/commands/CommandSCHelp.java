@@ -1,9 +1,7 @@
 package org.freeforums.geforce.securitycraft.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -29,9 +27,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
 public class CommandSCHelp extends CommandBase implements ICommand{
 	
-	private Map<String, String[]> recipes = new HashMap<String, String[]>();
-	private Map<String, String> helpInfo = new HashMap<String, String>();
-
 	private List nicknames;
 	
 	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc <help|recipe> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
@@ -39,12 +34,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 	public CommandSCHelp(){
 		this.nicknames = new ArrayList();
 		this.nicknames.add("sc");
-		
-		this.recipes.put("reinforcedglasspane", new String[]{"The reinforced glass pane requires: 4 glass, 1 glass pane", " X ", "XYX", " X ", "X = glass, Y = glass pane"});
-		this.recipes.put("reinforcedstone", new String[]{"The reinforced stone requires: 4 cobblestone, 1 stone", " X ", "XYX", " X ", "X = cobblestone, Y = stone"});
-		
-		this.helpInfo.put("reinforcedglasspane", "The reinforced glass panes act the same as vanilla glass panes, except it is unbreakable.");
-		this.helpInfo.put("reinforcedstone", "Reinforced stone act the same as vanilla stone blocks, except it is unbreakable.");
 	}
 	
 	/**
@@ -133,7 +122,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			}else if(par1String[0].matches("recipe")){
 				if(icommandsender.getCommandSenderEntity() instanceof EntityPlayer && ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem() != null && ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem() instanceof ItemBlock && ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock() instanceof IHelpInfo){
 					if(((IHelpInfo) ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock()).getRecipe().length == 5){
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock()).getRecipe()[0], icommandsender);
+						sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Recipe" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock()).getRecipe()[0], icommandsender);
 						sendMessageToPlayer(EnumChatFormatting.GRAY + "Crafting recipe:", icommandsender);
 						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock()).getRecipe()[1], icommandsender);
 						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getBlock()).getRecipe()[2], icommandsender);
@@ -144,7 +133,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					}
 				}else if(icommandsender.getCommandSenderEntity() instanceof EntityPlayer && ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem() != null && ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem() instanceof Item && ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem() instanceof IHelpInfo){
 					if(((IHelpInfo) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getRecipe().length == 5){
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getRecipe()[0], icommandsender);
+						sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Recipe" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getRecipe()[0], icommandsender);
 						sendMessageToPlayer(EnumChatFormatting.GRAY + "Crafting recipe:", icommandsender);
 						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getRecipe()[1], icommandsender);
 						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) icommandsender.getCommandSenderEntity()).getCurrentEquippedItem().getItem()).getRecipe()[2], icommandsender);
@@ -187,22 +176,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		}
 		
 		return startingString;
-	}
-
-	private String getHelpInfo(String string) {
-		if(this.helpInfo.containsKey(string)){
-			return this.helpInfo.get(string);
-		}else{
-			return ("There is no info for " + string);
-		}
-	}
-
-	private String[] getRecipe(String string) {
-		if(this.recipes.containsKey(string)){
-			return this.recipes.get(string);
-		}else{
-			return new String[]{"There is no recipe for " + string};
-		}
 	}
 	
 	private void sendMessageToPlayer(String par1, ICommandSender par2){

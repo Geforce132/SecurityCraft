@@ -8,18 +8,18 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLogger extends BlockContainer{
+public class BlockLogger extends BlockContainer implements IHelpInfo {
 	
 	@SideOnly(Side.CLIENT)
     private IIcon field_149935_N;
@@ -105,6 +105,14 @@ public class BlockLogger extends BlockContainer{
 
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
+	}
+	
+	public String getHelpInfo() {
+		return "The username logger will log any player's name within 3 blocks when it is powered by redstone.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The username logger requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
 	}
 
 }

@@ -1,19 +1,14 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
-@SuppressWarnings("unused")
-public class TileEntityKeypad extends CustomizableSCTE{
-	
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+
+public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 	
 	private String passcode;
-	private boolean isGettingHacked = false;
-	private int currentlyHackedLetterPos = 0;
 	
     public String getKeypadCode(){
     	return passcode;
@@ -22,15 +17,6 @@ public class TileEntityKeypad extends CustomizableSCTE{
     public void setKeypadCode(String par1){
     	passcode = par1;
     }
-    
-    public boolean isGettingHacked(){
-    	return isGettingHacked;
-    }
-    
-    public void setIsGettingHacked(boolean par1){
-    	isGettingHacked = par1;
-    }
-    
     
     /**
      * Writes a tile entity to NBT.
@@ -63,6 +49,14 @@ public class TileEntityKeypad extends CustomizableSCTE{
 
 	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+	}
+	
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a keypad will allow players to use the block without knowing the code.", EnumChatFormatting.UNDERLINE + "Blacklist module:" + EnumChatFormatting.RESET + "\n\nAdding a blacklist module to a keypad will ban players from interacting with the block."};
+	}
+
+	public String getPassword() {
+		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}       
  
 }

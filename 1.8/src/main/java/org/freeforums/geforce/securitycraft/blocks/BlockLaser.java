@@ -10,12 +10,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -27,15 +26,16 @@ import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 
 public class BlockLaser extends BlockContainer implements IIntersectable{
 	
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
 
-	public BlockLaser() {
-		super(Material.circuits);
+	public BlockLaser(Material material) {
+		super(material);
 		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
 
 	}
@@ -88,14 +88,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.east(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.east(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.east(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.east(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.east(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.east(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.east(i), mod_SecurityCraft.LaserBlock, 50);
 					
 					if(world.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -108,14 +106,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.west(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.west(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.west(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.west(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.west(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.west(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.west(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(world.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -128,14 +124,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.south(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.south(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.south(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.south(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.south(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.south(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.south(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(world.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -148,14 +142,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.north(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.north(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.north(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.north(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.north(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.north(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.north(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(world.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -168,14 +160,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.up(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.up(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.up(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.up(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.up(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.up(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.up(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(world.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -188,14 +178,12 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
 				Block id = Utils.getBlock(world, pos.down(i));
 				if(id == mod_SecurityCraft.LaserBlock){
 					if(world.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(world, pos.down(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ return; }
-					ItemStack[] modules = ((CustomizableSCTE) world.getTileEntity(pos.down(i))).itemStacks;
 					Utils.setBlockProperty(world, pos.down(i), BlockLaserBlock.POWERED, true, true);
-					((CustomizableSCTE) world.getTileEntity(pos.down(i))).itemStacks = modules;
 					world.notifyNeighborsOfStateChange(pos.down(i), mod_SecurityCraft.LaserBlock);
 					world.scheduleUpdate(pos.down(i), mod_SecurityCraft.LaserBlock, 50);
 
 					if(world.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 					
 					break;
@@ -307,6 +295,11 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
         
     } 
     
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        return this.getDefaultState().withProperty(BOUNDTYPE, 1);
+    }
+    
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BOUNDTYPE, meta);
@@ -333,7 +326,7 @@ public class BlockLaser extends BlockContainer implements IIntersectable{
     }
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityIntersectable();
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 }

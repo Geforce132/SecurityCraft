@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +30,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory {
+public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
 	
 	private static final int[] slotsTop = new int[] {0};
     private static final int[] slotsBottom = new int[] {2, 1};
@@ -486,6 +488,10 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	public IChatComponent getDisplayName() {
 		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+	}
+
+	public String getPassword() {
+		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
     
 }

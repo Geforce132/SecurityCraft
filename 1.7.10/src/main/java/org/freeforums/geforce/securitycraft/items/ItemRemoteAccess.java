@@ -2,15 +2,14 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -19,52 +18,34 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("static-access")
-public class ItemRemoteAccess extends Item{
+public class ItemRemoteAccess extends ItemWithInfo{
 
 	private final int remoteAccessVarity;
 	
 	public int listIndex = 0;
 	
 	public TileEntityMineLoc[] tEList = new TileEntityMineLoc[6];
-	
-	private Block[] allowedBlocks = {mod_SecurityCraft.Mine, mod_SecurityCraft.MineCut};
-	
-	public static ItemRemoteAccess activeRemote;
-	public static EntityPlayer playerObj;
-	public static World worldObj;
-
+		
 	public ItemRemoteAccess(int par1) {
-		super();
+		super("The mine remote access tool will allow you to access mines remotely. Right-click on a mine to 'bind' it to the tool. Right-click in the air (with the tool equipped) to open the tool's GUI, which will allow you to activate, deactivate, or detonate any bound mines.", new String[]{"The mine remote access tool requires: 1 redstone torch, 1 diamond, 1 gold ingot, 1 stick", " R ", " DG", "S  ", "R = redstone torch, D = diamond, G = gold ingot, S = stick"});
 		this.remoteAccessVarity = par1;
 	}
 	
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-    	this.activeRemote = (ItemRemoteAccess) par1ItemStack.getItem();
-  	    this.playerObj = par3EntityPlayer;
-  	    this.worldObj = par2World;
-  	    
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
     	if(par2World.isRemote){
     		return par1ItemStack;
     	}else{
     		if(this.remoteAccessVarity == 1){
     			par3EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
     		}
-    		
+  	
     		return par1ItemStack;
     	}
-    	
     }
     
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
-    	this.activeRemote = (ItemRemoteAccess) par1ItemStack.getItem();
-  	  	this.playerObj = par2EntityPlayer;
-  	  	this.worldObj = par3World;
-  
-  	  	if(par3World.isRemote){
-  	  		return true;
-  	  	}else{
-  	  		if(isValidMine(par3World, par4, par5, par6)){
+    	if(!par3World.isRemote){
+  	  		if(par3World.getBlock(par4, par5, par6) instanceof IExplosive){
   	  			if(!isMineAdded(par1ItemStack, par3World, par4, par5, par6)){
 		  	  		int availSlot = this.getNextAvaliableSlot(par1ItemStack);
 		  	  		
@@ -84,10 +65,12 @@ public class ItemRemoteAccess extends Item{
   	  				this.removeTagFromItemAndUpdate(par1ItemStack, par4, par5, par6, par2EntityPlayer);
   	  				HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, par2EntityPlayer.getCommandSenderName() + " unbound a mine at X:" + par4 + " Y:" + par5 + " Z:" + par6 + " from a remote access tool.", null);
   	  			}
+  	  		}else{
+    			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
   	  		}
-  	  		
-  	  		return true;
   	  	}
+    	
+	  	return true;
     }
     
     @SideOnly(Side.CLIENT)
@@ -157,18 +140,6 @@ public class ItemRemoteAccess extends Item{
     	return false;
 	}
 
-	private boolean isValidMine(World par1World, int par2, int par3, int par4){
-    	for(int i = 1; i <= this.allowedBlocks.length; i++){
-    		if(par1World.getBlock(par2, par3, par4) == this.allowedBlocks[i - 1]){  
-    			return true;
-    		}else{
-    			continue;
-    		}
-    	}
-
-    	return false;
-    }
-    
     private int getNextAvaliableSlot(ItemStack par1ItemStack){
     	for(int i = 1; i <= 6; i++){
     		if(par1ItemStack.stackTagCompound == null){

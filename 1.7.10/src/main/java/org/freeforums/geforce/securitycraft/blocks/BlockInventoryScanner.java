@@ -16,6 +16,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
@@ -26,7 +27,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockInventoryScanner extends BlockContainer{
+public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 
 	public static int lastKeypadX;
 	public static int lastKeypadY;
@@ -274,5 +275,12 @@ public class BlockInventoryScanner extends BlockContainer{
 		return new TileEntityInventoryScanner();
 	}
 
+	public String getHelpInfo() {
+		return "The inventory scanner is used by placing two scanners a block apart, facing each other. When placed correctly, a laser field should spawn between them. If a player walks through the field, any blocks or items entered in the scanner's GUI in the player's inventory will be deleted.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
+	}
 
 }

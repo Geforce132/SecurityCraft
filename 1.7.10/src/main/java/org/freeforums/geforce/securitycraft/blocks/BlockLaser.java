@@ -5,28 +5,31 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLaser extends Block{
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon transparentIcon;
 
-	public BlockLaser() {
-		super(Material.circuits);
+	public BlockLaser(Material material) {
+		super(material);
 		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
 
 	}
@@ -64,7 +67,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2 + i, par3, par4, mod_SecurityCraft.LaserBlock);
 					
 					if(par1World.getTileEntity(par2 + i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -81,7 +84,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2 - i, par3, par4, mod_SecurityCraft.LaserBlock);
 
 					if(par1World.getTileEntity(par2 - i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -98,7 +101,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 + i, mod_SecurityCraft.LaserBlock);
 
 					if(par1World.getTileEntity(par2, par3, par4 + i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -115,7 +118,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2, par3, par4 - i, mod_SecurityCraft.LaserBlock);
 
 					if(par1World.getTileEntity(par2, par3, par4 - i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -132,7 +135,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2, par3 + i, par4, mod_SecurityCraft.LaserBlock);
 
 					if(par1World.getTileEntity(par2, par3 + i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -149,7 +152,7 @@ public class BlockLaser extends Block{
 					par1World.notifyBlocksOfNeighborChange(par2, par3 - i, par4, mod_SecurityCraft.LaserBlock);
 
 					if(par1World.getTileEntity(par2, par3 - i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(EnumCustomModules.HARMING)){
-						((EntityLivingBase) par5Entity).attackEntityFrom(DamageSource.generic, 10F);
+						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 					}
 				}else{
 					continue;
@@ -270,7 +273,6 @@ public class BlockLaser extends Block{
 
         }
     	
-       
     }
 
     /**
@@ -299,8 +301,25 @@ public class BlockLaser extends Block{
     }
 
 
-    
- 
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+    public IIcon getIcon(int side, int meta)
+    {
+        if(meta == 1 && (side == 1 || side == 0)){
+    		return this.transparentIcon;
+    	}else{
+    		return this.blockIcon;
+    	}
+        
+    	//if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
+    	//	return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
+    	//}else{
+    	//	return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront));
+    	//}
+    }
     
     @SideOnly(Side.CLIENT)
 
@@ -311,7 +330,7 @@ public class BlockLaser extends Block{
     public void registerBlockIcons(IIconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("securitycraft:aniLaser");
-     
+        this.transparentIcon = par1IconRegister.registerIcon("securitycraft:transparent");
     }
     
     @SideOnly(Side.CLIENT)

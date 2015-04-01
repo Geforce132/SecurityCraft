@@ -18,6 +18,12 @@ public class TileEntityOwnable extends TileEntitySCTE{
 	public String getOwnerUUID(){
     	return ownerUUID;
     }
+	
+	/**
+	 * 
+	 * @param par1 The owner's UUID.
+	 * @param par2 The owner's name.
+	 */
     
     public void setOwner(String par1, String par2){
     	ownerUUID = par1;

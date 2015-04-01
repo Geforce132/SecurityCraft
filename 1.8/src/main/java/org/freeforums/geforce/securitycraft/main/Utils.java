@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.main;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
 public class Utils {
 	
@@ -91,7 +93,6 @@ public class Utils {
 		setBlockProperty(par1World, pos, property, value, false);
 	}
 
-
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
 			ItemStack[] modules = null;
@@ -100,6 +101,7 @@ public class Utils {
 			String password = "";
 			String ownerUUID = "";
 			String ownerName = "";
+			int cooldown = -1;
 
 			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
 				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
@@ -128,6 +130,10 @@ public class Utils {
 			
 			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode() != null){
 				password = ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode();
+			}
+			
+			if(par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown != 0){
+				cooldown = ((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown;
 			}
 			
 			TileEntity tileEntity = par1World.getTileEntity(pos);
@@ -161,6 +167,10 @@ public class Utils {
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
 				((TileEntityKeypadChest) par1World.getTileEntity(pos)).setKeypadCode(password);
 			}
+			
+			if(cooldown != -1 && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar){
+				((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown = cooldown;
+			}
 		}else{
 			par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 		}
@@ -181,12 +191,33 @@ public class Utils {
 		}
 	}
 	
+	public static boolean hasBlockProperty(World par1World, BlockPos pos, IProperty property){
+		try{
+			Comparable comparable = par1World.getBlockState(pos).getValue(property);
+			return true;
+		}catch(IllegalArgumentException e){
+			return false;
+		}
+	}
+	
+	public static boolean hasBlockProperty(World par1World, int par2, int par3, int par4, IProperty property){
+		return hasBlockProperty(par1World, new BlockPos(par2, par3, par4), property);
+	}
+	
 	public static Comparable getBlockProperty(World par1World, BlockPos pos, PropertyBool property) {
 		return par1World.getBlockState(pos).getValue(property);
 	}
 	
 	public static Comparable getBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property) {
 		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
+	}
+	
+	public static boolean getBlockPropertyAsBoolean(World par1World, BlockPos pos, PropertyBool property){
+		return ((Boolean) par1World.getBlockState(pos).getValue(property)).booleanValue();
+	}
+	
+	public static boolean getBlockPropertyAsBoolean(World par1World, int par2, int par3, int par4, PropertyBool property){
+		return ((Boolean) par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property)).booleanValue();
 	}
 	
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {

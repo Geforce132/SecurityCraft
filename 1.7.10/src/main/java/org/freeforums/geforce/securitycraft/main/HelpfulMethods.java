@@ -25,8 +25,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -100,88 +100,34 @@ public class HelpfulMethods {
 	
 	public static void setBlockInBox(World par1World, int par2, int par3, int par4, Block par5){
 		par1World.setBlock(par2 + 1, par3 + 1, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 1, par4, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 2, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 2, par4, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 3, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 3, par4, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 1, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 2, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 3, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 1, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 1, par4, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 2, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 2, par4, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 3, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 3, par4, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 1, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 2, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 3, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2, par3 + 1, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 1, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2, par3 + 2, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 2, par4 + 1, par5, 1200);
-
 		par1World.setBlock(par2, par3 + 3, par4 + 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 3, par4 + 1, par5, 1200);
 
 		par1World.setBlock(par2 + 1, par3 + 1, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 1, par4, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 2, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 2, par4, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 3, par4, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 3, par4, par5, 1200);
 
-		
 		par1World.setBlock(par2, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 1, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 2, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2, par3 + 3, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 1, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 2, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2 + 1, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 + 1, par3 + 3, par4 - 1, par5, 1200);
-
-		
 		par1World.setBlock(par2 - 1, par3 + 1, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 1, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 2, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 2, par4 - 1, par5, 1200);
-
 		par1World.setBlock(par2 - 1, par3 + 3, par4 - 1, par5);
-    	par1World.scheduleBlockUpdate(par2 - 1, par3 + 3, par4 - 1, par5, 1200);
-
 	}
 	
 	public static void disableEMPField(World par1World, double par2, double par3, double par4, Block block, int radius, int height, boolean isClient){	
@@ -681,6 +627,22 @@ public class HelpfulMethods {
 		}
 		
 		return false;
+	}
+	
+	public static ItemModule getItemFromModule(EnumCustomModules module) { //TODO Add any new modules to this list!
+		if(module == EnumCustomModules.REDSTONE){
+			return mod_SecurityCraft.redstoneModule;
+		}else if(module == EnumCustomModules.WHITELIST){
+			return mod_SecurityCraft.whitelistModule;
+		}else if(module == EnumCustomModules.BLACKLIST){
+			return mod_SecurityCraft.blacklistModule;
+		}else if(module == EnumCustomModules.HARMING){
+			return mod_SecurityCraft.harmingModule;
+		}else if(module == EnumCustomModules.SMART){
+			return mod_SecurityCraft.smartModule;
+		}else{
+			return null;
+		}
 	}
 	
 	public static boolean toggleBoolean(boolean par1) {

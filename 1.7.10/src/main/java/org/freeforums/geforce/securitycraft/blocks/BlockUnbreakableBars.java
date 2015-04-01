@@ -14,17 +14,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvider{
+public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvider, IHelpInfo {
 	
 	public BlockUnbreakableBars(String par2Str, String par3Str, Material par4Material, boolean par5) {
 		super(par2Str, par3Str, par4Material, par5);
-		
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Block.soundTypeMetal, 32);
 	}
 	
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {	
@@ -75,6 +77,14 @@ public class BlockUnbreakableBars extends BlockPane implements ITileEntityProvid
 
 	public TileEntity createNewTileEntity(World par1, int par2) {
 		return new TileEntityOwnable();
+	}
+	
+	public String getHelpInfo() {
+		return "Reinforced iron bars act the same as vanilla iron bars, except they are unbreakable.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"Reinforced iron bars requires: 4 iron ingots, 1 iron bars", " X ", "XYX", " X ", "X = iron ingot, Y = iron bars"};
 	}
 
 }

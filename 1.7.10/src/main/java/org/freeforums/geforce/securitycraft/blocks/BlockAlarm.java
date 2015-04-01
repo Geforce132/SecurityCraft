@@ -15,13 +15,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockAlarm extends BlockContainer {
+public class BlockAlarm extends BlockContainer implements IHelpInfo {
 	
 	private final boolean isLit;
 	
@@ -200,6 +201,14 @@ public class BlockAlarm extends BlockContainer {
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityAlarm();
+	}
+
+	public String getHelpInfo() {
+		return "The alarm will emit a siren sound effect whenever it is powered by redstone, and in 2-second intervals after that (modifiable in the config file).";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The alarm requires: 7 glass, 1 note block, 1 redstone", "XXX", "XYX", "XZX", "X = glass, Y = note block, Z = redstone"};
 	}
 
 }

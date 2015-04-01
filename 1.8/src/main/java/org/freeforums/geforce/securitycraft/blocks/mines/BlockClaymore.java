@@ -21,15 +21,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 
-public class BlockClaymore extends BlockContainer implements IHelpInfo {
+public class BlockClaymore extends BlockContainer implements IExplosive, IHelpInfo {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyBool POWERED = PropertyBool.create("powered");
+    public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockClaymore(Material materialIn) {
 		super(materialIn);
@@ -75,10 +76,10 @@ public class BlockClaymore extends BlockContainer implements IHelpInfo {
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote){
 			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters){
-				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(POWERED, false));
+				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
 			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
-				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(POWERED, true));
+				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
 		}
@@ -86,18 +87,19 @@ public class BlockClaymore extends BlockContainer implements IHelpInfo {
 		return false;
 	}
     
-    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
-    {
-    	if (!worldIn.isRemote && ((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.POWERED)).booleanValue())
+	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+    	if (!world.isRemote && !((Boolean) world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
         {
-            Utils.destroyBlock(worldIn, pos, false);
-            worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+            Utils.destroyBlock(world, pos, false);
+            world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
         }
+    	
+    	return super.removedByPlayer(world, pos, player, willHarvest);
     }
     
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
-        if (!worldIn.isRemote && ((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.POWERED)).booleanValue())
+        if (!worldIn.isRemote && Utils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
         {
             Utils.destroyBlock(worldIn, pos, false);
             worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
@@ -106,8 +108,27 @@ public class BlockClaymore extends BlockContainer implements IHelpInfo {
 	
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(POWERED, true);
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DEACTIVATED, false);
     }
+	
+	public void activateMine(World world, BlockPos pos) {
+		if(!world.isRemote){
+			Utils.setBlockProperty(world, pos, DEACTIVATED, false);
+		}
+	}
+
+	public void defuseMine(World world, BlockPos pos) {
+		if(!world.isRemote){
+			Utils.setBlockProperty(world, pos, DEACTIVATED, true);
+		}
+	}
+	
+	public void explode(World world, BlockPos pos) {
+		if(!world.isRemote){
+			Utils.destroyBlock(world, pos, false);
+			world.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 3.5F, true);
+		}
+	}
 	
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
@@ -139,15 +160,15 @@ public class BlockClaymore extends BlockContainer implements IHelpInfo {
     public IBlockState getStateFromMeta(int meta)
     {
     	if(meta <= 5){
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(DEACTIVATED, true);
         }else{
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
+        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(DEACTIVATED, false);
         }
     }
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
     		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
     	}else{
     		return ((EnumFacing) state.getValue(FACING)).getIndex();
@@ -156,13 +177,21 @@ public class BlockClaymore extends BlockContainer implements IHelpInfo {
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED});
+        return new BlockState(this, new IProperty[] {FACING, DEACTIVATED});
     }
+    
+    public boolean isActive(World world, BlockPos pos) {
+		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+	}
+    
+    public boolean isDefusable() {
+		return true;
+	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
 	}
-
+	
 	public String getHelpInfo() {
 		return "Claymores explode one second after a living entity walks within " + mod_SecurityCraft.configHandler.claymoreRange + " blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.";
 	}

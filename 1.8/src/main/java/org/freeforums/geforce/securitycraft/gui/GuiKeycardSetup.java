@@ -46,10 +46,9 @@ public class GuiKeycardSetup extends GuiContainer{
         this.fontRendererObj.drawString("Select the level of security that", this.xSize / 2 - this.fontRendererObj.getStringWidth("Select the level of security that") / 2 - 2, 30 - 10, 4210752);
         this.fontRendererObj.drawString("you want. Only players with a", this.xSize / 2 - this.fontRendererObj.getStringWidth("you want. Only players with a") / 2 - 11, 42 - 10, 4210752);
         this.fontRendererObj.drawString("keycard with a security level", this.xSize / 2 - this.fontRendererObj.getStringWidth("keycard with a security level") / 2 - 10, 54 - 10, 4210752);
-        this.fontRendererObj.drawString("                        the level", this.xSize / 2 - this.fontRendererObj.getStringWidth("                 the level") / 2, 66 - 5, 4210752);
-        this.fontRendererObj.drawString("you select will be able to use", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 9, 78 - 1, 4210752);
-        this.fontRendererObj.drawString("this keycard reader.", this.xSize / 2 - this.fontRendererObj.getStringWidth("you select will be able to use") / 2 - 10, 90 - 1, 4210752);
-
+        this.fontRendererObj.drawString("                          the", this.xSize / 2 - this.fontRendererObj.getStringWidth("                          the") / 2, 66 - 5, 4210752);
+        this.fontRendererObj.drawString("level you select will be able to", this.xSize / 2 - this.fontRendererObj.getStringWidth("level you select will be able to") / 2 - 6, 78 - 1, 4210752);
+        this.fontRendererObj.drawString("use this keycard reader.", this.xSize / 2 - this.fontRendererObj.getStringWidth("use this keycard reader.") / 2 - 20, 90 - 1, 4210752);
     }
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {

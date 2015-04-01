@@ -20,9 +20,9 @@ import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityIntersectable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockCageTrap extends Block implements IIntersectable, IHelpInfo{
+public class BlockCageTrap extends Block implements IIntersectable, IHelpInfo {
 
 	public final boolean deactivated;
 	private final int blockTextureIndex;
@@ -80,7 +80,7 @@ public class BlockCageTrap extends Block implements IIntersectable, IHelpInfo{
 	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityIntersectable();
+		return new TileEntityOwnable().intersectsEntities();
 	}
 
 	public String getHelpInfo() {
@@ -90,4 +90,5 @@ public class BlockCageTrap extends Block implements IIntersectable, IHelpInfo{
 	public String[] getRecipe() {
 		return new String[]{"The cage trap requires: 3 reinforced iron bars, 2 gold ingots, 1 redstone, 3 iron blocks", "WWW", "XYX", "ZZZ", "W = reinforced iron bars, X = gold ingot, Y = redstone, Z = iron block"};
 	}
+    
 }

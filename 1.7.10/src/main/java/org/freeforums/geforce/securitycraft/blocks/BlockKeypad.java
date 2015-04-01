@@ -13,9 +13,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -23,7 +24,7 @@ import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer{
+public class BlockKeypad extends BlockContainer implements IHelpInfo {
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -63,7 +64,7 @@ public class BlockKeypad extends BlockContainer{
     			return true;       		
         	}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
         		if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
-    				if(!((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty() && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
+    				if(((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode() != null && !((TileEntityKeypad)par1World.getTileEntity(par2, par3, par4)).getKeypadCode().isEmpty() && (par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Keypad && (par1World.getBlockMetadata(par2, par3, par4) <= 6 || par1World.getBlockMetadata(par2, par3, par4) >= 11))){
     					new ScheduleUpdate(par1World, 3, par2, par3, par4);
     				}
     			}else{	
@@ -204,5 +205,13 @@ public class BlockKeypad extends BlockContainer{
     {
         return new TileEntityKeypad();
     }
+    
+    public String getHelpInfo() {
+		return "The keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.";
+	}
+
+	public String[] getRecipe() {
+		return new String[]{"The keypad requires: 9 stone buttons.", "XXX", "XXX", "XXX", "X = stone button"};
+	}
 
 }

@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.items;
 
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,25 +7,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("unused")
-public class ItemModifiedBucket extends Item{
+import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.common.eventhandler.Event;
+
+public class ItemModifiedBucket extends Item implements IHelpInfo {
 	
     private Block isFull;
-	
-	@SideOnly(Side.CLIENT)
-	private IIcon bucketWater;
-	 
-	@SideOnly(Side.CLIENT)
-	private IIcon bucketLava;
 	
 	public ItemModifiedBucket(Block par1Block){
 		this.maxStackSize = 1;
@@ -226,4 +218,25 @@ public class ItemModifiedBucket extends Item{
             }
         }
     }
+    
+    public String getHelpInfo() {
+		if(isFull == mod_SecurityCraft.bogusLavaFlowing){
+			return "The fake lava acts the same as lava, except it heals you instead of hurting you.";
+		}else if(isFull == mod_SecurityCraft.bogusWaterFlowing){
+			return "The fake water acts the same as water, expect it hurts you when touched.";
+		}else{
+			return null;
+		}
+	}
+
+	public String[] getRecipe() {
+		if(isFull == mod_SecurityCraft.bogusLavaFlowing){
+			return new String[]{"The bucket of fake lava requires: 1 lava bucket, 1 healing potion.", "X", "Y", "   ", "X = healing potion, Y = lava bucket"};
+		}else if(isFull == mod_SecurityCraft.bogusWaterFlowing){
+			return new String[]{"The bucket of fake water requires: 1 water bucket, 1 harming potion.", "X", "Y", "   ", "X = harming potion, Y = water bucket"};
+		}else{
+			return null;
+		}
+	}
+	
 }

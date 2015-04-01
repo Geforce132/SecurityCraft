@@ -8,6 +8,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,14 +26,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScannerBlock;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 
-public class BlockInventoryScannerBlock extends BlockContainer{
+public class BlockInventoryScannerBlock extends BlockContainer implements IIntersectable {
     
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -97,92 +99,92 @@ public class BlockInventoryScannerBlock extends BlockContainer{
         	}
     	}
     }
-      
-    public static void checkForEntity(World par1World, BlockPos pos, Entity par5Entity){
-    	if(par5Entity instanceof EntityPlayer){   	        	
-        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
-	        	if(HelpfulMethods.checkForModule(par1World, pos.west(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+    
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+    	if(entity instanceof EntityPlayer){   	        	
+        	if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
+	        	if(HelpfulMethods.checkForModule(world, pos.west(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
         					}       					
         				}
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
-	        	if(HelpfulMethods.checkForModule(par1World, pos.east(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        	}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(world, pos.east(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
         					}       					
         				}
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
-	        	if(HelpfulMethods.checkForModule(par1World, pos.north(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        	}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(world, pos.north(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
         					}       					
         				}
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
-	        	if(HelpfulMethods.checkForModule(par1World, pos.south(), ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+        	}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
+	        	if(HelpfulMethods.checkForModule(world, pos.south(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
-        				if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) par5Entity).inventory.mainInventory[j] != null){
-        						checkInventory(((EntityPlayer) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        				if(((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
+        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
         					}       					
         				}
         			}
         		}
         	}
         //******************************************
-        }else if(par5Entity instanceof EntityItem){
-        	if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
+        }else if(entity instanceof EntityItem){
+        	if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
-        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
-        				if(((EntityItem) par5Entity).getEntityItem() != null){
-        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.west())).getStackInSlotCopy(i));
+        			if(((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
         				}       					
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
+        	}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
-        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
-        				if(((EntityItem) par5Entity).getEntityItem() != null){
-        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.east())).getStackInSlotCopy(i));
+        			if(((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
         				}       					
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
+        	}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
-        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
-        				if(((EntityItem) par5Entity).getEntityItem() != null){
-        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.north())).getStackInSlotCopy(i));
+        			if(((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
         				}       					
         			}
         		}
-        	}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
+        	}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
-        			if(((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
-        				if(((EntityItem) par5Entity).getEntityItem() != null){
-        					checkEntity(((EntityItem) par5Entity), ((TileEntityInventoryScanner)par1World.getTileEntity(pos.south())).getStackInSlotCopy(i));
+        			if(((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
+        				if(((EntityItem) entity).getEntityItem() != null){
+        					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
         				}       					
         			}
         		}
         	}
         }
-    }  
-    
+	}
+      
     public static void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
 //    	Block block = null;
 //		Item item = null;
@@ -331,7 +333,7 @@ public class BlockInventoryScannerBlock extends BlockContainer{
     }
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityInventoryScannerBlock();
+		return new TileEntitySCTE().intersectsEntities();
 	}
    
 }

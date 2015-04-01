@@ -281,5 +281,4 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
 	}
 
-
 }

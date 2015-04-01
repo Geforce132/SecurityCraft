@@ -5,9 +5,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 
+import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
 {
@@ -254,8 +255,12 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		}
 	}
 
-	protected EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART};
 	}
     
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory."};
+	}
+	
 }

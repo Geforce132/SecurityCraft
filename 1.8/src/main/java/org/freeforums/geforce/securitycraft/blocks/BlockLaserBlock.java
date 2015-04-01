@@ -65,6 +65,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
     private void setLaser(World par1World, BlockPos pos) {
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.east(i)).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.east(j)).getBlock() == Blocks.air){
@@ -78,6 +79,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(new BlockPos(pos.west(i))).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.west(j)).getBlock() == Blocks.air){
@@ -91,6 +93,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.south(i)).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.south(j)).getBlock() == Blocks.air){
@@ -104,6 +107,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.north(i)).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.north(j)).getBlock() == Blocks.air){
@@ -117,6 +121,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.up(i)).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.up(j)).getBlock() == Blocks.air){
@@ -130,6 +135,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.down(i)).getBlock();
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.down(j)).getBlock() == Blocks.air){
@@ -241,14 +247,6 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
 				continue;
 			}
 		}
-    }
-    
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
-        return true;
     }
     
     /**

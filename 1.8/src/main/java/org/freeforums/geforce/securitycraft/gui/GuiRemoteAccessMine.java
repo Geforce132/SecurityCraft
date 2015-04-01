@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -60,15 +61,15 @@ public class GuiRemoteAccessMine extends GuiContainer{
 	 protected void actionPerformed(GuiButton guibutton){
 		 switch(guibutton.id){
 		 case 0:
-			 ItemRemoteAccess.playerObj.openGui(mod_SecurityCraft.instance, 6, ItemRemoteAccess.worldObj, (int) ItemRemoteAccess.playerObj.posX, (int) ItemRemoteAccess.playerObj.posY, (int) ItemRemoteAccess.playerObj.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 6, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 case 1:
-			 ItemRemoteAccess.playerObj.openGui(mod_SecurityCraft.instance, 7, ItemRemoteAccess.worldObj, (int) ItemRemoteAccess.playerObj.posX, (int) ItemRemoteAccess.playerObj.posY, (int) ItemRemoteAccess.playerObj.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 7, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 case 2:
-			 ItemRemoteAccess.playerObj.openGui(mod_SecurityCraft.instance, 8, ItemRemoteAccess.worldObj, (int) ItemRemoteAccess.playerObj.posX, (int) ItemRemoteAccess.playerObj.posY, (int) ItemRemoteAccess.playerObj.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 8, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 }

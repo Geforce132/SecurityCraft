@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -10,7 +11,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	private String username;
 	private String customName;
 	
-	private int cooldown = 0;
+	public int cooldown = 0;
 	
 	
 	/**
@@ -32,12 +33,17 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
      */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        super.readFromNBT(par1NBTTagCompound);
-       
+        super.readFromNBT(par1NBTTagCompound);   
+        
+        if (par1NBTTagCompound.hasKey("username"))
+        {
+            this.username = par1NBTTagCompound.getString("username");
+        }
+        
         if (par1NBTTagCompound.hasKey("owner"))
         {
             this.username = par1NBTTagCompound.getString("owner");
-        }        
+        }     
         
         if (par1NBTTagCompound.hasKey("customName")){
         	this.customName = par1NBTTagCompound.getString("customName");
@@ -54,16 +60,19 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setString("owner", this.username);
-        par1NBTTagCompound.setInteger("cooldown", this.cooldown);
         
+        if(this.username != null && !this.username.isEmpty()){
+        	par1NBTTagCompound.setString("username", this.getOwnerName());
+        }
+          
         if(this.customName != null && !this.customName.isEmpty()){
         	par1NBTTagCompound.setString("customName", this.customName);
         }
 
+        par1NBTTagCompound.setInteger("cooldown", this.cooldown);
     }
-
-	public void setUsername(String username) {
+    
+    public void setUsername(String username) {
 		this.username = username;
 	}
 	
@@ -83,8 +92,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 		return (this.customName != null && !this.customName.isEmpty()) ? true : false;
 	}
 
-	protected EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.REDSTONE};
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};
+	}
+
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Redstone module:" + EnumChatFormatting.RESET + "\n\nAdding a redstone module to a portable radar will cause the radar to emit a redstone signal whenever a player is within range.", EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a portable radar will remove the whitelisted players from the radar's search."};
 	}
 
 }

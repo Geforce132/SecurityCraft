@@ -3,13 +3,13 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -17,20 +17,19 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
-public class BlockMine extends BlockContainer implements IHelpInfo{
+public class BlockMine extends BlockExplosive implements IHelpInfo {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
@@ -66,8 +65,7 @@ public class BlockMine extends BlockContainer implements IHelpInfo{
 	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
-	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5)
-	{
+	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5){
 		if (par1World.getBlockState(pos.down()).getBlock().getMaterial() != Material.air){
 			return;  	   
 		}else{    	   
@@ -78,8 +76,7 @@ public class BlockMine extends BlockContainer implements IHelpInfo{
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
-	public boolean canPlaceBlockAt(World par1World, BlockPos pos)
-	{
+	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
 		if(Utils.getBlockMaterial(par1World, pos.down()) == Material.glass || Utils.getBlockMaterial(par1World, pos.down()) == Material.cactus || Utils.getBlockMaterial(par1World, pos.down()) == Material.air || Utils.getBlockMaterial(par1World, pos.down()) == Material.cake || Utils.getBlockMaterial(par1World, pos.down()) == Material.plants){
 			return false;
 		}else{
@@ -120,62 +117,37 @@ public class BlockMine extends BlockContainer implements IHelpInfo{
 		}
 
 	}  
-
-	private void setPosition(ItemRemoteAccess par1Item, BlockPos pos, TileEntityMineLoc TEML, EntityPlayer par6EntityPlayer) {	   
-		if(this.isFullArray(par1Item)){
-			HelpfulMethods.sendMessageToPlayer(par6EntityPlayer, "No avaliable slots to bind the mine to!", EnumChatFormatting.RED);
-			return;
-		}
-
-		for(int x = 1; x <= par1Item.tEList.length; x++){
-			if(par1Item.tEList[x - 1] != null && par1Item.tEList[x - 1].getPos() == pos){
-				HelpfulMethods.sendMessageToPlayer(par6EntityPlayer, par6EntityPlayer.getName() + " unbound a mine at " + Utils.getFormattedCoordinates(pos) + ".", null);
-				par1Item.tEList[x - 1] = null;
-				break;
-			}else if(par1Item.tEList[x - 1] == null){
-				par1Item.tEList[x - 1] = TEML;
-				HelpfulMethods.sendMessageToPlayer(par6EntityPlayer, par6EntityPlayer.getName() + " bound a mine at " + Utils.getFormattedCoordinates(pos) + ".", null);
-				break;
-			}
-		}
-
-	}
-
-	private boolean isFullArray(ItemRemoteAccess par1Item) {
-
-		for(int x = 1; x <= par1Item.tEList.length; x++){
-			if(par1Item.tEList[x - 1] == null){
-				return false;
-			}else{
-				continue;
-			}
-		}
-
-		return true;
-
-
-
-	}
+	
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity)
-	{
+	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
 		if(par1World.isRemote){
 			return;
 		}else{
-
 			if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem){
 				return;
 			}else{
 				this.explode(par1World, pos);
 			}  		
 		}
-
+	}
+	
+	public void activateMine(World world, BlockPos pos) {
+		if(!world.isRemote){
+			Utils.setBlockProperty(world, pos, DEACTIVATED, false);
+		}
 	}
 
-	private void explode(World par1World, BlockPos pos) {
+	public void defuseMine(World world, BlockPos pos) {
+		if(!world.isRemote){
+			Utils.setBlockProperty(world, pos, DEACTIVATED, true);
+		}
+	}
+
+	public void explode(World par1World, BlockPos pos) {
 		if(par1World.isRemote){ return; }
 
 		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
@@ -216,6 +188,14 @@ public class BlockMine extends BlockContainer implements IHelpInfo{
 	{
 		return new BlockState(this, new IProperty[] {DEACTIVATED});
 	}
+	
+	public boolean isActive(World world, BlockPos pos) {
+		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+	}
+	
+	public boolean isDefusable() {
+		return true;
+	}      
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityMineLoc();
@@ -227,6 +207,6 @@ public class BlockMine extends BlockContainer implements IHelpInfo{
 
 	public String[] getRecipe() {
 		return new String[]{"The mine requires: 3 iron ingots, 1 gunpowder", " X ", "XYX", "   ", "X = iron ingot, Y = gunpowder"};
-	}      
+	}
 
 }

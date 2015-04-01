@@ -25,15 +25,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.apache.commons.lang3.Validate;
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
-public class BlockPortableRadar extends BlockContainer implements IHelpInfo{
+public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 	
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	
@@ -77,7 +79,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo{
             AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0).addCoord(0.0D, (double) par1World.getHeight(), 0.0D);
             List list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
             Iterator iterator = list.iterator();
-            EntityPlayer entityplayer;
+            EntityPlayer entityplayer;                 
             
             if(list.isEmpty()){
             	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) && ((Boolean) state.getValue(POWERED)).booleanValue()){
@@ -85,11 +87,18 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo{
             		return;
                 }
             }
+            
+            if(!((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
+            	this.togglePowerOutput(par1World, pos, false);
+            }
 
             while (iterator.hasNext()){      
             	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername());            
                 
                 entityplayer = (EntityPlayer)iterator.next();
+                
+                System.out.println(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername());
+                if(entityplayermp != null && HelpfulMethods.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername())){
                 	HelpfulMethods.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
@@ -116,18 +125,19 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo{
     }
 
     private void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
-		if(par5){
-			Utils.setBlockProperty(par1World, pos, POWERED, true);
-		}else{
-			Utils.setBlockProperty(par1World, pos, POWERED, false);
+    	if(par5 && !((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
+			Utils.setBlockProperty(par1World, pos, POWERED, true, true);
+			HelpfulMethods.updateAndNotify(par1World, pos, Utils.getBlock(par1World, pos), 1, false);
+		}else if(!par5 && ((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
+			Utils.setBlockProperty(par1World, pos, POWERED, false, true);
+			HelpfulMethods.updateAndNotify(par1World, pos, Utils.getBlock(par1World, pos), 1, false);
 		}
-		
-		HelpfulMethods.updateAndNotify(par1World, pos, Utils.getBlock(par1World, pos), 1, false);
 	}     
 
 	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	((TileEntityPortableRadar)par1World.getTileEntity(pos)).setUsername(((EntityPlayer)par5EntityLivingBase).getName());
-    }
+		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());       
+	}
 	
     public boolean canProvidePower()
     {

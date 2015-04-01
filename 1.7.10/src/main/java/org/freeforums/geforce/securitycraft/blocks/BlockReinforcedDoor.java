@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -27,9 +26,9 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockReinforcedDoor extends BlockContainer
-{
-    @SideOnly(Side.CLIENT)
+public class BlockReinforcedDoor extends BlockContainer{
+    
+	@SideOnly(Side.CLIENT)
     private IIcon[] field_150017_a;
     @SideOnly(Side.CLIENT)
     private IIcon[] field_150016_b;
@@ -37,9 +36,7 @@ public class BlockReinforcedDoor extends BlockContainer
     public BlockReinforcedDoor(Material p_i45402_1_)
     {
         super(p_i45402_1_);
-        float f = 0.5F;
-        float f1 = 1.0F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+        this.isBlockContainer = true;
     }
 
     /**
@@ -472,7 +469,7 @@ public class BlockReinforcedDoor extends BlockContainer
     
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
     {
-		return mod_SecurityCraft.doorIndestructableIronItem;
+    	return (p_149650_1_ & 8) != 0 ? null : mod_SecurityCraft.doorIndestructableIronItem;
     }
 
     /**

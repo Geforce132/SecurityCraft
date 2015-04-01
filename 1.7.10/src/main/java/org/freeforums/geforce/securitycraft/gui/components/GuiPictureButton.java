@@ -56,8 +56,8 @@ public class GuiPictureButton extends GuiButton{
             }else{
  	            GL11.glEnable(GL11.GL_LIGHTING);
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 1);
+	            itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2);
 	            GL11.glDisable(GL11.GL_LIGHTING);
             }
 
