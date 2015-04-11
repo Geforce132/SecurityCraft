@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
@@ -19,11 +21,12 @@ import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLaser extends Block{
+public class BlockLaser extends BlockContainer {
 	
 	@SideOnly(Side.CLIENT)
 	private IIcon transparentIcon;
@@ -342,5 +345,11 @@ public class BlockLaser extends Block{
     {
         return null;
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return new TileEntityOwnable();
+	}
 
 }

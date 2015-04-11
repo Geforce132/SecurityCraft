@@ -23,129 +23,178 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("static-access")
 public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
-	    
+
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
 	}
-	
+
 	/**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
-        super.onBlockAdded(par1World, par2, par3, par4);
-    }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
-    	((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+	 * Called whenever the block is added into the world. Args: world, x, y, z
+	 */
+	public void onBlockAdded(World par1World, int par2, int par3, int par4)
+	{
+		super.onBlockAdded(par1World, par2, par3, par4);
+	}
 
-        if(!par1World.isRemote){
-        	this.setLaser(par1World, par2, par3, par4);
-        }
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
+	{
+		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 
-    }
+		if(!par1World.isRemote){
+			this.setLaser(par1World, par2, par3, par4, par5EntityLivingBase);
+		}
 
-    private void setLaser(World par1World, int par2, int par3, int par4) {
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+	}
+
+	private void setLaser(World par1World, int par2, int par3, int par4, EntityLivingBase elb)
+	{
+		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2 + i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air)
+					{
 						par1World.setBlock(par2 + j, par3, par4, mod_SecurityCraft.Laser, 3, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2 + j, par3, par4)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
-		
-		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2 - i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air)
+					{
 						par1World.setBlock(par2 - j, par3, par4, mod_SecurityCraft.Laser, 3, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2 - j, par3, par4)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
-		
-		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2, par3, par4 + i);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air)
+					{
 						par1World.setBlock(par2, par3, par4 + j, mod_SecurityCraft.Laser, 2, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4 + j)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
-		
-		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air)
+					{
 						par1World.setBlock(par2, par3, par4 - j, mod_SecurityCraft.Laser, 2, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4 - j)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
-		
-		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2, par3 + i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air)
+					{
 						par1World.setBlock(par2, par3 + j, par4, mod_SecurityCraft.Laser, 1, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2, par3 + j, par4)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
-		
-		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++)
+		{
 			Block id = par1World.getBlock(par2, par3 - i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
-				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air){
+
+			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock)
+				break;
+
+			if(id == mod_SecurityCraft.LaserBlock)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air)
+					{
 						par1World.setBlock(par2, par3 - j, par4, mod_SecurityCraft.Laser, 1, 3);
+						((TileEntityOwnable)par1World.getTileEntity(par2, par3 - j, par4)).setOwner(((EntityPlayer) elb).getGameProfile().getId().toString(), elb.getCommandSenderName());
 					}
 				}
-			}else{
-				continue;
 			}
+			else
+				continue;
 		}
 	}
-    
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
-    public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5) {
-    	if(!par1World.isRemote){
-    		destroyAdjecentLasers(par1World, par2, par3, par4);
-    	}
-    }
-    
-    public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
-    	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+
+	/**
+	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
+	 */
+	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5) {
+		if(!par1World.isRemote){
+			destroyAdjecentLasers(par1World, par2, par3, par4);
+		}
+	}
+
+	public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
+		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
@@ -159,7 +208,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-		
+
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
@@ -174,7 +223,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-		
+
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
 			if(id == mod_SecurityCraft.LaserBlock){
@@ -189,7 +238,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-		
+
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
 			if(id == mod_SecurityCraft.LaserBlock){
@@ -204,7 +253,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-		
+
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
@@ -219,7 +268,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-		
+
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
@@ -234,75 +283,75 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 				continue;
 			}
 		}
-    }
-    
-    /**
-     * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-     * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-     * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-    	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
-    		return 15;
-    	}else{
-    		return 0;
-    	}
-    }
-    
-    /**
-     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-     * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-    	
-    	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
-    		return 15;
-    	}else{
-    		return 0;
-    	}
-    }
-    
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2){
-        	par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
-        }                      
-    }
-    
-    @SideOnly(Side.CLIENT)
+	}
 
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        
-            if(par1World.getBlockMetadata(par2, par3, par4) == 2){
-            double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d3 = 0.2199999988079071D;
-            double d4 = 0.27000001072883606D;
+	/**
+	 * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
+	 * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
+	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 */
+	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
+			return 15;
+		}else{
+			return 0;
+		}
+	}
 
-            
-            par1World.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-            par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-        }
-        
-    }
+	/**
+	 * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
+	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
+	 */
+	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	{
+
+		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
+			return 15;
+		}else{
+			return 0;
+		}
+	}
+
+	/**
+	 * Ticks the block if it's been scheduled
+	 */
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	{
+		if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2){
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+		}                      
+	}
+
+	@SideOnly(Side.CLIENT)
+
+	/**
+	 * A randomly called display update to be able to add particles or other items for display
+	 */
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	{
+
+		if(par1World.getBlockMetadata(par2, par3, par4) == 2){
+			double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d3 = 0.2199999988079071D;
+			double d4 = 0.27000001072883606D;
+
+
+			par1World.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
+			par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+		}
+
+	}
 
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock();
 	}
-	
+
 	public String getHelpInfo() {
 		return "The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.";
 	}
@@ -310,5 +359,5 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 	public String[] getRecipe() {
 		return new String[]{"The laser block requires: 7 stone, 1 block of redstone, 1 glass pane", "XXX", "XYX", "XZX", "X = stone, Y = block of redstone, Z = glass pane"};
 	}
-	
+
 }
