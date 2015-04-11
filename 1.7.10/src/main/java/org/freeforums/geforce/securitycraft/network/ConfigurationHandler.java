@@ -428,7 +428,7 @@ public class ConfigurationHandler{
 			});
 			
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
-				"III", "IBI", "IPI", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keyPanel
+				"III", "IBI", "IPI", 'I', Items.iron_ingot, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keyPanel
 			});
 		}
 		
