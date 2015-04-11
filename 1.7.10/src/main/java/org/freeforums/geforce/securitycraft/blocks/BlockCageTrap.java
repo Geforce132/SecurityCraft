@@ -2,7 +2,6 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -21,7 +20,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockCageTrap extends Block implements IHelpInfo {
+public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
 	
 	public final boolean deactivated;
 	private final int blockTextureIndex;

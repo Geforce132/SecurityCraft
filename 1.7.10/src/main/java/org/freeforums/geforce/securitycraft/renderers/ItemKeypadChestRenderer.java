@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.entity;
+package org.freeforums.geforce.securitycraft.renderers;
 
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;

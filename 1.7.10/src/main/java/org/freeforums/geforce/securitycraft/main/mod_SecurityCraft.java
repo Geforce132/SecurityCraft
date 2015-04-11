@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.main;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -68,7 +69,7 @@ public class mod_SecurityCraft {
 
 	private GuiHandler GuiHandler = new GuiHandler();
 	
-	private SCIRCBot ircBot;
+	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	private NBTTagCompound savedModule;
 	
 	public static Configuration configFile;
@@ -115,6 +116,10 @@ public class mod_SecurityCraft {
 	public static Block reinforcedFencegate;
 	public static Block reinforcedWoodPlanks;
 	public static Block panicButton;
+	public static Block keypadFrame;
+	public static Block claymoreActive;
+	public static Block claymoreDefused;
+	public static Block keypadFurnace;
 
 	public static BlockEMPedWire empedWire;
 	
@@ -221,12 +226,16 @@ public class mod_SecurityCraft {
 		return VERSION;
 	}
 	
-	public SCIRCBot getIrcBot() {
-		return ircBot;
+	public SCIRCBot getIrcBot(String playerName) {
+		return ircBots.get(playerName);
 	}
 
-	public void setIrcBot(SCIRCBot ircBot) {
-		this.ircBot = ircBot;
+	public void setIrcBot(String playerName) {
+		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
+	}
+	
+	public void removeIrcBot(String playerName){
+		ircBots.remove(playerName);
 	}
 
 	public NBTTagCompound getSavedModule() {

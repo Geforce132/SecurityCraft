@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class BlockSecurityCamera extends BlockContainer{
@@ -46,12 +47,12 @@ public class BlockSecurityCamera extends BlockContainer{
      * Called upon block activation (right click on the block.)
      */
     public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(par1World.isRemote){
-    		return true;
-    	}else{
+    	if(!par1World.isRemote && (par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor))){
     		this.mountCamera(par1World, pos, (EnumFacing) par1World.getBlockState(pos).getValue(FACING), par5EntityPlayer);
     		return true;
     	}
+    	
+    	return false;
     }
 	    
     private void mountCamera(World world, BlockPos pos, EnumFacing dir, EntityPlayer player) {

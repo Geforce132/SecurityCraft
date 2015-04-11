@@ -16,11 +16,11 @@ public class ItemWithInfo extends Item implements IHelpInfo {
 	}
 
 	public String getHelpInfo() {
-		return null;
+		return info;
 	}
 
 	public String[] getRecipe() {
-		return null;
+		return recipe;
 	}
 
 }

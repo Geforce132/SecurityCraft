@@ -131,7 +131,7 @@ public class HelpfulMethods {
 		
 		return null;
 	}
-	
+		
 	public static String removeLastChar(String par1){
 		if(par1 == null || par1.isEmpty()){ return ""; }
 		

@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.main;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
@@ -66,7 +67,7 @@ public class mod_SecurityCraft {
 
 	private GuiHandler GuiHandler = new GuiHandler();
 	
-	private SCIRCBot ircBot;
+	private HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	private NBTTagCompound savedModule;
 	
 	public static Configuration configFile;
@@ -230,12 +231,16 @@ public class mod_SecurityCraft {
 		return VERSION;
 	}
 	
-	public SCIRCBot getIrcBot() {
-		return ircBot;
+	public SCIRCBot getIrcBot(String playerName) {
+		return ircBots.get(playerName);
 	}
 
-	public void setIrcBot(SCIRCBot ircBot) {
-		this.ircBot = ircBot;
+	public void setIrcBot(String playerName) {
+		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
+	}
+	
+	public void removeIrcBot(String playerName) {
+		ircBots.remove(playerName);
 	}
 
 	public NBTTagCompound getSavedModule() {

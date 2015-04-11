@@ -1,14 +1,11 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -87,18 +84,6 @@ public class BlockFullMineBase extends BlockExplosive implements IHelpInfo {
 	public boolean canDropFromExplosion(Explosion par1Explosion)
 	{
 		return false;
-	}
-
-	/**
-	 * Returns the quantity of items to drop on block destruction.
-	 */
-	public int quantityDropped(Random par1Random)
-	{
-		return 0;
-	}
-
-	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return null;
 	}
 	
 	public boolean isActive(World world, int par2, int par3, int par4) {

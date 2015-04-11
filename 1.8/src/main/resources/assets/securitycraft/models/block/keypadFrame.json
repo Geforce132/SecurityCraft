@@ -3,7 +3,7 @@
     "ambientocclusion": false,
     "textures": {
         "stone": "blocks/stone",
-        "keypadFrameFront": "securitycraft:blocks/keypadFrameFront",
+        "keypadFrameFront": "blocks/stone",
         "particle": "blocks/stone"
     },
         "elements": [

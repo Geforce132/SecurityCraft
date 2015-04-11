@@ -54,6 +54,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
+		mod_SecurityCraft.instance.setIrcBot(event.player.getCommandSenderName());
 		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -63,16 +64,14 @@ public class ForgeEventHandler {
 	
 	private String getRandomTip(){
     	Random random = new Random();
-    	int randomInt = random.nextInt(4);
+    	int randomInt = random.nextInt(3);
     	
     	if(randomInt == 0){
-    		return "Check out " + EnumChatFormatting.ITALIC + "geforce.freeforums.org" + EnumChatFormatting.RESET + " for new updates, news, reporting bugs, and more!";
+    		return "Join breakinbad.net, the official SecurityCraft server!";
     	}else if(randomInt == 1){
-    		return "Use the command '/sc' to get information on different things this mod adds. /sc recipe laserblock will display the recipe for the laser block.";
+    		return "/sc recipe will display the recipe for SecurityCraft blocks/items.";
     	}else if(randomInt == 2){
-    		return "Use the command '/sc' to get information on different things this mod adds. /sc help codebreaker will display a description on the codebreaker.";
-    	}else if(randomInt == 3){
-    		return "Join my IRC channel " + EnumChatFormatting.ITALIC + "#GeforceMods" + EnumChatFormatting.RESET + " on EsperNet to chat with me for support and discussion on mods I have made.";
+    		return "/sc help will display help info for SecurityCraft blocks/items.";
     	}else{
     		return "";
     	}
@@ -101,11 +100,11 @@ public class ForgeEventHandler {
 		event.setResult(Result.ALLOW);
 	}
 	
-	@SubscribeEvent //TODO I used the Unload event before.
+	@SubscribeEvent
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot() != null){
-			mod_SecurityCraft.instance.getIrcBot().disconnect();
-			mod_SecurityCraft.instance.setIrcBot(null);
+		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
+			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
+			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
 		}
 			
 	}

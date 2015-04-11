@@ -19,6 +19,7 @@ import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -68,10 +69,13 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 		String code1 = "";
 		String code2 = "";
+		String code3 = "";
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad){
 			code1 = ((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest){
 			code2 = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
+		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadFurnace){
+			code3 = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getKeypadCode();
 		}
 
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code.matches(code1)){
@@ -82,7 +86,13 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code.matches(code2)){
 			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
-			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getChestInventory(getWorld(par1EntityPlayer), x, y, z)); //((TileEntityKeypadChest) getWorld().getTileEntity(x, y, z))
+			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getChestInventory(getWorld(par1EntityPlayer), x, y, z)); 
+			return null;
+		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadFurnace && code.matches(code3)){
+			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			((EntityPlayerMP) par1EntityPlayer).closeScreen();
+			((EntityPlayerMP) par1EntityPlayer).openGui(mod_SecurityCraft.instance, 16, getWorld(par1EntityPlayer), x, y, z); 
+			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(x, y, z, getWorld(par1EntityPlayer).getBlockMetadata(x, y, z) + 5, 3);
 			return null;
 		}
 		

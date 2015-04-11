@@ -7,8 +7,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityOwnable extends TileEntitySCTE{
 	
-	private String ownerUUID;
-	private String owner;
+	private String ownerUUID = "ownerUUID";
+	private String owner = "owner";
 
 	
 	public String getOwnerName(){

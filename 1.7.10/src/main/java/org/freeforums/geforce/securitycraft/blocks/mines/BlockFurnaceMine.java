@@ -2,24 +2,32 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpInfo {
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpInfo {
+
+	@SideOnly(Side.CLIENT)
+    private IIcon field_149935_N;
+    @SideOnly(Side.CLIENT)
+    private IIcon field_149936_O;
+    
 	public BlockFurnaceMine(Material par2Material) {
-		super(false);
+		super(par2Material);
 	}
 
 	/**
@@ -75,18 +83,22 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 	{
 		return false;
 	}
+	
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2){
+		if(par1 == 3 && par2 == 0){
+    		return this.field_149936_O;
+    	}
+		
+        return par1 == 1 ? this.field_149935_N : (par1 == 0 ? this.field_149935_N : (par1 != par2 ? this.blockIcon : this.field_149936_O));
+    }
 
-	/**
-	 * Returns the quantity of items to drop on block destruction.
-	 */
-	public int quantityDropped(Random par1Random)
-	{
-		return 0;
-	}
-
-	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return null;
-	}
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_){  	
+        this.blockIcon = p_149651_1_.registerIcon("furnace_side");
+        this.field_149936_O = p_149651_1_.registerIcon("furnace_front_off");
+        this.field_149935_N = p_149651_1_.registerIcon("furnace_top");
+    }
 
 	public boolean isActive(World world, int par2, int par3, int par4) {
 		return true;
@@ -94,11 +106,6 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 
 	public boolean isDefusable() {
 		return false;
-	}
-
-	public TileEntity createNewTileEntity(World worldIn, int meta)
-	{
-		return new TileEntityOwnable();
 	}
 
 	public String getHelpInfo() {

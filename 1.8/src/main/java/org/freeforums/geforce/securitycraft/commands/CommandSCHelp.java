@@ -90,11 +90,9 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		
 		if(par1String.length == 1){
 			if(par1String[0].matches("connect")){
-				
-				mod_SecurityCraft.instance.setIrcBot(new SCIRCBot("SCUser_" + icommandsender.getName()));	
-				
+								
 				try{
-					mod_SecurityCraft.instance.getIrcBot().connectToChannel();
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
 					sendMessageToPlayer("Error occurred when connecting to IRC. Do you have internet access, and access to the IRC server 'irc.esper.net'?", icommandsender);
@@ -103,8 +101,8 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 				
 				sendMessageToPlayer("Bot connected successfully. You may now report bugs using '/sc bug <bug to report>' or contact me using '/sc contact <message>", icommandsender);
 			}else if(par1String[0].matches("disconnect")){
-				if(mod_SecurityCraft.instance.getIrcBot() != null){
-					mod_SecurityCraft.instance.getIrcBot().disconnect();
+				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).disconnect();
 				}
 					
 				mod_SecurityCraft.instance.setIrcBot(null); 
@@ -150,15 +148,15 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("bug")){
-				if(mod_SecurityCraft.instance.getIrcBot() != null){
-					mod_SecurityCraft.instance.getIrcBot().sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + " bug] Geforce: "  + getMessageFromArray(par1String, 1));
+				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + " bug] Geforce: "  + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
 				}else{
 					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);
 				}
 			}else if(par1String[0].matches("contact")){
-				if(mod_SecurityCraft.instance.getIrcBot() != null){
-					mod_SecurityCraft.instance.getIrcBot().sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + "] Geforce: " + getMessageFromArray(par1String, 1));
+				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + "] Geforce: " + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
 				}else{
 					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);

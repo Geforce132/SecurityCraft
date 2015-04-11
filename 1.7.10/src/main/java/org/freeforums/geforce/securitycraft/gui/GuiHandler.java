@@ -5,11 +5,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeycardSetup;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypad;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadChest;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadChestSetup;
+import org.freeforums.geforce.securitycraft.containers.ContainerKeypadFurnace;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadSetup;
 import org.freeforums.geforce.securitycraft.containers.ContainerLogger;
 import org.freeforums.geforce.securitycraft.containers.ContainerRAMActivate;
@@ -24,6 +26,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanne
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
@@ -39,7 +42,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		
-		if(tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14){
+		if(tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14 || ID == 15 || ID == 16){
 			//Is securitycraft TE.
 		}else{
 			//Is not securitycraft TE.
@@ -89,6 +92,15 @@ public class GuiHandler implements IGuiHandler {
     	case 13:
     		return new ContainerKeypadChest(player.inventory, (TileEntityKeypadChest) tile_entity);
     	
+    	case 14:
+    		return new ContainerGeneric(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    		
+    	case 15:
+    		return new ContainerGeneric(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    		
+    	case 16:
+    		return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    		
     		
     	case 100:
         	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
@@ -101,7 +113,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		
-		if((tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest) || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14){
+		if((tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest) || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14 || ID == 15 || ID == 16){
 			//Is securitycraft TE.
 		}else{
 			//Is not securitycraft TE.
@@ -151,13 +163,22 @@ public class GuiHandler implements IGuiHandler {
     	case 13:
     		return new GuiKeypadChest(player.inventory, (TileEntityKeypadChest) tile_entity);
     		
+    	case 14:
+    		return new GuiKeypadFurnaceSetup(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    		
+    	case 15:
+    		return new GuiKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    		
+    	case 16:
+    		return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+    	
     		
     	case 100:
     		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
     		
     	default:
         	return null;
-	}
+		}
 	}
 
 }

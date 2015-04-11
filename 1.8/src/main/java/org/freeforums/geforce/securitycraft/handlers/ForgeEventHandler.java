@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,6 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -54,6 +56,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
+		mod_SecurityCraft.instance.setIrcBot(event.player.getName());
 		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -75,6 +78,16 @@ public class ForgeEventHandler {
     		return "";
     	}
     }
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void renderGameOverlay(RenderGameOverlayEvent event){
+		if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor){
+			Minecraft.getMinecraft().fontRendererObj.drawString("Camera X: " + Math.floor(Minecraft.getMinecraft().thePlayer.posX), 10, 10, 0xffffff);
+			Minecraft.getMinecraft().fontRendererObj.drawString("Camera Y: " + Math.floor(Minecraft.getMinecraft().thePlayer.posY), 10, 20, 0xffffff);
+			Minecraft.getMinecraft().fontRendererObj.drawString("Camera Z: " + Math.floor(Minecraft.getMinecraft().thePlayer.posZ), 10, 30, 0xffffff);
+		}
+	}
 	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
@@ -100,11 +113,11 @@ public class ForgeEventHandler {
 		
 	}
 	
-	@SubscribeEvent //TODO I used the Unload event before.
+	@SubscribeEvent 
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot() != null){
-			mod_SecurityCraft.instance.getIrcBot().disconnect();
-			mod_SecurityCraft.instance.setIrcBot(null);
+		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getName()) != null){
+			mod_SecurityCraft.instance.getIrcBot(event.player.getName()).disconnect();
+			mod_SecurityCraft.instance.removeIrcBot(event.player.getName());
 		}
 			
 	}
@@ -259,7 +272,7 @@ public class ForgeEventHandler {
     }
   
 	private boolean isOwnableBlock(Block par1Block){
-    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton || par1Block == mod_SecurityCraft.FurnaceMine || par1Block == mod_SecurityCraft.portableRadar || par1Block instanceof BlockOwnable || par1Block instanceof IOwnable){
+    	if(par1Block == mod_SecurityCraft.doorIndestructableIron || par1Block == mod_SecurityCraft.keypad || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.retinalScanner || par1Block == mod_SecurityCraft.reinforcedGlass || par1Block == mod_SecurityCraft.alarm || par1Block == mod_SecurityCraft.reinforcedStone || par1Block == mod_SecurityCraft.unbreakableIronBars || par1Block == mod_SecurityCraft.reinforcedFencegate || par1Block == mod_SecurityCraft.LaserBlock || par1Block == mod_SecurityCraft.keypadChest || par1Block == mod_SecurityCraft.reinforcedPlanks_Oak || par1Block == mod_SecurityCraft.reinforcedPlanks_Spruce || par1Block == mod_SecurityCraft.reinforcedPlanks_Birch || par1Block == mod_SecurityCraft.reinforcedPlanks_Jungle || par1Block == mod_SecurityCraft.reinforcedPlanks_Acadia || par1Block == mod_SecurityCraft.reinforcedPlanks_DarkOak || par1Block == mod_SecurityCraft.keycardReader || par1Block == mod_SecurityCraft.ironTrapdoor || par1Block == mod_SecurityCraft.keypadFurnace || par1Block == mod_SecurityCraft.panicButton || par1Block == mod_SecurityCraft.FurnaceMine || par1Block == mod_SecurityCraft.usernameLogger || par1Block == mod_SecurityCraft.portableRadar || par1Block instanceof BlockOwnable || par1Block instanceof IOwnable){
     		return true;
     	}else{
     		return false;

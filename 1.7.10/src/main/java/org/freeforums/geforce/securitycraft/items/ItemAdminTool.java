@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -19,6 +20,10 @@ public class ItemAdminTool extends ItemWithInfo {
 
 	public ItemAdminTool(String info, String[] recipe) {
 		super(info, recipe);
+		
+		if(mod_SecurityCraft.configHandler.allowAdminTool){
+			this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		}
 	}
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){

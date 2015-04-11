@@ -8,6 +8,7 @@ import java.util.Scanner;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,6 +38,7 @@ import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 
 public class HelpfulMethods {
@@ -655,6 +657,16 @@ public class HelpfulMethods {
 		}
 		
 		return tempBoolean;
+	}
+	
+	public static void setCameraZoom(double zoom){
+		if(zoom <= 0){
+			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1.0D, 46);
+			return;
+		}
+		
+		double tempZoom = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 46);
+		ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, tempZoom + zoom, 46);
 	}
 	
 //	private static void bookCode(){

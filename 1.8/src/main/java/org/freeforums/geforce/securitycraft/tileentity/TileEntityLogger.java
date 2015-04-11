@@ -13,7 +13,7 @@ import net.minecraft.util.AxisAlignedBB;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
 
-public class TileEntityLogger extends TileEntitySCTE {
+public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	

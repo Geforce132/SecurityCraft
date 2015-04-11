@@ -57,8 +57,8 @@ public class SCIRCBot extends PircBot{
     }
 	
 	protected void onKick(String channel, String user, String login, String hostname, String userKicked, String reason){
-    	if(mod_SecurityCraft.instance.getIrcBot() != null){
-			mod_SecurityCraft.instance.getIrcBot().disconnect();
+    	if(mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")) != null){
+			mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 		}
 			
 		mod_SecurityCraft.instance.setIrcBot(null);

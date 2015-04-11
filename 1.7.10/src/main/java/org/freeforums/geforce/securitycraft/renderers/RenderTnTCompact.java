@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.entity;
+package org.freeforums.geforce.securitycraft.renderers;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
+import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.lwjgl.opengl.GL11;
 

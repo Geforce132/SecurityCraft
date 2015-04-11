@@ -1,8 +1,6 @@
 package org.freeforums.geforce.securitycraft.items;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import java.util.Scanner;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,6 +11,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 public class ItemCameraMonitor extends Item {
 	
 	public ItemCameraMonitor(){
@@ -21,7 +23,7 @@ public class ItemCameraMonitor extends Item {
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing facing, float par8, float par9, float par10){
 		if(!par3World.isRemote){
-			if(par2EntityPlayer.isSneaking() && par3World.getBlockState(pos).getBlock() == mod_SecurityCraft.securityCamera){
+			if(par3World.getBlockState(pos).getBlock() == mod_SecurityCraft.securityCamera){
 				if(par2EntityPlayer.getCurrentEquippedItem().getTagCompound() == null){
 					par2EntityPlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());				
 				}
@@ -33,8 +35,21 @@ public class ItemCameraMonitor extends Item {
 						break;
 					}
 				}
-			}else{
-				par2EntityPlayer.openGui(mod_SecurityCraft.instance, 17, par3World, pos.getX(), pos.getY(), pos.getZ());
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean isCameraAdded(NBTTagCompound nbt, BlockPos pos){
+		for(int i = 0; i <= 10; i++){
+			if(nbt.hasKey("Camera" + i)){
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");	
+				String[] coords = new String[]{scanner.next(), scanner.next(), scanner.next()};
+				
+				if(coords[0].matches(pos.getX() + "") && coords[1].matches(pos.getY() + "") && coords[2].matches(pos.getZ() + "")){
+					return true;
+				}
 			}
 		}
 		

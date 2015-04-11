@@ -79,13 +79,6 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public boolean canDropFromExplosion(Explosion par1Explosion){
 		return false;
 	}
-
-	/**
-	 * Returns the quantity of items to drop on block destruction.
-	 */
-	public int quantityDropped(Random par1Random){
-		return 1;
-	}
 	
 	public boolean isActive(World world, BlockPos pos) {
 		return true;

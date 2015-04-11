@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -56,6 +57,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 		}else if(getWorld(player).getTileEntity(x, y, z) != null && getWorld(player).getTileEntity(x, y, z) instanceof TileEntityKeypadChest){
 			((TileEntityKeypadChest) getWorld(player).getTileEntity(x, y, z)).setKeypadCode(codeToSet);
+			this.checkForAdjecentChest(x, y, z, codeToSet, player);
+
+		}else if(getWorld(player).getTileEntity(x, y, z) != null && getWorld(player).getTileEntity(x, y, z) instanceof TileEntityKeypadFurnace){
+			((TileEntityKeypadFurnace) getWorld(player).getTileEntity(x, y, z)).setKeypadCode(codeToSet);
 			this.checkForAdjecentChest(x, y, z, codeToSet, player);
 
 		}

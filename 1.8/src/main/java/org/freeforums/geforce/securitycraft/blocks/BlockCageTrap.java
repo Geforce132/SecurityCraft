@@ -2,7 +2,6 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -22,15 +21,13 @@ import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockCageTrap extends Block implements IIntersectable, IHelpInfo {
+public class BlockCageTrap extends BlockOwnable implements IIntersectable, IHelpInfo {
 
 	public final boolean deactivated;
-	private final int blockTextureIndex;
 
 	public BlockCageTrap(Material par2Material, boolean deactivated, int blockTextureIndex) {
 		super(par2Material);
 		this.deactivated = deactivated;
-		this.blockTextureIndex = blockTextureIndex;
 	}
 	
 	public int getRenderType(){

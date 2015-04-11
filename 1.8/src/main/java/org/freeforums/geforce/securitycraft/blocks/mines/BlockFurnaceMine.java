@@ -1,28 +1,31 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
-import java.util.Random;
-
-import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpInfo {
+public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpInfo {
 
-	public BlockFurnaceMine() {
-		super(false);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+
+	public BlockFurnaceMine(Material par1Material) {
+		super(par1Material);
 	}
 
 	/**
@@ -42,12 +45,6 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 			this.explode(par1World, pos);
 		}
 	}	
-	
-	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	if(par5EntityLivingBase instanceof EntityPlayer){
-    		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getName());
-    	}
-    }
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(par1World.isRemote){
@@ -60,7 +57,11 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 				return false;	   		
 			}
 		}
-	}	  
+	}	
+	
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    }
 	
 	public void activateMine(World world, BlockPos pos) {}
 
@@ -84,14 +85,24 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 	{
 		return false;
 	}
+	
+	@SideOnly(Side.CLIENT)
+    public IBlockState getStateForEntityRender(IBlockState state)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+    }
 
-	/**
-	 * Returns the quantity of items to drop on block destruction.
-	 */
-	public int quantityDropped(Random par1Random)
-	{
-		return 1;
-	}
+	public IBlockState getStateFromMeta(int meta){
+        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
+    }
+
+    public int getMetaFromState(IBlockState state){
+        return ((EnumFacing)state.getValue(FACING)).getIndex();
+    }
+
+    protected BlockState createBlockState(){
+        return new BlockState(this, new IProperty[] {FACING});
+    }
 	
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
@@ -99,11 +110,6 @@ public class BlockFurnaceMine extends BlockFurnace implements IExplosive, IHelpI
 	
 	public boolean isDefusable() {
 		return false;
-	}
-
-	public TileEntity createNewTileEntity(World worldIn, int meta)
-	{
-		return new TileEntityOwnable();
 	}
 
 	public String getHelpInfo() {
