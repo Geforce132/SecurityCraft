@@ -89,7 +89,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
-                if(HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
+                if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
                 	if(!((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).isEmped()){

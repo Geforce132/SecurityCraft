@@ -97,8 +97,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
-                System.out.println(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername());
-                if(entityplayermp != null && HelpfulMethods.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
+                if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername())){
                 	HelpfulMethods.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
