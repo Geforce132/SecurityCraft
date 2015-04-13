@@ -40,6 +40,7 @@ tile.keypadFrame.name=Keypad Frame
 tile.keypadFurnace.name=Password-protected Furnace
 tile.claymoreActive.name=Claymore
 tile.claymoreDeactivated.name=Claymore
+tile.securityCamera.name=Security Camera
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover

@@ -47,8 +47,8 @@ public class mod_SecurityCraft {
 	private static final String MOTU = "Thanks for all your suggestions!";
 	
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
-	//TODO ********************************* This is v1.7.4.1 for MC 1.7.10!
-	protected static final String VERSION = "v1.7.4.1";
+	//TODO ********************************* This is v1.7.4.2 for MC 1.7.10!
+	protected static final String VERSION = "v1.7.4.2";
 	protected static final String FORGEVERSION = "required-after:Forge@[10.13.0.1180,)";
 	
 	
@@ -135,7 +135,8 @@ public class mod_SecurityCraft {
 	public static Item wireCutters;
 	public static Item keyPanel;
 	public static Item adminTool;
-    
+	public static Item cameraMonitor;
+
     //Modules
     public static ItemModule redstoneModule;
     public static ItemModule whitelistModule;

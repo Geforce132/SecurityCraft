@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class BlockSecurityCamera extends BlockContainer{
@@ -42,21 +41,9 @@ public class BlockSecurityCamera extends BlockContainer{
 	{
 		return false;
 	}
-    
-	/**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(!par1World.isRemote && (par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor))){
-    		this.mountCamera(par1World, pos, (EnumFacing) par1World.getBlockState(pos).getValue(FACING), par5EntityPlayer);
-    		return true;
-    	}
-    	
-    	return false;
-    }
-	    
-    private void mountCamera(World world, BlockPos pos, EnumFacing dir, EntityPlayer player) {
-		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, pos.getX(), pos.getY(), pos.getZ(), 1);
+
+    public void mountCamera(World world, BlockPos pos, EntityPlayer player) {
+    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, pos.getX(), pos.getY(), pos.getZ(), 1);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
 	}     
@@ -103,6 +90,14 @@ public class BlockSecurityCamera extends BlockContainer{
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+    }
+    
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return worldIn.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
+               worldIn.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
+               worldIn.isSideSolid(pos.north(), EnumFacing.SOUTH, true) ||
+               worldIn.isSideSolid(pos.south(), EnumFacing.NORTH, true);
     }
     
     @SideOnly(Side.CLIENT)

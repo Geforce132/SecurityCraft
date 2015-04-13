@@ -39,6 +39,7 @@ tile.reinforcedPlanks_DarkOak.name=Reinforced Dark Oak Planks
 tile.panicButton.name=Panic Button
 tile.keypadFurnace.name=Password-protected Furnace
 tile.claymore.name=Claymore
+tile.securityCamera.name=Security Camera
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover
@@ -60,6 +61,7 @@ item.smartModule.name=Smart Module
 item.wireCutters.name=Wire Cutters
 item.keypadItem.name=Key Panel
 item.adminTool.name=Admin Tool
+item.cameraMonitor.name=Camera Monitor
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?

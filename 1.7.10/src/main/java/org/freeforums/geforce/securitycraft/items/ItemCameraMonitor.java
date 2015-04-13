@@ -9,17 +9,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.gui.GuiCameraMonitorOverlay;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCameraMonitor extends Item {
 	
@@ -27,32 +25,34 @@ public class ItemCameraMonitor extends Item {
 		super();
 	}
 	
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing facing, float par8, float par9, float par10){
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		if(!par3World.isRemote){
-			if(par3World.getBlockState(pos).getBlock() == mod_SecurityCraft.securityCamera){
+			if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.securityCamera){
 				if(par2EntityPlayer.getCurrentEquippedItem().getTagCompound() == null){
 					par2EntityPlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());				
 				}
 				
-				if(this.isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), pos)){ return false; }
+				if(this.isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), par4, par5, par6)){ return false; }
 				
 				for(int i = 1; i <= 10; i++){
 					if(!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
-						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, pos.getX() + " " + pos.getY() + " " + pos.getZ());
-						HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Bound camera (at " + Utils.getFormattedCoordinates(pos) + ") to monitor.", EnumChatFormatting.GREEN);
+						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, par4 + " " + par5 + " " + par6);
+						HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Bound camera (at X: " + par4 + " Y: " + par5 + " Z: " + par6 + ") to monitor.", EnumChatFormatting.GREEN);
 						break;
 					}
 				}
 				
 				return true;
 			}
+			
+			return false;
 		}
 		
-		return false;
+		return true;
 	}
 	
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
-    	if(!par2World.isRemote && par3EntityPlayer.isSneaking()){
+    	if(!par2World.isRemote){
     		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitorOverlay((ItemCameraMonitor) par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
     		//par3EntityPlayer.openGui(mod_SecurityCraft.instance, 17, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
     	}
@@ -73,13 +73,13 @@ public class ItemCameraMonitor extends Item {
     	}
     }
 	
-	private boolean isCameraAdded(NBTTagCompound nbt, BlockPos pos){
+	private boolean isCameraAdded(NBTTagCompound nbt, int par2, int par3, int par4){
 		for(int i = 0; i <= 10; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");	
 				String[] coords = new String[]{scanner.next(), scanner.next(), scanner.next()};
 				
-				if(coords[0].matches(pos.getX() + "") && coords[1].matches(pos.getY() + "") && coords[2].matches(pos.getZ() + "")){
+				if(coords[0].matches(par2 + "") && coords[1].matches(par3 + "") && coords[2].matches(par4 + "")){
 					return true;
 				}
 			}
@@ -94,15 +94,15 @@ public class ItemCameraMonitor extends Item {
 	 * @param nbt The monitor's NBTTagCompound.
 	 * @return All camera positions.
 	 */
-	public ArrayList<BlockPos> getCameraPositions(NBTTagCompound nbt){
-		ArrayList<BlockPos> list = new ArrayList<BlockPos>();
+	public ArrayList<int[]> getCameraPositions(NBTTagCompound nbt){
+		ArrayList<int[]> list = new ArrayList<int[]>();
 
 		for(int i = 0; i <= 10; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");	
 				String[] coords = new String[]{scanner.next(), scanner.next(), scanner.next()};
 				
-				list.add(new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])));
+				list.add(new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])});
 			}
 		}
 		

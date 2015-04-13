@@ -3,14 +3,12 @@ package org.freeforums.geforce.securitycraft.blocks;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,10 +24,9 @@ import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 @SuppressWarnings("static-access")
-public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
+public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	    
@@ -52,14 +49,12 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo{
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
-    	((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
-
+    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+    	super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
+    	
         if(!par1World.isRemote){
         	this.setLaser(par1World, pos);
         }
-
     }
 
     private void setLaser(World par1World, BlockPos pos) {

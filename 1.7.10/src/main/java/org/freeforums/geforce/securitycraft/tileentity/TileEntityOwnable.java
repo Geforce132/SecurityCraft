@@ -5,7 +5,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
-public class TileEntityOwnable extends TileEntitySCTE{
+import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
+
+public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	
 	private String ownerUUID = "ownerUUID";
 	private String owner = "owner";

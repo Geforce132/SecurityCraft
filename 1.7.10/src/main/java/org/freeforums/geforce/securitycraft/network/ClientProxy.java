@@ -10,6 +10,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.models.ModelClaymore;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFrame;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFurnaceDeactivated;
+import org.freeforums.geforce.securitycraft.models.ModelSecurityCameraTest;
 import org.freeforums.geforce.securitycraft.renderers.CustomModeledBlockRenderer;
 import org.freeforums.geforce.securitycraft.renderers.RenderEMP;
 import org.freeforums.geforce.securitycraft.renderers.RenderEmpBackup;
@@ -22,6 +23,8 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFrame;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFrameRenderer;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnaceRenderer;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCameraRenderer;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -38,10 +41,12 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadFrame.class, new TileEntityKeypadFrameRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadFurnace.class, new TileEntityKeypadFurnaceRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClaymore.class, new TileEntityClaymoreRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.keypadChest), new CustomModeledBlockRenderer(new TileEntityKeypadChest()));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.keypadFrame), new CustomModeledBlockRenderer(new TileEntityKeypadFrame(), new ModelKeypadFrame(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.keypadFurnace), new CustomModeledBlockRenderer(new TileEntityKeypadFurnace(), new ModelKeypadFurnaceDeactivated(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.claymoreActive), new CustomModeledBlockRenderer(new TileEntityClaymore(), new ModelClaymore(), 0.0D, -0.1D, 0.0D, 0.0F));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.securityCamera), new CustomModeledBlockRenderer(new TileEntitySecurityCamera(), new ModelSecurityCameraTest(), 0.0D, -0.1D, 0.0D, 0.0F));
 	}
 	
 	public void registerClientTickHandler(){

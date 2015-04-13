@@ -21,6 +21,7 @@ import org.freeforums.geforce.securitycraft.containers.ContainerRAMDeactivate;
 import org.freeforums.geforce.securitycraft.containers.ContainerRAMDetonate;
 import org.freeforums.geforce.securitycraft.containers.ContainerRemoteAccessMine;
 import org.freeforums.geforce.securitycraft.containers.ContainerSecurityCamera;
+import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -33,13 +34,11 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class GuiHandler implements IGuiHandler {
-	
-	public static final int amountOfGUIs = 13;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if(tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14){
+		if(tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14 || ID == 17){
 			//Is securitycraft TE.
 		}else{
 			//Is not securitycraft TE.
@@ -92,6 +91,9 @@ public class GuiHandler implements IGuiHandler {
     	case 16:
     		return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
     		
+    	case 17:
+    		return new ContainerGeneric(player.inventory, null);
+    		
     		
     	case 100:
         	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
@@ -104,7 +106,7 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(new BlockPos(x, y, z));
 		
-		if((tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest) || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14){
+		if((tile_entity instanceof TileEntitySCTE || tile_entity instanceof TileEntityKeypadChest) || tile_entity instanceof TileEntityInventoryScanner || ID == 5 || ID == 6 || ID == 7 || ID == 8 || ID == 14 || ID == 17){
 			//Is securitycraft TE.
 		}else{
 			//Is not securitycraft TE.
@@ -157,6 +159,9 @@ public class GuiHandler implements IGuiHandler {
     	case 16:
     		return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) tile_entity);
     	
+    	case 17:
+    		return new GuiCameraMonitorOverlay((ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
+    		
     		
     	case 100:
     		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);

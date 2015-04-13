@@ -20,7 +20,6 @@ import org.freeforums.geforce.securitycraft.containers.ContainerRAMDetonate;
 import org.freeforums.geforce.securitycraft.containers.ContainerRemoteAccessMine;
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScannerSetup;
-import org.freeforums.geforce.securitycraft.containers.ContainerSecurityCamera;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -31,7 +30,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -80,9 +78,6 @@ public class GuiHandler implements IGuiHandler {
     	case 9:
     		return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity);
     	
-    	case 10:
-    		return new ContainerSecurityCamera(player.inventory, (TileEntitySecurityCamera) tile_entity);
-    		
     	case 11:
     		return new ContainerLogger(player.inventory, (TileEntityLogger) tile_entity);
     	
@@ -150,9 +145,6 @@ public class GuiHandler implements IGuiHandler {
     	
     	case 9:
     		return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
-    	
-    	case 10:
-    		return new GuiSecurityCamera(player.inventory, (TileEntitySecurityCamera) tile_entity);
     	
     	case 11:
     		return new GuiLogger(player.inventory, (TileEntityLogger) tile_entity);

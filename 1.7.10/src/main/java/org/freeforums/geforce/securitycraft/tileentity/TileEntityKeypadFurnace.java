@@ -6,12 +6,12 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
+import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
-public class TileEntityKeypadFurnace extends TileEntityFurnace implements ISidedInventory, IPasswordProtected {
+public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnable, ISidedInventory, IPasswordProtected {
 
 	private String passcode;
 	private String ownerUUID = "ownerUUID";

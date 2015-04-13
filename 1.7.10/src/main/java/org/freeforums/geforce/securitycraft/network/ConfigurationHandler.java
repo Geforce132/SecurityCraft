@@ -44,10 +44,12 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
 import org.freeforums.geforce.securitycraft.entity.EntityEMP;
 import org.freeforums.geforce.securitycraft.entity.EntityEMPBackup;
+import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
 import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
+import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
@@ -66,6 +68,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCreateExplosion;
+import org.freeforums.geforce.securitycraft.network.packets.PacketMountCamera;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSDebugField;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
@@ -218,6 +221,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.keypadFrame = new BlockKeypadFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keypadFrame");
 	
 		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setBlockName("keypadFurnace").setBlockTextureName("securitycraft:keypadUnactive");
+	
+	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera");
 	}
 	
 	public void setupMines(){
@@ -275,15 +280,14 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.wireCutters = new ItemWithInfo("Right-clicking a mine with the wire cutters will defuse it.", new String[]{"The wire cutters requires: 1 shears, 4 iron ingots", "XY ", "Y Y", " Y ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters").setTextureName("securitycraft:wireCutter");
 	
-
 		mod_SecurityCraft.keyPanel = new ItemWithInfo("The key panel is used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.", new String[]{"The key panel requires: 1 weighted pressure plate (heavy), 8 stone button", "YYY", "YXY", "YYY", "X = weighted pressure plate (heavy), Y = stone button"}).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem").setTextureName("securitycraft:keypadItem");
 		
 		mod_SecurityCraft.adminTool = new ItemAdminTool("", new String[]{"", ""}).setMaxStackSize(1).setUnlocalizedName("adminTool");
+	
+		mod_SecurityCraft.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cameraMonitor").setTextureName("securitycraft:cameraMonitor");
 	}
 	
 	public void setupDebuggingBlocks(){
-	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("mod/securityCameraSides");
-
 		mod_SecurityCraft.empedWire = (BlockEMPedWire) new BlockEMPedWire().setBlockName("testBlock");
 		
 		mod_SecurityCraft.empEntity = new BlockEmpEntity(Material.circuits).setBlockName("empEntity").setBlockTextureName("securitycraft:empEntity");
@@ -392,6 +396,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(mod_SecurityCraft.wireCutters, mod_SecurityCraft.wireCutters.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.adminTool, mod_SecurityCraft.adminTool.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.keyPanel, mod_SecurityCraft.keyPanel.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(mod_SecurityCraft.cameraMonitor, mod_SecurityCraft.cameraMonitor.getUnlocalizedName().substring(5));
 
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
@@ -428,7 +433,7 @@ public class ConfigurationHandler{
 			});
 			
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
-				"III", "IBI", "IPI", 'I', Items.iron_ingot, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keyPanel
+				"III", "IBI", "IPI", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keyPanel
 			});
 		}
 		
@@ -651,12 +656,8 @@ public class ConfigurationHandler{
 	public void setupEntityRegistry() {
 		EntityRegistry.registerGlobalEntityID(EntityTnTCompact.class, "TnTCompact", EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
-		EntityRegistry.registerGlobalEntityID(EntityEMP.class, "EMP", EntityRegistry.findGlobalUniqueEntityId());
-		EntityRegistry.registerModEntity(EntityEMP.class, "EMP", 1, mod_SecurityCraft.instance, 225, 1, true);
-		EntityRegistry.registerGlobalEntityID(EntityEMPBackup.class, "EMP2", EntityRegistry.findGlobalUniqueEntityId());
-		EntityRegistry.registerModEntity(EntityEMPBackup.class, "EMP2", 2, mod_SecurityCraft.instance, 225, 1, true);
-		//EntityRegistry.registerGlobalEntityID(EntityCCTV.class, "CCTV", EntityRegistry.findGlobalUniqueEntityId());
-		//EntityRegistry.registerModEntity(EntityCCTV.class, "CCTV", 3, mod_SecurityCraft.instance, 225, 1, true);
+		EntityRegistry.registerGlobalEntityID(EntitySecurityCamera.class, "Camera", EntityRegistry.findGlobalUniqueEntityId());
+		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "Camera", 1, mod_SecurityCraft.instance, 128, 2, false);
 	}
 
 	public void setupHandlers(FMLPreInitializationEvent event) {
@@ -682,6 +683,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSDebugField.Handler.class, PacketSDebugField.class, 14, Side.SERVER);
 		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 15, Side.CLIENT);
 		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 16, Side.SERVER);
+		network.registerMessage(PacketMountCamera.Handler.class, PacketMountCamera.class, 17, Side.SERVER);
 	}
 
 	
