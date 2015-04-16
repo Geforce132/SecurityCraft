@@ -660,13 +660,17 @@ public class HelpfulMethods {
 	}
 	
 	public static void setCameraZoom(double zoom){
-		if(zoom <= 0){
+		if(zoom == 0){
 			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1.0D, 46);
 			return;
 		}
 		
 		double tempZoom = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 46);
 		ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, tempZoom + zoom, 46);
+	}
+	
+	public static double getCameraZoom(){
+		return ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 46);
 	}
 	
 //	private static void bookCode(){

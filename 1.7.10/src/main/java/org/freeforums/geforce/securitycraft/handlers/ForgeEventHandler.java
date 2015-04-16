@@ -29,17 +29,16 @@ import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -184,7 +183,7 @@ public class ForgeEventHandler {
 			}
 		}
 	}
-	
+
 	private ItemStack fillBucket(World world, MovingObjectPosition position){
 		Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
 		
@@ -239,19 +238,6 @@ public class ForgeEventHandler {
     	return movingobjectposition;
 
     }
-  
-    private void notifyPlayers(String username, EntityPlayer par2EntityPlayer, int par3, int par4, int par5) {
-    	HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, username + " destroyed a reinforced door with a universal block remover at X: " + par3 + " Y: " + par4 + " Z: " + par5, null);
-
-	}
-
-
-	private void sendChatMessageTo(EntityPlayer par1EntityPlayer, TileEntityReinforcedDoor TERD){
-    	
-    	if(TERD.getOwnerUUID() != null){
-    		HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Im sorry, you can not remove this door. This door is owned by " + TERD.getOwnerName() + ".", EnumChatFormatting.RED);
-    	}
-    }
 	
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
     	if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){
@@ -267,15 +253,6 @@ public class ForgeEventHandler {
     	}else{
     		return false;
     	}
-    }
-    
-    @SideOnly(Side.SERVER)
-    public World getServerWorld(){
-    	return MinecraftServer.getServer().getEntityWorld();
-    }
-    
-    public Side getSide(){
-    	return FMLCommonHandler.instance().getEffectiveSide();
     }
     
     public EntityPlayer getPlayerFromName(String par1){

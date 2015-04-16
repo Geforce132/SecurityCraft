@@ -43,18 +43,19 @@ public class ItemCameraMonitor extends Item {
 				}
 				
 				return true;
+			}else{
+	    		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitorOverlay((ItemCameraMonitor) par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
+				return true;
 			}
-			
-			return false;
 		}
 		
 		return true;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
-    	if(!par2World.isRemote){
+    	if(par2World.isRemote){
     		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitorOverlay((ItemCameraMonitor) par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
-    		//par3EntityPlayer.openGui(mod_SecurityCraft.instance, 17, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
     	}
     	
 		return par1ItemStack;

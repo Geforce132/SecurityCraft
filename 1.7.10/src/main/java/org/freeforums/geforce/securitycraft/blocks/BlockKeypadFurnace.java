@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -47,12 +48,16 @@ public class BlockKeypadFurnace extends BlockContainer implements IHelpInfo {
 		if(par1World.isRemote){
 			return true;
 		}else{
-			System.out.println(mod_SecurityCraft.instance.ircBots.size());
-			TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4);
-			if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, par2, par3, par4);
+			if(par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker)){
+				TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4);
+				if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, par2, par3, par4);
+				}else{
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, par2, par3, par4);
+				}
 			}else{
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, par2, par3, par4);
+				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, par2, par3, par4); 
+				par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
 			}
 
 			return true;

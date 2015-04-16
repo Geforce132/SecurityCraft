@@ -50,13 +50,17 @@ public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
 		
 		GL11.glPushMatrix();
 
-		if(meta == 1 || meta == 6){
-			rotation = 0F;
-		}else if(meta == 2 || meta == 7){
-			rotation = 1F;
-		}else if(meta == 3 || meta == 8){
-			rotation = -10000F; 
-		}else if(meta == 4 || meta == 9){
+		if(par1TileEntity.hasWorldObj()){
+			if(meta == 1 || meta == 6){
+				rotation = 0F;
+			}else if(meta == 2 || meta == 7){
+				rotation = 1F;
+			}else if(meta == 3 || meta == 8){
+				rotation = -10000F; 
+			}else if(meta == 4 || meta == 9){
+				rotation = -1F;
+			}
+		}else{
 			rotation = -1F;
 		}
 		

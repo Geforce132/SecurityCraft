@@ -62,6 +62,13 @@ item.smartModule.name=Smart Module
 item.wireCutters.name=Wire Cutters
 item.adminTool.name=Admin Tool
 item.keypadItem.name=Key Panel
+item.cameraMonitor.name=Camera Monitor
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
+
+key.categories.securitycraft=SecurityCraft
+key.cameraRotateUp=Move Camera Up
+key.cameraRotateDown=Move Camera Down
+key.cameraRotateLeft=Move Camera Left
+key.cameraRotateRight=Move Camera Right

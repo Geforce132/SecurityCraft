@@ -264,15 +264,6 @@ public class ForgeEventHandler {
     	}
     }
     
-    @SideOnly(Side.SERVER)
-    public World getServerWorld(){
-    	return MinecraftServer.getServer().getEntityWorld();
-    }
-    
-    public Side getSide(){
-    	return FMLCommonHandler.instance().getEffectiveSide();
-    }
-    
     public EntityPlayer getPlayerFromName(String par1){
     	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
     	Iterator iterator = players.iterator();

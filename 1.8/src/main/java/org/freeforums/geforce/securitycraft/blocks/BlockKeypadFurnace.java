@@ -52,13 +52,21 @@ public class BlockKeypadFurnace extends BlockOwnable implements IHelpInfo {
         if(par1World.isRemote){
             return true;
         }else{
-	        TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(pos);
-	        if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, pos.getX(), pos.getY(), pos.getZ());
+			if(par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker)){
+		        TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(pos);
+		        if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, pos.getX(), pos.getY(), pos.getZ());
+				}else{
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, pos.getX(), pos.getY(), pos.getZ());
+				}
 			}else{
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, pos.getX(), pos.getY(), pos.getZ());
+				if(!((Boolean) Utils.getBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN)).booleanValue()){
+					Utils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, true);
+				}
+				par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
 			}
-
+			
             return true;
         }
     }

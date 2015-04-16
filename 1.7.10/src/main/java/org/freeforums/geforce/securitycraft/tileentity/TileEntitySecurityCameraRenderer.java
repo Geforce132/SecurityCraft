@@ -41,14 +41,18 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		
 		GL11.glPushMatrix();
 		
-		if(meta == 1){
-			rotation = 0F;
-		}else if(meta == 2){
-			rotation = 1F;
-		}else if(meta == 3){
-			rotation = -10000F; 
-		}else if(meta == 4){
-			rotation = -1F;
+		if(par1TileEntity.hasWorldObj()){
+			if(meta == 1){
+				rotation = 0F;
+			}else if(meta == 2){
+				rotation = 1F;
+			}else if(meta == 3){
+				rotation = -10000F; 
+			}else if(meta == 4){
+				rotation = -1F;
+			}
+		}else{
+			rotation = -10000F;
 		}
 		
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);

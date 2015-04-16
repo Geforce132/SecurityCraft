@@ -1,135 +1,111 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class BlockSecurityCamera extends BlockContainer{
-	
-	@SideOnly(Side.CLIENT)
-    private IIcon keypadIconTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon keypadIconFront;
 
 	public BlockSecurityCamera(Material par2Material) {
 		super(par2Material);
 	}
 	
+	public boolean renderAsNormalBlock(){
+		return false;
+	}
+
+	public boolean isNormalCube(){
+		return false;
+	}
+
+	public boolean isOpaqueCube(){
+		return false;
+	}
+
+	public int getRenderType(){
+		return -1;
+	}
 	
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
+        return null;
+    }
 	
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    public IIcon getIcon(int par1, int par2)
-    {
-    	return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront)); 	
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-     * is the only chance you get to register icons.
-     */
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("cobblestone");
-        this.keypadIconFront = par1IconRegister.registerIcon("stone");
-        this.keypadIconTop = par1IconRegister.registerIcon("cobblestone");
-    }
-    
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-    	if(par1World.isRemote){
-    		return true;
-    	}else{
-    	
-    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 10, par1World, par2, par3, par4);
-    		
-    		return true;
-    	}
-    }
-	    
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
-        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-        if (l == 0){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-	        HelpfulMethods.checkBlocksMetadata(par1World, par2, par3, par4);
-        }
-
-        if (l == 1){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-	        HelpfulMethods.checkBlocksMetadata(par1World, par2, par3, par4);
-        }
-
-        if (l == 2){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-	        HelpfulMethods.checkBlocksMetadata(par1World, par2, par3, par4);
+	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z){
+        int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+        
+    	if(meta == 3){
+    		this.setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
+    	}else if(meta == 1){
+    		this.setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
+        }else if(meta == 2){
+    		this.setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+        }else{
+    		this.setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
         }
         
-        if (l == 3){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-	        HelpfulMethods.checkBlocksMetadata(par1World, par2, par3, par4);
+    } 
+	
+	/**
+     * Called when the block is placed in the world.
+     */
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+
+        if(l == 0){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);    
+        }
+
+        if(l == 1){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);         
+        }
+
+        if(l == 2){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);           
+        }
+
+        if(l == 3){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
     	}else{
+            System.out.println(par1World.getBlockMetadata(par2, par3, par4));
     		return;
-    	}
+    	}   
+        
+        System.out.println(par1World.getBlockMetadata(par2, par3, par4));
+        
+    }
 
-       
+    public void mountCamera(World world, int par2, int par3, int par4, EntityPlayer player) {
+    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, 1);
+		world.spawnEntityInWorld(dummyEntity);
+		player.mountEntity(dummyEntity);
+	}     
+    
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
+        return par1World.isSideSolid(par2 - 1, par3, par4, EAST ) ||
+        		par1World.isSideSolid(par2 + 1, par3, par4, WEST ) ||
+        		par1World.isSideSolid(par2, par3, par4 - 1, SOUTH) ||
+        		par1World.isSideSolid(par2, par3, par4 + 1, NORTH);
     }
 	    
-	    
-    /**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
+    public boolean canProvidePower(){
         return true;
-    }
-    
-
-    /**
-     * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
-     * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
-     * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasPlayer() ? 15 : 0;
-    	//return 15;
-    }
-    
-    /**
-     * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
-     * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
-     */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return ((TileEntitySecurityCamera) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasPlayer() ? 15 : 0;
-    	//return 15;
     }
 
 	public TileEntity createNewTileEntity(World world, int par2) {

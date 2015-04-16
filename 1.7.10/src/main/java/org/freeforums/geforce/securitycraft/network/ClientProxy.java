@@ -7,6 +7,7 @@ import org.freeforums.geforce.securitycraft.entity.EntityEMP;
 import org.freeforums.geforce.securitycraft.entity.EntityEMPBackup;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.models.ModelClaymore;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFrame;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFurnaceDeactivated;
@@ -33,6 +34,8 @@ public class ClientProxy extends ServerProxy{
 	
 	@Override
 	public void registerRenderThings(){
+		KeyBindings.init();
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTnTCompact.class, new RenderTnTCompact());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEMP.class, new RenderEMP());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEMPBackup.class, new RenderEmpBackup());
