@@ -42,8 +42,6 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
-import org.freeforums.geforce.securitycraft.entity.EntityEMP;
-import org.freeforums.geforce.securitycraft.entity.EntityEMPBackup;
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;

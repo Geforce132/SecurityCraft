@@ -70,11 +70,11 @@ public class mod_SecurityCraft {
 	private GuiHandler GuiHandler = new GuiHandler();
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
+	public HashMap<String, double[]> cameraUsePositions = new HashMap<String, double[]>();
+
 	private NBTTagCompound savedModule;
 	
-	public static Configuration configFile;
-	//public CCTVBase cctvPlugin = new CCTVBase();
-	
+	public static Configuration configFile;	
 	
 	//Blocks
 	public static Block LaserBlock;
@@ -146,10 +146,6 @@ public class mod_SecurityCraft {
 
     public static Item testItem;
     
-    //public static Item testChestplate;
-    
-
-
     
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){
@@ -227,16 +223,41 @@ public class mod_SecurityCraft {
 		return VERSION;
 	}
 	
+	/**
+	 * Get the IRC bot for the given player.
+	 */
 	public SCIRCBot getIrcBot(String playerName) {
 		return ircBots.get(playerName);
 	}
-
-	public void setIrcBot(String playerName) {
+	
+	/**
+	 * Create an IRC bot for the given player.
+	 */
+	public void createIrcBot(String playerName) {
 		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
 	}
 	
+	/**
+	 * Remove/delete the given player's IRC bot.
+	 */
 	public void removeIrcBot(String playerName){
 		ircBots.remove(playerName);
+	}
+	
+	public double[] getUsePosition(String playerName) {
+		return cameraUsePositions.get(playerName);
+	}
+
+	public void setUsePosition(String playerName, double x, double y, double z) {
+		cameraUsePositions.put(playerName, new double[]{x, y, z});
+	}
+	
+	public boolean hasUsePosition(String playerName) {
+		return cameraUsePositions.containsKey(playerName);
+	}
+	
+	public void removeUsePosition(String playerName){
+		cameraUsePositions.remove(playerName);
 	}
 
 	public NBTTagCompound getSavedModule() {

@@ -72,3 +72,5 @@ key.cameraRotateUp=Move Camera Up
 key.cameraRotateDown=Move Camera Down
 key.cameraRotateLeft=Move Camera Left
 key.cameraRotateRight=Move Camera Right
+key.cameraZoomIn=Zoom Camera In
+key.cameraZoomOut=Zoom Camera Out

@@ -32,7 +32,11 @@ public class ItemCameraMonitor extends Item {
 					par2EntityPlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());				
 				}
 				
-				if(this.isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), par4, par5, par6)){ return false; }
+				if(this.isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), par4, par5, par6)){ 
+					par2EntityPlayer.getCurrentEquippedItem().getTagCompound().removeTag(this.getTagNameFromPosition(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), par4, par5, par6));
+					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Unbound camera (at X: " + par4 + " Y: " + par5 + " Z: " + par6 + ") to monitor.", EnumChatFormatting.RED);
+					return true; 
+				}
 				
 				for(int i = 1; i <= 10; i++){
 					if(!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
@@ -73,6 +77,21 @@ public class ItemCameraMonitor extends Item {
 			}
     	}
     }
+	
+	private String getTagNameFromPosition(NBTTagCompound nbt, int par2, int par3, int par4){
+		for(int i = 0; i <= 10; i++){
+			if(nbt.hasKey("Camera" + i)){
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");	
+				String[] coords = new String[]{scanner.next(), scanner.next(), scanner.next()};
+				
+				if(coords[0].matches(par2 + "") && coords[1].matches(par3 + "") && coords[2].matches(par4 + "")){
+					return "Camera" + i;
+				}
+			}
+		}
+		
+		return "";
+	}
 	
 	private boolean isCameraAdded(NBTTagCompound nbt, int par2, int par3, int par4){
 		for(int i = 0; i <= 10; i++){

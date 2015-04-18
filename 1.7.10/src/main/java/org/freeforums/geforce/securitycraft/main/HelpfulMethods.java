@@ -467,6 +467,10 @@ public class HelpfulMethods {
 		}
 	}
 	
+	public static void setPlayerPosition(EntityPlayer player, double x, double y, double z){
+		player.setPositionAndUpdate(x, y, z);
+	}
+	
 	public static String removeLastChar(String par1){
 		if(par1 == null || par1.isEmpty()){ return ""; }
 		

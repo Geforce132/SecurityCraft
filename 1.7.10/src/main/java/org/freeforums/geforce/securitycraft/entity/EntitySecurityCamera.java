@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.misc.KeyBindings;
-import org.lwjgl.input.Mouse;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -82,15 +81,21 @@ public class EntitySecurityCamera extends Entity{
 				this.moveViewRight();
 			}
 			
-			int mouseMovement = (Mouse.getDWheel() / 120);
-			
-			if(mouseMovement != 0){
-				this.zoomCameraView(mouseMovement);
+			if(KeyBindings.cameraZoomIn.getIsKeyPressed()){
+				this.zoomCameraView(1);
 			}
 			
-			//System.out.println(Mouse.getDWheel() / 120);
+			if(KeyBindings.cameraZoomOut.getIsKeyPressed()){
+				this.zoomCameraView(-1);
+			}
 			
-			System.out.println(this.rotationYaw + " | " + this.rotationPitch);
+//			int mouseMovement = (Mouse.getDWheel() / 120);
+//			
+//			if(mouseMovement != 0){
+//				this.zoomCameraView(mouseMovement);
+//			}
+						
+			//System.out.println(this.rotationYaw + " | " + this.rotationPitch);
 			((EntityPlayer) this.riddenByEntity).rotationYaw = this.rotationYaw;
 			((EntityPlayer) this.riddenByEntity).rotationPitch = this.rotationPitch;
 		}

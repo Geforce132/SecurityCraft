@@ -103,7 +103,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).disconnect();
 				}
 					
-				mod_SecurityCraft.instance.setIrcBot(null);
 				sendMessageToPlayer("Bot disconnected from EsperNet successfully.", icommandsender);
 			}else if(par1String[0].matches("help")){
 				if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof ItemBlock && ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a instanceof IHelpInfo){

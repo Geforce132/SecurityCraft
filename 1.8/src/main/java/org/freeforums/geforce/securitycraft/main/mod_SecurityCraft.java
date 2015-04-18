@@ -70,9 +70,7 @@ public class mod_SecurityCraft {
 	private HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	private NBTTagCompound savedModule;
 	
-	public static Configuration configFile;
-	//public CCTVBase cctvPlugin = new CCTVBase();
-	
+	public static Configuration configFile;	
 	
 	//Blocks
 	public static Block LaserBlock;
@@ -148,10 +146,7 @@ public class mod_SecurityCraft {
     
     public static Item testItem;
     public static Item cameraMonitor;
-    //public static Item testChestplate;
-    
-
-
+ 
     
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){

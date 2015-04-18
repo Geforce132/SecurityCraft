@@ -60,9 +60,7 @@ public class SCIRCBot extends PircBot{
     	if(mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")) != null){
 			mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 		}
-			
-		mod_SecurityCraft.instance.setIrcBot(null);
-		
+					
 		try{
 			sendMessageToPlayer(EnumChatFormatting.RED + "You have been disconnected from EsperNet for reason: " + reason, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
 		}catch(PlayerNotFoundException e){

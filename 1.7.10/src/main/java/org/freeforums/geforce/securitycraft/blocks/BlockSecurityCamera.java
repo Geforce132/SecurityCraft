@@ -11,11 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
+import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
@@ -92,9 +95,15 @@ public class BlockSecurityCamera extends BlockContainer{
     }
 
     public void mountCamera(World world, int par2, int par3, int par4, EntityPlayer player) {
+    	if(player.ridingEntity == null){
+			HelpfulMethods.sendMessageToPlayer(player, "You are now mounted to a security camera. Use the arrow keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
+		}
+    	
     	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, 1);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
+		
+		mod_SecurityCraft.instance.setUsePosition(player.getCommandSenderName(), player.posX, player.posY, player.posZ);
 	}     
     
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){

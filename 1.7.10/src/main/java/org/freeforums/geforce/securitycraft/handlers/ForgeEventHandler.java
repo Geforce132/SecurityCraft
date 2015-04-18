@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -18,6 +21,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -25,23 +29,24 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -53,7 +58,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		mod_SecurityCraft.instance.setIrcBot(event.player.getCommandSenderName());
+		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
 		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -89,8 +94,12 @@ public class ForgeEventHandler {
 			counter = 0;
 		}
 		
+		if((event.player.ridingEntity == null || !(event.player.ridingEntity instanceof EntitySecurityCamera)) && mod_SecurityCraft.instance.hasUsePosition(event.player.getCommandSenderName())){
+			HelpfulMethods.setPlayerPosition(event.player, mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[0], mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[1], mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[2]);
+			mod_SecurityCraft.instance.removeUsePosition(event.player.getCommandSenderName());
+		}
 	}
-	
+
 	@SubscribeEvent
 	public void onBucketUsed(FillBucketEvent event){
 		ItemStack result = fillBucket(event.world, event.target);
@@ -110,14 +119,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent 
 	public void onPlayerInteracted(PlayerInteractEvent event){
-		if(event.entityPlayer.worldObj.isRemote){
-			return;
-		}else{
-//			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.adminTool){
-//				event.setCanceled(true);
-//				return;
-//			}
-			
+		if(!event.entityPlayer.worldObj.isRemote){	
 			if(event.action == Action.RIGHT_CLICK_BLOCK &&  event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && isCustomizableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z), event.world.getTileEntity(event.x, event.y, event.z)) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier){
 				event.setCanceled(true);
 				
@@ -181,6 +183,13 @@ public class ForgeEventHandler {
 					}
 				}
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onEntityConstructing(EntityConstructing event){
+		if(event.entity instanceof EntityPlayer){
+			event.entity.registerExtendedProperties("SecurityCraftHandler", new PlayerExtendedPropertyHandler());
 		}
 	}
 
