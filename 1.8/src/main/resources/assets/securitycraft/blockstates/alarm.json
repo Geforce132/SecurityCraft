@@ -1,8 +1,10 @@
 {
     "variants": {
-        "facing=north": { "model": "securitycraft:alarm" },
-        "facing=south": { "model": "securitycraft:alarm", "y": 180 },
-        "facing=west":  { "model": "securitycraft:alarm", "y": 270 },
-        "facing=east":  { "model": "securitycraft:alarm", "y": 90 }
+        "facing=down": { "model": "securitycraft:alarm", "x": 180 },
+        "facing=east":  { "model": "securitycraft:alarm", "x": 90, "y": 90 },
+        "facing=west":  { "model": "securitycraft:alarm", "x": 90, "y": 270 },
+        "facing=south": { "model": "securitycraft:alarm", "x": 90, "y": 180 },
+        "facing=north": { "model": "securitycraft:alarm", "x": 90 },
+        "facing=up": { "model": "securitycraft:alarm"}
     }
 }
