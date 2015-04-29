@@ -3,7 +3,7 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityKeycardReader extends CustomizableSCTE{
 

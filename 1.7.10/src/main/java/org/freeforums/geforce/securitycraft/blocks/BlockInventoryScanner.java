@@ -17,7 +17,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -110,7 +111,7 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     		if(this.isFacingAnotherBlock(par1World, par2, par3, par4)){
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, par2, par3, par4);
     		}else{
-    			HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "Is not connected to another inventory scanner block!", EnumChatFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Is not connected to another inventory scanner block!", EnumChatFormatting.RED);
     		}
     		
     		return true;
@@ -186,13 +187,13 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){	
     	if(par6 == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
-    		HelpfulMethods.insertModule(par1World, par2 - 2, par3, par4, null);	
+    		ModuleUtils.insertModule(par1World, par2 - 2, par3, par4, null);	
     	}else if(par6 == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
-    		HelpfulMethods.insertModule(par1World, par2 + 2, par3, par4, null);	
+    		ModuleUtils.insertModule(par1World, par2 + 2, par3, par4, null);	
 		}else if(par6 == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
-			HelpfulMethods.insertModule(par1World, par2, par3, par4 - 2, null);	
+			ModuleUtils.insertModule(par1World, par2, par3, par4 - 2, null);	
     	}else if(par6 == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
-    		HelpfulMethods.insertModule(par1World, par2, par3, par4 + 2, null);	
+    		ModuleUtils.insertModule(par1World, par2, par3, par4 + 2, null);	
     	}
     	
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents().length; i++){

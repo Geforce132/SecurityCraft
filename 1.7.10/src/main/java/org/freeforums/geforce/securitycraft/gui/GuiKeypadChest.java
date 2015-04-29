@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadChest;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -89,7 +89,7 @@ public class GuiKeypadChest extends GuiContainer
 			this.checkCode(this.currentString);			
 		}else if(this.isValidChar(par1) && par1 == ''){
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			this.checkCode(this.currentString);
 		}else{
@@ -190,7 +190,7 @@ public class GuiKeypadChest extends GuiContainer
 			break;
 			
 		case 10:
-			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			break;
 		

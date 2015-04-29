@@ -6,7 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 public class ContainerInventoryScanner extends Container {
@@ -75,7 +75,7 @@ public class ContainerInventoryScanner extends Container {
     {
         super.onContainerClosed(par1EntityPlayer);
         
-        HelpfulMethods.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord, ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord)).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord)).getType());
+        Utils.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord, ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord)).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.xCoord, inventoryScannerTE.yCoord, inventoryScannerTE.zCoord)).getType());
     }
 	
 	public boolean canInteractWith(EntityPlayer entityplayer) {

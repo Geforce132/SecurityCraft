@@ -2,7 +2,7 @@ package org.freeforums.geforce.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
@@ -57,7 +57,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		mod_SecurityCraft.log("Setting type to " + packet.type);
 		getWorld(context.getServerHandler().playerEntity).scheduleBlockUpdate(x, y, z, getWorld(context.getServerHandler().playerEntity).getBlock(x, y, z), 1);
 		
-		HelpfulMethods.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), x, y, z, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getType());			
+		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), x, y, z, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getType());			
 		
 		return null;
 	}

@@ -19,10 +19,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
@@ -89,13 +91,13 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
-                if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
+                if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
                 	if(!((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).isEmped()){
-                		HelpfulMethods.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET + " is near a portable radar (at X: " + par2 + " Y:" + par3 + " Z:" + par4 + ")."), null);
+                		PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET + " is near a portable radar (at X: " + par2 + " Y:" + par3 + " Z:" + par4 + ")."), null);
                 	}else{
-                		HelpfulMethods.sendMessageToPlayer(entityplayermp, "xxxxxxxxxx",  EnumChatFormatting.OBFUSCATED);
+                		PlayerUtils.sendMessageToPlayer(entityplayermp, "xxxxxxxxxx",  EnumChatFormatting.OBFUSCATED);
                 	}
                 }   
                 
@@ -123,7 +125,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 3);
 		}
 		
-		HelpfulMethods.updateAndNotify(par1World, par2, par3, par4, par1World.getBlock(par2, par3, par4), 1, false);
+		BlockUtils.updateAndNotify(par1World, par2, par3, par4, par1World.getBlock(par2, par3, par4), 1, false);
 	}
         
     @SideOnly(Side.CLIENT)

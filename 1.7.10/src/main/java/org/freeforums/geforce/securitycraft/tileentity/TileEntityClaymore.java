@@ -7,9 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class TileEntityClaymore extends TileEntitySCTE{
@@ -33,7 +32,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 			
 			if(cooldown == 0){
-				HelpfulMethods.destroyBlock(getWorldObj(), xCoord, yCoord, zCoord, false);
+				BlockUtils.destroyBlock(getWorldObj(), xCoord, yCoord, zCoord, false);
 				getWorldObj().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
 				return;
 			}

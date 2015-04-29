@@ -17,7 +17,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -464,7 +464,7 @@ public class BlockReinforcedDoor extends BlockContainer{
     }
     
     private void notifyPlayers(String username, EntityPlayer par2EntityPlayer, int par3, int par4, int par5) {
-    	HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, username + " destroyed a reinforced door with a door remover at X: " + par3 + " Y: " + par4 + " Z: " + par5, null);
+    	PlayerUtils.sendMessageToPlayer(par2EntityPlayer, username + " destroyed a reinforced door with a door remover at X: " + par3 + " Y: " + par4 + " Z: " + par5, null);
 	}
     
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)

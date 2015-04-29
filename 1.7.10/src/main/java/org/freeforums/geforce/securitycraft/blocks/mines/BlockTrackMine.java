@@ -11,7 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import cpw.mods.fml.relauncher.Side;
@@ -26,9 +26,8 @@ public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
 		super(false);
 	}
 	
-	public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z)
-    {
-		HelpfulMethods.destroyBlock(world, x, y, z, false);
+	public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z){
+		BlockUtils.destroyBlock(world, x, y, z, false);
         
         if(mod_SecurityCraft.configHandler.smallerMineExplosion){
             world.createExplosion(cart, x, y + 1, z, 4.0F, true);

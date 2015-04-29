@@ -1,7 +1,6 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -10,9 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.gui.GuiCustomizeBlock;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public abstract class CustomizableSCTE extends TileEntityOwnable implements IInventory{
 	
@@ -345,8 +345,14 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return list;
 	}
 	
+	/**
+	 * What modules can be used on this Block?
+	 */
 	public abstract EnumCustomModules[] getCustomizableOptions();
 	
+	/**
+	 *  Set the descriptions for each module that gets shown on the "info" buttons in {@link GuiCustomizeBlock}.
+	 */
 	public abstract String[] getOptionDescriptions();
 	
 }

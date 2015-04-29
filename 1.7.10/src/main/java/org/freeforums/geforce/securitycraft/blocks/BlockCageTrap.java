@@ -14,7 +14,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import cpw.mods.fml.relauncher.Side;
@@ -57,10 +58,10 @@ public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
 				 par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);	
 				 par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);	
 
-				 HelpfulMethods.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
+				 BlockUtils.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
 
 				 par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-				 MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + HelpfulMethods.getFormattedCoordinates(par2, par3, par4)));
+				 MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + Utils.getFormattedCoordinates(par2, par3, par4)));
 			 }
 		 }
 	 }
@@ -85,7 +86,7 @@ public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
      */
     public Item getItemDropped(int par1, Random par2Random, int par3)
     {
-        return this.deactivated ? HelpfulMethods.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : HelpfulMethods.getItemFromBlock(this);
+        return this.deactivated ? BlockUtils.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : BlockUtils.getItemFromBlock(this);
     }
 	 
 	 

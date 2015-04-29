@@ -6,7 +6,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerKeycardSetup;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLevel;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
@@ -76,7 +77,7 @@ public class GuiKeycardSetup extends GuiContainer{
 				break;
 			
 			case 1:
-				this.requiresExactCard = HelpfulMethods.toggleBoolean(this.requiresExactCard);
+				this.requiresExactCard = Utils.toggleBoolean(this.requiresExactCard);
 				this.requiresExactCardButton.displayString = this.requiresExactCard ? "equal to" : "equal to or higher then";
 				break;
 				
@@ -89,7 +90,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	private void saveLVs() {
 		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.lvOfSecurity, this.requiresExactCard));
 		
-		HelpfulMethods.closePlayerScreen();
+		ClientUtils.closePlayerScreen();
 	}
 
 }

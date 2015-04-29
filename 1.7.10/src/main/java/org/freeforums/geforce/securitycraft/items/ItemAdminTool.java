@@ -8,10 +8,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -30,28 +30,28 @@ public class ItemAdminTool extends ItemWithInfo {
 		if(!par3World.isRemote){
 			if(par3World.getTileEntity(par4, par5, par6) != null){
 				TileEntity te = par3World.getTileEntity(par4, par5, par6);
-				HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Block info:", EnumChatFormatting.GRAY);
+				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Block info:", EnumChatFormatting.GRAY);
 				
 				if(te instanceof TileEntityOwnable){
-					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityOwnable) te).getOwnerName() == null ? "????" : ((TileEntityOwnable) te).getOwnerName()), null);
-					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityOwnable) te).getOwnerUUID() == null ? "????" : ((TileEntityOwnable) te).getOwnerUUID()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityOwnable) te).getOwnerName() == null ? "????" : ((TileEntityOwnable) te).getOwnerName()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityOwnable) te).getOwnerUUID() == null ? "????" : ((TileEntityOwnable) te).getOwnerUUID()), null);
 				}else if(te instanceof TileEntityKeypadChest){
-					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityKeypadChest) te).getOwnerName() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerName()), null);
-					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityKeypadChest) te).getOwnerUUID() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerUUID()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityKeypadChest) te).getOwnerName() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerName()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityKeypadChest) te).getOwnerUUID() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerUUID()), null);
 				}
 				
 				if(te instanceof IPasswordProtected){
-					HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Password: " + (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Password: " + (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword()), null);
 				}
 				
 				if(te instanceof CustomizableSCTE){
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 					
 					if(!modules.isEmpty()){
-						HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Equipped modules: ", null);
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Equipped modules: ", null);
 						
 						for(EnumCustomModules module : modules){
-							HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "-" + module.getModuleName(), null);
+							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "-" + module.getModuleName(), null);
 						}
 					}
 				}

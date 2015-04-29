@@ -15,7 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -79,17 +79,17 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		}
 
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypad && code.matches(code1)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			new ScheduleUpdate(getWorld(par1EntityPlayer), 3, x, y, z);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadChest && code.matches(code2)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getChestInventory(getWorld(par1EntityPlayer), x, y, z)); 
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityKeypadFurnace && code.matches(code3)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).openGui(mod_SecurityCraft.instance, 16, getWorld(par1EntityPlayer), x, y, z); 
 			getWorld(par1EntityPlayer).setBlockMetadataWithNotify(x, y, z, getWorld(par1EntityPlayer).getBlockMetadata(x, y, z) + 5, 3);

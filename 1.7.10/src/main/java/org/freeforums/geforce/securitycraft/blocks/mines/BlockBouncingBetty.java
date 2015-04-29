@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
@@ -114,7 +114,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 	 */
 	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return HelpfulMethods.getItemFromBlock(this);
+		return BlockUtils.getItemFromBlock(this);
 	}
 
 
@@ -122,7 +122,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return HelpfulMethods.getItemFromBlock(this);
+		return BlockUtils.getItemFromBlock(this);
 	}
 
 	public void registerBlockIcons(IIconRegister par1IconRegister){

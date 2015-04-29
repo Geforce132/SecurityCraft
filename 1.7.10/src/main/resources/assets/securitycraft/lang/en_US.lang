@@ -68,9 +68,8 @@ death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
 
 key.categories.securitycraft=SecurityCraft
-key.cameraRotateUp=Move Camera Up
-key.cameraRotateDown=Move Camera Down
-key.cameraRotateLeft=Move Camera Left
-key.cameraRotateRight=Move Camera Right
 key.cameraZoomIn=Zoom Camera In
+key.cameraEmitRedstone=Toggle Camera Power
+key.cameraActivateNightVision=Enable Camera Night Vision
+key.cameraEmitLight=Toggle Camera Light
 key.cameraZoomOut=Zoom Camera Out

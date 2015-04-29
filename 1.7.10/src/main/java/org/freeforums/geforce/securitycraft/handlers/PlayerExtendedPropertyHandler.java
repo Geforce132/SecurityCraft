@@ -18,15 +18,17 @@ public class PlayerExtendedPropertyHandler implements IExtendedEntityProperties 
 		if(mod_SecurityCraft.instance.hasUsePosition(player.getCommandSenderName())){
 			NBTTagCompound tempCompound = new NBTTagCompound();
 			compound.setTag(securitycraftTagName, tempCompound);
-			tempCompound.setDouble("MonitorUseX", mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[0]);
-			tempCompound.setDouble("MonitorUseY", mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[1]);
-			tempCompound.setDouble("MonitorUseZ", mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[2]);
+			tempCompound.setDouble("MonitorUseX", (Double) mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[0]);
+			tempCompound.setDouble("MonitorUseY", (Double) mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[1]);
+			tempCompound.setDouble("MonitorUseZ", (Double) mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[2]);
+			tempCompound.setFloat("MonitorUseYaw", (Float) mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[3]);
+			tempCompound.setFloat("MonitorUsePitch", (Float) mod_SecurityCraft.instance.getUsePosition(player.getCommandSenderName())[4]);
 		}
 	}
 
 	public void loadNBTData(NBTTagCompound compound) {
 		if(compound.getTag(securitycraftTagName) != null && ((NBTTagCompound) compound.getTag(securitycraftTagName)).hasKey("MonitorUseX") && ((NBTTagCompound) compound.getTag(securitycraftTagName)).hasKey("MonitorUseY") && ((NBTTagCompound) compound.getTag(securitycraftTagName)).hasKey("MonitorUseZ") && !mod_SecurityCraft.instance.hasUsePosition(player.getCommandSenderName())){
-			mod_SecurityCraft.instance.setUsePosition(player.getCommandSenderName(), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseX"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseY"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseZ"));
+			mod_SecurityCraft.instance.setUsePosition(player.getCommandSenderName(), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseX"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseY"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getDouble("MonitorUseZ"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getFloat("MonitorUseRotationYaw"), ((NBTTagCompound) compound.getTag(securitycraftTagName)).getFloat("MonitorUseRotationPitch"));
 		}
 	}
 

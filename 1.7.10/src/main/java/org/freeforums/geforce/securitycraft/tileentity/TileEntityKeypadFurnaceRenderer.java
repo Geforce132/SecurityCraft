@@ -13,6 +13,14 @@ import org.freeforums.geforce.securitycraft.models.ModelKeypadFurnaceDeactivated
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
+	
+	private ResourceLocation activeFurnaceTexture;
+	private ResourceLocation deactivatedFurnaceTexture;
+
+	public TileEntityKeypadFurnaceRenderer(){
+		this.activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
+		this.deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
+	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		
@@ -41,11 +49,9 @@ public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		
 		if(isActive){
-			ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+			Minecraft.getMinecraft().renderEngine.bindTexture(activeFurnaceTexture);
 		}else{
-			ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
-			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedFurnaceTexture);
 		}
 		
 		GL11.glPushMatrix();

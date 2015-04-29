@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
 import org.freeforums.geforce.securitycraft.gui.components.GuiPictureButton;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.lwjgl.opengl.GL11;
 
@@ -32,7 +32,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, 265, 45 + (i * 25), 20, 20, "", this.itemRender, new ItemStack(HelpfulMethods.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
+    		GuiPictureButton button = new GuiPictureButton(i, 265, 45 + (i * 25), 20, 20, "", this.itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
     		this.buttonList.add(button);
     		this.hoverCheckers[i] = new HoverChecker(button, 20);
     	}

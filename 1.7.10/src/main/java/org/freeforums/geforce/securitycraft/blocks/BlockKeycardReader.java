@@ -14,11 +14,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
 
@@ -102,7 +103,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 	public void insertCard(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
 		
-		if(HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
+		if(ModuleUtils.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, par2, par3, par4, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
 		if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			if(par5ItemStack.getItemDamage() == 3 && par5ItemStack.stackTagCompound != null && !par6EntityPlayer.capabilities.isCreativeMode){
@@ -118,9 +119,9 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 			par1World.notifyBlocksOfNeighborChange(par2, par3, par4, this);
 		}else{
 			if(((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() != 0){
-				HelpfulMethods.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((TileEntityKeycardReader)par1World.getTileEntity(par2, par3, par4)).getPassLV() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
 			}else{
-				HelpfulMethods.sendMessageToPlayer(par6EntityPlayer, "Keycard reader's security level not set!", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard reader's security level not set!", EnumChatFormatting.RED);
 			}
 		}
 		

@@ -7,8 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
 {
@@ -25,7 +25,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	}else{
     		if(isProvidingPower){
     			isProvidingPower = false;
-    			HelpfulMethods.updateAndNotify(getWorldObj(), xCoord, yCoord, zCoord, getWorldObj().getBlock(xCoord, yCoord, zCoord), 1, true);
+    			BlockUtils.updateAndNotify(getWorldObj(), xCoord, yCoord, zCoord, getWorldObj().getBlock(xCoord, yCoord, zCoord), 1, true);
     		}
     	}
     }

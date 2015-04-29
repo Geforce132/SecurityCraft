@@ -1,9 +1,10 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -67,7 +68,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		String extraOwnerUUID = packet.extraOwnerUUID;
 		String extraOwnerName = packet.extraOwnerName;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
-
+		
 		getWorld(par1EntityPlayer).setBlockMetadataWithNotify(x, y, z, blockMetadata, 3);
 		
 		if(!extraOwnerUUID.isEmpty() && !extraOwnerName.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null){
@@ -78,7 +79,13 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 		if(shouldUpdateBlock){
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(x, y, z, getWorld(par1EntityPlayer).getBlock(x, y, z), amountOfTicks);
-		}		return null;
+			getWorld(par1EntityPlayer).notifyBlocksOfNeighborChange(x + 1, y, z, getWorld(par1EntityPlayer).getBlock(x, y, z));
+			getWorld(par1EntityPlayer).notifyBlocksOfNeighborChange(x - 1, y, z, getWorld(par1EntityPlayer).getBlock(x, y, z));
+			getWorld(par1EntityPlayer).notifyBlocksOfNeighborChange(x, y, z + 1, getWorld(par1EntityPlayer).getBlock(x, y, z));
+			getWorld(par1EntityPlayer).notifyBlocksOfNeighborChange(x, y, z - 1, getWorld(par1EntityPlayer).getBlock(x, y, z));
+		}		
+				
+		return null;
 	}
 }
 

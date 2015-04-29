@@ -12,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -21,7 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 
@@ -110,7 +109,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
     
 	public boolean removedByPlayer(World world, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, boolean willHarvest){
     	if (!world.isRemote && world.getBlock(par3, par4, par5) != mod_SecurityCraft.claymoreDefused){
-            HelpfulMethods.destroyBlock(world, par3, par4, par5, false);
+            BlockUtils.destroyBlock(world, par3, par4, par5, false);
             world.createExplosion((Entity) null, (double) par3 + 0.5F, (double) par4 + 0.5F, (double) par5 + 0.5F, 3.5F, true);
         }
     	
@@ -120,7 +119,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
     public void onBlockDestroyedByExplosion(World worldIn, int par2, int par3, int par4, Explosion explosionIn){
         if (!worldIn.isRemote && worldIn.getBlock(par2, par3, par4) instanceof IExplosive && worldIn.getBlock(par2, par3, par4) == mod_SecurityCraft.claymoreActive)
         {
-        	HelpfulMethods.destroyBlock(worldIn, par2, par3, par4, false);
+        	BlockUtils.destroyBlock(worldIn, par2, par3, par4, false);
             worldIn.createExplosion((Entity) null, (double) par2 + 0.5F, (double) par3 + 0.5F, (double) par4 + 0.5F, 3.5F, true);
         }
     }
@@ -139,30 +138,10 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 	
 	public void explode(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
-			HelpfulMethods.destroyBlock(world, par2, par3, par4, false);
+			BlockUtils.destroyBlock(world, par2, par3, par4, false);
 			world.createExplosion((Entity) null, (double) par2, (double) par3, (double) par4, 3.5F, true);
 		}
 	}
-	
-//    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos){
-//        if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
-//        {
-//    		this.setBlockBounds(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-//        }
-//        else if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-//        {
-//    		this.setBlockBounds(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-//        }
-//        else if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
-//        {
-//    		this.setBlockBounds(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
-//        }
-//        else
-//        {
-//    		this.setBlockBounds(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
-//        }
-//        
-//    } 
 	
 	public Item getItemDropped(int par1, Random par2Random, int par3){
         return Item.getItemFromBlock(mod_SecurityCraft.claymoreActive);

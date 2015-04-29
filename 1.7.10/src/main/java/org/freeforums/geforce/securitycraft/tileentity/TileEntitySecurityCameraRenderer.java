@@ -8,15 +8,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.models.ModelSecurityCameraTest;
+import org.freeforums.geforce.securitycraft.models.ModelSecurityCamera;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
 
-	private ModelSecurityCameraTest modelSecurityCamera;
-	
+	private ModelSecurityCamera modelSecurityCamera;
+	private ResourceLocation cameraTexture;
+
 	public TileEntitySecurityCameraRenderer() {
-		this.modelSecurityCamera = new ModelSecurityCameraTest();
+		this.modelSecurityCamera = new ModelSecurityCamera();
+		this.cameraTexture = new ResourceLocation("securitycraft:textures/blocks/cameraTexture.png");
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
@@ -36,19 +38,18 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		
-		ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/cameraTexture.png");
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
 		
 		GL11.glPushMatrix();
 		
 		if(par1TileEntity.hasWorldObj()){
-			if(meta == 1){
+			if(meta == 1 || meta == 5){
 				rotation = 0F;
-			}else if(meta == 2){
+			}else if(meta == 2 || meta == 6){
 				rotation = 1F;
-			}else if(meta == 3){
+			}else if(meta == 3 || meta == 7){
 				rotation = -10000F; 
-			}else if(meta == 4){
+			}else if(meta == 4 || meta == 8){
 				rotation = -1F;
 			}
 		}else{

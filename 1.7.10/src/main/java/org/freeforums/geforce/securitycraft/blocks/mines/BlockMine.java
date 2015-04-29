@@ -20,7 +20,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
@@ -61,7 +61,7 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 		if (par1World.getBlock(par2, par3 - 1, par4).getMaterial() != Material.air){
 			return;
 		}else{
-			HelpfulMethods.destroyBlock(par1World, par2, par3, par4, true);
+			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
 		}
 	}
 
@@ -180,14 +180,14 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine);
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine);
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 	
 	public boolean isActive(World world, int par2, int par3, int par4) {

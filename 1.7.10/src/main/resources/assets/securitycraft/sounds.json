@@ -1,3 +1,5 @@
 {
-    "alarm": {"category": "player","sounds":["misc/alarm"]}
+    "alarm": {"category": "player","sounds":["misc/alarm"]},
+    "cameraZoomIn": {"category": "player","sounds":["misc/cameraZoomIn"]},
+    "cameraSnap": {"category": "player","sounds":["misc/cameraSnap"]}
 }

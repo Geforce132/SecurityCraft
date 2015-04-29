@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockEMPedWire;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.commands.CommandModule;
 import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
@@ -70,7 +69,7 @@ public class mod_SecurityCraft {
 	private GuiHandler GuiHandler = new GuiHandler();
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
-	public HashMap<String, double[]> cameraUsePositions = new HashMap<String, double[]>();
+	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 
 	private NBTTagCompound savedModule;
 	
@@ -106,6 +105,7 @@ public class mod_SecurityCraft {
 	public static Block deactivatedCageTrap;
 	public static Block unbreakableIronBars;
 	public static Block securityCamera;
+	public static Block securityCameraLit;
 	public static Block empEntity;
 	public static Block usernameLogger;
 	public static Block keypadChest;
@@ -120,8 +120,6 @@ public class mod_SecurityCraft {
 	public static Block claymoreActive;
 	public static Block claymoreDefused;
 	public static Block keypadFurnace;
-
-	public static BlockEMPedWire empedWire;
 	
     //Items
     public static Item Codebreaker;
@@ -244,12 +242,12 @@ public class mod_SecurityCraft {
 		ircBots.remove(playerName);
 	}
 	
-	public double[] getUsePosition(String playerName) {
+	public Object[] getUsePosition(String playerName) {
 		return cameraUsePositions.get(playerName);
 	}
 
-	public void setUsePosition(String playerName, double x, double y, double z) {
-		cameraUsePositions.put(playerName, new double[]{x, y, z});
+	public void setUsePosition(String playerName, double x, double y, double z, float yaw, float pitch) {
+		cameraUsePositions.put(playerName, new Object[]{x, y, z, yaw, pitch});
 	}
 	
 	public boolean hasUsePosition(String playerName) {

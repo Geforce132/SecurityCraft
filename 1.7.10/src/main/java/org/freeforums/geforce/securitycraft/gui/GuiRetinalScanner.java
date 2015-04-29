@@ -10,7 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerRetinalScanner;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -131,7 +131,7 @@ public class GuiRetinalScanner extends GuiContainer{
 			
 			
 			//System.out.println(scanner.findInLine(P.getCommandSenderName()));
-			HelpfulMethods.closePlayerScreen();
+			ClientUtils.closePlayerScreen();
 			
 		}
 			

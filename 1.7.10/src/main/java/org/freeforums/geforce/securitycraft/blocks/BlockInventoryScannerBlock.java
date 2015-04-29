@@ -14,9 +14,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -60,7 +62,7 @@ public class BlockInventoryScannerBlock extends Block{
     	if(par1World.isRemote){
     		return;
     	}else{
-    		if(!HelpfulMethods.hasInventoryScannerFacingBlock(par1World, par2, par3, par4)){
+    		if(!Utils.hasInventoryScannerFacingBlock(par1World, par2, par3, par4)){
         		par1World.func_147480_a(par2, par3, par4, false);
         	}
     	}
@@ -76,7 +78,7 @@ public class BlockInventoryScannerBlock extends Block{
     	}else{
 	        if(par5Entity instanceof EntityPlayer){   	        	
 	        	if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityInventoryScanner){    
-		        	if(HelpfulMethods.checkForModule(par1World, par2 - 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+		        	if(ModuleUtils.checkForModule(par1World, par2 - 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
 	        		for(int i = 0; i < 10; i++){
 	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
 	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 - 1, par3, par4)).getStackInSlotCopy(i) != null){       				
@@ -87,7 +89,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        			}
 	        		}
 	        	}else if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, par2 + 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+		        	if(ModuleUtils.checkForModule(par1World, par2 + 1, par3, par4, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
 	        		for(int i = 0; i < 10; i++){
 	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
 	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2 + 1, par3, par4)).getStackInSlotCopy(i) != null){       				
@@ -98,7 +100,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        			}
 	        		}
 	        	}else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, par2, par3, par4 - 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+		        	if(ModuleUtils.checkForModule(par1World, par2, par3, par4 - 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
 	        		for(int i = 0; i < 10; i++){
 	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
 	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 - 1)).getStackInSlotCopy(i) != null){       				
@@ -109,7 +111,7 @@ public class BlockInventoryScannerBlock extends Block{
 	        			}
 	        		}
 	        	}else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityInventoryScanner){
-		        	if(HelpfulMethods.checkForModule(par1World, par2, par3, par4 + 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
+		        	if(ModuleUtils.checkForModule(par1World, par2, par3, par4 + 1, ((EntityPlayer) par5Entity), EnumCustomModules.WHITELIST)){ return; }
 	        		for(int i = 0; i < 10; i++){
 	        			for(int j = 0; j < ((EntityPlayer) par5Entity).inventory.mainInventory.length; j++){
 	        				if(((TileEntityInventoryScanner)par1World.getTileEntity(par2, par3, par4 + 1)).getStackInSlotCopy(i) != null){       				
@@ -197,7 +199,7 @@ public class BlockInventoryScannerBlock extends Block{
 						mod_SecurityCraft.log("Running te update");
 						par2TileEntity.setCooldown(60);
 						this.checkAndUpdateTEAppropriately(par2TileEntity.getWorldObj(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity);
-						HelpfulMethods.updateAndNotify(par2TileEntity.getWorldObj(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorldObj().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
+						BlockUtils.updateAndNotify(par2TileEntity.getWorldObj(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorldObj().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
 						mod_SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: X: " + par2TileEntity.xCoord + " Y: " + + par2TileEntity.yCoord + " Z: " + + par2TileEntity.zCoord + " )");
 					}
 				}
@@ -223,27 +225,25 @@ public class BlockInventoryScannerBlock extends Block{
     
     private void checkAndUpdateTEAppropriately(World par1World, int par2, int par3, int par4, TileEntityInventoryScanner par5TileEntityIS) {
     	mod_SecurityCraft.log("Updating te");
+    	
 		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setCooldown(60);
-			HelpfulMethods.updateAndNotify(par1World, par2 - 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
-		}
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
+			BlockUtils.updateAndNotify(par1World, par2 - 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setCooldown(60);
-			HelpfulMethods.updateAndNotify(par1World, par2 + 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
+			BlockUtils.updateAndNotify(par1World, par2 + 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
 
-		}
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setCooldown(60);
-			HelpfulMethods.updateAndNotify(par1World, par2, par3, par4 - 2, par1World.getBlock(par2, par3, par4), 1, true);
+			BlockUtils.updateAndNotify(par1World, par2, par3, par4 - 2, par1World.getBlock(par2, par3, par4), 1, true);
 
-		}
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setCooldown(60);
-			HelpfulMethods.updateAndNotify(par1World, par2, par3, par4 + 2, par1World.getBlock(par2, par3, par4), 1, true);
+			BlockUtils.updateAndNotify(par1World, par2, par3, par4 + 2, par1World.getBlock(par2, par3, par4), 1, true);
 
 		}
 	}

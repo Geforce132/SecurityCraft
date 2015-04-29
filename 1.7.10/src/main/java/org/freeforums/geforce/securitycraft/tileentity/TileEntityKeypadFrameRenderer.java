@@ -14,9 +14,11 @@ import org.lwjgl.opengl.GL11;
 public class TileEntityKeypadFrameRenderer extends TileEntitySpecialRenderer {
 	
 	private ModelKeypadFrame keypadFrameModel;
-	
+	private ResourceLocation frameTexture;
+
 	public TileEntityKeypadFrameRenderer() {
 		this.keypadFrameModel = new ModelKeypadFrame();
+		this.frameTexture = new ResourceLocation("textures/blocks/stone.png");
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
@@ -36,8 +38,7 @@ public class TileEntityKeypadFrameRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		
-		ResourceLocation texture = new ResourceLocation("textures/blocks/stone.png");
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(frameTexture);
 		
 		GL11.glPushMatrix();
 		

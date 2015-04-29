@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -62,7 +62,7 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
 	@SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
-        return HelpfulMethods.getItemFromBlock(this);
+        return BlockUtils.getItemFromBlock(this);
     }
     
     @SideOnly(Side.CLIENT)
@@ -72,7 +72,7 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
      */
     public Item getItemDropped(int par1, Random par2Random, int par3)
     {
-        return HelpfulMethods.getItemFromBlock(this);
+        return BlockUtils.getItemFromBlock(this);
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

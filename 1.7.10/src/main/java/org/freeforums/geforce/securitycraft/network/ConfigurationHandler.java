@@ -13,8 +13,6 @@ import org.freeforums.geforce.securitycraft.blocks.BlockBogusLavaBase;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusWater;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusWaterBase;
 import org.freeforums.geforce.securitycraft.blocks.BlockCageTrap;
-import org.freeforums.geforce.securitycraft.blocks.BlockEMPedWire;
-import org.freeforums.geforce.securitycraft.blocks.BlockEmpEntity;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockIronTrapDoor;
@@ -44,7 +42,6 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
 import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
 import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
@@ -59,23 +56,27 @@ import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
 import org.freeforums.geforce.securitycraft.items.ItemWithInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraUsePosition;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraZoom;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCreateExplosion;
+import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
 import org.freeforums.geforce.securitycraft.network.packets.PacketMountCamera;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSDebugField;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSetOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlockAndMetadata;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlockMetadata;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLevel;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeypadCode;
-import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateClient;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
@@ -220,7 +221,8 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setBlockName("keypadFurnace").setBlockTextureName("securitycraft:keypadUnactive");
 	
-	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera");
+	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron, false).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("securitycraft:cameraParticleTexture");
+	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron, true).setHardness(1.0F).setResistance(10.F).setBlockName("securityCameraLit").setBlockTextureName("securitycraft:cameraParticleTexture");
 	}
 	
 	public void setupMines(){
@@ -286,9 +288,7 @@ public class ConfigurationHandler{
 	}
 	
 	public void setupDebuggingBlocks(){
-		mod_SecurityCraft.empedWire = (BlockEMPedWire) new BlockEMPedWire().setBlockName("testBlock");
 		
-		mod_SecurityCraft.empEntity = new BlockEmpEntity(Material.circuits).setBlockName("empEntity").setBlockTextureName("securitycraft:empEntity");
 	}
 	
 	public void setupDebuggingItems(){
@@ -377,7 +377,9 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.claymoreActive, mod_SecurityCraft.claymoreActive.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.claymoreDefused, mod_SecurityCraft.claymoreDefused.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.keypadFurnace, mod_SecurityCraft.keypadFurnace.getUnlocalizedName().substring(5));
-
+		GameRegistry.registerBlock(mod_SecurityCraft.securityCamera, mod_SecurityCraft.securityCamera.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
+		
 		GameRegistry.registerItem(mod_SecurityCraft.Codebreaker, mod_SecurityCraft.Codebreaker.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(mod_SecurityCraft.universalBlockRemover, mod_SecurityCraft.universalBlockRemover.getUnlocalizedName().substring(5));
@@ -639,13 +641,8 @@ public class ConfigurationHandler{
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.FurnaceMine, 1), new Object[] {Blocks.furnace, mod_SecurityCraft.Mine});
 	}
 	
-	public void registerDebuggingAdditions(){
-		GameRegistry.registerBlock(mod_SecurityCraft.empedWire, mod_SecurityCraft.empedWire.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.securityCamera, mod_SecurityCraft.securityCamera.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.empEntity, mod_SecurityCraft.empEntity.getUnlocalizedName().substring(5));
-		
+	public void registerDebuggingAdditions(){		
 		GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
-		
 	}
 	
 	public void setupOtherRegistrys(){}
@@ -666,24 +663,25 @@ public class ConfigurationHandler{
 	public void setupPackets(SimpleNetworkWrapper network) {
 		network.registerMessage(PacketCheckKeypadCode.Handler.class, PacketCheckKeypadCode.class, 0, Side.SERVER);
 		network.registerMessage(PacketCheckRetinalScanner.Handler.class, PacketCheckRetinalScanner.class, 1, Side.SERVER);
-		network.registerMessage(PacketCreateExplosion.Handler.class, PacketCreateExplosion.class, 2, Side.SERVER);
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 3, Side.SERVER);
-		network.registerMessage(PacketSetBlockMetadata.Handler.class, PacketSetBlockMetadata.class, 4, Side.SERVER);
-		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 5, Side.SERVER);
-		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 6, Side.SERVER);
-		network.registerMessage(PacketSetKeypadCode.Handler.class, PacketSetKeypadCode.class, 7, Side.SERVER);
-		network.registerMessage(PacketUpdateClient.Handler.class, PacketUpdateClient.class, 8, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 9, Side.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 10, Side.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 11, Side.SERVER);
-		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 12, Side.CLIENT);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 13, Side.CLIENT);
-		network.registerMessage(PacketSDebugField.Handler.class, PacketSDebugField.class, 14, Side.SERVER);
-		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 15, Side.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 16, Side.SERVER);
-		network.registerMessage(PacketMountCamera.Handler.class, PacketMountCamera.class, 17, Side.SERVER);
+		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 2, Side.SERVER);
+		network.registerMessage(PacketSetBlockMetadata.Handler.class, PacketSetBlockMetadata.class, 3, Side.SERVER);
+		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 4, Side.SERVER);
+		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 5, Side.SERVER);
+		network.registerMessage(PacketSetKeypadCode.Handler.class, PacketSetKeypadCode.class, 6, Side.SERVER);
+		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 7, Side.CLIENT);
+		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 8, Side.CLIENT);
+		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 9, Side.SERVER);
+		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 10, Side.CLIENT);
+		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 11, Side.CLIENT);
+		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 12, Side.CLIENT);
+		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 13, Side.SERVER);
+		network.registerMessage(PacketMountCamera.Handler.class, PacketMountCamera.class, 14, Side.SERVER);
+		network.registerMessage(PacketCSetCameraUsePosition.Handler.class, PacketCSetCameraUsePosition.class, 15, Side.CLIENT);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 16, Side.SERVER);
+		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 17, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 18, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 19, Side.SERVER);
+		network.registerMessage(PacketCSetCameraZoom.Handler.class, PacketCSetCameraZoom.class, 20, Side.CLIENT);
 	}
-
-	
 
 }

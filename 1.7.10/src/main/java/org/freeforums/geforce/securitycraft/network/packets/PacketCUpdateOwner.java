@@ -55,10 +55,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	public IMessage onMessage(PacketCUpdateOwner message, MessageContext ctx) {
 		if(message.checkForNull && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) != null && Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z) instanceof TileEntityOwnable && ((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).getOwnerUUID() == null){
 			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.uuid, message.owner);
-			System.out.println("Sending owner to: " + message.owner);
 		}else if(!message.checkForNull){
 			((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z)).setOwner(message.uuid, message.owner);
-			System.out.println("Sending owner to: " + message.owner);
 		}
 		return null;
 	}
