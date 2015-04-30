@@ -149,7 +149,7 @@ public class ItemCameraMonitor extends Item {
 		ArrayList<int[]> list = new ArrayList<int[]>();
 
 		for(int i = 0; i <= 10; i++){
-			if(nbt.hasKey("Camera" + i)){
+			if(nbt != null && nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");	
 				String[] coords = new String[]{scanner.next(), scanner.next(), scanner.next()};
 				
