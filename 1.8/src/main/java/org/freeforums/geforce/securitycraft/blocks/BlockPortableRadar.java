@@ -23,11 +23,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
@@ -94,10 +96,10 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
-                if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && HelpfulMethods.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
+                if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername())){
-                	HelpfulMethods.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
                 }   
                 
                 if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
@@ -122,11 +124,11 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 
     private void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
     	if(par5 && !((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
-			Utils.setBlockProperty(par1World, pos, POWERED, true, true);
-			HelpfulMethods.updateAndNotify(par1World, pos, Utils.getBlock(par1World, pos), 1, false);
+    		BlockUtils.setBlockProperty(par1World, pos, POWERED, true, true);
+    		BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
 		}else if(!par5 && ((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
-			Utils.setBlockProperty(par1World, pos, POWERED, false, true);
-			HelpfulMethods.updateAndNotify(par1World, pos, Utils.getBlock(par1World, pos), 1, false);
+			BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
+			BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
 		}
 	}     
 

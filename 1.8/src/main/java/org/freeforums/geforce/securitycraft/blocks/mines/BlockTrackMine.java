@@ -6,7 +6,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class BlockTrackMine extends BlockRail implements IHelpInfo {
@@ -15,9 +15,8 @@ public class BlockTrackMine extends BlockRail implements IHelpInfo {
 		super();
 	}
 	
-	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos)
-    {
-		Utils.destroyBlock(world, pos, false);
+	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos){
+		BlockUtils.destroyBlock(world, pos, false);
 		
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
 			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), 4.0F, true);

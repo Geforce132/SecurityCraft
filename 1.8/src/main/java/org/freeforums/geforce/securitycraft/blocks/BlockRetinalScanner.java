@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
@@ -80,7 +80,7 @@ public class BlockRetinalScanner extends BlockContainer implements IHelpInfo {
         if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
         	String ownerUUID = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerUUID();
         	String ownerName = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerName();
-        	Utils.setBlockProperty(par1World, pos, POWERED, false);
+        	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
         	((TileEntityRetinalScanner) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
         }                       
     }

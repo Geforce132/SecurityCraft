@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 
@@ -154,10 +154,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
     
     public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
     	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2 + i, par3, par4);
+			Block id = BlockUtils.getBlock(par1World, par2 + i, par3, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2 + j, par3, par4) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2 + j, par3, par4) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2 + j, par3, par4), false);
 					}else{
 						return;
@@ -169,10 +169,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 		}
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2 - i, par3, par4);
+			Block id = BlockUtils.getBlock(par1World, par2 - i, par3, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2 - j, par3, par4) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2 - j, par3, par4) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2 - j, par3, par4), false);
 					}else{
 						return;
@@ -184,10 +184,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 		}
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2, par3, par4 + i);
+			Block id = BlockUtils.getBlock(par1World, par2, par3, par4 + i);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2, par3, par4 + j) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2, par3, par4 + j) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2, par3, par4 + j), false);
 					}else{
 						return;
@@ -199,10 +199,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 		}
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2 , par3, par4 - i);
+			Block id = BlockUtils.getBlock(par1World, par2 , par3, par4 - i);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2, par3, par4 - j) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2, par3, par4 - j) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2, par3, par4 - j), false);
 					}else{
 						return;
@@ -214,10 +214,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 		}
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2, par3 + i, par4);
+			Block id = BlockUtils.getBlock(par1World, par2, par3 + i, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2, par3 + j, par4) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2, par3 + j, par4) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2, par3 + j, par4), false);
 					}else{
 						return;
@@ -229,10 +229,10 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 		}
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
-			Block id = Utils.getBlock(par1World, par2, par3 - i, par4);
+			Block id = BlockUtils.getBlock(par1World, par2, par3 - i, par4);
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
-					if(Utils.getBlock(par1World, par2, par3 - j, par4) == mod_SecurityCraft.Laser){
+					if(BlockUtils.getBlock(par1World, par2, par3 - j, par4) == mod_SecurityCraft.Laser){
 						par1World.destroyBlock(new BlockPos(par2, par3 - j, par4), false);
 					}else{
 						return;
@@ -274,7 +274,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
      */
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
-        	Utils.setBlockProperty(par1World, pos, POWERED, false, true);
+        	BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
         }                      
     }
     

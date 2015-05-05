@@ -1,12 +1,6 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,6 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public abstract class CustomizableSCTE extends TileEntityOwnable implements IInventory{
 	
@@ -297,7 +296,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void insertModule(EnumCustomModules module){
 		for(int i = 0; i < this.itemStacks.length; i++){
 			if(this.itemStacks[i] == null && module != null){
-				this.itemStacks[i] = new ItemStack(HelpfulMethods.getItemFromModule(module)); 
+				this.itemStacks[i] = new ItemStack(ModuleUtils.getItemFromModule(module)); 
 				break;
 			}else if(this.itemStacks[i] != null && module == null){
 				this.itemStacks[i] = null;

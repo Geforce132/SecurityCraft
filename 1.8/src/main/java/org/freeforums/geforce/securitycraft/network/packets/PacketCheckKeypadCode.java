@@ -12,22 +12,20 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -87,19 +85,19 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		}
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypad && code.matches(code1)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			new ScheduleUpdate(getWorld(par1EntityPlayer), 3, x, y, z);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && code.matches(code2)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
 			((EntityPlayerMP) par1EntityPlayer).closeScreen();
 			((EntityPlayerMP) par1EntityPlayer).displayGUIChest(getLockableContainer(getWorld(par1EntityPlayer), new BlockPos(x, y, z))); //((TileEntityKeypadChest) getWorld().getTileEntity(x, y, z))
 			return null;
 		}else if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace && code.matches(code3)){
-			HelpfulMethods.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
-			if(!((Boolean) Utils.getBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN)).booleanValue()){
-				Utils.setBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN, true, true);
+			PlayerUtils.sendMessageToPlayer(par1EntityPlayer, "Passcode entered correctly.", EnumChatFormatting.GREEN);
+			if(!((Boolean) BlockUtils.getBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN)).booleanValue()){
+				BlockUtils.setBlockProperty(getWorld(par1EntityPlayer), pos, BlockKeypadFurnace.OPEN, true, true);
 			}
 			getWorld(par1EntityPlayer).playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 			par1EntityPlayer.openGui(mod_SecurityCraft.instance, 16, getWorld(par1EntityPlayer), pos.getX(), pos.getY(), pos.getZ());

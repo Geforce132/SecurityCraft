@@ -17,8 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.gui.GuiCameraMonitorOverlay;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
 import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class ItemCameraMonitor extends Item {
@@ -39,7 +39,7 @@ public class ItemCameraMonitor extends Item {
 				for(int i = 1; i <= 10; i++){
 					if(!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
 						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, pos.getX() + " " + pos.getY() + " " + pos.getZ());
-						HelpfulMethods.sendMessageToPlayer(par2EntityPlayer, "Bound camera (at " + Utils.getFormattedCoordinates(pos) + ") to monitor.", EnumChatFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Bound camera (at " + Utils.getFormattedCoordinates(pos) + ") to monitor.", EnumChatFormatting.GREEN);
 						break;
 					}
 				}

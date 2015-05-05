@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.enums;
+package org.freeforums.geforce.securitycraft.misc;
 
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;

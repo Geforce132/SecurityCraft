@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 
@@ -90,7 +90,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
     	if (!world.isRemote && !((Boolean) world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
         {
-            Utils.destroyBlock(world, pos, false);
+            BlockUtils.destroyBlock(world, pos, false);
             world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
         }
     	
@@ -99,9 +99,9 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
     
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
-        if (!worldIn.isRemote && Utils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
+        if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
         {
-            Utils.destroyBlock(worldIn, pos, false);
+            BlockUtils.destroyBlock(worldIn, pos, false);
             worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
         }
     }
@@ -113,19 +113,19 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 	
 	public void activateMine(World world, BlockPos pos) {
 		if(!world.isRemote){
-			Utils.setBlockProperty(world, pos, DEACTIVATED, false);
+			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 		}
 	}
 
 	public void defuseMine(World world, BlockPos pos) {
 		if(!world.isRemote){
-			Utils.setBlockProperty(world, pos, DEACTIVATED, true);
+			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 		}
 	}
 	
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
-			Utils.destroyBlock(world, pos, false);
+			BlockUtils.destroyBlock(world, pos, false);
 			world.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 3.5F, true);
 		}
 	}

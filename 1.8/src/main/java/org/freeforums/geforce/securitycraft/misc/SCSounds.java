@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.sounds;
+package org.freeforums.geforce.securitycraft.misc;
 
 public enum SCSounds {
 	

@@ -19,10 +19,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
@@ -52,7 +53,7 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     		if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
     			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(pos);
     			
-    			if(HelpfulMethods.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || HelpfulMethods.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+    			if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
     				return true;
     			}
     			    		
@@ -69,7 +70,7 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     					new ScheduleUpdate(par1World, 3, pos.getX(), pos.getY(), pos.getZ());
     				}
     			}else{	
-    				HelpfulMethods.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
+    				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
     			}	
         	}     	    	     	
     	}

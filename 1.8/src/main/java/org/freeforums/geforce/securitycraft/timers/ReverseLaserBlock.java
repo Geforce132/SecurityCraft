@@ -6,8 +6,7 @@ import java.util.TimerTask;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class ReverseLaserBlock{
@@ -22,16 +21,12 @@ public class ReverseLaserBlock{
 			this.xCoord = pos.getX();
 			this.yCoord = pos.getY();
 			this.zCoord = pos.getZ();
-			timer.schedule(new RemindTask(), seconds*1000);
-			
-			
-			
-			
+			timer.schedule(new RemindTask(), seconds*1000);	
 		}
 		class RemindTask extends TimerTask{
 
 			public void run(){
-				Utils.setBlock(world, new BlockPos(xCoord, yCoord, zCoord), mod_SecurityCraft.LaserBlock);
+				BlockUtils.setBlock(world, new BlockPos(xCoord, yCoord, zCoord), mod_SecurityCraft.LaserBlock);
 				world.notifyNeighborsOfStateChange(new BlockPos(xCoord, yCoord, zCoord), mod_SecurityCraft.LaserBlock);
 				
 				timer.cancel();

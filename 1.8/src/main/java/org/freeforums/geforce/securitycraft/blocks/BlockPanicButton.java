@@ -13,7 +13,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class BlockPanicButton extends BlockButton implements ITileEntityProvider, IHelpInfo {
@@ -30,19 +30,15 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         return false;
     }
     
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (((Boolean)state.getValue(POWERED)).booleanValue())
-        {
-        	Utils.setBlockProperty(worldIn, pos, POWERED, false, true);
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
+        if(((Boolean)state.getValue(POWERED)).booleanValue()){
+        	BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
             worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
-        }
-        else
-        {
-        	Utils.setBlockProperty(worldIn, pos, POWERED, true, true);
+        }else{
+        	BlockUtils.setBlockProperty(worldIn, pos, POWERED, true, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
             worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));

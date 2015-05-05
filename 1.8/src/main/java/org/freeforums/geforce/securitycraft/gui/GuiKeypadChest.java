@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadChest;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -21,9 +21,8 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 @SuppressWarnings({"unchecked", "unused"})
-//TODO
-public class GuiKeypadChest extends GuiContainer
-{
+public class GuiKeypadChest extends GuiContainer{
+	
     private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	public static boolean givingPower = false;
 	private GuiButton buttonSave;
@@ -86,7 +85,7 @@ public class GuiKeypadChest extends GuiContainer
 			this.checkCode(this.currentString);			
 		}else if(this.isValidChar(par1) && par1 == ''){
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			this.checkCode(this.currentString);
 		}else{
@@ -179,7 +178,7 @@ public class GuiKeypadChest extends GuiContainer
 			this.checkCode(this.currentString);	
 			break;
 		case 10:
-			this.currentString = HelpfulMethods.removeLastChar(currentString);
+			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.textboxKeycode, currentString);
 			break;
 			

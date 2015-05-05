@@ -6,8 +6,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockAlarm;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.SCSounds;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import org.freeforums.geforce.securitycraft.sounds.SCSounds;
 
 public class TileEntityAlarm extends TileEntityOwnable {
 	

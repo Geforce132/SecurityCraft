@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
@@ -52,12 +52,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 		((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).setType(packet.type);
 		
-		
-		
 		mod_SecurityCraft.log("Setting type to " + packet.type);
 		getWorld(context.getServerHandler().playerEntity).scheduleUpdate(new BlockPos(x, y, z), getWorld(context.getServerHandler().playerEntity).getBlockState(new BlockPos(x, y, z)).getBlock(), 1);
 		
-		HelpfulMethods.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), new BlockPos(x, y, z), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getType());			
+		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), new BlockPos(x, y, z), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getType());			
 		
 		return null;
 	}

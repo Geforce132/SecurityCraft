@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 
@@ -124,14 +124,14 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 */
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
 	{
-		return HelpfulMethods.getItemFromBlock(this);
+		return BlockUtils.getItemFromBlock(this);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
-		return HelpfulMethods.getItemFromBlock(this);
+		return BlockUtils.getItemFromBlock(this);
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {

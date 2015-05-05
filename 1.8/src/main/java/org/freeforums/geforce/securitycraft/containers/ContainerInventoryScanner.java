@@ -6,7 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 public class ContainerInventoryScanner extends Container {
@@ -71,11 +71,10 @@ public class ContainerInventoryScanner extends Container {
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
-    {
+    public void onContainerClosed(EntityPlayer par1EntityPlayer){
         super.onContainerClosed(par1EntityPlayer);
         
-        HelpfulMethods.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getType());
+        Utils.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getType());
     }
 	
 	public boolean canInteractWith(EntityPlayer entityplayer) {

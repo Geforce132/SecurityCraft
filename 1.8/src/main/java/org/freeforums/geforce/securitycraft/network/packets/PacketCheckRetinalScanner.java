@@ -17,10 +17,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 
@@ -96,10 +96,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			return null;
 		}
 			
-		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString()) || HelpfulMethods.checkForModule(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), par1EntityPlayer, EnumCustomModules.WHITELIST))){
+		if(posXYZ[5] > 1 && posXYZ[5] < 6 && (((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString()) || ModuleUtils.checkForModule(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), par1EntityPlayer, EnumCustomModules.WHITELIST))){
         	String ownerUUID = ((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerUUID();
         	String ownerName = ((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).getOwnerName();
-        	Utils.setBlockProperty(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), BlockRetinalScanner.POWERED, true);
+        	BlockUtils.setBlockProperty(getWorld(par1EntityPlayer), new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), BlockRetinalScanner.POWERED, true);
         	((TileEntityRetinalScanner) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]))).setOwner(ownerUUID, ownerName);
 			getWorld(par1EntityPlayer).scheduleUpdate(new BlockPos(posXYZ[1], posXYZ[2], posXYZ[3]), mod_SecurityCraft.retinalScanner, 60);
 			

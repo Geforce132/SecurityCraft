@@ -1,22 +1,17 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerBlock;
-import org.freeforums.geforce.securitycraft.enums.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
-public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
-{
+public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
+	
 	private ItemStack[] inventoryContents = new ItemStack[21]; 
 	private String type = "check";
 	private boolean isProvidingPower;
@@ -28,7 +23,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	}else{
     		if(isProvidingPower){
     			isProvidingPower = false;
-    			HelpfulMethods.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
+    			BlockUtils.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
     		}
     	}
     }

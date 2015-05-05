@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class TileEntitySecurityCamera extends TileEntitySCTE{
@@ -37,13 +37,13 @@ public class TileEntitySecurityCamera extends TileEntitySCTE{
 							detectingPlayer = true;
 					}
 					
-					HelpfulMethods.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1, true);
+					BlockUtils.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1, true);
 				}else{
 					if(detectingPlayer){
 						detectingPlayer = false;
 					}
 					
-					HelpfulMethods.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1, true);
+					BlockUtils.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1, true);
 				}		
 	        }
 		}
@@ -133,11 +133,8 @@ public class TileEntitySecurityCamera extends TileEntitySCTE{
     	
     }
 
-
-
 	private void checkPlayers(EntityPlayer par1EntityPlayer) {
-		HelpfulMethods.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1 , true);
-
+		BlockUtils.updateAndNotify(worldObj, pos, mod_SecurityCraft.securityCamera, 1 , true);
 	}
 	
 	/**

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvider, IHelpInfo {
@@ -52,19 +52,16 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
     
 	
 	@SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, BlockPos pos)
-    {
-        return HelpfulMethods.getItemFromBlock(this);
+    public Item getItem(World p_149694_1_, BlockPos pos){
+        return BlockUtils.getItemFromBlock(this);
     }
     
-    @SideOnly(Side.CLIENT)
-
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3)
-    {
-        return HelpfulMethods.getItemFromBlock(this);
+    @SideOnly(Side.CLIENT)
+    public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+        return BlockUtils.getItemFromBlock(this);
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

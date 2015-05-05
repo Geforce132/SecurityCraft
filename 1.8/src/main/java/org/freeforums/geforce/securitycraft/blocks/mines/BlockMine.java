@@ -24,8 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 
@@ -77,7 +76,7 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		if(Utils.getBlockMaterial(par1World, pos.down()) == Material.glass || Utils.getBlockMaterial(par1World, pos.down()) == Material.cactus || Utils.getBlockMaterial(par1World, pos.down()) == Material.air || Utils.getBlockMaterial(par1World, pos.down()) == Material.cake || Utils.getBlockMaterial(par1World, pos.down()) == Material.plants){
+		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.glass || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cactus || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.air || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cake || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.plants){
 			return false;
 		}else{
 			return true;
@@ -137,13 +136,13 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 	
 	public void activateMine(World world, BlockPos pos) {
 		if(!world.isRemote){
-			Utils.setBlockProperty(world, pos, DEACTIVATED, false);
+			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 		}
 	}
 
 	public void defuseMine(World world, BlockPos pos) {
 		if(!world.isRemote){
-			Utils.setBlockProperty(world, pos, DEACTIVATED, true);
+			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 		}
 	}
 
@@ -164,14 +163,14 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine);
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
-		return HelpfulMethods.getItemFromBlock(mod_SecurityCraft.Mine);
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	public IBlockState getStateFromMeta(int meta)

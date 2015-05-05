@@ -10,7 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockClaymore;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class TileEntityClaymore extends TileEntitySCTE{
@@ -34,12 +34,12 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 			
 			if(cooldown == 0){
-				Utils.destroyBlock(getWorld(), getPos(), false);
+				BlockUtils.destroyBlock(getWorld(), getPos(), false);
 				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
 				return;
 			}
 			
-			EnumFacing dir = Utils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
+			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1));
 			
 			if(dir == EnumFacing.NORTH){

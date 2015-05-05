@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.handlers;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -9,15 +7,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -25,7 +18,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -39,15 +31,14 @@ import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
-@SuppressWarnings({"unused", "rawtypes"})
+@SuppressWarnings({"unused"})
 public class ForgeEventHandler {
 	
 	private int counter = 0;
@@ -120,7 +111,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier && ((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
-					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() + ".", EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -141,7 +132,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 
 				if(((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
-					HelpfulMethods.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}
 
@@ -206,47 +197,6 @@ public class ForgeEventHandler {
 			return null;
 		}
 	}
-	
-	private int[] getBlockInFront(World par1World, EntityPlayer par2EntityPlayer, double reach){
-    	int[] blockInfo = {0, 0, 0, 0, -1, 0};
-    	
-    	MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(par1World, par2EntityPlayer, true, reach);
-    	
-    	if(movingobjectposition != null){
-    		if(movingobjectposition.typeOfHit == MovingObjectType.BLOCK){
-    			blockInfo[1] = movingobjectposition.getBlockPos().getX();
-    			blockInfo[2] = movingobjectposition.getBlockPos().getY();
-    			blockInfo[3] = movingobjectposition.getBlockPos().getZ();
-    			blockInfo[4] = movingobjectposition.sideHit.getIndex();
-    			blockInfo[5] = par1World.getBlockState(movingobjectposition.getBlockPos()).getBlock().getMetaFromState(par1World.getBlockState(movingobjectposition.getBlockPos()));
-    			blockInfo[0] = Block.getIdFromBlock(par1World.getBlockState(new BlockPos(blockInfo[1], blockInfo[2], blockInfo[3])).getBlock());
-
-    		}
-    	}
-    	
-    	return blockInfo;
-    }
-    
-    private MovingObjectPosition getMovingObjectPositionFromPlayer(World par1World, EntityPlayer par2EntityPlayer, boolean flag, double reach){
-    	float f = 1.0F;
-    	float playerPitch = par2EntityPlayer.prevRotationPitch + (par2EntityPlayer.rotationPitch - par2EntityPlayer.prevRotationPitch) * f;
-    	float playerYaw = par2EntityPlayer.prevRotationYaw + (par2EntityPlayer.rotationYaw - par2EntityPlayer.prevRotationYaw) * f;
-    	double playerPosX = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * f;
-    	double playerPosY = (par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * f + 1.6200000000000001D);
-    	double playerPosZ = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * f;
-    	Vec3 vecPlayer = new Vec3(playerPosX, playerPosY, playerPosZ);
-    	float cosYaw = MathHelper.cos(-playerYaw * 0.01745329F - 3.141593F);
-    	float sinYaw = MathHelper.sin(-playerYaw * 0.01745329F - 3.141593F);
-    	float cosPitch = -MathHelper.cos(-playerPitch * 0.01745329F);
-    	float sinPitch = -MathHelper.sin(-playerPitch * 0.01745329F);
-    	float pointX = sinYaw * cosPitch;
-    	float pointY = sinPitch;
-    	float pointZ = cosYaw * cosPitch;
-    	Vec3 vecPoint = vecPlayer.addVector(pointX * reach, pointY * reach, pointZ * reach);
-    	MovingObjectPosition movingobjectposition = par1World.rayTraceBlocks(vecPlayer, vecPoint, flag);
-    	return movingobjectposition;
-
-    }
   
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
     	if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){
@@ -262,20 +212,6 @@ public class ForgeEventHandler {
     	}else{
     		return false;
     	}
-    }
-    
-    public EntityPlayer getPlayerFromName(String par1){
-    	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-    	Iterator iterator = players.iterator();
-    	
-    	while(iterator.hasNext()){
-    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-    		if(tempPlayer.getName().matches(par1)){
-    			return tempPlayer;
-    		}
-    	}
-    	
-    	return null;
     }
     
     public void setCooldown(int par1){

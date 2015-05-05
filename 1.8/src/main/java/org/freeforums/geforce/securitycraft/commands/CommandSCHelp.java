@@ -19,8 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
-import org.freeforums.geforce.securitycraft.main.HelpfulMethods;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -76,13 +75,13 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			
 			if(world.getBlockState(new BlockPos(positions[0], positions[1], positions[2])).getBlock() == mod_SecurityCraft.keypad && ((TileEntityKeypad)world.getTileEntity(new BlockPos(positions[0], positions[1], positions[2]))).getKeypadCode().matches(par1String[4])){
 				((TileEntityKeypad)world.getTileEntity(new BlockPos(positions[0], positions[1], positions[2]))).setKeypadCode(par1String[5]);
-				HelpfulMethods.sendMessage(icommandsender, "Changed keypad's (at X:" + positions[0] + " Y:" + positions[1] + " Z:" + positions[2] + ") code from " + Integer.parseInt(par1String[4]) + " to " + Integer.parseInt(par1String[5]) + ".", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessage(icommandsender, "Changed keypad's (at X:" + positions[0] + " Y:" + positions[1] + " Z:" + positions[2] + ") code from " + Integer.parseInt(par1String[4]) + " to " + Integer.parseInt(par1String[5]) + ".", EnumChatFormatting.GREEN);
 			}
 			else if((world.getBlockState(new BlockPos(positions[0], positions[1], positions[2])).getBlock() == mod_SecurityCraft.keypad  && !((TileEntityKeypad)world.getTileEntity(new BlockPos(positions[0], positions[1], positions[2]))).getKeypadCode().matches(par1String[4])) || (world.getBlockState(new BlockPos(positions[0], positions[1], positions[2])).getBlock() == mod_SecurityCraft.keypadChest  && !((TileEntityKeypadChest)world.getTileEntity(new BlockPos(positions[0], positions[1], positions[2]))).getKeypadCode().matches(par1String[4]))){
-				HelpfulMethods.sendMessage(icommandsender, par1String[3] + " is not the passcode for this block.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessage(icommandsender, par1String[3] + " is not the passcode for this block.", EnumChatFormatting.RED);
 			}
 			else if(world.getBlockState(new BlockPos(positions[0], positions[1], positions[2])).getBlock() != mod_SecurityCraft.keypad && world.getBlockState(new BlockPos(positions[0], positions[1], positions[2])).getBlock() != mod_SecurityCraft.keypadChest){
-				HelpfulMethods.sendMessage(icommandsender, "There is no accessable block at the specifed coordinates!", EnumChatFormatting.RED);
+				PlayerUtils.sendMessage(icommandsender, "There is no accessable block at the specifed coordinates!", EnumChatFormatting.RED);
 			}
 			
 			return;

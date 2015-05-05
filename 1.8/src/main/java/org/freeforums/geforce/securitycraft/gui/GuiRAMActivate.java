@@ -9,12 +9,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.containers.ContainerRAMActivate;
 import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.lwjgl.opengl.GL11;
@@ -45,7 +43,7 @@ public class GuiRAMActivate extends GuiContainer{
     			}
     			
     			this.buttons[i - 1].displayString = "Mine at X: " + coords[0] + " Y: " + coords[1] + " Z: " + coords[2];
-    			this.buttons[i - 1].enabled = (Utils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) Utils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && !((IExplosive) Utils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
+    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && !((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
     		

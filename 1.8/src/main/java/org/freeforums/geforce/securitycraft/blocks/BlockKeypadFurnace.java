@@ -1,7 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -18,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 
@@ -60,8 +58,8 @@ public class BlockKeypadFurnace extends BlockOwnable implements IHelpInfo {
 					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, pos.getX(), pos.getY(), pos.getZ());
 				}
 			}else{
-				if(!((Boolean) Utils.getBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN)).booleanValue()){
-					Utils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, true);
+				if(!((Boolean) BlockUtils.getBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN)).booleanValue()){
+					BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, true);
 				}
 				par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
