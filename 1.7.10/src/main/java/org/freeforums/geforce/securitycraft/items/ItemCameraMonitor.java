@@ -60,7 +60,7 @@ public class ItemCameraMonitor extends Item {
 				return true;
 			}
 		}else if(par3World.isRemote && par3World.getBlock(par4, par5, par6) != mod_SecurityCraft.securityCamera){
-			this.openMonitorGUI(par1ItemStack);
+			this.openMonitorGUI(par1ItemStack, par2EntityPlayer);
 			return true;
 		}
 		
@@ -70,7 +70,7 @@ public class ItemCameraMonitor extends Item {
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
     	if(par2World.isRemote){
-    		this.openMonitorGUI(par1ItemStack);
+    		this.openMonitorGUI(par1ItemStack, par3EntityPlayer);
     	}
     	
 		return par1ItemStack;
@@ -90,7 +90,12 @@ public class ItemCameraMonitor extends Item {
     }
 	
 	@SideOnly(Side.CLIENT)
-	public void openMonitorGUI(ItemStack par1ItemStack){
+	public void openMonitorGUI(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
+		if(!par1ItemStack.hasTagCompound() || !par1ItemStack.stackTagCompound.hasKey("Camera1")){ 
+			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Add cameras to this monitor by right-clicking them!", EnumChatFormatting.RED);
+			return; 
+		}
+		
 		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitor((ItemCameraMonitor) par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
 	}
 	

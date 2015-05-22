@@ -218,16 +218,6 @@ public class ItemModifiedBucket extends Item implements IHelpInfo {
             }
         }
     }
-    
-    public String getHelpInfo() {
-		if(isFull == mod_SecurityCraft.bogusLavaFlowing){
-			return "The fake lava acts the same as lava, except it heals you instead of hurting you.";
-		}else if(isFull == mod_SecurityCraft.bogusWaterFlowing){
-			return "The fake water acts the same as water, expect it hurts you when touched.";
-		}else{
-			return null;
-		}
-	}
 
 	public String[] getRecipe() {
 		if(isFull == mod_SecurityCraft.bogusLavaFlowing){

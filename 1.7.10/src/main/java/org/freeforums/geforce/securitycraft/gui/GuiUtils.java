@@ -41,7 +41,7 @@ public class GuiUtils extends Gui{
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out", (resolution.getScaledWidth() - 80) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out") / 2, resolution.getScaledHeight() - 60, 16777215);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision", (resolution.getScaledWidth() - 91) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision") / 2, resolution.getScaledHeight() - 50, 16777215);
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitLight.getKeyCode()) + " - Activate light", (resolution.getScaledWidth() - 108) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitLight.getKeyCode()) + " - Activate light") / 2, resolution.getScaledHeight() - 40, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal", (resolution.getScaledWidth() - 82) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal") / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 0xFF3377);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal", (resolution.getScaledWidth() - 82) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal") / 2, resolution.getScaledHeight() - 30, 16777215);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -61,12 +61,10 @@ public class GuiUtils extends Gui{
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 		}
 		
-		if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && !((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE)){
-			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		}else if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && ((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE)){
+		if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0){
 			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
 		}else{
-			drawItemStackToGui(mc, Items.redstone, 10, 0);
+			drawItemStackToGui(mc, Items.redstone, 10, 0, true);
 //			GL11.glColor3f(1.0F, 1.0F, 1.0F);
 //			mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
 //			IIcon icon = Items.redstone.getIconFromDamage(0);
@@ -152,17 +150,23 @@ public class GuiUtils extends Gui{
 		}
 	}
 	
-	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y){
-		GL11.glEnable(GL11.GL_LIGHTING);
+	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
+		if(fixLighting){
+			GL11.glEnable(GL11.GL_LIGHTING);
+		}
+		
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(item), x, y);
-        //itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(item), x, y);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        
+        if(fixLighting){
+        	GL11.glDisable(GL11.GL_LIGHTING);
+        }
+        
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}
 	
-	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y){
-		drawItemStackToGui(mc, Item.getItemFromBlock(block), x, y);
+	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
+		drawItemStackToGui(mc, Item.getItemFromBlock(block), x, y, fixLighting);
 	}
 
 	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel){

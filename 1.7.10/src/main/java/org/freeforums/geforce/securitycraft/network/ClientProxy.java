@@ -11,6 +11,7 @@ import org.freeforums.geforce.securitycraft.models.ModelKeypadFrame;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFurnaceDeactivated;
 import org.freeforums.geforce.securitycraft.models.ModelSecurityCamera;
 import org.freeforums.geforce.securitycraft.renderers.CustomModeledBlockRenderer;
+import org.freeforums.geforce.securitycraft.renderers.ItemTaserRenderer;
 import org.freeforums.geforce.securitycraft.renderers.RenderTnTCompact;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymoreRenderer;
@@ -45,6 +46,7 @@ public class ClientProxy extends ServerProxy{
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.claymoreActive), new CustomModeledBlockRenderer(new TileEntityClaymore(), new ModelClaymore(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.securityCamera), new CustomModeledBlockRenderer(new TileEntitySecurityCamera(), new ModelSecurityCamera(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.securityCameraLit), new CustomModeledBlockRenderer(new TileEntitySecurityCamera(), new ModelSecurityCamera(), 0.0D, -0.1D, 0.0D, 0.0F));
+		MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.taser, new ItemTaserRenderer());
 	}
 	
 	public void registerClientTickHandler(){

@@ -9,8 +9,6 @@ package org.freeforums.geforce.securitycraft.interfaces;
 
 public interface IHelpInfo {
 	
-	public String getHelpInfo();
-
 	public String[] getRecipe();
 
 }

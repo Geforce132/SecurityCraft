@@ -190,10 +190,6 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 		return new TileEntityKeycardReader();
 	}
 
-    public String getHelpInfo() {
-		return "The keycard reader emits a 15-block redstone redstone signal if you insert a keycard with a security level equal to or higher then (as specified in the GUI) the level selected in the reader's GUI.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The keycard reader requires: 8 stone, 1 hopper", "XXX", "XYX", "XXX", "X = stone, Y = hopper"};
 	}

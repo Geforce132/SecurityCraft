@@ -32,10 +32,6 @@ public class ItemCodebreaker extends Item implements IHelpInfo {
         return EnumRarity.rare;
     }
 	
-	public String getHelpInfo() {
-		return "The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by right-clicking on it.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The codebreaker requires: 2 diamonds, 2 gold ingots, 2 redstone, 1 nether star, 1 emerald, 1 redstone torch", "UVU", "WXW", "YZY", "U = diamond, V = redstone torch, W = gold ingot, X = nether star, Y = redstone, Z = emerald"};
 	}

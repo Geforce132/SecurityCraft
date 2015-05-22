@@ -86,10 +86,6 @@ public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
 			e.printStackTrace();
 		}
     }
-	
-    public String getHelpInfo() {
-		return "The track mine explodes when a minecart passes on top of it.";
-	}
 
 	public String[] getRecipe() {
 		return new String[]{"The track mine requires: 6 iron ingots, 1 stick, 1 gunpowder", "X X", "XYX", "XZX", "X = iron ingot, Y = stick, Z = gunpowder"};

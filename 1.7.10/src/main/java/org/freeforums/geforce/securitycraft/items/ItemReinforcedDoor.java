@@ -109,10 +109,6 @@ public class ItemReinforcedDoor extends Item implements IHelpInfo {
         p_150924_0_.notifyBlocksOfNeighborChange(p_150924_1_, p_150924_2_, p_150924_3_, p_150924_5_);
         p_150924_0_.notifyBlocksOfNeighborChange(p_150924_1_, p_150924_2_ + 1, p_150924_3_, p_150924_5_);
     }
-    
-    public String getHelpInfo() {
-		return "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.";
-	}
 
 	public String[] getRecipe() {
 		return new String[]{"The reinforced iron door requires: 8 iron ingots, 1 iron door", "XXX", "XYX", "XXX", "X = iron ingot, Y = iron door"};

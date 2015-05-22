@@ -159,10 +159,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 		return new TileEntityClaymore();
 	}
 	
-	public String getHelpInfo() {
-		return "Claymores explode one second after a living entity walks within " + mod_SecurityCraft.configHandler.claymoreRange + " blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.";
-	}
-
 	public String[] getRecipe() {
 		return null;
 	}

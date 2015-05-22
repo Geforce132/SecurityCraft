@@ -16,7 +16,6 @@ import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.misc.SCSounds;
 import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
@@ -186,7 +185,7 @@ public class EntitySecurityCamera extends Entity{
 			this.moveViewRight();
 		}
 		
-		if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && this.worldObj.getTileEntity((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)) != null && ((CustomizableSCTE) this.worldObj.getTileEntity((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ))).hasModule(EnumCustomModules.REDSTONE) && this.redstoneCooldown == 0){
+		if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && this.redstoneCooldown == 0){
 			int meta = this.worldObj.getBlockMetadata((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
 			this.setRedstonePower(meta);
 			this.redstoneCooldown = 30;
@@ -279,6 +278,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void setRedstonePower(int meta) {
+		System.out.println("Setting power to " + (meta + 5));
 		if(meta == 5 || meta == 6 || meta == 7 || meta == 8){
 			mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ), this.worldObj.getBlockMetadata((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)) - 4, true, 1, "", ""));
 		}else if(meta == 1 || meta == 2 || meta == 3 || meta == 4){

@@ -1,6 +1,7 @@
 package org.freeforums.geforce.securitycraft.main;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -19,6 +20,7 @@ import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
@@ -46,8 +48,8 @@ public class mod_SecurityCraft {
 	private static final String MOTU = "Thanks for all your suggestions!";
 	
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
-	//TODO ********************************* This is v1.7.4.2 for MC 1.7.10!
-	protected static final String VERSION = "v1.7.4.2";
+	//TODO ********************************* This is v1.8.0 for MC 1.7.10!
+	protected static final String VERSION = "v1.8.0";
 	protected static final String FORGEVERSION = "required-after:Forge@[10.13.0.1180,)";
 	
 	
@@ -70,6 +72,8 @@ public class mod_SecurityCraft {
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
+	
+	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 
 	private NBTTagCompound savedModule;
 	
@@ -134,6 +138,8 @@ public class mod_SecurityCraft {
 	public static Item keyPanel;
 	public static Item adminTool;
 	public static Item cameraMonitor;
+	public static Item taser;
+	public static Item scManual;
 
     //Modules
     public static ItemModule redstoneModule;
@@ -207,20 +213,6 @@ public class mod_SecurityCraft {
 		log("Mod finished loading correctly! :D");
 	}
 	
-	public static void log(String par1){
-		log(par1, false);
-	}
-	
-	public static void log(String par1, boolean isSevereError){
-		if(mod_SecurityCraft.debuggingMode){
-			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + par1 : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + par1);
-		}
-	}
-	
-	public static String getVersion(){
-		return VERSION;
-	}
-	
 	/**
 	 * Get the IRC bot for the given player.
 	 */
@@ -264,6 +256,23 @@ public class mod_SecurityCraft {
 
 	public void setSavedModule(NBTTagCompound savedModule) {
 		this.savedModule = savedModule;
+	}
+	
+	/**
+	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
+	 */
+	public static void log(String par1){
+		log(par1, false);
+	}
+	
+	public static void log(String par1, boolean isSevereError){
+		if(mod_SecurityCraft.debuggingMode){
+			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + par1 : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + par1);
+		}
+	}
+	
+	public static String getVersion(){
+		return VERSION;
 	}
 	
 }

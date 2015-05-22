@@ -302,10 +302,6 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock();
 	}
-	
-	public String getHelpInfo() {
-		return "The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.";
-	}
 
 	public String[] getRecipe() {
 		return new String[]{"The laser block requires: 7 stone, 1 block of redstone, 1 glass pane", "XXX", "XYX", "XZX", "X = stone, Y = block of redstone, Z = glass pane"};

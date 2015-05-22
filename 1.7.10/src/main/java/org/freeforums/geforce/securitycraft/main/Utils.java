@@ -53,8 +53,8 @@ public static class PlayerUtils{
 	 * Args: player, x, y, z, yaw, pitch.
 	 */
 	public static void setPlayerPosition(EntityPlayer player, double x, double y, double z, float yaw, float pitch){
-		player.setPositionAndUpdate(x, y, z);
 		player.setPositionAndRotation(x, y, z, yaw, pitch);
+		player.setPositionAndUpdate(x, y, z);
 	}
 	
 	/**
@@ -542,83 +542,82 @@ public static class ClientUtils{
 	
 }
 
-/**
- * Removes the last character in the given String. <p>
- */
-public static String removeLastChar(String par1){
-	if(par1 == null || par1.isEmpty()){ return ""; }
+	/**
+	 * Removes the last character in the given String. <p>
+	 */
+	public static String removeLastChar(String par1){
+		if(par1 == null || par1.isEmpty()){ return ""; }
+		
+		return par1.substring(0, par1.length() - 1);
+	}
 	
-	return par1.substring(0, par1.length() - 1);
-}
-
-/**
- * Returns the given X, Y, and Z coordinates in a nice String, useful for chat messages. <p>
- * 
- * Args: x, y, z.
- */
-public static String getFormattedCoordinates(int par1, int par2, int par3){
-	return " X:" + par1 + " Y:" + par2 + " Z:" + par3;
-}
-
-/**
- * Returns the opposite value of the given boolean. <p>
- */
-public static boolean toggleBoolean(boolean par1) {
-	return !par1;
-}
-
-//----------------------//
-//    Random methods    //
-//----------------------//
-
-public static void setISinTEAppropriately(World par1World, int par2, int par3, int par4, ItemStack[] contents, String type) {
-	if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setContents(contents);
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setType(type);
-	}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setContents(contents);
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setType(type);
-	}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setContents(contents);
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setType(type);
-	}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setContents(contents);
-		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setType(type);
+	/**
+	 * Returns the given X, Y, and Z coordinates in a nice String, useful for chat messages. <p>
+	 * 
+	 * Args: x, y, z.
+	 */
+	public static String getFormattedCoordinates(int par1, int par2, int par3){
+		return " X:" + par1 + " Y:" + par2 + " Z:" + par3;
 	}
-}
-
-public static boolean hasInventoryScannerFacingBlock(World par1World, int par2, int par3, int par4) {
-	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4 && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5){
-		return true;
+	
+	/**
+	 * Returns the opposite value of the given boolean. <p>
+	 */
+	public static boolean toggleBoolean(boolean par1) {
+		return !par1;
 	}
-	else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5 && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4){
-		return true;
+	
+	//----------------------//
+	//    Random methods    //
+	//----------------------//
+	
+	public static void setISinTEAppropriately(World par1World, int par2, int par3, int par4, ItemStack[] contents, String type) {
+		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setContents(contents);
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setType(type);
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setContents(contents);
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setType(type);
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setContents(contents);
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setType(type);
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setContents(contents);
+			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setType(type);
+		}
 	}
-	else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2 && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3){
-		return true;
+	
+	public static boolean hasInventoryScannerFacingBlock(World par1World, int par2, int par3, int par4) {
+		if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4 && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5){
+			return true;
+		}
+		else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5 && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4){
+			return true;
+		}
+		else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2 && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3){
+			return true;
+		}
+		else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3 && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
+			return true;
+		}else{
+			return false;
+		}
 	}
-	else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3 && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
-		return true;
-	}else{
-		return false;
-	}
-}
-
-//private static void bookCode(){
-//	ItemStack book = new ItemStack(Items.written_book);
-//	
-//	NBTTagCompound tag = new NBTTagCompound();
-//	NBTTagList bookPages = new NBTTagList();
-//	bookPages.appendTag(new NBTTagString("SecurityCraft " + mod_SecurityCraft.getVersion() + " info book."));
-//	bookPages.appendTag(new NBTTagString("Keypad: \n \nThe keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds."));
-//	bookPages.appendTag(new NBTTagString("Laser block: The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal."));
-//	
-//	book.setTagInfo("pages", bookPages);
-//	book.setTagInfo("author", new NBTTagString("Geforce"));
-//	book.setTagInfo("title", new NBTTagString("SecurityCraft"));
-//	
-//	player.inventory.addItemStackToInventory(book);
-//}
-
+	
+	//private static void bookCode(){
+	//	ItemStack book = new ItemStack(Items.written_book);
+	//	
+	//	NBTTagCompound tag = new NBTTagCompound();
+	//	NBTTagList bookPages = new NBTTagList();
+	//	bookPages.appendTag(new NBTTagString("SecurityCraft " + mod_SecurityCraft.getVersion() + " info book."));
+	//	bookPages.appendTag(new NBTTagString("Keypad: \n \nThe keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds."));
+	//	bookPages.appendTag(new NBTTagString("Laser block: The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal."));
+	//	
+	//	book.setTagInfo("pages", bookPages);
+	//	book.setTagInfo("author", new NBTTagString("Geforce"));
+	//	book.setTagInfo("title", new NBTTagString("SecurityCraft"));
+	//	
+	//	player.inventory.addItemStackToInventory(book);
+	//}
 
 }

@@ -94,10 +94,6 @@ public class BlockFullMineBase extends BlockExplosive implements IHelpInfo {
 		return false;
 	}
 
-	public String getHelpInfo() {
-		return "The " + mineName + " mine is a standard block mine. Walking into it or mining it will cause it to explode.";
-	}
-
 	public String[] getRecipe() {
 		if(mineName.matches("dirt")){
 			return new String[]{"The dirt mine requires: 1 dirt, 1 mine. This is a shapeless recipe."};

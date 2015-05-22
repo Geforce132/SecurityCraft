@@ -103,16 +103,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 				}
 					
 				sendMessageToPlayer("Bot disconnected from EsperNet successfully.", icommandsender);
-			}else if(par1String[0].matches("help")){
-				if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof ItemBlock && ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a instanceof IHelpInfo){
-					sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Help" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getHelpInfo(), icommandsender);
-				}else if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof Item && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof IHelpInfo){
-					sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Help" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getHelpInfo(), icommandsender);
-				}else if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null){
-					sendMessageToPlayer(EnumChatFormatting.RED + "There is no help info for this item.", icommandsender);
-				}else{
-					sendMessageToPlayer(EnumChatFormatting.RED + "Please hold the item you wish to view the help text for.", icommandsender);
-				}
 			}else if(par1String[0].matches("recipe")){
 				if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof ItemBlock && ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a instanceof IHelpInfo){
 					if(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe().length == 5){

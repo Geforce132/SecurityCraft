@@ -162,10 +162,6 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 		return new TileEntityPortableRadar();
 	}
 	
-	public String getHelpInfo() {
-		return "The portable radar will send the owner a chat message whenever a player is inside of the radar's detection radius (modifiable in the config file). You can name the portable radar by right-clicking on it with a named name-tag.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The portable radar requires: 7 iron ingots, 1 redstone torch, 1 redstone", "XXX", "XYX", "XZX", "X = iron ingot, Y = redstone torch, Z = redstone"};
 	}

@@ -5,11 +5,9 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -140,10 +138,6 @@ public class BlockKeypadFurnace extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
-	}
-
-	public String getHelpInfo() {
-		return "The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.";
 	}
 
 	public String[] getRecipe() {

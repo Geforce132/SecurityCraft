@@ -92,11 +92,7 @@ public class BlockKeypadChest extends BlockChest implements IHelpInfo {
     {
         return new TileEntityKeypadChest();
     }
-    
-    public String getHelpInfo() {
-		return "The password-protected chest is equipped with a password locking system. Whenever the password is entered correctly, the chest's inventory will open.";
-	}
-
+  
 	public String[] getRecipe() {
 		return new String[]{"The password-protected chest requires: 7 iron ingot, 1 keypad, 1 chest", "XYX", "XZX", "XXX", "X = iron ingot, Y = keypad, Z = chest"};
 	}

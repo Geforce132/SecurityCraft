@@ -167,10 +167,6 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 		return new TileEntityOwnable();
 	}
 	
-	public String getHelpInfo() {
-		return "The panic button looks like a button, but works the same way as a lever.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The panic button requires: 3 iron ingots, 1 stone button, 1 redstone", " X ", "XYX", " Z ", "X = iron ingot, Y = stone button, Z = redstone"};
 	}

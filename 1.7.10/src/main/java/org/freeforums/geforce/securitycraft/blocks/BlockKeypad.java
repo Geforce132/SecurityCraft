@@ -202,14 +202,9 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2)
-    {
+    public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
-    
-    public String getHelpInfo() {
-		return "The keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.";
-	}
 
 	public String[] getRecipe() {
 		return new String[]{"The keypad requires: 9 stone buttons.", "XXX", "XXX", "XXX", "X = stone button"};

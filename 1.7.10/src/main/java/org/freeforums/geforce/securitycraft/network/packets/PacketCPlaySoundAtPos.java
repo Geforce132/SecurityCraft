@@ -26,6 +26,14 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		this.sound = par4String;
 		this.volume = par5;
 	}
+	
+	public PacketCPlaySoundAtPos(double par1, double par2, double par3, String par4String, double par5){
+		this.x = (int) par1;
+		this.y = (int) par2;
+		this.z = (int) par3;
+		this.sound = par4String;
+		this.volume = par5;
+	}
 
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readInt();

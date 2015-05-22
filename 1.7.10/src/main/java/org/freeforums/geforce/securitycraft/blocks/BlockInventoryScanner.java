@@ -276,10 +276,6 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 		return new TileEntityInventoryScanner();
 	}
 
-	public String getHelpInfo() {
-		return "The inventory scanner is used by placing two scanners a block apart, facing each other. When placed correctly, a laser field should spawn between them. If a player walks through the field, any blocks or items entered in the scanner's GUI in the player's inventory will be deleted.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
 	}

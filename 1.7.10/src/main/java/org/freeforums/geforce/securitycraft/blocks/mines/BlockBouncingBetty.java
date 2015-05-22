@@ -141,10 +141,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 		return new TileEntityMineLoc();
 	}
 
-	public String getHelpInfo() {
-		return "The bouncing betty will launch up into the air and explode when touched.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The bouncing betty requires: 2 iron ingots, 1 gunpowder, 1 weighted pressure plate (heavy)", " X ", "YZY", "   ", "X = weighted pressure plate (heavy), Y = iron ingot, Z = gunpowder"};
 	}

@@ -107,10 +107,6 @@ public class BlockLogger extends BlockOwnable implements IHelpInfo {
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
 	}
-	
-	public String getHelpInfo() {
-		return "The username logger will log any player's name within 3 blocks when it is powered by redstone.";
-	}
 
 	public String[] getRecipe() {
 		return new String[]{"The username logger requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};

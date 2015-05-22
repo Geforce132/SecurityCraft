@@ -71,10 +71,6 @@ public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
 		return new TileEntityKeypadFrame();
 	}
 
-	public String getHelpInfo() {
-		return "The keypad frame is used in the keypad's crafting recipe.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The keypad frame requires: 8 stone, 1 redstone", "XXX", "XYX", "X X", "X = stone, Y = redstone"};
 	}

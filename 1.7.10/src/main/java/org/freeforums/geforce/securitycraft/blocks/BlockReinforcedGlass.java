@@ -79,10 +79,6 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
 		return new TileEntityOwnable();
 	}
 	
-	public String getHelpInfo() {
-		return "Reinforced glass panes act the same as vanilla glass panes, except they are unbreakable.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"Reinforced glass panes require: 4 glass, 1 glass pane", " X ", "XYX", " X ", "X = glass pane, Y = glass"};
 	}

@@ -88,20 +88,15 @@ public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
     {
         return this.deactivated ? BlockUtils.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : BlockUtils.getItemFromBlock(this);
     }
-	 
-	 
-	 public void registerIcons(IIconRegister par1IconRegister){
-		 if(this.blockTextureIndex == 9999){
-			 this.blockIcon = par1IconRegister.registerIcon("mod/cageTrapTop");
-			 this.topIcon = par1IconRegister.registerIcon("mod/cageTrapSides");
-		 }else{
-			 //this.blockIcon = par1IconRegister.registerIcon(Block.blocksList[blockTextureIndex].getTextureName());
-		 }
-	 }
-	 
-	public String getHelpInfo() {
-		return "The cage trap will spawn a 'cage' around any player who walks on top of it. (*needs textures & recipe*)";
-	}
+	  
+    public void registerIcons(IIconRegister par1IconRegister){
+    	if(this.blockTextureIndex == 9999){
+    		this.blockIcon = par1IconRegister.registerIcon("mod/cageTrapTop");
+    		this.topIcon = par1IconRegister.registerIcon("mod/cageTrapSides");
+    	}else{
+    		//this.blockIcon = par1IconRegister.registerIcon(Block.blocksList[blockTextureIndex].getTextureName());
+    	}
+    }
 
 	public String[] getRecipe() {
 		return new String[]{"The cage trap requires: 3 reinforced iron bars, 2 gold ingots, 1 redstone, 3 iron blocks", "WWW", "XYX", "ZZZ", "W = reinforced iron bars, X = gold ingot, Y = redstone, Z = iron block"};

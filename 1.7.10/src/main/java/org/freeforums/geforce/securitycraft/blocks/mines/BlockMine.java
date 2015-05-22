@@ -198,10 +198,6 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 		return new TileEntityMineLoc();
 	}
 
-	public String getHelpInfo() {
-		return "The mine explodes when stepped on by any entity other then creepers, cats, and ocelots. Right-clicking the mine while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.";
-	}
-
 	public String[] getRecipe() {
 		return new String[]{"The mine requires: 3 iron ingots, 1 gunpowder", " X ", "XYX", "   ", "X = iron ingot, Y = gunpowder"};
 	}

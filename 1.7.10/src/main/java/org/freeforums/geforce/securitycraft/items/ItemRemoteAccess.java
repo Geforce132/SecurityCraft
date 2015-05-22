@@ -18,7 +18,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemRemoteAccess extends ItemWithInfo{
+public class ItemRemoteAccess extends ItemWithInfo {
 
 	private final int remoteAccessVarity;
 	
