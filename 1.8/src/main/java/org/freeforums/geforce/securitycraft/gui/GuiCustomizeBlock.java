@@ -31,7 +31,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, 265, 45 + (i * 25), 20, 20, "", this.itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
+    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", this.itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
     		this.buttonList.add(button);
     		this.hoverCheckers[i] = new HoverChecker(button, 20);
     	}
