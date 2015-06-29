@@ -42,11 +42,9 @@ public class BlockLogger extends BlockOwnable implements IHelpInfo {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block p_149695_5_)
-    {
-    	if (!par1World.isRemote){              	       
-        	if(par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
-            {
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block p_149695_5_){
+    	if(!par1World.isRemote){              	       
+        	if(par1World.isBlockIndirectlyGettingPowered(par2, par3, par4)){
             	((TileEntityLogger)par1World.getTileEntity(par2, par3, par4)).logPlayers();
             }
         }

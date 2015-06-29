@@ -23,6 +23,7 @@ public class ItemSCManual extends Item {
 		if(world.isRemote){
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 		}
+		
 		return stack;
 	}
 	

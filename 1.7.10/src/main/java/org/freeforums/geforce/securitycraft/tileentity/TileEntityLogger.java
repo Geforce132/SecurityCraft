@@ -17,11 +17,13 @@ public class TileEntityLogger extends TileEntityOwnable{
 	
 	public String[] players = new String[100];
 	
+	public void updateEntity(){
+		if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 80L == 0L && this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)){		
+			this.logPlayers();
+		}
+	}
+	
 	public void logPlayers(){
-		if(this.worldObj.isRemote){
-			return;
-		}else{
-			
 		double d0 = (double)(mod_SecurityCraft.configHandler.usernameLoggerSearchRadius);
 		
 		AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(d0, d0, d0);
@@ -34,12 +36,10 @@ public class TileEntityLogger extends TileEntityOwnable{
         }
         
     	sendChangeToClient();
-
-		}
 	}
     
 	
-	private void addPlayerName(String username) {
+	private void addPlayerName(String username){
 		if(!hasPlayerName(username)){
 	        for(int i = 0; i < this.players.length; i++){
 	        	if(this.players[i] == "" || this.players[i] == null){
@@ -52,7 +52,7 @@ public class TileEntityLogger extends TileEntityOwnable{
 		}
 	}
 
-	private boolean hasPlayerName(String username) {
+	private boolean hasPlayerName(String username){
         for(int i = 0; i < this.players.length; i++){
         	if(this.players[i] == username){
         		return true;
@@ -67,8 +67,7 @@ public class TileEntityLogger extends TileEntityOwnable{
 	/**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -81,8 +80,7 @@ public class TileEntityLogger extends TileEntityOwnable{
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -93,7 +91,6 @@ public class TileEntityLogger extends TileEntityOwnable{
         }
     }
 	
-    
     public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
@@ -104,9 +101,7 @@ public class TileEntityLogger extends TileEntityOwnable{
     	readFromNBT(packet.func_148857_g());        
     }
 	
-	
-	public void sendChangeToClient()
-    {
+	public void sendChangeToClient(){
         for(int i = 0; i < this.players.length; i++){
         	if(this.players[i] != null){
         		//TODO

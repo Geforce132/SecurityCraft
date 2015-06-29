@@ -20,7 +20,7 @@ public class ItemTaserRenderer implements IItemRenderer {
 	}
 
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.INVENTORY){
+		if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON || type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY){
 			return true;
 		}else{
 			return false;
@@ -56,7 +56,7 @@ public class ItemTaserRenderer implements IItemRenderer {
 			
 			model.render((Entity) data[1], 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 			GL11.glPopMatrix();
-		}else if(type == ItemRenderType.INVENTORY){
+		}else if(type == ItemRenderType.INVENTORY || type == ItemRenderType.ENTITY){
 			GL11.glPushMatrix();
 			Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 			

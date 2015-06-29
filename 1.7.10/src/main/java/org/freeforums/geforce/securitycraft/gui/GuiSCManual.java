@@ -3,11 +3,16 @@ package org.freeforums.geforce.securitycraft.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.lookingglass.api.animator.CameraAnimatorPivot;
+import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,15 +22,15 @@ public class GuiSCManual extends GuiScreen {
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/infoBookTexture.png");
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/infoBookTitlePage.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-
+	
     private int currentPage = -1;
-    
+
 	public GuiSCManual() {
 		super();
 	}
 	
 	public void initGui(){
-		int i = (this.width - 256) / 2;
+        int i = (this.width - 256) / 2;
         byte b0 = 2;
         GuiSCManual.NextPageButton nextButton = new GuiSCManual.NextPageButton(1, i + 210, b0 + 158, true);
         GuiSCManual.NextPageButton prevButton = new GuiSCManual.NextPageButton(2, i + 16, b0 + 158, false);
@@ -34,7 +39,10 @@ public class GuiSCManual extends GuiScreen {
         this.buttonList.add(prevButton);
     }
 	
-	public void drawScreen(int par1, int par2, float par3){
+	public void drawScreen(int par1, int par2, float par3){		
+		int yPos = 50;
+		int xPos = 100;
+
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		if(this.currentPage == -1){
@@ -63,6 +71,10 @@ public class GuiSCManual extends GuiScreen {
 	    }
 	    
 	    this.updateButtons();
+	}
+	
+	public void onGuiClosed(){
+		super.onGuiClosed();
 	}
 	
     protected void actionPerformed(GuiButton par1GuiButton){

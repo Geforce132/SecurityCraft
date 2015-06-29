@@ -7,6 +7,7 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +27,7 @@ import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraUsePosition;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraZoom;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
@@ -35,7 +37,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockSecurityCamera extends BlockContainer{
+public class BlockSecurityCamera extends BlockContainer {
 	
 	private final boolean isLit;
 
@@ -79,11 +81,15 @@ public class BlockSecurityCamera extends BlockContainer{
         
     } 
 	
+	public void onBlockAdded(World par1World, int par2, int par3, int par4){
+		
+	}
+	
 	/**
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+    	int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
         ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 
@@ -102,8 +108,20 @@ public class BlockSecurityCamera extends BlockContainer{
         if(l == 3){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
     	}else{
-    		return;
+            System.out.println(par1World.getBlockMetadata(par2, par3, par4));
     	}  
+        System.out.println(par1World.getBlockMetadata(par2, par3, par4));
+        
+//        if(par1World.isRemote && !mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
+//			IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(par2, par3, par4), 192, 192); //192
+//			lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), par1World.getBlockMetadata(par2, par3, par4)));
+//			lgView.grab();
+//			if(!mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
+//				System.out.println("Inserting new view at" + Utils.getFormattedCoordinates(par2, par3, par4));
+//				mod_SecurityCraft.instance.lgViews.put(par2 + " " + par3 + " " + par4, lgView);		
+//			}
+//		}
+    	
     }
 
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player) {
@@ -129,6 +147,14 @@ public class BlockSecurityCamera extends BlockContainer{
 			mod_SecurityCraft.network.sendTo(new PacketCSetCameraUsePosition(x, y, z, yaw, pitch), (EntityPlayerMP) player);
 		}
 	}     
+    
+    public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
+//    	if(par1World.isRemote && mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
+//    		mod_SecurityCraft.instance.getViewFromCoords(par2 + " " + par3 + " " + par4).release();
+//    		mod_SecurityCraft.instance.removeViewForCoords(par2 + " " + par3 + " " + par4);
+//    	}
+    	mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
+    }
     
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
         return par1World.isSideSolid(par2 - 1, par3, par4, EAST ) ||

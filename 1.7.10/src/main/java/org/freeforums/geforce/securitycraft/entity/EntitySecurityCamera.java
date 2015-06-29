@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
 import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
-import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -111,7 +110,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 			
 			if(id == 0 && ((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem() != null && ((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor){
-				id = ((ItemCameraMonitor) ((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
+				//id = ((ItemCameraMonitor) ((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer) this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
 			}
 			
 //			if(KeyBindings.cameraRotateUp.getIsKeyPressed()){

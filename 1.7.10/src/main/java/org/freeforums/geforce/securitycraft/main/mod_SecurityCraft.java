@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.main;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,9 +19,13 @@ import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.lookingglass.LookingGlassPanelRenderer;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
+
+import com.xcompwiz.lookingglass.api.IWorldViewAPI;
+import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -31,12 +34,12 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-
 
 @Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.FORGEVERSION)
 @SuppressWarnings({"static-access"})
@@ -72,6 +75,8 @@ public class mod_SecurityCraft {
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
+	public HashMap<String, IWorldView> lgViews = new HashMap<String, IWorldView>();
+	public LookingGlassPanelRenderer lgPanelRenderer;
 	
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 
@@ -110,7 +115,6 @@ public class mod_SecurityCraft {
 	public static Block unbreakableIronBars;
 	public static Block securityCamera;
 	public static Block securityCameraLit;
-	public static Block empEntity;
 	public static Block usernameLogger;
 	public static Block keypadChest;
 	public static Block reinforcedGlass;
@@ -124,7 +128,8 @@ public class mod_SecurityCraft {
 	public static Block claymoreActive;
 	public static Block claymoreDefused;
 	public static Block keypadFurnace;
-	
+	public static Block monitor;
+
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
@@ -198,6 +203,9 @@ public class mod_SecurityCraft {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
+		log("Setting up LookingGlass stuff...");
+		
+		FMLInterModComms.sendMessage("LookingGlass", "API", "org.freeforums.geforce.securitycraft.lookingglass.LookingGlassAPIProvider.register");
 		
 		log("Doing registering stuff... (PT 2/2)");
 		
@@ -256,6 +264,31 @@ public class mod_SecurityCraft {
 
 	public void setSavedModule(NBTTagCompound savedModule) {
 		this.savedModule = savedModule;
+	}
+	
+	public IWorldViewAPI getLGPanelRenderer(){
+		return this.instance.lgPanelRenderer.getApi();
+	}
+	
+	/**
+	 * Get the IWorldView object for the specified key.
+	 */
+	public IWorldView getViewFromCoords(String coords){
+		return this.instance.lgViews.get(coords);
+	}
+
+	/**
+	 * Do we have an IWorldView object for the given key already saved?
+	 */
+	public boolean hasViewForCoords(String coords){
+		return this.instance.lgViews.containsKey(coords);
+	}
+	
+	/**
+	 * Remove the IWorldView object for the specified key.
+	 */
+	public void removeViewForCoords(String coords){
+		this.instance.lgViews.remove(this.instance.lgViews.get(coords));
 	}
 	
 	/**

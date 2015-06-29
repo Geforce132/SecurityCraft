@@ -26,6 +26,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaser;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
+import org.freeforums.geforce.securitycraft.blocks.BlockMonitor;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockPanicButton;
 import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
@@ -64,6 +65,8 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraLocation;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraUsePosition;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraZoom;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
@@ -97,6 +100,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityMonitor;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
@@ -151,19 +155,11 @@ public class ConfigurationHandler{
 	// RetinalScanner = new BlockRetinalScanner(1018, Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundMetalFootstep).setCreativeTab(mod_SecurityCraft.tabSecurityCraft).setBlockName("retinalScanner");
 
 	public void setupAdditions(){
-		this.setupCCTVMod();
 		this.setupTechnicalBlocks();
 		this.setupMines();
 		this.setupItems();
 	}
 	
-	private void setupCCTVMod() {
-		//mod_SecurityCraft.instance.cctvPlugin.load();
-        //GameRegistry.registerBlock(mod_SecurityCraft.instance.cctvPlugin.cctvCamera, mod_SecurityCraft.instance.cctvPlugin.cctvCamera.getUnlocalizedName().substring(5));
-        //GameRegistry.registerItem(mod_SecurityCraft.instance.cctvPlugin.cctv, mod_SecurityCraft.instance.cctvPlugin.cctv.getUnlocalizedName().substring(5));
-		
-	}
-
 	public void setupDebugAdditions() {
 		this.setupDebuggingBlocks();
 		this.setupDebuggingItems();
@@ -229,6 +225,8 @@ public class ConfigurationHandler{
 	
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron, false).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("securitycraft:cameraParticleTexture");
 	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron, true).setHardness(1.0F).setResistance(10.F).setBlockName("securityCameraLit").setBlockTextureName("securitycraft:cameraParticleTexture");
+	
+	    mod_SecurityCraft.monitor = new BlockMonitor(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("monitor");
 	}
 	
 	public void setupMines(){
@@ -290,7 +288,7 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.adminTool = new ItemAdminTool("", new String[]{"", ""}).setMaxStackSize(1).setUnlocalizedName("adminTool");
 	
-		mod_SecurityCraft.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cameraMonitor").setTextureName("securitycraft:monitor_terminal");
+		mod_SecurityCraft.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cameraMonitor").setTextureName("securitycraft:cameraMonitor");
 	
 		mod_SecurityCraft.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("scManual").setTextureName("securitycraft:scManual");
 	
@@ -388,7 +386,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.keypadFurnace);
 		registerBlock(mod_SecurityCraft.securityCamera);
 		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
-		
+		GameRegistry.registerBlock(mod_SecurityCraft.monitor, mod_SecurityCraft.monitor.getUnlocalizedName().substring(5));
+
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem);
 		registerItem(mod_SecurityCraft.universalBlockRemover);
@@ -428,6 +427,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityKeypadFrame.class, "keypadFrame");
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
+		GameRegistry.registerTileEntity(TileEntityMonitor.class, "monitor");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		if(useOldKeypadRecipe){
@@ -658,9 +658,7 @@ public class ConfigurationHandler{
 	private void registerBlock(Block block){
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 		
-		//if(block instanceof IHelpInfo){
-			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
-		//}
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	/**
@@ -669,9 +667,7 @@ public class ConfigurationHandler{
 	private void registerItem(Item item){
 		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
 		
-		//if(item instanceof IHelpInfo){
-			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
-		//}
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	public void registerDebuggingAdditions(){		
@@ -681,11 +677,8 @@ public class ConfigurationHandler{
 	public void setupOtherRegistrys(){}
 
 	public void setupEntityRegistry() {
-		EntityRegistry.registerGlobalEntityID(EntityTnTCompact.class, "TnTCompact", EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
-		EntityRegistry.registerGlobalEntityID(EntitySecurityCamera.class, "Camera", EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "Camera", 1, mod_SecurityCraft.instance, 128, 2, false);
-		EntityRegistry.registerGlobalEntityID(EntityTaserBullet.class, "TazerBullet", EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
 	}
 
@@ -715,6 +708,8 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 18, Side.SERVER);
 		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 19, Side.SERVER);
 		network.registerMessage(PacketCSetCameraZoom.Handler.class, PacketCSetCameraZoom.class, 20, Side.CLIENT);
+		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 21, Side.CLIENT);
+		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 22, Side.CLIENT);
 	}
 
 }

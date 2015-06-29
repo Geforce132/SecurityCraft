@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -130,6 +131,11 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					sendMessageToPlayer(EnumChatFormatting.RED + "There is no recipe for this item.", icommandsender);
 				}else{
 					sendMessageToPlayer(EnumChatFormatting.RED + "Please hold the item you wish to view the recipe for.", icommandsender);
+				}
+			}else if(par1String[0].matches("help")){
+				boolean success = this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
+				if(!success){
+					
 				}
 			}
 		}else if(par1String.length >= 2){

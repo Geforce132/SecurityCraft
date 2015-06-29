@@ -44,6 +44,7 @@ tile.securityCamera.name=Security Camera
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover
+item.null.name=Keycards
 item.keycardOne.name=Level 1 Keycard
 item.keycardTwo.name=Level 2 Keycard
 item.keycardThree.name=Level 3 Keycard
