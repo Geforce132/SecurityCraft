@@ -41,9 +41,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCRemoveLGView packet, MessageContext ctx) {
-		System.out.println("Removing view at coords" + Utils.getFormattedCoordinates(packet.camX, packet.camY, packet.camZ));
-		
 		if(mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ)){
+			System.out.println("Removing view at coords" + Utils.getFormattedCoordinates(packet.camX, packet.camY, packet.camZ));
 			mod_SecurityCraft.instance.getViewFromCoords(packet.camX + " " + packet.camY + " " + packet.camZ).release();
 			mod_SecurityCraft.instance.removeViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ);
 		}

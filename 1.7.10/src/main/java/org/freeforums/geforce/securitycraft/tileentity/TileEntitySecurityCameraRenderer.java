@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.models.ModelSecurityCamera;
 import org.lwjgl.opengl.GL11;
 
@@ -70,7 +71,6 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 			this.modelSecurityCamera.reverseCameraRotation = false;
 		}
 		
-		//System.out.println(this.modelSecurityCamera.cameraRotationPoint.rotateAngleY);
 		this.modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		GL11.glPopMatrix();

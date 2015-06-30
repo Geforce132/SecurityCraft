@@ -22,6 +22,9 @@ public class TileEntitySecurityCamera extends CustomizableSCTE{
 				mod_SecurityCraft.instance.lgViews.put(xCoord + " " + yCoord + " " + zCoord, lgView);		
 			}
 		}
+//		else if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
+//			mod_SecurityCraft.instance.getViewFromCoords(xCoord + " " + yCoord + " " + zCoord).markDirty();
+//		}
 	}
 		
 	public EnumCustomModules[] getCustomizableOptions() {

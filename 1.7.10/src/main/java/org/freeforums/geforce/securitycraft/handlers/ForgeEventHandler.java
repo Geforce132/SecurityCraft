@@ -113,6 +113,7 @@ public class ForgeEventHandler {
 			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
 		}
 			
+		mod_SecurityCraft.instance.lgViews.clear();
 	}
 	
 	@SubscribeEvent 
