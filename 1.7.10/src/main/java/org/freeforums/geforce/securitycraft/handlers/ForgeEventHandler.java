@@ -21,6 +21,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.WorldEvent.Unload;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
@@ -31,6 +32,7 @@ import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.ClientProxy;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -63,6 +65,17 @@ public class ForgeEventHandler {
 		}
 	}
 	
+	/**
+	 * Called whenever a {@link EntityPlayer} leaves the game.
+	 */
+	@SubscribeEvent
+	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
+		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
+			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
+			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
+		}	
+	}
+	
 	private String getRandomTip(){
     	Random random = new Random();
     	int randomInt = random.nextInt(3);
@@ -91,7 +104,7 @@ public class ForgeEventHandler {
 			}
 		}
 		
-		//System.out.println((event.player.ridingEntity == null) + " | " + (mod_SecurityCraft.instance.hasUsePosition(event.player.getCommandSenderName())) + " | " + mod_SecurityCraft.instance.cameraUsePositions.size() + " | " + FMLCommonHandler.instance().getEffectiveSide());
+		//TODO Remove after we implement the new version of the cameras that use LookingGlass.
 		if((event.player.ridingEntity == null || !(event.player.ridingEntity instanceof EntitySecurityCamera)) && mod_SecurityCraft.instance.hasUsePosition(event.player.getCommandSenderName())){
 			PlayerUtils.setPlayerPosition(event.player, (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[0], (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[1], (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[2], (Float) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[3], (Float) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[4]);
 			mod_SecurityCraft.instance.removeUsePosition(event.player.getCommandSenderName());
@@ -107,13 +120,11 @@ public class ForgeEventHandler {
 	}
 	
 	@SubscribeEvent
-	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
-			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
-			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
+	public void onWorldUnloaded(Unload event){
+		if(event.world.isRemote){
+			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.clear();
+			System.out.println(((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.size());
 		}
-			
-		mod_SecurityCraft.instance.lgViews.clear();
 	}
 	
 	@SubscribeEvent 
@@ -185,7 +196,7 @@ public class ForgeEventHandler {
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent //TODO Remove after we implement the new version of the cameras that use LookingGlass.
 	public void onEntityConstructing(EntityConstructing event){
 		if(event.entity instanceof EntityPlayer){
 			event.entity.registerExtendedProperties("SecurityCraftHandler", new PlayerExtendedPropertyHandler());
@@ -193,7 +204,7 @@ public class ForgeEventHandler {
 	}
 	
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT) //TODO Remove after we implement the new version of the cameras that use LookingGlass.
 	public void onPlayerRendered(RenderPlayerEvent.Pre event){
 		if(event.entityPlayer.ridingEntity != null && event.entityPlayer.ridingEntity instanceof EntitySecurityCamera){
 			event.setCanceled(true);
@@ -201,7 +212,7 @@ public class ForgeEventHandler {
 	}
 	
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT) //TODO Remove after we implement the new version of the cameras that use LookingGlass.
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event){
 		if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
 			//Minecraft.getMinecraft().getTextureManager().bindTexture(CameraTextures.cameraDashboard);            

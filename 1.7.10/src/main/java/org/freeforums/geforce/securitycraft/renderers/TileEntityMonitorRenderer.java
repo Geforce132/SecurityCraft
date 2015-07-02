@@ -40,8 +40,8 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 		}
 		
-		if(par1TileEntity.hasWorldObj() && lgView == null){
-			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ());
+		if(par1TileEntity.hasWorldObj() && lgView == null && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ())){
+			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ()).getView();
 		}
 		
 		GL11.glPushMatrix();
@@ -70,22 +70,18 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 		this.monitorModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		if(lgView != null){			
-			System.out.println(lgView.isReady() + " | " + (lgView.getTexture() != 0));
+			System.out.println(lgView.isReady() + " | " + (lgView.getTexture() != 0) + " (" + ((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ() + ")");
 			if(lgView.getTexture() != 0){
-				GL11.glTranslatef(-0.63F, 0.375F, -0.475F);
+				GL11.glTranslatef(-0F, 0.375F, -0.6F);
+				//GL11.glTranslatef(-0.63F, 0.375F, -0.475F);
+
+				GL11.glDisable(3008);
+		        GL11.glDisable(2896);
+
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, lgView.getTexture());
-				//90, 270
+				
 				tessellator.startDrawingQuads();
-//				tessellator.addVertexWithUV(0.25, 0.25, 0, 0, 0);
-//				tessellator.addVertexWithUV(0.25, 1, 0, 0, 1);
-//				tessellator.addVertexWithUV(1, 1, 0, 1, 1);
-//				tessellator.addVertexWithUV(1, 0.25, 0, 1, 0); //1, 0, 0, 1, 1, 1, 0, 0
-				
-//				tessellator.addVertexWithUV(0.25, 1, 0, 1, 0);
-//				tessellator.addVertexWithUV(0.25, 0.25, 0, 1, 1);
-//				tessellator.addVertexWithUV(1, 0.25, 0, 0, 1);
-//				tessellator.addVertexWithUV(1, 1, 0, 0, 0);
-				
+
 				tessellator.addVertexWithUV(0.25, 1, 0, 1, 0);
 				tessellator.addVertexWithUV(0.25, 0.25, 0, 1, 1);
 				tessellator.addVertexWithUV(1, 0.25, 0, 0, 1);
@@ -93,7 +89,10 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 
 				tessellator.draw();
 				
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);				
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);		
+
+				GL11.glEnable(3008);
+		        GL11.glEnable(2896);
 			}	
 			
 			lgView.markDirty();

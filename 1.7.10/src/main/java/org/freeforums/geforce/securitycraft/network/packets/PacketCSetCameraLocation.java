@@ -61,7 +61,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int camZ = packet.camZ;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 	
-		if(getWorld(player).getBlock(x, y, z) == mod_SecurityCraft.monitor){
+		if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.monitor){
 			((TileEntityMonitor) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ);
 		}
 		

@@ -3,9 +3,11 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import net.minecraft.util.ChunkCoordinates;
 
 import org.freeforums.geforce.securitycraft.lookingglass.CameraAnimatorSecurityCamera;
+import org.freeforums.geforce.securitycraft.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.network.ClientProxy;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
@@ -19,7 +21,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE{
 			lgView.grab();
 			if(!mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
 				System.out.println("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
-				mod_SecurityCraft.instance.lgViews.put(xCoord + " " + yCoord + " " + zCoord, lgView);		
+				((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord, new IWorldViewHelper(lgView));		
 			}
 		}
 //		else if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){

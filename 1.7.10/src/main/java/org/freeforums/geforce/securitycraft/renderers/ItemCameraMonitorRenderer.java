@@ -48,10 +48,10 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 				int camZ = ((ItemCameraMonitor) item.getItem()).getCameraCoordinates(item.getTagCompound())[2];
 
 				if(mod_SecurityCraft.instance.hasViewForCoords(camX + " " + camY + " " + camZ)){
-					IWorldView view = mod_SecurityCraft.instance.getViewFromCoords(camX + " " + camY + " " + camZ);
+					IWorldView view = mod_SecurityCraft.instance.getViewFromCoords(camX + " " + camY + " " + camZ).getView();
 				    mod_SecurityCraft.log(view.isReady() + " | " + (view.getTexture() != 0));
 					
-				    if(view.isReady()){
+				    if(view.isReady() && view.getTexture() != 0){
 				    	//Bind the IWorldView texture then draw it.
 				    	GL11.glDisable(3008);
 				        GL11.glDisable(2896);

@@ -19,13 +19,14 @@ import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.lookingglass.LookingGlassPanelRenderer;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
+import org.freeforums.geforce.securitycraft.network.ClientProxy;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
 import com.xcompwiz.lookingglass.api.IWorldViewAPI;
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -75,7 +76,6 @@ public class mod_SecurityCraft {
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
-	public HashMap<String, IWorldView> lgViews = new HashMap<String, IWorldView>();
 	public LookingGlassPanelRenderer lgPanelRenderer;
 	
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
@@ -273,22 +273,22 @@ public class mod_SecurityCraft {
 	/**
 	 * Get the IWorldView object for the specified key.
 	 */
-	public IWorldView getViewFromCoords(String coords){
-		return this.instance.lgViews.get(coords);
+	public IWorldViewHelper getViewFromCoords(String coords){
+		return ((ClientProxy) this.instance.serverProxy).worldViews.get(coords);
 	}
 
 	/**
 	 * Do we have an IWorldView object for the given key already saved?
 	 */
 	public boolean hasViewForCoords(String coords){
-		return this.instance.lgViews.containsKey(coords);
+		return ((ClientProxy) this.instance.serverProxy).worldViews.containsKey(coords);
 	}
 	
 	/**
 	 * Remove the IWorldView object for the specified key.
 	 */
 	public void removeViewForCoords(String coords){
-		this.instance.lgViews.remove(this.instance.lgViews.get(coords));
+		((ClientProxy) this.instance.serverProxy).worldViews.remove(((ClientProxy) this.instance.serverProxy).worldViews.get(coords));
 	}
 	
 	/**

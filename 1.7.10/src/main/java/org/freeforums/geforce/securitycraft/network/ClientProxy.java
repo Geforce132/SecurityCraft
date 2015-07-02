@@ -1,9 +1,12 @@
 package org.freeforums.geforce.securitycraft.network;
 
+import java.util.HashMap;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
+import org.freeforums.geforce.securitycraft.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.models.ModelClaymore;
@@ -31,6 +34,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends ServerProxy{
+	
+	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<String, IWorldViewHelper>();
 			
 	@Override
 	public void registerRenderThings(){

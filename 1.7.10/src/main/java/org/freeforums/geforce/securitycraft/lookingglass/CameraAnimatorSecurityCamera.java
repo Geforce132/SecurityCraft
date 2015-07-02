@@ -31,9 +31,9 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		}else if(securityCameraMeta == 2){
 			this.camera.setLocation(camera.getX(), camera.getY() - 2D, camera.getZ() + 0.5D);
 		}else if(securityCameraMeta == 3){
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2D, camera.getZ() + 0D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2.45D, camera.getZ() + 0.5D);
 		}else if(securityCameraMeta == 4){
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2.35D, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2.5D, camera.getZ() + 0.5D);
 		}
 		
 		if(securityCameraMeta == 1){

@@ -81,13 +81,6 @@ public class BlockSecurityCamera extends BlockContainer {
         
     } 
 	
-	public void onBlockAdded(World par1World, int par2, int par3, int par4){
-		
-	}
-	
-	/**
-     * Called when the block is placed in the world.
-     */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
@@ -107,21 +100,9 @@ public class BlockSecurityCamera extends BlockContainer {
 
         if(l == 3){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
-    	}else{
-            System.out.println(par1World.getBlockMetadata(par2, par3, par4));
-    	}  
-        System.out.println(par1World.getBlockMetadata(par2, par3, par4));
+    	}
         
-//        if(par1World.isRemote && !mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
-//			IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(par2, par3, par4), 192, 192); //192
-//			lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), par1World.getBlockMetadata(par2, par3, par4)));
-//			lgView.grab();
-//			if(!mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
-//				System.out.println("Inserting new view at" + Utils.getFormattedCoordinates(par2, par3, par4));
-//				mod_SecurityCraft.instance.lgViews.put(par2 + " " + par3 + " " + par4, lgView);		
-//			}
-//		}
-    	
+        mod_SecurityCraft.log(par1World.getBlockMetadata(par2, par3, par4) + "");
     }
 
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player) {
@@ -149,10 +130,6 @@ public class BlockSecurityCamera extends BlockContainer {
 	}     
     
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-//    	if(par1World.isRemote && mod_SecurityCraft.instance.hasViewForCoords(par2 + " " + par3 + " " + par4)){
-//    		mod_SecurityCraft.instance.getViewFromCoords(par2 + " " + par3 + " " + par4).release();
-//    		mod_SecurityCraft.instance.removeViewForCoords(par2 + " " + par3 + " " + par4);
-//    	}
     	mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
     }
     

@@ -1,27 +1,10 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-
-import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
-import org.freeforums.geforce.securitycraft.lookingglass.CameraAnimatorSecurityCamera;
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityMonitor extends TileEntityOwnable {
 		
-	private IWorldView lgView = null;
-
 	private int[] boundCameraLocation = new int[3];
-	
-	public TileEntityMonitor(){
-		System.out.println("New TileEntityMonitor being created!");
-	}
 	
 	public void updateEntity(){
 //		if(this.hasCameraLocation() && !(this.worldObj.getBlock(this.boundCameraLocation[0], this.boundCameraLocation[1], this.boundCameraLocation[2]) instanceof BlockSecurityCamera)){
@@ -66,8 +49,7 @@ public class TileEntityMonitor extends TileEntityOwnable {
     public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.hasKey("cameraLoc"))
-        {
+        if (par1NBTTagCompound.hasKey("cameraLoc")){
             this.boundCameraLocation[0] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[0]);
             this.boundCameraLocation[1] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[1]);
             this.boundCameraLocation[2] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[2]);
@@ -100,9 +82,4 @@ public class TileEntityMonitor extends TileEntityOwnable {
     	}
     }
 	
-	@SideOnly(Side.CLIENT)
-	public IWorldView getLGRenderer(){
-		return this.lgView;
-	}
-
 }
