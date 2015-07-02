@@ -2,7 +2,6 @@ package org.freeforums.geforce.securitycraft.items;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -16,7 +15,7 @@ public class ItemTaser extends Item {
 	
 	public ItemTaser(){
 		super();
-		this.setMaxDamage(301);
+		this.setMaxDamage(151);
 	}
 	
 	public boolean isFull3D(){
@@ -25,10 +24,12 @@ public class ItemTaser extends Item {
 	
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
 		if(!par2World.isRemote){
-			if(!par1ItemStack.isItemDamaged() && (par3EntityPlayer.capabilities.isCreativeMode || par3EntityPlayer.inventory.consumeInventoryItem(Items.redstone))){
+			if(!par1ItemStack.isItemDamaged()){
 				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer));
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
-				par1ItemStack.damageItem(300, par3EntityPlayer);
+				
+				if(!par3EntityPlayer.capabilities.isCreativeMode)
+					par1ItemStack.damageItem(150, par3EntityPlayer);
 			}
 		}
 		
