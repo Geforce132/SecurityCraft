@@ -70,10 +70,9 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 		this.monitorModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		if(lgView != null){			
-			System.out.println(lgView.isReady() + " | " + (lgView.getTexture() != 0) + " (" + ((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ() + ")");
 			if(lgView.getTexture() != 0){
-				GL11.glTranslatef(-0F, 0.375F, -0.6F);
-				//GL11.glTranslatef(-0.63F, 0.375F, -0.475F);
+				GL11.glTranslatef(0.625F, 0.375F, -0.475F);
+				GL11.glRotated(180D, 0D, 1D, 0D);
 
 				GL11.glDisable(3008);
 		        GL11.glDisable(2896);

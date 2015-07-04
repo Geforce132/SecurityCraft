@@ -7,74 +7,22 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.misc.KeyBindings;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class GuiUtils extends Gui{
 	
-	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/cameraDashboard.png");
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 
 	private static RenderItem itemRender = new RenderItem();
-	
-	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, int x, int y, int z, int mouseX, int mouseY){
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), (resolution.getScaledWidth() / 2) - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out", (resolution.getScaledWidth() - 80) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out") / 2, resolution.getScaledHeight() - 60, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision", (resolution.getScaledWidth() - 91) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision") / 2, resolution.getScaledHeight() - 50, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitLight.getKeyCode()) + " - Activate light", (resolution.getScaledWidth() - 108) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitLight.getKeyCode()) + " - Activate light") / 2, resolution.getScaledHeight() - 40, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal", (resolution.getScaledWidth() - 82) - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal") / 2, resolution.getScaledHeight() - 30, 16777215);
-
-		mc.getTextureManager().bindTexture(cameraDashboard);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
-		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
-		
-		if(world.getBlock(x, y, z) == mod_SecurityCraft.securityCamera){
-			gui.drawTexturedModalRect(46, 3, 90, 24, 10, 12);
-		}else if(world.getBlock(x, y, z) == mod_SecurityCraft.securityCameraLit){
-			gui.drawTexturedModalRect(46, 3, 100, 24, 10, 12);
-		}
-		
-		if(player.getActivePotionEffect(Potion.nightVision) == null){
-			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
-		}else{
-			mc.getTextureManager().bindTexture(potionIcons);
-			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
-		}
-		
-		if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0){
-			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
-		}else{
-			drawItemStackToGui(mc, Items.redstone, 10, 0, true);
-//			GL11.glColor3f(1.0F, 1.0F, 1.0F);
-//			mc.getTextureManager().bindTexture(TextureMap.locationItemsTexture);
-//			IIcon icon = Items.redstone.getIconFromDamage(0);
-//			GL11.glEnable(GL11.GL_BLEND);
-//	        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-//			gui.drawTexturedModelRectFromIcon(10, 0, icon, 16, 16);
-//			GL11.glDisable(GL11.GL_BLEND);
-//	        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		}
-	}
 
 	public static void drawTooltip(List list, int x, int y, FontRenderer fontRenderer){
 		if (!list.isEmpty()){

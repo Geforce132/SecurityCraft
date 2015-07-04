@@ -3,7 +3,6 @@ package org.freeforums.geforce.securitycraft.handlers;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -13,10 +12,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -25,9 +20,6 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
-import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
-import org.freeforums.geforce.securitycraft.gui.GuiUtils;
 import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
@@ -44,8 +36,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ForgeEventHandler {
 	
@@ -103,12 +93,6 @@ public class ForgeEventHandler {
 				counter = 0;
 			}
 		}
-		
-		//TODO Remove after we implement the new version of the cameras that use LookingGlass.
-		if((event.player.ridingEntity == null || !(event.player.ridingEntity instanceof EntitySecurityCamera)) && mod_SecurityCraft.instance.hasUsePosition(event.player.getCommandSenderName())){
-			PlayerUtils.setPlayerPosition(event.player, (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[0], (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[1], (Double) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[2], (Float) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[3], (Float) mod_SecurityCraft.instance.getUsePosition(event.player.getCommandSenderName())[4]);
-			mod_SecurityCraft.instance.removeUsePosition(event.player.getCommandSenderName());
-		}
 	}
 
 	@SubscribeEvent
@@ -123,7 +107,6 @@ public class ForgeEventHandler {
 	public void onWorldUnloaded(Unload event){
 		if(event.world.isRemote){
 			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.clear();
-			System.out.println(((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.size());
 		}
 	}
 	
@@ -192,34 +175,6 @@ public class ForgeEventHandler {
 						((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 					}
 				}
-			}
-		}
-	}
-	
-	@SubscribeEvent //TODO Remove after we implement the new version of the cameras that use LookingGlass.
-	public void onEntityConstructing(EntityConstructing event){
-		if(event.entity instanceof EntityPlayer){
-			event.entity.registerExtendedProperties("SecurityCraftHandler", new PlayerExtendedPropertyHandler());
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT) //TODO Remove after we implement the new version of the cameras that use LookingGlass.
-	public void onPlayerRendered(RenderPlayerEvent.Pre event){
-		if(event.entityPlayer.ridingEntity != null && event.entityPlayer.ridingEntity instanceof EntitySecurityCamera){
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT) //TODO Remove after we implement the new version of the cameras that use LookingGlass.
-	public void renderGameOverlay(RenderGameOverlayEvent.Post event){
-		if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
-			//Minecraft.getMinecraft().getTextureManager().bindTexture(CameraTextures.cameraDashboard);            
-            //event.gui.drawTexturedModalRect(5, 0, 0, 0, 0, 0);
-			if(event.type == ElementType.EXPERIENCE && Minecraft.getMinecraft().theWorld.getBlock((int) Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int) (Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1D), (int) Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ)) instanceof BlockSecurityCamera){
-				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.resolution, Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, (int) Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int) (Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1D), (int) Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ), event.mouseX, event.mouseY);
-				//GuiUtils.drawTooltip(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(((EntitySecurityCamera) Minecraft.getMinecraft().thePlayer.ridingEntity).getCameraInfo(), 200), 0, 20, Minecraft.getMinecraft().fontRenderer);
 			}
 		}
 	}

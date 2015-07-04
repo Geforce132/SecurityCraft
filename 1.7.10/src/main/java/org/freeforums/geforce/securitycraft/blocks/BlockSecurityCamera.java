@@ -12,24 +12,18 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraUsePosition;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraZoom;
 import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -101,33 +95,7 @@ public class BlockSecurityCamera extends BlockContainer {
         if(l == 3){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
     	}
-        
-        mod_SecurityCraft.log(par1World.getBlockMetadata(par2, par3, par4) + "");
     }
-
-    public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player) {
-    	if(player.ridingEntity == null){
-    		PlayerUtils.sendMessageToPlayer(player, "You are now mounted to a security camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
-		}
-    	
-    	double x, y, z;
-    	float yaw, pitch;
-    	x = player.posX;
-    	y = player.posY;
-    	z = player.posZ;
-    	yaw = player.rotationYaw;
-    	pitch = player.rotationPitch;
-
-    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5);
-		world.spawnEntityInWorld(dummyEntity);
-		player.mountEntity(dummyEntity);
-		
-		mod_SecurityCraft.network.sendTo(new PacketCSetCameraZoom(1.1D), (EntityPlayerMP) player);
-		if(!mod_SecurityCraft.instance.hasUsePosition(player.getCommandSenderName())){
-			mod_SecurityCraft.instance.setUsePosition(player.getCommandSenderName(), x, y, z, yaw, pitch);
-			mod_SecurityCraft.network.sendTo(new PacketCSetCameraUsePosition(x, y, z, yaw, pitch), (EntityPlayerMP) player);
-		}
-	}     
     
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
     	mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));

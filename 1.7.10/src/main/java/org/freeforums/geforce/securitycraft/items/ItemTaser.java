@@ -28,8 +28,9 @@ public class ItemTaser extends Item {
 				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer));
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
 				
-				if(!par3EntityPlayer.capabilities.isCreativeMode)
+				if(!par3EntityPlayer.capabilities.isCreativeMode){
 					par1ItemStack.damageItem(150, par3EntityPlayer);
+				}
 			}
 		}
 		

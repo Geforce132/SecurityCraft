@@ -15,6 +15,7 @@ import com.xcompwiz.lookingglass.api.view.IViewCamera;
 public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 	
 	private final float cameraRotationSpeed = 0.5F;
+	private final double cameraYOffset = 2.425D;
 	
 	private IViewCamera camera;
 	private int cameraMeta = 0;
@@ -27,13 +28,13 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		this.cameraMeta = securityCameraMeta;
 		
 		if(securityCameraMeta == 1){
-			this.camera.setLocation(camera.getX(), camera.getY() - 2D, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		}else if(securityCameraMeta == 2){
-			this.camera.setLocation(camera.getX(), camera.getY() - 2D, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		}else if(securityCameraMeta == 3){
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2.45D, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		}else if(securityCameraMeta == 4){
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - 2.5D, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		}
 		
 		if(securityCameraMeta == 1){

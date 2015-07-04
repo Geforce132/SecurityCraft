@@ -42,7 +42,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
-@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.FORGEVERSION)
+@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES)
 @SuppressWarnings({"static-access"})
 public class mod_SecurityCraft {
 	
@@ -54,7 +54,7 @@ public class mod_SecurityCraft {
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
 	//TODO ********************************* This is v1.8.0 for MC 1.7.10!
 	protected static final String VERSION = "v1.8.0";
-	protected static final String FORGEVERSION = "required-after:Forge@[10.13.0.1180,)";
+	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);required-after:LookingGlass@[0.1.1.00,)";
 	
 	
 	@SidedProxy(clientSide = "org.freeforums.geforce.securitycraft.network.ClientProxy", serverSide = "org.freeforums.geforce.securitycraft.network.ServerProxy")
@@ -288,7 +288,7 @@ public class mod_SecurityCraft {
 	 * Remove the IWorldView object for the specified key.
 	 */
 	public void removeViewForCoords(String coords){
-		((ClientProxy) this.instance.serverProxy).worldViews.remove(((ClientProxy) this.instance.serverProxy).worldViews.get(coords));
+		((ClientProxy) this.instance.serverProxy).worldViews.remove(coords);
 	}
 	
 	/**

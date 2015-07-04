@@ -24,18 +24,10 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
-
-	public static int lastKeypadX;
-	public static int lastKeypadY;
-	public static int lastKeypadZ;
-	public static World worldServerObj;
-	public static EntityPlayer playerObj;
-	
 	
 	@SideOnly(Side.CLIENT)
     private IIcon furnaceIconTop;
@@ -49,8 +41,7 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
+    public void onBlockAdded(World par1World, int par2, int par3, int par4){
         super.onBlockAdded(par1World, par2, par3, par4);
         this.setDefaultDirection(par1World, par2, par3, par4);
     }
@@ -58,33 +49,27 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     /**
      * set a blocks direction
      */
-    private void setDefaultDirection(World par1World, int par2, int par3, int par4)
-    {
-        if (!par1World.isRemote)
-        {
+    private void setDefaultDirection(World par1World, int par2, int par3, int par4){
+        if(!par1World.isRemote){
         	Block block = par1World.getBlock(par2, par3, par4 - 1);
             Block block1 = par1World.getBlock(par2, par3, par4 + 1);
             Block block2 = par1World.getBlock(par2 - 1, par3, par4);
             Block block3 = par1World.getBlock(par2 + 1, par3, par4);
             byte b0 = 3;
 
-            if (block.func_149730_j() && !block1.func_149730_j())
-            {
+            if (block.func_149730_j() && !block1.func_149730_j()){
                 b0 = 3;
             }
 
-            if (block1.func_149730_j() && !block.func_149730_j())
-            {
+            if (block1.func_149730_j() && !block.func_149730_j()){
                 b0 = 2;
             }
 
-            if (block2.func_149730_j() && !block3.func_149730_j())
-            {
+            if (block2.func_149730_j() && !block3.func_149730_j()){
                 b0 = 5;
             }
 
-            if (block3.func_149730_j() && !block2.func_149730_j())
-            {
+            if (block3.func_149730_j() && !block2.func_149730_j()){
                 b0 = 4;
             }
 
@@ -92,14 +77,7 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
         }
     }
     
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-    	this.worldServerObj = par1World;
-		this.lastKeypadX = par2;
-    	this.lastKeypadY = par3;
-    	this.lastKeypadZ = par4;
-    	this.playerObj = par5EntityPlayer;
-    	
-    	
+	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){  
     	if(par1World.isRemote){
     		return true;
     	}else{
@@ -121,33 +99,27 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {    	
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){    	
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
         
-        if (l == 0)
-        {
+        if (l == 0){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
         }
 
-        if (l == 1)
-        {
+        if (l == 1){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
         }
 
-        if (l == 2)
-        {
+        if (l == 2){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
         }
 
-        if (l == 3)
-        {
+        if (l == 3){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
         }
         
         this.checkAndPlaceAppropriately(par1World, par2, par3, par4);
-        
     }
     
     private void checkAndPlaceAppropriately(World par1World, int par2, int par3, int par4) {
@@ -171,15 +143,12 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 		}
 		else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField&& par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
 			return true;
-
 		}
 		else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
 			return true;
-
 		}
 		else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
 			return true;
-
 		}else{
 			return false;
 		}
@@ -211,8 +180,7 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean canProvidePower()
-    {
+    public boolean canProvidePower(){
         return true;
     }
     
@@ -221,10 +189,8 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).getType() == null){
-    		System.out.println("type is null on the " + FMLCommonHandler.instance().getEffectiveSide() + " side");
     		return 0 ;
     	}
     	    	
@@ -235,21 +201,18 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).getType() == null){
-    		return 0 ;
+    		return 0;
     	}
     	
     	return (((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).shouldProvidePower())? 15 : 0;
     }
 
-
-	@SideOnly(Side.CLIENT)
-
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
+	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2)
     {
         if(par1 == 3 && par2 == 0){
@@ -259,14 +222,12 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
         return par1 == 1 ? this.furnaceIconTop : (par1 == 0 ? this.furnaceIconTop : (par1 != par2 ? this.blockIcon : this.furnaceIconFront));
     }
 
-    @SideOnly(Side.CLIENT)
-
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister){
         this.blockIcon = par1IconRegister.registerIcon("furnace_side");
         this.furnaceIconFront = par1IconRegister.registerIcon("securitycraft:inventoryScanner");
         this.furnaceIconTop = par1IconRegister.registerIcon("furnace_top");

@@ -16,7 +16,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockBogusWater;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusWaterBase;
 import org.freeforums.geforce.securitycraft.blocks.BlockCageTrap;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
-import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerField;
 import org.freeforums.geforce.securitycraft.blocks.BlockIronTrapDoor;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
@@ -43,7 +43,6 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
 import org.freeforums.geforce.securitycraft.entity.EntityTaserBullet;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
@@ -67,15 +66,12 @@ import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraLocation;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraUsePosition;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraZoom;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
-import org.freeforums.geforce.securitycraft.network.packets.PacketMountCamera;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSSetOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
@@ -191,7 +187,7 @@ public class ConfigurationHandler{
 
 		mod_SecurityCraft.inventoryScanner = new BlockInventoryScanner(Material.rock).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeStone).setBlockName("inventoryScanner");
 
-		mod_SecurityCraft.inventoryScannerField = new BlockInventoryScannerBlock(Material.glass).setBlockUnbreakable().setResistance(1000F).setBlockName("inventoryScannerField");
+		mod_SecurityCraft.inventoryScannerField = new BlockInventoryScannerField(Material.glass).setBlockUnbreakable().setResistance(1000F).setBlockName("inventoryScannerField");
 				
 	    mod_SecurityCraft.cageTrap = new BlockCageTrap(Material.rock, false, cageTrapTextureIndex).setHardness(5F).setResistance(100F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("cageTrap");
 		
@@ -386,7 +382,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.keypadFurnace);
 		registerBlock(mod_SecurityCraft.securityCamera);
 		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.monitor, mod_SecurityCraft.monitor.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.monitor);
 
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem);
@@ -404,7 +400,7 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.wireCutters);
 		registerItem(mod_SecurityCraft.adminTool);
 		registerItem(mod_SecurityCraft.keyPanel);
-		GameRegistry.registerItem(mod_SecurityCraft.cameraMonitor, mod_SecurityCraft.cameraMonitor.getUnlocalizedName().substring(5));
+		registerItem(mod_SecurityCraft.cameraMonitor);
 		registerItem(mod_SecurityCraft.taser);
 		registerItem(mod_SecurityCraft.scManual);
 
@@ -644,6 +640,10 @@ public class ConfigurationHandler{
 			"F", "R", "K", 'K', mod_SecurityCraft.keyPanel, 'R', Items.redstone, 'F', Blocks.furnace
 		});
 		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.claymoreActive, 1), new Object[]{
+			"HSH", "SBS", "RGR", 'H', Blocks.tripwire_hook, 'S', Items.string, 'B', mod_SecurityCraft.bouncingBetty, 'R', Items.redstone, 'G', Items.gunpowder
+		});
+		
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.StoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.CobblestoneMine, 1), new Object[] {Blocks.cobblestone, mod_SecurityCraft.Mine});
@@ -678,7 +678,6 @@ public class ConfigurationHandler{
 
 	public void setupEntityRegistry() {
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
-		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "Camera", 1, mod_SecurityCraft.instance, 128, 2, false);
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
 	}
 
@@ -701,15 +700,12 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 11, Side.CLIENT);
 		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 12, Side.CLIENT);
 		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 13, Side.SERVER);
-		network.registerMessage(PacketMountCamera.Handler.class, PacketMountCamera.class, 14, Side.SERVER);
-		network.registerMessage(PacketCSetCameraUsePosition.Handler.class, PacketCSetCameraUsePosition.class, 15, Side.CLIENT);
-		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 16, Side.SERVER);
-		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 17, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 18, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 19, Side.SERVER);
-		network.registerMessage(PacketCSetCameraZoom.Handler.class, PacketCSetCameraZoom.class, 20, Side.CLIENT);
-		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 21, Side.CLIENT);
-		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 22, Side.CLIENT);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 14, Side.SERVER);
+		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 15, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 16, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 17, Side.SERVER);
+		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 18, Side.CLIENT);
+		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 19, Side.CLIENT);
 	}
 
 }

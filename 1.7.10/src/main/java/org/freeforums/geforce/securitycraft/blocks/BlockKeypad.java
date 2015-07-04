@@ -37,9 +37,7 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     private IIcon keypadIconFront;
     @SideOnly(Side.CLIENT)
     private IIcon keypadIconFrontActive;
-    
-	public static boolean canSend = true;
-    
+        
     @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
     	if(par1World.isRemote){
@@ -80,18 +78,41 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
+    public void onBlockAdded(World par1World, int par2, int par3, int par4){
         super.onBlockAdded(par1World, par2, par3, par4);
     }
     
- 
-    
+    /**
+     * Called when the block is placed in the world.
+     */
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+        
+        if (l == 0){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);         
+        }
+
+        if (l == 1){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+        }
+
+        if (l == 2){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+        }
+
+        if (l == 3){
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+    	}else{
+    		return;
+    	}
+    }
+
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean canProvidePower()
-    {
+    public boolean canProvidePower(){
         return true;
     }
     
@@ -100,8 +121,7 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10){
     		return 15;
     	}else{
@@ -113,9 +133,7 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-    	
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10){
     		return 15;
     	}else{
@@ -123,14 +141,11 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     	}
     }
 
-    
-    @SideOnly(Side.CLIENT)
-
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
      */
-    public IIcon getIcon(int par1, int par2)
-    {
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2){
         if(par1 == 3 && par2 == 0){
     		return this.keypadIconFront;
     	}
@@ -142,63 +157,18 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     	}
     }
 
-    @SideOnly(Side.CLIENT)
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
      * is the only chance you get to register icons.
      */
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister){
         this.blockIcon = par1IconRegister.registerIcon("securitycraft:iron_block");
         this.keypadIconFront = par1IconRegister.registerIcon("securitycraft:keypadUnactive");
         this.keypadIconTop = par1IconRegister.registerIcon("securitycraft:iron_block");
         this.keypadIconFrontActive = par1IconRegister.registerIcon("securitycraft:keypadActive");
     }
     
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
-        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-
-        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-        
-        if (l == 0)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-            
-        }
-
-        if (l == 1)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-            
-
-
-        }
-
-        if (l == 2)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-            
-
-
-        }
-
-        if (l == 3)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-            
-            
-
-    	}else{
-    		return;
-    	}
-
-       
-    }
-
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */

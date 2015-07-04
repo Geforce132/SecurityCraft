@@ -102,6 +102,8 @@ help.panicButton.info=The panic button looks like a button, but works the same w
 help.keypadFrame.info=The keypad frame is used in the keypad's crafting recipe.
 help.claymoreActive.info=Claymores explode one second after a living entity walks within 5 blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.
 help.keypadFurnace.info=The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.
+help.securityCamera.info=The security camera allows you to view the nearby area from its position. Simply place down a camera, then right-click it with a camera monitor to use it. 
+help.monitor.info=The monitor is a block-version of the handheld camera monitor. Right-click it with a camera monitor already bound to a camera to activate it. Note: This will change in the future.
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by right-clicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
@@ -115,4 +117,5 @@ help.wireCutters.info=Right-clicking a mine with the wire cutters will defuse it
 help.keypadItem.info=The key panel is used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.
 help.adminTool.info=The admin tool's main purpose is to display information about a SecurityCraft block. It will show the owner's UUID and name, and other information, like passcodes and any inserted modules. It is only obtainable via Creative mode.
 help.taser.info=The taser is a self-recharging stun gun. Right-click to fire it. Entities hit with the taser will get Nausea III, Slowness III, and Weakness III for 20 seconds.
+help.cameraMonitor.info=The camera monitor is a handheld screen, used to view live camera feeds. Right-click a security camera to view it on the monitor.
 help.scManual.info=The SecurityCraft Manual shows information about all the blocks and items SecurityCraft adds.

@@ -31,22 +31,19 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 	/**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
+    public void onBlockAdded(World par1World, int par2, int par3, int par4){
         super.onBlockAdded(par1World, par2, par3, par4);
     }
     
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
-    {
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 
         if(!par1World.isRemote){
         	this.setLaser(par1World, par2, par3, par4);
         }
-
     }
 
     private void setLaser(World par1World, int par2, int par3, int par4) {
@@ -241,8 +238,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
     		return 15;
     	}else{
@@ -254,9 +250,7 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-    	
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2){
     		return 15;
     	}else{
@@ -267,36 +261,30 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2){
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
+        if(!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2){
         	par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
         }                      
     }
     
-    @SideOnly(Side.CLIENT)
-
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
-        
-            if(par1World.getBlockMetadata(par2, par3, par4) == 2){
-            double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d3 = 0.2199999988079071D;
-            double d4 = 0.27000001072883606D;
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random){
+    	if(par1World.getBlockMetadata(par2, par3, par4) == 2){
+    		double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d3 = 0.2199999988079071D;
+    		double d4 = 0.27000001072883606D;
 
-            
-            par1World.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-            par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-        }
-        
+    		par1World.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+    		par1World.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
+    		par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+    		par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+    		par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+    	}
     }
 
 	public TileEntity createNewTileEntity(World par1World, int par2) {
