@@ -222,7 +222,7 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron, false).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("securitycraft:cameraParticleTexture");
 	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron, true).setHardness(1.0F).setResistance(10.F).setBlockName("securityCameraLit").setBlockTextureName("securitycraft:cameraParticleTexture");
 	
-	    mod_SecurityCraft.monitor = new BlockMonitor(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("monitor");
+	    mod_SecurityCraft.monitor = new BlockMonitor(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("scmonitor");
 	}
 	
 	public void setupMines(){
@@ -423,7 +423,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityKeypadFrame.class, "keypadFrame");
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
-		GameRegistry.registerTileEntity(TileEntityMonitor.class, "monitor");
+		GameRegistry.registerTileEntity(TileEntityMonitor.class, "scmonitor");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		if(useOldKeypadRecipe){
