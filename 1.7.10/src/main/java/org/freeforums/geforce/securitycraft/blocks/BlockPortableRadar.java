@@ -19,13 +19,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
@@ -46,21 +46,17 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 		this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);	
 	}
 	
-	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube(){
         return false;
     }
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
+    public boolean renderAsNormalBlock(){
         return false;
+    }
+    
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).setUsername(((EntityPlayer)par5EntityLivingBase).getCommandSenderName());
     }
      
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
@@ -68,9 +64,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
     }
     
     public void addEffectsToPlayers(World par1World, int par2, int par3, int par4){
-        if(par1World.isRemote){	
-        	return;      	
-        }else{
+        if(!par1World.isRemote){	
             double d0 = (double)(mod_SecurityCraft.configHandler.portableRadarSearchRadius);
         	
             AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)par2, (double)par3, (double)par4, (double)(par2 + 1), (double)(par3 + 1), (double)(par4 + 1)).expand(d0, d0, d0);
@@ -91,14 +85,12 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
+                if(par1World.getTileEntity(par2, par3, par4) == null || !(par1World.getTileEntity(par2, par3, par4) instanceof CustomizableSCTE)){ continue; }
+                
                 if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
-                	if(!((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).isEmped()){
-                		PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET + " is near a portable radar (at X: " + par2 + " Y:" + par3 + " Z:" + par4 + ")."), null);
-                	}else{
-                		PlayerUtils.sendMessageToPlayer(entityplayermp, "xxxxxxxxxx",  EnumChatFormatting.OBFUSCATED);
-                	}
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET + " is near a portable radar (at X: " + par2 + " Y:" + par3 + " Z:" + par4 + ")."), null);         
                 }   
                 
                 if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE)){
@@ -109,13 +101,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
     }
 
 	private boolean isOwnerOnline(String username) {
-    	if(MinecraftServer.getServer().getConfigurationManager().func_152612_a(username) != null){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    		
-    	
+    	return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(username) != null);  	
     }
 
     private void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
@@ -126,30 +112,8 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 		}
 		
 		BlockUtils.updateAndNotify(par1World, par2, par3, par4, par1World.getBlock(par2, par3, par4), 1, false);
-	}
-        
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister){
-    	this.sidesIcon = par1IconRegister.registerIcon("securitycraft:portableRadarSides");
-    	this.topIcon = par1IconRegister.registerIcon("securitycraft:portableRadarTop1");
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2){
-    	return par1 == 1 ? topIcon : sidesIcon;
-    }
-
-
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-		((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).setUsername(((EntityPlayer)par5EntityLivingBase).getCommandSenderName());
-    }
-	
-    public boolean canProvidePower()
-    {
-        return true;
-    }
-    
+	}  
+   
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
     	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1){
     		return 15;
@@ -157,7 +121,22 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
     		return 0;
     	}
     }
+	
+    public boolean canProvidePower(){
+        return true;
+    }
+  
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2){
+    	return par1 == 1 ? topIcon : sidesIcon;
+    }
 
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister){
+    	this.sidesIcon = par1IconRegister.registerIcon("securitycraft:portableRadarSides");
+    	this.topIcon = par1IconRegister.registerIcon("securitycraft:portableRadarTop1");
+    }
+    
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityPortableRadar();
 	}

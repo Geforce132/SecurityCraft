@@ -8,8 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.containers.ContainerRAMActivate;
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
@@ -22,7 +22,7 @@ public class GuiRAMDeactivate extends GuiContainer{
 	private GuiButton[] buttons = new GuiButton[6];
 
 	public GuiRAMDeactivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
-        super(new ContainerRAMActivate(inventory, tile_entity));
+        super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}
 	

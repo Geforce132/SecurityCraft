@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -44,6 +43,17 @@ public class ItemKeycardBase extends Item{
         this.setMaxDamage(0);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
+	
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
+        if(!par3World.isRemote){
+        	if(par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5){              
+        		((BlockKeycardReader) mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
+            	return true;
+        	}  	
+        }
+        
+        return false;
+    }
 	
 	public int getKeycardLV(ItemStack par1ItemStack){
 		if(par1ItemStack.getItemDamage() == 0){
@@ -77,28 +87,7 @@ public class ItemKeycardBase extends Item{
         par3List.add(new ItemStack(this, 1, 5)); //5
     }
 	
-	/**
-     * Gets an icon index based on an item's damage value
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1)
-    {
-        if(par1 == 0){
-        	return this.keycardOneIcon;
-        }else if(par1 == 1){
-        	return this.keycardTwoIcon;
-        }else if(par1 == 2){
-        	return this.keycardThreeIcon;
-        }else if(par1 == 4){
-        	return this.keycardFourIcon;
-        }else if(par1 == 5){
-        	return this.keycardFiveIcon;
-        }else if(par1 == 3){
-        	return this.limitedUseKeycardIcon;
-        }else{
-        	return super.getIconFromDamage(par1);
-        }
-    }
+	
     
     public String getUnlocalizedName(ItemStack par1ItemStack){
     	if(par1ItemStack.getItemDamage() == 0){
@@ -118,19 +107,6 @@ public class ItemKeycardBase extends Item{
     	}
 
     }
-
-
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
-        this.keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
-        this.keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
-        this.keycardFourIcon = par1IconRegister.registerIcon("securitycraft:lv4Keycard");
-        this.keycardFiveIcon = par1IconRegister.registerIcon("securitycraft:lv5Keycard");
-        this.limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
-
-    }
     
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
@@ -144,35 +120,37 @@ public class ItemKeycardBase extends Item{
 			
 		}
 	}
-	
-	/**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
+
+    /**
+     * Gets an icon index based on an item's damage value
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-    {
-        if (par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.keycardReader)
-        {
-            if (par3World.isRemote)
-            {
-            	if(((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getPassLV() > 0){
-            		((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).setIsProvidingPower(true);
-            	}
-                return true;
-            }
-            else
-            {      	
-            	if((par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5) && !((TileEntityKeycardReader)par3World.getTileEntity(par4, par5, par6)).getIsProvidingPower()){              
-            		((BlockKeycardReader)mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
-            	}
-            	
-                return true;
-            }
-        }
-        else
-        {
-            return false;
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int par1){
+        if(par1 == 0){
+        	return this.keycardOneIcon;
+        }else if(par1 == 1){
+        	return this.keycardTwoIcon;
+        }else if(par1 == 2){
+        	return this.keycardThreeIcon;
+        }else if(par1 == 4){
+        	return this.keycardFourIcon;
+        }else if(par1 == 5){
+        	return this.keycardFiveIcon;
+        }else if(par1 == 3){
+        	return this.limitedUseKeycardIcon;
+        }else{
+        	return super.getIconFromDamage(par1);
         }
     }
+    
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister par1IconRegister){
+        this.keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
+        this.keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
+        this.keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
+        this.keycardFourIcon = par1IconRegister.registerIcon("securitycraft:lv4Keycard");
+        this.keycardFiveIcon = par1IconRegister.registerIcon("securitycraft:lv5Keycard");
+        this.limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
+    } 
 	
 }

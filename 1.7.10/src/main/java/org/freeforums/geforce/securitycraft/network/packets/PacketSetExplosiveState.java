@@ -3,7 +3,7 @@ package org.freeforums.geforce.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
+import org.freeforums.geforce.securitycraft.api.IExplosive;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

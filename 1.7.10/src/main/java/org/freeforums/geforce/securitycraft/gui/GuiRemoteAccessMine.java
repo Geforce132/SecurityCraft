@@ -6,8 +6,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.containers.ContainerRemoteAccessMine;
-import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +18,7 @@ public class GuiRemoteAccessMine extends GuiContainer{
 	private TileEntityRAM RADInventory;
 
 	public GuiRemoteAccessMine(InventoryPlayer inventory, TileEntityRAM tile_entity) {
-        super(new ContainerRemoteAccessMine(inventory, tile_entity));
+        super(new ContainerGeneric(inventory, tile_entity));
         this.RADInventory = tile_entity;
 	}
 	

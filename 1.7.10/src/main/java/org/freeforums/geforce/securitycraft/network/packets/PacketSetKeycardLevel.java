@@ -52,7 +52,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		boolean exactCard = packet.exactCard;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
-		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setPassLV(level);
+		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setPassword(String.valueOf(level));
 		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setRequiresExactKeycard(exactCard);
 		
 		return null;

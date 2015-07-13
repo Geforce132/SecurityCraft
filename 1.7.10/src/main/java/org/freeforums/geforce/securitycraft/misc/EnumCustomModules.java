@@ -3,6 +3,12 @@ package org.freeforums.geforce.securitycraft.misc;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
+/**
+ * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}.
+ * Gives easy access to the module ItemStack and name.
+ * 
+ * @author Geforce
+ */
 public enum EnumCustomModules {
 		
 	REDSTONE(mod_SecurityCraft.redstoneModule, "Redstone module"),

@@ -3,6 +3,7 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
@@ -10,7 +11,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	
 	private String username;
 	private String customName;
-	private boolean EMPed = false;
 	
 	private int cooldown = 0;
 	
@@ -41,11 +41,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
             this.username = par1NBTTagCompound.getString("owner");
         }
         
-        if (par1NBTTagCompound.hasKey("emped"))
-        {
-            this.EMPed = par1NBTTagCompound.getBoolean("emped");
-        }
-        
         if (par1NBTTagCompound.hasKey("customName")){
         	this.customName = par1NBTTagCompound.getString("customName");
         }
@@ -62,7 +57,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setString("owner", this.username);
-        par1NBTTagCompound.setBoolean("emped", this.EMPed);
         par1NBTTagCompound.setInteger("cooldown", this.cooldown);
         
         if(this.customName != null && !this.customName.isEmpty()){
@@ -77,14 +71,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	
 	public String getUsername(){
 		return this.username;
-	}
-	
-	public void setEmped(boolean emped) {
-		this.EMPed = emped;
-	}
-	
-	public boolean isEmped(){
-		return this.EMPed;
 	}
 
 	public String getCustomName() {

@@ -3,16 +3,11 @@ package org.freeforums.geforce.securitycraft.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.lookingglass.api.animator.CameraAnimatorPivot;
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +16,7 @@ public class GuiSCManual extends GuiScreen {
 
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/infoBookTexture.png");
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/infoBookTitlePage.png");
+	private ResourceLocation skinTexture = new ResourceLocation("textures/entity/steve.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 	
     private int currentPage = -1;
@@ -68,6 +64,9 @@ public class GuiSCManual extends GuiScreen {
 	    
 	    if(this.currentPage > -1){
 	    	GuiUtils.drawItemStackToGui(mc, mod_SecurityCraft.instance.manualPages.get(currentPage).getItem(), k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+	    	
+	    	//this.mc.getTextureManager().bindTexture(skinTexture);
+	    	//this.drawTexturedModalRect(0, 0, 5, 0, 16, 16);
 	    }
 	    
 	    this.updateButtons();

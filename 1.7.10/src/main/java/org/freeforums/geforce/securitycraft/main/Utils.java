@@ -4,16 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
-import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
-import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -33,6 +23,17 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.world.World;
+
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -410,7 +411,7 @@ public static class ModuleUtils{
 		if(te instanceof TileEntityKeypad){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
-				new ScheduleUpdate(par1World, 3, par2, par3, par4);
+				BlockKeypad.activate(par1World, par2, par3, par4);
 				return true;
 			}
 			
@@ -421,9 +422,7 @@ public static class ModuleUtils{
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
-				((TileEntityKeycardReader) te).setIsProvidingPower(true);
-				new ScheduleKeycardUpdate(3, par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
-				par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par1World.getBlock(par2, par3, par4));
+				BlockKeycardReader.activate(par1World, par2, par3, par4);
 				return true;
 			}
 			
@@ -603,21 +602,5 @@ public static class ClientUtils{
 			return false;
 		}
 	}
-	
-	//private static void bookCode(){
-	//	ItemStack book = new ItemStack(Items.written_book);
-	//	
-	//	NBTTagCompound tag = new NBTTagCompound();
-	//	NBTTagList bookPages = new NBTTagList();
-	//	bookPages.appendTag(new NBTTagString("SecurityCraft " + mod_SecurityCraft.getVersion() + " info book."));
-	//	bookPages.appendTag(new NBTTagString("Keypad: \n \nThe keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds."));
-	//	bookPages.appendTag(new NBTTagString("Laser block: The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal."));
-	//	
-	//	book.setTagInfo("pages", bookPages);
-	//	book.setTagInfo("author", new NBTTagString("Geforce"));
-	//	book.setTagInfo("title", new NBTTagString("SecurityCraft"));
-	//	
-	//	player.inventory.addItemStackToInventory(book);
-	//}
 
 }

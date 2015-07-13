@@ -1,0 +1,34 @@
+*** New blocks/items: ***
+ - Added security cameras.
+ - Added camera monitors.
+ - Added tasers.
+ - Added SecurityCraft manual.
+ 
+*** Major additions: ***
+ - Added Waila support.
+ - SecurityCraft now requires LookingGlass v0.2.00+ as a dependency.
+
+*** Bugfixes/Improvements: ***
+ --- Hefty code cleanup:
+   - Deleted org.freeforums.geforce.securitycraft.timers and all the classes in it. 
+   - Moved all the classes in org.freeforums.geforce.securitycraft.lookingglass to org.freeforums.geforce.securitycraft.imc.lookingglass.
+   - Did some code formatting.
+   - Simplified TileEntity and ID checks in GuiHandler.
+   - Deleted unused texture .png files.
+ --- Simplified password-protected block's password setup process:
+   - Deleted some GuiContainer, Container, and IMessage classes.
+   - Added setPassword() and activate() methods to IPasswordProtected.
+ --- Worked on the SecurityCraft API:
+   - Added comments to methods in IPasswordProtected, IOwnable, and IExplosive, and CustomizableSCTE.
+   - Moved all the classes in org.freeforums.geforce.securitycraft.interfaces to org.freeforums.geforce.securitycraft.api.
+   - Moved CustomizableSCTE from org.freeforums.geforce.securitycraft.tileentity to org.freeforums.geforce.securitycraft.api.
+   - Modified the build.gradle file to also generate deobfuscated and raw source .jar files when building.
+ - Keycard readers now emit redstone particles like laser blocks when active.
+ - Alarms can now be placed on all sides of a block.
+ - Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
+ - Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
+ - Lasers could be broken by players who didn't place them.
+ - Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
+ - Rotation of keypad frames and password-protected furnaces in inventory.
+ - Codebreakers can now be used on password-protected furnaces.
+ - Changed keypad recipe to use iron ingots instead of iron blocks.

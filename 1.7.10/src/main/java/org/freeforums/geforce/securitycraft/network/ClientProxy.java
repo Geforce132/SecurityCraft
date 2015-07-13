@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
-import org.freeforums.geforce.securitycraft.lookingglass.IWorldViewHelper;
+import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.KeyBindings;
 import org.freeforums.geforce.securitycraft.models.ModelClaymore;

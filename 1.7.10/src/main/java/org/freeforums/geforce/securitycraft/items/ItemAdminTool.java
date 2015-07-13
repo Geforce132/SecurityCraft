@@ -8,13 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class ItemAdminTool extends ItemWithInfo {
 
@@ -32,12 +31,9 @@ public class ItemAdminTool extends ItemWithInfo {
 				TileEntity te = par3World.getTileEntity(par4, par5, par6);
 				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Block info:", EnumChatFormatting.GRAY);
 				
-				if(te instanceof TileEntityOwnable){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityOwnable) te).getOwnerName() == null ? "????" : ((TileEntityOwnable) te).getOwnerName()), null);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityOwnable) te).getOwnerUUID() == null ? "????" : ((TileEntityOwnable) te).getOwnerUUID()), null);
-				}else if(te instanceof TileEntityKeypadChest){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityKeypadChest) te).getOwnerName() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerName()), null);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityKeypadChest) te).getOwnerUUID() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerUUID()), null);
+				if(te instanceof IOwnable){
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID()), null);
 				}
 				
 				if(te instanceof IPasswordProtected){

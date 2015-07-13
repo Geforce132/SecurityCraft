@@ -1,11 +1,12 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	
@@ -25,11 +26,18 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	 * 
 	 * @param par1 The owner's UUID.
 	 * @param par2 The owner's name.
-	 */
-    
+	 */ 
     public void setOwner(String par1, String par2){
     	ownerUUID = par1;
     	owner = par2;
+    }
+    
+    public boolean isOwner(EntityPlayer player){
+    	if(!ownerUUID.matches("ownerUUID")){
+    		return ownerUUID.matches(player.getGameProfile().getId().toString());
+    	}else{
+    		return owner.matches(player.getCommandSenderName());
+    	}
     }
     
     /**

@@ -1,13 +1,18 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
@@ -16,45 +21,7 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 	private String passcode;
 	private String ownerUUID = "ownerUUID";
 	private String owner = "owner";
-
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);    
-		
-		if(this.passcode != null && !this.passcode.isEmpty()){
-        	par1NBTTagCompound.setString("passcode", this.passcode);
-        }
-		
-		if(this.owner != null && this.owner != ""){
-        	par1NBTTagCompound.setString("owner", this.owner);
-        }
-        
-        if(this.ownerUUID != null && this.ownerUUID != ""){
-        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
-        }
-	}
 	
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);   
-		
-		if (par1NBTTagCompound.hasKey("passcode"))
-        {
-        	if(par1NBTTagCompound.getInteger("passcode") != 0){
-        		this.passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
-        	}else{
-        		this.passcode = par1NBTTagCompound.getString("passcode");
-        	}
-        }
-		
-		if (par1NBTTagCompound.hasKey("owner"))
-        {
-            this.owner = par1NBTTagCompound.getString("owner");
-        }
-        
-        if (par1NBTTagCompound.hasKey("ownerUUID"))
-        {
-            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
-        }
-	}
 	
 	public void updateEntity(){
         boolean flag = this.furnaceBurnTime > 0;
@@ -120,6 +87,55 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
         }
     }
 	
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+		super.writeToNBT(par1NBTTagCompound);    
+		
+		if(this.passcode != null && !this.passcode.isEmpty()){
+        	par1NBTTagCompound.setString("passcode", this.passcode);
+        }
+		
+		if(this.owner != null && this.owner != ""){
+        	par1NBTTagCompound.setString("owner", this.owner);
+        }
+        
+        if(this.ownerUUID != null && this.ownerUUID != ""){
+        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
+        }
+	}
+	
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+		super.readFromNBT(par1NBTTagCompound);   
+		
+		if (par1NBTTagCompound.hasKey("passcode"))
+        {
+        	if(par1NBTTagCompound.getInteger("passcode") != 0){
+        		this.passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+        	}else{
+        		this.passcode = par1NBTTagCompound.getString("passcode");
+        	}
+        }
+		
+		if (par1NBTTagCompound.hasKey("owner"))
+        {
+            this.owner = par1NBTTagCompound.getString("owner");
+        }
+        
+        if (par1NBTTagCompound.hasKey("ownerUUID"))
+        {
+            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
+        }
+	}
+	
+	public Packet getDescriptionPacket() {                
+    	NBTTagCompound tag = new NBTTagCompound();                
+    	this.writeToNBT(tag);                
+    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);        
+    }        
+    
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    	readFromNBT(packet.func_148857_g());        
+    }
+	
 	public String getOwnerName(){
     	return owner;
     }
@@ -133,16 +149,18 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
     	owner = par2;
     }
 	
-    public String getKeypadCode(){
-    	return passcode;
-    }
-    
-    public void setKeypadCode(String par1){
-    	passcode = par1;
-    }
+	public void activate(EntityPlayer player) {
+		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadFurnace){
+			BlockKeypadFurnace.activate(worldObj, xCoord, yCoord, zCoord, player);
+    	}
+	}
 
 	public String getPassword() {
 		return passcode;
+	}
+
+	public void setPassword(String password) {
+		passcode = password;
 	}
 
 }

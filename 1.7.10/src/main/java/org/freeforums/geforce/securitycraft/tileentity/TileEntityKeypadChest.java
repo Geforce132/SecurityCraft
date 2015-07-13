@@ -1,10 +1,15 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypadChest;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, IPasswordProtected {
 	
@@ -16,29 +21,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
     public TileEntityKeypadChest adjacentChestXPos;
     public TileEntityKeypadChest adjacentChestXNeg;
     public TileEntityKeypadChest adjacentChestZPos;
-
+  
 	
-	public String getKeypadCode(){
-    	return passcode;
-    }
-    
-    public void setKeypadCode(String par1){
-    	passcode = par1;
-    }
-    
-    public String getOwnerUUID(){
-    	return ownerUUID;
-    }
-    
-    public String getOwnerName(){
-    	return ownerName;
-    }
-    
-    public void setOwner(String par1, String par2){
-    	ownerUUID = par1;
-    	ownerName = par2;
-    }
-    
     /**
      * Writes a tile entity to NBT.
      */
@@ -83,19 +67,48 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
         if (par1NBTTagCompound.hasKey("ownerUUID"))
         {
             this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
-        }
+        }        
     }
     
-    /**
-     * Returns the name of the inventory
-     */
-    public String getInventoryName()
-    {
+    public Packet getDescriptionPacket() {                
+    	NBTTagCompound tag = new NBTTagCompound();                
+    	this.writeToNBT(tag);                
+    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);        
+    }        
+    
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    	readFromNBT(packet.func_148857_g());        
+    }
+    
+    public String getInventoryName(){
         return "Protected chest";
     }
+    
+    public String getOwnerUUID(){
+    	return ownerUUID;
+    }
+    
+    public String getOwnerName(){
+    	return ownerName;
+    }
+    
+    public void setOwner(String par1, String par2){
+    	ownerUUID = par1;
+    	ownerName = par2;
+    }
+
+	public void activate(EntityPlayer player) {
+		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadChest){
+			BlockKeypadChest.activate(worldObj, xCoord, yCoord, zCoord, player);
+    	}
+	}
 
 	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
-    
+
+	public void setPassword(String password) {
+		passcode = password;
+	}
+	
 }

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.containers.ContainerKeycardSetup;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -23,7 +23,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	private int lvOfSecurity = 0;
 
 	public GuiKeycardSetup(InventoryPlayer inventory, TileEntityKeycardReader tile_entity) {
-		 super(new ContainerKeycardSetup(inventory, tile_entity));
+		 super(new ContainerGeneric(inventory, tile_entity));
 	     this.keypadInventory = tile_entity;
 	}
 	
@@ -88,6 +88,9 @@ public class GuiKeycardSetup extends GuiContainer{
 	 }
 
 	private void saveLVs() {
+		keypadInventory.setPassword(String.valueOf(lvOfSecurity));
+		keypadInventory.setRequiresExactKeycard(requiresExactCard);
+		
 		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.lvOfSecurity, this.requiresExactCard));
 		
 		ClientUtils.closePlayerScreen();

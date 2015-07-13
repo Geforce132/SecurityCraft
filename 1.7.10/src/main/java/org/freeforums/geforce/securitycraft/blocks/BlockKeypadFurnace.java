@@ -14,7 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.api.IHelpInfo;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 
@@ -43,23 +45,26 @@ public class BlockKeypadFurnace extends BlockContainer implements IHelpInfo {
 	}
 
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote){
-			return true;
-		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker)){
-				TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4);
-				if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, par2, par3, par4);
-				}else{
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, par2, par3, par4);
-				}
-			}else{
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, par2, par3, par4); 
-				par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
+		if(!par1World.isRemote){
+			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
+				activate(par1World, par2, par3, par4, par5EntityPlayer);
 			}
 
-			return true;
+			if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadFurnace){
+				if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() == null){
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, par2, par3, par4);
+				}else{
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, par2, par3, par4);
+				}
+			}
 		}
+
+		return true;
+	}
+	
+	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
+		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, par2, par3, par4); 
+		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
 	}
 
 	/**

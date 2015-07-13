@@ -17,10 +17,10 @@ import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
 import org.freeforums.geforce.securitycraft.commands.CommandSCLog;
 import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
+import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
+import org.freeforums.geforce.securitycraft.imc.lookingglass.LookingGlassPanelRenderer;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.lookingglass.IWorldViewHelper;
-import org.freeforums.geforce.securitycraft.lookingglass.LookingGlassPanelRenderer;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.ClientProxy;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
@@ -54,7 +54,7 @@ public class mod_SecurityCraft {
 	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
 	//TODO ********************************* This is v1.8.0 for MC 1.7.10!
 	protected static final String VERSION = "v1.8.0";
-	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);required-after:LookingGlass@[0.1.1.00,)";
+	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);required-after:LookingGlass@[0.1.1.00,);";
 	
 	
 	@SidedProxy(clientSide = "org.freeforums.geforce.securitycraft.network.ClientProxy", serverSide = "org.freeforums.geforce.securitycraft.network.ServerProxy")
@@ -88,7 +88,6 @@ public class mod_SecurityCraft {
 	public static Block LaserBlock;
 	public static Block Laser;
 	public static Block Keypad;
-	public static Block LaserActive;
 	public static BlockMine Mine;
 	public static BlockMine MineCut;
 	public static Block DirtMine;
@@ -180,7 +179,8 @@ public class mod_SecurityCraft {
 		mod_SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(mod_SecurityCraft.MODID);
 		this.configHandler.setupPackets(mod_SecurityCraft.network);
 		log("Network setup.");
-		log("Loading mod additions...");
+		
+		log("Loading mod additions....");
 		this.configHandler.setupAdditions();
 		
 		if(this.debuggingMode){
@@ -203,9 +203,10 @@ public class mod_SecurityCraft {
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-		log("Setting up LookingGlass stuff...");
+		log("Setting up inter-mod stuff...");
 		
-		FMLInterModComms.sendMessage("LookingGlass", "API", "org.freeforums.geforce.securitycraft.lookingglass.LookingGlassAPIProvider.register");
+		FMLInterModComms.sendMessage("Waila", "register", "org.freeforums.geforce.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
+		FMLInterModComms.sendMessage("LookingGlass", "API", "org.freeforums.geforce.securitycraft.imc.lookingglass.LookingGlassAPIProvider.register");
 		
 		log("Doing registering stuff... (PT 2/2)");
 		

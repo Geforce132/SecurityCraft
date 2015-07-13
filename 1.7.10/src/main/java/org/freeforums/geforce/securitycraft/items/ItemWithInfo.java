@@ -2,7 +2,7 @@ package org.freeforums.geforce.securitycraft.items;
 
 import net.minecraft.item.Item;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 
 public class ItemWithInfo extends Item implements IHelpInfo {
 	

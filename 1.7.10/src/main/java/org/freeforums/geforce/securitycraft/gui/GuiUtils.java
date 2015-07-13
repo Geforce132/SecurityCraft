@@ -116,6 +116,15 @@ public class GuiUtils extends Gui{
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
 		drawItemStackToGui(mc, Item.getItemFromBlock(block), x, y, fixLighting);
 	}
+	
+//	public static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight){
+//		float f = 1F / (float) textureWidth;
+//		float f1 = 1F / (float) textureHeight;
+//		Tessellator tessellator = Tessellator.instance;
+//		tessellator.startDrawingQuads();
+//		tessellator.addVertexWithUV((double) x, (double) (y + height), 0, (double)((float) u * f), (double)((float)));
+//		tessellator.draw();
+//	}
 
 	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel){
 		float f = (float)(p_73733_5_ >> 24 & 255) / 255.0F;

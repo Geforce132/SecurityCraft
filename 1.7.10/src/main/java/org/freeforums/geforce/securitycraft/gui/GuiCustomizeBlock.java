@@ -6,10 +6,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
 import org.freeforums.geforce.securitycraft.gui.components.GuiPictureButton;
 import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.config.HoverChecker;

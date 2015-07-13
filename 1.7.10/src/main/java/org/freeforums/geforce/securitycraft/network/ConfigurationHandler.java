@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockActiveLaser;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.blocks.BlockAlarm;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusLava;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusLavaBase;
@@ -23,8 +23,8 @@ import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadChest;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFrame;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
-import org.freeforums.geforce.securitycraft.blocks.BlockLaser;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockLaserField;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
 import org.freeforums.geforce.securitycraft.blocks.BlockMonitor;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
@@ -69,11 +69,12 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraLoca
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSCheckPassword;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSSetOwner;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSetPassword;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlockAndMetadata;
@@ -81,9 +82,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlockMetada
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLevel;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
@@ -113,11 +112,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class ConfigurationHandler{
-	private int[] harmingPotions = {8268, 8236, 16460, 16428};
-	private int[] healingPotions = {8261, 8229, 16453, 16421};
+	private int[]  harmingPotions = {8268, 8236, 16460, 16428};
+	private int[]  healingPotions = {8261, 8229, 16453, 16421};
 	
 	public boolean allowCodebreakerItem;
-	public boolean allowDoorRemover;
 	public boolean allowAdminTool;
 	public boolean shouldSpawnFire;
 	public boolean ableToBreakMines;
@@ -148,8 +146,6 @@ public class ConfigurationHandler{
 	public boolean ableToContinueHacking = true;
 	public boolean hackingFailed = false;
 		
-	// RetinalScanner = new BlockRetinalScanner(1018, Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundMetalFootstep).setCreativeTab(mod_SecurityCraft.tabSecurityCraft).setBlockName("retinalScanner");
-
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();
 		this.setupMines();
@@ -163,15 +159,14 @@ public class ConfigurationHandler{
 		this.registerDebuggingAdditions();
 	}
 	
+
 	public void setupTechnicalBlocks(){
 		mod_SecurityCraft.LaserBlock = new BlockLaserBlock(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("laserBlock").setBlockTextureName("securitycraft:dispenser_front_vertical");
 		
-		mod_SecurityCraft.Laser = new BlockLaser(Material.rock).setBlockUnbreakable().setResistance(1000F).setBlockName("laser");
+		mod_SecurityCraft.Laser = new BlockLaserField(Material.rock).setBlockUnbreakable().setResistance(1000F).setBlockName("laser");
 		
 		mod_SecurityCraft.Keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keypad");
-				
-		mod_SecurityCraft.LaserActive = new BlockActiveLaser(Material.iron).setBlockUnbreakable().setResistance(1000F).setBlockName("laserActive");
-		
+						
 		mod_SecurityCraft.retinalScanner = new BlockRetinalScanner(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("retinalScanner");
 	    
 		mod_SecurityCraft.doorIndestructableIron = new BlockReinforcedDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setBlockName("ironDoorReinforced");
@@ -257,7 +252,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.keycards = new ItemKeycardBase();
 	  
 		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCTechnical).setTextureName("securitycraft:doorReinforcedIron");
-	    
+		
 		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover").setTextureName("securitycraft:universalBlockRemover");
 		
 		mod_SecurityCraft.remoteAccessMine = new ItemRemoteAccess(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine").setTextureName("securitycraft:remoteAccessDoor").setMaxStackSize(1);
@@ -291,7 +286,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
 	}
 	
-	public void setupDebuggingBlocks(){
+	public void setupDebuggingBlocks() {
 		
 	}
 	
@@ -304,7 +299,6 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.configFile.load();
 
         allowCodebreakerItem = mod_SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true).getBoolean(true);
-        allowDoorRemover = mod_SecurityCraft.configFile.get("options", "Is door remover allowed?", true).getBoolean(true);
         allowAdminTool = mod_SecurityCraft.configFile.get("options", "Is admin tool allowed?", false).getBoolean(false);
         shouldSpawnFire = mod_SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true).getBoolean(true);
         ableToBreakMines = mod_SecurityCraft.configFile.get("options", "Are mines unbreakable?", true).getBoolean(true);
@@ -329,14 +323,10 @@ public class ConfigurationHandler{
         disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
         useOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false).getBoolean(false);
 
-        //cageTrapTextureIndex = config.get("Options", "cage-trap-block-texture (enter a block's id to use it's texture on the cage trap. Using the id '9999' will use the default cage trap texture)", 9999).getInt(9999);
-        //empRadius = config.get("Options", "emp-radius(factors-of-ten-only)", 51).getInt(51);
-
         if(mod_SecurityCraft.configFile.hasChanged()){
         	mod_SecurityCraft.configFile.save();
         }
         
-
 	}
 	
 	public void setupGameRegistry(){
@@ -385,7 +375,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.monitor);
 
 		registerItem(mod_SecurityCraft.Codebreaker);
-	    registerItem(mod_SecurityCraft.doorIndestructableIronItem);
+	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
 		registerItem(mod_SecurityCraft.keycards);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
@@ -651,7 +641,7 @@ public class ConfigurationHandler{
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.SandMine, 1), new Object[] {Blocks.sand, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.FurnaceMine, 1), new Object[] {Blocks.furnace, mod_SecurityCraft.Mine});
 	}
-	
+
 	/**
 	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
 	 */
@@ -666,6 +656,15 @@ public class ConfigurationHandler{
 	 */
 	private void registerItem(Item item){
 		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	/**
+	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 */
+	private void registerItem(Item item, String customName){
+		GameRegistry.registerItem(item, customName);
 		
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
 	}
@@ -686,26 +685,26 @@ public class ConfigurationHandler{
 	} 
 
 	public void setupPackets(SimpleNetworkWrapper network) {
-		network.registerMessage(PacketCheckKeypadCode.Handler.class, PacketCheckKeypadCode.class, 0, Side.SERVER);
 		network.registerMessage(PacketCheckRetinalScanner.Handler.class, PacketCheckRetinalScanner.class, 1, Side.SERVER);
 		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 2, Side.SERVER);
 		network.registerMessage(PacketSetBlockMetadata.Handler.class, PacketSetBlockMetadata.class, 3, Side.SERVER);
 		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 4, Side.SERVER);
 		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 5, Side.SERVER);
-		network.registerMessage(PacketSetKeypadCode.Handler.class, PacketSetKeypadCode.class, 6, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 7, Side.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 8, Side.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 9, Side.SERVER);
-		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 10, Side.CLIENT);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 11, Side.CLIENT);
-		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 12, Side.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 13, Side.SERVER);
-		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 14, Side.SERVER);
-		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 15, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 16, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 17, Side.SERVER);
-		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 18, Side.CLIENT);
-		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 19, Side.CLIENT);
+		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 6, Side.CLIENT);
+		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 7, Side.CLIENT);
+		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 8, Side.SERVER);
+		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 9, Side.CLIENT);
+		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 10, Side.CLIENT);
+		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 11, Side.CLIENT);
+		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 12, Side.SERVER);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 13, Side.SERVER);
+		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 14, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 15, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 16, Side.SERVER);
+		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 17, Side.CLIENT);
+		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 18, Side.CLIENT);
+		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 19, Side.SERVER);
+		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 10, Side.SERVER);
 	}
 
 }

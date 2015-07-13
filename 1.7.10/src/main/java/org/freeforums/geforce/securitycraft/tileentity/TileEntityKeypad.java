@@ -1,22 +1,17 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 	
 	private String passcode;
-	
-    public String getKeypadCode(){
-    	return passcode;
-    }
-    
-    public void setKeypadCode(String par1){
-    	passcode = par1;
-    }
     
     /**
      * Writes a tile entity to NBT.
@@ -46,6 +41,20 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
         	}
         }
     }
+    
+    public void activate(EntityPlayer player) {
+    	if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypad){
+    		BlockKeypad.activate(worldObj, xCoord, yCoord, zCoord);
+    	}
+	}
+    
+	public String getPassword() {
+		return this.passcode;
+	}
+	
+	public void setPassword(String password) {
+		passcode = password;
+	}
 
 	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
@@ -55,8 +64,4 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a keypad will allow players to use the block without knowing the code.", EnumChatFormatting.UNDERLINE + "Blacklist module:" + EnumChatFormatting.RESET + "\n\nAdding a blacklist module to a keypad will ban players from interacting with the block."};
 	}
 
-	public String getPassword() {
-		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
-	}       
- 
 }

@@ -2,7 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.List;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
+import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
