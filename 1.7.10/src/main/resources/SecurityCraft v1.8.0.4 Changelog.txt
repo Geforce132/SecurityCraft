@@ -27,8 +27,8 @@
  - Alarms can now be placed on all sides of a block.
  - Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
- - Lasers could be broken by players who didn't place them.
- - Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
- - Rotation of keypad frames and password-protected furnaces in inventory.
+ - Fix: Lasers could be broken by players who didn't place them.
+ - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
+ - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
  - Codebreakers can now be used on password-protected furnaces.
  - Changed keypad recipe to use iron ingots instead of iron blocks.
