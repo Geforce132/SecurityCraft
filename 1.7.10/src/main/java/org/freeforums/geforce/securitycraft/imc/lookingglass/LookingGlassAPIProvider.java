@@ -18,7 +18,7 @@ public class LookingGlassAPIProvider {
 	
 	public static void register(APIInstanceProvider provider){
 		try{
-			Object viewAPI = provider.getAPIInstance("view-1");
+			Object viewAPI = provider.getAPIInstance("view-2");
 			
 			if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 				LookingGlassAPIHandler.handleAPICast(viewAPI);

@@ -24,9 +24,7 @@ public class GuiHandler implements IGuiHandler {
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
-		
-		if(tile_entity == null){ return null; }
-		
+				
     	switch(ID){
     	case 4:
     		return new ContainerGeneric(player.inventory, tile_entity);
@@ -70,8 +68,6 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		
-		if(tile_entity == null){ return null; }
-
 		switch(ID){	
     	case 4:
     		return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);

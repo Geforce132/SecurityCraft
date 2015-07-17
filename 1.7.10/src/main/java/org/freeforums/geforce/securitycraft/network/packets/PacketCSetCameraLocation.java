@@ -4,9 +4,8 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
-import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMonitor;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -61,8 +60,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int camZ = packet.camZ;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 	
-		if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.monitor){
-			((TileEntityMonitor) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ);
+		if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.frame){
+			((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ);
 		}
 		
 		return null;

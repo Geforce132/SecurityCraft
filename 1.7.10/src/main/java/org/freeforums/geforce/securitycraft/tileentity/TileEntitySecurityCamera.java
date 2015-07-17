@@ -11,6 +11,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.ClientProxy;
 
+import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE{
@@ -24,7 +25,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE{
 			IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(xCoord, yCoord, zCoord), 192, 192); 
 					
 			lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
-			lgView.grab();
+
 			if(!mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
 				mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
 				((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord, new IWorldViewHelper(lgView));		

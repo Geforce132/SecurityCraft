@@ -1,6 +1,10 @@
+-----------------------
+SecurityCraft v1.8.0.4:
+-----------------------
+
 *** New blocks/items: ***
  - Added security cameras.
- - Added camera monitors.
+ - Changed the name of the keypad frame to "Frame".
  - Added tasers.
  - Added SecurityCraft manual.
  
@@ -15,6 +19,7 @@
    - Did some code formatting.
    - Simplified TileEntity and ID checks in GuiHandler.
    - Deleted unused texture .png files.
+   - Deleted unused Access Transformer.
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
    - Added setPassword() and activate() methods to IPasswordProtected.
@@ -32,3 +37,5 @@
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
  - Codebreakers can now be used on password-protected furnaces.
  - Changed keypad recipe to use iron ingots instead of iron blocks.
+ - Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
+ - Removed the keypad's recipe (unless the "useOldKeypadRecipe" config option is selected).

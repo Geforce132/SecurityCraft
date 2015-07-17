@@ -26,7 +26,6 @@ import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserField;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
-import org.freeforums.geforce.securitycraft.blocks.BlockMonitor;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockPanicButton;
 import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
@@ -49,6 +48,7 @@ import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
 import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
 import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
+import org.freeforums.geforce.securitycraft.items.ItemKeyPanel;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
@@ -86,11 +86,11 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFrame;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
@@ -210,14 +210,12 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("panicButton");
 	
-		mod_SecurityCraft.keypadFrame = new BlockKeypadFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keypadFrame");
+		mod_SecurityCraft.frame = new BlockKeypadFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("keypadFrame");
 	
 		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setBlockName("keypadFurnace").setBlockTextureName("securitycraft:keypadUnactive");
 	
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron, false).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("securitycraft:cameraParticleTexture");
 	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron, true).setHardness(1.0F).setResistance(10.F).setBlockName("securityCameraLit").setBlockTextureName("securitycraft:cameraParticleTexture");
-	
-	    mod_SecurityCraft.monitor = new BlockMonitor(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("scmonitor");
 	}
 	
 	public void setupMines(){
@@ -275,7 +273,7 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.wireCutters = new ItemWithInfo(null, new String[]{"The wire cutters requires: 1 shears, 4 iron ingots", "XY ", "Y Y", " Y ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters").setTextureName("securitycraft:wireCutter");
 	
-		mod_SecurityCraft.keyPanel = new ItemWithInfo(null, new String[]{"The key panel requires: 1 weighted pressure plate (heavy), 8 stone button", "YYY", "YXY", "YYY", "X = weighted pressure plate (heavy), Y = stone button"}).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem").setTextureName("securitycraft:keypadItem");
+		mod_SecurityCraft.keyPanel = new ItemKeyPanel().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem").setTextureName("securitycraft:keypadItem");
 		
 		mod_SecurityCraft.adminTool = new ItemAdminTool("", new String[]{"", ""}).setMaxStackSize(1).setUnlocalizedName("adminTool");
 	
@@ -366,13 +364,12 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedFencegate);
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class, mod_SecurityCraft.reinforcedWoodPlanks.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.panicButton);
-		registerBlock(mod_SecurityCraft.keypadFrame);
+		registerBlock(mod_SecurityCraft.frame);
 		registerBlock(mod_SecurityCraft.claymoreActive);
 		GameRegistry.registerBlock(mod_SecurityCraft.claymoreDefused, mod_SecurityCraft.claymoreDefused.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.keypadFurnace);
 		registerBlock(mod_SecurityCraft.securityCamera);
 		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
-		registerBlock(mod_SecurityCraft.monitor);
 
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
@@ -410,10 +407,10 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, "retinalScanner");
 		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
 		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
-		GameRegistry.registerTileEntity(TileEntityKeypadFrame.class, "keypadFrame");
+		GameRegistry.registerTileEntity(TileEntityFrame.class, "keypadFrame");
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
-		GameRegistry.registerTileEntity(TileEntityMonitor.class, "scmonitor");
+		GameRegistry.registerTileEntity(TileEntityMonitor.class, "monitor");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		if(useOldKeypadRecipe){
@@ -425,12 +422,8 @@ public class ConfigurationHandler{
 				"III", "IBI", "III", 'I', Blocks.stone_button, 'B', Blocks.heavy_weighted_pressure_plate
 			});
 			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFrame, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.frame, 1), new Object[]{
 				"III", "IBI", "I I", 'I', Blocks.stone, 'B', Items.redstone
-			});
-			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
-				"III", "IBI", "IPI", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keyPanel
 			});
 		}
 		

@@ -1,16 +1,17 @@
 package org.freeforums.geforce.securitycraft.imc.lookingglass;
 
-import com.xcompwiz.lookingglass.api.IWorldViewAPI;
+import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
+
 
 public class LookingGlassPanelRenderer {
 	
-	private final IWorldViewAPI api;
+	private final WorldViewAPI2 api;
 
-	public LookingGlassPanelRenderer(IWorldViewAPI api) {
+	public LookingGlassPanelRenderer(WorldViewAPI2 api) {
 		this.api = api;
 	}
 
-	public IWorldViewAPI getApi() {
+	public WorldViewAPI2 getApi() {
 		return api;
 	}
 

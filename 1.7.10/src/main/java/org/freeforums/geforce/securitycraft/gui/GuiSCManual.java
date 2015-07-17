@@ -66,7 +66,7 @@ public class GuiSCManual extends GuiScreen {
 	    	GuiUtils.drawItemStackToGui(mc, mod_SecurityCraft.instance.manualPages.get(currentPage).getItem(), k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
 	    	
 	    	//this.mc.getTextureManager().bindTexture(skinTexture);
-	    	//this.drawTexturedModalRect(0, 0, 5, 0, 16, 16);
+	    	//cpw.mods.fml.client.config.GuiUtils.drawTexturedModalRect(125, 150, 0, 0, 256, 256, this.zLevel);
 	    }
 	    
 	    this.updateButtons();

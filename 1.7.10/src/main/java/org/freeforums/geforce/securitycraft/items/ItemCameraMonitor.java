@@ -15,7 +15,7 @@ import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraLocation;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMonitor;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,10 +39,10 @@ public class ItemCameraMonitor extends ItemMap {
 				return true;
 			}
 			
-			if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.monitor){
+			if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
 				if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera")){ return false; }
 				
-				((TileEntityMonitor) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]));
+				((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]));
 				mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2])));
 				
 				return true;

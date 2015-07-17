@@ -17,16 +17,6 @@ public class IWorldViewHelper {
 		this.view = view;
 	}
 	
-	public void grab(){
-		isGrabbed = true;
-		view.grab();
-	}
-	
-	public boolean release(){
-		isGrabbed = false;
-		return view.release();
-	}
-	
 	public void markDirty(){
 		view.markDirty();
 	}

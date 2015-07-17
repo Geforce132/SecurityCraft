@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.renderers;
+package org.freeforums.geforce.securitycraft.tileentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -10,25 +10,24 @@ import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.models.ModelKeypadFrame;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMonitor;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
-public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
-
-	private ModelKeypadFrame monitorModel;
-	private ResourceLocation monitorTexture;
-
-	public TileEntityMonitorRenderer() {
-		this.monitorModel = new ModelKeypadFrame();
-		this.monitorTexture = new ResourceLocation("textures/blocks/stone.png");
-	}
+public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 	
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float p_147500_8_) {
+	private ModelKeypadFrame keypadFrameModel;
+	private ResourceLocation frameTexture;
+
+	public TileEntityFrameRenderer() {
+		this.keypadFrameModel = new ModelKeypadFrame();
+		this.frameTexture = new ResourceLocation("textures/blocks/iron_block.png");
+	}
+
+	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
-		float rotation = 0F;
 		IWorldView lgView = null;
+		float rotation = 0F;
 		Tessellator tessellator = Tessellator.instance;
 
 		if(par1TileEntity.hasWorldObj()){
@@ -40,25 +39,25 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 		}
 		
-		if(par1TileEntity.hasWorldObj() && lgView == null && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ())){
-			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityMonitor) par1TileEntity).getCamX() + " " + ((TileEntityMonitor) par1TileEntity).getCamY() + " " + ((TileEntityMonitor) par1TileEntity).getCamZ()).getView();
+		if(par1TileEntity.hasWorldObj() && lgView == null && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCamX() + " " + ((TileEntityFrame) par1TileEntity).getCamY() + " " + ((TileEntityFrame) par1TileEntity).getCamZ())){
+			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCamX() + " " + ((TileEntityFrame) par1TileEntity).getCamY() + " " + ((TileEntityFrame) par1TileEntity).getCamZ()).getView();
 		}
 		
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-
-		Minecraft.getMinecraft().renderEngine.bindTexture(monitorTexture);
+		
+		Minecraft.getMinecraft().renderEngine.bindTexture(frameTexture);
 		
 		GL11.glPushMatrix();
 		
 		if(par1TileEntity.hasWorldObj()){
-			if(meta == 1){
+			if(meta == 2){
 				rotation = 0F;
-			}else if(meta == 2){
+			}else if(meta == 4){
 				rotation = 1F;
 			}else if(meta == 3){
 				rotation = -10000F; 
-			}else if(meta == 4){
+			}else if(meta == 5){
 				rotation = -1F;
 			}
 		}else{
@@ -67,7 +66,7 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 		
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 		
-		this.monitorModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.keypadFrameModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		if(lgView != null){			
 			if(lgView.getTexture() != 0){
@@ -99,7 +98,6 @@ public class TileEntityMonitorRenderer extends TileEntitySpecialRenderer {
 		
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
-
 	}
-
+	
 }

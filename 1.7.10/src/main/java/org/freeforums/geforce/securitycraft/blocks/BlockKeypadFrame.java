@@ -10,7 +10,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFrame;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
@@ -44,11 +44,11 @@ public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
         ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 
         if(l == 0){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);    
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);    
         }
 
         if(l == 1){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);         
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);         
         }
 
         if(l == 2){
@@ -56,11 +56,8 @@ public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
         }
 
         if(l == 3){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
-    	}else{
-    		return;
-    	}   
-        
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);                   
+    	}         
     }
 	
 	public void registerBlockIcons(IIconRegister icon){
@@ -68,7 +65,7 @@ public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
 	}
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityKeypadFrame();
+		return new TileEntityFrame();
 	}
 
 	public String[] getRecipe() {

@@ -26,7 +26,7 @@ import org.freeforums.geforce.securitycraft.network.ClientProxy;
 import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
 import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
-import com.xcompwiz.lookingglass.api.IWorldViewAPI;
+import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -123,11 +123,10 @@ public class mod_SecurityCraft {
 	public static Block reinforcedFencegate;
 	public static Block reinforcedWoodPlanks;
 	public static Block panicButton;
-	public static Block keypadFrame;
+	public static Block frame;
 	public static Block claymoreActive;
 	public static Block claymoreDefused;
 	public static Block keypadFurnace;
-	public static Block monitor;
 
     //Items
     public static Item Codebreaker;
@@ -267,7 +266,7 @@ public class mod_SecurityCraft {
 		this.savedModule = savedModule;
 	}
 	
-	public IWorldViewAPI getLGPanelRenderer(){
+	public WorldViewAPI2 getLGPanelRenderer(){
 		return this.instance.lgPanelRenderer.getApi();
 	}
 	
