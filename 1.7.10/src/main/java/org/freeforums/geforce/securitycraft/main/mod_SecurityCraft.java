@@ -4,13 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.commands.CommandModule;
 import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
@@ -41,6 +34,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES)
 @SuppressWarnings({"static-access"})
@@ -69,9 +68,6 @@ public class mod_SecurityCraft {
 	
 	public static ForgeEventHandler eventHandler = new ForgeEventHandler();
 	
-	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical(CreativeTabs.getNextID(),"tabSecurityCraft");
-	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives(CreativeTabs.getNextID(),"tabSecurityCraft");
-
 	private GuiHandler GuiHandler = new GuiHandler();
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
@@ -132,7 +128,7 @@ public class mod_SecurityCraft {
 	public static Block reinforcedStairsSpruce;
     public static Block reinforcedStairsBirch;
     public static Block reinforcedStairsJungle;
-    public static Block reinforcedStairsAcadia;
+    public static Block reinforcedStairsAcacia;
     public static Block reinforcedStairsDarkoak;
 
     //Items
@@ -160,6 +156,9 @@ public class mod_SecurityCraft {
 
     public static Item testItem;
     
+	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
+	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
+	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
     
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){

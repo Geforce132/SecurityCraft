@@ -7,20 +7,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class CreativeTabSCTechnical extends CreativeTabs{
+public class CreativeTabSCDecoration extends CreativeTabs{
 	
-	public CreativeTabSCTechnical(){
+	public CreativeTabSCDecoration(){
 		super(getNextID(), "tabSecurityCraft");
 	}
 
 	
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.usernameLogger);
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak);
 	}
 	
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: Technical";
+		return "SecurityCraft: Decoration";
 		
 	}
+
 }
