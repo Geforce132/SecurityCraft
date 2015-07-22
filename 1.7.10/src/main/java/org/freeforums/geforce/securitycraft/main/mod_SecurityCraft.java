@@ -127,6 +127,13 @@ public class mod_SecurityCraft {
 	public static Block claymoreActive;
 	public static Block claymoreDefused;
 	public static Block keypadFurnace;
+	public static Block reinforcedStairsStone;
+	public static Block reinforcedStairsOak;
+	public static Block reinforcedStairsSpruce;
+    public static Block reinforcedStairsBirch;
+    public static Block reinforcedStairsJungle;
+    public static Block reinforcedStairsAcadia;
+    public static Block reinforcedStairsDarkoak;
 
     //Items
     public static Item Codebreaker;

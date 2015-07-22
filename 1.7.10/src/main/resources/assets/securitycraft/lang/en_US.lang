@@ -99,6 +99,7 @@ help.keypadFrame.info=The frame is used to craft keypads and to display camera v
 help.claymoreActive.info=Claymores explode one second after a living entity walks within 5 blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.
 help.keypadFurnace.info=The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.
 help.securityCamera.info=The security camera allows you to view the nearby area from its position. Simply place down a camera, then right-click it with a camera monitor to use it. 
+help.reinforcedStairsStone.info=Reinforced stone stairs is the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by right-clicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.

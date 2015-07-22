@@ -3,6 +3,7 @@ package org.freeforums.geforce.securitycraft.items;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
@@ -15,10 +16,10 @@ import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
-public class ItemAdminTool extends ItemWithInfo {
+public class ItemAdminTool extends Item {
 
-	public ItemAdminTool(String info, String[] recipe) {
-		super(info, recipe);
+	public ItemAdminTool() {
+		super();
 		
 		if(mod_SecurityCraft.configHandler.allowAdminTool){
 			this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);

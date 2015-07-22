@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -26,36 +25,25 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(){
 		return false;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	public boolean renderAsNormalBlock()
-	{
+	public boolean renderAsNormalBlock(){
 		return false;
 	}
 
 	/**
 	 * Sets the block's bounds for rendering it as an item
 	 */
-	public void setBlockBoundsForItemRender()
-	{
+	public void setBlockBoundsForItemRender(){
 		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
-	{
+	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
 		if(par5Entity instanceof EntityLivingBase){
 			par1World.setBlockToAir(par2, par3, par4);
 			EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
@@ -72,16 +60,13 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 	/**
 	 * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
 	 */
-	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer)
-	{
+	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
 		if(par5EntityPlayer instanceof EntityLivingBase){
 			this.explode(par1World, par2, par3, par4);
 		}else{
 			return;
 		}
 	}
-	
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {}
 		
 	public void activateMine(World world, int par2, int par3, int par4) {}
 
@@ -112,11 +97,9 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
-	public Item getItemDropped(int par1, Random par2Random, int par3)
-	{
+	public Item getItemDropped(int par1, Random par2Random, int par3){
 		return BlockUtils.getItemFromBlock(this);
 	}
-
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)

@@ -4,9 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
@@ -20,12 +24,15 @@ public class GuiSCManual extends GuiScreen {
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 	
     private int currentPage = -1;
-
+    private ItemStack[] recipe;
+    
 	public GuiSCManual() {
 		super();
 	}
 	
-	public void initGui(){
+	public void initGui(){		
+		Keyboard.enableRepeatEvents(true);
+
         int i = (this.width - 256) / 2;
         byte b0 = 2;
         GuiSCManual.NextPageButton nextButton = new GuiSCManual.NextPageButton(1, i + 210, b0 + 158, true);
@@ -65,6 +72,17 @@ public class GuiSCManual extends GuiScreen {
 	    if(this.currentPage > -1){
 	    	GuiUtils.drawItemStackToGui(mc, mod_SecurityCraft.instance.manualPages.get(currentPage).getItem(), k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
 	    	
+	    	if(recipe != null){
+		    	for(int i = 0; i < 3; i++){
+		    		for(int j = 0; j < 3; j++){
+		    			if(((i * 3) + j) >= recipe.length){ break; }
+		    			if(this.recipe[(i * 3) + j] == null){ continue; }
+		    			
+		    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    		}
+		    	}
+	    	}
+	    	
 	    	//this.mc.getTextureManager().bindTexture(skinTexture);
 	    	//cpw.mods.fml.client.config.GuiUtils.drawTexturedModalRect(125, 150, 0, 0, 256, 256, this.zLevel);
 	    }
@@ -74,16 +92,53 @@ public class GuiSCManual extends GuiScreen {
 	
 	public void onGuiClosed(){
 		super.onGuiClosed();
+		Keyboard.enableRepeatEvents(false);
+	}
+	
+	protected void keyTyped(char par1, int par2){
+		super.keyTyped(par1, par2);
+		
+		if(par2 == Keyboard.KEY_LEFT){
+			this.currentPage--;
+			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			this.updateRecipe();
+		}else if(par2 == Keyboard.KEY_RIGHT){
+			this.currentPage++;
+			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			this.updateRecipe();
+		}
 	}
 	
     protected void actionPerformed(GuiButton par1GuiButton){
     	if(par1GuiButton.id == 1){
     		this.currentPage++;
+    		this.updateRecipe();
     	}else if(par1GuiButton.id == 2){
     		this.currentPage--;
+    		this.updateRecipe();
     	}
     	
     	this.updateButtons();
+    }
+    
+    private void updateRecipe(){
+    	if(this.currentPage < 0){ 
+    		recipe = null; 
+    		return;
+    	}
+    	
+    	for(Object object : CraftingManager.getInstance().getRecipeList()){
+			if(object instanceof ShapedRecipes){
+				ShapedRecipes recipe = (ShapedRecipes) object;
+				
+				if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					this.recipe = recipe.recipeItems;
+					break;
+				}
+			}
+			
+			this.recipe = null;
+		}
     }
     
     private void updateButtons(){

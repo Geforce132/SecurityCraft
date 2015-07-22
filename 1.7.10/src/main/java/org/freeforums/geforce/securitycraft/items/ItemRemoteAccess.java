@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -18,7 +19,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemRemoteAccess extends ItemWithInfo {
+public class ItemRemoteAccess extends Item {
 
 	private final int remoteAccessVarity;
 	
@@ -27,7 +28,7 @@ public class ItemRemoteAccess extends ItemWithInfo {
 	public TileEntityMineLoc[] tEList = new TileEntityMineLoc[6];
 		
 	public ItemRemoteAccess(int par1) {
-		super("The mine remote access tool will allow you to access mines remotely. Right-click on a mine to 'bind' it to the tool. Right-click in the air (with the tool equipped) to open the tool's GUI, which will allow you to activate, deactivate, or detonate any bound mines.", new String[]{"The mine remote access tool requires: 1 redstone torch, 1 diamond, 1 gold ingot, 1 stick", " R ", " DG", "S  ", "R = redstone torch, D = diamond, G = gold ingot, S = stick"});
+		super();
 		this.remoteAccessVarity = par1;
 	}
 	

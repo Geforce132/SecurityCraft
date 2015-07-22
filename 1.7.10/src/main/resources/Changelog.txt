@@ -6,6 +6,7 @@ SecurityCraft v1.8.0.4:
  - Added security cameras.
  - Changed the name of the keypad frame to "Frame".
  - Added tasers.
+ - Added reinforced stone and wood stairs.
  - Added SecurityCraft manual.
  
 *** Major additions: ***
@@ -20,6 +21,8 @@ SecurityCraft v1.8.0.4:
    - Simplified TileEntity and ID checks in GuiHandler.
    - Deleted unused texture .png files.
    - Deleted unused Access Transformer.
+   - Deleted the ItemWithInfo class.
+   - Renamed the BlockKeypadFrame class to BlockFrame.
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
    - Added setPassword() and activate() methods to IPasswordProtected.
@@ -38,4 +41,7 @@ SecurityCraft v1.8.0.4:
  - Codebreakers can now be used on password-protected furnaces.
  - Changed keypad recipe to use iron ingots instead of iron blocks.
  - Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
+ - The frame now uses an iron block texture instead of a stone texture.
  - Removed the keypad's recipe (unless the "useOldKeypadRecipe" config option is selected).
+ - Changed the frame's recipe to use iron ingots instead of stone blocks.
+ - Fixed Bouncing Betty's owners being set to "owner".

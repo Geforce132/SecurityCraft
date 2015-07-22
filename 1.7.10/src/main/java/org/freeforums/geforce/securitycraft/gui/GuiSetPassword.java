@@ -72,7 +72,14 @@ public class GuiSetPassword extends GuiContainer {
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(blockName + " setup", this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName + " setup") / 2, 6, 4210752);
+    	
+    	//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line.
+    	if(this.fontRendererObj.getStringWidth(blockName + " setup") >= 170){
+            this.fontRendererObj.drawString(blockName, this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
+            this.fontRendererObj.drawString("setup", this.xSize / 2 - this.fontRendererObj.getStringWidth("setup") / 2, 16, 4210752);
+    	}else{
+            this.fontRendererObj.drawString(blockName + " setup", this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName + " setup") / 2, 6, 4210752);
+    	}
     }
 
     /**

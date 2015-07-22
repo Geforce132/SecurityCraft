@@ -37,9 +37,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
         return false;
     }
     
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
     public boolean isNormalCube(){
         return false;
     } 
@@ -142,10 +139,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 			world.createExplosion((Entity) null, (double) par2, (double) par3, (double) par4, 3.5F, true);
 		}
 	}
-	
-	public Item getItemDropped(int par1, Random par2Random, int par3){
-        return Item.getItemFromBlock(mod_SecurityCraft.claymoreActive);
-    }
     
     public boolean isActive(World world, int par2, int par3, int par4) {
 		return isActive;
@@ -154,6 +147,10 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
     public boolean isDefusable() {
 		return true;
 	}
+    
+    public Item getItemDropped(int par1, Random par2Random, int par3){
+        return Item.getItemFromBlock(mod_SecurityCraft.claymoreActive);
+    }
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();

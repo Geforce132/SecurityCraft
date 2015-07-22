@@ -9,19 +9,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.models.ModelKeypadFrame;
+import org.freeforums.geforce.securitycraft.models.ModelFrame;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 	
-	private ModelKeypadFrame keypadFrameModel;
+	private ModelFrame frameModel;
 	private ResourceLocation frameTexture;
 
 	public TileEntityFrameRenderer() {
-		this.keypadFrameModel = new ModelKeypadFrame();
-		this.frameTexture = new ResourceLocation("textures/blocks/iron_block.png");
+		this.frameModel = new ModelFrame();
+		this.frameTexture = new ResourceLocation("securitycraft:textures/blocks/frame.png");
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
@@ -66,7 +66,7 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 		
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 		
-		this.keypadFrameModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.frameModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		if(lgView != null){			
 			if(lgView.getTexture() != 0){

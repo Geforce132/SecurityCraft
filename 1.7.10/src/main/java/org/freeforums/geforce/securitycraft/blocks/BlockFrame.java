@@ -1,7 +1,6 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,9 +12,9 @@ import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
+public class BlockFrame extends BlockOwnable implements IHelpInfo {
 
-	public BlockKeypadFrame(Material par1) {
+	public BlockFrame(Material par1) {
 		super(par1);
 	}
 
@@ -60,10 +59,6 @@ public class BlockKeypadFrame extends BlockOwnable implements IHelpInfo {
     	}         
     }
 	
-	public void registerBlockIcons(IIconRegister icon){
-		this.blockIcon = icon.registerIcon("stone");
-	}
-
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityFrame();
 	}
