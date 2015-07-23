@@ -7,6 +7,7 @@ SecurityCraft v1.8.0.4:
  - Changed the name of the keypad frame to "Frame".
  - Added tasers.
  - Added reinforced stone and wood stairs.
+ - Added iron fence (hurts any entity (except dropped items) when touched, except the owner)
  - Added SecurityCraft manual.
  
 *** Major additions: ***
@@ -31,17 +32,20 @@ SecurityCraft v1.8.0.4:
    - Moved all the classes in org.freeforums.geforce.securitycraft.interfaces to org.freeforums.geforce.securitycraft.api.
    - Moved CustomizableSCTE from org.freeforums.geforce.securitycraft.tileentity to org.freeforums.geforce.securitycraft.api.
    - Modified the build.gradle file to also generate deobfuscated and raw source .jar files when building.
+ - Password-protected chests now have a custon christmas texture.
+ - Added new Creative Tab for decoration blocks (Reinforced blocks/iron fence etc.)
+ - Reinforced Iron Fence Gate now hurts any entity except dropped items and its owner.
  - Keycard readers now emit redstone particles like laser blocks when active.
  - Alarms can now be placed on all sides of a block.
  - Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
- - Fix: Lasers could be broken by players who didn't place them.
- - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
- - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
  - Codebreakers can now be used on password-protected furnaces.
  - Changed keypad recipe to use iron ingots instead of iron blocks.
  - Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
  - The frame now uses an iron block texture instead of a stone texture.
  - Removed the keypad's recipe (unless the "useOldKeypadRecipe" config option is selected).
  - Changed the frame's recipe to use iron ingots instead of stone blocks.
- - Fixed Bouncing Betty's owners being set to "owner".
+ - Fix: Lasers could be broken by players who didn't place them.
+ - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
+ - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
+ - Fix: Bouncing Betty's owners get set to "owner".

@@ -48,6 +48,8 @@ tile.reinforcedStairsBirch.name=Reinforced Birch Stairs
 tile.reinforcedStairsJungle.name=Reinforced Jungle Stairs
 tile.reinforcedStairsAcacia.name=Reinforced Acacia Stairs
 tile.reinforcedStairsDarkoak.name=Reinforced Dark Oak Stairs
+tile.scIronFence.name=Iron Fence
+
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover
@@ -76,6 +78,7 @@ item.scManual.name=SecurityCraft Manual
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
+death.attack.securitycraft.fence=%s was electrocuted.
 
 key.categories.securitycraft=SecurityCraft
 key.cameraNext=Next Camera
@@ -100,13 +103,14 @@ help.usernameLogger.info=The username logger will log any player's name within 3
 help.reinforcedGlass.info=Reinforced glass panes act the same as vanilla glass panes, except they are unbreakable.
 help.reinforcedStone.info=Reinforced stone is an unbreakable building block. Only the person who placed it down can destroy it using the universal block remover.
 help.alarm.info=The alarm will emit a siren sound effect whenever it is powered by redstone, and in 2-second intervals after that (modifiable in the config file).
-help.reinforcedFenceGate.info=The reinforced iron fence gate acts the same as a vanilla fence gate, except it is unbreakable, and can only be opened with redstone power.
+help.reinforcedFenceGate.info=The reinforced iron fence gate acts the same as a vanilla fence gate, except it is unbreakable, and can only be opened with redstone power. It will also hurt anyone but the owner when they get in contact with it.
 help.panicButton.info=The panic button looks like a button, but works the same way as a lever.
 help.keypadFrame.info=The frame is used to craft keypads and to display camera views. Right-click it with a key panel to craft a keypad. Right-click it with a bound camera monitor to display a camera's view.
 help.claymoreActive.info=Claymores explode one second after a living entity walks within 5 blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.
 help.keypadFurnace.info=The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.
 help.securityCamera.info=The security camera allows you to view the nearby area from its position. Simply place down a camera, then right-click it with a camera monitor to use it. 
 help.reinforcedStairsStone.info=Reinforced stone stairs is the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
+help.scIronFence.info=The iron fence acts the same as a vanilla fence, except it is unbreakable, and will hurt anyone but the owner when they get in contact with it.
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by right-clicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
