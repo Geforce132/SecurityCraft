@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.tileentity;
 
 import java.util.Calendar;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
@@ -11,22 +17,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 @SideOnly(Side.CLIENT)
 public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation trappedDouble = new ResourceLocation("textures/entity/chest/trapped_double.png");
-    private static final ResourceLocation christmasDouble = new ResourceLocation("textures/entity/chest/christmas_double.png");
+    private static final ResourceLocation christmasDouble = new ResourceLocation("securitycraft:textures/entity/chest/christmas_double.png");
     private static final ResourceLocation normalDoubleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestUnactive.png");
     private static final ResourceLocation normalDoubleActive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestActive.png");
     private static final ResourceLocation trappedNormal = new ResourceLocation("textures/entity/chest/trapped.png");
-    private static final ResourceLocation christmasNormal = new ResourceLocation("textures/entity/chest/christmas.png");
+    private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
     private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
     private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
     private ModelChest field_147510_h = new ModelChest();
