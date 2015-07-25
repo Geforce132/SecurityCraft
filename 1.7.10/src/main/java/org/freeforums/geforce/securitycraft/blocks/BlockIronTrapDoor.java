@@ -1,7 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -14,10 +14,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockIronTrapDoor extends Block implements IHelpInfo {
+public class BlockIronTrapDoor extends Block {
 	
     /** Set this to allow trapdoors to remain free-floating */
     public static boolean disableValidation = false;
@@ -224,9 +222,5 @@ public class BlockIronTrapDoor extends Block implements IHelpInfo {
         if (disableValidation) return true;
         return p_150119_0_.getMaterial().isOpaque() && p_150119_0_.renderAsNormalBlock() || p_150119_0_ == Blocks.glowstone || p_150119_0_ instanceof BlockSlab || p_150119_0_ instanceof BlockStairs;
     }
-
-	public String[] getRecipe() {
-		return new String[]{"The iron trapdoor requires: 8 iron ingots, 1 trapdoor", "XXX", "XYX", "XXX", "X = iron ingot, Y = trapdoor"};
-	}
 	
 }

@@ -1,5 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,14 +16,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockLogger extends BlockOwnable implements IHelpInfo {
+public class BlockLogger extends BlockOwnable {
 	
 	@SideOnly(Side.CLIENT)
     private IIcon field_149935_N;
@@ -104,10 +102,6 @@ public class BlockLogger extends BlockOwnable implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The username logger requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
 	}
 
 }

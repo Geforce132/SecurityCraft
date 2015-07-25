@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -19,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IHelpInfo {
+public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider {
 
 	public BlockReinforcedFenceGate(){
 		super();
@@ -35,7 +34,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
 		super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
-
+		
 		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
 
@@ -58,6 +57,9 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 		if(entity instanceof EntityItem)
 			return;
+		
+		if(world.getBlockMetadata(x, y, z) > 3)
+			shouldHurt = false;
 		
 		if(entity instanceof EntityPlayer)
 		{
@@ -82,10 +84,6 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The reinforced iron fencegate requires: 4 iron ingots, 1 fencegate.", " X ", "XYX", " X ", "X = iron ingot, Y = fencegate"};
 	}
 
 }

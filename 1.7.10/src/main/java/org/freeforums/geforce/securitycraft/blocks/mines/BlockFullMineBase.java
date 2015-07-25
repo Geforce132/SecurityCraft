@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -10,10 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-public class BlockFullMineBase extends BlockExplosive implements IHelpInfo {
+public class BlockFullMineBase extends BlockExplosive {
 
 	private final String mineName;
 
@@ -92,22 +91,6 @@ public class BlockFullMineBase extends BlockExplosive implements IHelpInfo {
 	
 	public boolean isDefusable(){
 		return false;
-	}
-
-	public String[] getRecipe() {
-		if(mineName.matches("dirt")){
-			return new String[]{"The dirt mine requires: 1 dirt, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("stone")){
-			return new String[]{"The stone mine requires: 1 stone, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("cobblestone")){
-			return new String[]{"The cobblestone mine requires: 1 cobblestone, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("sand")){
-			return new String[]{"The sand mine requires: 1 sand, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("diamond ore")){
-			return new String[]{"The diamond ore mine requires: 1 diamond ore (use a Silk Touch-enchanted pickaxe), 1 mine. This is a shapeless recipe."};
-		}else{
-			return null;
-		}
 	}
 
 }

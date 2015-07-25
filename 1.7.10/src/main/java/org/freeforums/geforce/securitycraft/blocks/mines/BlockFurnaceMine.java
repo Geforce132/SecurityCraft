@@ -1,25 +1,20 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
-import java.util.Random;
-
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-
 import org.freeforums.geforce.securitycraft.api.IExplosive;
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.World;
 
-public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpInfo {
+public class BlockFurnaceMine extends BlockOwnable implements IExplosive {
 
 	@SideOnly(Side.CLIENT)
     private IIcon field_149935_N;
@@ -106,14 +101,6 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpI
 
 	public boolean isDefusable() {
 		return false;
-	}
-
-	public String getHelpInfo() {
-		return "The furnace mine will explode when a player right-clicks on it.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The furnace mine requires: 1 furnace, 1 mine. This is a shapeless recipe."};
 	}
 
 }

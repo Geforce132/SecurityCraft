@@ -3,6 +3,17 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,20 +26,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.gui.GuiHandler;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockKeypad extends BlockContainer implements IHelpInfo {
+public class BlockKeypad extends BlockContainer {
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -163,10 +161,6 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
 	 */
 	public TileEntity createNewTileEntity(World par1World, int par2){
 		return new TileEntityKeypad();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The keypad requires: 9 stone buttons.", "XXX", "XXX", "XXX", "X = stone button"};
 	}
 
 }

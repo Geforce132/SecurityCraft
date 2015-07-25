@@ -2,8 +2,6 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.List;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -13,7 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class BlockReinforcedWood extends BlockOwnable implements IHelpInfo {
+public class BlockReinforcedWood extends BlockOwnable {
 	
 	public static final String[] icons = new String[] {"oak", "spruce", "birch", "jungle", "acacia", "bigoak"};
     @SideOnly(Side.CLIENT)
@@ -66,13 +64,5 @@ public class BlockReinforcedWood extends BlockOwnable implements IHelpInfo {
             this.icon[i] = p_149651_1_.registerIcon(this.getTextureName() + "_" + icons[i]);
         }
     }
-
-    public String getHelpInfo() {
-		return "Reinforced wood planks are indestructible wood blocks. Only the person who placed who placed them down can destroy them using the Universal Block Remover.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"Reinforced wood planks require: 4 iron ingots, 1 plank", " X ", "XYX", " X ", "X = iron ingot, Y = plank"};
-	}
 	
 }

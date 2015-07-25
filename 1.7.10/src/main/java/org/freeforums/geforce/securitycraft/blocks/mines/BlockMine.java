@@ -2,6 +2,10 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,12 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
-
-public class BlockMine extends BlockExplosive implements IHelpInfo {
+public class BlockMine extends BlockExplosive {
 
 	public boolean cut;
 
@@ -196,10 +195,6 @@ public class BlockMine extends BlockExplosive implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityMineLoc();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The mine requires: 3 iron ingots, 1 gunpowder", " X ", "XYX", "   ", "X = iron ingot, Y = gunpowder"};
 	}
 	
 }

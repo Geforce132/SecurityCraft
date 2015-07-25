@@ -104,7 +104,6 @@ public class TileEntityLogger extends TileEntityOwnable{
 	public void sendChangeToClient(){
         for(int i = 0; i < this.players.length; i++){
         	if(this.players[i] != null){
-        		//TODO
         		mod_SecurityCraft.network.sendToAll(new PacketUpdateLogger(this.xCoord, this.yCoord, this.zCoord, i, this.players[i]));
         		
         	}

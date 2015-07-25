@@ -79,6 +79,15 @@ public static class PlayerUtils{
     }
 	
 	/**
+	 * Returns true if a player with the given name is logged on the server.
+	 * 
+	 * Args: playerName.
+	 */
+	public static boolean isPlayerOnline(String par1) {
+    	return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);  	
+    }
+	
+	/**
 	 * Sends the given player a chat message. <p>
 	 * 
 	 * Args: player, message, color.

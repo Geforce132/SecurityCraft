@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -19,8 +18,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockIronFence extends BlockFence implements ITileEntityProvider, IHelpInfo
-{
+public class BlockIronFence extends BlockFence implements ITileEntityProvider{
+	
 	public BlockIronFence(String texture, Material material)
 	{
 		super(texture, material);
@@ -89,14 +88,9 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider, I
     }
 
 	@Override
-	public String[] getRecipe()
-	{
-		return new String[]{"The iron fence requires: 4 iron ingots, 1 fence.", " X ", "XYX", " X ", "X = iron ingot, Y = fence"};
-	}
-
-	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
 	{
 		return new TileEntityOwnable();
 	}
+	
 }

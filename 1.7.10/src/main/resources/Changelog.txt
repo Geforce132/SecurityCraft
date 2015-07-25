@@ -7,7 +7,7 @@ SecurityCraft v1.8.0.4:
  - Changed the name of the keypad frame to "Frame".
  - Added tasers.
  - Added reinforced stone and wood stairs.
- - Added iron fence (hurts any entity (except dropped items) when touched, except the owner)
+ - Added iron fence (hurts any entity (except dropped items) when touched, except the owner).
  - Added SecurityCraft manual.
  
 *** Major additions: ***

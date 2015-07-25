@@ -2,6 +2,10 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
@@ -14,13 +18,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockPanicButton extends BlockButton implements ITileEntityProvider, IHelpInfo {
+public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon buttonPowered;
@@ -165,10 +163,6 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityOwnable();
-	}
-	
-	public String[] getRecipe() {
-		return new String[]{"The panic button requires: 3 iron ingots, 1 stone button, 1 redstone", " X ", "XYX", " Z ", "X = iron ingot, Y = stone button, Z = redstone"};
 	}
 
 }

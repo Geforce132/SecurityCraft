@@ -1,19 +1,20 @@
 package org.freeforums.geforce.securitycraft.entity;
 
-import java.util.List;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 
-import net.minecraft.entity.Entity;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class EntityIMSBomb extends EntityThrowable {
+public class EntityIMSBomb extends EntityFireball {
 
-	private int ticksFlying = 0;
+	private String playerName = null;
+	public int ticksFlying = 0;
+	public boolean launching = true;
 
 	public EntityIMSBomb(World worldIn){
 		super(worldIn);
@@ -25,68 +26,56 @@ public class EntityIMSBomb extends EntityThrowable {
 		this.setSize(0.375F, 0.5F);
 		this.setPosition(x, y, z);
 	}
+	
+	public EntityIMSBomb(World worldIn, double x, double y, double z, double targetX, double targetY, double targetZ){
+		super(worldIn, x, y, z, targetX, targetY, targetZ);
+		this.setSize(0.375F, 0.5F);
+	}
+	
+	public EntityIMSBomb(World worldIn, EntityLivingBase targetEntity, double x, double y, double z){
+        super(worldIn, targetEntity, x, y, z);
+        this.playerName = targetEntity.getCommandSenderName();
+        this.setSize(0.375F, 0.5F);
+    }
 
-	public void onUpdate(){
-		//Copied code from EntityThrowable to check if this entity is colliding with a block.
-		Vec3 vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		Vec3 vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec3, vec31);
-		vec3 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		vec31 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-
-		if(movingobjectposition != null){
-			vec31 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+	public void onUpdate(){	
+		if(!launching){
+			super.onUpdate();
+			System.out.println("Updating: " + posX + " " + posY + " " + posZ + " " + FMLCommonHandler.instance().getEffectiveSide());
+			return;
 		}
-
-		if(!this.worldObj.isRemote){
-			Entity entity = null;
-			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
-			double d0 = 0.0D;
-			EntityLivingBase entitylivingbase = this.getThrower();
-
-			for(int j = 0; j < list.size(); ++j){
-				Entity entity1 = (Entity)list.get(j);
-
-				if(entity1.canBeCollidedWith() && (entity1 != entitylivingbase)){
-					float f = 0.3F;
-					AxisAlignedBB axisalignedbb = entity1.boundingBox.expand((double)f, (double)f, (double)f);
-					MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3, vec31);
-
-					if(movingobjectposition1 != null){
-						double d1 = vec3.distanceTo(movingobjectposition1.hitVec);
-
-						if(d1 < d0 || d0 == 0.0D){
-							entity = entity1;
-							d0 = d1;
-						}
-					}
-				}
-			}
-
-			if(entity != null){
-				movingobjectposition = new MovingObjectPosition(entity);
-			}
-		}
-
-		if(movingobjectposition != null){
-			if(movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){
-				this.onImpact(movingobjectposition);
-			}
-		}
-        //-----
 		
-		if(ticksFlying <= 40){
+		if(ticksFlying < 40 && launching){
 			this.motionY = 0.25F;
 			this.ticksFlying++;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		}else{
-			this.motionY = -3F;
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		}else if(ticksFlying >= 40 && launching){
+			//this.motionY = 0.25F;
+			//this.ticksFlying++;
+			//this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.setTarget(playerName);
+		}
+	}
+
+	public void setTarget(String player) {
+		if(player != null && !this.worldObj.isRemote && PlayerUtils.isPlayerOnline(player)){
+			System.out.println("Setting target pos to: " + posX + " " + posY + " " + posZ);
+			EntityPlayer target = PlayerUtils.getPlayerFromName(player);
+			
+			double d5 = target.posX - posX;
+            double d6 = target.boundingBox.minY + (double)(target.height / 2.0F) - ((double) posY + 1.25D);
+            double d7 = target.posZ - posZ;
+			
+			//EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, d5, d6, d7);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, posX, posY, posZ, d5, d6, d7);
+            entitylargefireball.launching = false;
+            worldObj.spawnEntityInWorld(entitylargefireball);
+            System.out.println("Spawning new IMSBomb at pos: " + entitylargefireball.posX + " " + entitylargefireball.posY + " " + entitylargefireball.posZ);
+            this.setDead();
 		}
 	}
 
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
-		System.out.println("Impacting");
 		if(!this.worldObj.isRemote){
 			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK){
 				this.worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 10F, true);
@@ -94,6 +83,10 @@ public class EntityIMSBomb extends EntityThrowable {
 			}
 		}
 	}
+	
+	protected float getMotionFactor(){
+        return 1F;
+    }
 
 	protected boolean canTriggerWalking(){
 		return false;

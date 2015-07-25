@@ -2,6 +2,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -14,13 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.gui.GuiHandler;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
-
-public class BlockKeypadFurnace extends BlockContainer implements IHelpInfo {
+public class BlockKeypadFurnace extends BlockContainer {
 
 	private Random random = new Random();
 
@@ -143,10 +142,6 @@ public class BlockKeypadFurnace extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The password-protected furnace requires: 7 iron ingot, 1 keypad, 1 furnace", "XYX", "XZX", "XXX", "X = iron ingot, Y = keypad, Z = furnace"};
 	}
 
 }

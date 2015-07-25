@@ -2,6 +2,11 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -18,13 +23,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.freeforums.geforce.securitycraft.api.IExplosive;
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
-
-public class BlockClaymore extends BlockContainer implements IExplosive, IHelpInfo {
+public class BlockClaymore extends BlockContainer implements IExplosive {
 	
 	private final boolean isActive;
 	
@@ -154,10 +153,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
-	}
-	
-	public String[] getRecipe() {
-		return null;
 	}
 
 }

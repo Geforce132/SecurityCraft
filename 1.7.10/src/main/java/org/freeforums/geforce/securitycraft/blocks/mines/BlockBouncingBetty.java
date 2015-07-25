@@ -2,23 +2,20 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IExplosive;
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
-
-public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IHelpInfo {
+public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
@@ -118,14 +115,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive, IH
 
 	public boolean isDefusable() {
 		return false;
-	}
-
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityMineLoc();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The bouncing betty requires: 2 iron ingots, 1 gunpowder, 1 weighted pressure plate (heavy)", " X ", "YZY", "   ", "X = weighted pressure plate (heavy), Y = iron ingot, Z = gunpowder"};
 	}
 
 }

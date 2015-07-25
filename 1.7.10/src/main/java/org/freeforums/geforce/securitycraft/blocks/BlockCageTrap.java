@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,15 +18,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
+public class BlockCageTrap extends BlockOwnable {
 
 	public final boolean deactivated;
 	private final int blockTextureIndex;
@@ -77,10 +75,6 @@ public class BlockCageTrap extends BlockOwnable implements IHelpInfo {
 
 	public Item getItemDropped(int par1, Random par2Random, int par3){
 		return this.deactivated ? BlockUtils.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : BlockUtils.getItemFromBlock(this);
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The cage trap requires: 3 reinforced iron bars, 2 gold ingots, 1 redstone, 3 iron blocks", "WWW", "XYX", "ZZZ", "W = reinforced iron bars, X = gold ingot, Y = redstone, Z = iron block"};
 	}
 
 }

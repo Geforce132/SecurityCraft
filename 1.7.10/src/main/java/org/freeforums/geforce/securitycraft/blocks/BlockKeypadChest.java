@@ -1,5 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,13 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.gui.GuiHandler;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-
-public class BlockKeypadChest extends BlockChest implements IHelpInfo {
+public class BlockKeypadChest extends BlockChest {
 
 	public BlockKeypadChest(int par1){
 		super(par1);
@@ -73,28 +72,18 @@ public class BlockKeypadChest extends BlockChest implements IHelpInfo {
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block)
-    {
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5Block);
         TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)par1World.getTileEntity(par2, par3, par4);
 
-        if (tileentitychest != null)
-        {
+        if (tileentitychest != null){
             tileentitychest.updateContainingBlockInfo();
         }
       
     }
 	
-	/**
-     * Returns a new instance of a block's tile entity class. Called on placing the block.
-     */
-    public TileEntity createNewTileEntity(World par1World, int par2)
-    {
+    public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypadChest();
     }
-  
-	public String[] getRecipe() {
-		return new String[]{"The password-protected chest requires: 7 iron ingot, 1 keypad, 1 chest", "XYX", "XZX", "XXX", "X = iron ingot, Y = keypad, Z = chest"};
-	}
 
 }

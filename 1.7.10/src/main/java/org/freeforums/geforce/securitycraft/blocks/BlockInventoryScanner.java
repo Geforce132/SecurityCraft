@@ -1,5 +1,14 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,18 +25,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
+public class BlockInventoryScanner extends BlockContainer {
 	
 	@SideOnly(Side.CLIENT)
     private IIcon furnaceIconTop;
@@ -235,10 +233,6 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityInventoryScanner();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
 	}
 
 }

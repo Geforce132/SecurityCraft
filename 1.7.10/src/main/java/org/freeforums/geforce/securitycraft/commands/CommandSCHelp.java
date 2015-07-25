@@ -3,30 +3,23 @@ package org.freeforums.geforce.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-
 public class CommandSCHelp extends CommandBase implements ICommand{
 	
 	private List nicknames;
 	
-	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc <help:recipe> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
+	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
 	
 	public CommandSCHelp(){
 		this.nicknames = new ArrayList();
@@ -104,39 +97,8 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 				}
 					
 				sendMessageToPlayer("Bot disconnected from EsperNet successfully.", icommandsender);
-			}else if(par1String[0].matches("recipe")){
-				if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof ItemBlock && ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a instanceof IHelpInfo){
-					if(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe().length == 5){
-						sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Recipe" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[0], icommandsender);
-						sendMessageToPlayer(EnumChatFormatting.GRAY + "Crafting recipe:", icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[1], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[2], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[3], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[4], icommandsender);
-					}else{
-						sendMessageToPlayer(((IHelpInfo) ((ItemBlock) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).field_150939_a).getRecipe()[0], icommandsender);
-					}
-				}else if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof Item && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem() instanceof IHelpInfo){
-					if(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe().length == 5){
-						sendMessageToPlayer("[" + EnumChatFormatting.GOLD + "Recipe" + EnumChatFormatting.RESET + "] " + ((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[0], icommandsender);
-						sendMessageToPlayer(EnumChatFormatting.GRAY + "Crafting recipe:", icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[1], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[2], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[3], icommandsender);
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[4], icommandsender);
-					}else{
-						sendMessageToPlayer(((IHelpInfo) ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem().getItem()).getRecipe()[0], icommandsender);
-					}
-				}else if(this.getCommandSenderAsPlayer(icommandsender) instanceof EntityPlayer && ((EntityPlayer) this.getCommandSenderAsPlayer(icommandsender)).getCurrentEquippedItem() != null){
-					sendMessageToPlayer(EnumChatFormatting.RED + "There is no recipe for this item.", icommandsender);
-				}else{
-					sendMessageToPlayer(EnumChatFormatting.RED + "Please hold the item you wish to view the recipe for.", icommandsender);
-				}
 			}else if(par1String[0].matches("help")){
 				boolean success = this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
-				if(!success){
-					
-				}
 			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("bug")){

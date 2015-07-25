@@ -106,9 +106,7 @@ public class GuiUtils extends Gui{
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(item), x, y);
         
-        if(fixLighting){
-        	GL11.glDisable(GL11.GL_LIGHTING);
-        }
+        GL11.glDisable(GL11.GL_LIGHTING);
         
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	}

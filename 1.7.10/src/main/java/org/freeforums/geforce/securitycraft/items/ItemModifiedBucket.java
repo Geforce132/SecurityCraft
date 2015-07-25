@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.items;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,12 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import cpw.mods.fml.common.eventhandler.Event;
-
-public class ItemModifiedBucket extends Item implements IHelpInfo {
+public class ItemModifiedBucket extends Item {
 	
     private Block isFull;
 	
@@ -158,14 +156,4 @@ public class ItemModifiedBucket extends Item implements IHelpInfo {
         }
     }
 
-	public String[] getRecipe() {
-		if(isFull == mod_SecurityCraft.bogusLavaFlowing){
-			return new String[]{"The bucket of fake lava requires: 1 lava bucket, 1 healing potion.", "X", "Y", "   ", "X = healing potion, Y = lava bucket"};
-		}else if(isFull == mod_SecurityCraft.bogusWaterFlowing){
-			return new String[]{"The bucket of fake water requires: 1 water bucket, 1 harming potion.", "X", "Y", "   ", "X = harming potion, Y = water bucket"};
-		}else{
-			return null;
-		}
-	}
-	
 }

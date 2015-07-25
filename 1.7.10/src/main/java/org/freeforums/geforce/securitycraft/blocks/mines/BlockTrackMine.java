@@ -3,6 +3,11 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,14 +15,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
+public class BlockTrackMine extends BlockRailBase {
 
 	@SideOnly(Side.CLIENT)
     private IIcon theIcon;
@@ -38,30 +36,7 @@ public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
 		cart.setDead();
     }    
 
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    public IIcon getIcon(int par1, int par2)
-    {
-        return par2 >= 6 ? this.theIcon : this.blockIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-
-    /**
-     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-     * is the only chance you get to register icons.
-     */
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        super.registerBlockIcons(par1IconRegister);
-        this.theIcon = par1IconRegister.registerIcon("securitycraft:rail_mineTurned");
-    }
-
-    protected void func_150048_a(World par1World, int par2, int par3, int par4, int par5, int par6, Block par7)
-    {
+    protected void func_150048_a(World par1World, int par2, int par3, int par4, int par5, int par6, Block par7){
     	try{
     		BlockRailBase.Rail rail = new BlockRailBase.Rail(par1World, par2, par3, par4);
     		Method method = rail.getClass().getDeclaredMethod("func_150650_a");
@@ -86,9 +61,17 @@ public class BlockTrackMine extends BlockRailBase implements IHelpInfo {
 			e.printStackTrace();
 		}
     }
+    
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2){
+        return par2 >= 6 ? this.theIcon : this.blockIcon;
+    }
 
-	public String[] getRecipe() {
-		return new String[]{"The track mine requires: 6 iron ingots, 1 stick, 1 gunpowder", "X X", "XYX", "XZX", "X = iron ingot, Y = stick, Z = gunpowder"};
-	} 
+   
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister par1IconRegister){
+        super.registerBlockIcons(par1IconRegister);
+        this.theIcon = par1IconRegister.registerIcon("securitycraft:rail_mineTurned");
+    }
 
 }

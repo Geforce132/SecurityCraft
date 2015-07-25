@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
@@ -13,15 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvider, IHelpInfo {
+public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvider {
 
 	public BlockReinforcedGlass(String par2Str, String par3Str, Material par4Material, boolean par5) {
 		super(par2Str, par3Str, par4Material, par5);
@@ -79,8 +77,4 @@ public class BlockReinforcedGlass extends BlockPane implements ITileEntityProvid
 		return new TileEntityOwnable();
 	}
 	
-	public String[] getRecipe() {
-		return new String[]{"Reinforced glass panes require: 4 glass, 1 glass pane", " X ", "XYX", " X ", "X = glass pane, Y = glass"};
-	}
-
 }

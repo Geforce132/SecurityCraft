@@ -2,6 +2,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,14 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockRetinalScanner extends BlockContainer implements IHelpInfo {
+public class BlockRetinalScanner extends BlockContainer {
 	
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconTop;
@@ -102,9 +100,5 @@ public class BlockRetinalScanner extends BlockContainer implements IHelpInfo {
     public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner();
 	}
-
-	public String[] getRecipe() {
-		return new String[]{"The retinal scanner requires: 8 stone, 1 eye of ender", "XXX", "XYX", "XXX", "X = stone, Y = eye of ender"};
-	}
-
+    
 }

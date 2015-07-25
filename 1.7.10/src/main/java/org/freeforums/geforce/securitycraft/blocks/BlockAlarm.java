@@ -9,6 +9,12 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,15 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockAlarm extends BlockContainer implements IHelpInfo {
+public class BlockAlarm extends BlockContainer {
 
 	private final boolean isLit;
 
@@ -307,10 +305,6 @@ public class BlockAlarm extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityAlarm();
-	}
-	
-	public String[] getRecipe() {
-		return new String[]{"The alarm requires: 7 glass, 1 note block, 1 redstone", "XXX", "XYX", "XZX", "X = glass, Y = note block, Z = redstone"};
 	}
 
 }

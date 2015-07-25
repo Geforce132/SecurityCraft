@@ -13,7 +13,7 @@ import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
 {
-	private ItemStack[] inventoryContents = new ItemStack[21]; //TODO 19
+	private ItemStack[] inventoryContents = new ItemStack[21]; 
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;

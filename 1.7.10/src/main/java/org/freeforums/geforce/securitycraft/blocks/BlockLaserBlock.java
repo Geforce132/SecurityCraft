@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -13,16 +19,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 @SuppressWarnings("static-access")
-public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
+public class BlockLaserBlock extends BlockContainer {
 	    
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
@@ -291,8 +289,4 @@ public class BlockLaserBlock extends BlockContainer implements IHelpInfo {
 		return new TileEntityLaserBlock();
 	}
 
-	public String[] getRecipe() {
-		return new String[]{"The laser block requires: 7 stone, 1 block of redstone, 1 glass pane", "XXX", "XYX", "XZX", "X = stone, Y = block of redstone, Z = glass pane"};
-	}
-	
 }

@@ -4,6 +4,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,20 +30,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
+public class BlockPortableRadar extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon topIcon;
@@ -89,7 +87,7 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 
                 if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
                 
-                if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
+                if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
                 	PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET + " is near a portable radar (at X: " + par2 + " Y:" + par3 + " Z:" + par4 + ")."), null);         
                 }   
                 
@@ -98,10 +96,6 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
                 }
             }     
         }
-    }
-
-	private boolean isOwnerOnline(String username) {
-    	return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(username) != null);  	
     }
 
     private void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
@@ -141,8 +135,4 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 		return new TileEntityPortableRadar();
 	}
 	
-	public String[] getRecipe() {
-		return new String[]{"The portable radar requires: 7 iron ingots, 1 redstone torch, 1 redstone", "XXX", "XYX", "XZX", "X = iron ingot, Y = redstone torch, Z = redstone"};
-	}
-
 }

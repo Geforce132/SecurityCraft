@@ -98,11 +98,11 @@ public class GuiSCManual extends GuiScreen {
 	protected void keyTyped(char par1, int par2){
 		super.keyTyped(par1, par2);
 		
-		if(par2 == Keyboard.KEY_LEFT){
+		if(par2 == Keyboard.KEY_LEFT && (this.currentPage - 1) > -2){
 			this.currentPage--;
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.updateRecipe();
-		}else if(par2 == Keyboard.KEY_RIGHT){
+		}else if(par2 == Keyboard.KEY_RIGHT && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
 			this.currentPage++;
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.updateRecipe();
@@ -110,14 +110,14 @@ public class GuiSCManual extends GuiScreen {
 	}
 	
     protected void actionPerformed(GuiButton par1GuiButton){
-    	if(par1GuiButton.id == 1){
+    	if(par1GuiButton.id == 1 && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
     		this.currentPage++;
     		this.updateRecipe();
-    	}else if(par1GuiButton.id == 2){
+    	}else if(par1GuiButton.id == 2 && (this.currentPage - 1) > -2){
     		this.currentPage--;
     		this.updateRecipe();
     	}
-    	
+    	    	
     	this.updateButtons();
     }
     

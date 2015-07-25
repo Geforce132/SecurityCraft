@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.items;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,11 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class ItemReinforcedDoor extends Item implements IHelpInfo {
+public class ItemReinforcedDoor extends Item {
 	
     public ItemReinforcedDoor(Material p_i45334_1_){
         this.maxStackSize = 1;
@@ -85,9 +84,5 @@ public class ItemReinforcedDoor extends Item implements IHelpInfo {
         par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par6Block);
         par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, par6Block);
     }
-
-	public String[] getRecipe() {
-		return new String[]{"The reinforced iron door requires: 8 iron ingots, 1 iron door", "XXX", "XYX", "XXX", "X = iron ingot, Y = iron door"};
-	}
-	
+    
 }

@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,11 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IHelpInfo;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class BlockFrame extends BlockOwnable implements IHelpInfo {
+public class BlockFrame extends BlockOwnable {
 
 	public BlockFrame(Material par1) {
 		super(par1);
@@ -61,10 +60,6 @@ public class BlockFrame extends BlockOwnable implements IHelpInfo {
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityFrame();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The keypad frame requires: 8 stone, 1 redstone", "XXX", "XYX", "X X", "X = stone, Y = redstone"};
 	}
 
 }
