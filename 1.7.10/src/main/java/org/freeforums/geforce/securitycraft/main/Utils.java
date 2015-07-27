@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
@@ -29,6 +30,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
@@ -546,6 +548,18 @@ public static class ClientUtils{
 		int minutes = (int) ((float) time.longValue() / 16.666666F % 60.0F);
 		
 		return String.format("%02d:%02d %s", new Object[]{Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM"});
+	}
+	
+	/**
+	 * Sends the client-side NBTTagCompound of a block's TileEntity to the server.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void syncTileEntity(TileEntity tileEntity){
+		NBTTagCompound tag = new NBTTagCompound();                
+		tileEntity.writeToNBT(tag);
+		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, tag));
 	}
 	
 }

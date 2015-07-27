@@ -34,6 +34,7 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockBouncingBetty;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockClaymore;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
+import org.freeforums.geforce.securitycraft.blocks.mines.BlockIMS;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
 import org.freeforums.geforce.securitycraft.entity.EntityIMSBomb;
@@ -69,6 +70,7 @@ import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSCheckPassword;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSSetOwner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSSetPassword;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlockAndMetadata;
@@ -81,6 +83,7 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIMS;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
@@ -141,6 +144,7 @@ public class ConfigurationHandler{
 	public static int empRadius;
 	public static int portableRadarDelay;
 	public static int claymoreRange;
+	public static int imsRange;
 	public boolean useOldKeypadRecipe;
 
 	public String currentHackIndex = "";
@@ -253,6 +257,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.claymoreActive = new BlockClaymore(Material.circuits, true).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(mod_SecurityCraft.tabSCMine).setBlockName("claymoreActive").setBlockTextureName("securitycraft:claymore");
 		
 		mod_SecurityCraft.claymoreDefused = new BlockClaymore(Material.circuits, false).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setBlockName("claymoreDefused").setBlockTextureName("securitycraft:claymore");
+	
+		mod_SecurityCraft.ims = new BlockIMS(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCMine).setBlockName("ims");
 	}
 	
 	public void setupItems(){
@@ -295,9 +301,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
 	}
 	
-	public void setupDebuggingBlocks() {
-		
-	}
+	public void setupDebuggingBlocks() {}
 	
 	public void setupDebuggingItems(){
 		mod_SecurityCraft.testItem = new ItemTestItem().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("Test");
@@ -326,6 +330,7 @@ public class ConfigurationHandler{
         alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D).getDouble(0.8D);
         portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
         claymoreRange = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5).getInt(5);
+        imsRange = mod_SecurityCraft.configFile.get("options", "IMS range:", 15).getInt(15);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
@@ -389,7 +394,8 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsDarkoak, mod_SecurityCraft.reinforcedStairsDarkoak.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.reinforcedStairsStone);
 		registerBlock(mod_SecurityCraft.ironFence);
-		
+		registerBlock(mod_SecurityCraft.ims);
+
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
@@ -430,6 +436,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
 		GameRegistry.registerTileEntity(TileEntityMonitor.class, "monitor");
+		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		if(useOldKeypadRecipe){
@@ -647,9 +654,18 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ironFence, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.fence
-			});
+			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.fence
+	    });
 		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStone, 4), new Object[]{
+			"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStone
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ims, 1), new Object[]{
+		    "BPB", " I ", "B B", 'B', mod_SecurityCraft.bouncingBetty, 'P', mod_SecurityCraft.portableRadar, 'I', Blocks.iron_block
+		});
+
+	
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.StoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.CobblestoneMine, 1), new Object[] {Blocks.cobblestone, mod_SecurityCraft.Mine});
@@ -722,6 +738,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 18, Side.CLIENT);
 		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 19, Side.SERVER);
 		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 20, Side.SERVER);
+		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 21, Side.SERVER);
 	}
 
 }

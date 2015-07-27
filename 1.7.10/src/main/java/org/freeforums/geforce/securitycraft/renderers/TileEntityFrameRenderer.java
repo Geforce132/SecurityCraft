@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.tileentity;
+package org.freeforums.geforce.securitycraft.renderers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.models.ModelFrame;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;

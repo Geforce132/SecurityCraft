@@ -8,6 +8,7 @@ SecurityCraft v1.8.0.4:
  - Added tasers.
  - Added reinforced stone and wood stairs.
  - Added iron fence (hurts any entity (except dropped items) when touched, except the owner).
+ - Added I.M.S.
  - Added SecurityCraft manual.
  
 *** Major additions: ***
@@ -24,6 +25,7 @@ SecurityCraft v1.8.0.4:
    - Deleted unused Access Transformer.
    - Deleted the ItemWithInfo class.
    - Renamed the BlockKeypadFrame class to BlockFrame.
+   - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers.
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
    - Added setPassword() and activate() methods to IPasswordProtected.

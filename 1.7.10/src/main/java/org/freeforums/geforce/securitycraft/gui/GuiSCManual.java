@@ -1,13 +1,7 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.ResourceLocation;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.lwjgl.input.Keyboard;
@@ -15,6 +9,15 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiSCManual extends GuiScreen {
 
@@ -135,10 +138,27 @@ public class GuiSCManual extends GuiScreen {
 					this.recipe = recipe.recipeItems;
 					break;
 				}
+			}else if(object instanceof ShapelessRecipes){
+				ShapelessRecipes recipe = (ShapelessRecipes) object;
+
+				if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					this.recipe = this.toItemStackArray(recipe.recipeItems);
+					break;
+				}
 			}
 			
 			this.recipe = null;
 		}
+    }
+    
+    private ItemStack[] toItemStackArray(List items){
+    	ItemStack[] array = new ItemStack[9];
+    	
+    	for(int i = 0; i < items.size(); i++){
+    		array[i] = (ItemStack) items.get(i);
+    	}
+    	
+    	return array;
     }
     
     private void updateButtons(){

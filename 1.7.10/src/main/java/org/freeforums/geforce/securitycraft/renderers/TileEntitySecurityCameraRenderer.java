@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.tileentity;
+package org.freeforums.geforce.securitycraft.renderers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;

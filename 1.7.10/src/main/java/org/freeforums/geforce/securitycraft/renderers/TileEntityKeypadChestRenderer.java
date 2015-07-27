@@ -1,4 +1,4 @@
-package org.freeforums.geforce.securitycraft.tileentity;
+package org.freeforums.geforce.securitycraft.renderers;
 
 import java.util.Calendar;
 

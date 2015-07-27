@@ -130,6 +130,7 @@ public class mod_SecurityCraft {
     public static Block reinforcedStairsAcacia;
     public static Block reinforcedStairsDarkoak;
     public static Block ironFence;
+    public static Block ims;
 
     //Items
     public static Item Codebreaker;

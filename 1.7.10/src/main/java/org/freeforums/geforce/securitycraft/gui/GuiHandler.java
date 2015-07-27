@@ -1,14 +1,11 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
 import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadFurnace;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIMS;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -16,6 +13,9 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 	
@@ -56,9 +56,12 @@ public class GuiHandler implements IGuiHandler {
     	case 18:
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
+    	case 19:
+    		return new ContainerGeneric(player.inventory, tile_entity);
+    		
+    		
     	case 100:
         	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
-    	
         	
     	default:
         	return null;
@@ -98,6 +101,9 @@ public class GuiHandler implements IGuiHandler {
     		
     	case 18:
     		return new GuiCheckPassword(player.inventory, tile_entity, world.getBlock(x, y, z));
+    		
+    	case 19:
+    		return new GuiIMS(player.inventory, (TileEntityIMS) tile_entity);
     		
     		
     	case 100:
