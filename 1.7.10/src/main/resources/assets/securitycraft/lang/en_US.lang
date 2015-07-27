@@ -28,7 +28,7 @@ tile.retinalScanner.name=Retinal Scanner
 tile.reinforcedGlass.name=Reinforced Glass Pane
 tile.alarm.name=Alarm
 tile.reinforcedStone.name=Reinforced Stone
-tile.reinforcedFenceGate.name=Reinforced Iron Fence Gate
+tile.reinforcedFenceGate.name=Electrified Iron Fence Gate
 tile.reinforcedPlanks_oak.name=Reinforced Oak Planks
 tile.reinforcedPlanks_spruce.name=Reinforced Spruce Planks
 tile.reinforcedPlanks_birch.name=Reinforced Birch Planks
@@ -48,7 +48,7 @@ tile.reinforcedStairsBirch.name=Reinforced Birch Stairs
 tile.reinforcedStairsJungle.name=Reinforced Jungle Stairs
 tile.reinforcedStairsAcacia.name=Reinforced Acacia Stairs
 tile.reinforcedStairsDarkoak.name=Reinforced Dark Oak Stairs
-tile.scIronFence.name=Iron Fence
+tile.scIronFence.name=Electrified Iron Fence
 tile.ims.name=Intelligent Munitions System 
 
 item.codebreaker.name=Codebreaker

@@ -65,7 +65,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		}
 
 		if(shouldHurt)
-			entity.attackEntityFrom(CustomDamageSources.fence, 1.0F);
+			entity.attackEntityFrom(CustomDamageSources.fence, 6.0F); //3 hearts per attack
     }
     
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){

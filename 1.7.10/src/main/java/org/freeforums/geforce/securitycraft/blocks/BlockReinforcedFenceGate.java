@@ -70,7 +70,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		}
 
 		if(shouldHurt)
-			entity.attackEntityFrom(CustomDamageSources.fence, 1.0F);
+			entity.attackEntityFrom(CustomDamageSources.fence, 6.0F);
 	}
 
 	/**
