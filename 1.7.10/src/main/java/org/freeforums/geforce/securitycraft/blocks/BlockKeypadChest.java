@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
 import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
@@ -26,7 +27,12 @@ public class BlockKeypadChest extends BlockChest {
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote){
 			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-				activate(par1World, par2, par3, par4, par5EntityPlayer);
+				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem)
+					activate(par1World, par2, par3, par4, par5EntityPlayer);
+				else
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);
+				
+				return true;
 			}
 
 			if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest){
