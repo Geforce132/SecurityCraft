@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
@@ -560,6 +561,18 @@ public static class ClientUtils{
 		NBTTagCompound tag = new NBTTagCompound();                
 		tileEntity.writeToNBT(tag);
 		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, tag));
+	}
+	
+}
+
+public static class WorldUtils{
+	
+	public static boolean isPathObstructed(World world, int x1, int y1, int z1, int x2, int y2, int z2){
+		return isPathObstructed(world, (double) x1, (double) y1, (double) z1, (double) x2, (double) y2, (double) z2);
+	}
+
+	public static boolean isPathObstructed(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
+		return world.rayTraceBlocks(Vec3.createVectorHelper(x1, y1, z1), Vec3.createVectorHelper(x2, y2, z2)) != null;
 	}
 	
 }

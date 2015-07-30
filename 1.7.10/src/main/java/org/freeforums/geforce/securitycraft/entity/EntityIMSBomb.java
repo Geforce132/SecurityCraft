@@ -1,8 +1,9 @@
 package org.freeforums.geforce.securitycraft.entity;
 
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.MovingObjectPosition;
@@ -12,9 +13,10 @@ import net.minecraft.world.World;
 public class EntityIMSBomb extends EntityFireball {
 
 	private String playerName = null;
-	private EntityCreature targetMob = null;
+	private EntityLivingBase targetMob = null;
 	
 	public int ticksFlying = 0;
+	private int launchHeight;
 	public boolean launching = true;
 
 	public EntityIMSBomb(World worldIn){
@@ -22,15 +24,17 @@ public class EntityIMSBomb extends EntityFireball {
 		this.setSize(0.25F, 0.3F);
 	}
 	
-	public EntityIMSBomb(World worldIn, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ){
+	public EntityIMSBomb(World worldIn, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
 		super(worldIn, x, y, z, targetX, targetY, targetZ);
 		this.playerName = targetEntity.getCommandSenderName();
+		this.launchHeight = height;
 		this.setSize(0.25F, 0.3F);
 	}
 	
-	public EntityIMSBomb(World worldIn, EntityCreature targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ){
+	public EntityIMSBomb(World worldIn, EntityLivingBase targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
 		super(worldIn, x, y, z, targetX, targetY, targetZ);
 		this.targetMob = targetEntity;
+		this.launchHeight = height;
 		this.setSize(0.25F, 0.3F);
 	}
 
@@ -39,12 +43,12 @@ public class EntityIMSBomb extends EntityFireball {
 			super.onUpdate();
 			return;
 		}
-		
-		if(ticksFlying < 30 && launching){
+
+		if(ticksFlying < launchHeight && launching){
 			this.motionY = 0.35F;
 			this.ticksFlying++;
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		}else if(ticksFlying >= 30 && launching){
+		}else if(ticksFlying >= launchHeight && launching){
 			this.setTarget();
 		}
 	}
@@ -52,21 +56,22 @@ public class EntityIMSBomb extends EntityFireball {
 	public void setTarget() {
 		if(playerName != null && PlayerUtils.isPlayerOnline(playerName)){
 			EntityPlayer target = PlayerUtils.getPlayerFromName(playerName);
-			
+						
 			double d5 = target.posX - posX;
             double d6 = target.boundingBox.minY + (double)(target.height / 2.0F) - ((double) posY + 1.25D);
             double d7 = target.posZ - posZ;
 			
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7, 0);
             entitylargefireball.launching = false;
             worldObj.spawnEntityInWorld(entitylargefireball);
             this.setDead();
-		}else if(targetMob != null && !targetMob.isDead){			
+		}else if(targetMob != null && !targetMob.isDead){	
+			
 			double d5 = targetMob.posX - posX;
             double d6 = targetMob.boundingBox.minY + (double)(targetMob.height / 2.0F) - ((double) posY + 1.25D);
             double d7 = targetMob.posZ - posZ;
 			
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7, 0);
             entitylargefireball.launching = false;
             worldObj.spawnEntityInWorld(entitylargefireball);
             this.setDead();
@@ -77,8 +82,8 @@ public class EntityIMSBomb extends EntityFireball {
 
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
 		if(!this.worldObj.isRemote){
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK){
-				this.worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 10F, true);
+			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && worldObj.getBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY, par1MovingObjectPosition.blockZ) != mod_SecurityCraft.ims){
+				this.worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 8F, true);
 				this.setDead();
 			}
 		}

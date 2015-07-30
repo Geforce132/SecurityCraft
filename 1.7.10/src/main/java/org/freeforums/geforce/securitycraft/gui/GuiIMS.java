@@ -27,7 +27,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 		
-		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 28, this.height / 2 - 58, 100, 20, tileEntity.getTargetingOption() == 1 ? "Mobs & Players" : "Players"));
+		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == 1 ? "Hostile mobs & players" : "Players"));
 	}
 	
     public void drawScreen(int par1, int par2, float par3){
@@ -39,7 +39,7 @@ public class GuiIMS extends GuiContainer{
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
         this.fontRendererObj.drawString("Intelligent Munitions System", this.xSize / 2 - this.fontRendererObj.getStringWidth("Intelligent Munitions System") / 2, 6, 4210752);
-        this.fontRendererObj.drawString("Target:", this.xSize / 2 - 68, 30, 4210752);
+        this.fontRendererObj.drawString("Target:", this.xSize / 2 - 78, 30, 4210752);
     }
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -71,7 +71,7 @@ public class GuiIMS extends GuiContainer{
 		if(this.targetingOption == 0){
 			targetButton.displayString = "Players";
 		}else if(this.targetingOption == 1){
-			targetButton.displayString = "Mobs & Players";
+			targetButton.displayString = "Hostile mobs & players";
 		}
 	}	
 
