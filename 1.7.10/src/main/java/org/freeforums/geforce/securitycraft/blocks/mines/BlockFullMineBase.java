@@ -14,11 +14,8 @@ import net.minecraft.world.World;
 
 public class BlockFullMineBase extends BlockExplosive {
 
-	private final String mineName;
-
-	public BlockFullMineBase(Material par2Material, String mineName) {
+	public BlockFullMineBase(Material par2Material) {
 		super(par2Material);
-		this.mineName = mineName;
 	}
 
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
@@ -41,8 +38,6 @@ public class BlockFullMineBase extends BlockExplosive {
 			}
 
 		}
-
-
 	}
 
 	/**

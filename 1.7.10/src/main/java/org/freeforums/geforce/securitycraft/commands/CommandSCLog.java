@@ -15,10 +15,10 @@ import net.minecraft.command.WrongUsageException;
 
 public class CommandSCLog extends CommandBase implements ICommand{
 
-	private List nicknames;
+	private List<String> nicknames;
 	
 	public CommandSCLog(){
-		this.nicknames = new ArrayList();
+		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("log");
 	}
 	
@@ -34,7 +34,7 @@ public class CommandSCLog extends CommandBase implements ICommand{
 		return "log";
 	}
 	
-	public List getCommandAliases() {
+	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 

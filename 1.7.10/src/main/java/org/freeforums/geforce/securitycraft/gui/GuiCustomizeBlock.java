@@ -1,11 +1,5 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
 import org.freeforums.geforce.securitycraft.gui.components.GuiPictureButton;
@@ -15,6 +9,11 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.config.HoverChecker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
@@ -32,7 +31,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", this.itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
+    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
     		this.buttonList.add(button);
     		this.hoverCheckers[i] = new HoverChecker(button, 20);
     	}

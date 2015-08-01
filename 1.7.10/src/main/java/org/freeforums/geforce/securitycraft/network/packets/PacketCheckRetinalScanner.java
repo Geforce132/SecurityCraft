@@ -1,16 +1,5 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-
 import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
@@ -20,6 +9,16 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 
 public class PacketCheckRetinalScanner implements IMessage{
 	
@@ -85,7 +84,6 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
     }
 
 	public IMessage onMessage(PacketCheckRetinalScanner packet, MessageContext context) {
-		String playerName = packet.playerName;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 		int[] posXYZ = getBlockInFront(getWorld(par1EntityPlayer), par1EntityPlayer, 1);
 		
@@ -98,15 +96,15 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			getWorld(par1EntityPlayer).scheduleBlockUpdate(posXYZ[1], posXYZ[2], posXYZ[3], getWorld(par1EntityPlayer).getBlock(posXYZ[1], posXYZ[2], posXYZ[3]), 60);
 			
 			if(mod_SecurityCraft.eventHandler.getCooldown() <= 0){
-				ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Hello " + par1EntityPlayer.getCommandSenderName() + ".", new Object[0]);
-				par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
+				ChatComponentText chatcomponenttext = new ChatComponentText("Hello " + par1EntityPlayer.getCommandSenderName() + ".");
+				par1EntityPlayer.addChatComponentMessage(chatcomponenttext);
 				mod_SecurityCraft.network.sendTo(new PacketCUpdateCooldown(250), (EntityPlayerMP) par1EntityPlayer);
 				mod_SecurityCraft.eventHandler.setCooldown(250);
 			}	
 		}else if(posXYZ[5] > 1 && posXYZ[5] < 6 && !((TileEntityOwnable)getWorld(par1EntityPlayer).getTileEntity(posXYZ[1], posXYZ[2], posXYZ[3])).getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString())){
 			if(mod_SecurityCraft.eventHandler.getCooldown() <= 0){
-				ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("[" + par1EntityPlayer.getCommandSenderName() + "] Unknown player, denying access...", new Object[0]);
-				par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
+				ChatComponentText chatcomponenttext = new ChatComponentText("[" + par1EntityPlayer.getCommandSenderName() + "] Unknown player, denying access...");
+				par1EntityPlayer.addChatComponentMessage(chatcomponenttext);
 				mod_SecurityCraft.network.sendTo(new PacketCUpdateCooldown(250), (EntityPlayerMP) par1EntityPlayer);
 			}
 		}

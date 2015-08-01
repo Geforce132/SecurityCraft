@@ -1,8 +1,5 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.CameraAnimatorSecurityCamera;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
@@ -11,8 +8,10 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.ClientProxy;
 
-import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE{
 	

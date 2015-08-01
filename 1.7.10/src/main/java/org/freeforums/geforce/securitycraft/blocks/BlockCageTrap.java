@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -56,7 +56,7 @@ public class BlockCageTrap extends BlockOwnable {
 				BlockUtils.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
 
 				par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + Utils.getFormattedCoordinates(par2, par3, par4)));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + Utils.getFormattedCoordinates(par2, par3, par4)));
 			}
 		}
 	}

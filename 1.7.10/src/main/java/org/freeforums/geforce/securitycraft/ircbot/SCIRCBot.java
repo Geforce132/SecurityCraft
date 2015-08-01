@@ -3,18 +3,18 @@ package org.freeforums.geforce.securitycraft.ircbot;
 import java.io.IOException;
 import java.util.Scanner;
 
-import net.minecraft.command.PlayerNotFoundException;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
+
+import net.minecraft.command.PlayerNotFoundException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 
 public class SCIRCBot extends PircBot{
 		
@@ -53,6 +53,7 @@ public class SCIRCBot extends PircBot{
     		String trimmedMessage = scanner.next();
     		mod_SecurityCraft.log(trimmedMessage);
     		sendMessageToPlayer(EnumChatFormatting.YELLOW + "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+    		scanner.close();
     	}
     }
 	
@@ -69,7 +70,7 @@ public class SCIRCBot extends PircBot{
     }
     
     private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
-    	ChatComponentTranslation component = new ChatComponentTranslation(par1String, new Object[0]);
+    	ChatComponentText component = new ChatComponentText(par1String);
     	par2EntityPlayer.addChatComponentMessage(component);
     }
     

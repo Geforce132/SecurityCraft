@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -23,7 +22,7 @@ public class GuiSCManual extends GuiScreen {
 
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/infoBookTexture.png");
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/infoBookTitlePage.png");
-	private ResourceLocation skinTexture = new ResourceLocation("textures/entity/steve.png");
+	protected ResourceLocation skinTexture = new ResourceLocation("textures/entity/steve.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 	
     private int currentPage = -1;
@@ -46,9 +45,6 @@ public class GuiSCManual extends GuiScreen {
     }
 	
 	public void drawScreen(int par1, int par2, float par3){		
-		int yPos = 50;
-		int xPos = 100;
-
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		if(this.currentPage == -1){

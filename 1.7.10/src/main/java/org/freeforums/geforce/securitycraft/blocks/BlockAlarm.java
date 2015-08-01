@@ -38,7 +38,7 @@ public class BlockAlarm extends BlockContainer {
 
 		this.isLit = isLit;
 
-		if(isLit){
+		if(this.isLit){
 			this.setLightLevel(1.0F);
 		}
 	}

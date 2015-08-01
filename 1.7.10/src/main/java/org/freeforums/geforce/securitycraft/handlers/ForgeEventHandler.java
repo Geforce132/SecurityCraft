@@ -2,22 +2,6 @@ package org.freeforums.geforce.securitycraft.handlers;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.WorldEvent.Unload;
-
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.api.IOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
@@ -36,6 +20,21 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.WorldEvent.Unload;
 
 public class ForgeEventHandler {
 	
@@ -48,10 +47,10 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
+		ChatComponentText chatcomponenttext = new ChatComponentText("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip());
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
-			event.player.addChatComponentMessage(chatcomponenttranslation);	
+			event.player.addChatComponentMessage(chatcomponenttext);	
 		}
 	}
 	
@@ -68,14 +67,16 @@ public class ForgeEventHandler {
 	
 	private String getRandomTip(){
     	Random random = new Random();
-    	int randomInt = random.nextInt(3);
+    	int randomInt = random.nextInt(4);
     	
     	if(randomInt == 0){
-    		return "Join breakinbad.net, the official SecurityCraft server!";
+    		return "Join BreakIn' Bad, the official SecurityCraft server! IP: breakinbad.net";
     	}else if(randomInt == 1){
-    		return "/sc recipe will display the recipe for SecurityCraft blocks/items.";
-    	}else if(randomInt == 2){
     		return "/sc help will display help info for SecurityCraft blocks/items.";
+    	}else if(randomInt == 2){
+    		return "Use /sc connect to get personal support from the mod devs!";
+    	}else if(randomInt == 3){
+    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
     	}else{
     		return "";
     	}

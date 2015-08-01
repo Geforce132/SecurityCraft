@@ -1,14 +1,5 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
@@ -18,6 +9,14 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryScanner extends GuiContainer
@@ -26,12 +25,12 @@ public class GuiInventoryScanner extends GuiContainer
     private TileEntityInventoryScanner tileEntity;
     private EntityPlayer playerObj;
     
-    private GuiTextField[] textFields = new GuiTextField[10];
+    protected GuiTextField[] textFields = new GuiTextField[10];
 	
-	private boolean flag = false;
+	protected boolean flag = false;
 	
-	private GuiButton saveAndContinueButton;
-	private GuiButton typeButton;
+	protected GuiButton saveAndContinueButton;
+	protected GuiButton typeButton;
 
     public GuiInventoryScanner(IInventory par1IInventory, TileEntityInventoryScanner par2TileEntity, EntityPlayer par3EntityPlayer){
         super(new ContainerInventoryScanner(par1IInventory, par2TileEntity));

@@ -1,15 +1,15 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
-import org.lwjgl.opengl.GL11;
 
 @SuppressWarnings({"unused", "unchecked"})
 public class GuiRemoteAccessMine extends GuiContainer{
@@ -27,12 +27,9 @@ public class GuiRemoteAccessMine extends GuiContainer{
 
     	int j = (this.height - this.height) / 2;
     	
-    	
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, "Activate."));
 		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, "Deactivate."));
 		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, "Detonate!"));
-
-
     }
 
 	/**
@@ -53,8 +50,6 @@ public class GuiRemoteAccessMine extends GuiContainer{
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-
-        
     }
     
 	 protected void actionPerformed(GuiButton guibutton){
@@ -73,10 +68,4 @@ public class GuiRemoteAccessMine extends GuiContainer{
 			 
 		 }
 	 }
-
-
-	
-
-	
-
 }

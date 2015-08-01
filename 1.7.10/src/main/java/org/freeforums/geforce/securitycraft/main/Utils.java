@@ -4,6 +4,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,27 +35,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
-import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * SecurityCraft's utility methods are found here. Frequently used or simplified vanilla code can be found here.
@@ -96,13 +95,13 @@ public static class PlayerUtils{
 	 * Args: player, message, color.
 	 */
 	public static void sendMessageToPlayer(EntityPlayer par1EntityPlayer, String par2, EnumChatFormatting par3){
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
+		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
     	
 		if(par3 != null){
-    		chatcomponenttranslation.getChatStyle().setColor(par3);
+    		chatcomponenttext.getChatStyle().setColor(par3);
     	}
     	
-		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
+		par1EntityPlayer.addChatComponentMessage(chatcomponenttext);
 	}
 	
 	/**
@@ -111,13 +110,13 @@ public static class PlayerUtils{
 	 * Args: sender, message, color.
 	 */
 	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
-        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
+		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
 
         if(par3 != null){
-    		chatcomponenttranslation.getChatStyle().setColor(par3);
+        	chatcomponenttext.getChatStyle().setColor(par3);
     	}
     	
-        par1ICommandSender.addChatMessage(chatcomponenttranslation);
+        par1ICommandSender.addChatMessage(chatcomponenttext);
 	}
 	
 }

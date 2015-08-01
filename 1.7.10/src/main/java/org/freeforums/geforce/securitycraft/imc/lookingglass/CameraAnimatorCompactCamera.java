@@ -1,10 +1,10 @@
 package org.freeforums.geforce.securitycraft.imc.lookingglass;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChunkCoordinates;
-
 import com.xcompwiz.lookingglass.api.animator.ICameraAnimator;
 import com.xcompwiz.lookingglass.api.view.IViewCamera;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChunkCoordinates;
 
 /**
  * Not used at the moment.
@@ -14,7 +14,7 @@ import com.xcompwiz.lookingglass.api.view.IViewCamera;
 @Deprecated
 public class CameraAnimatorCompactCamera implements ICameraAnimator {
 	
-	private IViewCamera camera;
+	protected IViewCamera camera;
 	private int x = 0, y = 0, z = 0;
 	
 	public CameraAnimatorCompactCamera(IViewCamera camera, int x, int y, int z, int meta){

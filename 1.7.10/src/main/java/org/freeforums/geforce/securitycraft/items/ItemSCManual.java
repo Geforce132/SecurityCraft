@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.items;
 
+import org.freeforums.geforce.securitycraft.gui.GuiSCManual;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -7,11 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.gui.GuiSCManual;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class ItemSCManual extends Item {
 	

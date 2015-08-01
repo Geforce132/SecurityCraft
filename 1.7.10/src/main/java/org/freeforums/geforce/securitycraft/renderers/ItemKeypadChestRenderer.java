@@ -1,15 +1,15 @@
 package org.freeforums.geforce.securitycraft.renderers;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
+
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-
 public class ItemKeypadChestRenderer implements IItemRenderer {
 
-	private ModelChest chestModel;
+	protected ModelChest chestModel;
 	
 	public ItemKeypadChestRenderer(){
 		

@@ -1,9 +1,5 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 
@@ -12,6 +8,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 
 public class PacketCSetCameraLocation implements IMessage{
 	
@@ -58,7 +56,6 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int camX = packet.camX;
 		int camY = packet.camY;
 		int camZ = packet.camZ;
-		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 	
 		if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.frame){
 			((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ);

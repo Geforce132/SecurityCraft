@@ -239,15 +239,15 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.MineCut = (BlockMine) new BlockMine(Material.circuits, true).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setBlockName("mineCut");
 		
-		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground, "dirt").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setBlockName("dirtMine").setBlockTextureName("dirt");
+		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setBlockName("dirtMine").setBlockTextureName("dirt");
 		
-		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock, "stone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setBlockName("stoneMine").setBlockTextureName("stone");
+		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setBlockName("stoneMine").setBlockTextureName("stone");
 		
-		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock, "cobblestone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setBlockName("cobblestoneMine").setBlockTextureName("cobblestone");
+		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setBlockName("cobblestoneMine").setBlockTextureName("cobblestone");
 		
-		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand, "sand").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setBlockName("sandMine").setBlockTextureName("sand");
+		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setBlockName("sandMine").setBlockTextureName("sand");
 		
-		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock, "diamond ore").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setBlockName("diamondMine").setBlockTextureName("diamond_ore");
+		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setBlockName("diamondMine").setBlockTextureName("diamond_ore");
 		
 		mod_SecurityCraft.FurnaceMine = new BlockFurnaceMine(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setBlockName("furnaceMine");
 				

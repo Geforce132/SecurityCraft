@@ -2,14 +2,6 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMap;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-
 import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
 import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
@@ -19,6 +11,13 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 public class ItemCameraMonitor extends ItemMap {
 	
@@ -92,5 +91,4 @@ public class ItemCameraMonitor extends ItemMap {
 		
 		return false;
 	}
-	
 }

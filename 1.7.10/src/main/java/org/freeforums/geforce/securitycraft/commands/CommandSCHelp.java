@@ -11,18 +11,17 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 public class CommandSCHelp extends CommandBase implements ICommand{
 	
-	private List nicknames;
+	private List<String> nicknames;
 	
 	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
 	
 	public CommandSCHelp(){
-		this.nicknames = new ArrayList();
+		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("sc");
 	}
 	
@@ -38,7 +37,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		return "sc";
 	}
 	
-	public List getCommandAliases() {
+	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
@@ -61,10 +60,10 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			return;
 		}
 		
-		if(par1String[0].matches("changePasscode") && par1String.length == 6){
-			int[] positions = {Integer.parseInt(par1String[1]), Integer.parseInt(par1String[2]), Integer.parseInt(par1String[3])};
-			World world = icommandsender.getEntityWorld();
-			
+//		if(par1String[0].matches("changePasscode") && par1String.length == 6){
+//			int[] positions = {Integer.parseInt(par1String[1]), Integer.parseInt(par1String[2]), Integer.parseInt(par1String[3])};
+//			World world = icommandsender.getEntityWorld();
+//			
 //			if(world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad && ((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4])){
 //				((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).setKeypadCode(par1String[5]);
 //				PlayerUtils.sendMessage(icommandsender, "Changed keypad's (at X:" + positions[0] + " Y:" + positions[1] + " Z:" + positions[2] + ") code from " + Integer.parseInt(par1String[4]) + " to " + Integer.parseInt(par1String[5]) + ".", EnumChatFormatting.GREEN);
@@ -75,9 +74,9 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 //			else if(world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.Keypad && world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.keypadChest){
 //				PlayerUtils.sendMessage(icommandsender, "There is no accessable block at the specifed coordinates!", EnumChatFormatting.RED);
 //			}
-			
-			return;
-		}
+//			
+//			return;
+//		}
 		
 		if(par1String.length == 1){
 			if(par1String[0].matches("connect")){
@@ -98,7 +97,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					
 				sendMessageToPlayer("Bot disconnected from EsperNet successfully.", icommandsender);
 			}else if(par1String[0].matches("help")){
-				boolean success = this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
+				this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("bug")){
@@ -131,13 +130,12 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 	}
 
 	private void sendMessageToPlayer(String par1, ICommandSender par2){
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par1, new Object[0]);
-		((EntityPlayerMP) getPlayer(par2, par2.getCommandSenderName())).addChatComponentMessage(chatcomponenttranslation);
+		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
+		((EntityPlayerMP) getPlayer(par2, par2.getCommandSenderName())).addChatComponentMessage(chatcomponenttext);
 	}
 	
 	public int compareTo(Object par1Obj)
     {
         return this.compareTo((ICommand)par1Obj);
     }
-
 }

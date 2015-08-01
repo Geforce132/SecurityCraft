@@ -8,7 +8,7 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class CustomModeledBlockRenderer implements IItemRenderer {
 	
-	private ModelBase model;
+	protected ModelBase model;
 	private TileEntity tileEntity;
 	private double x = 0D, y = 0D, z = 0D;
 	private float angle = 0F;

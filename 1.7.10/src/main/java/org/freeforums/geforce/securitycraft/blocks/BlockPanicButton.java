@@ -85,11 +85,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	private void updateBlockBounds(int par1) {
 		int j = par1 & 15;
 		boolean flag = (par1 == 6 || par1 == 7 || par1 == 8 || par1 == 9);
-		float f = 0.25F;
-        float f1 = 0.375F;
         float f2 = (float)(flag ? 1 : 2) / 16.0F;
-        float f3 = 0.125F;
-        float f4 = 0.1875F;
                 
         if(j == 0){
         	this.setBlockBounds(0.1800F, 0.300F, 0.95F, 0.8150F, 0.700F, 1.0F);

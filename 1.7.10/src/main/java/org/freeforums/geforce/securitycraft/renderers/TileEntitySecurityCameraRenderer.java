@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.renderers;
 
+import org.freeforums.geforce.securitycraft.models.ModelSecurityCamera;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,10 +10,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.models.ModelSecurityCamera;
-import org.lwjgl.opengl.GL11;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
 

@@ -3,6 +3,10 @@ package org.freeforums.geforce.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -11,18 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
 public class CommandModule extends CommandBase implements ICommand {
 
-	private List nicknames;
+	private List<String> nicknames;
 
 	private final String usage = "/module add <playerName> OR /module remove <playerName> OR /module copy OR /module paste";
 
 	public CommandModule() {
-		this.nicknames = new ArrayList();
+		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("module");
 	}
 	
@@ -35,7 +35,7 @@ public class CommandModule extends CommandBase implements ICommand {
 		return "module";
 	}
 	
-	public List getCommandAliases() {
+	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
@@ -140,6 +140,4 @@ public class CommandModule extends CommandBase implements ICommand {
 	public int compareTo(Object par1Obj) {
         return this.compareTo((ICommand)par1Obj);
 	}
-
-
 }

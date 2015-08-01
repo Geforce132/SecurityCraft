@@ -1,9 +1,9 @@
 package org.freeforums.geforce.securitycraft.imc.lookingglass;
 
-import net.minecraft.util.ChunkCoordinates;
-
 import com.xcompwiz.lookingglass.api.animator.ICameraAnimator;
 import com.xcompwiz.lookingglass.api.view.IViewCamera;
+
+import net.minecraft.util.ChunkCoordinates;
 
 /**
  * The IWorldView animator for the security cameras. <p>
@@ -19,7 +19,6 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 	
 	private IViewCamera camera;
 	private int cameraMeta = 0;
-	private ChunkCoordinates target;
 	
 	private boolean reverseRotation = false;
 	
@@ -49,13 +48,9 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 	}
 	
 
-	public void setTarget(ChunkCoordinates target) {
-		this.target = target;
-	}
+	public void setTarget(ChunkCoordinates target){}
 
-	public void refresh() {
-		
-	}
+	public void refresh(){}
 
 	public void update(float arg0) {
 		if(camera == null || cameraMeta == 0){ return; }
@@ -112,5 +107,4 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 			}
 		}		
 	}
-
 }
