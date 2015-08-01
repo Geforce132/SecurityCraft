@@ -49,8 +49,10 @@ SecurityCraft v1.8.0.4:
  - Change: Removed the keypad's recipe (unless the "useOldKeypadRecipe" config option is selected).
  - Change: Changed the frame's recipe to use iron ingots instead of stone blocks.
  - Change: Changed the password-protected furnace recipe.
+ - Change: Your entire inventory is now shown while looking in the inventory scanner GUI.
  - Fix: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Fix: Lasers could be broken by players who didn't place them.
  - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
  - Fix: Bouncing Betty's owners get set to "owner".
+ - Fix: The password-protected furnace and password-protected chest now cannot be "hacked" using the codebreaker if it's disabled in the config file.

@@ -66,7 +66,6 @@ public class EntityIMSBomb extends EntityFireball {
             worldObj.spawnEntityInWorld(entitylargefireball);
             this.setDead();
 		}else if(targetMob != null && !targetMob.isDead){	
-			
 			double d5 = targetMob.posX - posX;
             double d6 = targetMob.boundingBox.minY + (double)(targetMob.height / 2.0F) - ((double) posY + 1.25D);
             double d7 = targetMob.posZ - posZ;
@@ -83,7 +82,7 @@ public class EntityIMSBomb extends EntityFireball {
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
 		if(!this.worldObj.isRemote){
 			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && worldObj.getBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY, par1MovingObjectPosition.blockZ) != mod_SecurityCraft.ims){
-				this.worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 8F, true);
+				this.worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 7F, true);
 				this.setDead();
 			}
 		}

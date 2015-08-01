@@ -11,8 +11,8 @@ import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
-public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory
-{
+public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory {
+	
 	private ItemStack[] inventoryContents = new ItemStack[21]; 
 	private String type = "check";
 	private boolean isProvidingPower;

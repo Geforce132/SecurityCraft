@@ -18,14 +18,32 @@ public class ContainerInventoryScanner extends Container {
         this.numRows = par2TileEntityInventoryScanner.getSizeInventory() / 9;
     	this.inventoryScannerTE = par2TileEntityInventoryScanner;
         int rows = (numRows - 4) * 18;
-    	for (int i = 0; i < 10; ++i){
+    	for(int i = 0; i < 10; i++){
             this.addSlotToContainer(new SlotRestricted(par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
+        }		
+    	
+//    	for(int i = 0; i < 3; i++){
+//            for(int j = 0; j < 9; j++){
+//                this.addSlotToContainer(new Slot(par1IInventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
+//            }
+//    	}	
+//    	
+//    	for(int j = 0; j < 9; j++){
+//            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, 209 + rows));
+//        }  
+    	
+    	for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 9; ++j)
+            {
+                this.addSlotToContainer(new Slot(par1IInventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
+            }
         }
-    	
-    	for (int j = 0; j < 9; ++j){
-            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, 179 + rows));
-        }  	
-    	
+
+        for (int i = 0; i < 9; ++i)
+        {
+            this.addSlotToContainer(new Slot(par1IInventory, i, 8 + i * 18, 173));
+        }
     }
     
     /**
