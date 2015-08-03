@@ -67,5 +67,6 @@ SecurityCraft v1.8.0.4:
  - Fix: Mines now explode when the block underneath it is broken.
  - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file.
  - Fix: Fixed bug that causes a crash when right-clicking a keycard reader after setting the keycard level in the GUI without interacting with another GUI afterwards.
+ - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file.
  - Fix: Crash when receiving a message containing a '%' from IRC.
  - Fix: Fake Lava ignored doFireTick gamerule.
