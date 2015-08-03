@@ -288,6 +288,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			return mod_SecurityCraft.smartModule;
 		}else if(module == EnumCustomModules.REDSTONE){
 			return mod_SecurityCraft.redstoneModule;
+		}else if(module == EnumCustomModules.STORAGE){
+			return mod_SecurityCraft.storageModule;
 		}else{
 			return null;
 		}
@@ -305,6 +307,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			return EnumCustomModules.SMART;
 		}else if(module.getItem() == mod_SecurityCraft.redstoneModule){
 			return EnumCustomModules.REDSTONE;
+		}else if(module.getItem() == mod_SecurityCraft.storageModule){
+			return EnumCustomModules.STORAGE;
 		}else{
 			return null;
 		}

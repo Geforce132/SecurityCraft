@@ -111,7 +111,7 @@ public class mod_SecurityCraft {
 	public static Block securityCameraLit;
 	public static Block usernameLogger;
 	public static Block keypadChest;
-	public static Block reinforcedGlass;
+	public static Block reinforcedGlassPane;
 	public static Block alarm;
 	public static Block alarmLit;
 	public static Block reinforcedStone;
@@ -131,6 +131,8 @@ public class mod_SecurityCraft {
     public static Block reinforcedStairsDarkoak;
     public static Block ironFence;
     public static Block ims;
+    public static Block reinforcedGlass;
+    public static Block reinforcedStainedGlass;
 
     //Items
     public static Item Codebreaker;
@@ -154,6 +156,7 @@ public class mod_SecurityCraft {
     public static ItemModule blacklistModule;
     public static ItemModule harmingModule;
     public static ItemModule smartModule;
+    public static ItemModule storageModule;
 
     public static Item testItem;
     

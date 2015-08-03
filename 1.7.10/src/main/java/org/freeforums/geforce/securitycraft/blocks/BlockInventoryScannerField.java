@@ -1,5 +1,15 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,16 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockInventoryScannerField extends Block{
     
@@ -161,10 +161,21 @@ public class BlockInventoryScannerField extends Block{
 				}
 			}
 		}else if(par2TileEntity.getType().matches("check")){
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
-					if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
-						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+			if(par2TileEntity instanceof CustomizableSCTE && ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE)){
+				for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
+					if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
+						if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
+							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
+							par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+						}
+					}
+				}
+			}else{
+				for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
+					if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
+						if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
+							par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+						}
 					}
 				}
 			}

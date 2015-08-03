@@ -2,25 +2,22 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider {
+public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider {
 
-	public BlockReinforcedGlass(Material par1Material) {
-		super(par1Material, false);
+	public BlockReinforcedStainedGlass(Material par1Material) {
+		super(par1Material);
 	}
-
+	
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
     	if(!par1World.isRemote){
     		if(par5EntityLivingBase instanceof EntityPlayer){
@@ -34,13 +31,8 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
         par1World.removeTileEntity(par2, par3, par4);
     }
 	
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister){
-        this.blockIcon = par1IIconRegister.registerIcon("securitycraft:glass_reinforced");
-    }
-	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
-	
+
 }

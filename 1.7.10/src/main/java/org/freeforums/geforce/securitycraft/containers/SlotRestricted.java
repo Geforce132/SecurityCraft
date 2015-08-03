@@ -18,15 +18,17 @@ public class SlotRestricted extends Slot {
 	/**
      * Return whether this slot's stack can be taken from this slot.
      */
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer)
-    {
+    public boolean canTakeStack(EntityPlayer par1EntityPlayer){
     	return (inventoryScannerTE.getOwnerUUID() != null && inventoryScannerTE.getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString()));
     }
     
-    public void putStack(ItemStack p_75215_1_)
-    {
+    public void putStack(ItemStack p_75215_1_){
         this.inventoryScannerTE.setInventorySlotContents(getSlotIndex(), p_75215_1_);
         this.onSlotChanged();
     }
 
+    public int getSlotStackLimit(){
+        return 1;
+    }
+    
 }

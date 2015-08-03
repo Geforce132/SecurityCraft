@@ -2,6 +2,14 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -10,36 +18,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.api.IExplosive;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class ItemRemoteAccess extends Item {
-
-	private final int remoteAccessVarity;
+public class ItemMineRemoteAccessTool extends Item {
 	
 	public int listIndex = 0;
-	
-	public TileEntityMineLoc[] tEList = new TileEntityMineLoc[6];
-		
-	public ItemRemoteAccess(int par1) {
+			
+	public ItemMineRemoteAccessTool() {
 		super();
-		this.remoteAccessVarity = par1;
 	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
     	if(par2World.isRemote){
     		return par1ItemStack;
     	}else{
-    		if(this.remoteAccessVarity == 1){
-    			par3EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
-    		}
-  	
+    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
     		return par1ItemStack;
     	}
     }
@@ -52,6 +43,11 @@ public class ItemRemoteAccess extends Item {
 		  	  		
 		  	  		if(availSlot == 0){
 		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "There are no more empty slots to bind this mine to!", EnumChatFormatting.RED);
+		  	  			return false;
+		  	  		}
+		  	  		
+		  	  		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable && !((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerUUID().matches(par2EntityPlayer.getGameProfile().getId().toString())){
+		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't bind a mine that doesn't belong to you.", EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}
 		  	  		

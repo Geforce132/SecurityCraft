@@ -18,9 +18,16 @@ public class ContainerInventoryScanner extends Container {
         this.numRows = par2TileEntityInventoryScanner.getSizeInventory() / 9;
     	this.inventoryScannerTE = par2TileEntityInventoryScanner;
         int rows = (numRows - 4) * 18;
+        
     	for(int i = 0; i < 10; i++){
             this.addSlotToContainer(new SlotRestricted(par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
         }		
+    	
+    	for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 3; j++){
+                this.addSlotToContainer(new Slot(par2TileEntityInventoryScanner, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));
+            }
+        }
     	
     	for(int i = 0; i < 3; i++){
             for(int j = 0; j < 9; j++){

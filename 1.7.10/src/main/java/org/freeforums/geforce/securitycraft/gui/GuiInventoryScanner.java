@@ -1,7 +1,9 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.lwjgl.input.Keyboard;
@@ -19,24 +21,33 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class GuiInventoryScanner extends GuiContainer
-{
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/inventoryScannerGUI.png");
-    private TileEntityInventoryScanner tileEntity;
+public class GuiInventoryScanner extends GuiContainer {
+	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventoryScannerGUI.png");
+	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventoryScannerEnhancedGUI.png");
+
+	private TileEntityInventoryScanner tileEntity;
     private EntityPlayer playerObj;
+    private boolean hasStorageModule = false;
     
-    protected GuiTextField[] textFields = new GuiTextField[10];
+    private GuiTextField[] textFields = new GuiTextField[10];
 	
-	protected boolean flag = false;
+	private boolean flag = false;
 	
-	protected GuiButton saveAndContinueButton;
-	protected GuiButton typeButton;
+	private GuiButton saveAndContinueButton;
+	private GuiButton typeButton;
 
     public GuiInventoryScanner(IInventory par1IInventory, TileEntityInventoryScanner par2TileEntity, EntityPlayer par3EntityPlayer){
         super(new ContainerInventoryScanner(par1IInventory, par2TileEntity));
         this.tileEntity = par2TileEntity;
         this.playerObj = par3EntityPlayer;
-        this.xSize = 176;
+        this.hasStorageModule = ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE);
+        
+        if(this.hasStorageModule){
+        	this.xSize = 234;
+        }else{ // 56
+        	this.xSize = 176;
+        }
+        
         this.ySize = 196;
     }
     
@@ -45,25 +56,25 @@ public class GuiInventoryScanner extends GuiContainer
     	Keyboard.enableRepeatEvents(true); 		
     		
 		if(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID())){
-			this.buttonList.add(this.typeButton = new GuiButton(0, this.width / 2 - 83, this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
+			this.buttonList.add(this.typeButton = new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
 		}
     }
     
     public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		
+
 		if(!this.buttonList.isEmpty()){
 			if(((GuiButton)this.buttonList.get(0)).displayString.matches("Check inventory.")){
-				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 38, 4210752);
-				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 28, 4210752);
-				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83, this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83, this.height / 2 - 8, 4210752);
+				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
+				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
+				this.fontRendererObj.drawString("prohibited item, will delete the", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRendererObj.drawString("item from the player's inventory.", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
 			}else{
-				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83, this.height / 2 - 38, 4210752);
-				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83, this.height / 2 - 28, 4210752);
-				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83, this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83, this.height / 2 - 8, 4210752);	
+				this.fontRendererObj.drawString("This setting will check a player's", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
+				this.fontRendererObj.drawString("inventory, and, if it contains a ", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
+				this.fontRendererObj.drawString("prohibited item, will emit a", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRendererObj.drawString("redstone signal for 3 seconds.", this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);	
 			}
 		}else{
 			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
@@ -122,12 +133,21 @@ public class GuiInventoryScanner extends GuiContainer
     {
         this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
         this.fontRendererObj.drawString(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID()) ? (EnumChatFormatting.UNDERLINE + "Admin Mode") : (EnumChatFormatting.UNDERLINE + "View Mode"), 112, 6, 4210752);
+        
+        if(hasStorageModule && playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID())){
+        	this.fontRendererObj.drawString("Storage", 183, 6, 4210752);
+        }
+        
         this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
     }
 	
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(field_110410_t);
+		if(hasStorageModule){
+			this.mc.getTextureManager().bindTexture(exhancedInventory);
+		}else{
+			this.mc.getTextureManager().bindTexture(regularInventory);
+		}
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize + 30);

@@ -21,6 +21,10 @@ public class ContainerCustomizeBlock extends Container{
 		}else if(tileEntity.getNumberOfCustomizableOptions() == 2){
 			this.addSlotToContainer(new ModuleSlot(tileEntity, 0, 70, 20));
 			this.addSlotToContainer(new ModuleSlot(tileEntity, 1, 88, 20));
+		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 0, 61, 20));
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 1, 79, 20));
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 2, 97, 20));
 		}
 		
 		for(int i = 0; i < 3; i++){

@@ -380,6 +380,8 @@ public static class ModuleUtils{
 			return mod_SecurityCraft.harmingModule;
 		}else if(module == EnumCustomModules.SMART){
 			return mod_SecurityCraft.smartModule;
+		}else if(module == EnumCustomModules.STORAGE){
+			return mod_SecurityCraft.storageModule;
 		}else{
 			return null;
 		}

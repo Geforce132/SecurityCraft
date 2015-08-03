@@ -4,13 +4,12 @@ import java.util.Random;
 
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -18,7 +17,6 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -35,32 +33,19 @@ public class BlockMine extends BlockExplosive {
 		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	public boolean isOpaqueCube()
-	{
+	public boolean isOpaqueCube(){
 		return false;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	public boolean renderAsNormalBlock()
-	{
+	public boolean renderAsNormalBlock(){
 		return false;
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
-	 */
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5){
-		if (par1World.getBlock(par2, par3 - 1, par4).getMaterial() != Material.air){
+		if(par1World.getBlock(par2, par3 - 1, par4).getMaterial() != Material.air){
 			return;
 		}else{
-			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			this.explode(par1World, par2, par3, par4);
 		}
 	}
 
@@ -74,10 +59,19 @@ public class BlockMine extends BlockExplosive {
 			return true;
 		}
 	}
-
-	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5){
-		this.explode(par1World, par2, par3, par4);
-	}
+	
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest){
+        if(!world.isRemote){
+        	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.instance.configHandler.mineExplodesWhenInCreative){
+            	return super.removedByPlayer(world, player, x, y, z, willHarvest);
+        	}else{
+        		this.explode(world, x, y, z);
+            	return super.removedByPlayer(world, player, x, y, z, willHarvest);
+        	}
+        }
+		
+		return super.removedByPlayer(world, player, x, y, z, willHarvest);
+    }
 
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(par1World.isRemote){
@@ -100,16 +94,9 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	private boolean isInteractibleItem(Item item){
-		if(item == mod_SecurityCraft.wireCutters || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel){
-			return true;
-		}else{
-			return false;
-		}
-
+		return item == mod_SecurityCraft.wireCutters || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel;
 	}
 	
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {}
-
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
@@ -123,6 +110,32 @@ public class BlockMine extends BlockExplosive {
 				this.explode(par1World, par2, par3, par4);
 			}
 		}
+	}
+	
+	/**
+	 * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
+	 */
+	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10, World par11World){
+		Explosion explosion = new Explosion(par11World, par1Entity, par2, par4, par6, par8);
+		if(mod_SecurityCraft.configHandler.shouldSpawnFire){
+			explosion.isFlaming = true;
+		}else{
+			explosion.isFlaming = false;
+		}
+		explosion.isSmoking = par10;
+		explosion.doExplosionA();
+
+
+		explosion.doExplosionB(true);
+		return explosion;
+	}
+	
+	public Item getItemDropped(int par1, Random par2Random, int par3){
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
+	}
+
+	public Item getItem(World par1World, int par2, int par3, int par4){
+		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 	
 	public void activateMine(World world, int par2, int par3, int par4) {
@@ -147,54 +160,21 @@ public class BlockMine extends BlockExplosive {
 			}
 		}
 	}
-
-	/**
-	 * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
-	 */
-	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10, World par11World){
-		Explosion explosion = new Explosion(par11World, par1Entity, par2, par4, par6, par8);
-		if(mod_SecurityCraft.configHandler.shouldSpawnFire){
-			explosion.isFlaming = true;
-		}else{
-			explosion.isFlaming = false;
-		}
-		explosion.isSmoking = par10;
-		explosion.doExplosionA();
-
-
-		explosion.doExplosionB(true);
-		return explosion;
+	
+	public boolean isActive(World world, int par2, int par3, int par4) {
+		return !cut;
 	}
-
+	
 	public void registerBlockIcons(IIconRegister par1IconRegister){
 		if(cut){
 			this.blockIcon = par1IconRegister.registerIcon("securitycraft:mineCut");
 		}else{
 			this.blockIcon = par1IconRegister.registerIcon("securitycraft:mine");
 		}
-
-	}
-
-	/**
-	 * Returns the ID of the items to drop on destruction.
-	 */
-	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
-	}
-
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
-	public Item getItem(World par1World, int par2, int par3, int par4){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
-	}
-	
-	public boolean isActive(World world, int par2, int par3, int par4) {
-		return !cut;
 	}
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityMineLoc();
+		return new TileEntityOwnable();
 	}
 	
 }

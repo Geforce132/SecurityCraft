@@ -10,6 +10,8 @@ SecurityCraft v1.8.0.4:
  - Added reinforced stone and wood stairs.
  - Added electrified iron fence (hurts any entity (except dropped items) when touched, except the owner).
  - Added I.M.S.
+ - Added reinforced glass & stained glass.
+ - Added storage module.
  - Added SecurityCraft manual.
  
 *** Major additions: ***
@@ -24,8 +26,10 @@ SecurityCraft v1.8.0.4:
    - Simplified TileEntity and ID checks in GuiHandler.
    - Deleted unused texture .png files.
    - Deleted unused Access Transformer.
-   - Deleted the ItemWithInfo class.
+   - Deleted the ItemWithInfo and TileEntityMineLoc classes.
    - Renamed the BlockKeypadFrame class to BlockFrame.
+   - Renamed the BlockReinforcedGlass class to BlockReinforcedGlassPane.
+   - Renamed the ItemRemoteAccess class to ItemMineRemoteAccessTool.
    - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers.
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
@@ -42,6 +46,8 @@ SecurityCraft v1.8.0.4:
  - New: Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
  - New: Codebreakers can now be used on password-protected furnaces.
  - New: Claymores now have crafting recipes.
+ - New: Inventory scanners now have a built-in inventory to store deleted items in.
+ - New: New tips!
  - Change: Electrified Iron Fence Gates now hurts any entity except dropped items and its owner.
  - Change: Changed keypad recipe to use iron ingots instead of iron blocks.
  - Change: Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
@@ -50,9 +56,16 @@ SecurityCraft v1.8.0.4:
  - Change: Changed the frame's recipe to use iron ingots instead of stone blocks.
  - Change: Changed the password-protected furnace recipe.
  - Change: Your entire inventory is now shown while looking in the inventory scanner GUI.
- - Fix: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
+ - Change: You now can't bind mines to a mine remote access tool if they don't belong to you.
+ - Change: Mines can now be configured to not explode if the player who broke it is in Creative mode.
+ - Change: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Fix: Lasers could be broken by players who didn't place them.
- - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
+ - Fix: Using different window sizes and resolutions caused the buttons in the Universal Block Modifier GUI to move.
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
- - Fix: Bouncing Betty's owners get set to "owner".
- - Fix: The password-protected furnace and password-protected chest now cannot be "hacked" using the codebreaker if it's disabled in the config file.
+ - Fix: Bouncing Betty's owners got set to "owner".
+ - Fix: Mines are now "ownable".
+ - Fix: Mines now explode when the block underneath it is broken.
+ - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file.
+ - Fix: Fixed bug that causes a crash when right-clicking a keycard reader after setting the keycard level in the GUI without interacting with another GUI afterwards.
+ - Fix: Crash when receiving a message containing a '%' from IRC.
+ - Fix: Fake Lava ignored doFireTick gamerule.

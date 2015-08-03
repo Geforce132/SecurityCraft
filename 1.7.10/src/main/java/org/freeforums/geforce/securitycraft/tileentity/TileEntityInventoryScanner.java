@@ -13,7 +13,7 @@ import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory {
 	
-	private ItemStack[] inventoryContents = new ItemStack[21]; 
+	private ItemStack[] inventoryContents = new ItemStack[37]; 
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -84,7 +84,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     }
     
 	public int getSizeInventory() {
-		return 19;
+		return 37;
 	}
 
 	public ItemStack decrStackSize(int par1, int par2)
@@ -159,13 +159,31 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
         this.markDirty();
 	}
+	
+	public void addItemToStorage(ItemStack par1ItemStack) {
+		for(int i = 10; i < this.inventoryContents.length; i++){
+			if(this.inventoryContents[i] == null){
+				this.inventoryContents[i] = par1ItemStack;
+				break;
+			}else if(this.inventoryContents[i] != null && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
+				if(this.inventoryContents[i].stackSize + par1ItemStack.stackSize <= this.getInventoryStackLimit()){
+					this.inventoryContents[i].stackSize += par1ItemStack.stackSize;
+					break;
+				}else{
+					this.inventoryContents[i].stackSize = this.getInventoryStackLimit();
+				}
+			}
+		}
+
+        this.markDirty();
+	}
 
 	public boolean hasCustomInventoryName() {
 		return true;
 	}
     
 	public int getInventoryStackLimit() {
-		return 1;
+		return 64;
 	}
 
 	public boolean isUseableByPlayer(EntityPlayer var1) {
@@ -257,11 +275,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	public EnumCustomModules[] getCustomizableOptions() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART};
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE};
 	}
     
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory."};
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory.", "test"};
 	}
 	
 }

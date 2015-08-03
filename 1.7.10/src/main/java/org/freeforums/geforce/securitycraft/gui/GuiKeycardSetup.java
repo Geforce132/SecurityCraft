@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -93,7 +94,8 @@ public class GuiKeycardSetup extends GuiContainer{
 		
 		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.lvOfSecurity, this.requiresExactCard));
 		
-		ClientUtils.closePlayerScreen();
+		Minecraft.getMinecraft().thePlayer.closeScreen();
+		//ClientUtils.closePlayerScreen();
 	}
 
 }
