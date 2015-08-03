@@ -42,6 +42,7 @@ SecurityCraft v1.8.0.4:
  - New: Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
  - New: Codebreakers can now be used on password-protected furnaces.
  - New: Claymores now have crafting recipes.
+ - New: New tips!
  - Change: Electrified Iron Fence Gates now hurts any entity except dropped items and its owner.
  - Change: Changed keypad recipe to use iron ingots instead of iron blocks.
  - Change: Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
@@ -50,9 +51,11 @@ SecurityCraft v1.8.0.4:
  - Change: Changed the frame's recipe to use iron ingots instead of stone blocks.
  - Change: Changed the password-protected furnace recipe.
  - Change: Your entire inventory is now shown while looking in the inventory scanner GUI.
- - Fix: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
+ - Change: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Fix: Lasers could be broken by players who didn't place them.
- - Fix: Using different window sizes and resolutions cause the buttons in the Universal Block Modifier GUI to move.
+ - Fix: Using different window sizes and resolutions caused the buttons in the Universal Block Modifier GUI to move.
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
- - Fix: Bouncing Betty's owners get set to "owner".
- - Fix: The password-protected furnace and password-protected chest now cannot be "hacked" using the codebreaker if it's disabled in the config file.
+ - Fix: Bouncing Betty's owners got set to "owner".
+ - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file.
+ - Fix: Crash when receiving a message containing a '%' from IRC.
+ - Fix: Fake Lava ignored doFireTick gamerule.
