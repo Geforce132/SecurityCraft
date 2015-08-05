@@ -220,7 +220,7 @@ public class mod_SecurityCraft {
 		
 		NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
 		if(vcUpdateTag != null){
-			//FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
+			FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
 		}
 			
 		log("Doing registering stuff... (PT 2/2)");
