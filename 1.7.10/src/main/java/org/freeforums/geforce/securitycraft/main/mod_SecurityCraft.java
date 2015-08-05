@@ -12,6 +12,7 @@ import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.LookingGlassPanelRenderer;
+import org.freeforums.geforce.securitycraft.imc.versionchecker.VersionUpdateChecker;
 import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
@@ -217,6 +218,11 @@ public class mod_SecurityCraft {
 		FMLInterModComms.sendMessage("Waila", "register", "org.freeforums.geforce.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
 		FMLInterModComms.sendMessage("LookingGlass", "API", "org.freeforums.geforce.securitycraft.imc.lookingglass.LookingGlassAPIProvider.register");
 		
+		NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+		if(vcUpdateTag != null){
+			//FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
+		}
+			
 		log("Doing registering stuff... (PT 2/2)");
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);

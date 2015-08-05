@@ -9,7 +9,10 @@ import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
+import org.freeforums.geforce.securitycraft.misc.SCSounds;
 import org.freeforums.geforce.securitycraft.network.ClientProxy;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
@@ -30,6 +33,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -96,6 +100,13 @@ public class ForgeEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onDamageTaken(LivingHurtEvent event)
+	{
+		if(event.source == CustomDamageSources.fence)
+			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
+	}
+	
 	@SubscribeEvent
 	public void onBucketUsed(FillBucketEvent event){
 		ItemStack result = fillBucket(event.world, event.target);

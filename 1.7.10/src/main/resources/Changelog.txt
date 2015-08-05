@@ -16,6 +16,7 @@ SecurityCraft v1.8.0.4:
  
 *** Major additions: ***
  - Added Waila support.
+ - Added VersionChecker update support.
  - SecurityCraft now requires LookingGlass v0.2.00+ as a dependency.
 
 *** Bugfixes/Improvements: ***
