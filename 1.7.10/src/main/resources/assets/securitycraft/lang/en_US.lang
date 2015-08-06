@@ -69,6 +69,23 @@ tile.reinforcedStainedGlass_green.name=Reinforced Green Stained Glass
 tile.reinforcedStainedGlass_red.name=Reinforced Red Stained Glass
 tile.reinforcedStainedGlass_black.name=Reinforced Black Stained Glass
 
+tile.reinforcedStainedGlassPanes_white.name=Reinforced White Stained Glass Pane
+tile.reinforcedStainedGlassPanes_orange.name=Reinforced Orange Stained Glass Pane
+tile.reinforcedStainedGlassPanes_magenta.name=Reinforced Magenta Stained Glass Pane
+tile.reinforcedStainedGlassPanes_light_blue.name=Reinforced Light Blue Stained Glass Pane
+tile.reinforcedStainedGlassPanes_yellow.name=Reinforced Yellow Stained Glass Pane
+tile.reinforcedStainedGlassPanes_lime.name=Reinforced Lime Stained Glass Pane
+tile.reinforcedStainedGlassPanes_pink.name=Reinforced Pink Stained Glass Pane
+tile.reinforcedStainedGlassPanes_gray.name=Reinforced Gray Stained Glass Pane
+tile.reinforcedStainedGlassPanes_silver.name=Reinforced Silver Stained Glass Pane
+tile.reinforcedStainedGlassPanes_cyan.name=Reinforced Cyan Stained Glass Pane
+tile.reinforcedStainedGlassPanes_purple.name=Reinforced Purple Stained Glass Pane
+tile.reinforcedStainedGlassPanes_blue.name=Reinforced Blue Stained Glass Pane
+tile.reinforcedStainedGlassPanes_brown.name=Reinforced Brown Stained Glass Pane
+tile.reinforcedStainedGlassPanes_green.name=Reinforced Green Stained Glass Pane
+tile.reinforcedStainedGlassPanes_red.name=Reinforced Red Stained Glass Pane
+tile.reinforcedStainedGlassPanes_black.name=Reinforced Black Stained Glass Pane
+
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
 item.universalBlockRemover.name=Universal Block Remover

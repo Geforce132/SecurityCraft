@@ -20,7 +20,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE{
 	public void updateEntity(){
 		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && !mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
 			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0 || this.createdView) return; 
-
+			
 			IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(xCoord, yCoord, zCoord), 192, 192); 
 					
 			lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
@@ -46,7 +46,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE{
 		super.writeToNBT(par1NBTTagCompound);
 		
 		par1NBTTagCompound.setBoolean("createdView", this.createdView);
-    }
+	}
 		
 	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.REDSTONE};

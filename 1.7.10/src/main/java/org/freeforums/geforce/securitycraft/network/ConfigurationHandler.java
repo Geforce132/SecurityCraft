@@ -27,6 +27,7 @@ import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedFenceGate;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedGlass;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedGlassPane;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedStainedGlass;
+import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedStainedGlassPanes;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedStairs;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedWood;
 import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
@@ -45,6 +46,7 @@ import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
 import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
 import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedStainedGlass;
+import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
 import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
 import org.freeforums.geforce.securitycraft.items.ItemKeyPanel;
@@ -94,7 +96,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMonitor;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
@@ -110,6 +111,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -137,7 +139,8 @@ public class ConfigurationHandler{
 	public boolean sayThanksMessage;
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
-
+	public boolean fiveMinAutoShutoff;
+	
 	public static int fakePanelID = 1;
 	public static int portableRadarSearchRadius;
 	public static int usernameLoggerSearchRadius;	
@@ -238,6 +241,7 @@ public class ConfigurationHandler{
 	
 	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedGlassBlock");
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlass").setBlockTextureName("securitycraft:glass_reinforced");
+	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlassPanes").setBlockTextureName("securitycraft:glass_reinforced");
 	}
 	
 	public void setupMines(){
@@ -332,6 +336,7 @@ public class ConfigurationHandler{
         ableToCraftLUKeycard = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true).getBoolean(true);
         smallerMineExplosion = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false).getBoolean(false);
         mineExplodesWhenInCreative = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true).getBoolean(true);
+        fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", false).getBoolean(false);
 
         portableRadarSearchRadius = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25).getInt(25);
         usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
@@ -407,7 +412,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.ims);
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class, mod_SecurityCraft.reinforcedStainedGlass.getUnlocalizedName().substring(5));
-
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class, mod_SecurityCraft.reinforcedStainedGlassPanes.getUnlocalizedName().substring(5));
+		
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
@@ -447,7 +453,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityFrame.class, "keypadFrame");
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
 		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
-		GameRegistry.registerTileEntity(TileEntityMonitor.class, "monitor");
 		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
@@ -709,6 +714,15 @@ public class ConfigurationHandler{
     		"BGI", "RSG", "  S", 'B', Items.bow, 'G', Items.gold_ingot, 'I', Items.iron_ingot, 'R', Items.redstone, 'S', Items.stick
         });
 
+        for(int i = 0; i < 16; i++){
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, BlockColored.func_150031_c(i)), new Object[]{
+        		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i)
+        	});
+        	
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i), new Object[]{
+        		"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
+        	});
+        }
 	
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.StoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.Mine});
