@@ -1,5 +1,5 @@
 -----------------------
-SecurityCraft v1.8.0.4:
+SecurityCraft v1.8.0:
 -----------------------
 
 *** New blocks/items: ***
@@ -60,6 +60,7 @@ SecurityCraft v1.8.0.4:
  - Change: You now can't bind mines to a mine remote access tool if they don't belong to you.
  - Change: Mines can now be configured to not explode if the player who broke it is in Creative mode.
  - Change: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
+ - Change: All mobs and dropped items get damaged by Fake Water now.
  - Fix: Lasers could be broken by players who didn't place them.
  - Fix: Using different window sizes and resolutions caused the buttons in the Universal Block Modifier GUI to move.
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
