@@ -2,6 +2,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
@@ -11,12 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBogusWaterBase extends BlockStaticLiquid {
 	
@@ -87,6 +86,8 @@ public class BlockBogusWaterBase extends BlockStaticLiquid {
 			if(par5Entity instanceof EntityPlayer && !((EntityPlayer) par5Entity).capabilities.isCreativeMode){
 				((EntityPlayer) par5Entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 			}
+			else
+				par5Entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 		}
 	}
 
