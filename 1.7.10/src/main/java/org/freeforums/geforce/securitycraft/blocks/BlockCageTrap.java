@@ -32,6 +32,12 @@ public class BlockCageTrap extends BlockOwnable {
 		this.blockTextureIndex = blockTextureIndex;
 	}
 
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+	
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
 		if(!deactivated){
 			return null;
