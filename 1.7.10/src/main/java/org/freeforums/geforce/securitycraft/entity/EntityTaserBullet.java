@@ -12,6 +12,8 @@ import net.minecraft.world.World;
 
 public class EntityTaserBullet extends EntityThrowable {
 
+	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
+	
 	public EntityTaserBullet(World worldIn){
 		super(worldIn);
 		this.setSize(0.01F, 0.01F);
@@ -35,6 +37,17 @@ public class EntityTaserBullet extends EntityThrowable {
 		return 0.00F;
 	}
 
+	@Override
+	public void onUpdate()
+	{
+		super.onUpdate();
+		
+		deathTime--;
+		
+		if(deathTime <= 0)
+			setDead();
+	}
+	
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
 	{
 		if(!this.worldObj.isRemote)
