@@ -5,6 +5,8 @@ import java.util.TimerTask;
 
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityFrame;
 
+import net.minecraft.client.Minecraft;
+
 public class CameraShutoffTimer{
 		Timer timer;
 		private TileEntityFrame tileEntity;
@@ -17,8 +19,10 @@ public class CameraShutoffTimer{
 		class RemindTask extends TimerTask{
 
 			public void run(){
-				tileEntity.disableView();
-				
+				if(tileEntity != null && Minecraft.getMinecraft().theWorld != null){
+					tileEntity.disableView();
+				}
+
 				timer.cancel();
 			}
 		}

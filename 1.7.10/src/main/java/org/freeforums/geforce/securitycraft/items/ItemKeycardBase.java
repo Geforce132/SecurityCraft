@@ -2,6 +2,10 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,13 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ItemKeycardBase extends Item{
@@ -43,17 +40,6 @@ public class ItemKeycardBase extends Item{
         this.setMaxDamage(0);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
-	
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
-        if(!par3World.isRemote){
-        	if(par3World.getBlockMetadata(par4, par5, par6) == 2 || par3World.getBlockMetadata(par4, par5, par6) == 3 || par3World.getBlockMetadata(par4, par5, par6) == 4 || par3World.getBlockMetadata(par4, par5, par6) == 5){              
-        		((BlockKeycardReader) mod_SecurityCraft.keycardReader).insertCard(par3World, par4, par5, par6, par1ItemStack, par2EntityPlayer);                
-            	return true;
-        	}  	
-        }
-        
-        return false;
-    }
 	
 	public int getKeycardLV(ItemStack par1ItemStack){
 		if(par1ItemStack.getItemDamage() == 0){

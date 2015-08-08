@@ -63,6 +63,7 @@ import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCCreateLGView;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -336,7 +337,7 @@ public class ConfigurationHandler{
         ableToCraftLUKeycard = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true).getBoolean(true);
         smallerMineExplosion = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false).getBoolean(false);
         mineExplodesWhenInCreative = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true).getBoolean(true);
-        fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", false).getBoolean(false);
+        fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true).getBoolean(true);
 
         portableRadarSearchRadius = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25).getInt(25);
         usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
@@ -411,8 +412,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.ironFence);
 		registerBlock(mod_SecurityCraft.ims);
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class, mod_SecurityCraft.reinforcedStainedGlass.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class, mod_SecurityCraft.reinforcedStainedGlassPanes.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
 		
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
@@ -650,6 +651,10 @@ public class ConfigurationHandler{
 			"III", "IPI", "IEI", 'I', Items.iron_ingot, 'P', Items.paper, 'E', Items.ender_pearl
 		});
 		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.storageModule, 1), new Object[]{
+			"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', mod_SecurityCraft.keypadChest
+		});
+		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{
 			"ER ", "RI ", "  I", 'E', Items.emerald, 'R', Items.redstone, 'I', Items.iron_ingot
 		});
@@ -712,6 +717,14 @@ public class ConfigurationHandler{
         
         GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.taser, 1), new Object[]{
     		"BGI", "RSG", "  S", 'B', Items.bow, 'G', Items.gold_ingot, 'I', Items.iron_ingot, 'R', Items.redstone, 'S', Items.stick
+        });
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedGlass, 4), new Object[]{
+    		" G ", "GGG", " G ", 'G', Blocks.glass
+    	});
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.securityCamera, 1), new Object[]{
+        	"III", "GRI", "IIS", 'I', Items.iron_ingot, 'G', mod_SecurityCraft.reinforcedGlassPane, 'R', Blocks.redstone_block, 'S', Items.stick
         });
 
         for(int i = 0; i < 16; i++){
@@ -800,9 +813,10 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 16, Side.SERVER);
 		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 17, Side.CLIENT);
 		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 18, Side.CLIENT);
-		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 19, Side.SERVER);
-		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 20, Side.SERVER);
-		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 21, Side.SERVER);
+		network.registerMessage(PacketCCreateLGView.Handler.class, PacketCCreateLGView.class, 19, Side.CLIENT);
+		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 20, Side.SERVER);
+		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 21, Side.SERVER);
+		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 22, Side.SERVER);
 	}
 
 }

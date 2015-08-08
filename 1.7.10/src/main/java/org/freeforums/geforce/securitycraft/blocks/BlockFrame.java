@@ -65,14 +65,16 @@ public class BlockFrame extends BlockOwnable {
 		if(par1World.isRemote){
 			if(mod_SecurityCraft.instance.configHandler.fiveMinAutoShutoff && ((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation()){
 				((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).enableView();
+				return true;
 			}
 		}else{
 			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Right-click the frame with a bound monitor to view it.", EnumChatFormatting.RED);
+				return false;
 			}
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {

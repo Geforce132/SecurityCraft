@@ -1,15 +1,21 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.util.List;
+
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPane;
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +29,8 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
     
 	public BlockReinforcedStainedGlassPanes() {
 		super();
+		ObfuscationReflectionHelper.setPrivateValue(BlockPane.class, this, "glass_reinforced", 2);
+		ObfuscationReflectionHelper.setPrivateValue(BlockPane.class, this, "glass_reinforced_pane_top", 0);
 	}
 	
     public int damageDropped(int par1){
@@ -51,11 +59,16 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	public IIcon func_150104_b(int par1){
 		return topPaneTextures[~par1 & 15];
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
+        for (int i = 0; i < paneTextures.length; i++){
+            par3List.add(new ItemStack(par1Item, 1, i));
+        }
+    }
 
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IIconRegister){
-		super.registerBlockIcons(par1IIconRegister);
-
         for(int i = 0; i < paneTextures.length; ++i){
         	paneTextures[i] = par1IIconRegister.registerIcon(this.getTextureName() + "_" + ItemDye.field_150921_b[func_150103_c(i)]);
         	topPaneTextures[i] = par1IIconRegister.registerIcon(this.getTextureName() + "_pane_top_" + ItemDye.field_150921_b[func_150103_c(i)]);

@@ -231,45 +231,41 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 	
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
-		if(!this.getWorldObj().isRemote){
-			if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
-				}
+		if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
 			}
 		}
 	}
 	
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		if(!this.getWorldObj().isRemote){
-			if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
-				}
-			}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
-					((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
-				}
+		if(this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
+			}
+		}else if(this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module)){
+				((CustomizableSCTE) this.getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
 			}
 		}
 	}
@@ -279,7 +275,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
     
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory.", "test"};
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory.", EnumChatFormatting.UNDERLINE + "Storage module:" + EnumChatFormatting.RESET + "\n\nAdding a storage module will allow the scannners to store the items it deletes in a built-in inventory."};
 	}
 	
 }

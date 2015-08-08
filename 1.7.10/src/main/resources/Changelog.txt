@@ -10,7 +10,7 @@ SecurityCraft v1.8.0:
  - Added reinforced stone and wood stairs.
  - Added electrified iron fence (hurts any entity (except dropped items) when touched, except the owner).
  - Added I.M.S.
- - Added reinforced glass & stained glass.
+ - Added reinforced glass, stained glass, and stained glass panes.
  - Added storage module.
  - Added SecurityCraft manual.
  

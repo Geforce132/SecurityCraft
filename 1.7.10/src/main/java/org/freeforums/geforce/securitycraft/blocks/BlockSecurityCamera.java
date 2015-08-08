@@ -7,6 +7,14 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,17 +27,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCRemoveLGView;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockSecurityCamera extends BlockContainer {
 	
@@ -108,26 +105,6 @@ public class BlockSecurityCamera extends BlockContainer {
         		par1World.isSideSolid(par2, par3, par4 + 1, NORTH);
     }
 	    
-    public boolean canProvidePower(){
-        return true;
-    }
-    
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-    	if(par1IBlockAccess.getTileEntity(par2, par3, par4) != null && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 5 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 6 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8)){
-    		return 15;
-    	}else{
-    		return 0;
-    	}
-    }
-    
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-    	if(par1IBlockAccess.getTileEntity(par2, par3, par4) != null && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 5 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 6 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8)){
-    		return 15;
-    	}else{
-    		return 0;
-    	}
-    }
-    
     public int getLightValue(){
         return isLit ? (int)(15.0F * 1.0F) : 0;
     }

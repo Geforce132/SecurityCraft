@@ -80,19 +80,19 @@ public class BlockKeycardReader extends BlockOwnable {
 	}
 	
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-    	if(par1World.isRemote){
-    		return false;
-    	}
-    	
-    	if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 0)).getItem() || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 1).getItem()) || par5EntityPlayer.getCurrentEquippedItem().getItem() != (new ItemStack(mod_SecurityCraft.keycards, 1, 2).getItem())){
+    	if(!par1World.isRemote){
+    		int meta = par1World.getBlockMetadata(par2, par3, par4);
+    		
     		if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() == null){    	
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 4, par1World, par2, par3, par4);
-		    	return true;
+    			return true;
+    		}else if(meta >= 2 && meta <= 5 && par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase){
+    			insertCard(par1World, par2, par3, par4, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
+    			return true;
     		}
-    	
     	}
     	
-		return false;
+    	return true;
     }
     
     public static void activate(World par1World, int par2, int par3, int par4){
