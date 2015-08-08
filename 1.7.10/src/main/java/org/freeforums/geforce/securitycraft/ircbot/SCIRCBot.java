@@ -69,6 +69,22 @@ public class SCIRCBot extends PircBot{
 		}
     }
     
+	@Override
+	protected void onJoin(String channel, String sender, String login, String hostname)
+	{
+		try
+		{
+			Thread.sleep(2000);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if(sender.equals(this.getNick()))
+			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
+	}
+	
     private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
     	ChatComponentText component = new ChatComponentText(par1String);
     	par2EntityPlayer.addChatComponentMessage(component);
