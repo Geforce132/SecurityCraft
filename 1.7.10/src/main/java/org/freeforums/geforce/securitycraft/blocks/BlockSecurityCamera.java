@@ -27,6 +27,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockSecurityCamera extends BlockContainer {
 	
@@ -51,6 +52,12 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	public int getRenderType(){
 		return -1;
+	}
+	
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return false;
 	}
 	
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
