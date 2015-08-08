@@ -43,6 +43,12 @@ public class BlockAlarm extends BlockContainer {
 		}
 	}
 
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return false;
+	}
+	
 	public boolean isOpaqueCube(){
         return false;
     }

@@ -11,7 +11,9 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -53,24 +55,28 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
-		boolean shouldHurt = true;
-
-		if(entity instanceof EntityItem)
+		if(world.getBlockMetadata(x, y, z) > 3)
 			return;
 		
-		if(world.getBlockMetadata(x, y, z) > 3)
-			shouldHurt = false;
-		
-		if(entity instanceof EntityPlayer)
+		if(entity instanceof EntityItem)
+			return;
+		else if(entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)entity;
 
 			if(((TileEntityOwnable)world.getTileEntity(x, y, z)).getOwnerUUID().equals(player.getUniqueID().toString()))
-				shouldHurt = false;
+				return;
+		}
+		else if(entity instanceof EntityCreeper)
+		{
+			EntityCreeper creeper = (EntityCreeper)entity;
+			EntityLightningBolt lightning = new EntityLightningBolt(world, x, y, z);
+			
+			creeper.onStruckByLightning(lightning);
+			return;
 		}
 
-		if(shouldHurt)
-			entity.attackEntityFrom(CustomDamageSources.fence, 6.0F);
+		entity.attackEntityFrom(CustomDamageSources.fence, 6.0F);
 	}
 
 	/**

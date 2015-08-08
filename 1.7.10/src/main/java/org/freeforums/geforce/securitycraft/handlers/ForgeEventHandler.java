@@ -228,5 +228,4 @@ public class ForgeEventHandler {
     public int getCooldown(){
     	return this.cooldownCounter;
     }
-
 }

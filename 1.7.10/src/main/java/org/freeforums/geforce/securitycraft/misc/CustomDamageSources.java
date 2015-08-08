@@ -16,5 +16,4 @@ public class CustomDamageSources extends DamageSource{
 	public CustomDamageSources(String customType) {
 		super(customType);
 	}
-
 }

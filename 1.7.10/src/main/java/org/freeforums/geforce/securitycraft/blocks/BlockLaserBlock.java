@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 @SuppressWarnings("static-access")
 public class BlockLaserBlock extends BlockContainer {
@@ -31,6 +32,12 @@ public class BlockLaserBlock extends BlockContainer {
      */
     public void onBlockAdded(World par1World, int par2, int par3, int par4){
         super.onBlockAdded(par1World, par2, par3, par4);
+    }
+    
+    @Override
+    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+    {
+    	return true;
     }
     
     /**
