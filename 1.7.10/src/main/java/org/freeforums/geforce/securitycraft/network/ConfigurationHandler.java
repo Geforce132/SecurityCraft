@@ -467,10 +467,6 @@ public class ConfigurationHandler{
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.frame, 1), new Object[]{
 				"III", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.redstone
 			});
-			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
-					"III", "IFP", "III", 'I', Items.iron_ingot, 'F', mod_SecurityCraft.frame, 'P', mod_SecurityCraft.keyPanel
-			});
 		}
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.LaserBlock, 1), new Object[]{
