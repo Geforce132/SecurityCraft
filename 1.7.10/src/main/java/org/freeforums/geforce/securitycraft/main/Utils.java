@@ -227,6 +227,10 @@ public static class BlockUtils{
 		}
 	}
 	
+	public static boolean isBlockAir(World w, int x, int y, int z)
+	{
+		return w.getBlock(x, y, z) == Blocks.air;
+	}
 }
 
 public static class ModuleUtils{
