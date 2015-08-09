@@ -134,7 +134,6 @@ public class mod_SecurityCraft {
     public static Block reinforcedGlass;
     public static Block reinforcedStainedGlass;
     public static Block reinforcedStainedGlassPanes;
-    public static Block blockKeyPanel;
 
     //Items
     public static Item Codebreaker;

@@ -12,7 +12,6 @@ import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerField;
 import org.freeforums.geforce.securitycraft.blocks.BlockIronFence;
 import org.freeforums.geforce.securitycraft.blocks.BlockIronTrapDoor;
-import org.freeforums.geforce.securitycraft.blocks.BlockKeyPanel;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadChest;
@@ -243,8 +242,6 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedGlassBlock");
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlass").setBlockTextureName("securitycraft:glass_reinforced");
 	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlassPanes").setBlockTextureName("securitycraft:glass_reinforced");
-	    
-	    mod_SecurityCraft.blockKeyPanel = new BlockKeyPanel(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setBlockName("blockKeyPanel").setBlockTextureName("securitycraft:keypadUnactive");
 	}
 	
 	public void setupMines(){
@@ -415,7 +412,6 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
-		GameRegistry.registerBlock(mod_SecurityCraft.blockKeyPanel, mod_SecurityCraft.blockKeyPanel.getUnlocalizedName().substring(5));
 		
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));

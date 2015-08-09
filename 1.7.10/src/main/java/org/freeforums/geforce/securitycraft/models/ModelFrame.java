@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * Frame - Geforce
+ * Key Panel - Geforce
  * Created using Tabula 4.1.1
  */
 public class ModelFrame extends ModelBase {
