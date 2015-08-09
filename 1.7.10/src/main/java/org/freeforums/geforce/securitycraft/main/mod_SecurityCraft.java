@@ -109,7 +109,6 @@ public class mod_SecurityCraft {
 	public static Block deactivatedCageTrap;
 	public static Block unbreakableIronBars;
 	public static Block securityCamera;
-	public static Block securityCameraLit;
 	public static Block usernameLogger;
 	public static Block keypadChest;
 	public static Block reinforcedGlassPane;

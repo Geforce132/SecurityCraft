@@ -33,7 +33,7 @@ public interface IPasswordProtected {
      * 
      * The cleanest way to use this is to check if the block at xCoord, yCoord,
      * and zCoord is an instance of your block, if so, call a static method
-     * in your to do your block's function.
+     * to do your block's function.
 	 * 
 	 * @param player The player who entered the password.
 	 */
@@ -55,5 +55,5 @@ public interface IPasswordProtected {
 	 * @param password The new password to be saved.
 	 */	
 	public void setPassword(String password);
-	
+		
 }

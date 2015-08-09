@@ -211,7 +211,7 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.reinforcedGlassPane = new BlockReinforcedGlassPane("securitycraft:glass_reinforced", "glass_pane_top", Material.iron, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedGlass");
 	
-		mod_SecurityCraft.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("alarm").setBlockTextureName("securitycraft:alarmSidesDeactivated");
+		mod_SecurityCraft.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("alarm").setBlockTextureName("securitycraft:alarmParticleTexture");
 	
 		mod_SecurityCraft.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setBlockName("alarmLit");
 	
@@ -228,7 +228,6 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setBlockName("keypadFurnace").setBlockTextureName("securitycraft:keypadUnactive");
 	
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron, false).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("securityCamera").setBlockTextureName("securitycraft:cameraParticleTexture");
-	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron, true).setHardness(1.0F).setResistance(10.F).setBlockName("securityCameraLit").setBlockTextureName("securitycraft:cameraParticleTexture");
 	
 	    mod_SecurityCraft.reinforcedStairsOak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsOak");
 	    mod_SecurityCraft.reinforcedStairsSpruce = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsSpruce");
@@ -401,7 +400,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.claymoreDefused, mod_SecurityCraft.claymoreDefused.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.keypadFurnace);
 		registerBlock(mod_SecurityCraft.securityCamera);
-		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsOak, mod_SecurityCraft.reinforcedStairsOak.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsSpruce, mod_SecurityCraft.reinforcedStairsSpruce.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsBirch, mod_SecurityCraft.reinforcedStairsBirch.getUnlocalizedName().substring(5));

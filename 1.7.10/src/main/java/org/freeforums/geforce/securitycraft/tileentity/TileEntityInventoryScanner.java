@@ -177,6 +177,17 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
         this.markDirty();
 	}
+	
+	public void clearStorage() {
+		for(int i = 10; i < this.inventoryContents.length; i++){
+			if(this.inventoryContents[i] != null){
+				this.inventoryContents[i] = null;
+				break;
+			}
+		}
+
+        this.markDirty();
+	}
 
 	public boolean hasCustomInventoryName() {
 		return true;

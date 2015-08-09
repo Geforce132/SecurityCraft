@@ -155,12 +155,16 @@ public class BlockInventoryScanner extends BlockContainer {
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){	
     	if(par6 == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
     		ModuleUtils.insertModule(par1World, par2 - 2, par3, par4, null);	
+    		((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).clearStorage();
     	}else if(par6 == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
     		ModuleUtils.insertModule(par1World, par2 + 2, par3, par4, null);	
+    		((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).clearStorage();
 		}else if(par6 == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
 			ModuleUtils.insertModule(par1World, par2, par3, par4 - 2, null);	
+    		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).clearStorage();
     	}else if(par6 == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
     		ModuleUtils.insertModule(par1World, par2, par3, par4 + 2, null);	
+    		((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).clearStorage();
     	}
     	
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents().length; i++){
