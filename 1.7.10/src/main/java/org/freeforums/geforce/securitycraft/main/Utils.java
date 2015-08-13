@@ -7,13 +7,18 @@ import java.util.List;
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
+import org.freeforums.geforce.securitycraft.imc.lookingglass.CameraAnimatorSecurityCamera;
+import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.network.ClientProxy;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
+
+import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -36,6 +41,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.Vec3;
@@ -67,26 +73,52 @@ public static class PlayerUtils{
 	 */
 	@SuppressWarnings("rawtypes")
 	public static EntityPlayer getPlayerFromName(String par1){
-    	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-    	Iterator iterator = players.iterator();
-    	
-    	while(iterator.hasNext()){
-    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-    		if(tempPlayer.getCommandSenderName().matches(par1)){
-    			return tempPlayer;
-    		}
-    	}
-    	
-    	return null;
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			List players = Minecraft.getMinecraft().theWorld.playerEntities;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getCommandSenderName().matches(par1)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
+		}else{
+			List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getCommandSenderName().matches(par1)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
+		}
     }
 	
 	/**
-	 * Returns true if a player with the given name is logged on the server.
+	 * Returns true if a player with the given name is in the world.
 	 * 
 	 * Args: playerName.
 	 */
 	public static boolean isPlayerOnline(String par1) {
-    	return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);  	
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
+	    		EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
+	    		
+	    		if(player != null && player.getCommandSenderName().matches(par1)){
+	    			return true;
+	    		}
+	    	}
+			
+			return false;
+		}else{
+			return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);  	
+		}
     }
 	
 	/**
@@ -564,14 +596,61 @@ public static class ClientUtils{
 		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, tag));
 	}
 	
+	/**
+	 * Returns true if the client is hosting a LAN world.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static boolean isInLANWorld(){
+		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
+	}
+	
+	/**
+	 * Creates an {@link IWorldView} object, then adds it to ClientProxy.worldViews.
+	 * 
+	 * Only works on the CLIENT side.
+	 * 
+	 * @param world The world we are in.
+	 * @param dimension The dimension to view. (0 = Overworld, -1 = Nether)
+	 * @param xCoord View X coordinate.
+	 * @param yCoord View Y coordinate.
+	 * @param zCoord View Z coordinate.
+	 * @param viewWidth View width in pixels.
+	 * @param viewHeight View height in pixels.
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void createLookingGlassView(World world, int dimension, int xCoord, int yCoord, int zCoord, int viewWidth, int viewHeight){
+		IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(dimension, new ChunkCoordinates(xCoord, yCoord, zCoord), viewWidth, viewHeight); 
+		
+		lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), world.getBlockMetadata(xCoord, yCoord, zCoord)));
+
+		if(!mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
+			mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
+			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord, new IWorldViewHelper(lgView));		
+		}
+	}
+	
 }
 
 public static class WorldUtils{
 	
+	/**
+	 * Performs a ray trace against all blocks (except liquids) from the starting X, Y, and Z
+	 * to the end point, and returns true if a block is within that path.
+	 * 
+	 * Args: Starting X, Y, Z, ending X, Y, Z.
+	 */
 	public static boolean isPathObstructed(World world, int x1, int y1, int z1, int x2, int y2, int z2){
 		return isPathObstructed(world, (double) x1, (double) y1, (double) z1, (double) x2, (double) y2, (double) z2);
 	}
 
+	/**
+	 * Performs a ray trace against all blocks (except liquids) from the starting X, Y, and Z
+	 * to the end point, and returns true if a block is within that path.
+	 * 
+	 * Args: Starting X, Y, Z, ending X, Y, Z.
+	 */
 	public static boolean isPathObstructed(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
 		return world.rayTraceBlocks(Vec3.createVectorHelper(x1, y1, z1), Vec3.createVectorHelper(x2, y2, z2)) != null;
 	}

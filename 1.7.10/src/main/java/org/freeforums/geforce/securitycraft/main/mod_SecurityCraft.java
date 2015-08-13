@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.commands.CommandModule;
 import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
-import org.freeforums.geforce.securitycraft.commands.CommandSCLog;
 import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
@@ -169,9 +168,6 @@ public class mod_SecurityCraft {
     public void serverStarting(FMLServerStartingEvent event){
     	event.registerServerCommand(new CommandSCHelp());
     	event.registerServerCommand(new CommandModule());  	
-        if(this.debuggingMode){
-    		event.registerServerCommand(new CommandSCLog());
-    	}
     }
    
     @EventHandler

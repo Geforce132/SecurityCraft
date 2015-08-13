@@ -1,25 +1,30 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.imc.lookingglass.CameraAnimatorSecurityCamera;
-import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
-import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CameraShutoffTimer;
-import org.freeforums.geforce.securitycraft.network.ClientProxy;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
 
 
 public class TileEntityFrame extends TileEntityOwnable {
 
 	private int[] boundCameraLocation = new int[3];
 	private boolean shouldShowView = false;
-
+	private boolean createdView = false;
+	
+	public void updateEntity(){
+		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && this.hasCameraLocation() && !mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]) && !createdView){
+			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0 || this.createdView) return; 
+			
+			ClientUtils.createLookingGlassView(worldObj, 0, xCoord, yCoord, zCoord, 192, 192);
+			
+			this.createdView = true;
+		}
+	}
+	
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
 		super.writeToNBT(par1NBTTagCompound);
 
@@ -75,12 +80,13 @@ public class TileEntityFrame extends TileEntityOwnable {
 		
 		if(mod_SecurityCraft.instance.configHandler.fiveMinAutoShutoff){
 			if(!mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
-				IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]), 192, 192); 
-				
-				lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), worldObj.getBlockMetadata(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2])));
-	
-				mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]));
-				((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2], new IWorldViewHelper(lgView));		
+				ClientUtils.createLookingGlassView(worldObj, 0, boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2], 192, 192);
+//				IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]), 192, 192); 
+//				
+//				lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), worldObj.getBlockMetadata(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2])));
+//	
+//				mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]));
+//				((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2], new IWorldViewHelper(lgView));		
 			}
 			
 			new CameraShutoffTimer(this);

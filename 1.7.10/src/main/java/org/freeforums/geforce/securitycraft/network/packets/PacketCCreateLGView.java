@@ -1,11 +1,7 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import org.freeforums.geforce.securitycraft.imc.lookingglass.CameraAnimatorSecurityCamera;
-import org.freeforums.geforce.securitycraft.imc.lookingglass.IWorldViewHelper;
+import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.ClientProxy;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -14,7 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChunkCoordinates;
 
 public class PacketCCreateLGView implements IMessage{
 	
@@ -50,10 +45,11 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCCreateLGView packet, MessageContext ctx) {
 		if(!mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ)){
-			IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(packet.dimension, new ChunkCoordinates(packet.camX, packet.camY, packet.camZ), 192, 192);
-			lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), Minecraft.getMinecraft().theWorld.getBlockMetadata(packet.camX, packet.camY, packet.camZ)));
+			//IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(packet.dimension, new ChunkCoordinates(packet.camX, packet.camY, packet.camZ), 192, 192);
+			//lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), Minecraft.getMinecraft().theWorld.getBlockMetadata(packet.camX, packet.camY, packet.camZ)));
 			
-			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(packet.camX + " " + packet.camY + " " + packet.camZ, new IWorldViewHelper(lgView));		
+			//((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(packet.camX + " " + packet.camY + " " + packet.camZ, new IWorldViewHelper(lgView));	
+			ClientUtils.createLookingGlassView(Minecraft.getMinecraft().theWorld, packet.dimension, packet.camX, packet.camY, packet.camZ, 192, 192);
 		}
 		
 		return null;
