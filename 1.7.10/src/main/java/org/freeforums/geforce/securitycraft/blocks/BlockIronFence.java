@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -59,7 +60,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		{
 			EntityPlayer player = (EntityPlayer)entity;
 
-			if(((TileEntityOwnable)world.getTileEntity(x, y, z)).getOwnerUUID().equals(player.getUniqueID().toString()))
+			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(x, y, z), player));
 				return;
 		}
 		else if(entity instanceof EntityCreeper)

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.freeforums.geforce.securitycraft.api.IExplosive;
 import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -46,7 +47,7 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  			return false;
 		  	  		}
 		  	  		
-		  	  		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable && !((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerUUID().matches(par2EntityPlayer.getGameProfile().getId().toString())){
+		  	  		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable && !BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
 		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't bind a mine that doesn't belong to you.", EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}

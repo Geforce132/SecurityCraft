@@ -79,10 +79,10 @@ public class BlockInventoryScanner extends BlockContainer {
     	if(par1World.isRemote){
     		return true;
     	}else{
-    		
-    		if(((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID() != null && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName() != null){
-    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(par2, par3, par4, ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID(), ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName(), true));
-    		}
+    		//TODO I need to make sure this doesn't break anything. Don't know why this is here....
+//    		if(((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID() != null && ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName() != null){
+//    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(par2, par3, par4, ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerUUID(), ((TileEntityOwnable)par1World.getTileEntity(par2, par3, par4)).getOwnerName(), true));
+//    		}
     		
     		if(this.isFacingAnotherBlock(par1World, par2, par3, par4)){
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, par2, par3, par4);

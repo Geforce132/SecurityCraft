@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.containers;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ public class SlotRestricted extends Slot {
      * Return whether this slot's stack can be taken from this slot.
      */
     public boolean canTakeStack(EntityPlayer par1EntityPlayer){
-    	return (inventoryScannerTE.getOwnerUUID() != null && inventoryScannerTE.getOwnerUUID().matches(par1EntityPlayer.getGameProfile().getId().toString()));
+    	return (BlockUtils.isOwnerOfBlock(inventoryScannerTE, par1EntityPlayer));
     }
     
     public void putStack(ItemStack p_75215_1_){

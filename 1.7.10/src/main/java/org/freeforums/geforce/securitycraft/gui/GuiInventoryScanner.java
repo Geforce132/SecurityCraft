@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.gui;
 
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
@@ -55,7 +56,7 @@ public class GuiInventoryScanner extends GuiContainer {
     	super.initGui();
     	Keyboard.enableRepeatEvents(true); 		
     		
-		if(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID())){
+		if(BlockUtils.isOwnerOfBlock(tileEntity, playerObj)){
 			this.buttonList.add(this.typeButton = new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
 		}
     }
@@ -132,9 +133,9 @@ public class GuiInventoryScanner extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-        this.fontRendererObj.drawString(playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID()) ? (EnumChatFormatting.UNDERLINE + "Admin Mode") : (EnumChatFormatting.UNDERLINE + "View Mode"), 112, 6, 4210752);
+        this.fontRendererObj.drawString(BlockUtils.isOwnerOfBlock(tileEntity, playerObj) ? (EnumChatFormatting.UNDERLINE + "Admin Mode") : (EnumChatFormatting.UNDERLINE + "View Mode"), 112, 6, 4210752);
         
-        if(hasStorageModule && playerObj.getGameProfile().getId().toString().matches(this.tileEntity.getOwnerUUID())){
+        if(hasStorageModule && BlockUtils.isOwnerOfBlock(tileEntity, playerObj)){
         	this.fontRendererObj.drawString("Storage", 183, 6, 4210752);
         }
         

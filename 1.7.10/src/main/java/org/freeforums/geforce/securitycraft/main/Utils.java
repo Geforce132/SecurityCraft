@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.imc.lookingglass.CameraAnimatorSecurityCamera;
@@ -151,6 +152,19 @@ public static class PlayerUtils{
         par1ICommandSender.addChatMessage(chatcomponenttext);
 	}
 	
+	/**
+	 * Returns true if the player is holding the given item.
+	 * 
+	 * Args: player, item.
+	 */
+	public static boolean isHoldingItem(EntityPlayer player, Item item){
+		if(item == null && player.getCurrentEquippedItem() == null){
+			return true;
+		}
+		
+		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
+	}
+	
 }
 
 public static class BlockUtils{
@@ -257,6 +271,30 @@ public static class BlockUtils{
 		}else{
 			return false;
 		}
+	}
+	
+	/**
+	 * Returns true if the player is the owner of the given block.
+	 * 
+	 * Args: block's TileEntity, player.
+	 */
+	public static boolean isOwnerOfBlock(IOwnable block, EntityPlayer player){
+		if(!(block instanceof IOwnable) || block == null){
+			throw new ClassCastException("You must provide an instance of IOwnable when using Utils.isOwnerOfBlock!");
+		}
+		
+		String uuid = block.getOwnerUUID();
+		String owner = block.getOwnerName();
+		
+		if(uuid != null && !uuid.matches("ownerUUID")){
+			return uuid.matches(player.getGameProfile().getId().toString());
+		}
+		
+		if(owner != null && !owner.matches("owner")){
+			return owner.matches(player.getCommandSenderName());
+		}
+		
+		return false;
 	}
 	
 }
