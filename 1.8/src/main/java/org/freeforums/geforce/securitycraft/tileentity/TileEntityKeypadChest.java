@@ -1,10 +1,10 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
-
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
 	

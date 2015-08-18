@@ -1,5 +1,9 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -15,12 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-
-public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpInfo {
+public class BlockFurnaceMine extends BlockOwnable implements IExplosive {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -110,14 +109,6 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, IHelpI
 	
 	public boolean isDefusable() {
 		return false;
-	}
-
-	public String getHelpInfo() {
-		return "The furnace mine will explode when a player right-clicks on it.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The furnace mine requires: 1 furnace, 1 mine. This is a shapeless recipe."};
 	}
 
 }

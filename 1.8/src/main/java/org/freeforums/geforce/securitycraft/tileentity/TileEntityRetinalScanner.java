@@ -1,8 +1,9 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import net.minecraft.util.EnumChatFormatting;
-
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
+import net.minecraft.util.EnumChatFormatting;
 
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {

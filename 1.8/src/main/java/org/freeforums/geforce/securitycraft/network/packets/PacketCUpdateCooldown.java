@@ -1,13 +1,13 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class PacketCUpdateCooldown implements IMessage{
 	

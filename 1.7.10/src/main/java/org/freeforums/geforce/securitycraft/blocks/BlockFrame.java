@@ -68,13 +68,13 @@ public class BlockFrame extends BlockOwnable {
 				return true;
 			}
 		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.keyPanel)
-				return false;
-			
 			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Right-click the frame with a bound monitor to view it.", EnumChatFormatting.RED);
 				return false;
 			}
+			
+			if(PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.keyPanel))
+				return false;
 		}
 		
 		return false;

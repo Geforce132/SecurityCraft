@@ -1,5 +1,9 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,12 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class BlockLogger extends BlockContainer implements IHelpInfo {
+public class BlockLogger extends BlockContainer {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -91,10 +90,6 @@ public class BlockLogger extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
-	}
-
-	public String getHelpInfo() {
-		return "The username logger will log any player's name within 3 blocks when it is powered by redstone.";
 	}
 
 	public String[] getRecipe() {

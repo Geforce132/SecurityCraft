@@ -2,6 +2,11 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -14,12 +19,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityReinforcedDoor;
 
 public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvider{
     
@@ -144,13 +143,13 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	private boolean hasActiveKeypadNextTo(World par1World, BlockPos pos){
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.east(), BlockKeypad.POWERED)).booleanValue()){
+    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.Keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.east(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.west(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.Keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.west(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.south(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.Keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.south(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue()){
+    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.Keypad && ((Boolean) BlockUtils.getBlockProperty(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue()){
     		return true;
     	}else{
     		return false;
@@ -158,13 +157,13 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     }
     
     private boolean hasActiveReaderNextTo(World par1World, BlockPos pos){
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keycardReader && ((TileEntityKeycardReader)par1World.getTileEntity(pos.east())).getIsProvidingPower()){
+    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockKeycardReader.POWERED)){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keycardReader && ((TileEntityKeycardReader)par1World.getTileEntity(pos.west())).getIsProvidingPower()){
+    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.west(), BlockKeycardReader.POWERED)){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keycardReader && ((TileEntityKeycardReader)par1World.getTileEntity(pos.south())).getIsProvidingPower()){
+    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockKeycardReader.POWERED)){
     		return true;
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keycardReader && ((TileEntityKeycardReader)par1World.getTileEntity(pos.north())).getIsProvidingPower()){
+    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockKeycardReader.POWERED)){
     		return true;
     	}else{
     		return false;
@@ -186,13 +185,11 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     }
 
 	@SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos)
-    {
+    public Item getItem(World world, BlockPos pos){
 		return mod_SecurityCraft.doorIndestructableIronItem;
     }
 	
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
-    {
+	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.doorIndestructableIronItem;
     }
 

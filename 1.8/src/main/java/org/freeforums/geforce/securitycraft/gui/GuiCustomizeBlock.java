@@ -1,5 +1,11 @@
 package org.freeforums.geforce.securitycraft.gui;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
+import org.freeforums.geforce.securitycraft.gui.components.GuiPictureButton;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,18 +15,12 @@ import net.minecraftforge.fml.client.config.HoverChecker;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.containers.ContainerCustomizeBlock;
-import org.freeforums.geforce.securitycraft.gui.components.GuiPictureButton;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.lwjgl.opengl.GL11;
-
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
 	
     private CustomizableSCTE tileEntity;
     private HoverChecker[] hoverCheckers = new HoverChecker[5];
-
+    
     public GuiCustomizeBlock(InventoryPlayer par1InventoryPlayer, CustomizableSCTE par2TileEntity)
     {
         super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
@@ -31,7 +31,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", this.itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
+    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.getCustomizableOptions()[i])), "");
     		this.buttonList.add(button);
     		this.hoverCheckers[i] = new HoverChecker(button, 20);
     	}
@@ -42,11 +42,11 @@ public class GuiCustomizeBlock extends GuiContainer{
     	
     	for(int i = 0; i < hoverCheckers.length; i++){
     		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-    			this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(tileEntity.getOptionDescriptions()[i], 150), mouseX, mouseY);
+    			this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(tileEntity.getOptionDescriptions()[i], 150), mouseX, mouseY, this.mc.fontRendererObj);
     		}
     	}
     }
-    
+
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */

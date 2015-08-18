@@ -40,9 +40,9 @@ public class PacketCUpdateNBTTag implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCUpdateNBTTag, IMessage> {
 
 	@SideOnly(Side.CLIENT)
-	public IMessage onMessage(PacketCUpdateNBTTag message, MessageContext ctx) {
-		if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(message.itemName)){
-			Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().setTagCompound(message.stack);	
+	public IMessage onMessage(PacketCUpdateNBTTag packet, MessageContext ctx) {
+		if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+			Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().setTagCompound(packet.stack);;	
 		}
 		
 		return null;

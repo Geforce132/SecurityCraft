@@ -6,8 +6,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 
 public class ContainerCustomizeBlock extends Container{
 	
@@ -21,6 +21,10 @@ public class ContainerCustomizeBlock extends Container{
 		}else if(tileEntity.getNumberOfCustomizableOptions() == 2){
 			this.addSlotToContainer(new ModuleSlot(tileEntity, 0, 70, 20));
 			this.addSlotToContainer(new ModuleSlot(tileEntity, 1, 88, 20));
+		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 0, 61, 20));
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 1, 79, 20));
+			this.addSlotToContainer(new ModuleSlot(tileEntity, 2, 97, 20));
 		}
 		
 		for(int i = 0; i < 3; i++){
@@ -34,27 +38,36 @@ public class ContainerCustomizeBlock extends Container{
         }
 	}
 	
-    public ItemStack transferStackInSlot(EntityPlayer par1, int par2){
+    public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
+    {
     	ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(par2);
 
-        if (slot != null && slot.getHasStack()){
+        if (slot != null && slot.getHasStack())
+        {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (par2 < this.tileEntity.getSizeInventory()){
-                if (!this.mergeItemStack(itemstack1, 0, 35, true)){
+            if (par2 < this.tileEntity.getSizeInventory())
+            {
+                if (!this.mergeItemStack(itemstack1, 0, 35, true))
+                {
                     return null;
                 }else{
                 	this.tileEntity.onModuleRemoved(itemstack1, CustomizableSCTE.getTypeFromModule(itemstack1));
                 }
-            }else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getOptions().contains(CustomizableSCTE.getTypeFromModule(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false)){
+            }
+            else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getOptions().contains(CustomizableSCTE.getTypeFromModule(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))
+            {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0){
+            if (itemstack1.stackSize == 0)
+            {
                 slot.putStack((ItemStack)null);
-            }else{
+            }
+            else
+            {
                 slot.onSlotChanged();
             }
             

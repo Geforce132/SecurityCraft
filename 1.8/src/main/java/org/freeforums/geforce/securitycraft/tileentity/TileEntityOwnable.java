@@ -1,11 +1,11 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	

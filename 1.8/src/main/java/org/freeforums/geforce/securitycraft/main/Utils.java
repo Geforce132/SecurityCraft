@@ -4,36 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
@@ -42,8 +18,36 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
-import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
-import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Utils {
 
@@ -51,30 +55,88 @@ public class Utils {
 
 public static class PlayerUtils{
 	
+	/**
+	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p>
+	 * 
+	 * Args: playerName.
+	 */
 	@SuppressWarnings("rawtypes")
 	public static EntityPlayer getPlayerFromName(String par1){
-    	List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-    	Iterator iterator = players.iterator();
-    	
-    	while(iterator.hasNext()){
-    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-    		if(tempPlayer.getName().matches(par1)){
-    			return tempPlayer;
-    		}
-    	}
-    	
-    	return null;
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			List players = Minecraft.getMinecraft().theWorld.playerEntities;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getName().matches(par1)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
+		}else{
+			List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getName().matches(par1)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
+		}
     }
 	
-	public static EntityPlayerMP getPlayerByUUID(String uuid){
-		for(int i = 0; i < MinecraftServer.getServer().getConfigurationManager().playerEntityList.size(); i++){
-			if(((EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(i)).getGameProfile().getId().toString().matches(uuid)){
-				return (EntityPlayerMP) MinecraftServer.getServer().getConfigurationManager().playerEntityList.get(i);
-			}
+	public static EntityPlayer getPlayerByUUID(String uuid){
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			List players = Minecraft.getMinecraft().theWorld.playerEntities;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getGameProfile().getId().toString().matches(uuid)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
+		}else{
+			List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	    	Iterator iterator = players.iterator();
+	    	
+	    	while(iterator.hasNext()){
+	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+	    		if(tempPlayer.getGameProfile().getId().toString().matches(uuid)){
+	    			return tempPlayer;
+	    		}
+	    	}
+	    	
+	    	return null;
 		}
-		
-		return null;
 	}
+	
+	/**
+	 * Returns true if a player with the given name is in the world.
+	 * 
+	 * Args: playerName.
+	 */
+	public static boolean isPlayerOnline(String par1) {
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
+	    		EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
+	    		
+	    		if(player != null && player.getName().matches(par1)){
+	    			return true;
+	    		}
+	    	}
+			
+			return false;
+		}else{
+			return (MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(par1) != null);  	
+		}
+    }
 	
 	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
         ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
@@ -346,6 +408,38 @@ public static class BlockUtils{
 		return null;
 	}
 	
+	/**
+	 * Returns true if the player is the owner of the given block.
+	 * 
+	 * Args: block's TileEntity, player.
+	 */
+	public static boolean isOwnerOfBlock(IOwnable block, EntityPlayer player){
+		if(!(block instanceof IOwnable) || block == null){
+			throw new ClassCastException("You must provide an instance of IOwnable when using Utils.isOwnerOfBlock!");
+		}
+		
+		String uuid = block.getOwnerUUID();
+		String owner = block.getOwnerName();
+		
+		if(uuid != null && !uuid.matches("ownerUUID")){
+			return uuid.matches(player.getGameProfile().getId().toString());
+		}
+		
+		if(owner != null && !owner.matches("owner")){
+			return owner.matches(player.getName());
+		}
+		
+		return false;
+	}
+	
+	public static BlockPos toPos(int x, int y, int z){
+		return new BlockPos(x, y, z);
+	}
+	
+	public static int[] fromPos(BlockPos pos){
+		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
+	}
+	
 }
 
 public static class ModuleUtils{
@@ -515,7 +609,6 @@ public static class ModuleUtils{
 		if(te instanceof TileEntityKeypad){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
-				new ScheduleUpdate(par1World, 3, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 			
@@ -526,8 +619,6 @@ public static class ModuleUtils{
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
-				((TileEntityKeycardReader) te).setIsProvidingPower(true);
-				new ScheduleKeycardUpdate(3, par1World, pos.getX(), pos.getY(), pos.getZ());
 				par1World.notifyNeighborsOfStateChange(pos, par1World.getBlockState(pos).getBlock());
 				return true;
 			}
@@ -577,9 +668,108 @@ public static class ClientUtils{
 	
 	@SideOnly(Side.CLIENT)
 	public static void closePlayerScreen(){
-		Minecraft.getMinecraft().displayGuiScreen((GuiScreen)null);
-		Minecraft.getMinecraft().setIngameFocus();
+		Minecraft.getMinecraft().thePlayer.closeScreen();
 	}
+	
+	/**
+	 * Sets the "zoom" of the client's view.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void setCameraZoom(double zoom){
+		if(zoom == 0){
+			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1.0D, 48);
+			return;
+		}
+		
+		double tempZoom = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48);
+		ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, tempZoom + zoom, 48);
+	}
+	
+	/**
+	 * Gets the "zoom" of the client's view.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static double getCameraZoom(){
+		return ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48);
+	}
+	
+	/**
+	 * Takes a screenshot, and sends the player a notification. <p>
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void takeScreenshot() {
+        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+        	Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().mcDataDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer()));	
+        }
+	}
+	
+	/**
+	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static String getFormattedMinecraftTime(){
+		Long time = Long.valueOf(Minecraft.getMinecraft().theWorld.provider.getWorldTime());
+		
+		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
+		int hours = hours24 % 12;
+		int minutes = (int) ((float) time.longValue() / 16.666666F % 60.0F);
+		
+		return String.format("%02d:%02d %s", new Object[]{Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM"});
+	}
+	
+	/**
+	 * Sends the client-side NBTTagCompound of a block's TileEntity to the server.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void syncTileEntity(TileEntity tileEntity){
+		NBTTagCompound tag = new NBTTagCompound();                
+		tileEntity.writeToNBT(tag);
+		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
+	}
+	
+	/**
+	 * Returns true if the client is hosting a LAN world.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static boolean isInLANWorld(){
+		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
+	}
+}
+
+public static class WorldUtils{
+	
+	/**
+	 * Performs a ray trace against all blocks (except liquids) from the starting X, Y, and Z
+	 * to the end point, and returns true if a block is within that path.
+	 * 
+	 * Args: Starting X, Y, Z, ending X, Y, Z.
+	 */
+	public static boolean isPathObstructed(World world, int x1, int y1, int z1, int x2, int y2, int z2){
+		return isPathObstructed(world, (double) x1, (double) y1, (double) z1, (double) x2, (double) y2, (double) z2);
+	}
+
+	/**
+	 * Performs a ray trace against all blocks (except liquids) from the starting X, Y, and Z
+	 * to the end point, and returns true if a block is within that path.
+	 * 
+	 * Args: Starting X, Y, Z, ending X, Y, Z.
+	 */
+	public static boolean isPathObstructed(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
+		return world.rayTraceBlocks(new Vec3(x1, y1, z1), new Vec3(x2, y2, z2)) != null;
+	}
+	
 }
 
 	/**
@@ -638,21 +828,5 @@ public static class ClientUtils{
 			return false;
 		}
 	}
-	
-	//	private static void bookCode(){
-	//		ItemStack book = new ItemStack(Items.written_book);
-	//		
-	//		NBTTagCompound tag = new NBTTagCompound();
-	//		NBTTagList bookPages = new NBTTagList();
-	//		bookPages.appendTag(new NBTTagString("SecurityCraft " + mod_SecurityCraft.getVersion() + " info book."));
-	//		bookPages.appendTag(new NBTTagString("Keypad: \n \nThe keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds."));
-	//		bookPages.appendTag(new NBTTagString("Laser block: The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal."));
-	//		
-	//		book.setTagInfo("pages", bookPages);
-	//		book.setTagInfo("author", new NBTTagString("Geforce"));
-	//		book.setTagInfo("title", new NBTTagString("SecurityCraft"));
-	//		
-	//		player.inventory.addItemStackToInventory(book);
-	//	}
-	
+    
 }

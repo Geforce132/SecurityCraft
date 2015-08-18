@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -12,11 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class BlockPanicButton extends BlockButton implements ITileEntityProvider, IHelpInfo {
+public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
 
 	public BlockPanicButton() {
 		super(false);
@@ -172,13 +171,5 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
             }
         }
     }
-
-	public String getHelpInfo() {
-		return "The panic button looks like a button, but works the same way as a lever.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The panic button requires: 3 iron ingots, 1 stone button, 1 redstone", " X ", "XYX", " Z ", "X = iron ingot, Y = stone button, Z = redstone"};
-	}
 
 }

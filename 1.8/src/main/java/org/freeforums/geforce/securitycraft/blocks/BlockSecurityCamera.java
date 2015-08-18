@@ -1,5 +1,7 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -8,7 +10,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -16,9 +17,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 public class BlockSecurityCamera extends BlockContainer{
 
@@ -42,12 +40,6 @@ public class BlockSecurityCamera extends BlockContainer{
 		return false;
 	}
 
-    public void mountCamera(World world, BlockPos pos, EntityPlayer player) {
-    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, pos.getX(), pos.getY(), pos.getZ(), 1);
-		world.spawnEntityInWorld(dummyEntity);
-		player.mountEntity(dummyEntity);
-	}     
-	    
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */

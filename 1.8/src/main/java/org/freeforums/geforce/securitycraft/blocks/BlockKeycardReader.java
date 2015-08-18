@@ -2,9 +2,18 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -21,19 +30,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
-import org.freeforums.geforce.securitycraft.timers.ScheduleKeycardUpdate;
-
-public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
+public class BlockKeycardReader extends BlockOwnable  {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    
+    public static final PropertyBool POWERED = PropertyBool.create("powered");
+
 	public BlockKeycardReader(Material par2Material) {
 		super(par2Material);
 	}
@@ -77,7 +78,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 	public void insertCard(World par1World, BlockPos pos, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {		
 		if(ModuleUtils.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
-		if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
+		if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			if(((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) == 6 && par5ItemStack.getTagCompound() != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.getTagCompound().setInteger("Uses", par5ItemStack.getTagCompound().getInteger("Uses") - 1);
 				
@@ -86,12 +87,11 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 				}
 			}
 			
-			((TileEntityKeycardReader)par1World.getTileEntity(pos)).setIsProvidingPower(true);
-			new ScheduleKeycardUpdate(3, par1World, pos.getX(), pos.getY(), pos.getZ());
+			BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
 			par1World.notifyNeighborsOfStateChange(pos, this);
 		}else{
-			if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() != 0){
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassLV() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
+			if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0){
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
 			}else{
 				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard reader's security level not set!", EnumChatFormatting.RED);
 			}
@@ -105,7 +105,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
     	}
     	
     	if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV1 || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV2 || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV3){
-    		if(((TileEntityKeycardReader) par1World.getTileEntity(pos)).getPassLV() == 0){    	
+    		if(((TileEntityKeycardReader) par1World.getTileEntity(pos)).getPassword() == null){    	
 		    	par5EntityPlayer.openGui(mod_SecurityCraft.instance, 4, par1World, pos.getX(), pos.getY(), pos.getZ());
 		    	return true;
     		}
@@ -120,7 +120,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
      */
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-    	if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getIsProvidingPower()){
+    	if(((Boolean) state.getValue(POWERED))){
             double d0 = (double)((float)pos.getX() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
             double d1 = (double)((float)pos.getY() + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
             double d2 = (double)((float)pos.getZ() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
@@ -143,7 +143,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
     {
-    	if(((TileEntityKeycardReader)par1IBlockAccess.getTileEntity(pos)).getIsProvidingPower()){
+    	if(((Boolean) state.getValue(POWERED))){
     		return 15;
     	}else{
     		return 0;
@@ -160,7 +160,7 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
     
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
     
     @SideOnly(Side.CLIENT)
@@ -171,29 +171,29 @@ public class BlockKeycardReader extends BlockOwnable implements IHelpInfo {
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);    
+        if(meta <= 5){
+        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+        }else{
+        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
+        }
     }
 
     public int getMetaFromState(IBlockState state)
-    {   	
-    	return ((EnumFacing) state.getValue(FACING)).getIndex(); 	
+    {
+    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	}else{
+    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    	}
     }
-    
+
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockState(this, new IProperty[] {FACING, POWERED});
     }
     
     public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityKeycardReader();
-	}
-
-	public String getHelpInfo() {
-		return "The keycard reader emits a 15-block redstone redstone signal if you insert a keycard with a security level equal to or higher then (as specified in the GUI) the level selected in the reader's GUI.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The keycard reader requires: 8 stone, 1 hopper", "XXX", "XYX", "XXX", "X = stone, Y = hopper"};
 	}
 
 }

@@ -7,10 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerGeneric extends Container {
 	
-	/**
-	 * Blank, empty Container for use with GUIs that don't have any inventory slots.
-	 * 
-	 */
 	public ContainerGeneric(InventoryPlayer inventory, TileEntity te){
 		
 	}

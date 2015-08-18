@@ -2,6 +2,9 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -19,11 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
-
-public class BlockAlarm extends BlockOwnable implements IHelpInfo{
+public class BlockAlarm extends BlockOwnable {
 	
 	private final boolean isLit;
     public static final PropertyEnum FACING = PropertyDirection.create("facing");
@@ -246,14 +245,6 @@ public class BlockAlarm extends BlockOwnable implements IHelpInfo{
 		return new TileEntityAlarm();
 	}
 
-	public String getHelpInfo() {
-		return "The alarm will emit a siren sound effect whenever it is powered by redstone, and in 2-second intervals after that (modifiable in the config file).";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The alarm requires: 7 glass, 1 note block, 1 redstone", "XXX", "XYX", "XZX", "X = glass, Y = note block, Z = redstone"};
-	}
-	
     static final class SwitchEnumFacing{
         static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
 

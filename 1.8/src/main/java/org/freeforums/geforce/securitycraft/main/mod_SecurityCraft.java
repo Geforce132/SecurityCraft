@@ -1,7 +1,20 @@
 package org.freeforums.geforce.securitycraft.main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
+import org.freeforums.geforce.securitycraft.commands.CommandModule;
+import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
+import org.freeforums.geforce.securitycraft.imc.versionchecker.VersionUpdateChecker;
+import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.misc.SCManualPage;
+import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
+import org.freeforums.geforce.securitycraft.network.ServerProxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
@@ -17,37 +30,25 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.commands.CommandModule;
-import org.freeforums.geforce.securitycraft.commands.CommandSCHelp;
-import org.freeforums.geforce.securitycraft.commands.CommandSCLog;
-import org.freeforums.geforce.securitycraft.gui.GuiHandler;
-import org.freeforums.geforce.securitycraft.handlers.ForgeEventHandler;
-import org.freeforums.geforce.securitycraft.ircbot.SCIRCBot;
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.network.ConfigurationHandler;
-import org.freeforums.geforce.securitycraft.network.ServerProxy;
-
-@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.FORGEVERSION)
+@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "org.freeforums.geforce.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES)
 @SuppressWarnings({"static-access"})
 public class mod_SecurityCraft {
 	
 	public static boolean debuggingMode;
 	
 	public static final String MODID = "securitycraft";
-	private static final String MOTU = "Thanks for all your suggestions!";
-    
-	//TODO UPDATE 'RECIPES' and 'HELP' ArrayList's.
+	private static final String MOTU = "Finally! Cameras!";
+	
 	//TODO ********************************* This is v1.8.0 for MC 1.8!
 	protected static final String VERSION = "v1.8.0";
-	protected static final String FORGEVERSION = "required-after:Forge@[11.14.0.1252,)";
+	protected static final String DEPENDENCIES = "required-after:Forge@[11.14.1.1338,)";
 	
 	
 	@SidedProxy(clientSide = "org.freeforums.geforce.securitycraft.network.ClientProxy", serverSide = "org.freeforums.geforce.securitycraft.network.ServerProxy")
@@ -62,12 +63,13 @@ public class mod_SecurityCraft {
 	
 	public static ForgeEventHandler eventHandler = new ForgeEventHandler();
 	
-	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical(CreativeTabs.getNextID(),"tabSecurityCraft");
-	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives(CreativeTabs.getNextID(),"tabSecurityCraft");
-
 	private GuiHandler GuiHandler = new GuiHandler();
 	
-	private HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
+	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
+	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
+	
+	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
+
 	private NBTTagCompound savedModule;
 	
 	public static Configuration configFile;	
@@ -75,10 +77,9 @@ public class mod_SecurityCraft {
 	//Blocks
 	public static Block LaserBlock;
 	public static Block Laser;
-	public static Block keypad;
-	public static Block keypadFrame;
-	public static Block LaserActive;
-	public static Block Mine;
+	public static Block Keypad;
+	public static BlockMine Mine;
+	public static BlockMine MineCut;
 	public static Block DirtMine;
 	public static Block StoneMine;
 	public static Block CobblestoneMine;
@@ -104,21 +105,29 @@ public class mod_SecurityCraft {
 	public static Block securityCamera;
 	public static Block usernameLogger;
 	public static Block keypadChest;
-	public static Block reinforcedGlass;
+	public static Block reinforcedGlassPane;
 	public static Block alarm;
 	public static Block alarmLit;
 	public static Block reinforcedStone;
 	public static Block reinforcedFencegate;
-	public static Block reinforcedPlanks_Oak;
-	public static Block reinforcedPlanks_Spruce;
-	public static Block reinforcedPlanks_Birch;
-	public static Block reinforcedPlanks_Jungle;
-	public static Block reinforcedPlanks_Acadia;
-	public static Block reinforcedPlanks_DarkOak;
-	public static Block keypadFurnace;
+	public static Block reinforcedWoodPlanks;
 	public static Block panicButton;
+	public static Block frame;
 	public static Block claymore;
-	
+	public static Block keypadFurnace;
+	public static Block reinforcedStairsStone;
+	public static Block reinforcedStairsOak;
+	public static Block reinforcedStairsSpruce;
+    public static Block reinforcedStairsBirch;
+    public static Block reinforcedStairsJungle;
+    public static Block reinforcedStairsAcacia;
+    public static Block reinforcedStairsDarkoak;
+    public static Block ironFence;
+    public static Block ims;
+    public static Block reinforcedGlass;
+    public static Block reinforcedStainedGlass;
+    public static Block reinforcedStainedGlassPanes;
+
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
@@ -133,29 +142,31 @@ public class mod_SecurityCraft {
     public static Item fWaterBucket;
     public static Item fLavaBucket;
     public static Item universalBlockModifier;
-    public static Item wireCutters;
-    public static Item keypadItem;
-    public static Item adminTool;
-    public static Item cameraMonitor;
-    public static Item tazer;
-    
+	public static Item wireCutters;
+	public static Item keyPanel;
+	public static Item adminTool;
+	public static Item cameraMonitor;
+	public static Item taser;
+	public static Item scManual;
+
     //Modules
     public static ItemModule redstoneModule;
     public static ItemModule whitelistModule;
     public static ItemModule blacklistModule;
     public static ItemModule harmingModule;
     public static ItemModule smartModule;
-    
+    public static ItemModule storageModule;
+
     public static Item testItem;
- 
+    
+	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
+	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
+	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
     
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){
     	event.registerServerCommand(new CommandSCHelp());
-    	event.registerServerCommand(new CommandModule());
-    	if(this.debuggingMode){
-    		event.registerServerCommand(new CommandSCLog());
-    	}
+    	event.registerServerCommand(new CommandModule());  	
     }
    
     @EventHandler
@@ -173,7 +184,8 @@ public class mod_SecurityCraft {
 		mod_SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(mod_SecurityCraft.MODID);
 		this.configHandler.setupPackets(mod_SecurityCraft.network);
 		log("Network setup.");
-		log("Loading mod additions...");
+		
+		log("Loading mod additions....");
 		this.configHandler.setupAdditions();
 		
 		if(this.debuggingMode){
@@ -184,11 +196,9 @@ public class mod_SecurityCraft {
 		log("Doing registering stuff... (PT 1/2)");
 		this.configHandler.setupGameRegistry();
 		
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);
-
 		ModMetadata modMeta = event.getModMetadata();
         modMeta.authorList = Arrays.asList(new String[] {
-            "Geforce"
+            "Geforce, bl4ckscor3"
         });
         modMeta.autogenerated = false;
         modMeta.credits = "Thanks to all of you guys for your support!";
@@ -197,12 +207,20 @@ public class mod_SecurityCraft {
 	}
 	
 	@EventHandler
-	@SideOnly(Side.CLIENT)
 	public void init(FMLInitializationEvent event){
-		this.configHandler.setupTextureRegistry();
+		log("Setting up inter-mod stuff...");
 		
+		FMLInterModComms.sendMessage("Waila", "register", "org.freeforums.geforce.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
+		
+		NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+		if(vcUpdateTag != null){
+			FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
+		}
+			
 		log("Doing registering stuff... (PT 2/2)");
 		
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);
+
 		this.configHandler.setupEntityRegistry();
 		serverProxy.registerRenderThings();
 	}
@@ -213,6 +231,54 @@ public class mod_SecurityCraft {
 		log("Mod finished loading correctly! :D");
 	}
 	
+	/**
+	 * Get the IRC bot for the given player.
+	 */
+	public SCIRCBot getIrcBot(String playerName) {
+		return ircBots.get(playerName);
+	}
+	
+	/**
+	 * Create an IRC bot for the given player.
+	 */
+	public void createIrcBot(String playerName) {
+		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
+	}
+	
+	/**
+	 * Remove/delete the given player's IRC bot.
+	 */
+	public void removeIrcBot(String playerName){
+		ircBots.remove(playerName);
+	}
+	
+	public Object[] getUsePosition(String playerName) {
+		return cameraUsePositions.get(playerName);
+	}
+
+	public void setUsePosition(String playerName, double x, double y, double z, float yaw, float pitch) {
+		cameraUsePositions.put(playerName, new Object[]{x, y, z, yaw, pitch});
+	}
+	
+	public boolean hasUsePosition(String playerName) {
+		return cameraUsePositions.containsKey(playerName);
+	}
+	
+	public void removeUsePosition(String playerName){
+		cameraUsePositions.remove(playerName);
+	}
+
+	public NBTTagCompound getSavedModule() {
+		return savedModule;
+	}
+
+	public void setSavedModule(NBTTagCompound savedModule) {
+		this.savedModule = savedModule;
+	}
+	
+	/**
+	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
+	 */
 	public static void log(String par1){
 		log(par1, false);
 	}
@@ -227,24 +293,4 @@ public class mod_SecurityCraft {
 		return VERSION;
 	}
 	
-	public SCIRCBot getIrcBot(String playerName) {
-		return ircBots.get(playerName);
-	}
-
-	public void setIrcBot(String playerName) {
-		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
-	}
-	
-	public void removeIrcBot(String playerName) {
-		ircBots.remove(playerName);
-	}
-
-	public NBTTagCompound getSavedModule() {
-		return savedModule;
-	}
-
-	public void setSavedModule(NBTTagCompound savedModule) {
-		this.savedModule = savedModule;
-	}
-		
 }

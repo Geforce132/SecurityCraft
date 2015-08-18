@@ -1,15 +1,16 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 public class PacketSetISType implements IMessage{
 	
@@ -46,16 +47,14 @@ public class PacketSetISType implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetISType, IMessage> {
 	
 	public IMessage onMessage(PacketSetISType packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
+		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		
-		((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).setType(packet.type);
+		((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).setType(packet.type);
 		
 		mod_SecurityCraft.log("Setting type to " + packet.type);
-		getWorld(context.getServerHandler().playerEntity).scheduleUpdate(new BlockPos(x, y, z), getWorld(context.getServerHandler().playerEntity).getBlockState(new BlockPos(x, y, z)).getBlock(), 1);
+		getWorld(context.getServerHandler().playerEntity).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().playerEntity), pos), 1);
 		
-		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), new BlockPos(x, y, z), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(new BlockPos(x, y, z))).getType());			
+		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getType());			
 		
 		return null;
 	}

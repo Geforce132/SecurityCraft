@@ -1,47 +1,24 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class TileEntityKeycardReader extends CustomizableSCTE{
+public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
 
 	private int passLV = 0;
-	private boolean isGivingPower = false;
 	private boolean requiresExactKeycard = false;
 	
-	public int getPassLV(){
-    	return passLV;
-    }
-    
-    public void setPassLV(int par1){
-    	passLV = par1;
-    }
-    
-    public boolean getIsProvidingPower(){
-    	return isGivingPower;
-    }
-    
-    public void setIsProvidingPower(boolean par1){
-    	isGivingPower = par1;
-    }
-    
-    public void setRequiresExactKeycard(boolean par1) {
-    	requiresExactKeycard = par1;
-	}
-    
-    public boolean doesRequireExactKeycard() {
-    	return requiresExactKeycard;
-	}
-    
-    
-    
-    /**
+	/**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("passLV", this.passLV);
         par1NBTTagCompound.setBoolean("requiresExactKeycard", this.requiresExactKeycard);
@@ -50,8 +27,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.hasKey("passLV"))
@@ -62,9 +38,31 @@ public class TileEntityKeycardReader extends CustomizableSCTE{
         if (par1NBTTagCompound.hasKey("requiresExactKeycard"))
         {
             this.requiresExactKeycard = par1NBTTagCompound.getBoolean("requiresExactKeycard");
-        }  
+        }    
         
     }
+   
+    public void setRequiresExactKeycard(boolean par1) {
+    	requiresExactKeycard = par1;
+	}
+    
+    public boolean doesRequireExactKeycard() {
+    	return requiresExactKeycard;
+	}
+    
+    public void activate(EntityPlayer player) {
+    	if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader){
+    		BlockKeycardReader.activate(worldObj, getPos());
+    	}
+	}
+      
+    public String getPassword() {
+		return passLV == 0 ? null : String.valueOf(passLV);
+	}
+    
+    public void setPassword(String password) {
+		passLV = Integer.parseInt(password);
+	}
 
     public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};

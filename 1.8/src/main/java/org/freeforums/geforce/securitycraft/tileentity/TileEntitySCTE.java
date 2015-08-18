@@ -3,14 +3,14 @@ package org.freeforums.geforce.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.api.IIntersectable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-
-import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
 
 public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 

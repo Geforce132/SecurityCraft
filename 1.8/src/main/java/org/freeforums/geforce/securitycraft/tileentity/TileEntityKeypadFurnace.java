@@ -1,6 +1,6 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -201,6 +201,31 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     public int getInventoryStackLimit()
     {
         return 64;
+    }
+    
+    /**
+     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
+     * cooked
+     */
+    @SideOnly(Side.CLIENT)
+    public int getCookProgressScaled(int p_145953_1_)
+    {
+        return this.cookTime * p_145953_1_ / 200;
+    }
+
+    /**
+     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
+     * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
+     */
+    @SideOnly(Side.CLIENT)
+    public int getBurnTimeRemainingScaled(int p_145955_1_)
+    {
+        if (this.currentItemBurnTime == 0)
+        {
+            this.currentItemBurnTime = 200;
+        }
+
+        return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
     }
 
     public boolean isBurning()
@@ -493,5 +518,5 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
-    
+
 }

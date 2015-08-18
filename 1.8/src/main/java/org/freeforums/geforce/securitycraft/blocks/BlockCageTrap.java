@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IIntersectable;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,14 +20,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class BlockCageTrap extends BlockOwnable implements IIntersectable, IHelpInfo {
+public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 	public final boolean deactivated;
 
@@ -34,8 +33,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable, IHelp
 		return 3;
 	}
 
-	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
-	{
+	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state){
 		if(!deactivated){
 			return null;
 		}else{
@@ -53,8 +51,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable, IHelp
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
-	{
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
 		return this.deactivated ? BlockUtils.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : BlockUtils.getItemFromBlock(this);
 	}
 	
@@ -78,14 +75,6 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable, IHelp
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
-	}
-
-	public String getHelpInfo() {
-		return "The cage trap will spawn a 'cage' around any player who walks on top of it. (*needs textures & recipe*)";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The cage trap requires: 3 reinforced iron bars, 2 gold ingots, 1 redstone, 3 iron blocks", "WWW", "XYX", "ZZZ", "W = reinforced iron bars, X = gold ingot, Y = redstone, Z = iron block"};
 	}
     
 }

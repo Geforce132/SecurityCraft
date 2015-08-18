@@ -1,6 +1,8 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
-import java.util.Random;
+import org.freeforums.geforce.securitycraft.api.IIntersectable;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,18 +14,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+public class BlockFullMineBase extends BlockExplosive implements IIntersectable {
 
-public class BlockFullMineBase extends BlockExplosive implements IIntersectable, IHelpInfo{
-
-	private final String mineName;
-
-	public BlockFullMineBase(Material par1Material, String mineName) {
+	public BlockFullMineBase(Material par1Material) {
 		super(par1Material);
-		this.mineName = mineName;
 	}
 
 	public int getRenderType(){
@@ -90,26 +84,6 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
-	}
-
-	public String getHelpInfo() {
-		return "The " + mineName + " mine is a standard block mine. Walking into it or mining it will cause it to explode.";
-	}
-
-	public String[] getRecipe() {
-		if(mineName.matches("dirt")){
-			return new String[]{"The dirt mine requires: 1 dirt, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("stone")){
-			return new String[]{"The stone mine requires: 1 stone, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("cobblestone")){
-			return new String[]{"The cobblestone mine requires: 1 cobblestone, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("sand")){
-			return new String[]{"The sand mine requires: 1 sand, 1 mine. This is a shapeless recipe."};
-		}else if(mineName.matches("diamond ore")){
-			return new String[]{"The diamond ore mine requires: 1 diamond ore (use a Silk Touch-enchanted pickaxe), 1 mine. This is a shapeless recipe."};
-		}else{
-			return null;
-		}
 	}
 
 }

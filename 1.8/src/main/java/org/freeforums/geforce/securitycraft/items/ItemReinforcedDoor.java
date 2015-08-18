@@ -1,5 +1,9 @@
 package org.freeforums.geforce.securitycraft.items;
 
+import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
@@ -12,12 +16,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class ItemReinforcedDoor extends Item implements IHelpInfo {
+public class ItemReinforcedDoor extends Item {
 	
     public ItemReinforcedDoor(Material p_i45334_1_)
     {
@@ -67,8 +66,7 @@ public class ItemReinforcedDoor extends Item implements IHelpInfo {
     	}
     }
 
-    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door)
-    {
+    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door){
         BlockPos blockpos1 = pos.offset(facing.rotateY());
         BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
         int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube() ? 1 : 0);
@@ -89,13 +87,5 @@ public class ItemReinforcedDoor extends Item implements IHelpInfo {
         worldIn.notifyNeighborsOfStateChange(pos, door);
         worldIn.notifyNeighborsOfStateChange(blockpos3, door);
     }
-    
-    public String getHelpInfo() {
-		return "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The reinforced iron door requires: 8 iron ingots, 1 iron door", "XXX", "XYX", "XXX", "X = iron ingot, Y = iron door"};
-	}
 	
 }

@@ -4,6 +4,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -23,18 +33,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
-
-public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
+public class BlockPortableRadar extends BlockContainer {
 	
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	
@@ -47,16 +46,14 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube(){
         return false;
     }
     
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube()
-    {
+    public boolean isNormalCube(){
         return false;
     }
     
@@ -167,14 +164,6 @@ public class BlockPortableRadar extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityPortableRadar();
-	}
-
-	public String getHelpInfo() {
-		return "The portable radar will send the owner a chat message whenever a player is inside of the radar's detection radius (modifiable in the config file). You can name the portable radar by right-clicking on it with a named name-tag.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The portable radar requires: 7 iron ingots, 1 redstone torch, 1 redstone", "XXX", "XYX", "XZX", "X = iron ingot, Y = redstone torch, Z = redstone"};
 	}
 
 }

@@ -2,6 +2,13 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,16 +18,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class ItemAdminTool extends Item implements IHelpInfo {
+public class ItemAdminTool extends Item {
 
 	public ItemAdminTool() {
 		super();
@@ -30,23 +28,15 @@ public class ItemAdminTool extends Item implements IHelpInfo {
 		}
 	}
 	
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing side, float par8, float par9, float par10){
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par5EnumFacing, float hitX, float hitY, float hitZ){
 		if(!par3World.isRemote){
 			if(par3World.getTileEntity(pos) != null){
-				if(!mod_SecurityCraft.configHandler.allowAdminTool){ 
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "The admin tool has been disabled in the config file.", EnumChatFormatting.RED); 
-					return false; 
-				}
-				
 				TileEntity te = par3World.getTileEntity(pos);
 				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Block info:", EnumChatFormatting.GRAY);
 				
-				if(te instanceof TileEntityOwnable){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityOwnable) te).getOwnerName() == null ? "????" : ((TileEntityOwnable) te).getOwnerName()), null);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityOwnable) te).getOwnerUUID() == null ? "????" : ((TileEntityOwnable) te).getOwnerUUID()), null);
-				}else if(te instanceof TileEntityKeypadChest){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((TileEntityKeypadChest) te).getOwnerName() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerName()), null);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((TileEntityKeypadChest) te).getOwnerUUID() == null ? "????" : ((TileEntityKeypadChest) te).getOwnerUUID()), null);
+				if(te instanceof IOwnable){
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID()), null);
 				}
 				
 				if(te instanceof IPasswordProtected){
@@ -70,14 +60,6 @@ public class ItemAdminTool extends Item implements IHelpInfo {
 		}
 		
 		return false;
-	}
-
-	public String getHelpInfo() {
-		return null;
-	}
-
-	public String[] getRecipe() {
-		return null;
 	}
 
 }

@@ -9,7 +9,8 @@ public enum EnumCustomModules {
 	WHITELIST(mod_SecurityCraft.whitelistModule, "Whitelist module"),
 	BLACKLIST(mod_SecurityCraft.blacklistModule, "Blacklist module"),
 	HARMING(mod_SecurityCraft.harmingModule, "Harming module"),
-	SMART(mod_SecurityCraft.smartModule, "Smart module");
+	SMART(mod_SecurityCraft.smartModule, "Smart module"),
+	STORAGE(mod_SecurityCraft.storageModule, "Storage module");
 	
 	private final ItemModule correspondingStack;
 	private final String moduleName;

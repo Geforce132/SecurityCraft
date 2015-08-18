@@ -1,5 +1,12 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,16 +29,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-
-public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
+public class BlockInventoryScanner extends BlockContainer {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     
@@ -90,11 +88,6 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
     	if(par1World.isRemote){
     		return true;
     	}else{
-    		
-    		if(((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerUUID() != null && ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerName() != null){
-    			mod_SecurityCraft.network.sendToAll(new PacketCUpdateOwner(pos.getX(), pos.getY(), pos.getZ(), ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerUUID(), ((TileEntityOwnable)par1World.getTileEntity(pos)).getOwnerName(), true));
-    		}
-    		
     		if(this.isFacingAnotherBlock(par1World, pos)){
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, pos.getX(), pos.getY(), pos.getZ());
     		}else{
@@ -272,14 +265,6 @@ public class BlockInventoryScanner extends BlockContainer implements IHelpInfo {
 
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityInventoryScanner();
-	}
-
-	public String getHelpInfo() {
-		return "The inventory scanner is used by placing two scanners a block apart, facing each other. When placed correctly, a laser field should spawn between them. If a player walks through the field, any blocks or items entered in the scanner's GUI in the player's inventory will be deleted.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The inventory scanner requires: 7 stone, 1 laser block, 1 ender chest", "XXX", "XYX", "XZX", "X = stone, Y = laser block, Z = ender chest"};
 	}
 
 }

@@ -2,6 +2,12 @@ package org.freeforums.geforce.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IIntersectable;
+import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,14 +20,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.interfaces.IIntersectable;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
-
-public class BlockBouncingBetty extends BlockExplosive implements IIntersectable, IHelpInfo {
+public class BlockBouncingBetty extends BlockExplosive implements IIntersectable {
 
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
@@ -144,14 +143,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntitySCTE().intersectsEntities();
-	}
-
-	public String getHelpInfo() {
-		return "The bouncing betty will launch up into the air and explode when touched.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The bouncing betty requires: 2 iron ingots, 1 gunpowder, 1 weighted pressure plate (heavy)", " X ", "YZY", "   ", "X = weighted pressure plate (heavy), Y = iron ingot, Z = gunpowder"};
 	}
 	
 }

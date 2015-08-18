@@ -1,13 +1,14 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 
 public class PacketSetKeycardLevel implements IMessage{
 	
@@ -45,15 +46,13 @@ public class PacketSetKeycardLevel implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetKeycardLevel, IMessage> {
 
 	public IMessage onMessage(PacketSetKeycardLevel packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
+		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		int level = packet.level;
 		boolean exactCard = packet.exactCard;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
-		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setPassLV(level);
-		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setRequiresExactKeycard(exactCard);
+		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(String.valueOf(level));
+		((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setRequiresExactKeycard(exactCard);
 		
 		return null;
 	}

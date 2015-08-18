@@ -1,10 +1,10 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -43,16 +43,15 @@ public class PacketSetExplosiveState implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetExplosiveState, IMessage> {
 	
 	public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
-		BlockPos pos = new BlockPos(packet.x, packet.y, packet.z);
 		EntityPlayer player = context.getServerHandler().playerEntity;
 		
-		if(getWorld(player).getBlockState(pos) != null && getWorld(player).getBlockState(pos).getBlock() instanceof IExplosive){
+		if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive){
 			if(packet.state.equalsIgnoreCase("activate")){
-				((IExplosive) getWorld(player).getBlockState(pos).getBlock()).activateMine(getWorld(player), pos);
+				((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).activateMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
 			}else if(packet.state.equalsIgnoreCase("defuse")){
-				((IExplosive) getWorld(player).getBlockState(pos).getBlock()).defuseMine(getWorld(player), pos);
+				((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).defuseMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
 			}else if(packet.state.equalsIgnoreCase("detonate")){
-				((IExplosive) getWorld(player).getBlockState(pos).getBlock()).explode(getWorld(player), pos);
+				((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).explode(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
 			}
 		}
 		

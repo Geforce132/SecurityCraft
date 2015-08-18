@@ -1,46 +1,30 @@
 package org.freeforums.geforce.securitycraft.network;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockStaticLiquid;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.blocks.BlockActiveLaser;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.blocks.BlockAlarm;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusLava;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusLavaBase;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusWater;
 import org.freeforums.geforce.securitycraft.blocks.BlockBogusWaterBase;
 import org.freeforums.geforce.securitycraft.blocks.BlockCageTrap;
+import org.freeforums.geforce.securitycraft.blocks.BlockFrame;
 import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScanner;
-import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockInventoryScannerField;
+import org.freeforums.geforce.securitycraft.blocks.BlockIronFence;
 import org.freeforums.geforce.securitycraft.blocks.BlockIronTrapDoor;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeycardReader;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypad;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadChest;
-import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFrame;
 import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
-import org.freeforums.geforce.securitycraft.blocks.BlockLaser;
 import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockLaserField;
 import org.freeforums.geforce.securitycraft.blocks.BlockLogger;
-import org.freeforums.geforce.securitycraft.blocks.BlockOwnableWithInfo;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.blocks.BlockPanicButton;
 import org.freeforums.geforce.securitycraft.blocks.BlockPortableRadar;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedDoor;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedFenceGate;
-import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedGlass;
+import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedGlassPane;
 import org.freeforums.geforce.securitycraft.blocks.BlockReinforcedWood;
 import org.freeforums.geforce.securitycraft.blocks.BlockRetinalScanner;
 import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
@@ -49,46 +33,53 @@ import org.freeforums.geforce.securitycraft.blocks.mines.BlockBouncingBetty;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockClaymore;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFullMineBase;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockFurnaceMine;
+import org.freeforums.geforce.securitycraft.blocks.mines.BlockIMS;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockMine;
 import org.freeforums.geforce.securitycraft.blocks.mines.BlockTrackMine;
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
+import org.freeforums.geforce.securitycraft.entity.EntityIMSBomb;
+import org.freeforums.geforce.securitycraft.entity.EntityTaserBullet;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.items.ItemAdminTool;
+import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedPlanks;
+import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedStainedGlass;
+import org.freeforums.geforce.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
 import org.freeforums.geforce.securitycraft.items.ItemCameraMonitor;
 import org.freeforums.geforce.securitycraft.items.ItemCodebreaker;
+import org.freeforums.geforce.securitycraft.items.ItemKeyPanel;
 import org.freeforums.geforce.securitycraft.items.ItemKeycardBase;
+import org.freeforums.geforce.securitycraft.items.ItemMineRemoteAccessTool;
 import org.freeforums.geforce.securitycraft.items.ItemModifiedBucket;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.items.ItemReinforcedDoor;
-import org.freeforums.geforce.securitycraft.items.ItemRemoteAccess;
-import org.freeforums.geforce.securitycraft.items.ItemTazer;
+import org.freeforums.geforce.securitycraft.items.ItemSCManual;
+import org.freeforums.geforce.securitycraft.items.ItemTaser;
 import org.freeforums.geforce.securitycraft.items.ItemTestItem;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
-import org.freeforums.geforce.securitycraft.items.ItemWithInfo;
+import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateOwner;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCheckKeypadCode;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCreateExplosion;
-import org.freeforums.geforce.securitycraft.network.packets.PacketMountCamera;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSDebugField;
+import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSCheckPassword;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSetOwner;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSetPassword;
+import org.freeforums.geforce.securitycraft.network.packets.PacketSSyncTENBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSUpdateNBTTag;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetBlock;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetISType;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeycardLevel;
-import org.freeforums.geforce.securitycraft.network.packets.PacketSetKeypadCode;
-import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateClient;
 import org.freeforums.geforce.securitycraft.network.packets.PacketUpdateLogger;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityAlarm;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityEmpedWire;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIMS;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
@@ -96,7 +87,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
@@ -105,12 +95,31 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 public class ConfigurationHandler{
-	private int[] harmingPotions = {8024, 8268, 8236, 16460, 16428};
-	private int[] healingPotions = {8197, 8261, 8229, 16453, 16421};
+	private int[]  harmingPotions = {8268, 8236, 16460, 16428};
+	private int[]  healingPotions = {8261, 8229, 16453, 16421};
 	
 	public boolean allowCodebreakerItem;
-	public boolean allowDoorRemover;
 	public boolean allowAdminTool;
 	public boolean shouldSpawnFire;
 	public boolean ableToBreakMines;
@@ -121,10 +130,12 @@ public class ConfigurationHandler{
 	public boolean ableToCraftKeycard5;
 	public boolean ableToCraftLUKeycard;
 	public boolean smallerMineExplosion;
+	public boolean mineExplodesWhenInCreative;
 	public boolean sayThanksMessage;
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
-
+	public boolean fiveMinAutoShutoff;
+	
 	public static int fakePanelID = 1;
 	public static int portableRadarSearchRadius;
 	public static int usernameLoggerSearchRadius;	
@@ -135,28 +146,19 @@ public class ConfigurationHandler{
 	public static int empRadius;
 	public static int portableRadarDelay;
 	public static int claymoreRange;
+	public static int imsRange;
 	public boolean useOldKeypadRecipe;
 
 	public String currentHackIndex = "";
 	public boolean ableToContinueHacking = true;
 	public boolean hackingFailed = false;
 		
-	// RetinalScanner = new BlockRetinalScanner(1018, Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundMetalFootstep).setCreativeTab(mod_SecurityCraft.tabSecurityCraft).setUnlocalizedName("retinalScanner");
-
 	public void setupAdditions(){
-		this.setupCCTVMod();
 		this.setupTechnicalBlocks();
 		this.setupMines();
 		this.setupItems();
 	}
 	
-	private void setupCCTVMod() {
-		//mod_SecurityCraft.instance.cctvPlugin.load();
-        //GameRegistry.registerBlock(mod_SecurityCraft.instance.cctvPlugin.cctvCamera, mod_SecurityCraft.instance.cctvPlugin.cctvCamera.getUnlocalizedName().substring(5));
-        //GameRegistry.registerItem(mod_SecurityCraft.instance.cctvPlugin.cctv, mod_SecurityCraft.instance.cctvPlugin.cctv.getUnlocalizedName().substring(5));
-		
-	}
-
 	public void setupDebugAdditions() {
 		this.setupDebuggingBlocks();
 		this.setupDebuggingItems();
@@ -164,18 +166,17 @@ public class ConfigurationHandler{
 		this.registerDebuggingAdditions();
 	}
 	
+
 	public void setupTechnicalBlocks(){
 		mod_SecurityCraft.LaserBlock = new BlockLaserBlock(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("laserBlock");
 		
-		mod_SecurityCraft.Laser = new BlockLaser(Material.rock).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laser");
+		mod_SecurityCraft.Laser = new BlockLaserField(Material.rock).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laser");
 		
-		mod_SecurityCraft.keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypad");
+		mod_SecurityCraft.Keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypad");
 						
-		mod_SecurityCraft.LaserActive = new BlockActiveLaser(Material.iron).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laserActive");
-		
 		mod_SecurityCraft.retinalScanner = new BlockRetinalScanner(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("retinalScanner");
 	    
-		mod_SecurityCraft.doorIndestructableIron = new BlockReinforcedDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("reinforcedIronDoor");
+		mod_SecurityCraft.doorIndestructableIron = new BlockReinforcedDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("ironDoorReinforced");
 		
 		mod_SecurityCraft.bogusLava = (BlockStaticLiquid) new BlockBogusLavaBase(Material.lava).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("bogusLava");
 		mod_SecurityCraft.bogusLavaFlowing = new BlockBogusLava(Material.lava).setHardness(0.0F).setLightLevel(1.0F).setUnlocalizedName("bogusLavaFlowing");
@@ -184,13 +185,11 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.keycardReader = new BlockKeycardReader(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keycardReader");
 	    
-		mod_SecurityCraft.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setBlockUnbreakable().setResistance(200F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedIronTrapdoor");
-
-		//mod_SecurityCraft.doorbell = new BlockDoorbell(2077, Material.rock).setHardness(2F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setTextureName("button").setUnlocalizedName("doorbell");
+		mod_SecurityCraft.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setHardness(5.0F).setResistance(200F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("ironTrapdoor");
 
 		mod_SecurityCraft.inventoryScanner = new BlockInventoryScanner(Material.rock).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeStone).setUnlocalizedName("inventoryScanner");
 
-		mod_SecurityCraft.inventoryScannerField = new BlockInventoryScannerBlock(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("inventoryScannerField");
+		mod_SecurityCraft.inventoryScannerField = new BlockInventoryScannerField(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("inventoryScannerField");
 				
 	    mod_SecurityCraft.cageTrap = new BlockCageTrap(Material.rock, false, cageTrapTextureIndex).setHardness(5F).setResistance(100F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cageTrap");
 		
@@ -198,55 +197,61 @@ public class ConfigurationHandler{
 
 	    mod_SecurityCraft.portableRadar = new BlockPortableRadar(Material.circuits).setHardness(1F).setResistance(50F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("portableRadar");
 	    
-	    mod_SecurityCraft.unbreakableIronBars = new BlockUnbreakableBars(Material.iron, true).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("reinforcedIronBars");
+	    mod_SecurityCraft.unbreakableIronBars = new BlockUnbreakableBars(Material.iron, true).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("reinforcedIronBars");
 	    
 		mod_SecurityCraft.keypadChest = new BlockKeypadChest(0).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadChest");
 	
 	    mod_SecurityCraft.usernameLogger = new BlockLogger(Material.rock).setHardness(8F).setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("usernameLogger");
 	
-		mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedGlass");
+		mod_SecurityCraft.reinforcedGlassPane = new BlockReinforcedGlassPane(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedGlass");
 	
 		mod_SecurityCraft.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("alarm");
 	
 		mod_SecurityCraft.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setUnlocalizedName("alarmLit");
 	
-		mod_SecurityCraft.reinforcedStone = new BlockOwnableWithInfo(Material.rock, "Reinforced stone are indestructible stone blocks. Only the person who placed who placed them down can destroy them using the Universal Block Remover.", new String[]{"Reinforced stone require: 4 cobblestone, 1 stone", " X ", "XYX", " X ", "X = cobblestone, Y = stone"}).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedStone");
+		mod_SecurityCraft.reinforcedStone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStone");
 	
-		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("reinforcedFenceGate");
+		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedFenceGate");
 		
-		mod_SecurityCraft.reinforcedPlanks_Oak = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_Oak");
-		
-		mod_SecurityCraft.reinforcedPlanks_Spruce = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_Spruce");
-
-		mod_SecurityCraft.reinforcedPlanks_Birch = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_Birch");
-
-		mod_SecurityCraft.reinforcedPlanks_Jungle = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_Jungle");
-
-		mod_SecurityCraft.reinforcedPlanks_Acadia = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_Acadia");
-
-		mod_SecurityCraft.reinforcedPlanks_DarkOak = new BlockReinforcedWood().setUnlocalizedName("reinforcedPlanks_DarkOak");
-
-		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setUnlocalizedName("keypadFurnace");
+		mod_SecurityCraft.reinforcedWoodPlanks = new BlockReinforcedWood().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedPlanks");
 	
 		mod_SecurityCraft.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("panicButton");
 	
-		mod_SecurityCraft.keypadFrame = new BlockKeypadFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadFrame");
+		mod_SecurityCraft.frame = new BlockFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadFrame");
 	
-	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("securityCamera");		
+		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setUnlocalizedName("keypadFurnace");
+	
+	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("securityCamera");
+	
+	    mod_SecurityCraft.reinforcedStairsOak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsOak");
+	    mod_SecurityCraft.reinforcedStairsSpruce = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsSpruce");
+	    mod_SecurityCraft.reinforcedStairsBirch = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsBirch");
+	    mod_SecurityCraft.reinforcedStairsJungle = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsJungle");
+	    mod_SecurityCraft.reinforcedStairsAcacia = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsAcacia");
+	    mod_SecurityCraft.reinforcedStairsDarkoak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsDarkoak");
+	    mod_SecurityCraft.reinforcedStairsStone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsStone");
+	    
+	    mod_SecurityCraft.ironFence = new BlockIronFence(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("scIronFence");
+	
+	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedGlassBlock");
+	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlass").setBlockTextureName("securitycraft:glass_reinforced");
+	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlassPanes").setBlockTextureName("securitycraft:glass_reinforced");
 	}
 	
 	public void setupMines(){
-		mod_SecurityCraft.Mine = new BlockMine(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("mine");
-				
-		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground, "dirt").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("dirtMine");
+		mod_SecurityCraft.Mine = (BlockMine) new BlockMine(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("mine");
 		
-		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock, "stone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setUnlocalizedName("stoneMine");
+		mod_SecurityCraft.MineCut = (BlockMine) new BlockMine(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setUnlocalizedName("mineCut");
 		
-		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock, "cobblestone").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("cobblestoneMine");
+		mod_SecurityCraft.DirtMine = new BlockFullMineBase(Material.ground).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("dirtMine");
 		
-		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand, "sand").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setUnlocalizedName("sandMine");
+		mod_SecurityCraft.StoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setUnlocalizedName("stoneMine");
 		
-		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock, "diamond ore").setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("diamondMine");
+		mod_SecurityCraft.CobblestoneMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 2.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("cobblestoneMine");
+		
+		mod_SecurityCraft.SandMine = new BlockFullMineBase(Material.sand).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeSand).setUnlocalizedName("sandMine");
+		
+		mod_SecurityCraft.DiamondOreMine = new BlockFullMineBase(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("diamondMine");
 		
 		mod_SecurityCraft.FurnaceMine = new BlockFurnaceMine(Material.rock).setCreativeTab(mod_SecurityCraft.tabSCMine).setHardness(!ableToBreakMines ? -1F : 3.75F).setStepSound(Block.soundTypeStone).setUnlocalizedName("furnaceMine");
 				
@@ -254,29 +259,23 @@ public class ConfigurationHandler{
 
 		mod_SecurityCraft.bouncingBetty = new BlockBouncingBetty(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("bouncingBetty");
 	
-		mod_SecurityCraft.claymore = new BlockClaymore(Material.circuits).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("claymore");
+		mod_SecurityCraft.claymoreActive = new BlockClaymore(Material.circuits, true).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("claymoreActive");
+		
+		mod_SecurityCraft.claymoreDefused = new BlockClaymore(Material.circuits, false).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setUnlocalizedName("claymoreDefused");
+	
+		mod_SecurityCraft.ims = new BlockIMS(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCMine).setUnlocalizedName("ims");
 	}
 	
 	public void setupItems(){
 		mod_SecurityCraft.Codebreaker = new ItemCodebreaker().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("codebreaker");
 	    
-		mod_SecurityCraft.keycardLV1 = new ItemKeycardBase(1).setUnlocalizedName("keycardLV1");
-		
-		mod_SecurityCraft.keycardLV2 = new ItemKeycardBase(2).setUnlocalizedName("keycardLV2");
-
-		mod_SecurityCraft.keycardLV3 = new ItemKeycardBase(3).setUnlocalizedName("keycardLV3");
+		mod_SecurityCraft.keycardLV1 = new ItemKeycardBase();
 	  
-		mod_SecurityCraft.keycardLV4 = new ItemKeycardBase(4).setUnlocalizedName("keycardLV4");
-
-		mod_SecurityCraft.keycardLV5 = new ItemKeycardBase(5).setUnlocalizedName("keycardLV5");
-
-		mod_SecurityCraft.limitedUseKeycard = new ItemKeycardBase(6).setUnlocalizedName("limitedUseKeycard");
-
-		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCTechnical);
-	    
-		mod_SecurityCraft.universalBlockRemover = new ItemWithInfo("The universal block remover serves no other purpose except to break down alarms, retinal scanners, keypads, keycard readers, and any other 'reinforced' or 'ownable' block. Right-click the block to remove it.", new String[]{"The universal block remover requires: 2 iron ingots, 1 shears", "XYY", "   ", "   ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
+		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration);
 		
-		mod_SecurityCraft.remoteAccessMine = new ItemRemoteAccess(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine").setMaxStackSize(1);
+		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
+		
+		mod_SecurityCraft.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine");
 		
 		mod_SecurityCraft.fWaterBucket = new ItemModifiedBucket(mod_SecurityCraft.bogusWaterFlowing).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("bucketFWater");
 		
@@ -293,29 +292,33 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setUnlocalizedName("harmingModule");
 		
 		mod_SecurityCraft.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setUnlocalizedName("smartModule");
-		
-		mod_SecurityCraft.wireCutters = new ItemWithInfo("Right-clicking a mine with the wire cutters will defuse it.", new String[]{"The wire cutters requires: 1 shears, 4 iron ingots", "XY ", "Y Y", " Y ", "X = shears, Y = iron ingot"}).setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters");
 	
-		mod_SecurityCraft.keypadItem = new ItemWithInfo("The key panel is used in the crafting recipes of keypads, password-protected chests, and password-protected furnaces.", new String[]{"The key panel requires: 1 weighted pressure plate (heavy), 8 stone button", "YYY", "YXY", "YYY", "X = weighted pressure plate (heavy), Y = stone button"}).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem");
+		mod_SecurityCraft.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setUnlocalizedName("storageModule");
+
+		mod_SecurityCraft.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters");
+	
+		mod_SecurityCraft.keyPanel = new ItemKeyPanel().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("keypadItem");
 		
 		mod_SecurityCraft.adminTool = new ItemAdminTool().setMaxStackSize(1).setUnlocalizedName("adminTool");
 	
-	    mod_SecurityCraft.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cameraMonitor");
+		mod_SecurityCraft.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("cameraMonitor");
+	
+		mod_SecurityCraft.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("scManual");
+	
+		mod_SecurityCraft.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
 	}
 	
-	public void setupDebuggingBlocks(){}
+	public void setupDebuggingBlocks() {}
 	
 	public void setupDebuggingItems(){
 		mod_SecurityCraft.testItem = new ItemTestItem().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("Test");
 	    //mod_SecurityCraft.testChestplate = new ItemModifiedArmor(3213, armorBase, 0, 1).setUnlocalizedName("testChestplate").setCreativeTab(mod_SecurityCraft.tabSCTechnical);
-		mod_SecurityCraft.tazer = new ItemTazer().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("tazer");
 	}
 		
 	public void setupConfiguration() {
 		mod_SecurityCraft.configFile.load();
 
         allowCodebreakerItem = mod_SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true).getBoolean(true);
-        allowDoorRemover = mod_SecurityCraft.configFile.get("options", "Is door remover allowed?", true).getBoolean(true);
         allowAdminTool = mod_SecurityCraft.configFile.get("options", "Is admin tool allowed?", false).getBoolean(false);
         shouldSpawnFire = mod_SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true).getBoolean(true);
         ableToBreakMines = mod_SecurityCraft.configFile.get("options", "Are mines unbreakable?", true).getBoolean(true);
@@ -326,7 +329,9 @@ public class ConfigurationHandler{
         ableToCraftKeycard5 = mod_SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true).getBoolean(true);
         ableToCraftLUKeycard = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true).getBoolean(true);
         smallerMineExplosion = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false).getBoolean(false);
-        
+        mineExplodesWhenInCreative = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true).getBoolean(true);
+        fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true).getBoolean(true);
+
         portableRadarSearchRadius = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25).getInt(25);
         usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
         laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
@@ -334,90 +339,98 @@ public class ConfigurationHandler{
         alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D).getDouble(0.8D);
         portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
         claymoreRange = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5).getInt(5);
+        imsRange = mod_SecurityCraft.configFile.get("options", "IMS range:", 12).getInt(12);
         sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
         mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
         isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
         disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
         useOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false).getBoolean(false);
 
-        //cageTrapTextureIndex = config.get("Options", "cage-trap-block-texture (enter a block's id to use it's texture on the cage trap. Using the id '9999' will use the default cage trap texture)", 9999).getInt(9999);
-        //empRadius = config.get("Options", "emp-radius(factors-of-ten-only)", 51).getInt(51);
-
         if(mod_SecurityCraft.configFile.hasChanged()){
         	mod_SecurityCraft.configFile.save();
         }
         
-
 	}
 	
 	public void setupGameRegistry(){
-		GameRegistry.registerBlock(mod_SecurityCraft.LaserBlock, mod_SecurityCraft.LaserBlock.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.LaserBlock);
 		GameRegistry.registerBlock(mod_SecurityCraft.Laser, mod_SecurityCraft.Laser.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.keypad, mod_SecurityCraft.keypad.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.Mine, mod_SecurityCraft.Mine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.DirtMine, mod_SecurityCraft.DirtMine.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.Keypad);
+		registerBlock(mod_SecurityCraft.Mine);
+		GameRegistry.registerBlock(mod_SecurityCraft.MineCut,mod_SecurityCraft.MineCut.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.DirtMine);
 		GameRegistry.registerBlock(mod_SecurityCraft.StoneMine, mod_SecurityCraft.StoneMine.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.CobblestoneMine, mod_SecurityCraft.CobblestoneMine.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.DiamondOreMine, mod_SecurityCraft.DiamondOreMine.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.SandMine, mod_SecurityCraft.SandMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.FurnaceMine, mod_SecurityCraft.FurnaceMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.retinalScanner, mod_SecurityCraft.retinalScanner.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.FurnaceMine);
+		registerBlock(mod_SecurityCraft.retinalScanner);
 		GameRegistry.registerBlock(mod_SecurityCraft.doorIndestructableIron, mod_SecurityCraft.doorIndestructableIron.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.bogusLava, mod_SecurityCraft.bogusLava.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.bogusLavaFlowing, mod_SecurityCraft.bogusLavaFlowing.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.bogusWater, mod_SecurityCraft.bogusWater.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.bogusWaterFlowing, mod_SecurityCraft.bogusWaterFlowing.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.keycardReader, mod_SecurityCraft.keycardReader.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.ironTrapdoor, mod_SecurityCraft.ironTrapdoor.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.bouncingBetty, mod_SecurityCraft.bouncingBetty.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.inventoryScanner, mod_SecurityCraft.inventoryScanner.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.keycardReader);
+		registerBlock(mod_SecurityCraft.ironTrapdoor);
+		registerBlock(mod_SecurityCraft.bouncingBetty);
+		registerBlock(mod_SecurityCraft.inventoryScanner);
 		GameRegistry.registerBlock(mod_SecurityCraft.inventoryScannerField, mod_SecurityCraft.inventoryScannerField.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.trackMine, mod_SecurityCraft.trackMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.cageTrap, mod_SecurityCraft.cageTrap.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.portableRadar, mod_SecurityCraft.portableRadar.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.trackMine);
+		registerBlock(mod_SecurityCraft.cageTrap);
+		registerBlock(mod_SecurityCraft.portableRadar);
 		GameRegistry.registerBlock(mod_SecurityCraft.deactivatedCageTrap, mod_SecurityCraft.deactivatedCageTrap.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.unbreakableIronBars, mod_SecurityCraft.unbreakableIronBars.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.keypadChest, mod_SecurityCraft.keypadChest.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.usernameLogger, mod_SecurityCraft.usernameLogger.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedGlass, mod_SecurityCraft.reinforcedGlass.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.alarm, mod_SecurityCraft.alarm.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.unbreakableIronBars);
+		registerBlock(mod_SecurityCraft.keypadChest);
+		registerBlock(mod_SecurityCraft.usernameLogger);
+		registerBlock(mod_SecurityCraft.reinforcedGlassPane);
+		registerBlock(mod_SecurityCraft.alarm);
 		GameRegistry.registerBlock(mod_SecurityCraft.alarmLit, mod_SecurityCraft.alarmLit.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStone, mod_SecurityCraft.reinforcedStone.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedFencegate, mod_SecurityCraft.reinforcedFencegate.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_Oak, mod_SecurityCraft.reinforcedPlanks_Oak.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_Spruce, mod_SecurityCraft.reinforcedPlanks_Spruce.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_Birch, mod_SecurityCraft.reinforcedPlanks_Birch.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_Jungle, mod_SecurityCraft.reinforcedPlanks_Jungle.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_Acadia, mod_SecurityCraft.reinforcedPlanks_Acadia.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedPlanks_DarkOak, mod_SecurityCraft.reinforcedPlanks_DarkOak.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.keypadFurnace, mod_SecurityCraft.keypadFurnace.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.panicButton, mod_SecurityCraft.panicButton.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.claymore, mod_SecurityCraft.claymore.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.keypadFrame, mod_SecurityCraft.keypadFrame.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(mod_SecurityCraft.securityCamera, mod_SecurityCraft.securityCamera.getUnlocalizedName().substring(5));
-
-		GameRegistry.registerItem(mod_SecurityCraft.Codebreaker, mod_SecurityCraft.Codebreaker.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.universalBlockRemover, mod_SecurityCraft.universalBlockRemover.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keycardLV1, mod_SecurityCraft.keycardLV1.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keycardLV2, mod_SecurityCraft.keycardLV2.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keycardLV3, mod_SecurityCraft.keycardLV3.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keycardLV4, mod_SecurityCraft.keycardLV4.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keycardLV5, mod_SecurityCraft.keycardLV5.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.limitedUseKeycard, mod_SecurityCraft.limitedUseKeycard.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.remoteAccessMine, mod_SecurityCraft.remoteAccessMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.fWaterBucket, mod_SecurityCraft.fWaterBucket.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.fLavaBucket, mod_SecurityCraft.fLavaBucket.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.universalBlockModifier, mod_SecurityCraft.universalBlockModifier.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.redstoneModule, mod_SecurityCraft.redstoneModule.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.whitelistModule, mod_SecurityCraft.whitelistModule.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.blacklistModule, mod_SecurityCraft.blacklistModule.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.harmingModule, mod_SecurityCraft.harmingModule.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.smartModule, mod_SecurityCraft.smartModule.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.wireCutters, mod_SecurityCraft.wireCutters.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.keypadItem, mod_SecurityCraft.keypadItem.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.adminTool, mod_SecurityCraft.adminTool.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.cameraMonitor, mod_SecurityCraft.cameraMonitor.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.reinforcedStone);
+		registerBlock(mod_SecurityCraft.reinforcedFencegate);
+		registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class);
+		registerBlock(mod_SecurityCraft.panicButton);
+		registerBlock(mod_SecurityCraft.frame);
+		registerBlock(mod_SecurityCraft.claymore);
+		registerBlock(mod_SecurityCraft.keypadFurnace);
+		registerBlock(mod_SecurityCraft.securityCamera);
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsOak, mod_SecurityCraft.reinforcedStairsOak.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsSpruce, mod_SecurityCraft.reinforcedStairsSpruce.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsBirch, mod_SecurityCraft.reinforcedStairsBirch.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsJungle, mod_SecurityCraft.reinforcedStairsJungle.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsAcacia, mod_SecurityCraft.reinforcedStairsAcacia.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsDarkoak, mod_SecurityCraft.reinforcedStairsDarkoak.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.reinforcedStairsStone);
+		registerBlock(mod_SecurityCraft.ironFence);
+		registerBlock(mod_SecurityCraft.ims);
+		registerBlock(mod_SecurityCraft.reinforcedGlass);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
+		
+		registerItem(mod_SecurityCraft.Codebreaker);
+	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
+		registerItem(mod_SecurityCraft.universalBlockRemover);
+		registerItem(mod_SecurityCraft.keycardLV1);
+		registerItem(mod_SecurityCraft.keycardLV2);
+		registerItem(mod_SecurityCraft.keycardLV3);
+		registerItem(mod_SecurityCraft.keycardLV4);
+		registerItem(mod_SecurityCraft.keycardLV5);
+		registerItem(mod_SecurityCraft.limitedUseKeycard);
+		registerItem(mod_SecurityCraft.remoteAccessMine);
+		registerItem(mod_SecurityCraft.fWaterBucket);
+		registerItem(mod_SecurityCraft.fLavaBucket);
+		registerItem(mod_SecurityCraft.universalBlockModifier);
+		registerItem(mod_SecurityCraft.redstoneModule);
+		registerItem(mod_SecurityCraft.whitelistModule);
+		registerItem(mod_SecurityCraft.blacklistModule);
+		registerItem(mod_SecurityCraft.harmingModule);
+		registerItem(mod_SecurityCraft.smartModule);
+		registerItem(mod_SecurityCraft.storageModule);
+		registerItem(mod_SecurityCraft.wireCutters);
+		registerItem(mod_SecurityCraft.adminTool);
+		registerItem(mod_SecurityCraft.keyPanel);
+		registerItem(mod_SecurityCraft.cameraMonitor);
+		registerItem(mod_SecurityCraft.taser);
+		registerItem(mod_SecurityCraft.scManual);
 
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
@@ -427,7 +440,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
 		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
-		GameRegistry.registerTileEntity(TileEntityMineLoc.class, "mineLoc");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
 		GameRegistry.registerTileEntity(TileEntityEmpedWire.class, "empedWire");
 		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");
@@ -435,25 +447,23 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, "retinalScanner");
 		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
 		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
-		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
+		GameRegistry.registerTileEntity(TileEntityFrame.class, "keypadFrame");
 		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
+		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
+		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 
 		if(useOldKeypadRecipe){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.Keypad, 1), new Object[]{
 				"III", "III", "III", 'I', Blocks.stone_button
 			});
 		}else{
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadItem, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keyPanel, 1), new Object[]{
 				"III", "IBI", "III", 'I', Blocks.stone_button, 'B', Blocks.heavy_weighted_pressure_plate
 			});
 			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFrame, 1), new Object[]{
-				"III", "IBI", "I I", 'I', Blocks.stone, 'B', Items.redstone
-			});
-			
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
-				"III", "IBI", "IPI", 'I', Blocks.iron_block, 'B', mod_SecurityCraft.keypadFrame, 'P', mod_SecurityCraft.keypadItem
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.frame, 1), new Object[]{
+				"III", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.redstone
 			});
 		}
 		
@@ -490,38 +500,38 @@ public class ConfigurationHandler{
 		});
 		
 		if(ableToCraftKeycard1){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV1, 1, 0), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot 
 			});
 		}
 		
 		if(ableToCraftKeycard2){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV2), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV2, 1, 1), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.brick
 			});
 		}
 		
-		if(ableToCraftKeycard3){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV3), new Object[]{
+		if(ableToCraftKeycard3){ 
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV3, 1, 2), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.netherbrick
 			});
 		}
 		
 		if(ableToCraftKeycard4){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV4), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV4, 1, 4), new Object[]{
 				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13)
 			});
 		}
 		
 		if(ableToCraftKeycard5){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV5), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV5, 1, 5), new Object[]{
 				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5)
 			});
 		}
 		
 		if(ableToCraftLUKeycard){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.limitedUseKeycard), new Object[]{
-				"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, EnumDyeColor.BLUE.getDyeDamage())
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.limitedUseKeycard, 1, 3), new Object[]{
+				"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, 4)
 			});
 		}
 		
@@ -538,7 +548,7 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-			"K", "R", "C", 'K', mod_SecurityCraft.keypadItem, 'R', Items.redstone, 'C', Blocks.chest
+			"K", "R", "C", 'K', mod_SecurityCraft.keyPanel, 'R', Items.redstone, 'C', Blocks.chest
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
@@ -569,7 +579,7 @@ public class ConfigurationHandler{
 			"BBB", "GRG", "III", 'B', mod_SecurityCraft.unbreakableIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedGlass, 4), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedGlassPane, 4), new Object[]{
 			" G ", "GPG", " G ", 'G', Blocks.glass, 'P', Blocks.glass_pane
 		});
 		
@@ -582,30 +592,30 @@ public class ConfigurationHandler{
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
-			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence_gate
+			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.fence_gate
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_Oak, 5, 0), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 0), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 0)
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_Spruce, 5, 1), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 1), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 1)
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_Birch, 5, 2), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 2), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 2)
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_Jungle, 5, 3), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 3), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 3)
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_Acadia, 5, 4), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 4), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 4)
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedPlanks_DarkOak, 5, 5), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 5, 5), new Object[]{
 			" I ", "IWI", " I ", 'I', Items.iron_ingot, 'W', new ItemStack(Blocks.planks, 1, 5)
 		});
 		
@@ -637,8 +647,8 @@ public class ConfigurationHandler{
 			"III", "IPI", "IEI", 'I', Items.iron_ingot, 'P', Items.paper, 'E', Items.ender_pearl
 		});
 		
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
-			"F", "R", "K", 'K', mod_SecurityCraft.keypadItem, 'R', Items.redstone, 'F', Blocks.furnace
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.storageModule, 1), new Object[]{
+			"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', mod_SecurityCraft.keypadChest
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{
@@ -653,6 +663,76 @@ public class ConfigurationHandler{
 			"SPS", "SRS", "SSS", 'S', Blocks.stone, 'P', mod_SecurityCraft.portableRadar, 'R', Items.redstone
 		});
 		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
+			"K", "F", "P", 'K', mod_SecurityCraft.frame, 'F', Blocks.furnace, 'P', mod_SecurityCraft.keyPanel
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.claymore, 1), new Object[]{
+			"HSH", "SBS", "RGR", 'H', Blocks.tripwire_hook, 'S', Items.string, 'B', mod_SecurityCraft.bouncingBetty, 'R', Items.redstone, 'G', Items.gunpowder
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ironFence, 1), new Object[]{
+			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStone, 4), new Object[]{
+			"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStone
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsOak, 4), new Object[]{
+		    "W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 0)
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsSpruce, 4), new Object[]{
+			"W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 1)
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsBirch, 4), new Object[]{
+		    "W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 2)
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsJungle, 4), new Object[]{
+			"W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 3)
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsAcacia, 4), new Object[]{
+		    "W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 4)
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsDarkoak, 4), new Object[]{
+			"W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 5)
+	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ims, 1), new Object[]{
+		    "BPB", " I ", "B B", 'B', mod_SecurityCraft.bouncingBetty, 'P', mod_SecurityCraft.portableRadar, 'I', Blocks.iron_block
+		});
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.cameraMonitor, 1), new Object[]{
+		    "III", "IGI", "III", 'I', Items.iron_ingot, 'G', Blocks.glass_pane
+		});
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.taser, 1), new Object[]{
+    		"BGI", "RSG", "  S", 'B', Items.bow, 'G', Items.gold_ingot, 'I', Items.iron_ingot, 'R', Items.redstone, 'S', Items.stick
+        });
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedGlass, 4), new Object[]{
+    		" G ", "GGG", " G ", 'G', Blocks.glass
+    	});
+        
+        GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.securityCamera, 1), new Object[]{
+        	"III", "GRI", "IIS", 'I', Items.iron_ingot, 'G', mod_SecurityCraft.reinforcedGlassPane, 'R', Blocks.redstone_block, 'S', Items.stick
+        });
+
+        for(int i = 0; i < 16; i++){
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, BlockColored.getStateById(i).g), new Object[]{
+        		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i)
+        	});
+        	
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i), new Object[]{
+        		"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
+        	});
+        }
+	
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.StoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.CobblestoneMine, 1), new Object[] {Blocks.cobblestone, mod_SecurityCraft.Mine});
@@ -660,54 +740,80 @@ public class ConfigurationHandler{
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.SandMine, 1), new Object[] {Blocks.sand, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.FurnaceMine, 1), new Object[] {Blocks.furnace, mod_SecurityCraft.Mine});
 	}
+
+	/**
+	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
+	 */
+	private void registerBlock(Block block){
+		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass){
+		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	/**
+	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 */
+	private void registerItem(Item item){
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	/**
+	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 */
+	private void registerItem(Item item, String customName){
+		GameRegistry.registerItem(item, customName);
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
+	}
 	
 	public void registerDebuggingAdditions(){		
 		GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(mod_SecurityCraft.tazer, mod_SecurityCraft.tazer.getUnlocalizedName().substring(5));
 	}
 	
 	public void setupOtherRegistrys(){}
 
-
 	public void setupEntityRegistry() {
-		EntityRegistry.registerGlobalEntityID(EntityTnTCompact.class, "TnTCompact", EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
-		if(mod_SecurityCraft.debuggingMode){ 
-			EntityRegistry.registerGlobalEntityID(EntitySecurityCamera.class, "Camera", EntityRegistry.findGlobalUniqueEntityId());
-			EntityRegistry.registerModEntity(EntitySecurityCamera.class, "Camera", 3, mod_SecurityCraft.instance, 128, 2, false);
-		}
+		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(EntityIMSBomb.class, "IMSBomb", 3, mod_SecurityCraft.instance, 256, 1, true);
 	}
 
 	public void setupHandlers(FMLPreInitializationEvent event) {
 		FMLCommonHandler.instance().bus().register(mod_SecurityCraft.eventHandler);
-
 	} 
 
 	public void setupPackets(SimpleNetworkWrapper network) {
-		network.registerMessage(PacketCheckKeypadCode.Handler.class, PacketCheckKeypadCode.class, 0, Side.SERVER);
 		network.registerMessage(PacketCheckRetinalScanner.Handler.class, PacketCheckRetinalScanner.class, 1, Side.SERVER);
-		network.registerMessage(PacketCreateExplosion.Handler.class, PacketCreateExplosion.class, 2, Side.SERVER);
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 3, Side.SERVER);
-		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 5, Side.SERVER);
-		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 6, Side.SERVER);
-		network.registerMessage(PacketSetKeypadCode.Handler.class, PacketSetKeypadCode.class, 7, Side.SERVER);
-		network.registerMessage(PacketUpdateClient.Handler.class, PacketUpdateClient.class, 8, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 9, Side.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 10, Side.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 11, Side.SERVER);
-		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 12, Side.CLIENT);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 13, Side.CLIENT);
-		network.registerMessage(PacketSDebugField.Handler.class, PacketSDebugField.class, 14, Side.SERVER);
-		network.registerMessage(PacketCUpdateOwner.Handler.class, PacketCUpdateOwner.class, 15, Side.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 16, Side.SERVER);
-		network.registerMessage(PacketMountCamera.Handler.class, PacketMountCamera.class, 17, Side.SERVER);
+		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 2, Side.SERVER);
+		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 3, Side.SERVER);
+		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 4, Side.SERVER);
+		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 5, Side.CLIENT);
+		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 6, Side.CLIENT);
+		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 7, Side.SERVER);
+		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 8, Side.CLIENT);
+		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 9, Side.CLIENT);
+		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 10, Side.SERVER);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 11, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 12, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 13, Side.SERVER);
+		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 14, Side.SERVER);
+		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 15, Side.SERVER);
+		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 16, Side.SERVER);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void setupTextureRegistry() {
 		//Blocks 
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.keypadFrame), 0, new ModelResourceLocation("securitycraft:keypadFrame", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.Keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.frame), 0, new ModelResourceLocation("securitycraft:keypadFrame", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStone), 0, new ModelResourceLocation("securitycraft:reinforcedStone", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.LaserBlock), 0, new ModelResourceLocation("securitycraft:laserBlock", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.Laser), 0, new ModelResourceLocation("securitycraft:laser", "inventory"));
@@ -754,10 +860,11 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.harmingModule, 0, new ModelResourceLocation("securitycraft:harmingModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.smartModule, 0, new ModelResourceLocation("securitycraft:smartModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.wireCutters, 0, new ModelResourceLocation("securitycraft:wireCutters", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keypadItem, 0, new ModelResourceLocation("securitycraft:keypadItem", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keyPanel, 0, new ModelResourceLocation("securitycraft:keypadItem", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.adminTool, 0, new ModelResourceLocation("securitycraft:adminTool", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.cameraMonitor, 0, new ModelResourceLocation("securitycraft:cameraMonitor", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.tazer, 0, new ModelResourceLocation("securitycraft:tazer", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.scManual, 0, new ModelResourceLocation("securitycraft:scManual", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.taser, 0, new ModelResourceLocation("securitycraft:taser", "inventory"));
 
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

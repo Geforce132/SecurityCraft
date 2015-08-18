@@ -1,5 +1,14 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,16 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.timers.ScheduleUpdate;
-
-public class BlockKeypad extends BlockContainer implements IHelpInfo {
+public class BlockKeypad extends BlockContainer {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -44,36 +44,36 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
     	if(par1World.isRemote){
-    		return true;
-    	}else{
-    		if(((Boolean) state.getValue(POWERED)).booleanValue()){
-    			return false;
-    		}
-    		
-    		if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
-    			TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(pos);
-    			
-    			if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
-    				return true;
-    			}
-    			    		
-    			if(TEK.getKeypadCode() != null && !TEK.getKeypadCode().isEmpty()){
-    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 0, par1World, pos.getX(), pos.getY(), pos.getZ());
-    			}else{
-    				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 1, par1World, pos.getX(), pos.getY(), pos.getZ());
-    			}
-    			
-    			return true;       		
-        	}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-        		if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
-    				if(((TileEntityKeypad)par1World.getTileEntity(pos)).getKeypadCode() != null && !((TileEntityKeypad)par1World.getTileEntity(pos)).getKeypadCode().isEmpty() && (par1World.getBlockState(pos).getBlock() == mod_SecurityCraft.keypad && !((Boolean) state.getValue(POWERED)).booleanValue())){
-    					new ScheduleUpdate(par1World, 3, pos.getX(), pos.getY(), pos.getZ());
-    				}
-    			}else{	
-    				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
-    			}	
-        	}     	    	     	
-    	}
+			return true;
+		}else{
+			if(((Boolean) state.getValue(POWERED)).booleanValue()){
+				return false;
+			}
+
+			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
+				TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(pos);
+
+				if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+					return true;
+				}
+
+				if(((IPasswordProtected) TEK).getPassword() == null){
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+				}else{
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+				}
+
+				return true;       		
+			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
+				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
+					if(((IPasswordProtected) par1World.getTileEntity(pos)).getPassword() != null && !((Boolean) state.getValue(POWERED)).booleanValue()){
+						activate(par1World, pos);
+					}
+				}else{	
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
+				}	
+			}     	    	     	
+		}
 
     	return false;
     }
@@ -191,18 +191,8 @@ public class BlockKeypad extends BlockContainer implements IHelpInfo {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2)
-    {
+    public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
-
-	public String getHelpInfo() {
-		return "The keypad is used by placing the keypad, right-clicking it, and setting a numerical passcode. Once the keycode is set, right-clicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.";
-	}
-    
-    //TODO Fix recipe.
-	public String[] getRecipe() {
-		return new String[]{"The keypad requires: 9 stone buttons.", "XXX", "XXX", "XXX", "X = stone button"};
-	}
 
 }

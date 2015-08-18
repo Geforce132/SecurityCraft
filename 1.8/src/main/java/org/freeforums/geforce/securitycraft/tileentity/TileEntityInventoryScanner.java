@@ -1,14 +1,15 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
-
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 	
@@ -169,9 +170,9 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		return true;
 	}
 
-	public void openInventory() {}
+	public void openInventory(EntityPlayer player) {}
 
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer player) {}
 
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return true;

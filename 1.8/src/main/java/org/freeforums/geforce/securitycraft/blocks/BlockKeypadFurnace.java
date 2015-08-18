@@ -1,5 +1,9 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -15,12 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
-
-public class BlockKeypadFurnace extends BlockOwnable implements IHelpInfo {
+public class BlockKeypadFurnace extends BlockOwnable {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
@@ -105,14 +104,6 @@ public class BlockKeypadFurnace extends BlockOwnable implements IHelpInfo {
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
-	}
-
-	public String getHelpInfo() {
-		return "The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.";
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The password-protected furnace requires: 7 iron ingot, 1 keypad, 1 furnace", "XYX", "XZX", "XXX", "X = iron ingot, Y = keypad, Z = furnace"};
 	}
 
 }

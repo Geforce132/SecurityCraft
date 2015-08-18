@@ -2,6 +2,17 @@ package org.freeforums.geforce.securitycraft.handlers;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IOwnable;
+import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+import org.freeforums.geforce.securitycraft.items.ItemModule;
+import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,18 +37,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockLaserBlock;
-import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
-import org.freeforums.geforce.securitycraft.entity.EntitySecurityCamera;
-import org.freeforums.geforce.securitycraft.interfaces.IOwnable;
-import org.freeforums.geforce.securitycraft.items.ItemModule;
-import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
-
 @SuppressWarnings({"unused"})
 public class ForgeEventHandler {
 	
@@ -46,7 +45,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		mod_SecurityCraft.instance.setIrcBot(event.player.getName());
+		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
 		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -170,17 +169,6 @@ public class ForgeEventHandler {
 					}
 				}
 			}
-		}
-	}
-	
-	@SubscribeEvent //TODO
-	public void onEntityMounted(EntityMountEvent event){
-		if(!mod_SecurityCraft.debuggingMode){ return; }
-		
-		if(!event.worldObj.isRemote && event.isMounting() && event.entityBeingMounted != null && event.entityBeingMounted instanceof EntitySecurityCamera){
-			((EntityPlayer) event.entityMounting).setInvisible(true);
-		}else if(!event.worldObj.isRemote && event.isDismounting() && event.entityBeingMounted != null && event.entityBeingMounted instanceof EntitySecurityCamera){
-			((EntityPlayer) event.entityMounting).setInvisible(false);
 		}
 	}
 	

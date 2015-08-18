@@ -1,10 +1,11 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import org.freeforums.geforce.securitycraft.interfaces.IPasswordProtected;
-import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 		

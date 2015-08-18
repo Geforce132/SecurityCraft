@@ -1,11 +1,11 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-
-import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 

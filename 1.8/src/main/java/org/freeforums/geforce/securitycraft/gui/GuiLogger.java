@@ -4,7 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import org.freeforums.geforce.securitycraft.containers.ContainerLogger;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 import org.lwjgl.opengl.GL11;
 
@@ -14,7 +14,7 @@ public class GuiLogger extends GuiContainer{
     private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
 	public GuiLogger(InventoryPlayer par1InventoryPlayer, TileEntityLogger par2TileEntityFurnace) {
-        super(new ContainerLogger(par1InventoryPlayer, par2TileEntityFurnace));
+        super(new ContainerGeneric(par1InventoryPlayer, par2TileEntityFurnace));
         this.tileEntity = par2TileEntityFurnace;
 	}
 	

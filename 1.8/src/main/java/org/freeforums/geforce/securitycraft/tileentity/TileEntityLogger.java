@@ -17,11 +17,13 @@ public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	
+    public void update(){
+        if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 80L == 0L && this.worldObj.isBlockIndirectlyGettingPowered(this.getPos()) > 0){
+        	this.logPlayers();
+        }
+    }
+	
 	public void logPlayers(){
-		if(this.worldObj.isRemote){
-			return;
-		}else{
-			
 		double d0 = (double)(mod_SecurityCraft.configHandler.usernameLoggerSearchRadius);
 		
 		AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0);
@@ -34,8 +36,6 @@ public class TileEntityLogger extends TileEntityOwnable {
         }
         
     	sendChangeToClient();
-
-		}
 	}
     
 	
@@ -67,8 +67,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	/**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -81,8 +80,7 @@ public class TileEntityLogger extends TileEntityOwnable {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -92,8 +90,7 @@ public class TileEntityLogger extends TileEntityOwnable {
         	}
         }
     }
-	
-    
+	 
     public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
@@ -104,9 +101,7 @@ public class TileEntityLogger extends TileEntityOwnable {
     	readFromNBT(packet.getNbtCompound());        
     }
 	
-	
-	public void sendChangeToClient()
-    {
+	public void sendChangeToClient(){
         for(int i = 0; i < this.players.length; i++){
         	if(this.players[i] != null){
         		//TODO

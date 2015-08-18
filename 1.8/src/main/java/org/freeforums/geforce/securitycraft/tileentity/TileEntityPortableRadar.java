@@ -1,10 +1,11 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 	

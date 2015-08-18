@@ -3,14 +3,15 @@ package org.freeforums.geforce.securitycraft.items;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemUniversalBlockModifier extends ItemWithInfo{
+public class ItemUniversalBlockModifier extends Item{
 
 	public ItemUniversalBlockModifier() {
-		super("The universal block modifier enables you to insert modules into customizable blocks to modify how they work. Right-click on the block to modify it.", new String[]{"The universal block modifier requires: 1 emerald, 2 redstone, 2 iron ingots", "XY ", "YZ ", "  Z", "X = emerald, Y = redstone, Z = iron ingot"});
+		super();
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -23,5 +24,4 @@ public class ItemUniversalBlockModifier extends ItemWithInfo{
 		par3List.add("- Portable Radar");
 		par3List.add("- Retinal Scanner");
 	}
-
 }

@@ -2,6 +2,10 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,13 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLaserBlock;
-
 @SuppressWarnings("static-access")
-public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
+public class BlockLaserBlock extends BlockOwnable {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	    
@@ -64,7 +63,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.east(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.east(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 3));
+						par1World.setBlockState(pos.east(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 					}
 				}
 			}else{
@@ -78,7 +77,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.west(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.west(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 3));
+						par1World.setBlockState(pos.west(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 					}
 				}
 			}else{
@@ -92,7 +91,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.south(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.south(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 2));
+						par1World.setBlockState(pos.south(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 					}
 				}
 			}else{
@@ -106,7 +105,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.north(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.north(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 2));
+						par1World.setBlockState(pos.north(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 					}
 				}
 			}else{
@@ -120,7 +119,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.up(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.up(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 1));
+						par1World.setBlockState(pos.up(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 					}
 				}
 			}else{
@@ -134,7 +133,7 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 			if(id == mod_SecurityCraft.LaserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlockState(pos.down(j)).getBlock() == Blocks.air){
-						par1World.setBlockState(pos.down(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaser.BOUNDTYPE, 1));
+						par1World.setBlockState(pos.down(j), mod_SecurityCraft.Laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 					}
 				}
 			}else{
@@ -318,10 +317,6 @@ public class BlockLaserBlock extends BlockOwnable implements IHelpInfo{
 
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock();
-	}
-
-	public String getHelpInfo() {
-		return "The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.";
 	}
 
 	public String[] getRecipe() {

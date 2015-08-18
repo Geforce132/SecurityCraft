@@ -1,5 +1,8 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,8 +13,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityLogger;
 
 public class PacketUpdateLogger implements IMessage{
 	
@@ -50,18 +51,16 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketUpdateLogger packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
+		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		int i = packet.i;
 		String username = packet.username;
 		EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
 
-		TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)); //((TileEntityLogger) getWorld()
+		TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(pos); 
 		
-        if(te != null){
-            te.players[i] = username;
-        }
+		if(te != null){
+			te.players[i] = username;
+		}
 		
 		return null;
 	}

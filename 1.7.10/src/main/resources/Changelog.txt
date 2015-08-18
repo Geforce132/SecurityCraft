@@ -1,4 +1,29 @@
 -----------------------
+SecurityCraft v1.8.0.7 (beta):
+-----------------------
+
+*** Bugfixes/Improvements: ***
+ --- Code cleanup:
+   - Deleted the PacketCUpdateOwner class.
+ - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
+ 
+-----------------------
+SecurityCraft v1.8.0.6 (beta):
+-----------------------
+
+ - Change: LookingGlass world views are now created when right-clicking a camera with a monitor, not when the camera is placed.
+ - Fix: Fixed a I.M.S. crash that caused the game to crash when firing at another hostile player in a LAN world.
+ 
+
+-----------------------
+SecurityCraft v1.8.0.1 (beta) - v1.8.0.5 (beta):
+-----------------------
+Nothing here, because of reasons.
+
+(actually, it's just because Geforce never took the time to make a 
+ new changelog for the SC beta versions until Vauff asked him to. :/)
+
+-----------------------
 SecurityCraft v1.8.0:
 -----------------------
 

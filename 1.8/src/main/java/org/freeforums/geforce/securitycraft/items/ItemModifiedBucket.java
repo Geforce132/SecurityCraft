@@ -1,6 +1,5 @@
 package org.freeforums.geforce.securitycraft.items;
 
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 import net.minecraft.block.Block;
@@ -19,7 +18,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class ItemModifiedBucket extends ItemBucket implements IHelpInfo{
+public class ItemModifiedBucket extends ItemBucket {
 	
 	private Block containedBlock;
 

@@ -1,21 +1,19 @@
 package org.freeforums.geforce.securitycraft.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-
-import org.freeforums.geforce.securitycraft.containers.ContainerRAMActivate;
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSetExplosiveState;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiRAMDeactivate extends GuiContainer{
 
@@ -24,7 +22,7 @@ public class GuiRAMDeactivate extends GuiContainer{
 	private GuiButton[] buttons = new GuiButton[6];
 
 	public GuiRAMDeactivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
-        super(new ContainerRAMActivate(inventory, tile_entity));
+        super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}
 	
@@ -43,7 +41,7 @@ public class GuiRAMDeactivate extends GuiContainer{
     			}
     			
     			this.buttons[i - 1].displayString = "Mine at X: " + coords[0] + " Y: " + coords[1] + " Z: " + coords[2];
-    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
+    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, BlockUtils.toPos(coords[0], coords[1], coords[2]))) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
     		
@@ -71,13 +69,13 @@ public class GuiRAMDeactivate extends GuiContainer{
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);  
+        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
     
     protected void actionPerformed(GuiButton guibutton){
     	int[] coords = this.item.getTagCompound().getIntArray("mine" + (guibutton.id + 1));
 
-    	if(Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() instanceof IExplosive){
+    	if(BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive){
     		mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
     	}
 		

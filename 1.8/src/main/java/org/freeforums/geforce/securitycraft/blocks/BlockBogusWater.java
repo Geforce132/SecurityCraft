@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -18,8 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 
 public class BlockBogusWater extends BlockDynamicLiquid{
 

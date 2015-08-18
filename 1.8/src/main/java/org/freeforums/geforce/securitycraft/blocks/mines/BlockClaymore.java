@@ -1,5 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks.mines;
 
+import org.freeforums.geforce.securitycraft.api.IExplosive;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,13 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.freeforums.geforce.securitycraft.interfaces.IExplosive;
-import org.freeforums.geforce.securitycraft.interfaces.IHelpInfo;
-import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityClaymore;
-
-public class BlockClaymore extends BlockContainer implements IExplosive, IHelpInfo {
+public class BlockClaymore extends BlockContainer implements IExplosive {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
@@ -190,14 +189,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive, IHelpIn
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
-	}
-	
-	public String getHelpInfo() {
-		return "Claymores explode one second after a living entity walks within " + mod_SecurityCraft.configHandler.claymoreRange + " blocks in front of the mine. Right-clicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Right-clicking with flint and steel equipped will re-enable it.";
-	}
-
-	public String[] getRecipe() {
-		return null;
 	}
 
 }

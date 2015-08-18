@@ -1,13 +1,13 @@
 package org.freeforums.geforce.securitycraft.containers;
 
+import org.freeforums.geforce.securitycraft.main.Utils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import org.freeforums.geforce.securitycraft.main.Utils;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 
 public class ContainerInventoryScanner extends Container {
 	
@@ -18,16 +18,26 @@ public class ContainerInventoryScanner extends Container {
         this.numRows = par2TileEntityInventoryScanner.getSizeInventory() / 9;
     	this.inventoryScannerTE = par2TileEntityInventoryScanner;
         int rows = (numRows - 4) * 18;
-    	for (int i = 0; i < 10; ++i) //TODO 0 10    2 12
-        {
-            this.addSlotToContainer(new SlotRestricted(par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16)); //TODO i
+        
+    	for(int i = 0; i < 10; i++){
+            this.addSlotToContainer(new SlotRestricted(par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
+        }		
+    	
+    	for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 3; j++){
+                this.addSlotToContainer(new Slot(par2TileEntityInventoryScanner, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));
+            }
         }
     	
-    	for (int j = 0; j < 9; ++j)
-        {
-            this.addSlotToContainer(new Slot(par1IInventory, j, 8 + j * 18, 179 + rows));
-        }  	
-    	
+    	for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 9; j++){
+                this.addSlotToContainer(new Slot(par1IInventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
+            }
+        }
+
+        for(int i = 0; i < 9; i++){
+            this.addSlotToContainer(new Slot(par1IInventory, i, 8 + i * 18, 173));
+        }
     }
     
     /**
@@ -71,7 +81,8 @@ public class ContainerInventoryScanner extends Container {
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(EntityPlayer par1EntityPlayer){
+    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    {
         super.onContainerClosed(par1EntityPlayer);
         
         Utils.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getType());

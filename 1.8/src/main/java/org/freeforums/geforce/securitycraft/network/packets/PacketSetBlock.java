@@ -1,6 +1,6 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
-import org.freeforums.geforce.securitycraft.tileentity.CustomizableSCTE;
+import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
