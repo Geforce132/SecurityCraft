@@ -149,6 +149,7 @@ public class mod_SecurityCraft {
 	public static Item cameraMonitor;
 	public static Item taser;
 	public static Item scManual;
+	public static Item universalOwnerChanger;
 
     //Modules
     public static ItemModule redstoneModule;

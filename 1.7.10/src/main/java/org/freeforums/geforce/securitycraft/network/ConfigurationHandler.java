@@ -60,6 +60,7 @@ import org.freeforums.geforce.securitycraft.items.ItemTaser;
 import org.freeforums.geforce.securitycraft.items.ItemTestItem;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockModifier;
 import org.freeforums.geforce.securitycraft.items.ItemUniversalBlockRemover;
+import org.freeforums.geforce.securitycraft.items.ItemUniversalOwnerChanger;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
@@ -274,7 +275,7 @@ public class ConfigurationHandler{
 	public void setupItems(){
 		mod_SecurityCraft.Codebreaker = new ItemCodebreaker().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("codebreaker").setTextureName("securitycraft:CodeBreaker1");
 	    
-		mod_SecurityCraft.keycards = new ItemKeycardBase();
+		mod_SecurityCraft.keycards = new ItemKeycardBase().setUnlocalizedName("keycards");
 	  
 		mod_SecurityCraft.doorIndestructableIronItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:doorReinforcedIron");
 		
@@ -311,6 +312,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("scManual").setTextureName("securitycraft:scManual");
 	
 		mod_SecurityCraft.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
+	
+		mod_SecurityCraft.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalOwnerChanger").setTextureName("securitycraft:universalOwnerChanger");
 	}
 	
 	public void setupDebuggingBlocks() {}
@@ -432,7 +435,8 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.cameraMonitor);
 		registerItem(mod_SecurityCraft.taser);
 		registerItem(mod_SecurityCraft.scManual);
-
+		registerItem(mod_SecurityCraft.universalOwnerChanger);
+		
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
@@ -740,6 +744,7 @@ public class ConfigurationHandler{
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.DiamondOreMine, 1), new Object[] {Blocks.diamond_ore, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.SandMine, 1), new Object[] {Blocks.sand, mod_SecurityCraft.Mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.FurnaceMine, 1), new Object[] {Blocks.furnace, mod_SecurityCraft.Mine});
+        GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalOwnerChanger, 1), new Object[] {mod_SecurityCraft.universalBlockModifier, Items.name_tag});
 	}
 
 	/**
