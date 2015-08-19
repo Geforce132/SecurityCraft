@@ -8,9 +8,9 @@ import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -64,8 +64,6 @@ public class ItemUniversalOwnerChanger extends Item
 				return false;
 			}
 
-			PlayerUtils.sendMessageToPlayer(player, "Owner successfully changed to " + newOwner, EnumChatFormatting.GREEN);
-
 			if(world.getBlock(x, y, z) instanceof BlockReinforcedDoor)
 			{
 				if(world.getBlock(x, y + 1, z) instanceof BlockReinforcedDoor)
@@ -77,7 +75,8 @@ public class ItemUniversalOwnerChanger extends Item
 			if(te instanceof IOwnable)
 				((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			((EntityPlayerMP) player).playerNetServerHandler.sendPacket(te.getDescriptionPacket());
+			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
+			PlayerUtils.sendMessageToPlayer(player, "Owner successfully changed to " + newOwner, EnumChatFormatting.GREEN);
 			return true;
 		}
 
