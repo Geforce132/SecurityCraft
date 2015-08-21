@@ -2,19 +2,13 @@ package org.freeforums.geforce.securitycraft.items;
 
 import java.util.List;
 
-import org.freeforums.geforce.securitycraft.blocks.BlockSecurityCamera;
-import org.freeforums.geforce.securitycraft.main.Utils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
-import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntitySecurityCamera;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,43 +19,43 @@ public class ItemCameraMonitor extends ItemMap {
 		super();
 	}
 	
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
-		if(!par3World.isRemote){
-			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
-				if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).isOwner(par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
-					return false;
-				}
-				
-				if(par1ItemStack.getTagCompound() == null){
-					par1ItemStack.setTagCompound(new NBTTagCompound());
-		    	}
-				
-				par1ItemStack.getTagCompound().setString("Camera", par4 + " " + par5 + " " + par6);
-				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Bound camera at" + Utils.getFormattedCoordinates(par4, par5, par6) + " to monitor.", EnumChatFormatting.GREEN);
-				
-				return true;
-			}else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
-				if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera")){ return false; }
-
-				((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]));
-				mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2])));
-				par1ItemStack.stackSize--;
-				
-				return true;
-			}else{
-				if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera")){ 
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Right-click a security camera to view it.", null);
-					return false;
-				}
-				
-				mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]), 0), (EntityPlayerMP) par2EntityPlayer);
-				return false;
-			}
-		}
-		
-		return false;
-	}
+//	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
+//		if(!par3World.isRemote){
+//			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
+//				if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).isOwner(par2EntityPlayer)){
+//					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
+//					return false;
+//				}
+//				
+//				if(par1ItemStack.getTagCompound() == null){
+//					par1ItemStack.setTagCompound(new NBTTagCompound());
+//		    	}
+//				
+//				par1ItemStack.getTagCompound().setString("Camera", par4 + " " + par5 + " " + par6);
+//				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Bound camera at" + Utils.getFormattedCoordinates(par4, par5, par6) + " to monitor.", EnumChatFormatting.GREEN);
+//				
+//				return true;
+//			}else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
+//				if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera")){ return false; }
+//
+//				((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]));
+//				mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2])));
+//				par1ItemStack.stackSize--;
+//				
+//				return true;
+//			}else{
+//				if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera")){ 
+//					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Right-click a security camera to view it.", null);
+//					return false;
+//				}
+//				
+//				mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]), 0), (EntityPlayerMP) par2EntityPlayer);
+//				return false;
+//			}
+//		}
+//		
+//		return false;
+//	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   
     	if(!par2World.isRemote){
@@ -70,7 +64,7 @@ public class ItemCameraMonitor extends ItemMap {
 				return par1ItemStack;
 			}
 			
-			mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]), 0), (EntityPlayerMP) par3EntityPlayer);
+			//mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera").split(" ")[2]), 0), (EntityPlayerMP) par3EntityPlayer);
     	}
     	
 		return par1ItemStack;

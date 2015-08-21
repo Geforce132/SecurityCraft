@@ -1,13 +1,13 @@
 package org.freeforums.geforce.securitycraft.items;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockReinforcedStainedGlass extends ItemBlockWithMetadata {
+public class ItemBlockReinforcedStainedGlass extends ItemBlock {
 
 	public ItemBlockReinforcedStainedGlass(Block block) {
-		super(block, block);
+		super(block);
 	}
 	
 	public String getUnlocalizedName(ItemStack stack){

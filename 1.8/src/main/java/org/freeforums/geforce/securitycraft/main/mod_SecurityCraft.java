@@ -209,6 +209,7 @@ public class mod_SecurityCraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
+		this.configHandler.setupTextureRegistry();
 		
 		FMLInterModComms.sendMessage("Waila", "register", "org.freeforums.geforce.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
 		

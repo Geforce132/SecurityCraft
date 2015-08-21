@@ -1,17 +1,18 @@
 package org.freeforums.geforce.securitycraft.items;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockReinforcedPlanks extends ItemBlockWithMetadata{
+public class ItemBlockReinforcedPlanks extends ItemBlock {
 
 	public ItemBlockReinforcedPlanks(Block block) {
-		super(block, block);
+		super(block);
 	}
 	
 	public String getUnlocalizedName(ItemStack stack){
 		if(stack.getItemDamage() == 0){
-			return this.getUnlocalizedName(stack) + "_oak";
+			return this.getUnlocalizedName() + "_oak";
 		}else if(stack.getItemDamage() == 1){
 			return this.getUnlocalizedName() + "_spruce";
 		}else if(stack.getItemDamage() == 2){

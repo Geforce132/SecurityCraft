@@ -2,6 +2,7 @@ package org.freeforums.geforce.securitycraft.gui;
 
 import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.main.Utils.ClientUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIMS;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiButton;

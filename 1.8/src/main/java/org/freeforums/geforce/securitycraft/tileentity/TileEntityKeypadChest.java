@@ -2,7 +2,10 @@ package org.freeforums.geforce.securitycraft.tileentity;
 
 import org.freeforums.geforce.securitycraft.api.IOwnable;
 import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypadChest;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 
@@ -17,15 +20,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
     public TileEntityKeypadChest adjacentChestXNeg;
     public TileEntityKeypadChest adjacentChestZPos;
 
-	
-	public String getKeypadCode(){
-    	return passcode;
-    }
-    
-    public void setKeypadCode(String par1){
-    	passcode = par1;
-    }
-    
     public String getOwnerUUID(){
     	return ownerUUID;
     }
@@ -94,8 +88,18 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
         return "Protected chest";
     }
     
+    public void activate(EntityPlayer player) {
+		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest){
+    		BlockKeypadChest.activate(worldObj, pos, player);
+    	}
+	}
+
     public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
+    
+	public void setPassword(String password) {
+		passcode = password;
+	}	
     
 }

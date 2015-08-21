@@ -1,4 +1,4 @@
-tile.laserBlock.name=Блок лазера 
+﻿tile.laserBlock.name=Блок лазера 
 tile.laser.name=Лазер 
 tile.laserActive.name=Активный лазер
 tile.keypad.name=Клавиатура
@@ -36,8 +36,6 @@ tile.reinforcedPlanks_Jungle.name=Бронированные доски из т�
 tile.reinforcedPlanks_Acadia.name=Бронированные доски из акаций
 tile.reinforcedPlanks_DarkOak.name=Бронированные доски из тёмного дуба
 tile.panicButton.name=Тревожная кнопка
-tile.keypadFurnace.name=Запароленная печь
-tile.claymore.name=Дистанционная мина
 item.codebreaker.name=Взломщик паролей
 item.doorIndestructibleIronItem.name=Бронированная железная дверь
 item.universalBlockRemover.name=Универсальный съёмщик блоков

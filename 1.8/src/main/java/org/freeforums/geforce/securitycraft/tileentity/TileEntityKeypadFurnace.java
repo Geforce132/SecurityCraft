@@ -1,6 +1,8 @@
 package org.freeforums.geforce.securitycraft.tileentity;
 
 import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
+import org.freeforums.geforce.securitycraft.blocks.BlockKeypadFurnace;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -43,14 +45,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     private String furnaceCustomName;
     private String passcode;
     
-    public String getKeypadCode(){
-    	return passcode;
-    }
-    
-    public void setKeypadCode(String par1){
-    	passcode = par1;
-    }
-
     public int getSizeInventory()
     {
         return this.furnaceItemStacks.length;
@@ -514,9 +508,19 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public IChatComponent getDisplayName() {
 		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
 	}
+	
+	public void activate(EntityPlayer player) {
+		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace){
+    		BlockKeypadFurnace.activate(worldObj, pos, player);
+    	}
+	}
 
 	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
+	
+	public void setPassword(String password) {
+		passcode = password;
+	}	
 
 }

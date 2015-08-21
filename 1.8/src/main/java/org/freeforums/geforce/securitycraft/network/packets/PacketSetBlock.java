@@ -1,7 +1,7 @@
 package org.freeforums.geforce.securitycraft.network.packets;
 
 import org.freeforums.geforce.securitycraft.api.CustomizableSCTE;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypad;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
@@ -50,11 +50,12 @@ public class PacketSetBlock implements IMessage{
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
-
+	//TODO
 	public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
 		int x = packet.x;
 		int y = packet.y;
 		int z = packet.z;
+		BlockPos pos = BlockUtils.toPos(x, y, z);
 		String blockID = packet.blockID;
 		int meta = packet.meta;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
@@ -66,64 +67,48 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		String ownerUUID = "";
 		String ownerName = "";
 
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).itemStacks;
+		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
+			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks;
 		}
 		
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadFurnace){
-			inventory = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).furnaceItemStacks;
-			times[0] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).furnaceBurnTime;
-			times[1] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).currentItemBurnTime;
-			times[2] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).cookTime;
-			times[3] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).totalCookTime;
+		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+			inventory = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks;
+			times[0] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime;
+			times[1] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime;
+			times[2] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime;
+			times[3] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime;
 		}
 		
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getOwnerUUID() != null){
-			ownerUUID = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getOwnerUUID();
-			ownerName = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getOwnerName();
+		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerUUID() != null){
+			ownerUUID = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerUUID();
+			ownerName = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerName();
 		}
 		
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypad && ((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode() != null){
-			password = ((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode();
-		}
-		
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode() != null){
-			password = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode();
-		}
-		
-		if(getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode() != null){
-			password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).getKeypadCode();
+		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getPassword() != null){
+			password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(BlockUtils.toPos(x, y, z))).getPassword();
 		}
 		
 		Block block = (Block)Block.blockRegistry.getObject(blockID);
-		getWorld(par1EntityPlayer).setBlockState(new BlockPos(x, y, z), block.getStateFromMeta(meta));
+		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
 		
 		if(modules != null){
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).itemStacks = modules;
+			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks = modules;
 		}
 		
-		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadFurnace){
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).furnaceItemStacks = inventory;
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).furnaceBurnTime = times[0];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).currentItemBurnTime = times[1];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).cookTime = times[2];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).totalCookTime = times[3];
+		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks = inventory;
+			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime = times[0];
+			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime = times[1];
+			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime = times[2];
+			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime = times[3];
 		}
 		
 		if(!ownerName.isEmpty() && !ownerUUID.isEmpty()){
-			((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setOwner(ownerUUID, ownerName);
+			((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).setOwner(ownerUUID, ownerName);
 		}
 		
-		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypad){
-			((TileEntityKeypad) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setKeypadCode(password);
-		}
-		
-		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadFurnace){
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setKeypadCode(password);
-		}
-		
-		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z)) instanceof TileEntityKeypadChest){
-			((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(new BlockPos(x, y, z))).setKeypadCode(password);
+		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest){
+			((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(password);
 		}
 		
 		return null;

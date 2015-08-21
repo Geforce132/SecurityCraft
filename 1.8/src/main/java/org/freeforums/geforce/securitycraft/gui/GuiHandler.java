@@ -6,6 +6,7 @@ import org.freeforums.geforce.securitycraft.containers.ContainerGeneric;
 import org.freeforums.geforce.securitycraft.containers.ContainerInventoryScanner;
 import org.freeforums.geforce.securitycraft.containers.ContainerKeypadFurnace;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityIMS;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityInventoryScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeycardReader;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -14,7 +15,6 @@ import org.freeforums.geforce.securitycraft.tileentity.TileEntityRAM;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -49,7 +49,7 @@ public class GuiHandler implements IGuiHandler {
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
     	case 16:
-    		return new ContainerKeypadFurnace(player.inventory, (TileEntityFurnace) tile_entity);
+    		return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
     		
     	case 17:
     		return new ContainerGeneric(player.inventory, tile_entity);

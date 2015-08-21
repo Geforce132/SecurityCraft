@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
-import org.freeforums.geforce.securitycraft.tileentity.TileEntityMineLoc;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -196,7 +196,7 @@ public class BlockMine extends BlockExplosive {
 	}      
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityMineLoc();
+		return new TileEntityOwnable();
 	}
 
 }

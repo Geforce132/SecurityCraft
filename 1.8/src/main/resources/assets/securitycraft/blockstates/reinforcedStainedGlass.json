@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "color=0": { "model": "securitycraft:reinforcedStainedGlass_white" },
+        "color=1": { "model": "securitycraft:reinforcedStainedGlass_orange" }
+    }
+}

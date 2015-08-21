@@ -78,7 +78,13 @@ public class BlockKeycardReader extends BlockOwnable  {
 	public void insertCard(World par1World, BlockPos pos, ItemStack par5ItemStack, EntityPlayer par6EntityPlayer) {		
 		if(ModuleUtils.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par6EntityPlayer, EnumCustomModules.BLACKLIST)){ return; }
 		
-		if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0 && (!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
+		int securityLevel = 0;
+		
+		if(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() != null){
+			securityLevel = Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword());
+		}
+		
+		if((!((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && securityLevel <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader)par1World.getTileEntity(pos)).doesRequireExactKeycard() && securityLevel == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
 			if(((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) == 6 && par5ItemStack.getTagCompound() != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.getTagCompound().setInteger("Uses", par5ItemStack.getTagCompound().getInteger("Uses") - 1);
 				
@@ -114,6 +120,12 @@ public class BlockKeycardReader extends BlockOwnable  {
     	
 		return false;
     }
+    
+    public static void activate(World par1World, BlockPos pos){
+    	BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
+		par1World.scheduleUpdate(pos, mod_SecurityCraft.keycardReader, 60);
+	}
     
     /**
      * A randomly called display update to be able to add particles or other items for display

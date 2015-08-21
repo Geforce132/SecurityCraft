@@ -243,6 +243,10 @@ public class BlockLaserBlock extends BlockOwnable {
 		}
     }
     
+    public boolean canProvidePower(){
+        return true;
+    }
+    
     /**
      * Returns true if the block is emitting indirect/weak redstone power on the specified side. If isBlockNormalCube
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,

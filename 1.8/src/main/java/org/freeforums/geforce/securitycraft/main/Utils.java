@@ -24,6 +24,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.command.ICommandSender;
@@ -218,7 +219,7 @@ public static class BlockUtils{
 	}
 
 	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
-		par1World.destroyBlock(new BlockPos(par2, par3, par4), par5);
+		par1World.destroyBlock(toPos(par2, par3, par4), par5);
 	}
 
 	public static void setBlock(World par1World, BlockPos pos, Block block){
@@ -226,7 +227,7 @@ public static class BlockUtils{
 	}
 
 	public static void setBlock(World par1World, int par2, int par3, int par4, Block block){
-		setBlock(par1World, new BlockPos(par2, par3, par4), block);
+		setBlock(par1World, toPos(par2, par3, par4), block);
 	}
 
 	public static Block getBlock(World par1World, BlockPos pos){
@@ -234,7 +235,7 @@ public static class BlockUtils{
 	}
 
 	public static Block getBlock(World par1World, int par2, int par3, int par4){
-		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getBlock();
+		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock();
 	}
 
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value) {
@@ -268,16 +269,16 @@ public static class BlockUtils{
 				ownerName = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerName();
 			}
 
-			if(par1World.getTileEntity(pos) instanceof TileEntityKeypad && ((TileEntityKeypad) par1World.getTileEntity(pos)).getKeypadCode() != null){
-				password = ((TileEntityKeypad) par1World.getTileEntity(pos)).getKeypadCode();
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypad && ((TileEntityKeypad) par1World.getTileEntity(pos)).getPassword() != null){
+				password = ((TileEntityKeypad) par1World.getTileEntity(pos)).getPassword();
 			}
 
-			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getKeypadCode() != null){
-				password = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getKeypadCode();
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getPassword() != null){
+				password = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).getPassword();
 			}
 
-			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode() != null){
-				password = ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode();
+			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword() != null){
+				password = ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword();
 			}
 
 			if(par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown != 0){
@@ -305,15 +306,15 @@ public static class BlockUtils{
 			}
 
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypad){
-				((TileEntityKeypad) par1World.getTileEntity(pos)).setKeypadCode(password);
+				((TileEntityKeypad) par1World.getTileEntity(pos)).setPassword(password);
 			}
 
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
-				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).setKeypadCode(password);
+				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).setPassword(password);
 			}
 
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
-				((TileEntityKeypadChest) par1World.getTileEntity(pos)).setKeypadCode(password);
+				((TileEntityKeypadChest) par1World.getTileEntity(pos)).setPassword(password);
 			}
 
 			if(cooldown != -1 && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar){
@@ -327,15 +328,15 @@ public static class BlockUtils{
 	public static void setBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property, boolean value) {
 		ItemStack[] modules = null;
 		if(par1World.getTileEntity(new BlockPos(par2, par3, par4)) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) par1World.getTileEntity(new BlockPos(par2, par3, par4))).itemStacks;
+			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
 		}
 
-		TileEntity tileEntity = par1World.getTileEntity(new BlockPos(par2, par3, par4));
+		TileEntity tileEntity = par1World.getTileEntity(toPos(par2, par3, par4));
 		par1World.setBlockState(new BlockPos(par2, par3, par4), par1World.getBlockState(new BlockPos(par2, par3, par4)).withProperty(property, value));
 		par1World.setTileEntity(new BlockPos(par2, par3, par4), tileEntity);
 
 		if(modules != null){
-			((CustomizableSCTE) par1World.getTileEntity(new BlockPos(par2, par3, par4))).itemStacks = modules;
+			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = modules;
 		}
 	}
 
@@ -350,7 +351,7 @@ public static class BlockUtils{
 	}
 
 	public static boolean hasBlockProperty(World par1World, int par2, int par3, int par4, IProperty property){
-		return hasBlockProperty(par1World, new BlockPos(par2, par3, par4), property);
+		return hasBlockProperty(par1World, toPos(par2, par3, par4), property);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -360,7 +361,7 @@ public static class BlockUtils{
 
 	@SuppressWarnings("rawtypes")
 	public static Comparable getBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property) {
-		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
+		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property);
 	}
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, BlockPos pos, PropertyBool property){
@@ -368,7 +369,15 @@ public static class BlockUtils{
 	}
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, int par2, int par3, int par4, PropertyBool property){
-		return ((Boolean) par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property)).booleanValue();
+		return ((Boolean) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property)).booleanValue();
+	}
+	
+	public static int getBlockPropertyAsInteger(World par1World, BlockPos pos, PropertyInteger property){
+		return ((Integer) par1World.getBlockState(pos).getValue(property)).intValue();
+	}
+
+	public static int getBlockPropertyAsInteger(World par1World, int par2, int par3, int par4, PropertyInteger property){
+		return ((Integer) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property)).intValue();
 	}
 
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {

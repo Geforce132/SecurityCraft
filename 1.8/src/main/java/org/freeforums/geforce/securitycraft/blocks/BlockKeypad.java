@@ -1,7 +1,10 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import java.util.Random;
+
 import org.freeforums.geforce.securitycraft.api.IPasswordProtected;
 import org.freeforums.geforce.securitycraft.gui.GuiHandler;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.ModuleUtils;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
@@ -78,6 +81,17 @@ public class BlockKeypad extends BlockContainer {
     	return false;
     }
     
+    public static void activate(World par1World, BlockPos pos){
+    	BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
+		par1World.scheduleUpdate(pos, mod_SecurityCraft.Keypad, 60);
+	}
+    
+    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
+    }
+    
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
@@ -113,11 +127,7 @@ public class BlockKeypad extends BlockContainer {
         par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);		
 	}
 
-	/**
-     * Can this block provide power. Only wire currently seems to have this change based on its state.
-     */
-    public boolean canProvidePower()
-    {
+    public boolean canProvidePower(){
         return true;
     }
     
@@ -126,8 +136,7 @@ public class BlockKeypad extends BlockContainer {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
-    {
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
     	if(((Boolean) state.getValue(POWERED)).booleanValue()){
     		return 15;
     	}else{

@@ -4,13 +4,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeforums.geforce.securitycraft.api.IIntersectable;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 
@@ -59,6 +63,10 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
         {
             this.intersectsEntities = par1NBTTagCompound.getBoolean("intersectsEntities");
         }
+    }
+    
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
+    	return (oldState.getBlock() != newState.getBlock());
     }
     
     /**

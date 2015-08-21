@@ -1,6 +1,8 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
 
 import net.minecraft.block.Block;
@@ -37,10 +39,10 @@ public class BlockKeypadChest extends BlockChest {
             	}
             	
             	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
-            		if(((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode() != null && !((TileEntityKeypadChest) par1World.getTileEntity(pos)).getKeypadCode().isEmpty()){
-            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 13, par1World, pos.getX(), pos.getY(), pos.getZ());
+            		if(((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword() != null && !((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword().isEmpty()){
+            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
             		}else{
-            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 12, par1World, pos.getX(), pos.getY(), pos.getZ());
+            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 
             		}
             	}
@@ -51,6 +53,10 @@ public class BlockKeypadChest extends BlockChest {
         }
     }
     
+    public static void activate(World par1World, BlockPos pos, EntityPlayer player){
+    	player.displayGUIChest(((BlockChest) BlockUtils.getBlock(par1World, pos)).getLockableContainer(par1World, pos));
+	}
+    
     /**
      * Called when the block is placed in the world.
      */
@@ -60,13 +66,13 @@ public class BlockKeypadChest extends BlockChest {
         ((TileEntityKeypadChest) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
         
         if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityKeypadChest){
-        	((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(pos.east())).getKeypadCode());
+        	((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.east())).getPassword());
 		}else if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityKeypadChest){
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(pos.west())).getKeypadCode());
+			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.west())).getPassword());
 		}else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityKeypadChest){
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(pos.south())).getKeypadCode());
+			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.south())).getPassword());
 		}else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityKeypadChest){
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setKeypadCode(((TileEntityKeypadChest) par1World.getTileEntity(pos.north())).getKeypadCode());
+			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.north())).getPassword());
 		}
     }
     

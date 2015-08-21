@@ -19,16 +19,16 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	public BlockIronTrapDoor(Material materialIn) {
 		super(materialIn);
 	}
-	
-	 public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-	    	if(par5EntityLivingBase instanceof EntityPlayer){
-	    		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getName());
-	    	}
-	    }
-    
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
-    	return false;
-    }
+
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
+		if(par5EntityLivingBase instanceof EntityPlayer){
+			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getName());
+		}
+	}
+
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
+		return false;
+	}
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {

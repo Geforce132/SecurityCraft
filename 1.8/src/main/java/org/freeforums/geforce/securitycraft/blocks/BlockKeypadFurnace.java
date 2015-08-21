@@ -1,5 +1,6 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
+import org.freeforums.geforce.securitycraft.gui.GuiHandler;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -46,27 +47,30 @@ public class BlockKeypadFurnace extends BlockOwnable {
     }
 	
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-        if(par1World.isRemote){
-            return true;
-        }else{
+        if(!par1World.isRemote){     
 			if(par5EntityPlayer.getCurrentEquippedItem() == null || (par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker)){
 		        TileEntityKeypadFurnace TE = (TileEntityKeypadFurnace) par1World.getTileEntity(pos);
-		        if(TE.getKeypadCode() != null && !TE.getKeypadCode().isEmpty()){
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 15, par1World, pos.getX(), pos.getY(), pos.getZ());
+		        if(TE.getPassword() != null && !TE.getPassword().isEmpty()){
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				}else{
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, 14, par1World, pos.getX(), pos.getY(), pos.getZ());
+					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				}
 			}else{
-				if(!((Boolean) BlockUtils.getBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN)).booleanValue()){
-					BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, true);
+				if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN)){
+					BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
 				}
+				
 				par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
 			}
-			
-            return true;
         }
+        
+        return true;
     }
+	
+	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
+		player.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
+	}
 	
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
