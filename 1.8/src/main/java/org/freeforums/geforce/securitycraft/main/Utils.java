@@ -241,7 +241,7 @@ public static class BlockUtils{
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value) {
 		setBlockProperty(par1World, pos, property, value, false);
 	}
-
+	
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
 			ItemStack[] modules = null;
@@ -338,6 +338,10 @@ public static class BlockUtils{
 		if(modules != null){
 			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = modules;
 		}
+	}
+	
+	public static void setBlockProperty(World par1World, BlockPos pos, PropertyInteger property, int value) {
+		par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -905,6 +905,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.trackMine), 0, new ModelResourceLocation("securitycraft:trackMine", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.bouncingBetty), 0, new ModelResourceLocation("securitycraft:bouncingBetty", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.claymore), 0, new ModelResourceLocation("securitycraft:claymore", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.ims), 0, new ModelResourceLocation("securitycraft:ims", "inventory"));
 
 	}
 

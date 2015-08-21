@@ -2,6 +2,9 @@
 SecurityCraft v1.8.0.7 (beta):
 -----------------------
 
+*** New blocks/items: ***
+ - Added the universal owner changer.
+
 *** Bugfixes/Improvements: ***
  --- Code cleanup:
    - Deleted the PacketCUpdateOwner class.

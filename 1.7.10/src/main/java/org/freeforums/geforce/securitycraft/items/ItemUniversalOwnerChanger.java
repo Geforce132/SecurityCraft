@@ -54,7 +54,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, "This block cannot hold an owner. Please right-clock an appropriate SecurityCraft block.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, "This block cannot hold an owner. Please right-click an appropriate SecurityCraft block.", EnumChatFormatting.RED);
 				return false;
 			}
 
@@ -76,7 +76,7 @@ public class ItemUniversalOwnerChanger extends Item
 				((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			PlayerUtils.sendMessageToPlayer(player, "Owner successfully changed to " + newOwner, EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, "Owner successfully changed to " + newOwner + ".", EnumChatFormatting.GREEN);
 			return true;
 		}
 
