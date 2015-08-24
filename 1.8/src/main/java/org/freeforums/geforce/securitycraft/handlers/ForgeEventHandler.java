@@ -12,7 +12,6 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
 import org.freeforums.geforce.securitycraft.misc.SCSounds;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
@@ -35,15 +34,9 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ForgeEventHandler {
-	
-	private int counter = 0;
-	private int cooldownCounter = 0;
-	
+		
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
@@ -68,20 +61,6 @@ public class ForgeEventHandler {
     		return "";
     	}
     }
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onPlayerTick(PlayerTickEvent event){
-		counter++;
-		if(cooldownCounter > 0){
-			cooldownCounter--;
-		}
-		
-		if(counter >= 20){
-			mod_SecurityCraft.network.sendToServer(new PacketCheckRetinalScanner(event.player.getName()));
-			counter = 0;
-		}
-	}
 	
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
@@ -206,13 +185,5 @@ public class ForgeEventHandler {
     		return false;
     	}
     }
-    
-    public void setCooldown(int par1){
-    	this.cooldownCounter = par1;
-    }
-    
-    public int getCooldown(){
-    	return this.cooldownCounter;
-    }
-
+   
 }

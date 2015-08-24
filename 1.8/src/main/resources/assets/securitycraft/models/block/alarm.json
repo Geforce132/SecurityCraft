@@ -2,13 +2,13 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
+        "particle": "securitycraft:blocks/alarmSidesDeactivated",
         "alarmTopDeactivated": "securitycraft:blocks/alarmTopDeactivated",
-        "alarmSidesDeactivated": "securitycraft:blocks/alarmSidesDeactivated",
-        "particle": "securitycraft:blocks/alarmSidesDeactivated"
+        "alarmSidesDeactivated": "securitycraft:blocks/alarmSidesDeactivated"
     },
     "elements": [
         {
-            "from": [5,-1,5],
+            "from": [5,0,5],
             "to": [11,8,11],
             "faces": {
                 "up": {

@@ -1,9 +1,11 @@
 package org.freeforums.geforce.securitycraft.network;
 
+import org.freeforums.geforce.securitycraft.entity.EntityIMSBomb;
 import org.freeforums.geforce.securitycraft.entity.EntityTnTCompact;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.renderers.ItemKeypadChestRenderer;
 import org.freeforums.geforce.securitycraft.renderers.ItemTaserRenderer;
+import org.freeforums.geforce.securitycraft.renderers.RenderIMSBomb;
 import org.freeforums.geforce.securitycraft.renderers.RenderTnTCompact;
 import org.freeforums.geforce.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityKeypadChest;
@@ -47,6 +49,7 @@ public class ClientProxy extends ServerProxy{
 	@SideOnly(Side.CLIENT)
 	public void registerRenderThings(){
 		RenderingRegistry.registerEntityRenderingHandler(EntityTnTCompact.class, new RenderTnTCompact(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();

@@ -66,9 +66,7 @@ import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.misc.EnumCustomModules;
 import org.freeforums.geforce.securitycraft.misc.SCManualPage;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateCooldown;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCUpdateNBTTag;
-import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.network.packets.PacketGivePotionEffect;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSAddModules;
 import org.freeforums.geforce.securitycraft.network.packets.PacketSCheckPassword;
@@ -804,22 +802,20 @@ public class ConfigurationHandler{
 	} 
 
 	public void setupPackets(SimpleNetworkWrapper network) {
-		network.registerMessage(PacketCheckRetinalScanner.Handler.class, PacketCheckRetinalScanner.class, 1, Side.SERVER);
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 2, Side.SERVER);
-		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 3, Side.SERVER);
-		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 4, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 5, Side.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 6, Side.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 7, Side.SERVER);
-		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 8, Side.CLIENT);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 9, Side.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 10, Side.SERVER);
-		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 11, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 12, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 13, Side.SERVER);
-		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 14, Side.SERVER);
-		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 15, Side.SERVER);
-		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 16, Side.SERVER);
+		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 1, Side.SERVER);
+		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 2, Side.SERVER);
+		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 3, Side.SERVER);
+		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 4, Side.CLIENT);
+		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 5, Side.CLIENT);
+		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 6, Side.SERVER);
+		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 7, Side.CLIENT);
+		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 8, Side.SERVER);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 9, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 10, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 11, Side.SERVER);
+		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 12, Side.SERVER);
+		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 13, Side.SERVER);
+		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 14, Side.SERVER);
 	}
 
 	@SideOnly(Side.CLIENT)

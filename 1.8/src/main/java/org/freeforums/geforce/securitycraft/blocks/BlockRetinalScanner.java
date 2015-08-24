@@ -2,6 +2,8 @@ package org.freeforums.geforce.securitycraft.blocks;
 
 import java.util.Random;
 
+import org.freeforums.geforce.securitycraft.api.IViewActivated;
+import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
 import org.freeforums.geforce.securitycraft.main.Utils.BlockUtils;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityRetinalScanner;
@@ -25,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockRetinalScanner extends BlockContainer {
+public class BlockRetinalScanner extends BlockContainer implements IViewActivated {
 	
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -74,16 +76,20 @@ public class BlockRetinalScanner extends BlockContainer {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random)
-    {
+    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
-        	String ownerUUID = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerUUID();
-        	String ownerName = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerName();
+        	//String ownerUUID = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerUUID();
+        	//String ownerName = ((TileEntityRetinalScanner) par1World.getTileEntity(pos)).getOwnerName();
         	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-        	((TileEntityRetinalScanner) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
+        	//((TileEntityRetinalScanner) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
         }                       
     }
     
+    public void onEntityLookedAtBlock(World world, BlockPos pos, EntityPlayer entity) {
+    	BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
+		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
+	}
+
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
@@ -141,7 +147,7 @@ public class BlockRetinalScanner extends BlockContainer {
     }
     
     public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityRetinalScanner();
+		return new TileEntityRetinalScanner().viewActivated();
 	}
 
 }

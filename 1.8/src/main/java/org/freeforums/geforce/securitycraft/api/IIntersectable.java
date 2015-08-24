@@ -15,7 +15,7 @@ import net.minecraft.world.World;
  * 
  * @author Geforce
  */
-public interface IIntersectable extends ITileEntityProvider{
+public interface IIntersectable extends ITileEntityProvider {
 	
 	/**
 	 * Called when an Entity collides with a Block's bounding box.

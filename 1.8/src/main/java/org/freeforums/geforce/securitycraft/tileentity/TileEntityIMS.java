@@ -26,6 +26,8 @@ public class TileEntityIMS extends TileEntityOwnable {
 	public void update(){
 		super.update();
 		
+        System.out.println(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES));
+
 		if(this.worldObj.getTotalWorldTime() % 80L == 0L){
             this.launchMine();
         }
@@ -64,9 +66,11 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        
-		        BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
+		        if(!worldObj.isRemote){
+		        	BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
+		        }
 		        
-		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) == 0){
+		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
 		        
@@ -90,9 +94,11 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        
-		        BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
+		        if(!worldObj.isRemote){
+		        	BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
+		        }
 		        
-		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) == 0){
+		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
 	        }

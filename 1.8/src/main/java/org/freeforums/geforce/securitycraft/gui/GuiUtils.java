@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -101,15 +102,15 @@ public class GuiUtils extends Gui{
 	
 	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		if(fixLighting){
-			GL11.glEnable(GL11.GL_LIGHTING);
+			GlStateManager.enableLighting();
 		}
 		
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GlStateManager.enableRescaleNormal();
         itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
-        
-        GL11.glDisable(GL11.GL_LIGHTING);
-        
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+
+		GlStateManager.disableLighting();
+		GlStateManager.disableRescaleNormal();
+
 	}
 	
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){

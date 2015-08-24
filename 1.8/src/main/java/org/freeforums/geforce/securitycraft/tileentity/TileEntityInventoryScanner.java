@@ -13,7 +13,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 	
-	private ItemStack[] inventoryContents = new ItemStack[21]; 
+	private ItemStack[] inventoryContents = new ItemStack[37]; 
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -157,13 +157,42 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
         this.markDirty();
 	}
+	
+	public void addItemToStorage(ItemStack par1ItemStack) {
+		for(int i = 10; i < this.inventoryContents.length; i++){
+			if(this.inventoryContents[i] == null){
+				this.inventoryContents[i] = par1ItemStack;
+				break;
+			}else if(this.inventoryContents[i] != null && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
+				if(this.inventoryContents[i].stackSize + par1ItemStack.stackSize <= this.getInventoryStackLimit()){
+					this.inventoryContents[i].stackSize += par1ItemStack.stackSize;
+					break;
+				}else{
+					this.inventoryContents[i].stackSize = this.getInventoryStackLimit();
+				}
+			}
+		}
+
+        this.markDirty();
+	}
+	
+	public void clearStorage() {
+		for(int i = 10; i < this.inventoryContents.length; i++){
+			if(this.inventoryContents[i] != null){
+				this.inventoryContents[i] = null;
+				break;
+			}
+		}
+
+        this.markDirty();
+	}
 
 	public boolean hasCustomInventoryName() {
 		return true;
 	}
     
 	public int getInventoryStackLimit() {
-		return 1;
+		return 64;
 	}
 
 	public boolean isUseableByPlayer(EntityPlayer var1) {
