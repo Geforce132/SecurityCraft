@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforcedGlassBlock_white",
+    "parent": "securitycraft:block/reinforcedStainedGlass_white",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

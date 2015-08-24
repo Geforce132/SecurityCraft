@@ -100,7 +100,6 @@ public class mod_SecurityCraft {
 	public static Block trackMine;
 	public static Block cageTrap;
 	public static Block portableRadar;
-	public static Block deactivatedCageTrap;
 	public static Block unbreakableIronBars;
 	public static Block securityCamera;
 	public static Block usernameLogger;
@@ -148,6 +147,7 @@ public class mod_SecurityCraft {
 	public static Item cameraMonitor;
 	public static Item taser;
 	public static Item scManual;
+	public static Item universalOwnerChanger;
 
     //Modules
     public static ItemModule redstoneModule;
@@ -191,11 +191,13 @@ public class mod_SecurityCraft {
 		if(this.debuggingMode){
 			this.configHandler.setupDebugAdditions();
 		}
-		
+				
 		log("Finished loading mod additions.");
 		log("Doing registering stuff... (PT 1/2)");
 		this.configHandler.setupGameRegistry();
 		
+		serverProxy.registerTextureFiles();
+
 		ModMetadata modMeta = event.getModMetadata();
         modMeta.authorList = Arrays.asList(new String[] {
             "Geforce, bl4ckscor3"

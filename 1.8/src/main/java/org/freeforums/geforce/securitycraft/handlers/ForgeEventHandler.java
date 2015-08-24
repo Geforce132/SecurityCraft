@@ -9,13 +9,15 @@ import org.freeforums.geforce.securitycraft.blocks.BlockOwnable;
 import org.freeforums.geforce.securitycraft.items.ItemModule;
 import org.freeforums.geforce.securitycraft.main.Utils.PlayerUtils;
 import org.freeforums.geforce.securitycraft.main.mod_SecurityCraft;
+import org.freeforums.geforce.securitycraft.misc.CustomDamageSources;
+import org.freeforums.geforce.securitycraft.misc.SCSounds;
+import org.freeforums.geforce.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import org.freeforums.geforce.securitycraft.network.packets.PacketCheckRetinalScanner;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 import org.freeforums.geforce.securitycraft.tileentity.TileEntityPortableRadar;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +25,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -37,7 +39,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings({"unused"})
 public class ForgeEventHandler {
 	
 	private int counter = 0;
@@ -80,7 +81,13 @@ public class ForgeEventHandler {
 			mod_SecurityCraft.network.sendToServer(new PacketCheckRetinalScanner(event.player.getName()));
 			counter = 0;
 		}
-		
+	}
+	
+	@SubscribeEvent
+	public void onDamageTaken(LivingHurtEvent event)
+	{
+		if(event.source == CustomDamageSources.fence)
+			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
 	
 	@SubscribeEvent
@@ -88,8 +95,7 @@ public class ForgeEventHandler {
 		ItemStack result = fillBucket(event.world, event.target.getBlockPos());
 		if(result == null){ return; }
 		event.result = result;
-		event.setResult(Result.ALLOW);
-		
+		event.setResult(Result.ALLOW);	
 	}
 	
 	@SubscribeEvent 
@@ -97,8 +103,7 @@ public class ForgeEventHandler {
 		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getName()) != null){
 			mod_SecurityCraft.instance.getIrcBot(event.player.getName()).disconnect();
 			mod_SecurityCraft.instance.removeIrcBot(event.player.getName());
-		}
-			
+		}		
 	}
 	
 	@SubscribeEvent 

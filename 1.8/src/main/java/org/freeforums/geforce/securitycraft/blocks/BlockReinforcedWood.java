@@ -1,52 +1,44 @@
 package org.freeforums.geforce.securitycraft.blocks;
 
-import java.util.List;
+import org.freeforums.geforce.securitycraft.tileentity.TileEntityOwnable;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 
-public class BlockReinforcedWood extends BlockOwnable {
+public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider {
 	
-    public static final PropertyInteger VARIANT = PropertyInteger.create("variant", 0, 5);
-
     public BlockReinforcedWood(){
-        super(Material.wood);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, 0));
+        super();
     }
     
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List list){
-        for(int i = 0; i < 6; i++){
-            list.add(new ItemStack(itemIn, 1, i));
-        }
+    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
+    	if(!par1World.isRemote){
+    		if(par5EntityLivingBase instanceof EntityPlayer){
+    			((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
+    		}
+    	}
     }
     
-    public int damageDropped(IBlockState state)
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return ((Integer) state.getValue(VARIANT)).intValue();
+        return this.getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata(meta));
+    }
+	
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+        super.breakBlock(par1World, pos, state);
+        par1World.removeTileEntity(pos);
     }
 
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(VARIANT, meta);
-    }
-
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((Integer)state.getValue(VARIANT)).intValue();
-    }
-
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {VARIANT});
-    }
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityOwnable();
+	}
 
 }

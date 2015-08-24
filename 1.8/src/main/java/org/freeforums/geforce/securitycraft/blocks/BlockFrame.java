@@ -20,10 +20,6 @@ public class BlockFrame extends BlockOwnable {
 		super(par1Material);
 	}
 	
-    public boolean isOpaqueCube(){
-    	return false;
-    }
-    
     public boolean isNormalCube(){
         return false;
     }

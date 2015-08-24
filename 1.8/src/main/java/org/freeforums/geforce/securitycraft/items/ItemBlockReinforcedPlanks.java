@@ -8,6 +8,11 @@ public class ItemBlockReinforcedPlanks extends ItemBlock {
 
 	public ItemBlockReinforcedPlanks(Block block) {
 		super(block);
+		this.setHasSubtypes(true);
+	}
+	
+	public int getMetadata(int meta){
+		return meta;
 	}
 	
 	public String getUnlocalizedName(ItemStack stack){

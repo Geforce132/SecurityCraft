@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -30,7 +31,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		super(material);
 	}
 
-	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9)
 	{
 		return false;
 	}
@@ -38,7 +39,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	@Override
 	public boolean canConnectTo(IBlockAccess par1IBlockAccess, BlockPos pos)
 	{
-		Block block = BlockUtils.getBlock((World) par1IBlockAccess, pos);
+		Block block = par1IBlockAccess.getBlockState(pos).getBlock();
 
 		//split up oneliner to be more readable
 		if(block != this && !(block instanceof BlockFenceGate) && block != mod_SecurityCraft.reinforcedFencegate)

@@ -8,6 +8,11 @@ public class ItemBlockReinforcedStainedGlassPanes extends ItemBlock {
 
 	public ItemBlockReinforcedStainedGlassPanes(Block block) {
 		super(block);
+		this.setHasSubtypes(true);
+	}
+	
+	public int getMetadata(int meta){
+		return meta;
 	}
 	
 	public String getUnlocalizedName(ItemStack stack){

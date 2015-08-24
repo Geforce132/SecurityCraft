@@ -2,104 +2,123 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "stone": "blocks/stone",
-        "keypadFrameFront": "blocks/stone",
-        "particle": "blocks/stone"
+        "particle": "securitycraft:blocks/iron_block",
+        "iron_block": "securitycraft:blocks/iron_block"
     },
-        "elements": [
+    "elements": [
         {
             "from": [0,0,1],
             "to": [16,16,16],
             "faces": {
                 "up": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "down": {
-                    "texture": "#stone"
+                    "uv": [0,0,16,15],
+                    "texture": "#iron_block"
                 },
                 "west": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "east": {
-                    "texture": "#stone"
+                    "uv": [0,0,15,16],
+                    "texture": "#iron_block"
                 },
                 "north": {
-                    "texture": "#keypadFrameFront"
+                    "texture": "#iron_block"
                 },
                 "south": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 }
             }
         },
         {
-            "from": [0,14,0],
+            "from": [14,0,0],
             "to": [16,16,1],
             "faces": {
                 "up": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "down": {
-                    "texture": "#keypadFrameFront"
+                    "texture": "#iron_block"
                 },
                 "west": {
-                    "texture": "#stone"
+                    "uv": [1,2,2,14],
+                    "texture": "#iron_block"
                 },
                 "east": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "north": {
-                    "texture": "#stone"
+                    "uv": [0,0,3,16],
+                    "texture": "#iron_block"
                 }
             }
         },
         {
             "from": [0,0,0],
-            "to": [16,2,1],
+            "to": [2,16,1],
             "faces": {
                 "up": {
-                    "texture": "#keypadFrameFront"
+                    "texture": "#iron_block"
                 },
                 "down": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "west": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 },
                 "east": {
-                    "texture": "#stone"
+                    "uv": [14,2,15,14],
+                    "texture": "#iron_block"
                 },
                 "north": {
-                    "texture": "#stone"
+                    "uv": [13,0,16,16],
+                    "texture": "#iron_block"
                 }
             }
         },
         {
-            "from": [14,2,0],
-            "to": [16,14,1],
+            "from": [2,14,0],
+            "to": [14,16,1],
             "faces": {
+                "up": {
+                    "texture": "#iron_block"
+                },
+                "down": {
+                    "uv": [3,2,13,3],
+                    "texture": "#iron_block"
+                },
                 "west": {
-                    "texture": "#keypadFrameFront"
+                    "texture": "missingtexture"
                 },
                 "east": {
-                    "texture": "#stone"
+                    "texture": "missingtexture"
                 },
                 "north": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 }
             }
         },
         {
-            "from": [0,2,0],
-            "to": [2,14,1],
+            "from": [2,0,0],
+            "to": [14,2,1],
             "faces": {
+                "up": {
+                    "uv": [3,13,13,14],
+                    "texture": "#iron_block"
+                },
+                "down": {
+                    "texture": "#iron_block"
+                },
                 "west": {
-                    "texture": "#stone"
+                    "texture": "missingtexture"
                 },
                 "east": {
-                    "texture": "#keypadFrameFront"
+                    "texture": "missingtexture"
                 },
                 "north": {
-                    "texture": "#stone"
+                    "texture": "#iron_block"
                 }
             }
         }

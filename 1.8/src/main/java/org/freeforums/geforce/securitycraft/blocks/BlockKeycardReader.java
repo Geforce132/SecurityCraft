@@ -93,8 +93,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 				}
 			}
 			
-			BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-			par1World.notifyNeighborsOfStateChange(pos, this);
+			BlockKeycardReader.activate(par1World, pos);
 		}else{
 			if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0){
 				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
@@ -110,12 +109,13 @@ public class BlockKeycardReader extends BlockOwnable  {
     		return true;
     	}
     	
-    	if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV1 || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV2 || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.keycardLV3){
+    	if(par5EntityPlayer.getCurrentEquippedItem() == null || !(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase)){
     		if(((TileEntityKeycardReader) par1World.getTileEntity(pos)).getPassword() == null){    	
 		    	par5EntityPlayer.openGui(mod_SecurityCraft.instance, 4, par1World, pos.getX(), pos.getY(), pos.getZ());
 		    	return true;
     		}
-    	
+    	}else{
+    		((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
     	}
     	
 		return false;
@@ -126,6 +126,13 @@ public class BlockKeycardReader extends BlockOwnable  {
 		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
 		par1World.scheduleUpdate(pos, mod_SecurityCraft.keycardReader, 60);
 	}
+    
+    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    	if(!par1World.isRemote){
+    		BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
+			par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
+    	}
+    }
     
     /**
      * A randomly called display update to be able to add particles or other items for display
