@@ -11,9 +11,17 @@ SecurityCraft v1.8.0.7 (beta):
    - Added the IViewActivated interface (works along with TileEntitySCTE.viewActivated()).
  --- Code cleanup:
    - Deleted the PacketCUpdateOwner, PacketCUpdateCooldown, and the PacketCheckRetinalScanner classes.
+   - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.breakinbad...".
+   - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
+   - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
+   - Renamed BlockBogusLava to BlockFakeLava.   
+   - Renamed BlockBogusWaterBase to BlockFakeWaterBase.
+   - Renamed BlockBogusWater to BlockFakeWater.
+   - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
+ - Change: The alarm now emits light when powered.
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
  - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
-
+ 
 -----------------------
 SecurityCraft v1.8.0.6 (beta):
 -----------------------
