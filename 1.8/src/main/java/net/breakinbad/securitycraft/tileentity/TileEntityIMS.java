@@ -3,8 +3,6 @@ package net.breakinbad.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang3.Validate;
-
 import net.breakinbad.securitycraft.blocks.mines.BlockIMS;
 import net.breakinbad.securitycraft.entity.EntityIMSBomb;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
@@ -51,10 +49,6 @@ public class TileEntityIMS extends TileEntityOwnable {
 				if(WorldUtils.isPathObstructed(worldObj, (double) pos.getX() + 0.5D, (double) pos.getY() + (((launchHeight - 1) / 3) + 0.5D), (double) pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
 
 		        double d5 = entity.posX - ((double) pos.getX() + 0.5D);
-		        Validate.notNull(entity);
-		        Validate.notNull(entity.getEntityBoundingBox());
-		        Validate.notNull(entity.height);
-		        Validate.notNull(getPos());
 		        double d6 = entity.getEntityBoundingBox().minY + (double)(entity.height / 2.0F) - ((double) getPos().getY() + 1.25D);
 		        double d7 = entity.posZ - ((double) pos.getZ() + 0.5D);
 
