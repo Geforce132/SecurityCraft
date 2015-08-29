@@ -17,6 +17,9 @@ SecurityCraft v1.8.0.7 (beta):
    - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
  - Fix: Although, the cage trap was "ownable", it was still able to be broken by other players.
+ - Fix: The SecurityCraft: Technical Creative tab is now better sorted.
+ - Fix: Fixed the defused version of the claymore not having a localized name in Waila.
+ - Fix: Improved rendering performance of the password-protected furnace. 
 
 -----------------------
 SecurityCraft v1.8.0.6 (beta):

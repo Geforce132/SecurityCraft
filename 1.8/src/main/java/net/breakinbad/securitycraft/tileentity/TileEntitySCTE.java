@@ -23,6 +23,8 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
+	
+	private int blockPlaceCooldown = 30;
 
 	public void update() {
 		if(intersectsEntities){
@@ -42,25 +44,30 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 		}
 		
 		if(viewActivated){
+			if(blockPlaceCooldown > 0){ 
+				blockPlaceCooldown--; 
+				return;
+			}
+			
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
 	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(j)).expand(5, 5, 5));
-	        List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+	        List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator iterator = list.iterator();
-	        EntityPlayer entityPlayer;
+	        EntityLivingBase entity;
 	
 	        while (iterator.hasNext())
 	        {
-	        	entityPlayer = (EntityPlayer)iterator.next();
-	        	double eyeHeight = (double) entityPlayer.getEyeHeight();
+	        	entity = (EntityLivingBase)iterator.next();
+	        	double eyeHeight = (double) entity.getEyeHeight();
 	        	
-	        	Vec3 lookVec = new Vec3((entityPlayer.posX + (entityPlayer.getLookVec().xCoord * 5)), ((eyeHeight + entityPlayer.posY) + (entityPlayer.getLookVec().yCoord * 5)), (entityPlayer.posZ + (entityPlayer.getLookVec().zCoord * 5)));
+	        	Vec3 lookVec = new Vec3((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
 	        	
-	        	MovingObjectPosition mop = getWorld().rayTraceBlocks(new Vec3(entityPlayer.posX, entityPlayer.posY + entityPlayer.getEyeHeight(), entityPlayer.posZ), lookVec);
+	        	MovingObjectPosition mop = getWorld().rayTraceBlocks(new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ()){
-	        			activatedByView(entityPlayer);
+	        			activatedByView(entity);
 	        		}
 	        	}
 	        }
@@ -71,7 +78,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 		((IIntersectable) this.worldObj.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
 	}
 	
-	public void activatedByView(EntityPlayer entity) {
+	public void activatedByView(EntityLivingBase entity) {
 		((IViewActivated) this.worldObj.getBlockState(getPos()).getBlock()).onEntityLookedAtBlock(getWorld(), getPos(), entity);
 	}
 	

@@ -160,13 +160,12 @@ public class ConfigurationHandler{
 		this.setupItems();
 	}
 	
-	public void setupDebugAdditions() {
+	public void setupDebugAdditions(){
 		this.setupDebuggingBlocks();
 		this.setupDebuggingItems();
 		
 		this.registerDebuggingAdditions();
 	}
-	
 
 	public void setupTechnicalBlocks(){
 		mod_SecurityCraft.LaserBlock = new BlockLaserBlock(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("laserBlock");
@@ -508,37 +507,37 @@ public class ConfigurationHandler{
 		});
 		
 		if(ableToCraftKeycard1){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV1, 1, 0), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV1, 1), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot 
 			});
 		}
 		
 		if(ableToCraftKeycard2){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV2, 1, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV2, 1), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.brick
 			});
 		}
 		
 		if(ableToCraftKeycard3){ 
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV3, 1, 2), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV3, 1), new Object[]{
 				"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.netherbrick
 			});
 		}
 		
 		if(ableToCraftKeycard4){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV4, 1, 4), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV4, 1), new Object[]{
 				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13)
 			});
 		}
 		
 		if(ableToCraftKeycard5){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV5, 1, 5), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycardLV5, 1), new Object[]{
 				"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5)
 			});
 		}
 		
 		if(ableToCraftLUKeycard){
-			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.limitedUseKeycard, 1, 3), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.limitedUseKeycard, 1), new Object[]{
 				"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, 4)
 			});
 		}
@@ -731,13 +730,12 @@ public class ConfigurationHandler{
         	"III", "GRI", "IIS", 'I', Items.iron_ingot, 'G', mod_SecurityCraft.reinforcedGlassPane, 'R', Blocks.redstone_block, 'S', Items.stick
         });
 
-        //TODO Check recipe to make sure the dyes work.
         for(int i = 0; i < 16; i++){
-        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, i), new Object[]{
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, 15 - i), new Object[]{
         		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i)
         	});
         	
-        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i), new Object[]{
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i - 1), new Object[]{
         		"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
         	});
         }
@@ -870,6 +868,7 @@ public class ConfigurationHandler{
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlass), 12, new ModelResourceLocation("securitycraft:reinforcedStainedGlass_brown", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlass), 13, new ModelResourceLocation("securitycraft:reinforcedStainedGlass_green", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlass), 14, new ModelResourceLocation("securitycraft:reinforcedStainedGlass_red", "inventory"));
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlass), 15, new ModelResourceLocation("securitycraft:reinforcedStainedGlass_black", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlassPanes), 0, new ModelResourceLocation("securitycraft:reinforcedStainedGlassPanes_white", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlassPanes), 1, new ModelResourceLocation("securitycraft:reinforcedStainedGlassPanes_orange", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStainedGlassPanes), 2, new ModelResourceLocation("securitycraft:reinforcedStainedGlassPanes_magenta", "inventory"));
@@ -930,9 +929,6 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.bouncingBetty), 0, new ModelResourceLocation("securitycraft:bouncingBetty", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.claymore), 0, new ModelResourceLocation("securitycraft:claymore", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.ims), 0, new ModelResourceLocation("securitycraft:ims", "inventory"));
-
 	}
-
-	
 
 }

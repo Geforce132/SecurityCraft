@@ -24,6 +24,10 @@ public class TileEntityIMS extends TileEntityOwnable {
 	public void update(){
 		super.update();
 		
+		//TODO Fix bug which causes the last bomb not to render at all. 
+		//For whatever reason, the client side seems to minus two from the total number
+		//of bombs left when there are two bombs remaining, causing it to not render the last one.
+		
 		if(this.worldObj.getTotalWorldTime() % 80L == 0L){
             this.launchMine();
         }
@@ -55,18 +59,19 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        this.spawnMine(entity, d5, d6, d7, launchHeight);
 		            
 		        if(worldObj.isRemote){
+		        	System.out.println("Making sound");
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        
 		        if(!worldObj.isRemote){
 		        	BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
 		        }
-		        
+		        			        
 		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
 		        
-		        return;
+		        break;
 	        }
 	        
 	        while(iterator1.hasNext()){
@@ -93,8 +98,10 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
-	        }
-        }
+		        
+		        break;
+	        }	   	            
+	    }
 	}
 	
     /**

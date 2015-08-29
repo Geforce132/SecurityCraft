@@ -1,7 +1,7 @@
 package net.breakinbad.securitycraft.api;
 
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  */
 public interface IViewActivated extends ITileEntityProvider {
 
-	public void onEntityLookedAtBlock(World world, BlockPos pos, EntityPlayer entity);
+	public void onEntityLookedAtBlock(World world, BlockPos pos, EntityLivingBase entity);
 
 	public TileEntity createNewTileEntity(World worldIn, int meta);
 

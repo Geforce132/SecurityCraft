@@ -7,9 +7,11 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -78,7 +80,11 @@ public class GuiSCManual extends GuiScreen {
 		    			if(((i * 3) + j) >= recipe.length){ break; }
 		    			if(this.recipe[(i * 3) + j] == null){ continue; }
 		    			
-		    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    			if(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock){
+			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    			}else{
+			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), this.recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    			}
 		    		}
 		    	}
 	    	}

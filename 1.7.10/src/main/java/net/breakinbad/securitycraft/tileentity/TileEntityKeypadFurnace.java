@@ -12,7 +12,6 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnable, ISidedInventory, IPasswordProtected {
 
@@ -20,39 +19,36 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 	private String ownerUUID = "ownerUUID";
 	private String owner = "owner";
 	
-	
-	public void updateEntity(){
+    public void updateEntity(){
         boolean flag = this.furnaceBurnTime > 0;
         boolean flag1 = false;
 
         if (this.furnaceBurnTime > 0){
-            --this.furnaceBurnTime;
+            this.furnaceBurnTime--;
         }
 
-        if (!this.worldObj.isRemote){
-            if (this.furnaceBurnTime != 0 || this.getStackInSlot(1) != null && this.getStackInSlot(0) != null){
-                if (this.furnaceBurnTime == 0 && this.canSmelt()){
+        if(!this.worldObj.isRemote){
+            if(this.furnaceBurnTime != 0 || this.getStackInSlot(1) != null && this.getStackInSlot(0) != null){
+                if(this.furnaceBurnTime == 0 && this.canSmelt()){
                     this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.getStackInSlot(1));
 
-                    if (this.furnaceBurnTime > 0){
+                    if(this.furnaceBurnTime > 0){
                         flag1 = true;
 
-                        if (this.getStackInSlot(1) != null){
-                            --this.getStackInSlot(1).stackSize;
+                        if(this.getStackInSlot(1) != null){
+                            this.getStackInSlot(1).stackSize--;
 
-                            if (this.getStackInSlot(1).stackSize == 0){
-                            	ItemStack[] array = ObfuscationReflectionHelper.getPrivateValue(TileEntityFurnace.class, this, 3);
-                            	array[1] = array[1].getItem().getContainerItem(array[1]);
-                            	ObfuscationReflectionHelper.setPrivateValue(TileEntityFurnace.class, this, array, 3);
+                            if(this.getStackInSlot(1).stackSize == 0){
+                                this.setInventorySlotContents(1, this.getStackInSlot(1).getItem().getContainerItem(this.getStackInSlot(1)));
                             }
                         }
                     }
                 }
 
-                if (this.isBurning() && this.canSmelt()){
-                    ++this.furnaceCookTime;
+                if(this.isBurning() && this.canSmelt()){
+                    this.furnaceCookTime++;
 
-                    if (this.furnaceCookTime == 200){
+                    if(this.furnaceCookTime == 200){
                         this.furnaceCookTime = 0;
                         this.smeltItem();
                         flag1 = true;
@@ -62,15 +58,16 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
                 }
             }
 
-            if (flag != this.furnaceBurnTime > 0){
+            if(flag != this.furnaceBurnTime > 0){
                 flag1 = true;
             }
         }
 
-        if (flag1){
+        if(flag1){
             this.markDirty();
         }
     }
+
 	
 	private boolean canSmelt(){
         if (this.getStackInSlot(0) == null){

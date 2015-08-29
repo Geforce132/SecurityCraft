@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.breakinbad.securitycraft.api.IViewActivated;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.breakinbad.securitycraft.tileentity.TileEntityRetinalScanner;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -81,9 +83,13 @@ public class BlockRetinalScanner extends BlockContainer implements IViewActivate
         }                       
     }
     
-    public void onEntityLookedAtBlock(World world, BlockPos pos, EntityPlayer entity) {
-    	BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
-		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
+    public void onEntityLookedAtBlock(World world, BlockPos pos, EntityLivingBase entity) {
+    	if(!world.isRemote && entity instanceof EntityPlayer && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
+    		BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
+    		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
+    		
+    		PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getName() + ".", EnumChatFormatting.GREEN);
+    	}
 	}
 
     /**
