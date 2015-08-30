@@ -1,7 +1,7 @@
 package net.breakinbad.securitycraft.blocks;
 
-import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.CustomDamageSources;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -57,9 +57,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer)entity;
-
-			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(x, y, z), player));
+			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(x, y, z), (EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
@@ -72,7 +70,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.fence, 6.0F); //3 hearts per attack
+		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){

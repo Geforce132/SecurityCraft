@@ -13,9 +13,9 @@ import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockLaserBlock;
 import net.breakinbad.securitycraft.blocks.BlockOwnable;
 import net.breakinbad.securitycraft.items.ItemModule;
-import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
+import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.CustomDamageSources;
 import net.breakinbad.securitycraft.misc.SCSounds;
 import net.breakinbad.securitycraft.network.ClientProxy;
@@ -103,7 +103,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.source == CustomDamageSources.fence)
+		if(event.source == CustomDamageSources.electricity)
 			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
 	

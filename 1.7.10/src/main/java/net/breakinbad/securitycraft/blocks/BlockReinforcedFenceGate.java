@@ -2,8 +2,8 @@ package net.breakinbad.securitycraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.CustomDamageSources;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -58,25 +58,26 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		if(world.getBlockMetadata(x, y, z) > 3)
 			return;
 		
+		//so dropped items don't get destroyed
 		if(entity instanceof EntityItem)
 			return;
+		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer)entity;
-
-			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable)world.getTileEntity(x, y, z), player))
+			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(x, y, z), (EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
 		{
 			EntityCreeper creeper = (EntityCreeper)entity;
 			EntityLightningBolt lightning = new EntityLightningBolt(world, x, y, z);
-			
+
 			creeper.onStruckByLightning(lightning);
+			creeper.extinguish();
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.fence, 6.0F);
+		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
 	/**

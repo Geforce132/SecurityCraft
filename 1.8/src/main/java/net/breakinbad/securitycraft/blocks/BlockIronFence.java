@@ -60,9 +60,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer)entity;
-
-			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(pos), player));
+			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(pos), (EntityPlayer)entity));
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
@@ -75,7 +73,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.fence, 6.0F); //3 hearts per attack
+		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){

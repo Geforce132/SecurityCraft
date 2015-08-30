@@ -64,7 +64,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.source == CustomDamageSources.fence)
+		if(event.source == CustomDamageSources.electricity)
 			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
 	
