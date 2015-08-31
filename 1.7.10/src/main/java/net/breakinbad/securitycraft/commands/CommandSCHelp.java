@@ -17,7 +17,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 	
 	private List<String> nicknames;
 	
-	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
+	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message>";
 	
 	public CommandSCHelp(){
 		this.nicknames = new ArrayList<String>();
@@ -58,24 +58,6 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			sendMessageToPlayer("The SecurityCraft IRC bot is disabled from the config file. Please enable to it to use this feature.", icommandsender);
 			return;
 		}
-		
-//		if(par1String[0].matches("changePasscode") && par1String.length == 6){
-//			int[] positions = {Integer.parseInt(par1String[1]), Integer.parseInt(par1String[2]), Integer.parseInt(par1String[3])};
-//			World world = icommandsender.getEntityWorld();
-//			
-//			if(world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad && ((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4])){
-//				((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).setKeypadCode(par1String[5]);
-//				PlayerUtils.sendMessage(icommandsender, "Changed keypad's (at X:" + positions[0] + " Y:" + positions[1] + " Z:" + positions[2] + ") code from " + Integer.parseInt(par1String[4]) + " to " + Integer.parseInt(par1String[5]) + ".", EnumChatFormatting.GREEN);
-//			}
-//			else if((world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.Keypad  && !((TileEntityKeypad)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4])) || (world.getBlock(positions[0], positions[1], positions[2]) == mod_SecurityCraft.keypadChest  && !((TileEntityKeypadChest)world.getTileEntity(positions[0], positions[1], positions[2])).getKeypadCode().matches(par1String[4]))){
-//				PlayerUtils.sendMessage(icommandsender, par1String[3] + " is not the passcode for this block.", EnumChatFormatting.RED);
-//			}
-//			else if(world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.Keypad && world.getBlock(positions[0], positions[1], positions[2]) != mod_SecurityCraft.keypadChest){
-//				PlayerUtils.sendMessage(icommandsender, "There is no accessable block at the specifed coordinates!", EnumChatFormatting.RED);
-//			}
-//			
-//			return;
-//		}
 		
 		if(par1String.length == 1){
 			if(par1String[0].matches("connect")){

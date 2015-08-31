@@ -127,6 +127,10 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
         return this;
     }
     
+    public boolean doesIntersectsEntities(){
+        return intersectsEntities;
+    }
+    
     /**
      * Sets the TileEntity able to be activated when a player looks at the block. 
      * <p>
@@ -137,6 +141,10 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
     public TileEntitySCTE activatedByView(){
         viewActivated = true;
         return this;
+    }
+    
+    public boolean isActivatedByView(){
+        return viewActivated;
     }
 
 }

@@ -14,6 +14,7 @@
         "color=blue": { "model": "securitycraft:reinforcedStainedGlass_blue" },
         "color=brown": { "model": "securitycraft:reinforcedStainedGlass_brown" },
         "color=green": { "model": "securitycraft:reinforcedStainedGlass_green" },
-        "color=red": { "model": "securitycraft:reinforcedStainedGlass_red" }
+        "color=red": { "model": "securitycraft:reinforcedStainedGlass_red" },
+        "color=black": { "model": "securitycraft:reinforcedStainedGlass_black" }
     }
 }

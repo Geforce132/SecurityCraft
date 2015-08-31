@@ -7,10 +7,11 @@ SecurityCraft v1.8.0.7 (beta):
  - Added the universal owner changer.
 
 *** Bugfixes/Improvements: ***
- --- Worked on the SecurityCraft API:
+ --- Worked on the SecurityCraft API (1.8):
    - Added the IViewActivated interface (works along with TileEntitySCTE.viewActivated()).
  --- Code cleanup:
    - Deleted the PacketCUpdateOwner, PacketCUpdateCooldown, and the PacketCheckRetinalScanner classes.
+   - Deleted the TileEntityEmpedWire class.
    - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.breakinbad...".
    - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
    - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
@@ -18,7 +19,7 @@ SecurityCraft v1.8.0.7 (beta):
    - Renamed BlockBogusWaterBase to BlockFakeWaterBase.
    - Renamed BlockBogusWater to BlockFakeWater.
    - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
- - Change: The alarm now emits light when powered.
+ - Change: The alarm now emits light when powered (1.8).
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
  - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
  
@@ -44,32 +45,32 @@ SecurityCraft v1.8.0:
 
 *** New blocks/items: ***
  - Added security cameras.
- - Changed the name of the keypad frame to "Frame".
- - Changed the name of the reinforced iron fence gate to "Electrified Iron Fence Gate".
- - Added tasers.
- - Added reinforced stone and wood stairs.
- - Added electrified iron fence (hurts any entity (except dropped items) when touched, except the owner).
- - Added I.M.S.
- - Added reinforced glass, stained glass, and stained glass panes.
- - Added storage module.
- - Added SecurityCraft manual.
+ - Changed the name of the keypad frame to "Frame". *
+ - Changed the name of the reinforced iron fence gate to "Electrified Iron Fence Gate". *
+ - Added tasers. *
+ - Added reinforced stone and wood stairs. *
+ - Added electrified iron fence (hurts any entity (except dropped items) when touched, except the owner). *
+ - Added I.M.S. *
+ - Added reinforced glass, stained glass, and stained glass panes. *
+ - Added storage module. *
+ - Added SecurityCraft manual. *
  
 *** Major additions: ***
  - Added Waila support.
- - Added VersionChecker update support.
+ - Added VersionChecker update support. *
 
 *** Bugfixes/Improvements: ***
  --- Hefty code cleanup:
-   - Deleted org.freeforums.geforce.securitycraft.timers and all the classes in it. 
-   - Did some code formatting.
-   - Simplified TileEntity and ID checks in GuiHandler.
-   - Deleted unused texture .png files.
-   - Deleted unused Access Transformer.
-   - Deleted the ItemWithInfo and TileEntityMineLoc classes.
-   - Renamed the BlockKeypadFrame class to BlockFrame.
-   - Renamed the BlockReinforcedGlass class to BlockReinforcedGlassPane.
-   - Renamed the ItemRemoteAccess class to ItemMineRemoteAccessTool.
-   - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers.
+   - Deleted org.freeforums.geforce.securitycraft.timers and all the classes in it. *
+   - Did some code formatting. *
+   - Simplified TileEntity and ID checks in GuiHandler. *
+   - Deleted unused texture .png files. *
+   - Deleted unused Access Transformer. *
+   - Deleted the ItemWithInfo and TileEntityMineLoc classes. *
+   - Renamed the BlockKeypadFrame class to BlockFrame. *
+   - Renamed the BlockReinforcedGlass class to BlockReinforcedGlassPane. *
+   - Renamed the ItemRemoteAccess class to ItemMineRemoteAccessTool. *
+   - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers. *
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
    - Added setPassword() and activate() methods to IPasswordProtected.

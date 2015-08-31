@@ -19,7 +19,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 	
 	private List<String> nicknames;
 	
-	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message> OR /sc changePasscode <keypad/chest X> <keypad/chest Y> <keypad/chest Z> <keypad/chest old code> <keypad/chest new code>";
+	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message>";
 	
 	public CommandSCHelp(){
 		this.nicknames = new ArrayList<String>();

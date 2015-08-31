@@ -81,7 +81,6 @@ import net.breakinbad.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.breakinbad.securitycraft.network.packets.PacketUpdateLogger;
 import net.breakinbad.securitycraft.tileentity.TileEntityAlarm;
 import net.breakinbad.securitycraft.tileentity.TileEntityClaymore;
-import net.breakinbad.securitycraft.tileentity.TileEntityEmpedWire;
 import net.breakinbad.securitycraft.tileentity.TileEntityIMS;
 import net.breakinbad.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.breakinbad.securitycraft.tileentity.TileEntityKeycardReader;
@@ -449,7 +448,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
-		GameRegistry.registerTileEntity(TileEntityEmpedWire.class, "empedWire");
 		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");
 		GameRegistry.registerTileEntity(TileEntityLogger.class, "usernameLogger");
 		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, "retinalScanner");

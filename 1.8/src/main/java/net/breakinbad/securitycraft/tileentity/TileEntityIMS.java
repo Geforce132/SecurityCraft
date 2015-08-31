@@ -59,7 +59,6 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        this.spawnMine(entity, d5, d6, d7, launchHeight);
 		            
 		        if(worldObj.isRemote){
-		        	System.out.println("Making sound");
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        

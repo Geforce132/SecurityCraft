@@ -1,13 +1,20 @@
 package net.breakinbad.securitycraft.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.breakinbad.securitycraft.api.IExplosive;
+import net.breakinbad.securitycraft.api.IOwnable;
+import net.breakinbad.securitycraft.api.IPasswordProtected;
+import net.breakinbad.securitycraft.gui.components.CustomHoverChecker;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.tileentity.TileEntitySCTE;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,7 +24,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,9 +34,10 @@ public class GuiSCManual extends GuiScreen {
 
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/infoBookTexture.png");
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/infoBookTitlePage.png");
-	protected ResourceLocation skinTexture = new ResourceLocation("textures/entity/steve.png");
+	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/infoBookIcons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 	
+    private List<CustomHoverChecker> hoverCheckers = new ArrayList<CustomHoverChecker>();
     private int currentPage = -1;
     private ItemStack[] recipe;
     
@@ -57,7 +67,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 		
 	    int k = (this.width - 256) / 2;
-	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 180);
+	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 	    
 	    if(this.currentPage > -1){
 	    	this.fontRendererObj.drawString(mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName(), k + 39, 27, 0, false);	
@@ -72,7 +82,31 @@ public class GuiSCManual extends GuiScreen {
         }
 	    
 	    if(this.currentPage > -1){
-	    	GuiUtils.drawItemStackToGui(mc, mod_SecurityCraft.instance.manualPages.get(currentPage).getItem(), k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+	    	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
+	    	GuiUtils.drawItemStackToGui(mc, item, k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+
+	    	this.mc.getTextureManager().bindTexture(infoBookIcons);
+
+	    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+	    	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+	    	
+	    	if(te != null){
+		    	if(te instanceof IOwnable){
+	    	    	this.drawTexturedModalRect(k + 29, 118, 1, 1, 16, 16);
+		    	}	
+		    	
+		    	if(te instanceof IPasswordProtected){
+	    	    	this.drawTexturedModalRect(k + 55, 118, 18, 1, 17, 16);
+		    	}	
+		    	
+		    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
+	    	    	this.drawTexturedModalRect(k + 81, 118, 36, 1, 17, 16);
+		    	}	
+		    	
+		    	if(itemBlock instanceof IExplosive){
+	    	    	this.drawTexturedModalRect(k + 107, 118, 54, 1, 17, 16);
+		    	}	
+	    	}
 	    	
 	    	if(recipe != null){
 		    	for(int i = 0; i < 3; i++){
@@ -81,16 +115,27 @@ public class GuiSCManual extends GuiScreen {
 		    			if(this.recipe[(i * 3) + j] == null){ continue; }
 		    			
 		    			if(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock){
-			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
 		    			}else{
-			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), this.recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 115 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
-		    			}
+			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), this.recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    			}		    			   
 		    		}
 		    	}
-	    	}
+	    	}	
 	    	
-	    	//this.mc.getTextureManager().bindTexture(skinTexture);
-	    	//cpw.mods.fml.client.config.GuiUtils.drawTexturedModalRect(125, 150, 0, 0, 256, 256, this.zLevel);
+	    	for(int i = 0; i < hoverCheckers.size(); i++){
+	    		if(hoverCheckers.get(i) != null && hoverCheckers.get(i).checkHover(par1, par2)){
+	    			if(hoverCheckers.get(i).getX() == (k + 29)){
+	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.ownableBlock"), 150), par1, par2, this.mc.fontRendererObj);
+	    			}else if(hoverCheckers.get(i).getX() == (k + 55)){
+	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.passwordProtectedBlock"), 150), par1, par2, this.mc.fontRendererObj);
+	    			}else if(hoverCheckers.get(i).getX() == (k + 81)){
+	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.viewActivatedBlock"), 150), par1, par2, this.mc.fontRendererObj);
+	    			}else if(hoverCheckers.get(i).getX() == (k + 107)){
+	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.explosiveBlock"), 150), par1, par2, this.mc.fontRendererObj);
+	    			}
+	    		}
+	    	}
 	    }
 	    
 	    this.updateButtons();
@@ -107,32 +152,35 @@ public class GuiSCManual extends GuiScreen {
 		if(par2 == Keyboard.KEY_LEFT && (this.currentPage - 1) > -2){
 			this.currentPage--;
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			this.updateRecipe();
+			this.updateRecipeAndIcons();
 		}else if(par2 == Keyboard.KEY_RIGHT && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
 			this.currentPage++;
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			this.updateRecipe();
+			this.updateRecipeAndIcons();
 		}
 	}
 	
     protected void actionPerformed(GuiButton par1GuiButton){
     	if(par1GuiButton.id == 1 && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
     		this.currentPage++;
-    		this.updateRecipe();
+    		this.updateRecipeAndIcons();
     	}else if(par1GuiButton.id == 2 && (this.currentPage - 1) > -2){
     		this.currentPage--;
-    		this.updateRecipe();
+    		this.updateRecipeAndIcons();
     	}
     	    	
     	this.updateButtons();
     }
     
-    private void updateRecipe(){
+    private void updateRecipeAndIcons(){
     	if(this.currentPage < 0){ 
     		recipe = null; 
+    		this.hoverCheckers.clear();
     		return;
     	}
     	
+		this.hoverCheckers.clear();
+
     	for(Object object : CraftingManager.getInstance().getRecipeList()){
 			if(object instanceof ShapedRecipes){
 				ShapedRecipes recipe = (ShapedRecipes) object;
@@ -152,6 +200,29 @@ public class GuiSCManual extends GuiScreen {
 			
 			this.recipe = null;
 		}
+    	
+	    int k = (this.width - 256) / 2;
+    	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
+    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+    	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+
+    	if(te != null){
+	    	if(te instanceof IOwnable){
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20)); 
+	    	}	
+	    	
+	    	if(te instanceof IPasswordProtected){
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20)); 
+	    	}
+	    	
+	    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20)); 
+	    	}
+	    	
+	    	if(itemBlock instanceof IExplosive){
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20)); 
+	    	}
+    	}
     }
     
     private ItemStack[] toItemStackArray(List items){

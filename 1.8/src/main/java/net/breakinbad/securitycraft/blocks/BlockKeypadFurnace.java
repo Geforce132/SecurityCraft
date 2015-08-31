@@ -55,12 +55,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				}
 			}else{
-				if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN)){
-					BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
-				}
-				
-				par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
+				activate(par1World, pos, par5EntityPlayer);
 			}
         }
         
@@ -68,6 +63,11 @@ public class BlockKeypadFurnace extends BlockOwnable {
     }
 	
 	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
+		if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN)){
+			BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
+		}
+		
+		par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 		player.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
