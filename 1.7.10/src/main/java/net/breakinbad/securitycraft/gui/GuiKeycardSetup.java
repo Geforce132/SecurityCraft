@@ -95,7 +95,6 @@ public class GuiKeycardSetup extends GuiContainer{
 		mod_SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.xCoord, keypadInventory.yCoord, keypadInventory.zCoord, this.lvOfSecurity, this.requiresExactCard));
 		
 		Minecraft.getMinecraft().thePlayer.closeScreen();
-		//ClientUtils.closePlayerScreen();
 	}
 
 }

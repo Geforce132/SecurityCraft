@@ -64,7 +64,7 @@ public class BlockMine extends BlockExplosive {
 		if (par1World.getBlockState(pos.down()).getBlock().getMaterial() != Material.air){
 			return;  	   
 		}else{    	   
-			par1World.destroyBlock(pos, true);      
+			this.explode(par1World, pos);   
 		}
 	}
 
@@ -80,9 +80,17 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		this.explode(world, pos);
+        if(!world.isRemote){
+        	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.instance.configHandler.mineExplodesWhenInCreative){
+            	return super.removedByPlayer(world, pos, player, willHarvest);
+        	}else{
+        		this.explode(world, pos);
+            	return super.removedByPlayer(world, pos, player, willHarvest);
+        	}
+        }
+		
 		return super.removedByPlayer(world, pos, player, willHarvest);
-	}
+    }
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(par1World.isRemote){

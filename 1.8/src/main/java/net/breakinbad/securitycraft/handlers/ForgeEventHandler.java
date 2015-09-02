@@ -7,6 +7,7 @@ import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockLaserBlock;
 import net.breakinbad.securitycraft.blocks.BlockOwnable;
 import net.breakinbad.securitycraft.items.ItemModule;
+import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.CustomDamageSources;
@@ -48,14 +49,16 @@ public class ForgeEventHandler {
 	
 	private String getRandomTip(){
     	Random random = new Random();
-    	int randomInt = random.nextInt(3);
+    	int randomInt = random.nextInt(4);
     	
     	if(randomInt == 0){
-    		return "Join breakinbad.net, the official SecurityCraft server!";
+    		return "Join BreakIn' Bad, the official SecurityCraft server! IP: breakinbad.net";
     	}else if(randomInt == 1){
-    		return "/sc recipe will display the recipe for SecurityCraft blocks/items.";
+    		return "Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.";
     	}else if(randomInt == 2){
-    		return "/sc help will display help info for SecurityCraft blocks/items.";
+    		return "Use /sc connect to get personal support from the mod devs!";
+    	}else if(randomInt == 3){
+    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
     	}else{
     		return "";
     	}
@@ -89,10 +92,10 @@ public class ForgeEventHandler {
 		if(event.entityPlayer.worldObj.isRemote){
 			return;
 		}else{
-			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && isCustomizableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock(), event.entityPlayer.worldObj.getTileEntity(event.pos)) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && isCustomizableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock(), event.entityPlayer.worldObj.getTileEntity(event.pos)) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
 				event.setCanceled(true);
 				
-				if(event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockModifier && ((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
+				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos), event.entityPlayer)){
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() + ".", EnumChatFormatting.RED);
 					return;
 				}
@@ -101,7 +104,7 @@ public class ForgeEventHandler {
 				return;
 			}
 			
-			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getBlockState(event.pos).getBlock() == mod_SecurityCraft.portableRadar && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == Items.name_tag && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getBlockState(event.pos).getBlock() == mod_SecurityCraft.portableRadar && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
 				
 				event.entityPlayer.getCurrentEquippedItem().stackSize--;
@@ -110,10 +113,10 @@ public class ForgeEventHandler {
 				return;
 			}
 			
-			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && isOwnableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock(), event.entityPlayer.worldObj.getTileEntity(event.pos)) && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.universalBlockRemover){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.pos) != null && isOwnableBlock(event.entityPlayer.worldObj.getBlockState(event.pos).getBlock(), event.entityPlayer.worldObj.getTileEntity(event.pos)) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockRemover)){
 				event.setCanceled(true);
 
-				if(((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() != null && !((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID().matches(event.entityPlayer.getGameProfile().getId().toString())){
+				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos), event.entityPlayer)){
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}

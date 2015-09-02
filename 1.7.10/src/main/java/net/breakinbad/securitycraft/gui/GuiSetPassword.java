@@ -123,15 +123,14 @@ public class GuiSetPassword extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton){
     	switch(guibutton.id){
     	case 0:
-    		try{			
-    			((IPasswordProtected) tileEntity).setPassword(this.keycodeTextbox.getText());
-    			mod_SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, this.keycodeTextbox.getText()));
-    		}catch(Exception e){
+    		if(this.keycodeTextbox.getText().isEmpty()){
     			this.flag  = true;
     			this.updateButtonText();
-    			e.printStackTrace();
     			return;
     		}
+    		
+    		((IPasswordProtected) tileEntity).setPassword(this.keycodeTextbox.getText());
+    		mod_SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, this.keycodeTextbox.getText()));    		
 
     		ClientUtils.closePlayerScreen();
     		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 18, tileEntity.getWorldObj(), tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);	

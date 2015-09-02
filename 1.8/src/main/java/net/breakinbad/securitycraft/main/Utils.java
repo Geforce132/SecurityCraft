@@ -155,6 +155,19 @@ public static class PlayerUtils{
 		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
 	}
 
+	/**
+	 * Returns true if the player is holding the given item.
+	 * 
+	 * Args: player, item.
+	 */
+	public static boolean isHoldingItem(EntityPlayer player, Item item){
+		if(item == null && player.getCurrentEquippedItem() == null){
+			return true;
+		}
+		
+		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
+	}
+	
 }
 
 public static class BlockUtils{

@@ -2,6 +2,7 @@ package net.breakinbad.securitycraft.blocks;
 
 import net.breakinbad.securitycraft.gui.GuiHandler;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.tileentity.TileEntityKeypadChest;
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
@@ -33,9 +35,14 @@ public class BlockKeypadChest extends BlockChest {
 
             if (ilockablecontainer != null){ 
             	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-            		par5EntityPlayer.displayGUIChest(ilockablecontainer);
-            		return true;
-            	}
+                    if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
+                        par5EntityPlayer.displayGUIChest(ilockablecontainer);
+                        return true;
+                    }else{	
+                        PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  	
+                        return true;
+                    }                    
+				}
             	
             	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
             		if(((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword() != null && !((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword().isEmpty()){

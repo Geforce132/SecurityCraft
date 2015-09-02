@@ -55,28 +55,13 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
             throw new IllegalArgumentException("Invalid material");
         }
     }
-
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-		if(!par1World.isRemote){
-			if(par5Entity instanceof EntityPlayer && !((EntityPlayer) par5Entity).capabilities.isCreativeMode){
-				//float f = ((EntityPlayer) par5Entity).getHealth();
-				//((EntityPlayer) par5Entity).setHealth(f - 0.5F);
-				//par1World.playSoundAtEntity(par5Entity, "random.fizz", 1.0F, 1.0F);
-				((EntityPlayer) par5Entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
-			}
-		}
-	}
 	
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode){
-				//float f = ((EntityPlayer) entity).getHealth();
-				//((EntityPlayer) entity).setHealth(f - 0.5F);
-				//world.playSoundAtEntity(entity, "random.fizz", 1.0F, 1.0F);
 				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+			}else{
+				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 			}
 		}
 	}

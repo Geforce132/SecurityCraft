@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -72,7 +73,7 @@ public class BlockKeypad extends BlockContainer {
 						activate(par1World, pos);
 					}
 				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);  				
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
 				}	
 			}     	    	     	
 		}

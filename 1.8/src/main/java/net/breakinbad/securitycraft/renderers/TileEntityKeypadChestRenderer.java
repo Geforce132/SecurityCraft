@@ -18,11 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation trappedDouble = new ResourceLocation("textures/entity/chest/trapped_double.png");
-    private static final ResourceLocation christmasDouble = new ResourceLocation("textures/entity/chest/christmas_double.png");
+    private static final ResourceLocation christmasDouble = new ResourceLocation("securitycraft:textures/entity/chest/christmas_double.png");
     private static final ResourceLocation normalDoubleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestUnactive.png");
     private static final ResourceLocation normalDoubleActive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestActive.png");
     private static final ResourceLocation trappedNormal = new ResourceLocation("textures/entity/chest/trapped.png");
-    private static final ResourceLocation christmasNormal = new ResourceLocation("textures/entity/chest/christmas.png");
+    private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
     private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
     private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
     private ModelChest field_147510_h = new ModelChest();

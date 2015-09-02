@@ -66,7 +66,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.fence, 6.0F);
+		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F);
 	}
 
 
