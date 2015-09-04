@@ -74,9 +74,7 @@ import net.breakinbad.securitycraft.network.packets.PacketCCreateLGView;
 import net.breakinbad.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.breakinbad.securitycraft.network.packets.PacketCRemoveLGView;
 import net.breakinbad.securitycraft.network.packets.PacketCSetCameraLocation;
-import net.breakinbad.securitycraft.network.packets.PacketCUpdateCooldown;
 import net.breakinbad.securitycraft.network.packets.PacketCUpdateNBTTag;
-import net.breakinbad.securitycraft.network.packets.PacketCheckRetinalScanner;
 import net.breakinbad.securitycraft.network.packets.PacketGivePotionEffect;
 import net.breakinbad.securitycraft.network.packets.PacketSAddModules;
 import net.breakinbad.securitycraft.network.packets.PacketSCheckPassword;
@@ -794,27 +792,25 @@ public class ConfigurationHandler{
 	} 
 
 	public void setupPackets(SimpleNetworkWrapper network) {
-		network.registerMessage(PacketCheckRetinalScanner.Handler.class, PacketCheckRetinalScanner.class, 1, Side.SERVER);
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 2, Side.SERVER);
-		network.registerMessage(PacketSetBlockMetadata.Handler.class, PacketSetBlockMetadata.class, 3, Side.SERVER);
-		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 4, Side.SERVER);
-		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 5, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 6, Side.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 7, Side.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 8, Side.SERVER);
-		network.registerMessage(PacketCUpdateCooldown.Handler.class, PacketCUpdateCooldown.class, 9, Side.CLIENT);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 10, Side.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 11, Side.SERVER);
-		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 12, Side.SERVER);
-		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 13, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 14, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 15, Side.SERVER);
-		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 16, Side.CLIENT);
-		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 17, Side.CLIENT);
-		network.registerMessage(PacketCCreateLGView.Handler.class, PacketCCreateLGView.class, 18, Side.CLIENT);
-		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 19, Side.SERVER);
-		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 20, Side.SERVER);
-		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 21, Side.SERVER);
+		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 1, Side.SERVER);
+		network.registerMessage(PacketSetBlockMetadata.Handler.class, PacketSetBlockMetadata.class, 2, Side.SERVER);
+		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 3, Side.SERVER);
+		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 4, Side.SERVER);
+		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 5, Side.CLIENT);
+		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 6, Side.CLIENT);
+		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 7, Side.SERVER);
+		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 8, Side.CLIENT);
+		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 9, Side.SERVER);
+		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 10, Side.SERVER);
+		network.registerMessage(PacketSetBlockAndMetadata.Handler.class, PacketSetBlockAndMetadata.class, 11, Side.SERVER);
+		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 12, Side.SERVER);
+		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 13, Side.SERVER);
+		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 14, Side.CLIENT);
+		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 15, Side.CLIENT);
+		network.registerMessage(PacketCCreateLGView.Handler.class, PacketCCreateLGView.class, 16, Side.CLIENT);
+		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 17, Side.SERVER);
+		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 18, Side.SERVER);
+		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 19, Side.SERVER);
 	}
 
 }

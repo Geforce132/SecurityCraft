@@ -296,6 +296,13 @@ public static class BlockUtils{
 		return false;
 	}
 	
+	/**
+	 * Returns true if the metadata of the block at X, Y, and Z is within (or equal to) the minimum and maximum given.
+	 */
+	public static boolean isMetadataBetween(World world, int x, int y, int z, int min, int max) {
+		return (world.getBlockMetadata(x, y, z) >= min && world.getBlockMetadata(x, y, z) <= max);
+	}
+	
 }
 
 public static class ModuleUtils{

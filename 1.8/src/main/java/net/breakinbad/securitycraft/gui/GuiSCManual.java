@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.api.IExplosive;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.api.IPasswordProtected;
@@ -104,8 +105,12 @@ public class GuiSCManual extends GuiScreen {
 		    	}	
 		    	
 		    	if(itemBlock instanceof IExplosive){
-	    	    	this.drawTexturedModalRect(k + 107, 118, 54, 1, 17, 16);
+	    	    	this.drawTexturedModalRect(k + 107, 117, 54, 1, 18, 18);
 		    	}	
+		    	
+		    	if(te instanceof CustomizableSCTE){
+	    	    	this.drawTexturedModalRect(k + 213, 118, 72, 1, 16, 16);
+		    	}
 	    	}
 	    	
 	    	if(recipe != null){
@@ -133,6 +138,8 @@ public class GuiSCManual extends GuiScreen {
 	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.viewActivatedBlock"), 150), par1, par2, this.mc.fontRendererObj);
 	    			}else if(hoverCheckers.get(i).getX() == (k + 107)){
 	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.explosiveBlock"), 150), par1, par2, this.mc.fontRendererObj);
+	    			}else if(hoverCheckers.get(i).getX() == (k + 213)){
+	    				this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.customizableBlock"), 150), par1, par2, this.mc.fontRendererObj);
 	    			}
 	    		}
 	    	}
@@ -221,6 +228,10 @@ public class GuiSCManual extends GuiScreen {
 	    	
 	    	if(itemBlock instanceof IExplosive){
 	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20)); 
+	    	}
+	    	
+	    	if(te instanceof CustomizableSCTE){
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20)); 
 	    	}
     	}
     }

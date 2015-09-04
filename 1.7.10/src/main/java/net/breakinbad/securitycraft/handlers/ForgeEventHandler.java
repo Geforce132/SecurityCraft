@@ -7,7 +7,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockLaserBlock;
@@ -20,7 +19,6 @@ import net.breakinbad.securitycraft.misc.CustomDamageSources;
 import net.breakinbad.securitycraft.misc.SCSounds;
 import net.breakinbad.securitycraft.network.ClientProxy;
 import net.breakinbad.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import net.breakinbad.securitycraft.network.packets.PacketCheckRetinalScanner;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.breakinbad.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
@@ -41,9 +39,6 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
 public class ForgeEventHandler {
-	
-	private int counter = 0;
-	private int cooldownCounter = 0;
 	
 	/**
 	 * Called whenever a {@link EntityPlayer} joins the game.
@@ -85,20 +80,6 @@ public class ForgeEventHandler {
     		return "";
     	}
     }
-	
-	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event){
-		if(event.player.worldObj.isRemote){
-			counter++;
-			if(cooldownCounter > 0){
-				cooldownCounter--;
-			}
-			if(counter >= 20){
-				mod_SecurityCraft.network.sendToServer(new PacketCheckRetinalScanner(event.player.getCommandSenderName()));
-				counter = 0;
-			}
-		}
-	}
 
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
@@ -221,11 +202,4 @@ public class ForgeEventHandler {
     	}
     }
     
-    public void setCooldown(int par1){
-    	this.cooldownCounter = par1;
-    }
-    
-    public int getCooldown(){
-    	return this.cooldownCounter;
-    }
 }

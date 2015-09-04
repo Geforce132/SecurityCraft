@@ -97,18 +97,41 @@ public class BlockSecurityCamera extends BlockContainer {
 
         if(l == 3){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);                   
-    	}
+        }
+        
     }
+    
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
+		int metadata = par1World.getBlockMetadata(par2, par3, par4);
+		
+		if(metadata == 1){
+			if(!par1World.isSideSolid(par2, par3, par4 + 1, NORTH)){
+				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			}
+		}else if(metadata == 2){
+			if(!par1World.isSideSolid(par2 + 1, par3, par4, WEST)){
+				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			}
+		}else if(metadata == 3){
+			if(!par1World.isSideSolid(par2, par3, par4 - 1, SOUTH)){
+				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			}
+		}else if(metadata == 4){
+			if(!par1World.isSideSolid(par2 - 1, par3, par4, EAST)){
+				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			}
+		}
+	}
     
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
     	mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
     }
     
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
-        return par1World.isSideSolid(par2 - 1, par3, par4, EAST ) ||
-        		par1World.isSideSolid(par2 + 1, par3, par4, WEST ) ||
-        		par1World.isSideSolid(par2, par3, par4 - 1, SOUTH) ||
-        		par1World.isSideSolid(par2, par3, par4 + 1, NORTH);
+        return par1World.isSideSolid(par2 - 1, par3, par4, EAST) ||
+        	   par1World.isSideSolid(par2 + 1, par3, par4, WEST) ||
+        	   par1World.isSideSolid(par2, par3, par4 - 1, SOUTH) ||
+        	   par1World.isSideSolid(par2, par3, par4 + 1, NORTH);
     }
 	    
     public int getLightValue(){

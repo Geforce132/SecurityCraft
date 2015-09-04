@@ -52,7 +52,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
-	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(j)).expand(5, 5, 5));
+	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(k)).expand(5, 5, 5));
 	        List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator iterator = list.iterator();
 	        EntityLivingBase entity;

@@ -7,7 +7,7 @@ SecurityCraft v1.8.0.7 (beta):
  - Added the universal owner changer.
 
 *** Bugfixes/Improvements: ***
- --- Worked on the SecurityCraft API (1.8):
+ --- Worked on the SecurityCraft API:
    - Added the IViewActivated interface (works along with TileEntitySCTE.viewActivated()).
  --- Code cleanup:
    - Deleted the PacketCUpdateOwner, PacketCUpdateCooldown, and the PacketCheckRetinalScanner classes.
@@ -19,11 +19,12 @@ SecurityCraft v1.8.0.7 (beta):
    - Renamed BlockBogusWaterBase to BlockFakeWaterBase.
    - Renamed BlockBogusWater to BlockFakeWater.
    - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
+ - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
+ - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
  - Change: The alarm now emits light when powered (1.8).
- - Change: The SecurityCraft manual now displays icons to represent various properties of blocks.
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
  - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
- - Fix: Fixed bouncing betty's breaking particles. (1.8)
+ - Fix: Fixed the bouncing betty's and password-protected chest's breaking particles. (1.8)
  - Fix: Passcodes could still be set when nothing was entered, resulting in crashes when trying to type in passcodes.
  
 -----------------------
@@ -86,13 +87,13 @@ SecurityCraft v1.8.0:
  - New: Added new Creative Tab for decoration blocks (Reinforced blocks/iron fence etc.) *
  - New: Keycard readers now emit redstone particles like laser blocks when active. *
  - New: Alarms can now be placed on all sides of a block. *
- - New: Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse.
+ - New: Keeping a username logger powered now constantly logs players instead of just logging once when receiving a redstone pulse. *
  - New: Codebreakers can now be used on password-protected furnaces. *
  - New: Claymores now have crafting recipes. *
  - New: Inventory scanners now have a built-in inventory to store deleted items in. *
  - New: New tips! *
  - Change: Electrified Iron Fence Gates now hurts any entity except dropped items and its owner. *
- - Change: Right-clicking the frame with a key panel now creates a keypad. (1.7.10-1.8) Right-clicking the frame with a bound camera monitor now shows the camera's view. (1.7.10)
+ - Change: Right-clicking the frame with a key panel now creates a keypad. (1.7.10-1.8) Right-clicking the frame with a bound camera monitor now shows the camera's view. (1.7.10) *
  - Change: The frame now uses an iron block texture instead of a stone texture. *
  - Change: Removed the keypad's recipe (unless the "useOldKeypadRecipe" config option is selected). *
  - Change: Changed the frame's recipe to use iron ingots instead of stone blocks. *
