@@ -39,7 +39,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ScreenShotHelper;
@@ -140,19 +140,19 @@ public static class PlayerUtils{
     }
 	
 	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
-        ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
-        chatcomponenttranslation.getChatStyle().setColor(par3);
-        par1ICommandSender.addChatMessage(chatcomponenttranslation);
+		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
+		chatcomponenttext.getChatStyle().setColor(par3);
+        par1ICommandSender.addChatMessage(chatcomponenttext);
 	}
 	
 	public static void sendMessageToPlayer(EntityPlayer par1EntityPlayer, String par2, EnumChatFormatting par3){
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation(par2, new Object[0]);
+		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
     	
 		if(par3 != null){
-    		chatcomponenttranslation.getChatStyle().setColor(par3);
+			chatcomponenttext.getChatStyle().setColor(par3);
     	}
     	
-		par1EntityPlayer.addChatComponentMessage(chatcomponenttranslation);
+		par1EntityPlayer.addChatComponentMessage(chatcomponenttext);
 	}
 
 	/**

@@ -20,6 +20,7 @@ SecurityCraft v1.8.0.7 (beta):
    - Renamed BlockBogusWater to BlockFakeWater.
    - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
  - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
+ - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
  - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
  - Change: The alarm now emits light when powered (1.8).
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
@@ -110,5 +111,5 @@ SecurityCraft v1.8.0:
  - Fix: Mines now explode when the block underneath it is broken. *
  - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file. *
  - Fix: Fixed bug that causes a crash when right-clicking a keycard reader after setting the keycard level in the GUI without interacting with another GUI afterwards. *
- - Fix: Crash when receiving a message containing a '%' from IRC.
+ - Fix: Crash when receiving a message containing a '%' from IRC. *
  - Fix: Fake Lava ignored doFireTick gamerule.

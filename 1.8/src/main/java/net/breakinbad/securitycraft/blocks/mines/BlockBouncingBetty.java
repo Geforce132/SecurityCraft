@@ -81,7 +81,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		if(par1World.isRemote){
 			return true;
 		}else{
-			if(PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.remoteAccessMine)){
+			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.remoteAccessMine)){
 				this.explode(par1World, pos);
 				return false;
 			}else{

@@ -21,7 +21,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -40,10 +40,10 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
-		ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip(), new Object[0]);
+		ChatComponentText chatcomponenttext = new ChatComponentText("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip());
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
-			event.player.addChatComponentMessage(chatcomponenttranslation);	
+			event.player.addChatComponentMessage(chatcomponenttext);	
 		}
 	}
 	
