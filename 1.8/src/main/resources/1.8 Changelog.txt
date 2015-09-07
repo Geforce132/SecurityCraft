@@ -27,6 +27,7 @@ SecurityCraft v1.8.0.7 (beta):
  - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
  - Fix: Fixed the bouncing betty's and password-protected chest's breaking particles. (1.8)
  - Fix: Passcodes could still be set when nothing was entered, resulting in crashes when trying to type in passcodes.
+ - Fix: Security cameras now auto-break if the block they are attached to is broken.
  
 -----------------------
 SecurityCraft v1.8.0.6 (beta):

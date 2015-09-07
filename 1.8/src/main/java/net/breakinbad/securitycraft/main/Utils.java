@@ -30,6 +30,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -233,6 +234,22 @@ public static class BlockUtils{
 
 	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
 		par1World.destroyBlock(toPos(par2, par3, par4), par5);
+	}
+	
+	public static boolean isAirBlock(World par1World, BlockPos pos){
+		return par1World.getBlockState(pos).getBlock() == Blocks.air;
+	}
+
+	public static boolean isAirBlock(World par1World, int par2, int par3, int par4){
+		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock() == Blocks.air;
+	}
+	
+	public static int getBlockMeta(World par1World, BlockPos pos){
+		return par1World.getBlockState(pos).getBlock().getMetaFromState(par1World.getBlockState(pos));
+	}
+
+	public static int getBlockMeta(World par1World, int par2, int par3, int par4){
+		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock().getMetaFromState(par1World.getBlockState(toPos(par2, par3, par4)));
 	}
 
 	public static void setBlock(World par1World, BlockPos pos, Block block){

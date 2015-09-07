@@ -41,6 +41,7 @@ import net.breakinbad.securitycraft.blocks.mines.BlockIMS;
 import net.breakinbad.securitycraft.blocks.mines.BlockMine;
 import net.breakinbad.securitycraft.blocks.mines.BlockTrackMine;
 import net.breakinbad.securitycraft.entity.EntityIMSBomb;
+import net.breakinbad.securitycraft.entity.EntitySecurityCamera;
 import net.breakinbad.securitycraft.entity.EntityTaserBullet;
 import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.items.ItemAdminTool;
@@ -70,6 +71,8 @@ import net.breakinbad.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.breakinbad.securitycraft.network.packets.PacketGivePotionEffect;
 import net.breakinbad.securitycraft.network.packets.PacketSAddModules;
 import net.breakinbad.securitycraft.network.packets.PacketSCheckPassword;
+import net.breakinbad.securitycraft.network.packets.PacketSMountCamera;
+import net.breakinbad.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.breakinbad.securitycraft.network.packets.PacketSSetOwner;
 import net.breakinbad.securitycraft.network.packets.PacketSSetPassword;
 import net.breakinbad.securitycraft.network.packets.PacketSSyncTENBTTag;
@@ -220,6 +223,8 @@ public class ConfigurationHandler{
 	
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("securityCamera");
 	
+	    mod_SecurityCraft.securityCameraLit = new BlockSecurityCamera(Material.iron).setHardness(1.0F).setResistance(10.F).setLightLevel(1.0F).setUnlocalizedName("securityCameraLit");
+
 	    mod_SecurityCraft.reinforcedStairsOak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsOak");
 	    mod_SecurityCraft.reinforcedStairsSpruce = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsSpruce");
 	    mod_SecurityCraft.reinforcedStairsBirch = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsBirch");
@@ -399,6 +404,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.claymore);
 		registerBlock(mod_SecurityCraft.keypadFurnace);
 		registerBlock(mod_SecurityCraft.securityCamera);
+		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsOak, mod_SecurityCraft.reinforcedStairsOak.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsSpruce, mod_SecurityCraft.reinforcedStairsSpruce.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsBirch, mod_SecurityCraft.reinforcedStairsBirch.getUnlocalizedName().substring(5));
@@ -790,6 +796,7 @@ public class ConfigurationHandler{
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntityIMSBomb.class, "IMSBomb", 3, mod_SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "SecurityCamera", 4, mod_SecurityCraft.instance, 256, 20, false);
 	}
 
 	public void setupHandlers(FMLPreInitializationEvent event) {
@@ -811,6 +818,8 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 12, Side.SERVER);
 		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 13, Side.SERVER);
 		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 14, Side.SERVER);
+		network.registerMessage(PacketSMountCamera.Handler.class, PacketSMountCamera.class, 15, Side.SERVER);
+		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 16, Side.SERVER);
 	}
 
 	@SideOnly(Side.CLIENT)

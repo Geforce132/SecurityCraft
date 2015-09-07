@@ -90,26 +90,28 @@ public class GuiSCManual extends GuiScreen {
 	    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).field_150939_a instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).field_150939_a).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
 	    	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).field_150939_a : null);
 	    	
-	    	if(te != null){
-		    	if(te instanceof IOwnable){
-	    	    	this.drawTexturedModalRect(k + 29, 118, 1, 1, 16, 16);
-		    	}	
-		    	
-		    	if(te instanceof IPasswordProtected){
-	    	    	this.drawTexturedModalRect(k + 55, 118, 18, 1, 17, 16);
-		    	}	
-		    	
-		    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
-	    	    	this.drawTexturedModalRect(k + 81, 118, 36, 1, 17, 16);
-		    	}	
-		    	
-		    	if(itemBlock instanceof IExplosive){
+	    	if(itemBlock != null){
+	    		if(itemBlock instanceof IExplosive){
 	    	    	this.drawTexturedModalRect(k + 107, 117, 54, 1, 18, 18);
 		    	}	
-		    	
-		    	if(te instanceof CustomizableSCTE){
-	    	    	this.drawTexturedModalRect(k + 213, 118, 72, 1, 16, 16);
-		    	}
+	    		
+	    		if(te != null){
+			    	if(te instanceof IOwnable){
+		    	    	this.drawTexturedModalRect(k + 29, 118, 1, 1, 16, 16);
+			    	}	
+			    	
+			    	if(te instanceof IPasswordProtected){
+		    	    	this.drawTexturedModalRect(k + 55, 118, 18, 1, 17, 16);
+			    	}	
+			    	
+			    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
+		    	    	this.drawTexturedModalRect(k + 81, 118, 36, 1, 17, 16);
+			    	}	
+			    	
+			        if(te instanceof CustomizableSCTE){
+		    	    	this.drawTexturedModalRect(k + 213, 118, 72, 1, 16, 16);
+			    	}
+	    		}
 	    	}
 	    	
 	    	if(recipe != null){

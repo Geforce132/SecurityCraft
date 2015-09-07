@@ -3,9 +3,12 @@ package net.breakinbad.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.entity.EntityIMSBomb;
-import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.main.Utils.ModuleUtils;
 import net.breakinbad.securitycraft.main.Utils.WorldUtils;
+import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
@@ -13,8 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 
-public class TileEntityIMS extends TileEntityOwnable {
+public class TileEntityIMS extends CustomizableSCTE {
 	
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
@@ -46,6 +50,7 @@ public class TileEntityIMS extends TileEntityOwnable {
 				int launchHeight = this.getLaunchHeight();
 
 				if(WorldUtils.isPathObstructed(worldObj, (double) xCoord + 0.5D, (double) yCoord + (((launchHeight - 1) / 3) + 0.5D), (double) zCoord + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())){ continue; }
 
 		        double d5 = entity.posX - ((double) xCoord + 0.5D);
 		        double d6 = entity.boundingBox.minY + (double)(entity.height / 2.0F) - ((double) yCoord + 1.25D);
@@ -72,6 +77,7 @@ public class TileEntityIMS extends TileEntityOwnable {
 
 	        	if(entity instanceof EntityPlayer && ((EntityPlayer) entity).getCommandSenderName().matches(getOwnerName())){ continue; }
 				if(WorldUtils.isPathObstructed(worldObj, (double) xCoord + 0.5D, (double) yCoord + (((launchHeight - 1) / 3) + 0.5D), (double) zCoord + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(((EntityPlayer) entity).getCommandSenderName())){ continue; }
 
 		        double d5 = entity.posX - ((double) xCoord + 0.5D);
 		        double d6 = entity.boundingBox.minY + (double)(entity.height / 2.0F) - ((double) yCoord + 1.25D);
@@ -188,6 +194,14 @@ public class TileEntityIMS extends TileEntityOwnable {
 
 	public void setTargetingOption(int targetingOption) {
 		this.targetingOption = targetingOption;
+	}
+
+	public EnumCustomModules[] getCustomizableOptions() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
+	}
+
+	public String[] getOptionDescriptions() {
+		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to an I.M.S will allow the whitelisted players to walk into the range of the I.M.S without being targeted."};
 	}
 
 }

@@ -3,6 +3,7 @@ package net.breakinbad.securitycraft.network;
 import net.breakinbad.securitycraft.entity.EntityIMSBomb;
 import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.misc.KeyBindings;
 import net.breakinbad.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.breakinbad.securitycraft.renderers.ItemTaserRenderer;
 import net.breakinbad.securitycraft.renderers.RenderIMSBomb;
@@ -53,6 +54,8 @@ public class ClientProxy extends ServerProxy{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderThings(){
+		KeyBindings.init();
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTnTCompact.class, new RenderTnTCompact(Minecraft.getMinecraft().getRenderManager()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
