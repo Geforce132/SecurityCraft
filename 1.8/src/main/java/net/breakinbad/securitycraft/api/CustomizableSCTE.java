@@ -2,6 +2,7 @@ package net.breakinbad.securitycraft.api;
 
 import java.util.ArrayList;
 
+import net.breakinbad.securitycraft.gui.GuiCustomizeBlock;
 import net.breakinbad.securitycraft.items.ItemModule;
 import net.breakinbad.securitycraft.main.Utils.ModuleUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
@@ -16,6 +17,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 
+/**
+ * Extend this class in your TileEntity to make it customizable. You will
+ * be able to modify it with the various modules in SecurityCraft, and
+ * have your block do different functions based on what modules are
+ * inserted.
+ * 
+ * @author Geforce
+ */
 public abstract class CustomizableSCTE extends TileEntityOwnable implements IInventory{
 	
 	public ItemStack[] itemStacks = new ItemStack[getNumberOfCustomizableOptions()];
@@ -229,10 +238,29 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		}
 	}
 	
+	////////////////////////
+	   // MODULE STUFF //
+	////////////////////////
+
+	/**
+	 * Called whenever a module is inserted into a slot in the "Customize" GUI.
+	 * 
+	 * @param stack The raw ItemStack being inserted.
+	 * @param module The EnumCustomModules variant of stack.
+	 */	
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {}
 	
+	/**
+	 * Called whenever a module is removed from a slot in the "Customize" GUI.
+	 * 
+	 * @param stack The raw ItemStack being removed.
+	 * @param module The EnumCustomModules variant of stack.
+     */	
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {}
 	
+	/**
+	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
+     */	
 	public ArrayList<EnumCustomModules> getModules(){
 		ArrayList<EnumCustomModules> modules = new ArrayList<EnumCustomModules>();
 		
@@ -245,6 +273,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return modules;
 	}
 	
+	/**
+	 * @return The ItemStack for the given EnumCustomModules type.
+	 * If there is no ItemStack for that type, returns null.
+     */
 	public ItemStack getModule(EnumCustomModules module){
 		for(int i = 0; i < this.itemStacks.length; i++){
 			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
@@ -372,8 +404,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return list;
 	}
 	
+	/**
+	 * Return an array of what {@link EnumCustomModules} can be inserted
+	 * into this tile entity.
+	 */
 	public abstract EnumCustomModules[] getCustomizableOptions();
 	
+	/**
+	 *  Set the descriptions for each module that gets shown on the info buttons in 
+	 *  the Universal Block Modifier's "Customize" GUI. ({@link GuiCustomizeBlock})
+	 */
 	public abstract String[] getOptionDescriptions();
 	
 }

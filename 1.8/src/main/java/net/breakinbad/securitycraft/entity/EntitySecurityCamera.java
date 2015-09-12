@@ -9,6 +9,7 @@ import net.breakinbad.securitycraft.main.Utils;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.ClientUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.misc.KeyBindings;
 import net.breakinbad.securitycraft.misc.SCSounds;
 import net.breakinbad.securitycraft.network.packets.PacketGivePotionEffect;
@@ -259,11 +260,13 @@ public class EntitySecurityCamera extends Entity{
 	public void setRedstonePower() {
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
 
-		System.out.println("Setting power to " + Utils.toggleBoolean(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)));
-		if(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
-			mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) - 6));
-		}else if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
-			mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) + 6));
+		if(((CustomizableSCTE) worldObj.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
+			System.out.println("Setting power to " + Utils.toggleBoolean(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)));
+			if(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) - 6));
+			}else if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) + 6));
+			}
 		}
 	}
 	

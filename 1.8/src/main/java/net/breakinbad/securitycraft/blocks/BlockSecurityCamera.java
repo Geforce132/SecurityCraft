@@ -1,8 +1,10 @@
 package net.breakinbad.securitycraft.blocks;
 
+import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.entity.EntitySecurityCamera;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
+import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.breakinbad.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
@@ -49,6 +51,20 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public boolean isFullCube(){
 		return false;
+	}
+	
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
+		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) world, pos, FACING);
+        
+    	if(dir == EnumFacing.SOUTH){
+    		this.setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
+    	}else if(dir == EnumFacing.NORTH){
+    		this.setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
+        }else if(dir == EnumFacing.WEST){
+    		this.setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+        }else{
+    		this.setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
+        }
 	}
 
     /**
@@ -132,7 +148,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
     
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
     		return 15;
     	}else{
     		return 0;
@@ -140,7 +156,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
     
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){  	
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
     		return 15;
     	}else{
     		return 0;

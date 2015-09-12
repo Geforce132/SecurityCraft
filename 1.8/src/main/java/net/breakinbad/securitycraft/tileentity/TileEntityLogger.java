@@ -36,8 +36,7 @@ public class TileEntityLogger extends TileEntityOwnable {
         
     	sendChangeToClient();
 	}
-    
-	
+    	
 	private void addPlayerName(String username) {
 		if(!hasPlayerName(username)){
 	        for(int i = 0; i < this.players.length; i++){
@@ -63,9 +62,6 @@ public class TileEntityLogger extends TileEntityOwnable {
 		return false;
 	}
 
-	/**
-     * Writes a tile entity to NBT.
-     */
     public void writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
@@ -76,9 +72,6 @@ public class TileEntityLogger extends TileEntityOwnable {
         }
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
         
