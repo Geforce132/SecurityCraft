@@ -9,7 +9,9 @@ import net.breakinbad.securitycraft.renderers.ItemTaserRenderer;
 import net.breakinbad.securitycraft.renderers.RenderIMSBomb;
 import net.breakinbad.securitycraft.renderers.RenderTnTCompact;
 import net.breakinbad.securitycraft.renderers.TileEntityKeypadChestRenderer;
+import net.breakinbad.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.breakinbad.securitycraft.tileentity.TileEntityKeypadChest;
+import net.breakinbad.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -59,9 +61,10 @@ public class ClientProxy extends ServerProxy{
 		RenderingRegistry.registerEntityRenderingHandler(EntityTnTCompact.class, new RenderTnTCompact(Minecraft.getMinecraft().getRenderManager()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
-		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
+
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
-		MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.taser, new ItemTaserRenderer());
+		//MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.taser, new ItemTaserRenderer());
 	}
 
 }

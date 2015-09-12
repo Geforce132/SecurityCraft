@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
@@ -34,8 +35,12 @@ public class BlockSecurityCamera extends BlockContainer{
 		super(par2Material);
 	}
 	
+	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state){
+        return null;
+    }
+	
 	public int getRenderType(){
-		return 3;
+		return -1;
 	}
 	
 	public boolean isOpaqueCube(){
