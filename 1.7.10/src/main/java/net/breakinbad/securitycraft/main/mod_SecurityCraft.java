@@ -156,6 +156,9 @@ public class mod_SecurityCraft {
 	public static Item taser;
 	public static Item scManual;
 	public static Item universalOwnerChanger;
+	public static Item universalBlockReinforcerLvL1;
+	public static Item universalBlockReinforcerLvL2;
+	public static Item universalBlockReinforcerLvL3;
 
     //Modules
     public static ItemModule redstoneModule;

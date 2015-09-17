@@ -75,5 +75,4 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
-	
 }

@@ -41,5 +41,4 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
-	
 }
