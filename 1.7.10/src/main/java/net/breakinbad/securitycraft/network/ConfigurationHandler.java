@@ -232,12 +232,17 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.reinforcedStairsAcacia = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsAcacia");
 	    mod_SecurityCraft.reinforcedStairsDarkoak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsDarkoak");
 	    mod_SecurityCraft.reinforcedStairsStone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsStone");
-	    
+
 	    mod_SecurityCraft.ironFence = new BlockIronFence("securitycraft:reinforcedDoorLower", Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("scIronFence");
 	
 	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedGlassBlock");
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlass").setBlockTextureName("securitycraft:glass_reinforced");
 	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedGlassPanes").setBlockTextureName("securitycraft:glass_reinforced");
+	
+		mod_SecurityCraft.reinforcedDirt = new BlockOwnable(Material.ground).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedDirt").setBlockTextureName("securitycraft:reinforcedDirt");
+		
+		mod_SecurityCraft.reinforcedCobblestone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedCobblestone").setBlockTextureName("securitycraft:reinforcedCobblestone");
+	    mod_SecurityCraft.reinforcedStairsCobblestone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsCobblestone");
 	}
 	
 	public void setupMines(){
@@ -405,11 +410,14 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsAcacia, mod_SecurityCraft.reinforcedStairsAcacia.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsDarkoak, mod_SecurityCraft.reinforcedStairsDarkoak.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.reinforcedStairsStone);
+		registerBlock(mod_SecurityCraft.reinforcedStairsCobblestone);
 		registerBlock(mod_SecurityCraft.ironFence);
 		registerBlock(mod_SecurityCraft.ims);
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
+		registerBlock(mod_SecurityCraft.reinforcedDirt);
+		registerBlock(mod_SecurityCraft.reinforcedCobblestone);
 		
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
@@ -678,6 +686,10 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStone, 4), new Object[]{
 			"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStone
 	    });
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsCobblestone, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedCobblestone
+		    });
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsOak, 4), new Object[]{
 		    "W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 0)

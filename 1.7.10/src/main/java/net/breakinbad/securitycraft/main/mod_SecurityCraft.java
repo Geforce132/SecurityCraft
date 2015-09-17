@@ -125,6 +125,7 @@ public class mod_SecurityCraft {
 	public static Block claymoreDefused;
 	public static Block keypadFurnace;
 	public static Block reinforcedStairsStone;
+	public static Block reinforcedStairsCobblestone;
 	public static Block reinforcedStairsOak;
 	public static Block reinforcedStairsSpruce;
     public static Block reinforcedStairsBirch;
@@ -136,7 +137,9 @@ public class mod_SecurityCraft {
     public static Block reinforcedGlass;
     public static Block reinforcedStainedGlass;
     public static Block reinforcedStainedGlassPanes;
-
+    public static Block reinforcedDirt;
+    public static Block reinforcedCobblestone;
+    
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
