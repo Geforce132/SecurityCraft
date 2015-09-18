@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class BlockReinforcedStairs extends BlockStairs implements ITileEntityProvider {
 
 	public BlockReinforcedStairs(Block baseBlock, int meta) {
-		super(baseBlock.getStateFromMeta(meta));
+		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		this.useNeighborBrightness = true;
 	}
 	

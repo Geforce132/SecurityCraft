@@ -84,11 +84,13 @@ public class BlockRetinalScanner extends BlockContainer implements IViewActivate
     }
     
     public void onEntityLookedAtBlock(World world, BlockPos pos, EntityLivingBase entity) {
-    	if(!world.isRemote && entity instanceof EntityPlayer && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
+    	if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
     		BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
     		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
     		
-    		PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getName() + ".", EnumChatFormatting.GREEN);
+            if(entity instanceof EntityPlayer){
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getName() + ".", EnumChatFormatting.GREEN);
+            }             
     	}
 	}
 

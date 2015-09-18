@@ -8,6 +8,7 @@ import net.breakinbad.securitycraft.blocks.BlockFakeLavaBase;
 import net.breakinbad.securitycraft.blocks.BlockFakeWater;
 import net.breakinbad.securitycraft.blocks.BlockFakeWaterBase;
 import net.breakinbad.securitycraft.blocks.BlockFrame;
+import net.breakinbad.securitycraft.blocks.BlockHalfReinforcedWoodSlabs;
 import net.breakinbad.securitycraft.blocks.BlockInventoryScanner;
 import net.breakinbad.securitycraft.blocks.BlockInventoryScannerField;
 import net.breakinbad.securitycraft.blocks.BlockIronFence;
@@ -27,6 +28,7 @@ import net.breakinbad.securitycraft.blocks.BlockReinforcedFenceGate;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedGlass;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedGlassPane;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedIronBars;
+import net.breakinbad.securitycraft.blocks.BlockReinforcedSandstone;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStainedGlass;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStainedGlassPanes;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStairs;
@@ -46,8 +48,10 @@ import net.breakinbad.securitycraft.entity.EntityTaserBullet;
 import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.items.ItemAdminTool;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedPlanks;
+import net.breakinbad.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedStainedGlass;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
+import net.breakinbad.securitycraft.items.ItemBlockReinforcedWoodSlabs;
 import net.breakinbad.securitycraft.items.ItemCameraMonitor;
 import net.breakinbad.securitycraft.items.ItemCodebreaker;
 import net.breakinbad.securitycraft.items.ItemKeyPanel;
@@ -60,6 +64,7 @@ import net.breakinbad.securitycraft.items.ItemSCManual;
 import net.breakinbad.securitycraft.items.ItemTaser;
 import net.breakinbad.securitycraft.items.ItemTestItem;
 import net.breakinbad.securitycraft.items.ItemUniversalBlockModifier;
+import net.breakinbad.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.breakinbad.securitycraft.items.ItemUniversalBlockRemover;
 import net.breakinbad.securitycraft.items.ItemUniversalOwnerChanger;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
@@ -232,12 +237,21 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.reinforcedStairsAcacia = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsAcacia");
 	    mod_SecurityCraft.reinforcedStairsDarkoak = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsDarkoak");
 	    mod_SecurityCraft.reinforcedStairsStone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsStone");
-	    
+
 	    mod_SecurityCraft.ironFence = new BlockIronFence(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("electrifiedIronFence");
 	
 	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedGlassBlock");
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlass");
 	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlassPanes");
+	
+	    mod_SecurityCraft.reinforcedDirt = new BlockOwnable(Material.ground).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedDirt");
+		
+		mod_SecurityCraft.reinforcedCobblestone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedCobblestone");
+	    mod_SecurityCraft.reinforcedStairsCobblestone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsCobblestone");
+
+	    mod_SecurityCraft.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedSandstone");
+	
+	    mod_SecurityCraft.reinforcedWoodSlabs = new BlockHalfReinforcedWoodSlabs().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedWoodSlabs");
 	}
 	
 	public void setupMines(){
@@ -318,6 +332,10 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
 	
 		mod_SecurityCraft.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalOwnerChanger");
+	
+		mod_SecurityCraft.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL1");
+		mod_SecurityCraft.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL2");
+		mod_SecurityCraft.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL3");
 	}
 	
 	public void setupDebuggingBlocks() {}
@@ -397,6 +415,9 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.alarm);
 		GameRegistry.registerBlock(mod_SecurityCraft.alarmLit, mod_SecurityCraft.alarmLit.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.reinforcedStone);
+		registerBlock(mod_SecurityCraft.reinforcedCobblestone);
+		registerBlock(mod_SecurityCraft.reinforcedDirt);
+		registerBlock(mod_SecurityCraft.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
 		registerBlock(mod_SecurityCraft.reinforcedFencegate);
 		registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class);
 		registerBlock(mod_SecurityCraft.panicButton);
@@ -407,6 +428,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.securityCameraLit, mod_SecurityCraft.securityCameraLit.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsOak, mod_SecurityCraft.reinforcedStairsOak.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsSpruce, mod_SecurityCraft.reinforcedStairsSpruce.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsCobblestone, mod_SecurityCraft.reinforcedStairsCobblestone.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsBirch, mod_SecurityCraft.reinforcedStairsBirch.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsJungle, mod_SecurityCraft.reinforcedStairsJungle.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedStairsAcacia, mod_SecurityCraft.reinforcedStairsAcacia.getUnlocalizedName().substring(5));
@@ -417,7 +439,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
-		
+		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, ItemBlockReinforcedWoodSlabs.class);
+
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
@@ -444,7 +467,10 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.taser);
 		registerItem(mod_SecurityCraft.scManual);
 		registerItem(mod_SecurityCraft.universalOwnerChanger);
-		
+		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL1);
+		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL2);
+		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL3);
+
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
@@ -853,6 +879,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodPlanks), 4, new ModelResourceLocation("securitycraft:reinforcedPlanks_Acacia", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodPlanks), 5, new ModelResourceLocation("securitycraft:reinforcedPlanks_DarkOak", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsStone), 0, new ModelResourceLocation("securitycraft:reinforcedStairsStone", "inventory"));
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsCobblestone), 0, new ModelResourceLocation("securitycraft:reinforcedStairsCobblestone", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak), 0, new ModelResourceLocation("securitycraft:reinforcedStairsOak", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsSpruce), 0, new ModelResourceLocation("securitycraft:reinforcedStairsSpruce", "inventory"));
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsBirch), 0, new ModelResourceLocation("securitycraft:reinforcedStairsBirch", "inventory"));
@@ -896,7 +923,18 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.keypadFurnace), 0, new ModelResourceLocation("securitycraft:keypadFurnace", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.panicButton), 0, new ModelResourceLocation("securitycraft:panicButton", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.securityCamera), 0, new ModelResourceLocation("securitycraft:securityCamera", "inventory"));
-
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedDirt), 0, new ModelResourceLocation("securitycraft:reinforcedDirt", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedCobblestone), 0, new ModelResourceLocation("securitycraft:reinforcedCobblestone", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedSandstone), 0, new ModelResourceLocation("securitycraft:reinforcedSandstone_normal", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedSandstone), 1, new ModelResourceLocation("securitycraft:reinforcedSandstone_chiseled", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedSandstone), 2, new ModelResourceLocation("securitycraft:reinforcedSandstone_smooth", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 0, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_oak", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 1, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_spruce", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 2, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_birch", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 3, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_jungle", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 4, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_acacia", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 5, new ModelResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak", "inventory"));
+		
 		//Items
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.Codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.remoteAccessMine, 0, new ModelResourceLocation("securitycraft:remoteAccessMine", "inventory"));
@@ -924,6 +962,9 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.scManual, 0, new ModelResourceLocation("securitycraft:scManual", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.taser, 0, new ModelResourceLocation("securitycraft:taser", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalOwnerChanger, 0, new ModelResourceLocation("securitycraft:universalOwnerChanger", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockReinforcerLvL1, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL1", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockReinforcerLvL2, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL2", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockReinforcerLvL3, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL3", "inventory"));
 
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

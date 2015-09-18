@@ -5,7 +5,6 @@ import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.KeyBindings;
 import net.breakinbad.securitycraft.renderers.ItemKeypadChestRenderer;
-import net.breakinbad.securitycraft.renderers.ItemTaserRenderer;
 import net.breakinbad.securitycraft.renderers.RenderIMSBomb;
 import net.breakinbad.securitycraft.renderers.RenderTnTCompact;
 import net.breakinbad.securitycraft.renderers.TileEntityKeypadChestRenderer;
@@ -16,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -45,6 +43,14 @@ public class ClientProxy extends ServerProxy{
 	        "securitycraft:reinforcedStainedGlassPanes_lime", "securitycraft:reinforcedStainedGlassPanes_pink", "securitycraft:reinforcedStainedGlassPanes_gray", "securitycraft:reinforcedStainedGlassPanes_silver", "securitycraft:reinforcedStainedGlassPanes_cyan",
 	        "securitycraft:reinforcedStainedGlassPanes_purple", "securitycraft:reinforcedStainedGlassPanes_blue", "securitycraft:reinforcedStainedGlassPanes_brown", "securitycraft:reinforcedStainedGlassPanes_green", "securitycraft:reinforcedStainedGlassPanes_red", "securitycraft:reinforcedStainedGlassPanes_black"
 	    );
+		
+		Item reinforcedSandstone = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
+		ModelBakery.addVariantName(reinforcedSandstone, "securitycraft:reinforcedSandstone_normal", "securitycraft:reinforcedSandstone_chiseled", "securitycraft:reinforcedSandstone_smooth");
+		
+		Item reinforcedWoodSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
+		ModelBakery.addVariantName(reinforcedWoodSlabs, "securitycraft:reinforcedWoodSlabs_oak", "securitycraft:reinforcedWoodSlabs_spruce", "securitycraft:reinforcedWoodSlabs_birch", "securitycraft:reinforcedWoodSlabs_jungle", "securitycraft:reinforcedWoodSlabs_acacia",
+			"securitycraft:reinforcedWoodSlabs_darkoak"
+		);
 	}
 	
 	@Override

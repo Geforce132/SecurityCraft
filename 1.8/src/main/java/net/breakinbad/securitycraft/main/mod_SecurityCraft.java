@@ -115,6 +115,7 @@ public class mod_SecurityCraft {
 	public static Block claymore;
 	public static Block keypadFurnace;
 	public static Block reinforcedStairsStone;
+	public static Block reinforcedStairsCobblestone;
 	public static Block reinforcedStairsOak;
 	public static Block reinforcedStairsSpruce;
     public static Block reinforcedStairsBirch;
@@ -126,7 +127,11 @@ public class mod_SecurityCraft {
     public static Block reinforcedGlass;
     public static Block reinforcedStainedGlass;
     public static Block reinforcedStainedGlassPanes;
-
+    public static Block reinforcedDirt;
+    public static Block reinforcedCobblestone;
+    public static Block reinforcedSandstone;
+    public static Block reinforcedWoodSlabs;
+    
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
@@ -148,7 +153,10 @@ public class mod_SecurityCraft {
 	public static Item taser;
 	public static Item scManual;
 	public static Item universalOwnerChanger;
-
+	public static Item universalBlockReinforcerLvL1;
+	public static Item universalBlockReinforcerLvL2;
+	public static Item universalBlockReinforcerLvL3;
+	
     //Modules
     public static ItemModule redstoneModule;
     public static ItemModule whitelistModule;
