@@ -131,7 +131,7 @@ public class mod_SecurityCraft {
     public static Block reinforcedCobblestone;
     public static Block reinforcedSandstone;
     public static Block reinforcedWoodSlabs;
-    
+
     //Items
     public static Item Codebreaker;
     public static Item doorIndestructableIronItem;
@@ -156,7 +156,7 @@ public class mod_SecurityCraft {
 	public static Item universalBlockReinforcerLvL1;
 	public static Item universalBlockReinforcerLvL2;
 	public static Item universalBlockReinforcerLvL3;
-	
+
     //Modules
     public static ItemModule redstoneModule;
     public static ItemModule whitelistModule;
