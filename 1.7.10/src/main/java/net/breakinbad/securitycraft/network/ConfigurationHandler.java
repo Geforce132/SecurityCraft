@@ -152,10 +152,6 @@ public class ConfigurationHandler{
 	public static int imsRange;
 	public boolean useOldKeypadRecipe;
 
-	public String currentHackIndex = "";
-	public boolean ableToContinueHacking = true;
-	public boolean hackingFailed = false;
-		
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();
 		this.setupMines();
