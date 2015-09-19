@@ -268,22 +268,6 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		}
 	}
     
-    private boolean hasMultipleItemStacks(String string) {
-    	boolean flag1 = false, flag2 = false;
-    	
-    	if (Block.blockRegistry.containsKey(string))
-        {
-            flag1 = true;
-        }
-		
-		if (Item.itemRegistry.containsKey(string))
-        {
-            flag2 = true;
-        }
-		
-		return flag1 && flag2 ? true : false;
-	}
-
     /**
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */

@@ -378,10 +378,9 @@ public static class BlockUtils{
 		par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 	}
 
-	@SuppressWarnings("rawtypes")
 	public static boolean hasBlockProperty(World par1World, BlockPos pos, IProperty property){
 		try{
-			Comparable comparable = par1World.getBlockState(pos).getValue(property);
+			par1World.getBlockState(pos).getValue(property);
 			return true;
 		}catch(IllegalArgumentException e){
 			return false;

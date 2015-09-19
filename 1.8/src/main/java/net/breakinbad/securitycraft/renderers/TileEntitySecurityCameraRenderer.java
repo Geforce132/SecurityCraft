@@ -27,7 +27,6 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5, int par6) {
-		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : 0;
 		float rotation = 0F;
 		
 		if(par1TileEntity.hasWorldObj()){

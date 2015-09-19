@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL12;
 
 import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.blocks.BlockSecurityCamera;
-import net.breakinbad.securitycraft.main.Utils;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.ClientUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;

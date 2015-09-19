@@ -76,11 +76,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
-        float f = 0.25F;
-        float f1 = 0.375F;
         float f2 = (float)(flag ? 1 : 2) / 16.0F;
-        float f3 = 0.125F;
-        float f4 = 0.1875F;
                       
         switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
         {
@@ -111,7 +107,6 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	static final class SwitchEnumFacing
     {
         static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
-        private static final String __OBFID = "CL_00002131";
 
         static
         {
