@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockReinforcedWoodSlab extends BlockWoodSlab implements ITileEntityProvider {
-	
-	public BlockReinforcedWoodSlab(){
+public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider {
+
+	public BlockReinforcedWoodSlabs(){
 		if(!this.isDouble()){
 			this.useNeighborBrightness = true;
 		}
@@ -46,6 +46,10 @@ public abstract class BlockReinforcedWoodSlab extends BlockWoodSlab implements I
     public Item getItem(World worldIn, BlockPos pos){
         return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
     }
+
+    public boolean isDouble(){
+		return false;
+	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();

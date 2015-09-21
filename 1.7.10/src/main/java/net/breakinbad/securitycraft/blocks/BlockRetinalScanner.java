@@ -63,11 +63,13 @@ public class BlockRetinalScanner extends BlockContainer implements IViewActivate
     } 
     
     public void onEntityLookedAtBlock(World world, int x, int y, int z, EntityLivingBase entity) {
-    	if(!world.isRemote && entity instanceof EntityPlayer && !BlockUtils.isMetadataBetween(world, x, y, z, 7, 10)){
+    	if(!world.isRemote && !BlockUtils.isMetadataBetween(world, x, y, z, 7, 10)){
     		world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) + 5, 3);
     		world.scheduleBlockUpdate(x, y, z, mod_SecurityCraft.retinalScanner, 60);
     		
-    		PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getCommandSenderName() + ".", EnumChatFormatting.GREEN);
+            if(entity instanceof EntityPlayer){
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getCommandSenderName() + ".", EnumChatFormatting.GREEN);
+            }
     	}
 	}
     

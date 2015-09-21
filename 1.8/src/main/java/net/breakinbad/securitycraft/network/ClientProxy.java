@@ -51,6 +51,10 @@ public class ClientProxy extends ServerProxy{
 		ModelBakery.addVariantName(reinforcedWoodSlabs, "securitycraft:reinforcedWoodSlabs_oak", "securitycraft:reinforcedWoodSlabs_spruce", "securitycraft:reinforcedWoodSlabs_birch", "securitycraft:reinforcedWoodSlabs_jungle", "securitycraft:reinforcedWoodSlabs_acacia",
 			"securitycraft:reinforcedWoodSlabs_darkoak"
 		);
+		
+		Item reinforcedStoneSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
+		ModelBakery.addVariantName(reinforcedStoneSlabs, "securitycraft:reinforcedStoneSlabs_stone", "securitycraft:reinforcedStoneSlabs_cobblestone", "securitycraft:reinforcedStoneSlabs_sandstone", "securitycraft:reinforcedDirtSlab");
+		
 	}
 	
 	@Override
@@ -70,7 +74,6 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
-		//MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.taser, new ItemTaserRenderer());
 	}
 
 }

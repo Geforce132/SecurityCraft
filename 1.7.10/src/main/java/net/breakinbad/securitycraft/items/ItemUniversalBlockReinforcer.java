@@ -9,6 +9,7 @@ import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		super(2.0F, ToolMaterial.GOLD, getBreakableBlocks());
+		super(2.0F, ToolMaterial.IRON, getBreakableBlocks());
 
 		setMaxDamage(damage);
 	}
@@ -34,7 +35,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			World world = player.getEntityWorld();
 			Block block = world.getBlock(x, y, z);
 
-			if(block instanceof BlockDirt)
+			if(block instanceof BlockDirt || block instanceof BlockGrass)
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedDirt);
 			else if(block instanceof BlockStone)
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStone);

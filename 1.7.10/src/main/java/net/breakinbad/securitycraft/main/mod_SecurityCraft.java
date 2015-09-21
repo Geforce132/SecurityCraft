@@ -139,6 +139,10 @@ public class mod_SecurityCraft {
     public static Block reinforcedStainedGlassPanes;
     public static Block reinforcedDirt;
     public static Block reinforcedCobblestone;
+    public static Block reinforcedSandstone;
+    public static Block reinforcedWoodSlabs;
+    public static Block reinforcedStoneSlabs;
+    public static Block reinforcedDirtSlab;
     
     //Items
     public static Item Codebreaker;

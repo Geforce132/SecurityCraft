@@ -33,10 +33,12 @@ import net.breakinbad.securitycraft.blocks.BlockReinforcedFenceGate;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedGlass;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedGlassPane;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedIronBars;
+import net.breakinbad.securitycraft.blocks.BlockReinforcedSandstone;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStainedGlass;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStainedGlassPanes;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedStairs;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedWood;
+import net.breakinbad.securitycraft.blocks.BlockReinforcedWoodSlabs;
 import net.breakinbad.securitycraft.blocks.BlockRetinalScanner;
 import net.breakinbad.securitycraft.blocks.BlockSecurityCamera;
 import net.breakinbad.securitycraft.blocks.mines.BlockBouncingBetty;
@@ -51,8 +53,10 @@ import net.breakinbad.securitycraft.entity.EntityTaserBullet;
 import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.items.ItemAdminTool;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedPlanks;
+import net.breakinbad.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedStainedGlass;
 import net.breakinbad.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
+import net.breakinbad.securitycraft.items.ItemBlockReinforcedWoodSlabs;
 import net.breakinbad.securitycraft.items.ItemCameraMonitor;
 import net.breakinbad.securitycraft.items.ItemCodebreaker;
 import net.breakinbad.securitycraft.items.ItemKeyPanel;
@@ -152,6 +156,10 @@ public class ConfigurationHandler{
 	public static int imsRange;
 	public boolean useOldKeypadRecipe;
 
+	public String currentHackIndex = "";
+	public boolean ableToContinueHacking = true;
+	public boolean hackingFailed = false;
+		
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();
 		this.setupMines();
@@ -240,6 +248,12 @@ public class ConfigurationHandler{
 		
 		mod_SecurityCraft.reinforcedCobblestone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedCobblestone").setBlockTextureName("securitycraft:reinforcedCobblestone");
 	    mod_SecurityCraft.reinforcedStairsCobblestone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsCobblestone");
+	    
+	    mod_SecurityCraft.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedSandstone").setBlockTextureName("securitycraft:reinforcedSandstone");
+		
+	    mod_SecurityCraft.reinforcedWoodSlabs = new BlockReinforcedWoodSlabs().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedWoodSlabs");
+	    //mod_SecurityCraft.reinforcedStoneSlabs = new BlockReinforcedSlabs(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStoneSlabs");
+	    //mod_SecurityCraft.reinforcedDirtSlab = new BlockReinforcedSlabs(Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedDirtSlab");
 	}
 	
 	public void setupMines(){
@@ -396,6 +410,9 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.alarm);
 		GameRegistry.registerBlock(mod_SecurityCraft.alarmLit, mod_SecurityCraft.alarmLit.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.reinforcedStone);
+		registerBlock(mod_SecurityCraft.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
+		registerBlock(mod_SecurityCraft.reinforcedDirt);
+		registerBlock(mod_SecurityCraft.reinforcedCobblestone);
 		registerBlock(mod_SecurityCraft.reinforcedFencegate);
 		registerBlock(mod_SecurityCraft.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class);
 		registerBlock(mod_SecurityCraft.panicButton);
@@ -417,9 +434,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
-		registerBlock(mod_SecurityCraft.reinforcedDirt);
-		registerBlock(mod_SecurityCraft.reinforcedCobblestone);
-		
+		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, ItemBlockReinforcedWoodSlabs.class);
+
 		registerItem(mod_SecurityCraft.Codebreaker);
 	    registerItem(mod_SecurityCraft.doorIndestructableIronItem, mod_SecurityCraft.doorIndestructableIronItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);

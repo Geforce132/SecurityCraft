@@ -4,6 +4,7 @@ SecurityCraft v1.8.0.7 (beta):
 
 *** New blocks/items: ***
  - Added the universal owner changer.
+ - Added the universal block reinforcers.
 
 *** Bugfixes/Improvements: ***
  --- Worked on the SecurityCraft API:
@@ -20,6 +21,8 @@ SecurityCraft v1.8.0.7 (beta):
  - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
  - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
  - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
+ - Change: Reinforced blocks can no longer be crafted, and must be made by using the universal block reinforcers.
+ - Change: The SecurityCraft manual now displays bl4ckscor3 as an author.
  - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
  - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
  - Fix: The SecurityCraft: Technical Creative tab is now better sorted.

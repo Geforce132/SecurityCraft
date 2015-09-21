@@ -74,7 +74,7 @@ public class GuiSCManual extends GuiScreen {
 	    	this.fontRendererObj.drawSplitString(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo(), k + 18, 45, 225, 0);	
 	    }else{
 	    	this.fontRendererObj.drawString("Getting started with SecurityCraft", k + 39, 27, 0, false);	
-	    	this.fontRendererObj.drawString("by Geforce", k + 99, 159, 0, false);	
+	    	this.fontRendererObj.drawString("by Geforce and bl4ckscor3", k + 60, 159, 0, false);	
 	    }
 	    
 	    for(int i = 0; i < this.buttonList.size(); i++){
