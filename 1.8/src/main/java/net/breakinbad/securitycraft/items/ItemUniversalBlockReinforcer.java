@@ -9,6 +9,7 @@ import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
@@ -36,7 +37,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			World world = player.getEntityWorld();
 			Block block = world.getBlockState(pos).getBlock();
 
-			if(block instanceof BlockDirt)
+			if(block instanceof BlockDirt || block instanceof BlockGrass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedDirt.getDefaultState());
 			else if(block instanceof BlockStone)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getDefaultState());
@@ -71,6 +72,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 	{
 		return Sets.newHashSet(new Block[]{
 				Blocks.dirt,
+				Blocks.grass,
 				Blocks.stone,
 				Blocks.planks,
 				Blocks.glass,

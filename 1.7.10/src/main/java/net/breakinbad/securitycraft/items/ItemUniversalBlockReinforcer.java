@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		super(2.0F, ToolMaterial.IRON, getBreakableBlocks());
+		super(2.0F, ToolMaterial.GOLD, getBreakableBlocks());
 
 		setMaxDamage(damage);
 	}
@@ -49,6 +50,8 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCobblestone);
 			else if(block.getUnlocalizedName().equals(Blocks.iron_bars.getUnlocalizedName())) //glass panes and iron bars share the same class
 				world.setBlock(x, y, z, mod_SecurityCraft.unbreakableIronBars);
+			else if(block instanceof BlockSandStone)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedSandstone, block.getDamageValue(world, x, y, z), 2);
 			else
 			{
 				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
@@ -68,12 +71,14 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 	{
 		return Sets.newHashSet(new Block[]{
 				Blocks.dirt,
+				Blocks.grass,
 				Blocks.stone,
 				Blocks.planks,
 				Blocks.glass,
 				Blocks.glass_pane,
 				Blocks.cobblestone,
 				Blocks.iron_bars,
+				Blocks.sandstone
 		});
 	}
 }
