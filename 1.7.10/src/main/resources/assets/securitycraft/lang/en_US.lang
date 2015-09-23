@@ -100,6 +100,11 @@ tile.reinforcedWoodSlabs_birch.name=Reinforced Birch Wood Slab
 tile.reinforcedWoodSlabs_jungle.name=Reinforced Jungle Wood Slab
 tile.reinforcedWoodSlabs_acacia.name=Reinforced Acacia Wood Slab
 tile.reinforcedWoodSlabs_darkoak.name=Reinforced Dark Oak Wood Slab
+tile.reinforcedStoneSlabs.name=Reinforced Stone Slabs
+tile.reinforcedStoneSlabs_stone.name=Reinforced Stone Slab
+tile.reinforcedStoneSlabs_cobble.name=Reinforced Cobblestone Slab
+tile.reinforcedStoneSlabs_sandstone.name=Reinforced Sandstone Slab
+tile.reinforcedDirtSlab.name=Reinforced Dirt Slab
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -175,6 +180,9 @@ help.ims.info=The I.M.S, or Intelligent Munitions System, is a four-time-use min
 help.reinforcedStairsCobblestone.info=Reinforced cobblestone stairs is the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedDirt.info=Reinforced dirt is an unbreakable building block. Only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedCobblestone.info=Reinforced cobblestone is an unbreakable building block. Only the person who placed it down can destroy it using the universal block remover.
+help.reinforcedSandstone.info=Reinforced sandstone is an unbreakable building block. Only the person who placed it down can destroy it using the universal block remover.
+help.reinforcedWoodSlabs.info=Reinforced wood slabs are the same as vanilla wood slabs, except only the person who placed it down can destroy it using the universal block remover.
+help.reinforcedStoneSlabs.info=Reinforced stone slabs are the same as vanilla stone slabs, except only the person who placed it down can destroy it using the universal block remover.
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by right-clicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
