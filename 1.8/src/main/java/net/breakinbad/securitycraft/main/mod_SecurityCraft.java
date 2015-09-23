@@ -116,6 +116,7 @@ public class mod_SecurityCraft {
 	public static Block keypadFurnace;
 	public static Block reinforcedStairsStone;
 	public static Block reinforcedStairsCobblestone;
+	public static Block reinforcedStairsSandstone;
 	public static Block reinforcedStairsOak;
 	public static Block reinforcedStairsSpruce;
     public static Block reinforcedStairsBirch;

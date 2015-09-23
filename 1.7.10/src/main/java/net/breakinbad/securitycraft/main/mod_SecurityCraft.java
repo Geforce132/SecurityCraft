@@ -132,6 +132,7 @@ public class mod_SecurityCraft {
     public static Block reinforcedStairsJungle;
     public static Block reinforcedStairsAcacia;
     public static Block reinforcedStairsDarkoak;
+	public static Block reinforcedStairsSandstone;
     public static Block ironFence;
     public static Block ims;
     public static Block reinforcedGlass;
