@@ -25,8 +25,6 @@ public class GuiRemoteAccessMine extends GuiContainer{
 	public void initGui(){
     	super.initGui();
 
-    	int j = (this.height - this.height) / 2;
-    	
 		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, "Activate."));
 		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, "Deactivate."));
 		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, "Detonate!"));

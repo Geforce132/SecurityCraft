@@ -1,9 +1,10 @@
 package net.breakinbad.securitycraft.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.breakinbad.securitycraft.containers.ContainerGeneric;
 import net.breakinbad.securitycraft.main.Utils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
-import net.breakinbad.securitycraft.main.Utils.ClientUtils;
 import net.breakinbad.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.breakinbad.securitycraft.tileentity.TileEntityKeycardReader;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiKeycardSetup extends GuiContainer{
 	
