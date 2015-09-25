@@ -40,11 +40,13 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@SideOnly(Side.CLIENT)
     private IIcon reinforcedSandstoneIcon;
 	
+	private final boolean isDouble;
 	private final Material slabMaterial;
-    
-	public BlockReinforcedSlabs(Material par1Material) {
-		super(false, par1Material);
+
+	public BlockReinforcedSlabs(boolean isDouble, Material par1Material) {
+		super(isDouble, par1Material);
 		
+		this.isDouble = isDouble;
 		this.slabMaterial = par1Material;
 		this.useNeighborBrightness = true;
 	}

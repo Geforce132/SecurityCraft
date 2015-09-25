@@ -27,11 +27,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider {
 	
     public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
-	private final Material slabMaterial;
+	
+    private final boolean isDouble;
+    private final Material slabMaterial;
 
-	public BlockReinforcedSlabs(Material blockMaterial){
+	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial){
 		super(blockMaterial);
 		
+		this.isDouble = isDouble;
 		this.slabMaterial = blockMaterial;
 		
 		if(!this.isDouble()){
@@ -124,7 +127,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
     }
     
     public boolean isDouble(){
-		return false;
+		return isDouble;
 	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {

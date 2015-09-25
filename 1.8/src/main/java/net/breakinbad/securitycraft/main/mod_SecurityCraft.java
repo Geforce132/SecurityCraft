@@ -132,8 +132,11 @@ public class mod_SecurityCraft {
     public static Block reinforcedCobblestone;
     public static Block reinforcedSandstone;
     public static Block reinforcedWoodSlabs;
+    public static Block reinforcedDoubleWoodSlabs;
     public static Block reinforcedStoneSlabs;
+    public static Block reinforcedDoubleStoneSlabs;
     public static Block reinforcedDirtSlab;
+    public static Block reinforcedDoubleDirtSlab;
 
     //Items
     public static Item Codebreaker;
@@ -222,14 +225,15 @@ public class mod_SecurityCraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
-		this.serverProxy.setupTextureRegistry();
 		
 		FMLInterModComms.sendMessage("Waila", "register", "net.breakinbad.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
-		
+						
 		NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
 		if(vcUpdateTag != null){
 			FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
 		}
+		
+		this.serverProxy.setupTextureRegistry();
 			
 		log("Doing registering stuff... (PT 2/2)");
 		

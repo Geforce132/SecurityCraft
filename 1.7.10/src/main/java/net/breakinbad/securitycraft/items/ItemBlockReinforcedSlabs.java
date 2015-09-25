@@ -5,12 +5,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedSlabs;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedWoodSlabs;
+import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -103,10 +106,18 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable){
             	name = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerName();
             	uuid = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerUUID();
-            }
 
+            	if(!BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
+            		if(!par3World.isRemote){
+            			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
+            		}
+            		
+            		return false;
+            	}
+            }
+            
             if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getItemDamage()){
-                if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == mod_SecurityCraft.reinforcedStoneSlabs && i1 == 2 ? 0 : j1), 3)){
+                if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == mod_SecurityCraft.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
                     par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.getBlockVariant(block, i1).stepSound.func_150496_b(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getPitch() * 0.8F);
                     --par1ItemStack.stackSize;
                     
@@ -221,19 +232,15 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
     
     public Block getBlockVariant(Block slab, int meta){
     	if(slab == mod_SecurityCraft.reinforcedWoodSlabs){
-    		return mod_SecurityCraft.reinforcedWoodPlanks;
+    		return mod_SecurityCraft.reinforcedDoubleWoodSlabs;
     	}
     	
-    	if(slab == mod_SecurityCraft.reinforcedStoneSlabs && meta == 0){
-    		return mod_SecurityCraft.reinforcedStone;
-    	}else if(slab == mod_SecurityCraft.reinforcedStoneSlabs && meta == 1){
-    		return mod_SecurityCraft.reinforcedCobblestone;
-    	}else if(slab == mod_SecurityCraft.reinforcedStoneSlabs && meta == 2){
-    		return mod_SecurityCraft.reinforcedSandstone;
+    	if(slab == mod_SecurityCraft.reinforcedStoneSlabs){
+    		return mod_SecurityCraft.reinforcedDoubleStoneSlabs;
     	}
     	
     	if(slab == mod_SecurityCraft.reinforcedDirtSlab){
-    		return mod_SecurityCraft.reinforcedDirt;
+    		return mod_SecurityCraft.reinforcedDoubleDirtSlab;
     	}
     		
     	return slab;   	

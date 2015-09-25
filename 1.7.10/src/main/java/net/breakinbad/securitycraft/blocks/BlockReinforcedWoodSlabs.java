@@ -24,8 +24,8 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 
     public static final String[] variants = new String[] {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
 
-	public BlockReinforcedWoodSlabs() {
-		super(false, Material.wood);		
+	public BlockReinforcedWoodSlabs(boolean isDouble) {
+		super(isDouble, Material.wood);		
 	}
 	
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {

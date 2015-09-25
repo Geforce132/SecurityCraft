@@ -7,11 +7,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabSCDecoration extends CreativeTabs{
-	
+		
 	public CreativeTabSCDecoration(){
 		super(getNextID(), "tabSecurityCraft");
 	}
-
+	
 	
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
@@ -19,8 +19,7 @@ public class CreativeTabSCDecoration extends CreativeTabs{
 	}
 	
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: Decoration";
-		
+		return "SecurityCraft: Decoration";	
 	}
 
 }

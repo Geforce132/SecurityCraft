@@ -3,6 +3,8 @@ package net.breakinbad.securitycraft.items;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockReinforcedSlabs;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.main.Utils.BlockUtils;
+import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemBlockReinforcedSlabs extends ItemBlock {
 
 	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedStoneSlabs;
-	private Block doubleSlab = mod_SecurityCraft.reinforcedStone;
+	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleStoneSlabs;
 	
 	public ItemBlockReinforcedSlabs(Block block) {
 		super(block);
@@ -62,6 +65,14 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 if(worldIn.getTileEntity(pos) instanceof IOwnable){
                 	name = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerName();
                 	uuid = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerUUID();
+                
+                	if(!BlockUtils.isOwnerOfBlock((IOwnable) worldIn.getTileEntity(pos), playerIn)){
+                		if(!worldIn.isRemote){
+                			PlayerUtils.sendMessageToPlayer(playerIn, "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
+                		}
+                		
+                		return false;
+                	}
                 }
                 
                 if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
@@ -87,13 +98,13 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
     private IBlockState getDoubleSlabBlock(Comparable comparable) {
 		if(comparable == BlockReinforcedSlabs.EnumType.STONE){
-			return mod_SecurityCraft.reinforcedStone.getDefaultState();
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE){
-			return mod_SecurityCraft.reinforcedCobblestone.getDefaultState();
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.SANDSTONE){
-			return mod_SecurityCraft.reinforcedSandstone.getDefaultState();
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.DIRT){
-			return mod_SecurityCraft.reinforcedDirt.getDefaultState();
+			return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else{
 			return null;
 		}

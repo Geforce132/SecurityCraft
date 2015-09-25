@@ -19,7 +19,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider {
 
-	public BlockReinforcedWoodSlabs(){
+	private final boolean isDouble;
+	
+	public BlockReinforcedWoodSlabs(boolean isDouble){		
+		this.isDouble = isDouble;
+		
+		if(this.isDouble()){
+			this.setCreativeTab(null);
+		}
+		
 		if(!this.isDouble()){
 			this.useNeighborBrightness = true;
 		}
@@ -48,7 +56,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
     }
 
     public boolean isDouble(){
-		return false;
+		return isDouble;
 	}
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
