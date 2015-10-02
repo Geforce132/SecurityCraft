@@ -11,6 +11,7 @@ import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.api.IPasswordProtected;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.EnumCustomModules;
+import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,10 +52,10 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 		}
 		
-		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected){			
+		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && ((TileEntityOwnable)data.getTileEntity()).getOwnerUUID().equals(data.getPlayer().getUniqueID().toString())){
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 			
-			body.add("Password: " + (password != null && !password.isEmpty() ? password : "????"));
+			body.add("Password: " + (password != null && !password.isEmpty() ? password : "Not set."));
 		}
 		
 		return body;
