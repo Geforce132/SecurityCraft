@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 public class SecurityCraftConfigGUI extends GuiConfig{
 	
 	public SecurityCraftConfigGUI(GuiScreen parent) {
-        super(parent, new ConfigElement(mod_SecurityCraft.configFile.getCategory("options")).getChildElements(), "securitycraft", false, true, GuiConfig.getAbridgedConfigPath(mod_SecurityCraft.configFile.toString()));
+        super(parent, new ConfigElement(mod_SecurityCraft.configFile.getCategory("options")).getChildElements(), "securitycraft", true, false, GuiConfig.getAbridgedConfigPath(mod_SecurityCraft.configFile.toString()));
 	}
 
 }

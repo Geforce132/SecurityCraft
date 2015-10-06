@@ -215,6 +215,7 @@ help.universalBlockReinforcerLvL1.info=Der Universelle Block Verstärker verstä
 help.universalBlockReinforcerLvL2.info=Der Universelle Block Verstärker verstärkt einige Vanilla Blöcke und wandelt sie in ihre SecurityCraft Varianten um. LvL2 hat 2700 Nutzungen.
 help.universalBlockReinforcerLvL3.info=Der Universelle Block Verstärker verstärkt einige Vanilla Blöcke und wandelt sie in ihre SecurityCraft Varianten um. LvL3 hat unendlich Nutzungen.
 
+gui.scManual.author=bl4ckscor3
 gui.scManual.ownableBlock=Besitzbar: Dieser Block ist resistent gegenüber Explosionen und kann nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 gui.scManual.passwordProtectedBlock=Passwort gesichert: Dieser Block kann nur benutzt werden, wenn das korrekte Passwort eingegeben wird.
 gui.scManual.viewActivatedBlock=Sichtfeldaktivierung: Dieser Block wird aktiviert, indem du ihn mit deinem Fadenkreuz anschaust.

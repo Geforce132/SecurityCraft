@@ -145,19 +145,18 @@ public class ConfigurationHandler{
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
 	public boolean fiveMinAutoShutoff;
-	
-	public static int fakePanelID = 1;
-	public static int portableRadarSearchRadius;
-	public static int usernameLoggerSearchRadius;	
-    public static int laserBlockRange;
-	public static int alarmTickDelay;
-	public static double alarmSoundVolume;
-	public static int cageTrapTextureIndex;
-	public static int empRadius;
-	public static int portableRadarDelay;
-	public static int claymoreRange;
-	public static int imsRange;
 	public boolean useOldKeypadRecipe;
+
+	public int portableRadarSearchRadius;
+	public int usernameLoggerSearchRadius;	
+    public int laserBlockRange;
+	public int alarmTickDelay;
+	public double alarmSoundVolume;
+	public int cageTrapTextureIndex;
+	public int empRadius;
+	public int portableRadarDelay;
+	public int claymoreRange;
+	public int imsRange;
 
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();

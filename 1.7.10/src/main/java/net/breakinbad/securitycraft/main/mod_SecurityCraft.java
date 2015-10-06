@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
-import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -55,7 +54,7 @@ public class mod_SecurityCraft {
 	
 	//TODO ********************************* This is v1.8.0 for MC 1.7.10!
 	protected static final String VERSION = "v1.8.0";
-	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);required-after:LookingGlass@[0.1.1.00,);";
+	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.0.1180,);after:LookingGlass@[0.1.1.00,);";
 	
 	
 	@SidedProxy(clientSide = "net.breakinbad.securitycraft.network.ClientProxy", serverSide = "net.breakinbad.securitycraft.network.ServerProxy")
@@ -310,8 +309,8 @@ public class mod_SecurityCraft {
 		this.savedModule = savedModule;
 	}
 	
-	public WorldViewAPI2 getLGPanelRenderer(){
-		return this.instance.lgPanelRenderer.getApi();
+	public LookingGlassPanelRenderer getLGPanelRenderer(){
+		return this.instance.lgPanelRenderer;
 	}
 	
 	/**

@@ -47,16 +47,14 @@ public class EntitySecurityCamera extends Entity{
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 
-	public EntitySecurityCamera(World world)
-	{
+	public EntitySecurityCamera(World world){
 		super(world);
 		this.noClip = true;
 		this.height = 0.0001F;
 		this.width = 0.0001F;
 	}
 
-	public EntitySecurityCamera(World world, double x, double y, double z, int id)
-	{
+	public EntitySecurityCamera(World world, double x, double y, double z, int id){
 		this(world);
 		this.blockPosX = (int) x;
 		this.blockPosY = (int) y;
@@ -79,18 +77,15 @@ public class EntitySecurityCamera extends Entity{
 		}
 	}
 
-	public double getMountedYOffset()
-	{
+	public double getMountedYOffset(){
 		return this.height * -7500D;
 	}
 
-	protected boolean shouldSetPosAfterLoading()
-	{
+	protected boolean shouldSetPosAfterLoading(){
 		return false;
 	}
 	
-	public boolean shouldDismountInWater(Entity rider)
-    {
+	public boolean shouldDismountInWater(Entity rider){
         return false;
     }
 
@@ -248,10 +243,10 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void zoomCameraView(int mouseWheelMovement) {
-		if(mouseWheelMovement > 0 && ClientUtils.getCameraZoom() < 8.0D){
+		if(mouseWheelMovement > 0 && ClientUtils.getCameraZoom() <= 8.0D){
 			ClientUtils.setCameraZoom(0.1D);
 			Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);
-		}else if(mouseWheelMovement < 0 && ClientUtils.getCameraZoom() > 1.1D){
+		}else if(mouseWheelMovement < 0 && ClientUtils.getCameraZoom() >= 1.1D){
 			ClientUtils.setCameraZoom(-0.1D);
 			Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);
 		}	
@@ -261,7 +256,7 @@ public class EntitySecurityCamera extends Entity{
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
 
 		if(((CustomizableSCTE) worldObj.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
-			System.out.println("Setting power to " + Utils.toggleBoolean(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)));
+			//System.out.println("Setting power to " + Utils.toggleBoolean(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)));
 			if(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
 				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) - 6));
 			}else if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){

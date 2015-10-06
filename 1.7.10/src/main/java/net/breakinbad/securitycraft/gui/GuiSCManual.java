@@ -75,6 +75,10 @@ public class GuiSCManual extends GuiScreen {
 	    }else{
 	    	this.fontRendererObj.drawString("Getting started with SecurityCraft", k + 39, 27, 0, false);	
 	    	this.fontRendererObj.drawString("by Geforce and bl4ckscor3", k + 60, 159, 0, false);	
+	    	
+	    	if(StatCollector.canTranslate("gui.scManual.author")){
+		    	this.fontRendererObj.drawString("Translated by " + StatCollector.translateToLocal("gui.scManual.author"), k + 65, 170, 0, false);	//TODO: Make sure the "Translated by" is in the proper language as well.
+	    	}
 	    }
 	    
 	    for(int i = 0; i < this.buttonList.size(); i++){

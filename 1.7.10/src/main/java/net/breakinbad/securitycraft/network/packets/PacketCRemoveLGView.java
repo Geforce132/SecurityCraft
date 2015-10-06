@@ -39,7 +39,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCRemoveLGView packet, MessageContext ctx) {
 		if(mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ)){
-			mod_SecurityCraft.instance.getLGPanelRenderer().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(packet.camX + " " + packet.camY + " " + packet.camZ).getView());
+			mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(packet.camX + " " + packet.camY + " " + packet.camZ).getView());
 			mod_SecurityCraft.instance.removeViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ);
 		}
 		

@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
+import net.breakinbad.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
 import net.breakinbad.securitycraft.main.Utils.ClientUtils;
 import net.minecraft.client.Minecraft;
 
@@ -48,7 +49,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			//lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), Minecraft.getMinecraft().theWorld.getBlockMetadata(packet.camX, packet.camY, packet.camZ)));
 			
 			//((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(packet.camX + " " + packet.camY + " " + packet.camZ, new IWorldViewHelper(lgView));	
-			ClientUtils.createLookingGlassView(Minecraft.getMinecraft().theWorld, packet.dimension, packet.camX, packet.camY, packet.camZ, 192, 192);
+			LookingGlassAPIProvider.createLookingGlassView(Minecraft.getMinecraft().theWorld, packet.dimension, packet.camX, packet.camY, packet.camZ, 192, 192);
 		}
 		
 		return null;

@@ -146,6 +146,8 @@ public class ForgeEventHandler {
     public void onConfigChanged(OnConfigChangedEvent event) {
         if(event.modID.equals("securitycraft")){
         	mod_SecurityCraft.configFile.save();
+        	
+        	mod_SecurityCraft.configHandler.setupConfiguration();
         }
     }
 	

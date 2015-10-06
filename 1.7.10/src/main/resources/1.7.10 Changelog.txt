@@ -5,6 +5,9 @@ SecurityCraft v1.8.0.7 (beta):
 *** New blocks/items: ***
  - Added the universal owner changer.
  - Added the universal block reinforcers.
+ 
+*** Major additions: ***
+ - SecurityCraft now doesn't require LookingGlass v0.2.00+ to run.
 
 *** Bugfixes/Improvements: ***
  --- Worked on the SecurityCraft API:
@@ -30,6 +33,7 @@ SecurityCraft v1.8.0.7 (beta):
  - Fix: Improved rendering performance of the password-protected furnace. 
  - Fix: Security cameras now auto-break if the block they are attached to is broken.
  - Fix: Updated German localization.
+ - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
 
 -----------------------
 SecurityCraft v1.8.0.6 (beta):

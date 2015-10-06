@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class BlockKeypadChest extends BlockChest {
@@ -29,7 +30,7 @@ public class BlockKeypadChest extends BlockChest {
 				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem)
 					activate(par1World, par2, par3, par4, par5EntityPlayer);
 				else
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", null);
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);
 				
 				return true;
 			}

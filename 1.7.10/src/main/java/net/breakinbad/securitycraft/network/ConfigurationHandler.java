@@ -1,6 +1,7 @@
 package net.breakinbad.securitycraft.network;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -50,6 +51,7 @@ import net.breakinbad.securitycraft.blocks.mines.BlockIMS;
 import net.breakinbad.securitycraft.blocks.mines.BlockMine;
 import net.breakinbad.securitycraft.blocks.mines.BlockTrackMine;
 import net.breakinbad.securitycraft.entity.EntityIMSBomb;
+import net.breakinbad.securitycraft.entity.EntitySecurityCamera;
 import net.breakinbad.securitycraft.entity.EntityTaserBullet;
 import net.breakinbad.securitycraft.entity.EntityTnTCompact;
 import net.breakinbad.securitycraft.items.ItemAdminTool;
@@ -77,6 +79,7 @@ import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.misc.SCManualPage;
 import net.breakinbad.securitycraft.network.packets.PacketCCreateLGView;
+import net.breakinbad.securitycraft.network.packets.PacketCOpenMonitorGUI;
 import net.breakinbad.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.breakinbad.securitycraft.network.packets.PacketCRemoveLGView;
 import net.breakinbad.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -84,6 +87,8 @@ import net.breakinbad.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.breakinbad.securitycraft.network.packets.PacketGivePotionEffect;
 import net.breakinbad.securitycraft.network.packets.PacketSAddModules;
 import net.breakinbad.securitycraft.network.packets.PacketSCheckPassword;
+import net.breakinbad.securitycraft.network.packets.PacketSMountCamera;
+import net.breakinbad.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.breakinbad.securitycraft.network.packets.PacketSSetOwner;
 import net.breakinbad.securitycraft.network.packets.PacketSSetPassword;
 import net.breakinbad.securitycraft.network.packets.PacketSSyncTENBTTag;
@@ -144,23 +149,19 @@ public class ConfigurationHandler{
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
 	public boolean fiveMinAutoShutoff;
-
-	public static int fakePanelID = 1;
-	public static int portableRadarSearchRadius;
-	public static int usernameLoggerSearchRadius;	
-	public static int laserBlockRange;
-	public static int alarmTickDelay;
-	public static double alarmSoundVolume;
-	public static int cageTrapTextureIndex;
-	public static int empRadius;
-	public static int portableRadarDelay;
-	public static int claymoreRange;
-	public static int imsRange;
+	public boolean useLookingGlass;
 	public boolean useOldKeypadRecipe;
 
-	public String currentHackIndex = "";
-	public boolean ableToContinueHacking = true;
-	public boolean hackingFailed = false;
+	public int portableRadarSearchRadius;
+	public int usernameLoggerSearchRadius;	
+	public int laserBlockRange;
+	public int alarmTickDelay;
+	public double alarmSoundVolume;
+	public int cageTrapTextureIndex;
+	public int empRadius;
+	public int portableRadarDelay;
+	public int claymoreRange;
+	public int imsRange;
 
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();
@@ -362,6 +363,12 @@ public class ConfigurationHandler{
 		mineExplodesWhenInCreative = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true).getBoolean(true);
 		fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true).getBoolean(true);
 
+		if(!Loader.isModLoaded("LookingGlass")){
+			useLookingGlass = false;
+		}else{
+			useLookingGlass = mod_SecurityCraft.configFile.get("options", "Use LookingGlass for viewing cameras?", true).getBoolean(true);
+		}
+		
 		portableRadarSearchRadius = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25).getInt(25);
 		usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
 		laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
@@ -832,6 +839,7 @@ public class ConfigurationHandler{
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntityIMSBomb.class, "IMSBomb", 3, mod_SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "SecurityCamera", 4, mod_SecurityCraft.instance, 256, 20, false);
 	}
 
 	public void setupHandlers(FMLPreInitializationEvent event) {
@@ -858,6 +866,9 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 17, Side.SERVER);
 		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 18, Side.SERVER);
 		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 19, Side.SERVER);
+		network.registerMessage(PacketSMountCamera.Handler.class, PacketSMountCamera.class, 20, Side.SERVER);
+		network.registerMessage(PacketCOpenMonitorGUI.Handler.class, PacketCOpenMonitorGUI.class, 21, Side.CLIENT);
+		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 22, Side.SERVER);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -648,31 +649,6 @@ public static class ClientUtils{
 	@SideOnly(Side.CLIENT)
 	public static boolean isInLANWorld(){
 		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
-	}
-	
-	/**
-	 * Creates an {@link IWorldView} object, then adds it to ClientProxy.worldViews.
-	 * 
-	 * Only works on the CLIENT side.
-	 * 
-	 * @param world The world we are in.
-	 * @param dimension The dimension to view. (0 = Overworld, -1 = Nether)
-	 * @param xCoord View X coordinate.
-	 * @param yCoord View Y coordinate.
-	 * @param zCoord View Z coordinate.
-	 * @param viewWidth View width in pixels.
-	 * @param viewHeight View height in pixels.
-	 */
-	@SideOnly(Side.CLIENT)
-	public static void createLookingGlassView(World world, int dimension, int xCoord, int yCoord, int zCoord, int viewWidth, int viewHeight){
-		IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(dimension, new ChunkCoordinates(xCoord, yCoord, zCoord), viewWidth, viewHeight); 
-		
-		lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), world.getBlockMetadata(xCoord, yCoord, zCoord)));
-
-		if(!mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord)){
-			mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
-			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord, new IWorldViewHelper(lgView));		
-		}
 	}
 	
 }
