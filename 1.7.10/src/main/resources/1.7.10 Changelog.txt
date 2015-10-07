@@ -34,7 +34,8 @@ SecurityCraft v1.8.0.7 (beta):
  - Fix: Security cameras now auto-break if the block they are attached to is broken.
  - Fix: Updated German localization.
  - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
-
+ - Fix: Waila no longer displays the password of a password-protected block if you are not the owner.
+ 
 -----------------------
 SecurityCraft v1.8.0.6 (beta):
 -----------------------

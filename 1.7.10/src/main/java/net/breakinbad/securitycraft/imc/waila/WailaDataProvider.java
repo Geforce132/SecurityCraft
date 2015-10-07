@@ -9,6 +9,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.api.IPasswordProtected;
+import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
@@ -52,7 +53,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 		}
 		
-		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && ((TileEntityOwnable)data.getTileEntity()).getOwnerUUID().equals(data.getPlayer().getUniqueID().toString())){
+		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && BlockUtils.isOwnerOfBlock((TileEntityOwnable) data.getTileEntity(), data.getPlayer())){
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 			
 			body.add("Password: " + (password != null && !password.isEmpty() ? password : "Not set."));

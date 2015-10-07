@@ -7,10 +7,15 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.api.IOwnable;
 import net.breakinbad.securitycraft.blocks.BlockLaserBlock;
 import net.breakinbad.securitycraft.blocks.BlockOwnable;
+import net.breakinbad.securitycraft.blocks.BlockSecurityCamera;
+import net.breakinbad.securitycraft.entity.EntitySecurityCamera;
+import net.breakinbad.securitycraft.gui.GuiUtils;
 import net.breakinbad.securitycraft.items.ItemModule;
 import net.breakinbad.securitycraft.main.Utils.BlockUtils;
 import net.breakinbad.securitycraft.main.Utils.PlayerUtils;
@@ -22,6 +27,7 @@ import net.breakinbad.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.breakinbad.securitycraft.tileentity.TileEntityOwnable;
 import net.breakinbad.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -31,6 +37,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -174,9 +182,27 @@ public class ForgeEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onPlayerRendered(RenderPlayerEvent.Pre event){
+		if(event.entityPlayer.ridingEntity != null && event.entityPlayer.ridingEntity instanceof EntitySecurityCamera){
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void renderGameOverlay(RenderGameOverlayEvent.Post event){
+		if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
+			if(event.type == RenderGameOverlayEvent.ElementType.EXPERIENCE && Minecraft.getMinecraft().theWorld.getBlock((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ)) instanceof BlockSecurityCamera){
+				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.resolution, Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ), event.mouseX, event.mouseY);
+			}
+		}
+	}
+
 	private ItemStack fillBucket(World world, MovingObjectPosition position){
 		Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
-		
+
 		if(block == mod_SecurityCraft.bogusWater){
 			world.setBlockToAir(position.blockX, position.blockY, position.blockZ);
 			return new ItemStack(mod_SecurityCraft.fWaterBucket, 1);
