@@ -211,6 +211,7 @@ help.universalBlockReinforcerLvL1.info=O reforçador universal de blocos reforça 
 help.universalBlockReinforcerLvL2.info=O reforçador universal de blocos reforça vários blocos normais, e torna-os nas suas variantes do SecurityCraft. Nível 2 tem 2700 usos.
 help.universalBlockReinforcerLvL3.info=O reforçador universal de blocos reforça vários blocos normais, e torna-os nas suas variantes do SecurityCraft. Nível 3 tem usos ilimitados.
 
+gui.scManual.author=wiliv75
 gui.scManual.ownableBlock=Ownable: Este bloco é resistente a explosões e só pode ser removido pelo jogador que o colocou usando o Removedor Universal de Blocos.
 gui.scManual.passwordProtectedBlock=Protegido por Palavra-Passe: Este bloco sópode ser utilizado se a palavra-passe do proprietário actual for introduzida.
 gui.scManual.viewActivatedBlock=Vista Activada: Este bloco pode ser activado passando o cursor enquanto estiver ao alcance de quebrar blocos.

@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL12;
 import net.breakinbad.securitycraft.api.CustomizableSCTE;
 import net.breakinbad.securitycraft.main.Utils;
 import net.breakinbad.securitycraft.main.Utils.ClientUtils;
-import net.breakinbad.securitycraft.main.mod_SecurityCraft;
 import net.breakinbad.securitycraft.misc.EnumCustomModules;
 import net.breakinbad.securitycraft.misc.KeyBindings;
 import net.minecraft.block.Block;
@@ -47,10 +46,6 @@ public class GuiUtils extends Gui{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
 		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
-
-		if(world.getBlock(x, y, z) == mod_SecurityCraft.securityCamera){
-			gui.drawTexturedModalRect(46, 3, 90, 24, 10, 12);
-		}
 
 		if(player.getActivePotionEffect(Potion.nightVision) == null){
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);

@@ -18,6 +18,8 @@ import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityIMS extends TileEntityOwnable {
 	
+	private int amountOfBombsRemaining = 4;
+	
 	/** The targeting option currently selected for this IMS. 0 = players, 1 = hostile mobs & players.**/
 	private int targetingOption = 1;
 	
@@ -37,7 +39,7 @@ public class TileEntityIMS extends TileEntityOwnable {
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */	
 	private void launchMine() {
-		if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) > 0){
+		if(amountOfBombsRemaining > 0){
 			double d0 = (double) mod_SecurityCraft.configHandler.imsRange;
 			
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0);
@@ -62,17 +64,19 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        
+		        amountOfBombsRemaining--;		        
+		       			  
 		        if(!worldObj.isRemote){
 		        	BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
 		        }
-		        			        
-		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
+		        
+		        if(amountOfBombsRemaining <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
 		        
 		        break;
 	        }
-	        
+		  
 	        while(iterator1.hasNext()){
 	        	EntityPlayer entity = (EntityPlayer) iterator1.next();
 				int launchHeight = this.getLaunchHeight();
@@ -90,11 +94,13 @@ public class TileEntityIMS extends TileEntityOwnable {
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
 		        }
 		        
+		        amountOfBombsRemaining--;
+		        
 		        if(!worldObj.isRemote){
 		        	BlockUtils.setBlockProperty(getWorld(), getPos(), BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) - 1);
 		        }
 		        
-		        if(BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES) <= 0){
+		        if(amountOfBombsRemaining <= 0){
 		        	worldObj.scheduleUpdate(BlockUtils.toPos(pos.getX(), pos.getY(), pos.getZ()), BlockUtils.getBlock(worldObj, pos.getX(), pos.getY(), pos.getZ()), 140);
 		        }
 		        
@@ -107,7 +113,7 @@ public class TileEntityIMS extends TileEntityOwnable {
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
-		int bombsRemaining = BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES);
+		int bombsRemaining = amountOfBombsRemaining;
 		
 		if(bombsRemaining == 4){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
@@ -128,7 +134,7 @@ public class TileEntityIMS extends TileEntityOwnable {
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
-		int bombsRemaining = BlockUtils.getBlockPropertyAsInteger(getWorld(), getPos(), BlockIMS.MINES);
+		int bombsRemaining = amountOfBombsRemaining;
 		
 		if(bombsRemaining == 4){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
@@ -169,6 +175,7 @@ public class TileEntityIMS extends TileEntityOwnable {
         super.writeToNBT(par1NBTTagCompound);
         
         par1NBTTagCompound.setInteger("targetingOption", targetingOption);
+        par1NBTTagCompound.setInteger("bombsRemaining", amountOfBombsRemaining);
     }
 
     /**
@@ -177,9 +184,14 @@ public class TileEntityIMS extends TileEntityOwnable {
     public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.hasKey("targetingOption"))
+        if(par1NBTTagCompound.hasKey("targetingOption"))
         {
             this.targetingOption = par1NBTTagCompound.getInteger("targetingOption");
+        }
+        
+        if(par1NBTTagCompound.hasKey("bombsRemaining"))
+        {
+            this.amountOfBombsRemaining = par1NBTTagCompound.getInteger("bombsRemaining");
         }
     }
 
