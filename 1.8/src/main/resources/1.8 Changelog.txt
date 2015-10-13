@@ -15,7 +15,7 @@ SecurityCraft v1.8.0.7 (beta):
  --- Code cleanup:
    - Deleted the PacketCUpdateOwner, PacketCUpdateCooldown, and the PacketCheckRetinalScanner classes.
    - Deleted the TileEntityEmpedWire class.
-   - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.breakinbad...".
+   - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.geforcemods...".
    - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
    - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
    - Renamed BlockBogusLava to BlockFakeLava.   
@@ -37,6 +37,8 @@ SecurityCraft v1.8.0.7 (beta):
  - Fix: Updated German localization.
  - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
  - Fix: Waila no longer displays the password of a password-protected block if you are not the owner.
+ - Fix: The security camera animation no longer speeds up and down depending on how many times can re-render the camera.
+ - Removed: BreakIn' Bad tips and URL.
 
 -----------------------
 SecurityCraft v1.8.0.6 (beta):
