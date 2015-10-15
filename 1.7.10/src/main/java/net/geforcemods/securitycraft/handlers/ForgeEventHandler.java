@@ -17,9 +17,9 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiUtils;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -116,7 +116,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(!BlockUtils.isOwnerOfBlock(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Modifier", "I'm sorry, you cannot customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -137,13 +137,13 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "I'm sorry, you can not remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Remover", "I'm sorry, you cannot remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return;
 				}
 
 				if(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == mod_SecurityCraft.LaserBlock){
 					event.entityPlayer.worldObj.func_147480_a(event.x, event.y, event.z, true);
-					BlockLaserBlock.destroyAdjecentLasers(event.world, event.x, event.y, event.z);
+					BlockLaserBlock.destroyAdjacentLasers(event.world, event.x, event.y, event.z);
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}else{
 					event.entityPlayer.worldObj.func_147480_a(event.x, event.y, event.z, true);

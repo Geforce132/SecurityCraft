@@ -5,8 +5,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -31,25 +31,24 @@ public class ItemAdminTool extends Item {
 		if(!par3World.isRemote){
 			if(par3World.getTileEntity(pos) != null){
 				TileEntity te = par3World.getTileEntity(pos);
-				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Block info:", EnumChatFormatting.GRAY);
 				
 				if(te instanceof IOwnable){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner: " + (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName()), null);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Owner's UUID: " + (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Owner: " + (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName()), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Owner's UUID: " + (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID()), EnumChatFormatting.DARK_PURPLE);
 				}
 				
 				if(te instanceof IPasswordProtected){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Password: " + (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword()), null);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Password: " + (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword()), EnumChatFormatting.DARK_PURPLE);
 				}
 				
 				if(te instanceof CustomizableSCTE){
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 					
 					if(!modules.isEmpty()){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Equipped modules: ", null);
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Equipped modules: ", EnumChatFormatting.DARK_PURPLE);
 						
 						for(EnumCustomModules module : modules){
-							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "-" + module.getModuleName(), null);
+							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "-" + module.getModuleName(), EnumChatFormatting.DARK_PURPLE);
 						}
 					}
 				}

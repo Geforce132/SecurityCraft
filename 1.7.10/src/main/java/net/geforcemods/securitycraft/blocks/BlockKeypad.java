@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -94,7 +94,7 @@ public class BlockKeypad extends BlockContainer {
 						activate(par1World, par2, par3, par4);
 					}
 				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
 				}	
 			}     	    	     	
 		}

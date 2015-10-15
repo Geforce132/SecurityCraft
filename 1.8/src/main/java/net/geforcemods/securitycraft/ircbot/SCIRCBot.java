@@ -8,8 +8,8 @@ import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -50,7 +50,7 @@ public class SCIRCBot extends PircBot{
 
     		String trimmedMessage = scanner.next();
     		mod_SecurityCraft.log(trimmedMessage);
-    		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, EnumChatFormatting.YELLOW);
+    		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, EnumChatFormatting.YELLOW);
     		scanner.close();
     	}
     }
@@ -60,7 +60,7 @@ public class SCIRCBot extends PircBot{
 			mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 		}
     						
-		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "You have been disconnected from EsperNet for reason: " + reason, EnumChatFormatting.RED);
+		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "You have been disconnected from EsperNet for: " + reason, EnumChatFormatting.RED);
     }
     
 	@Override

@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.minecraft.block.material.Material;
@@ -71,9 +71,9 @@ public class BlockKeycardReader extends BlockOwnable {
 			activate(par1World, par2, par3, par4);
 		}else{
 			if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() != null){
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Required security level: " + ((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard Reader", "Required security level: " + ((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
 			}else{
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard reader's security level not set!", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard Reader", "Security level not set!", EnumChatFormatting.RED);
 			}
 		}
 	}

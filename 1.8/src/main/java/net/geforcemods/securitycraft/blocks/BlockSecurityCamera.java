@@ -123,7 +123,7 @@ public class BlockSecurityCamera extends BlockContainer{
     
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
     	if(player.ridingEntity == null && !world.isRemote) {
-    		PlayerUtils.sendMessageToPlayer(player, "You are now mounted to a security camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
+    		PlayerUtils.sendMessageToPlayer(player, "Security Camera", "You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
     	}
 
     	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5);

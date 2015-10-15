@@ -39,19 +39,19 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			if(!stack.hasDisplayName())
 			{
-				PlayerUtils.sendMessageToPlayer(player, "You need to give this item the name of the new block owner. Use an anvil to rename it.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "You need to give this item the name of the new block owner. Use an anvil to rename it.", EnumChatFormatting.RED);
 				return false;
 			}
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, "This block cannot hold an owner. Please right-click an appropriate SecurityCraft block.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "This block cannot hold an owner. Please right-click an appropriate SecurityCraft block.", EnumChatFormatting.RED);
 				return false;
 			}
 
 			if(!BlockUtils.isOwnerOfBlock((IOwnable)te, player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, "This is not your block, you cannot change its owner.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "This is not your block, you cannot change its owner.", EnumChatFormatting.RED);
 				return false;
 			}
 
@@ -67,7 +67,7 @@ public class ItemUniversalOwnerChanger extends Item
 				((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			PlayerUtils.sendMessageToPlayer(player, "Owner successfully changed to " + newOwner + ".", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "Owner successfully changed to " + newOwner + ".", EnumChatFormatting.GREEN);
 			return true;
 		}
 

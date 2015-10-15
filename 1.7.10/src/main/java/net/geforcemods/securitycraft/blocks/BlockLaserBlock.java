@@ -144,11 +144,11 @@ public class BlockLaserBlock extends BlockContainer {
      */
     public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5) {
     	if(!par1World.isRemote){
-    		destroyAdjecentLasers(par1World, par2, par3, par4);
+    		destroyAdjacentLasers(par1World, par2, par3, par4);
     	}
     }
     
-    public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
+    public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
     	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
 			if(id == mod_SecurityCraft.LaserBlock){

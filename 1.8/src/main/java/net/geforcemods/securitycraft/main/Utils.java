@@ -140,20 +140,12 @@ public static class PlayerUtils{
 		}
     }
 	
-	public static void sendMessage(ICommandSender par1ICommandSender, String par2, EnumChatFormatting par3){
-		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
-		chatcomponenttext.getChatStyle().setColor(par3);
-        par1ICommandSender.addChatMessage(chatcomponenttext);
+	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, EnumChatFormatting color){
+		player.addChatComponentMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
 	}
 	
-	public static void sendMessageToPlayer(EntityPlayer par1EntityPlayer, String par2, EnumChatFormatting par3){
-		ChatComponentText chatcomponenttext = new ChatComponentText(par2);
-    	
-		if(par3 != null){
-			chatcomponenttext.getChatStyle().setColor(par3);
-    	}
-    	
-		par1EntityPlayer.addChatComponentMessage(chatcomponenttext);
+	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, EnumChatFormatting color){
+		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
 	}
 
 	/**
@@ -652,23 +644,23 @@ public static class ModuleUtils{
 		
 		if(te instanceof TileEntityKeypad){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad", "You have been whitelisted on this keypad.", EnumChatFormatting.GREEN);
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this keypad.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad","You have been blacklisted on this keypad.", EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keycard Reader", "You have been whitelisted on this reader.", EnumChatFormatting.GREEN);
 				par1World.notifyNeighborsOfStateChange(pos, par1World.getBlockState(pos).getBlock());
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "You have been blacklisted on this reader.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keycard Reader", "You have been blacklisted on this reader.", EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){

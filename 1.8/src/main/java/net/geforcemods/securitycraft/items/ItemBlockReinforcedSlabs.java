@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
@@ -68,7 +68,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 
                 	if(!BlockUtils.isOwnerOfBlock((IOwnable) worldIn.getTileEntity(pos), playerIn)){
                 		if(!worldIn.isRemote){
-                			PlayerUtils.sendMessageToPlayer(playerIn, "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
+                			PlayerUtils.sendMessageToPlayer(playerIn, "Reinforced Slab", "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
                 		}
                 		
                 		return false;

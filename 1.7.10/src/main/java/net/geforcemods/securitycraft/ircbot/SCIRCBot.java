@@ -63,7 +63,7 @@ public class SCIRCBot extends PircBot{
 		}
 					
 		try{
-			sendMessageToPlayer(EnumChatFormatting.RED + "You have been disconnected from EsperNet for reason: " + reason, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+			sendMessageToPlayer(EnumChatFormatting.RED + "You have been disconnected from EsperNet for: " + reason, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
 		}catch(PlayerNotFoundException e){
 			e.printStackTrace();
 		}

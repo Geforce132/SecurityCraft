@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -90,7 +90,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		if(this.isFacingAnotherBlock(par1World, pos)){
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, pos.getX(), pos.getY(), pos.getZ());
     		}else{
-    			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Is not connected to another inventory scanner block!", EnumChatFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Inventory Scanner", "This is not connected to another inventory scanner block!", EnumChatFormatting.RED);
     		}
     		
     		return true;

@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -63,7 +63,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 						activate(par1World, pos, par5EntityPlayer);
 					}
 				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Password-protected furnace", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
 				}	
 			}
         }

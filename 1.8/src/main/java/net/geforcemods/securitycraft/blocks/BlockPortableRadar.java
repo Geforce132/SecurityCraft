@@ -6,10 +6,10 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
@@ -94,7 +94,7 @@ public class BlockPortableRadar extends BlockContainer {
                 if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername())){
-                	PlayerUtils.sendMessageToPlayer(entityplayermp, ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, "Portable Radar", ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
                 }   
                 
                 if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){

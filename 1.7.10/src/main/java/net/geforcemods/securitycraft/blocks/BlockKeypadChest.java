@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -30,7 +30,7 @@ public class BlockKeypadChest extends BlockChest {
 				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem)
 					activate(par1World, par2, par3, par4, par5EntityPlayer);
 				else
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Password-protected chest", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);
 				
 				return true;
 			}

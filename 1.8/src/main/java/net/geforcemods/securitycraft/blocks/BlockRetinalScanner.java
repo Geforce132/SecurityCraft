@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IViewActivated;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.minecraft.block.Block;
@@ -89,7 +89,7 @@ public class BlockRetinalScanner extends BlockContainer implements IViewActivate
     		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
     		
             if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Hello " + entity.getName() + ".", EnumChatFormatting.GREEN);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Retinal Scanner", "Hello " + entity.getName() + ".", EnumChatFormatting.GREEN);
             }             
     	}
 	}

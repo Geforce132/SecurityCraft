@@ -7,8 +7,8 @@ import java.util.Scanner;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +29,7 @@ public class ItemCameraMonitor extends Item {
 		if(!par3World.isRemote){
 			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.securityCamera){
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(pos), par2EntityPlayer)){
-					Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "I'm sorry, you can not view this camera. This camera is owned by " + ((IOwnable)par3World.getTileEntity(pos)).getOwnerName() + ".", EnumChatFormatting.RED);
+					Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "I'm sorry, you can not view this camera. This camera is owned by " + ((IOwnable)par3World.getTileEntity(pos)).getOwnerName() + ".", EnumChatFormatting.RED);
 					return true;
 				}
 
@@ -39,14 +39,14 @@ public class ItemCameraMonitor extends Item {
 
 				if(isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), pos.getX(), pos.getY(), pos.getZ())){
 					par2EntityPlayer.getCurrentEquippedItem().getTagCompound().removeTag(getTagNameFromPosition(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), pos.getX(), pos.getY(), pos.getZ()));
-					Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Unbound camera (at X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ() + ") to monitor.", EnumChatFormatting.RED);
+					Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "Unbound camera (at X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ() + ") to monitor.", EnumChatFormatting.RED);
 					return true;
 				}
 
 				for(int i = 1; i <= 10; i++){
 					if (!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
 						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, pos.getX() + " " + pos.getY() + " " + pos.getZ());
-						Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Bound camera (at X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ() + ") to monitor.", EnumChatFormatting.GREEN);
+						Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "Bound camera (at X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ() + ") to monitor.", EnumChatFormatting.GREEN);
 						break;
 					}
 				}

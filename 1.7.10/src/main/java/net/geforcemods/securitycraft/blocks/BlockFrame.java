@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.material.Material;
@@ -68,7 +68,7 @@ public class BlockFrame extends BlockOwnable {
 			}
 		}else{
 			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Right-click the frame with a bound monitor to view it.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Frame", "Right-click with a bound monitor to view it.", EnumChatFormatting.RED);
 				return false;
 			}
 			

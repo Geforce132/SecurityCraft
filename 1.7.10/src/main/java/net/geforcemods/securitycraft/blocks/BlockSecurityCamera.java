@@ -10,9 +10,9 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -139,7 +139,7 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
 		if(player.ridingEntity == null){
-			PlayerUtils.sendMessageToPlayer(player, "You are now mounted to a security camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, "Security Camera", "You are now mounted to this camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
 		}
 
 		double x = player.posX;

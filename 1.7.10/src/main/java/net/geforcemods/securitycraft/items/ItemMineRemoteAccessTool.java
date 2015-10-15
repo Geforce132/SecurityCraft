@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -42,12 +42,12 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		int availSlot = this.getNextAvaliableSlot(par1ItemStack);
 		  	  		
 		  	  		if(availSlot == 0){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "There are no more empty slots to bind this mine to!", EnumChatFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", "There are no more empty slots to bind this mine to!", EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}
 		  	  		
 		  	  		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable && !BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't bind a mine that doesn't belong to you.", EnumChatFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", "You can't bind a mine that doesn't belong to you.", EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}
 		  	  		
@@ -57,10 +57,10 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		
 		  	  		par1ItemStack.stackTagCompound.setIntArray(("mine" + availSlot), new int[]{par4, par5, par6});
 		  	  		mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par2EntityPlayer);
-		  	  		PlayerUtils.sendMessageToPlayer(par2EntityPlayer, par2EntityPlayer.getCommandSenderName() + " bound a mine at X:" + par4 + " Y:" + par5 + " Z:" + par6 + " to a remote access tool.", null);
+		  	  		PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", par2EntityPlayer.getCommandSenderName() + " bound a mine at X:" + par4 + " Y:" + par5 + " Z:" + par6 + " to a remote access tool.", null);
   	  			}else{
   	  				this.removeTagFromItemAndUpdate(par1ItemStack, par4, par5, par6, par2EntityPlayer);
-  	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, par2EntityPlayer.getCommandSenderName() + " unbound a mine at X:" + par4 + " Y:" + par5 + " Z:" + par6 + " from a remote access tool.", null);
+  	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", par2EntityPlayer.getCommandSenderName() + " unbound a mine at X:" + par4 + " Y:" + par5 + " Z:" + par6 + " from a remote access tool.", null);
   	  			}
   	  		}else{
     			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);

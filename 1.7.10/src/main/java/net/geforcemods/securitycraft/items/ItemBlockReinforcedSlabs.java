@@ -5,9 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWoodSlabs;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.entity.player.EntityPlayer;
@@ -109,7 +109,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
             	if(!BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
             		if(!par3World.isRemote){
-            			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
+            			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Reinforced Slab", "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
             		}
             		
             		return false;
