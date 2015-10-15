@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -29,14 +28,6 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     public void setOwner(String par1, String par2){
     	ownerUUID = par1;
     	owner = par2;
-    }
-    
-    public boolean isOwner(EntityPlayer player){
-    	if(!ownerUUID.matches("ownerUUID")){
-    		return ownerUUID.matches(player.getGameProfile().getId().toString());
-    	}else{
-    		return owner.matches(player.getCommandSenderName());
-    	}
     }
     
     /**

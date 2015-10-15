@@ -43,7 +43,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			body.add("Owner: " + ((IOwnable) data.getTileEntity()).getOwnerName());
 		}
 		
-		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).isOwner(data.getPlayer())){
+		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && BlockUtils.isOwnerOfBlock((CustomizableSCTE) data.getTileEntity(), data.getPlayer())){
 			if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty()){
 				body.add("Equipped with:");
 			}

@@ -6,10 +6,10 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.WorldUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,12 +25,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	
-	/** The targeting option currently selected for this IMS. 0 = players, 1 = hostile mobs & players.**/
-	private int targetingOption = 1;
+	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players.**/
+	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
+	
 	private boolean updateBombCount = false;
 	
-	//TODO: The new fix I've tried worked once, but after restarting the game (already in debug mode), it no longer worked. :/
-	//      Will try something else....
 	public void update(){
 		super.update();
 		
@@ -59,7 +58,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        Iterator iterator1 = list1.iterator();
 	        Iterator iterator2 = list2.iterator();	       
 	        
-	        while(targetingOption == 1 && iterator2.hasNext()){
+	        while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && iterator2.hasNext()){
 	        	EntityLivingBase entity = (EntityLivingBase) iterator2.next();
 				int launchHeight = this.getLaunchHeight();
 
@@ -181,7 +180,7 @@ public class TileEntityIMS extends CustomizableSCTE {
         super.writeToNBT(par1NBTTagCompound);
         
         par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
-        par1NBTTagCompound.setInteger("targetingOption", targetingOption);
+        par1NBTTagCompound.setInteger("targetingOption", targetingOption.modeIndex);
         par1NBTTagCompound.setBoolean("updateBombCount", updateBombCount);
     }
 
@@ -198,7 +197,7 @@ public class TileEntityIMS extends CustomizableSCTE {
         
         if (par1NBTTagCompound.hasKey("targetingOption"))
         {
-            this.targetingOption = par1NBTTagCompound.getInteger("targetingOption");
+            this.targetingOption = EnumIMSTargetingMode.values()[par1NBTTagCompound.getInteger("targetingOption")];
         }
         
         if (par1NBTTagCompound.hasKey("updateBombCount"))
@@ -215,11 +214,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public int getTargetingOption() {
+	public EnumIMSTargetingMode getTargetingOption() {
 		return targetingOption;
 	}
 
-	public void setTargetingOption(int targetingOption) {
+	public void setTargetingOption(EnumIMSTargetingMode targetingOption) {
 		this.targetingOption = targetingOption;
 	}
 
@@ -230,5 +229,19 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public String[] getOptionDescriptions() {
 		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to an I.M.S will allow the whitelisted players to walk into the range of the I.M.S without being targeted."};
 	}
+	
+public static enum EnumIMSTargetingMode {
+	
+	PLAYERS(0),
+	PLAYERS_AND_MOBS(1);
+	
+	public final int modeIndex;
+	
+	private EnumIMSTargetingMode(int index){
+		this.modeIndex = index;
+	}
+	
+	
+}
 
 }

@@ -37,6 +37,7 @@ SecurityCraft v1.8.0.7 (beta):
  - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
  - Fix: Waila no longer displays the password of a password-protected block if you are not the owner.
  - Fix: The security camera animation no longer speeds up and down depending on how many times can re-render the camera, and are now in sync with LookingGlass views.
+ - Fix: Alarms can now be placed on the sides of laser blocks.
  - Removed: BreakIn' Bad tips and URL.
  
 -----------------------

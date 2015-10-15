@@ -19,24 +19,27 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-@SuppressWarnings("static-access")
 public class BlockLaserBlock extends BlockContainer {
 	    
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
 	}
 	
-	/**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
-    public void onBlockAdded(World par1World, int par2, int par3, int par4){
-        super.onBlockAdded(par1World, par2, par3, par4);
-    }
+    public boolean isNormalCube(IBlockAccess world, int x, int y, int z){
+		return true;
+	}
     
     @Override
     public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
     {
     	return true;
+    }
+    
+    /**
+     * Called whenever the block is added into the world. Args: world, x, y, z
+     */
+    public void onBlockAdded(World par1World, int par2, int par3, int par4){
+        super.onBlockAdded(par1World, par2, par3, par4);
     }
     
     /**
@@ -275,9 +278,6 @@ public class BlockLaserBlock extends BlockContainer {
         }                      
     }
     
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random){
     	if(par1World.getBlockMetadata(par2, par3, par4) == 2){

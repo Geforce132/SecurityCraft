@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCOpenMonitorGUI;
@@ -36,7 +37,7 @@ public class ItemCameraMonitor extends ItemMap {
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		if(!par3World.isRemote){
 			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
-				if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).isOwner(par2EntityPlayer)){
+				if(BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
 					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
 					return false;
 				}

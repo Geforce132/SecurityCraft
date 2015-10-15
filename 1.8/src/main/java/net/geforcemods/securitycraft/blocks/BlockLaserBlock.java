@@ -23,13 +23,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings("static-access")
 public class BlockLaserBlock extends BlockOwnable {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	    
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
+	}
+	
+	public boolean isNormalCube(IBlockAccess world, BlockPos pos){
+		return true;
 	}
 	
 	public int getRenderType(){
@@ -281,10 +284,6 @@ public class BlockLaserBlock extends BlockOwnable {
     }
     
     @SideOnly(Side.CLIENT)
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
             if(((Boolean) state.getValue(POWERED)).booleanValue()){
             double d0 = (double)((float)pos.getX() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
@@ -320,10 +319,6 @@ public class BlockLaserBlock extends BlockOwnable {
 
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock();
-	}
-
-	public String[] getRecipe() {
-		return new String[]{"The laser block requires: 7 stone, 1 block of redstone, 1 glass pane", "XXX", "XYX", "XZX", "X = stone, Y = block of redstone, Z = glass pane"};
 	}
 
 }
