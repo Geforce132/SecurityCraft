@@ -5,15 +5,16 @@ import org.lwjgl.input.Mouse;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ClientUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,6 +41,7 @@ public class EntitySecurityCamera extends Entity{
 	private int toggleNightVisionCooldown = 0;
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
+	private float zoomAmount = 1F;
 
 	public EntitySecurityCamera(World world){
 		super(world);
@@ -59,15 +60,15 @@ public class EntitySecurityCamera extends Entity{
 		
 		this.rotationPitch = 30F;
 			
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
-		if(facing == EnumFacing.NORTH){
+		if(facing == BlockLever.EnumOrientation.NORTH){
 			this.rotationYaw = 180F;
-		}else if(facing == EnumFacing.WEST){
+		}else if(facing == BlockLever.EnumOrientation.WEST){
 			this.rotationYaw = 90F;
-		}else if(facing == EnumFacing.SOUTH){
+		}else if(facing == BlockLever.EnumOrientation.SOUTH){
 			this.rotationYaw = 0F;
-		}else if(facing == EnumFacing.EAST){
+		}else if(facing == BlockLever.EnumOrientation.EAST){
 			this.rotationYaw = 270F;
 		}
 	}
@@ -159,12 +160,12 @@ public class EntitySecurityCamera extends Entity{
 			this.enableNightVision();
 		}
 				
-		if(KeyBindings.cameraZoomIn.isKeyDown()){
-			this.zoomCameraView(1);
+		if(KeyBindings.cameraZoomIn.isPressed()){
+			this.zoomCameraView(-1);
 		}
 		
-		if(KeyBindings.cameraZoomOut.isKeyDown()){
-			this.zoomCameraView(-1);
+		if(KeyBindings.cameraZoomOut.isPressed()){
+			this.zoomCameraView(1);
 		}	
 	}
 
@@ -185,21 +186,21 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewLeft() {
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == EnumFacing.EAST){
+		if(facing == BlockLever.EnumOrientation.EAST){
 			if((this.rotationYaw - CAMERA_SPEED) > -180F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.WEST){
+		}else if(facing == BlockLever.EnumOrientation.WEST){
 			if((this.rotationYaw - CAMERA_SPEED) > 0F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.NORTH){
+		}else if(facing == BlockLever.EnumOrientation.NORTH){
 			if((this.rotationYaw - CAMERA_SPEED) > -270F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.SOUTH){
+		}else if(facing == BlockLever.EnumOrientation.SOUTH){
 			if((this.rotationYaw - CAMERA_SPEED) > -90F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
@@ -209,21 +210,21 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewRight(){
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == EnumFacing.EAST){
+		if(facing == BlockLever.EnumOrientation.EAST){
 			if((this.rotationYaw + CAMERA_SPEED) < 0F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.WEST){
+		}else if(facing == BlockLever.EnumOrientation.WEST){
 			if((this.rotationYaw + CAMERA_SPEED) < 180F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.NORTH){
+		}else if(facing == BlockLever.EnumOrientation.NORTH){
 			if((this.rotationYaw + CAMERA_SPEED) < -90F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == EnumFacing.SOUTH){
+		}else if(facing == BlockLever.EnumOrientation.SOUTH){
 			if((this.rotationYaw + CAMERA_SPEED) < 90F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
@@ -232,14 +233,24 @@ public class EntitySecurityCamera extends Entity{
 		this.updateServerRotation();
 	}
 	
-	public void zoomCameraView(int mouseWheelMovement) {
-		if(mouseWheelMovement > 0 && ClientUtils.getCameraZoom() <= 8.0D){
-			ClientUtils.setCameraZoom(0.1D);
-			Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);
-		}else if(mouseWheelMovement < 0 && ClientUtils.getCameraZoom() >= 1.1D){
-			ClientUtils.setCameraZoom(-0.1D);
-			Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);
-		}	
+	public void zoomCameraView(int zoom) {
+		if(zoom > 0){
+			if(zoomAmount == -0.5F){
+				zoomAmount = 1F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}else if(zoomAmount == 1F){
+				zoomAmount = 2F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}
+		}else if(zoom < 0){
+			if(zoomAmount == 2F){
+				zoomAmount = 1F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}else if(zoomAmount == 1F){
+				zoomAmount = -0.5F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}
+		}
 	}
 	
 	public void setRedstonePower() {
@@ -265,6 +276,10 @@ public class EntitySecurityCamera extends Entity{
 		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
 		String viewingFrom = (this.riddenByEntity != null && mod_SecurityCraft.instance.hasUsePosition(this.riddenByEntity.getName())) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[0]) + " Y: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[1]) + " Z: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[2]) : "";
 		return nowViewing + pos + viewingFrom;
+	}
+	
+	public float getZoomAmount(){
+		return zoomAmount;
 	}
 	
 	@SideOnly(Side.CLIENT)

@@ -45,13 +45,13 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		
 		if(par1TileEntity.hasWorldObj()){
 			if(meta == 1 || meta == 5){
-				rotation = 0F;
+				rotation = -1F;
 			}else if(meta == 2 || meta == 6){
 				rotation = 1F;
 			}else if(meta == 3 || meta == 7){
 				rotation = -10000F; 
 			}else if(meta == 4 || meta == 8){
-				rotation = -1F;
+				rotation = 0F;
 			}
 		}else{
 			rotation = -10000F;

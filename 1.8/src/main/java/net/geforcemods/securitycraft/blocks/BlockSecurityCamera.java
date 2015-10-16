@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Iterator;
+
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
@@ -9,10 +11,11 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockLever;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyEnum FACING = PropertyEnum.create("facing", BlockLever.EnumOrientation.class);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockSecurityCamera(Material par2Material) {
@@ -55,67 +58,63 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 	
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) world, pos, FACING);
+		BlockLever.EnumOrientation dir = BlockUtils.getBlockPropertyAsOrientation((World) world, pos, FACING);
         
-    	if(dir == EnumFacing.SOUTH){
+    	if(dir == BlockLever.EnumOrientation.SOUTH){
     		this.setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
-    	}else if(dir == EnumFacing.NORTH){
+    	}else if(dir == BlockLever.EnumOrientation.NORTH){
     		this.setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
-        }else if(dir == EnumFacing.WEST){
+        }else if(dir == BlockLever.EnumOrientation.WEST){
     		this.setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
         }else{
     		this.setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
         }
 	}
+	
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+        IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+
+        if(worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing)){
+            return iblockstate.withProperty(FACING, BlockLever.EnumOrientation.forFacings(facing, placer.getHorizontalFacing())).withProperty(POWERED, false);
+        }else{
+            Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
+            EnumFacing enumfacing1;
+
+            do{
+                if(!iterator.hasNext()){               
+                    return iblockstate;
+                }
+
+                enumfacing1 = (EnumFacing)iterator.next();
+            }while (!worldIn.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
+
+            return iblockstate.withProperty(FACING, BlockLever.EnumOrientation.forFacings(enumfacing1, placer.getHorizontalFacing())).withProperty(POWERED, false);
+        }
+    }
 
     /**
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-    	Block block = par1World.getBlockState(pos.north()).getBlock();
-        Block block1 = par1World.getBlockState(pos.south()).getBlock();
-        Block block2 = par1World.getBlockState(pos.west()).getBlock();
-        Block block3 = par1World.getBlockState(pos.east()).getBlock();
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-
-        if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-        {
-            enumfacing = EnumFacing.SOUTH;
-        }
-        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-        {
-            enumfacing = EnumFacing.NORTH;
-        }
-        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-        {
-            enumfacing = EnumFacing.EAST;
-        }
-        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-        {
-            enumfacing = EnumFacing.WEST;
-        }
-
-        par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
-       
         if(par5EntityLivingBase instanceof EntityPlayer){
     		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getName());
     	}
     }	
     
     public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){    			
-		if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.NORTH){
+		if(BlockUtils.getBlockPropertyAsOrientation(par1World, pos, FACING) == BlockLever.EnumOrientation.NORTH){
 			if(!par1World.isSideSolid(pos.south(), EnumFacing.NORTH)){
 				BlockUtils.destroyBlock(par1World, pos, true);
 			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.SOUTH){
+		}else if(BlockUtils.getBlockPropertyAsOrientation(par1World, pos, FACING) == BlockLever.EnumOrientation.SOUTH){
 			if(!par1World.isSideSolid(pos.north(), EnumFacing.SOUTH)){
 				BlockUtils.destroyBlock(par1World, pos, true);
 			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.EAST){
+		}else if(BlockUtils.getBlockPropertyAsOrientation(par1World, pos, FACING) == BlockLever.EnumOrientation.EAST){
 			if(!par1World.isSideSolid(pos.west(), EnumFacing.EAST)){
 				BlockUtils.destroyBlock(par1World, pos, true);
 			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.WEST){
+		}else if(BlockUtils.getBlockPropertyAsOrientation(par1World, pos, FACING) == BlockLever.EnumOrientation.WEST){
 			if(!par1World.isSideSolid(pos.east(), EnumFacing.WEST)){
 				BlockUtils.destroyBlock(par1World, pos, true);
 			}
@@ -131,10 +130,9 @@ public class BlockSecurityCamera extends BlockContainer{
     	world.spawnEntityInWorld(dummyEntity);
     	player.mountEntity(dummyEntity);
     }
-
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
+    
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+        return (side != EnumFacing.UP && side != EnumFacing.DOWN) ? super.canPlaceBlockOnSide(worldIn, pos, side) : false;
     }
     
     public boolean canPlaceBlockAt(World world, BlockPos pos){
@@ -168,24 +166,24 @@ public class BlockSecurityCamera extends BlockContainer{
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+        return this.getDefaultState().withProperty(FACING, BlockLever.EnumOrientation.SOUTH);
     }
 
     public IBlockState getStateFromMeta(int meta)
     {
         if(meta <= 5){
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+        	return this.getDefaultState().withProperty(FACING, (BlockLever.EnumOrientation.values()[meta].getFacing() == EnumFacing.UP || BlockLever.EnumOrientation.values()[meta].getFacing() == EnumFacing.DOWN) ? BlockLever.EnumOrientation.NORTH : BlockLever.EnumOrientation.values()[meta]).withProperty(POWERED, false);
         }else{
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
+        	return this.getDefaultState().withProperty(FACING, BlockLever.EnumOrientation.values()[meta - 6]).withProperty(POWERED, true);
         }
     }
 
     public int getMetaFromState(IBlockState state)
     {
     	if(((Boolean) state.getValue(POWERED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    		return (((BlockLever.EnumOrientation) state.getValue(FACING)).getMetadata() + 6);
     	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return ((BlockLever.EnumOrientation) state.getValue(FACING)).getMetadata();
     	}
     }
 

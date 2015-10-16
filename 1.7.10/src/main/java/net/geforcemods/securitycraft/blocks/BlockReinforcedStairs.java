@@ -14,6 +14,7 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
     
 	public BlockReinforcedStairs(Block par1, int par2) {
 		super(par1, par2);
+		this.useNeighborBrightness = true;
 	}
 	
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){

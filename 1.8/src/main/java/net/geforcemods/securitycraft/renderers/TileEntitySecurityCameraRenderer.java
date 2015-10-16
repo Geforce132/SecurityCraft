@@ -4,15 +4,16 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
@@ -48,15 +49,16 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		
 		GL11.glPushMatrix();
 		
-		if(par1TileEntity.hasWorldObj()){
-			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
-			if(side == EnumFacing.EAST){
+		if(par1TileEntity.hasWorldObj() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == mod_SecurityCraft.securityCamera){
+			BlockLever.EnumOrientation side = BlockUtils.getBlockPropertyAsOrientation(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
+			
+			if(side == BlockLever.EnumOrientation.EAST){
 				rotation = -1F;
-			}else if(side == EnumFacing.SOUTH){
+			}else if(side == BlockLever.EnumOrientation.SOUTH){
 				rotation = -10000F; 
-			}else if(side == EnumFacing.WEST){
+			}else if(side == BlockLever.EnumOrientation.WEST){
 				rotation = 1F; 
-			}else if(side == EnumFacing.NORTH){
+			}else if(side == BlockLever.EnumOrientation.NORTH){
 				rotation = 0F;
 			}
 		}else{

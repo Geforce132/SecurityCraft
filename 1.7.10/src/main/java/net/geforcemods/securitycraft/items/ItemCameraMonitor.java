@@ -38,8 +38,8 @@ public class ItemCameraMonitor extends ItemMap {
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		if(!par3World.isRemote){
 			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
-				if(BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
+				if(!BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
 					return false;
 				}
 				
@@ -81,7 +81,7 @@ public class ItemCameraMonitor extends ItemMap {
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   

@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLever;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -407,6 +408,14 @@ public static class BlockUtils{
 	public static EnumFacing getBlockPropertyAsEnum(World par1World, int par2, int par3, int par4, PropertyEnum property){
 		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
 	}
+	
+	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, BlockPos pos, PropertyEnum property){
+		return ((BlockLever.EnumOrientation) par1World.getBlockState(pos).getValue(property));
+	}
+
+	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, int par2, int par3, int par4, PropertyEnum property){
+		return ((BlockLever.EnumOrientation) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
+	}
 
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {
 		return (EnumFacing) par1World.getBlockState(pos).getValue(property);
@@ -722,6 +731,7 @@ public static class ClientUtils{
 		
 		double tempZoom = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48);
 		ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, tempZoom + zoom, 48);
+		System.out.println(ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48));
 	}
 	
 	/**

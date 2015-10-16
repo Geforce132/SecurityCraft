@@ -29,7 +29,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -56,24 +58,14 @@ public class ForgeEventHandler {
 		}
 	}
 	
-	private String getRandomTip(){
-    	Random random = new Random();
-    	int randomInt = random.nextInt(3);
-    	
-    	if(randomInt == 0){
-    		return "Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.";
-    	}else if(randomInt == 1){
-    		return "Use /sc connect to get personal support from the mod devs!";
-    	}else if(randomInt == 2){
-    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
-    	}else{
-    		return "";
-    	}
-    }
-	
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
+		if(event.entityLiving != null && event.entityLiving.ridingEntity != null && event.entityLiving.ridingEntity instanceof EntitySecurityCamera){
+			event.setCanceled(true);
+			return;
+		}
+		
 		if(event.source == CustomDamageSources.electricity)
 			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
@@ -184,6 +176,22 @@ public class ForgeEventHandler {
 			}
 		}
 	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void fovUpdateEvent(FOVUpdateEvent event){
+		if(event.entity.ridingEntity != null && event.entity.ridingEntity instanceof EntitySecurityCamera){
+			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void renderHandEvent(RenderHandEvent event){
+		if(Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
+			event.setCanceled(true);
+		}
+	}
 
 	private ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
@@ -198,6 +206,21 @@ public class ForgeEventHandler {
 			return null;
 		}
 	}
+	
+	private String getRandomTip(){
+    	Random random = new Random();
+    	int randomInt = random.nextInt(3);
+    	
+    	if(randomInt == 0){
+    		return "Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.";
+    	}else if(randomInt == 1){
+    		return "Use /sc connect to get personal support from the mod devs!";
+    	}else if(randomInt == 2){
+    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
+    	}else{
+    		return "";
+    	}
+    }
   
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
     	if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){

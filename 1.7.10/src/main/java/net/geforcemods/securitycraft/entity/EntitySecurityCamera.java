@@ -45,6 +45,7 @@ public class EntitySecurityCamera extends Entity {
 	private int toggleNightVisionCooldown = 0;
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
+	private float zoomAmount = 1F;
 
 	public EntitySecurityCamera(World world){
 		super(world);
@@ -65,13 +66,13 @@ public class EntitySecurityCamera extends Entity {
 
 		int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
 
-		if((meta == 1) || (meta == 5)){
+		if(meta == 4 || meta == 8){ 
 			this.rotationYaw = 180.0F;
-		}else if((meta == 2) || (meta == 6)){
+		}else if(meta == 2 || meta == 6){
 			this.rotationYaw = 90.0F;
-		}else if((meta == 3) || (meta == 7)){
+		}else if(meta == 3 || meta == 7){
 			this.rotationYaw = 0.0F;
-		}else if((meta == 4) || (meta == 8)){
+		}else if(meta == 1 || meta == 5){ 
 			this.rotationYaw = 270.0F;
 		}
 	}
@@ -88,8 +89,9 @@ public class EntitySecurityCamera extends Entity {
 		return false;
 	}
 
-	public void onUpdate() {
+	public void onUpdate() {		
 		if(this.worldObj.isRemote && this.riddenByEntity != null){
+			
 			if(this.screenshotCooldown > 0){
 				this.screenshotCooldown -= 1;
 			}
@@ -168,12 +170,12 @@ public class EntitySecurityCamera extends Entity {
 			enableNightVision();
 		}
 
-		if(KeyBindings.cameraZoomIn.getIsKeyPressed()){
-			zoomCameraView(1);
+		if(KeyBindings.cameraZoomIn.isPressed()){
+			zoomCameraView(-1);
 		}
 
-		if(KeyBindings.cameraZoomOut.getIsKeyPressed()){
-			zoomCameraView(-1);
+		if(KeyBindings.cameraZoomOut.isPressed()){
+			zoomCameraView(1);
 		}
 	}
 
@@ -195,10 +197,16 @@ public class EntitySecurityCamera extends Entity {
 
 	public void moveViewLeft(){
 		int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
-
-		if(meta == 1 || meta == 5){
-			if((this.rotationYaw - CAMERA_SPEED) > -270.0F){
-				setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+		
+		if(meta == 4 || meta == 8){
+			if(this.rotationYaw < 0){
+				if(this.rotationYaw - CAMERA_SPEED < 180F){
+					setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
+			}else{
+				if(this.rotationYaw - CAMERA_SPEED > 90F){
+					setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
 			}
 		}else if(meta == 2 || meta == 6){
 			if((this.rotationYaw - CAMERA_SPEED) > 0.0F){
@@ -208,7 +216,7 @@ public class EntitySecurityCamera extends Entity {
 			if((this.rotationYaw - CAMERA_SPEED) > -90.0F){
 				setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(meta == 4 || meta == 8){
+		}else if(meta == 1 || meta == 5){
 			if((this.rotationYaw - CAMERA_SPEED) > -180.0F){
 				setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
@@ -220,9 +228,15 @@ public class EntitySecurityCamera extends Entity {
 	public void moveViewRight(){
 		int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
 
-		if(meta == 1 || meta == 5){
-			if((this.rotationYaw + CAMERA_SPEED) < -90.0F){
-				setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+		if(meta == 4 || meta == 8){
+			if(this.rotationYaw < 0){
+				if((Math.abs(this.rotationYaw) + CAMERA_SPEED) > 90F){
+					setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
+			}else{
+				if(this.rotationYaw + CAMERA_SPEED < 185F){
+					setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
 			}
 		}else if(meta == 2 || meta == 6){
 			if((this.rotationYaw + CAMERA_SPEED) < 180.0F){
@@ -232,7 +246,7 @@ public class EntitySecurityCamera extends Entity {
 			if((this.rotationYaw + CAMERA_SPEED) < 90.0F){
 				setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(meta == 4 || meta == 8){
+		}else if(meta == 1 || meta == 5){
 			if((this.rotationYaw + CAMERA_SPEED) < 0.0F){
 				setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
@@ -241,13 +255,23 @@ public class EntitySecurityCamera extends Entity {
 		this.updateServerRotation();
 	}
 
-	public void zoomCameraView(int mouseWheelMovement){
-		if(mouseWheelMovement > 0 && ClientUtils.getCameraZoom() <= 8.0D){
-			ClientUtils.setCameraZoom(0.1D);
-			Minecraft.getMinecraft().theWorld.playSound(this.posX, this.posY, this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);
-		}else if(mouseWheelMovement < 0 && ClientUtils.getCameraZoom() >= 1.1D){
-			ClientUtils.setCameraZoom(-0.1D);
-			Minecraft.getMinecraft().theWorld.playSound(this.posX, this.posY, this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);
+	public void zoomCameraView(int zoom) {
+		if(zoom > 0){
+			if(zoomAmount == -0.5F){
+				zoomAmount = 1F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}else if(zoomAmount == 1F){
+				zoomAmount = 2F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}
+		}else if(zoom < 0){
+			if(zoomAmount == 2F){
+				zoomAmount = 1F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}else if(zoomAmount == 1F){
+				zoomAmount = -0.5F;
+				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+			}
 		}
 	}
 
@@ -298,6 +322,10 @@ public class EntitySecurityCamera extends Entity {
 	@SideOnly(Side.CLIENT)
 	private void updateServerRotation(){
 		mod_SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(this.rotationYaw, this.rotationPitch));
+	}
+	
+	public float getZoomAmount(){
+		return zoomAmount;
 	}
 
 	public void setDead(){

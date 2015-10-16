@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -45,7 +44,7 @@ public class GuiCameraMonitor extends GuiScreen {
 	}
 
 	public void onGuiClosed(){
-		ClientUtils.setCameraZoom(0.0D);
+		//ClientUtils.setCameraZoom(0.0D);
 	}
 
 	public void drawScreen(int par1, int par2, float par3){
