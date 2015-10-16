@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class BlockKeypadFurnace extends BlockContainer {
@@ -50,7 +51,7 @@ public class BlockKeypadFurnace extends BlockContainer {
 				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem)
 					activate(par1World, par2, par3, par4, par5EntityPlayer);
 				else
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Password-protected furnace", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
 				
 				return true;
 			}

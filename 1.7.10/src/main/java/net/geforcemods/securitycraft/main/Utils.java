@@ -38,6 +38,7 @@ import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -481,24 +482,24 @@ public static class ModuleUtils{
 		
 		if(te instanceof TileEntityKeypad){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad", "You have been whitelisted.", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.module.whitelisted"), EnumChatFormatting.GREEN);
 				BlockKeypad.activate(par1World, par2, par3, par4);
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad", "You have been blacklisted.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.module.blacklisted"), EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keycard Reader", "You have been whitelisted.", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keycardReader.name"), StatCollector.translateToLocal("messages.module.whitelisted"), EnumChatFormatting.GREEN);
 				BlockKeycardReader.activate(par1World, par2, par3, par4);
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getCommandSenderName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keycard Reader", "You have been blacklisted.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keycardReader.name"), StatCollector.translateToLocal("messages.module.blacklisted"), EnumChatFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){

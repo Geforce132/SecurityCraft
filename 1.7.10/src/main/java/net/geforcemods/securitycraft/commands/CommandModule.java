@@ -13,6 +13,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class CommandModule extends CommandBase implements ICommand {
 
@@ -53,9 +54,9 @@ public class CommandModule extends CommandBase implements ICommand {
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canBeModified()){		
 					mod_SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().stackTagCompound);
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "Module data saved.", EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "You must be holding the module you wish to save data from.", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForData"), EnumChatFormatting.RED);
 				}
 				
 				return;
@@ -63,14 +64,14 @@ public class CommandModule extends CommandBase implements ICommand {
 				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 
 				if(mod_SecurityCraft.instance.getSavedModule() == null){
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "There is no module data saved.", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.nothingSaved"), EnumChatFormatting.RED);
 					return;
 				}
 				
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canBeModified()){		
 					player.getCurrentEquippedItem().stackTagCompound = mod_SecurityCraft.instance.getSavedModule();
 					mod_SecurityCraft.instance.setSavedModule(null);
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "Saved data to module.", EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
 				}
 				
 				return;
@@ -86,16 +87,16 @@ public class CommandModule extends CommandBase implements ICommand {
 					
 					for(int i = 1; i <= 10; i++){
 						if(player.getCurrentEquippedItem().getTagCompound().hasKey("Player" + i) && player.getCurrentEquippedItem().getTagCompound().getString("Player" + i).matches(par2String[1])){
-							PlayerUtils.sendMessageToPlayer(player, "Module Manager", "The module you are holding already contains the player " + par2String[1] + ".", EnumChatFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.alreadyContained").replace("#", par2String[1]), EnumChatFormatting.RED);
 							return;
 						}
 					}
 					
 					player.getCurrentEquippedItem().stackTagCompound.setString("Player" + getNextSlot(player.getCurrentEquippedItem().stackTagCompound), par2String[1]);
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "Added " + par2String[1] + " to the held module.", EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.added").replace("#", par2String[1]), EnumChatFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "You must be holding the module you wish to modify!", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForModify"), EnumChatFormatting.RED);
 					return;
 				}
 			}else if(par2String[0].matches("remove")){
@@ -112,10 +113,10 @@ public class CommandModule extends CommandBase implements ICommand {
 						}
 					}
 					
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "Removed " + par2String[1] + " from the held module.", EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.removed").replace("#", par2String[1]), EnumChatFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, "Module Manager", "You must be holding the module you wish to modify!", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForModify"), EnumChatFormatting.RED);
 					return;
 				}
 			}

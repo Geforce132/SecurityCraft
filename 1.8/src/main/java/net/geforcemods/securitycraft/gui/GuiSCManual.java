@@ -74,11 +74,11 @@ public class GuiSCManual extends GuiScreen {
 	    	this.fontRendererObj.drawString(mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName(), k + 39, 27, 0, false);	
 	    	this.fontRendererObj.drawSplitString(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo(), k + 18, 45, 225, 0);	
 	    }else{
-	    	this.fontRendererObj.drawString("Getting started with SecurityCraft", k + 39, 27, 0, false);	
-	    	this.fontRendererObj.drawString("by Geforce and bl4ckscor3", k + 60, 159, 0, false);	
+	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.1"), k + 39, 27, 0, false);	
+	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.2"), k + 60, 159, 0, false);	
 	    
 	    	if(StatCollector.canTranslate("gui.scManual.author")){
-		    	this.fontRendererObj.drawString("Translated by " + StatCollector.translateToLocal("gui.scManual.author"), k + 65, 170, 0, false);	//TODO: Make sure the "Translated by" is in the proper language as well.
+		    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.author"), k + 65, 170, 0, false);
 	    	}
 	    }
 	    

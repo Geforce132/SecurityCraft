@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -68,7 +69,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 
                 	if(!BlockUtils.isOwnerOfBlock((IOwnable) worldIn.getTileEntity(pos), playerIn)){
                 		if(!worldIn.isRemote){
-                			PlayerUtils.sendMessageToPlayer(playerIn, "Reinforced Slab", "You must be the owner of this block to turn it into a double slab.", EnumChatFormatting.RED);
+                			PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
                 		}
                 		
                 		return false;

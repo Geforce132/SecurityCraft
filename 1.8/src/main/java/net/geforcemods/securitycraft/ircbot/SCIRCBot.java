@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class SCIRCBot extends PircBot{
 		
@@ -50,7 +51,7 @@ public class SCIRCBot extends PircBot{
 
     		String trimmedMessage = scanner.next();
     		mod_SecurityCraft.log(trimmedMessage);
-    		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, EnumChatFormatting.YELLOW);
+    		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "[" + StatCollector.translateToLocal("messages.irc.reply") + "]: " + EnumChatFormatting.RESET + trimmedMessage, EnumChatFormatting.YELLOW);
     		scanner.close();
     	}
     }
@@ -60,7 +61,7 @@ public class SCIRCBot extends PircBot{
 			mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 		}
     						
-		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "You have been disconnected from EsperNet for: " + reason, EnumChatFormatting.RED);
+		PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), EnumChatFormatting.RED);
     }
     
 	@Override

@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -90,7 +91,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		if(this.isFacingAnotherBlock(par1World, pos)){
     			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, pos.getX(), pos.getY(), pos.getZ());
     		}else{
-    			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Inventory Scanner", "This is not connected to another inventory scanner block!", EnumChatFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.inventoryScanner.name"), StatCollector.translateToLocal("messages.invScan.notConnected"), EnumChatFormatting.RED);
     		}
     		
     		return true;

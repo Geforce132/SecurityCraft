@@ -26,6 +26,7 @@ import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ItemCameraMonitor extends ItemMap {
@@ -38,7 +39,7 @@ public class ItemCameraMonitor extends ItemMap {
 		if(!par3World.isRemote){
 			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
 				if(BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 					return false;
 				}
 				
@@ -47,7 +48,7 @@ public class ItemCameraMonitor extends ItemMap {
 		    	}
 				
 				par1ItemStack.getTagCompound().setString("Camera1", par4 + " " + par5 + " " + par6);
-				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "Bound camera at" + Utils.getFormattedCoordinates(par4, par5, par6) + " to monitor.", EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.GREEN);
 				
 				return true;
 			}else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
@@ -66,7 +67,7 @@ public class ItemCameraMonitor extends ItemMap {
 				int[] camCoords = {Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[2])};
 				
 	    		if(!(par3World.getBlock(camCoords[0], camCoords[1], camCoords[2]) instanceof BlockSecurityCamera)){
-	    			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Camera Monitor", "There is no camera at the location" + Utils.getFormattedCoordinates(camCoords[0], camCoords[1], camCoords[2]) + ", right-click a new camera to reset the monitor.", EnumChatFormatting.RED);
+	    			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(camCoords[0], camCoords[1], camCoords[2])), EnumChatFormatting.RED);
 					return false;
 	    		}
 				
@@ -86,14 +87,14 @@ public class ItemCameraMonitor extends ItemMap {
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   
     	if(!par2World.isRemote){
     		if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera1")){ 
-				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, "Camera Monitor", "Right-click a security camera to view it.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
 				return par1ItemStack;
 			}
     		
     		int[] camCoords = {Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[2])};
 			
     		if(!(par2World.getBlock(camCoords[0], camCoords[1], camCoords[2]) instanceof BlockSecurityCamera)){
-    			PlayerUtils.sendMessageToPlayer(par3EntityPlayer, "Camera Monitor", "There is no camera at the location" + Utils.getFormattedCoordinates(camCoords[0], camCoords[1], camCoords[2]) + ", right-click a new camera to reset the monitor.", EnumChatFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(camCoords[0], camCoords[1], camCoords[2])), EnumChatFormatting.RED);
 				return par1ItemStack;
     		}
     		

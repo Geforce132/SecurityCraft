@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -71,9 +72,9 @@ public class BlockKeycardReader extends BlockOwnable {
 			activate(par1World, par2, par3, par4);
 		}else{
 			if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() != null){
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard Reader", "Required security level: " + ((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() + " Your keycard's level: " + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack), null);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, StatCollector.translateToLocal("tile.keycardReader.name"), StatCollector.translateToLocal("messages.keycardReader.required").replace("#r", ((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword()).replace("#c", "" + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)), EnumChatFormatting.RED);
 			}else{
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, "Keycard Reader", "Security level not set!", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, StatCollector.translateToLocal("tile.keycardReader.name"), StatCollector.translateToLocal("messages.keycardReader.notSet"), EnumChatFormatting.RED);
 			}
 		}
 	}

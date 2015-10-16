@@ -36,6 +36,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -116,7 +117,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(!BlockUtils.isOwnerOfBlock(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Modifier", "I'm sorry, you cannot customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockModifier.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName()), EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -137,7 +138,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Remover", "I'm sorry, you cannot remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockRemover.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName()), EnumChatFormatting.RED);
 					return;
 				}
 

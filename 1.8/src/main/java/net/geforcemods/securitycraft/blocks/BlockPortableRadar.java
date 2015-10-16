@@ -29,6 +29,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -94,7 +95,7 @@ public class BlockPortableRadar extends BlockContainer {
                 if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
                 if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getUsername())){
-                	PlayerUtils.sendMessageToPlayer(entityplayermp, "Portable Radar", ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET +" is near your portable radar named " + EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET + ".") : (EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET + " is near a portable radar (at " + Utils.getFormattedCoordinates(pos) + ")."), null);               
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), EnumChatFormatting.BLUE);               
                 }   
                 
                 if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){

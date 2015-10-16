@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -68,7 +69,7 @@ public class BlockRetinalScanner extends BlockContainer implements IViewActivate
     		world.scheduleBlockUpdate(x, y, z, mod_SecurityCraft.retinalScanner, 60);
     		
             if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, "Retinal Scanner", "Hello " + entity.getCommandSenderName() + ".", EnumChatFormatting.GREEN);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
             }
     	}
 	}

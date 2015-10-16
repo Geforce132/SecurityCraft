@@ -27,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -102,7 +103,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 				
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Modifier", "I'm sorry, you can not customize this block. This block is owned by " + ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerUUID() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockModifier.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName()), EnumChatFormatting.RED);
 					return;
 				}
 				
@@ -123,7 +124,7 @@ public class ForgeEventHandler {
 				event.setCanceled(true);
 
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos), event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Universal Block Remover", "I'm sorry, you can not remove this block. This block is owned by " + ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName() + ".", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockRemover.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.pos)).getOwnerName()), EnumChatFormatting.RED);
 					return;
 				}
 

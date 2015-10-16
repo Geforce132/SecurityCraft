@@ -27,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -139,7 +140,7 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
 		if(player.ridingEntity == null){
-			PlayerUtils.sendMessageToPlayer(player, "Security Camera", "You are now mounted to this camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
 		}
 
 		double x = player.posX;

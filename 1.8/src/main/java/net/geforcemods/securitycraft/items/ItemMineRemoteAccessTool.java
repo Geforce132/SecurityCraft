@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,12 +46,12 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		int availSlot = this.getNextAvaliableSlot(par1ItemStack);
 		  	  		
 		  	  		if(availSlot == 0){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", "There are no more empty slots to bind this mine to!", EnumChatFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.noSlots"), EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}
 		  	  		
 		  	  		if(par3World.getTileEntity(pos) instanceof IOwnable && !BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(pos), par2EntityPlayer)){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", "You can't bind a mine that doesn't belong to you.", EnumChatFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.cantBind"), EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}
 		  	  		
@@ -60,10 +61,10 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		
 		  	  		par1ItemStack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
 		  	  		mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par2EntityPlayer);
-		  	  		PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", par2EntityPlayer.getName() + " bound a mine at " + Utils.getFormattedCoordinates(pos) + " to a remote access tool.", null);
+		  	  		PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.GREEN);
   	  			}else{
   	  				this.removeTagFromItemAndUpdate(par1ItemStack, pos, par2EntityPlayer);
-  	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Mine Remote Access Tool", par2EntityPlayer.getName() + " unbound a mine at " + Utils.getFormattedCoordinates(pos) + " from a remote access tool.", null);
+  	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.RED);
   	  			}
   	  		}else{
     			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);

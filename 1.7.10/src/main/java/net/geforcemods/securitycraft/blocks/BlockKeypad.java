@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -94,7 +95,7 @@ public class BlockKeypad extends BlockContainer {
 						activate(par1World, par2, par3, par4);
 					}
 				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Keypad", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);  				
 				}	
 			}     	    	     	
 		}

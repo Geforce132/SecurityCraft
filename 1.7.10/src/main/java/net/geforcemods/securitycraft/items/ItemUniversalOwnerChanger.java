@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ItemUniversalOwnerChanger extends Item
@@ -47,19 +48,19 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			if(!stack.hasDisplayName())
 			{
-				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "You need to give this item the name of the new block owner. Use an anvil to rename it.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.noName"), EnumChatFormatting.RED);
 				return false;
 			}
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "This block cannot hold an owner. Please right-click an appropriate SecurityCraft block.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.cantChange"), EnumChatFormatting.RED);
 				return false;
 			}
 
 			if(!BlockUtils.isOwnerOfBlock((IOwnable)te, player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "This is not your block, you cannot change its owner.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.notOwned"), EnumChatFormatting.RED);
 				return false;
 			}
 
@@ -75,7 +76,7 @@ public class ItemUniversalOwnerChanger extends Item
 				((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "Owner successfully changed to " + newOwner + ".", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), EnumChatFormatting.GREEN);
 			return true;
 		}
 

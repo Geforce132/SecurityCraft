@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
@@ -39,7 +40,7 @@ public class BlockKeypadChest extends BlockChest {
                         par5EntityPlayer.displayGUIChest(ilockablecontainer);
                         return true;
                     }else{	
-                        PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Password-protected chest", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  	
+                        PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadChest.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);  	
                         return true;
                     }                    
 				}

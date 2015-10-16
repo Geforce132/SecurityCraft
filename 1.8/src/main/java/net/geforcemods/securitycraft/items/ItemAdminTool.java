@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ItemAdminTool extends Item {
@@ -33,22 +34,22 @@ public class ItemAdminTool extends Item {
 				TileEntity te = par3World.getTileEntity(pos);
 				
 				if(te instanceof IOwnable){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Owner: " + (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName()), EnumChatFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Owner's UUID: " + (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID()), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.name").replace("#", (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID())), EnumChatFormatting.DARK_PURPLE);
 				}
 				
 				if(te instanceof IPasswordProtected){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Password: " + (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword()), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), EnumChatFormatting.DARK_PURPLE);
 				}
 				
 				if(te instanceof CustomizableSCTE){
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 					
 					if(!modules.isEmpty()){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "Equipped modules: ", EnumChatFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.equippedModules"), EnumChatFormatting.DARK_PURPLE);
 						
 						for(EnumCustomModules module : modules){
-							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "Admin Tool", "-" + module.getModuleName(), EnumChatFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), "-" + module.getModuleName(), EnumChatFormatting.DARK_PURPLE);
 						}
 					}
 				}

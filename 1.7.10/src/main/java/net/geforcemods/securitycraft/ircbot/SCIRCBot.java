@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class SCIRCBot extends PircBot{
 		
@@ -52,7 +53,7 @@ public class SCIRCBot extends PircBot{
 
     		String trimmedMessage = scanner.next();
     		mod_SecurityCraft.log(trimmedMessage);
-    		sendMessageToPlayer(EnumChatFormatting.YELLOW + "[Reply]: " + EnumChatFormatting.RESET + trimmedMessage, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+    		sendMessageToPlayer(EnumChatFormatting.YELLOW + "[" + StatCollector.translateToLocal("messages.irc.reply") + "]: " + EnumChatFormatting.RESET + trimmedMessage, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
     		scanner.close();
     	}
     }
@@ -63,7 +64,7 @@ public class SCIRCBot extends PircBot{
 		}
 					
 		try{
-			sendMessageToPlayer(EnumChatFormatting.RED + "You have been disconnected from EsperNet for: " + reason, getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+			sendMessageToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
 		}catch(PlayerNotFoundException e){
 			e.printStackTrace();
 		}

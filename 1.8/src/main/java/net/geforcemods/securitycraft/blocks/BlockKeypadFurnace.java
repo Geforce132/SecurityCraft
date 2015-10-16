@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -63,7 +64,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 						activate(par1World, pos, par5EntityPlayer);
 					}
 				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Password-protected furnace", "The codebreaker has been disabled through the config file.", EnumChatFormatting.RED);  				
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);  				
 				}	
 			}
         }
