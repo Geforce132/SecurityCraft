@@ -137,11 +137,12 @@ public class BlockSecurityCamera extends BlockContainer{
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
     
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos){
-        return worldIn.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
-               worldIn.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
-               worldIn.isSideSolid(pos.north(), EnumFacing.SOUTH, true) ||
-               worldIn.isSideSolid(pos.south(), EnumFacing.NORTH, true);
+    public boolean canPlaceBlockAt(World world, BlockPos pos){
+        return !world.getBlockState(pos).getBlock().isReplaceable(world, pos) ^ //exclusive or
+        	   (world.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
+               world.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
+               world.isSideSolid(pos.north(), EnumFacing.SOUTH, true) ||
+               world.isSideSolid(pos.south(), EnumFacing.NORTH, true));
     }
     
     public boolean canProvidePower(){

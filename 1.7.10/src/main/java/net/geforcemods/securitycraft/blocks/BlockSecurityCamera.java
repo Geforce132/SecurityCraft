@@ -131,12 +131,14 @@ public class BlockSecurityCamera extends BlockContainer {
 		mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
 	}
 
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
-		return par1World.isSideSolid(par2 - 1, par3, par4, EAST) ||
-				par1World.isSideSolid(par2 + 1, par3, par4, WEST) ||
-				par1World.isSideSolid(par2, par3, par4 - 1, SOUTH) ||
-				par1World.isSideSolid(par2, par3, par4 + 1, NORTH);
-	}
+    public boolean canPlaceBlockAt(World world, int x, int y, int z)
+    {
+        return !world.getBlock(x, y, z).isReplaceable(world, x, y, z) ^ //exclusive or
+        		(world.isSideSolid(x - 1, y, z, EAST) ||
+        		world.isSideSolid(x + 1, y, z, WEST) ||
+        		world.isSideSolid(x, y, z - 1, SOUTH) ||
+        		world.isSideSolid(x, y, z + 1, NORTH));
+    }
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
 		if(player.ridingEntity == null){
