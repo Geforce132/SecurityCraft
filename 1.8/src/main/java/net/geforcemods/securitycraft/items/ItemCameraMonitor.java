@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
@@ -57,7 +58,7 @@ public class ItemCameraMonitor extends Item {
 				return true;
 			}
 		}else if((par3World.isRemote) && (BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera)){
-			openMonitorGUI(par1ItemStack);
+			openMonitorGUI(par1ItemStack, par2EntityPlayer);
 			return true;
 		}
 
@@ -67,7 +68,7 @@ public class ItemCameraMonitor extends Item {
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) {
-			openMonitorGUI(par1ItemStack);
+			openMonitorGUI(par1ItemStack, par3EntityPlayer);
 		}
 
 		return par1ItemStack;
@@ -87,7 +88,9 @@ public class ItemCameraMonitor extends Item {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void openMonitorGUI(ItemStack par1ItemStack){
+	public void openMonitorGUI(ItemStack par1ItemStack, EntityPlayer player){
+		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){ return; }
+		
 		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitor((ItemCameraMonitor)par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
 	}
 
@@ -143,7 +146,7 @@ public class ItemCameraMonitor extends Item {
 		ArrayList list = new ArrayList();
 
 		for(int i = 0; i <= 10; i++){
-			if(nbt.hasKey("Camera" + i)){
+			if(nbt != null && nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
 				scanner.close();

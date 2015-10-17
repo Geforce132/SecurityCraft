@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
@@ -43,10 +44,6 @@ public class GuiCameraMonitor extends GuiScreen {
 		this.buttonList.add(new GuiButton(this.page * 5 + 2, this.width - 25, this.height - 45, 20, 20, ">"));
 	}
 
-	public void onGuiClosed(){
-		//ClientUtils.setCameraZoom(0.0D);
-	}
-
 	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 	}
@@ -56,8 +53,10 @@ public class GuiCameraMonitor extends GuiScreen {
 			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, this.page--));
 		}else if((guibutton.id == this.page * 5 + 2) && (this.cameraMonitor.getCameraPositions(this.nbtTag).size() > this.page * 5 - 1)) {
 			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, this.page++));
-		}else if((guibutton.id > this.page) && (guibutton.id <= this.page * 6)){
-			mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2))[0], ((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2))[1], ((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2))[2], guibutton.id + 1));
+		}else if((guibutton.id > this.page) && (guibutton.id <= this.page * 6)){ 
+			int[] cameraPos = ((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2));
+			((BlockSecurityCamera) Minecraft.getMinecraft().theWorld.getBlock(cameraPos[0], cameraPos[1], cameraPos[2])).mountCamera(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1, Minecraft.getMinecraft().thePlayer);
+			mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1));
 			Minecraft.getMinecraft().thePlayer.closeScreen();
 		}
 	}

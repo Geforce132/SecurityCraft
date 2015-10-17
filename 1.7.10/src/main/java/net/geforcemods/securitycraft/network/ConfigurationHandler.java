@@ -83,6 +83,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCOpenMonitorGUI;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
+import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
@@ -869,6 +870,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSMountCamera.Handler.class, PacketSMountCamera.class, 20, Side.SERVER);
 		network.registerMessage(PacketCOpenMonitorGUI.Handler.class, PacketCOpenMonitorGUI.class, 21, Side.CLIENT);
 		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 22, Side.SERVER);
+		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 23, Side.CLIENT);
 	}
 
 }

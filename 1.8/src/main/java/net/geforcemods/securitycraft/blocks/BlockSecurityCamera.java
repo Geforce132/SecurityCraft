@@ -126,7 +126,7 @@ public class BlockSecurityCamera extends BlockContainer{
     		PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
     	}
 
-    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5);
+    	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
     	world.spawnEntityInWorld(dummyEntity);
     	player.mountEntity(dummyEntity);
     }

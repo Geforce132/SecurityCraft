@@ -39,7 +39,7 @@ public class ItemCameraMonitor extends ItemMap {
 		if(!par3World.isRemote){
 			if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
 				if(!BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), "You can't view a camera that doesn't belong to you", EnumChatFormatting.RED);
 					return false;
 				}
 				
@@ -122,7 +122,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void openMonitorGUI(ItemStack par1ItemStack){
+	public void openMonitorGUI(ItemStack par1ItemStack){		
 		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitor((ItemCameraMonitor)par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
 	}
 
@@ -173,7 +173,7 @@ public class ItemCameraMonitor extends ItemMap {
 		ArrayList list = new ArrayList();
 
 		for(int i = 1; i <= 10; i++){
-			if(nbt.hasKey("Camera" + i)){
+			if(nbt != null && nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
 

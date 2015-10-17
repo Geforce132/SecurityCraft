@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCOpenMonitorGUI packet, MessageContext context) {
+		if(Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){ return null; }
+		
 		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitor((ItemCameraMonitor) packet.monitor.getItem(), packet.monitor.getTagCompound()));
 		return null;
 	}

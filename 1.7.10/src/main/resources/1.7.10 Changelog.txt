@@ -5,11 +5,8 @@ SecurityCraft v1.8.0.7 (beta):
 *** New blocks/items: ***
  - Added the universal owner changer.
  - Added the universal block reinforcers.
- 
-*** Major additions: ***
- - SecurityCraft now doesn't require LookingGlass v0.2.00+ to run.
 
-*** Bugfixes/Improvements: ***
+*** Changes: ***
  --- Worked on the SecurityCraft API:
    - Added the IViewActivated interface (works along with TileEntitySCTE.viewActivated()).
  --- Code cleanup:
@@ -24,6 +21,7 @@ SecurityCraft v1.8.0.7 (beta):
  - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
  - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
  - New: Added Portuguese translation.
+ - Change: SecurityCraft now doesn't require LookingGlass v0.2.00+ to run.
  - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
  - Change: Reinforced blocks can no longer be crafted, and must be made by using the universal block reinforcers.
  - Change: The SecurityCraft manual now displays bl4ckscor3 as an author.
@@ -70,13 +68,8 @@ SecurityCraft v1.8.0:
  - Added reinforced glass, stained glass, and stained glass panes.
  - Added storage module.
  - Added SecurityCraft manual.
- 
-*** Major additions: ***
- - Added Waila support.
- - Added VersionChecker update support.
- - SecurityCraft now requires LookingGlass v0.2.00+ as a dependency.
 
-*** Bugfixes/Improvements: ***
+*** Changes: ***
  --- Hefty code cleanup:
    - Deleted org.freeforums.geforce.securitycraft.timers and all the classes in it. 
    - Moved all the classes in org.freeforums.geforce.securitycraft.lookingglass to org.freeforums.geforce.securitycraft.imc.lookingglass.
@@ -97,6 +90,9 @@ SecurityCraft v1.8.0:
    - Moved all the classes in org.freeforums.geforce.securitycraft.interfaces to org.freeforums.geforce.securitycraft.api.
    - Moved CustomizableSCTE from org.freeforums.geforce.securitycraft.tileentity to org.freeforums.geforce.securitycraft.api.
    - Modified the build.gradle file to also generate deobfuscated and raw source .jar files when building.
+ - New: Added Waila support.
+ - New: Added VersionChecker update support.
+ - New: SecurityCraft now requires LookingGlass v0.2.00+ as a dependency.
  - New: Password-protected chests now have a custom christmas texture.
  - New: Added new Creative Tab for decoration blocks (Reinforced blocks/iron fence etc.)
  - New: Keycard readers now emit redstone particles like laser blocks when active.

@@ -10,11 +10,12 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.Utils;
+import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
@@ -25,6 +26,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -39,6 +41,12 @@ public class EntitySecurityCamera extends Entity {
 	public int blockPosY;
 	public int blockPosZ;
 	
+	private double cameraUseX;
+	private double cameraUseY;
+	private double cameraUseZ;
+	private float cameraUseYaw;
+	private float cameraUsePitch;
+	
 	private int id;
 	private int screenshotCooldown = 0;
 	private int redstoneCooldown = 0;
@@ -46,6 +54,8 @@ public class EntitySecurityCamera extends Entity {
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	private float zoomAmount = 1F;
+	
+	private String playerViewingName = null;
 
 	public EntitySecurityCamera(World world){
 		super(world);
@@ -54,12 +64,18 @@ public class EntitySecurityCamera extends Entity {
 		this.width = 1.0E-004F;
 	}
 
-	public EntitySecurityCamera(World world, double x, double y, double z, int id){
+	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntityPlayer player){
 		this(world);
 		this.blockPosX = (int) x;
 		this.blockPosY = (int) y;
 		this.blockPosZ = (int) z;
+		this.cameraUseX = player.posX;
+		this.cameraUseY = player.posY;
+		this.cameraUseZ = player.posZ;
+		this.cameraUseYaw = player.rotationYaw;
+		this.cameraUsePitch = player.rotationPitch;
 		this.id = id;
+		this.playerViewingName = player.getCommandSenderName();
 		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
 
 		this.rotationPitch = 30.0F;
@@ -331,19 +347,70 @@ public class EntitySecurityCamera extends Entity {
 	public void setDead(){
 		super.setDead();
 
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			ClientUtils.setCameraZoom(0.0D);
-		}
+		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
+        	EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
+        	player.setPosition(cameraUseX, cameraUseY, cameraUseZ);
+        	mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
+        	System.out.println("Setting pos to " + cameraUseX + " | " + cameraUseY + " | " + cameraUseZ + " | " + FMLCommonHandler.instance().getEffectiveSide());
+        }
 	}
 
 	protected void entityInit() {}
 
-	public void writeEntityToNBT(NBTTagCompound tagCompound) {
-		tagCompound.setInteger("CameraID", this.id);
+	public void writeEntityToNBT(NBTTagCompound tagCompound){
+		tagCompound.setInteger("CameraID", id);
+		
+		if(playerViewingName != null){
+			tagCompound.setString("playerName", playerViewingName);
+		}
+		
+		if(cameraUseX != 0.0D){
+			tagCompound.setDouble("cameraUseX", cameraUseX);
+		}
+		
+		if(cameraUseY != 0.0D){
+			tagCompound.setDouble("cameraUseY", cameraUseY);
+		}
+		
+		if(cameraUseZ != 0.0D){
+			tagCompound.setDouble("cameraUseZ", cameraUseZ);
+		}
+		
+		if(cameraUseYaw != 0.0D){
+			tagCompound.setDouble("cameraUseYaw", cameraUseYaw);
+		}
+		
+		if(cameraUsePitch != 0.0D){
+			tagCompound.setDouble("cameraUsePitch", cameraUsePitch);
+		}
 	}
 
-	public void readEntityFromNBT(NBTTagCompound tagCompound) {
-		this.id = tagCompound.getInteger("CameraID");
-	}
+    public void readEntityFromNBT(NBTTagCompound tagCompound){
+    	this.id = tagCompound.getInteger("CameraID");
+    	
+    	if(tagCompound.hasKey("playerName")){
+    		this.playerViewingName = tagCompound.getString("playerName");
+    	}
+    	
+    	if(tagCompound.hasKey("cameraUseX")){
+    		this.cameraUseX = tagCompound.getDouble("cameraUseX");
+    	}
+    	
+    	if(tagCompound.hasKey("cameraUseY")){
+    		this.cameraUseY = tagCompound.getDouble("cameraUseY");
+    	}
+    	
+    	if(tagCompound.hasKey("cameraUseZ")){
+    		this.cameraUseZ = tagCompound.getDouble("cameraUseZ");
+    	}
+    	
+    	if(tagCompound.hasKey("cameraUseYaw")){
+    		this.cameraUseYaw = tagCompound.getFloat("cameraUseYaw");
+    	}
+    	
+    	if(tagCompound.hasKey("cameraUsePitch")){
+    		this.cameraUsePitch = tagCompound.getFloat("cameraUsePitch");
+    	}
+    }
 
 }
