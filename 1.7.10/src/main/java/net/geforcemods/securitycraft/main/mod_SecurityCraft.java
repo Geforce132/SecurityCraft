@@ -9,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Ordering;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -72,7 +73,6 @@ public class mod_SecurityCraft {
 	private GuiHandler GuiHandler = new GuiHandler();
 	
 	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public LookingGlassPanelRenderer lgPanelRenderer;
 	
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
@@ -285,22 +285,6 @@ public class mod_SecurityCraft {
 		ircBots.remove(playerName);
 	}
 	
-	public Object[] getUsePosition(String playerName) {
-		return cameraUsePositions.get(playerName);
-	}
-
-	public void setUsePosition(String playerName, double x, double y, double z, float yaw, float pitch) {
-		cameraUsePositions.put(playerName, new Object[]{x, y, z, yaw, pitch});
-	}
-	
-	public boolean hasUsePosition(String playerName) {
-		return cameraUsePositions.containsKey(playerName);
-	}
-	
-	public void removeUsePosition(String playerName){
-		cameraUsePositions.remove(playerName);
-	}
-
 	public NBTTagCompound getSavedModule() {
 		return savedModule;
 	}
@@ -332,6 +316,17 @@ public class mod_SecurityCraft {
 	 */
 	public void removeViewForCoords(String coords){
 		((ClientProxy) this.instance.serverProxy).worldViews.remove(coords);
+	}
+	
+	/**
+	 * @return Should SecurityCraft use the LookingGlass API when it can be used?
+	 */
+	public boolean useLookingGlass(){
+		if(Loader.isModLoaded("LookingGlass") && this.configHandler != null && this.configHandler.useLookingGlass){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**

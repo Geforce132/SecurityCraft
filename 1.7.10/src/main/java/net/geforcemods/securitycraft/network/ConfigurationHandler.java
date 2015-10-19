@@ -872,5 +872,5 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 22, Side.SERVER);
 		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 23, Side.CLIENT);
 	}
-
+	
 }

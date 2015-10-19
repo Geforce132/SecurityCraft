@@ -26,7 +26,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -77,6 +76,35 @@ public class EntitySecurityCamera extends Entity{
 		
 		this.rotationPitch = 30F;
 			
+		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		
+		if(facing == BlockLever.EnumOrientation.NORTH){
+			this.rotationYaw = 180F;
+		}else if(facing == BlockLever.EnumOrientation.WEST){
+			this.rotationYaw = 90F;
+		}else if(facing == BlockLever.EnumOrientation.SOUTH){
+			this.rotationYaw = 0F;
+		}else if(facing == BlockLever.EnumOrientation.EAST){
+			this.rotationYaw = 270F;
+		}
+	}
+	
+	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
+		this(world);
+		this.blockPosX = (int) x;
+		this.blockPosY = (int) y;
+		this.blockPosZ = (int) z;
+		this.cameraUseX = camera.cameraUseX;
+		this.cameraUseY = camera.cameraUseY;
+		this.cameraUseZ = camera.cameraUseZ;
+		this.cameraUseYaw = camera.cameraUseYaw;
+		this.cameraUsePitch = camera.cameraUsePitch;
+		this.id = id;
+		this.playerViewingName = camera.playerViewingName;
+		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+
+		this.rotationPitch = 30.0F;
+
 		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
 		if(facing == BlockLever.EnumOrientation.NORTH){
@@ -310,7 +338,6 @@ public class EntitySecurityCamera extends Entity{
         	EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
         	player.setPosition(cameraUseX, cameraUseY, cameraUseZ);
         	mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
-        	System.out.println("Setting pos to " + cameraUseX + " | " + cameraUseY + " | " + cameraUseZ + " | " + FMLCommonHandler.instance().getEffectiveSide());
         }
     }
 	

@@ -11,6 +11,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	private boolean isPowered = false;
 	
 	public void updateEntity(){
+		super.updateEntity();
+		
 		if(this.worldObj.isRemote){
 			return;
 		}else{		

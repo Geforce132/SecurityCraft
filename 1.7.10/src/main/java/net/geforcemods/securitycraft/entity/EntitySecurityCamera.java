@@ -92,6 +92,35 @@ public class EntitySecurityCamera extends Entity {
 			this.rotationYaw = 270.0F;
 		}
 	}
+	
+	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
+		this(world);
+		this.blockPosX = (int) x;
+		this.blockPosY = (int) y;
+		this.blockPosZ = (int) z;
+		this.cameraUseX = camera.cameraUseX;
+		this.cameraUseY = camera.cameraUseY;
+		this.cameraUseZ = camera.cameraUseZ;
+		this.cameraUseYaw = camera.cameraUseYaw;
+		this.cameraUsePitch = camera.cameraUsePitch;
+		this.id = id;
+		this.playerViewingName = camera.playerViewingName;
+		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+
+		this.rotationPitch = 30.0F;
+
+		int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
+
+		if(meta == 4 || meta == 8){ 
+			this.rotationYaw = 180.0F;
+		}else if(meta == 2 || meta == 6){
+			this.rotationYaw = 90.0F;
+		}else if(meta == 3 || meta == 7){
+			this.rotationYaw = 0.0F;
+		}else if(meta == 1 || meta == 5){ 
+			this.rotationYaw = 270.0F;
+		}
+	}
 
 	public double getMountedYOffset(){
 		return this.height * -7500.0D;
@@ -331,7 +360,7 @@ public class EntitySecurityCamera extends Entity {
 	public String getCameraInfo(){
 		String nowViewing = EnumChatFormatting.UNDERLINE + "Now viewing camera #" + this.id + "\n\n";
 		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int)Math.floor(this.posX) + " Y: " + (int)(this.posY - 1.0D) + " Z: " + (int)Math.floor(this.posZ) + "\n";
-		String viewingFrom = (this.riddenByEntity != null) && (mod_SecurityCraft.instance.hasUsePosition(this.riddenByEntity.getCommandSenderName())) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int)Math.floor(((Double)mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getCommandSenderName())[0]).doubleValue()) + " Y: " + (int)Math.floor(((Double)mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getCommandSenderName())[1]).doubleValue()) + " Z: " + (int)Math.floor(((Double)mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getCommandSenderName())[2]).doubleValue()) : "";
+		String viewingFrom = (this.riddenByEntity != null) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int)Math.floor(cameraUseX) + " Y: " + (int)Math.floor(cameraUseY) + " Z: " + (int)Math.floor(cameraUseZ) : "";
 		return nowViewing + pos + viewingFrom;
 	}
 	
@@ -351,7 +380,6 @@ public class EntitySecurityCamera extends Entity {
         	EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
         	player.setPosition(cameraUseX, cameraUseY, cameraUseZ);
         	mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
-        	System.out.println("Setting pos to " + cameraUseX + " | " + cameraUseY + " | " + cameraUseZ + " | " + FMLCommonHandler.instance().getEffectiveSide());
         }
 	}
 

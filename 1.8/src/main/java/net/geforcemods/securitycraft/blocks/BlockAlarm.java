@@ -27,6 +27,7 @@ public class BlockAlarm extends BlockOwnable {
 	public final boolean isLit;
     public static final PropertyEnum FACING = PropertyDirection.create("facing");
 
+    //TODO Before release: Fix owner bug after activating alarm!
 	public BlockAlarm(Material par1Material, boolean isLit) {
 		super(par1Material);
 		

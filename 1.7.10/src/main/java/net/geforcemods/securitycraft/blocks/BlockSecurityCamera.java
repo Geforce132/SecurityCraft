@@ -149,23 +149,20 @@ public class BlockSecurityCamera extends BlockContainer {
     }
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
-		if(player.ridingEntity == null){
+		if(!world.isRemote && player.ridingEntity == null){
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
 		}
-
-		double x = player.posX;
-		double y = player.posY;
-		double z = player.posZ;
-		float yaw = player.rotationYaw;
-		float pitch = player.rotationPitch;
+		
+		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){
+			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.ridingEntity);
+			world.spawnEntityInWorld(dummyEntity);
+			player.mountEntity(dummyEntity);
+			return;
+		}
 
 		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
-		
-		if(!mod_SecurityCraft.instance.hasUsePosition(player.getCommandSenderName())){
-			mod_SecurityCraft.instance.setUsePosition(player.getCommandSenderName(), x, y, z, yaw, pitch);
-		}
 	}
 
 	public Item getItemDropped(int par1, Random par2Random, int par3){

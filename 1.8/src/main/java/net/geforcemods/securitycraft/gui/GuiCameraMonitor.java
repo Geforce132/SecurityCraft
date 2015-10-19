@@ -32,10 +32,17 @@ public class GuiCameraMonitor extends GuiScreen {
 		this.buttonList.add(new GuiButton(this.page * 5 - 4, 5, this.height - 45, 20, 20, "<"));
 
 		mod_SecurityCraft.log("'<' button: " + (this.page * 5 - 4) + " '>' button: " + (this.page * 5 + 2) + " Camera buttons: " + (this.page * 5 - 3) + " thru " + (this.page * 5 + 1) + " Array size: " + this.cameraMonitor.getCameraPositions(this.nbtTag).size());
+		
 		int counter = 1;
 		for(int i = this.page * 5 - 3; i <= this.page * 5 + 1; i++){
 			if ((i - 2 < this.cameraMonitor.getCameraPositions(this.nbtTag).size()) && (this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2) != null)) {
-				this.buttonList.add(new GuiButton(i, -25 + counter * 70, this.height - 45, 60, 20, "Camera #" + (i - 1)));
+				GuiButton button = new GuiButton(i, -25 + counter * 70, this.height - 45, 60, 20, "Camera #" + (i - 1));
+				
+				this.buttonList.add(button);
+				
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos(this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2)[0], this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2)[1], this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2)[2])) != mod_SecurityCraft.securityCamera){
+					button.enabled = false;
+				}
 			}
 
 			counter++;
