@@ -139,7 +139,7 @@ item.universalBlockReinforcerLvL3.name=Universeller Block Verstärker (LvL3)
 
 death.attack.securitycraft.laser=%s wurde von einem Laser zerschnitten.
 death.attack.securitycraft.fakeWater=%s fiel in giftiges Wasser...?
-death.attack.securitycraft.fence=%s erlitt einen Stromschlaf.
+death.attack.securitycraft.electricity=%s erlitt einen Stromschlag.
 
 key.categories.securitycraft=SecurityCraft
 key.cameraNext=Nächste Kamera

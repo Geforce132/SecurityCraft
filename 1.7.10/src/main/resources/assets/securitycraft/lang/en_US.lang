@@ -140,7 +140,7 @@ item.universalBlockReinforcerLvL3.name=Universal Block Reinforcer (LvL3)
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
-death.attack.securitycraft.fence=%s was electrocuted.
+death.attack.securitycraft.electricity=%s was electrocuted.
 
 key.categories.securitycraft=SecurityCraft
 key.cameraNext=Next Camera
