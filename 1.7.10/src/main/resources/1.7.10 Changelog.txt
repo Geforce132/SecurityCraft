@@ -1,62 +1,4 @@
 -----------------------
-SecurityCraft v1.8.0.7 (beta):
------------------------
-
-*** New blocks/items: ***
- - Added the universal owner changer.
- - Added the universal block reinforcers.
-
-*** Changes: ***
- --- Worked on the SecurityCraft API:
-   - Added the IViewActivated interface (works along with TileEntitySCTE.viewActivated()).
- --- Code cleanup:
-   - Deleted the PacketCUpdateOwner, PacketCUpdateCooldown, PacketCheckRetinalScanner, and the CameraAnimatorCompactCamera classes.
-   - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.geforcemods...".
-   - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
-   - Renamed BlockBogusLavaBase to BlockFakeLavaBase.
-   - Renamed BlockBogusLava to BlockFakeLava.   
-   - Renamed BlockBogusWaterBase to BlockFakeWaterBase.
-   - Renamed BlockBogusWater to BlockFakeWater.
-   - Renamed BlockUnbreakableBars to BlockReinforcedIronBars.
- - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
- - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
- - New: Added Portuguese translation.
- - New: Messages sent by SecurityCraft can now be customized in the .lang file.
- - New: The alarm now lights up when powered.
- - Change: SecurityCraft now doesn't require LookingGlass v0.2.00+ to run.
- - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
- - Change: Reinforced blocks can no longer be crafted, and must be made by using the universal block reinforcers.
- - Change: Reinforced block textures now look identical to the vanilla texture, except it is darker.
- - Change: The SecurityCraft manual now displays bl4ckscor3 as an author.
- - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
- - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
- - Fix: The SecurityCraft: Technical Creative tab is now better sorted.
- - Fix: Fixed the defused version of the claymore not having a localized name in Waila.
- - Fix: Improved rendering performance of the password-protected furnace. 
- - Fix: Security cameras now auto-break if the block they are attached to is broken.
- - Fix: Updated German localization.
- - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
- - Fix: Waila no longer displays the password of a password-protected block if you are not the owner.
- - Fix: The security camera animation no longer speeds up and down depending on how many times can re-render the camera, and are now in sync with LookingGlass views.
- - Fix: Alarms can now be placed on the sides of laser blocks.
- - Removed: BreakIn' Bad tips and URL.
- 
------------------------
-SecurityCraft v1.8.0.6 (beta):
------------------------
-
- - Change: LookingGlass world views are now created when right-clicking a camera with a monitor, not when the camera is placed.
- - Fix: Fixed a I.M.S. crash that caused the game to crash when firing at another hostile player in a LAN world.
- 
------------------------
-SecurityCraft v1.8.0.1 (beta) - v1.8.0.5 (beta):
------------------------
-Nothing here, because of reasons.
-
-(actually, it's just because Geforce never took the time to make a 
- new changelog for the SC beta versions until Vauff asked him to. :/)
-
------------------------
 SecurityCraft v1.8.0:
 -----------------------
 
@@ -71,6 +13,8 @@ SecurityCraft v1.8.0:
  - Added reinforced glass, stained glass, and stained glass panes.
  - Added storage module.
  - Added SecurityCraft manual.
+ - Added the universal owner changer.
+ - Added the universal block reinforcer.
 
 *** Changes: ***
  --- Hefty code cleanup:
@@ -85,6 +29,12 @@ SecurityCraft v1.8.0:
    - Renamed the BlockReinforcedGlass class to BlockReinforcedGlassPane.
    - Renamed the ItemRemoteAccess class to ItemMineRemoteAccessTool.
    - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers.
+   - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
+   - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
+   - New: Added Portuguese translation.
+   - New: Messages sent by SecurityCraft can now be customized in the .lang file.
+   - New: The alarm now lights up when powered.
+
  --- Simplified password-protected block's password setup process:
    - Deleted some GuiContainer, Container, and IMessage classes.
    - Added setPassword() and activate() methods to IPasswordProtected.
@@ -105,6 +55,12 @@ SecurityCraft v1.8.0:
  - New: Claymores now have crafting recipes.
  - New: Inventory scanners now have a built-in inventory to store deleted items in.
  - New: New tips!
+ - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
+ - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
+ - New: Added Portuguese translation.
+ - New: Messages sent by SecurityCraft can now be customized in the .lang file.
+ - New: The alarm now lights up when powered.
+
  - Change: Electrified Iron Fence Gates now hurts any entity except dropped items and its owner.
  - Change: Changed keypad recipe to use iron ingots instead of iron blocks.
  - Change: Right-clicking the frame with a key panel now creates a keypad. Right-clicking the frame with a bound camera monitor now shows the camera's view.
@@ -117,6 +73,11 @@ SecurityCraft v1.8.0:
  - Change: Mines can now be configured to not explode if the player who broke it is in Creative mode.
  - Change: Adapted the keypad frame's model to the one used in SecurityCraft for Minecraft 1.8.
  - Change: All mobs and dropped items get damaged by Fake Water now.
+ - Change: SecurityCraft now doesn't require LookingGlass v0.2.00+ to run.
+ - Change: Removed the tooltip for the Universal Block Modifier in favour of the SecurityCraft manual.
+ - Change: Reinforced blocks can no longer be crafted, and must be made by using the universal block reinforcers.
+ - Change: Reinforced block textures now look identical to the vanilla texture, except it is darker.
+ - Change: The SecurityCraft manual now displays bl4ckscor3 as an author.
  - Fix: Lasers could be broken by players who didn't place them.
  - Fix: Using different window sizes and resolutions caused the buttons in the Universal Block Modifier GUI to move.
  - Fix: Rotation of keypad frames and password-protected furnaces in inventory.
@@ -128,3 +89,15 @@ SecurityCraft v1.8.0:
  - Fix: The password-protected furnace and password-protected chest could be "hacked" using the codebreaker if it's disabled in the config file.
  - Fix: Crash when receiving a message containing a '%' from IRC.
  - Fix: Fake Lava ignored doFireTick gamerule.
+ - Fix: Fixed a ownership bug that causes an "ownable" block to not be able to be broken if placed when using SecurityCraft v1.7.0 or older, then updating.
+ - Fix: Although the cage trap was "ownable", it was still able to be broken by other players.
+ - Fix: The SecurityCraft: Technical Creative tab is now better sorted.
+ - Fix: Fixed the defused version of the claymore not having a localized name in Waila.
+ - Fix: Improved rendering performance of the password-protected furnace. 
+ - Fix: Security cameras now auto-break if the block they are attached to is broken.
+ - Fix: Updated German localization.
+ - Fix: The SecurityCraft manual now displays the name of any people who translated the English names of the stuff in SecurityCraft to another language.
+ - Fix: Waila no longer displays the password of a password-protected block if you are not the owner.
+ - Fix: The security camera animation no longer speeds up and down depending on how many times can re-render the camera, and are now in sync with LookingGlass views.
+ - Fix: Alarms can now be placed on the sides of laser blocks.
+ - Removed: BreakIn' Bad tips and URL.
