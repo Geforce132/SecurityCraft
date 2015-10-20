@@ -15,11 +15,14 @@ SecurityCraft v1.8.0:
  - Added SecurityCraft manual.
  - Added the universal owner changer.
  - Added the universal block reinforcer.
+ - Added reinforced dirt, cobblestone, and sandstone.
+ - Added slab versions for all opaque SecurityCraft blocks.
 
 *** Changes: ***
  --- Hefty code cleanup:
    - Deleted org.freeforums.geforce.securitycraft.timers and all the classes in it. 
    - Moved all the classes in org.freeforums.geforce.securitycraft.lookingglass to org.freeforums.geforce.securitycraft.imc.lookingglass.
+   - Moved all SecurityCraft code from "org.freeforums.geforce..." packages to "net.geforcemods...".
    - Did some code formatting.
    - Simplified TileEntity and ID checks in GuiHandler.
    - Deleted unused texture .png files.
@@ -29,7 +32,6 @@ SecurityCraft v1.8.0:
    - Renamed the BlockReinforcedGlass class to BlockReinforcedGlassPane.
    - Renamed the ItemRemoteAccess class to ItemMineRemoteAccessTool.
    - Moved SecurityCraft's TileEntitySpecialRenderer classes to org.freeforums.geforce.securitycraft.renderers.
-   - New: The SecurityCraft manual now displays icons to represent various properties of blocks.
    - New: The track mine is now "ownable", and can be remotely detonated using the Mine Remote Access Tool.
    - New: Added Portuguese translation.
    - New: Messages sent by SecurityCraft can now be customized in the .lang file.
