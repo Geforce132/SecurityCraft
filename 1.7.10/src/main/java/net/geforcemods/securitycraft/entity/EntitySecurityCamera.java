@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.entity;
 
 import org.lwjgl.input.Mouse;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -378,7 +377,7 @@ public class EntitySecurityCamera extends Entity {
 
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
         	EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
-        	player.setPosition(cameraUseX, cameraUseY, cameraUseZ);
+        	player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
         	mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
         }
 	}

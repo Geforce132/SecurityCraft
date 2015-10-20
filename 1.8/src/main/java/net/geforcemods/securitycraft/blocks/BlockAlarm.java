@@ -27,7 +27,6 @@ public class BlockAlarm extends BlockOwnable {
 	public final boolean isLit;
     public static final PropertyEnum FACING = PropertyDirection.create("facing");
 
-    //TODO Before release: Fix owner bug after activating alarm!
 	public BlockAlarm(Material par1Material, boolean isLit) {
 		super(par1Material);
 		
@@ -154,9 +153,12 @@ public class BlockAlarm extends BlockOwnable {
     		boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
     		if(!isPowered){
+    			String name = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerName();
+				String uuid = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerUUID();
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarmLit);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
+				((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(uuid, name);
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(true);
 			}
     		
@@ -164,9 +166,12 @@ public class BlockAlarm extends BlockOwnable {
     		boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
 			if(isPowered){
+				String name = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerName();
+				String uuid = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerUUID();
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarm);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
+				((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(uuid, name);
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(false);
 			}
 		}

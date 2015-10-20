@@ -831,7 +831,7 @@ public class ConfigurationHandler{
 	}
 
 	public void registerDebuggingAdditions(){		
-		GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
+		//GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
 	}
 
 	public void setupOtherRegistrys(){}

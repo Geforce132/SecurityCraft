@@ -114,7 +114,7 @@ public class ItemCameraMonitor extends ItemMap {
 			}
 		}
 		
-		return false;
+		return true;
 	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   

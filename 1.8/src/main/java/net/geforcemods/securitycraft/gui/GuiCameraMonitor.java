@@ -16,6 +16,9 @@ public class GuiCameraMonitor extends GuiScreen {
 	private NBTTagCompound nbtTag;
 	private int page = 1;
 
+	private int prevButtonID = -1;
+	private int nextButtonID = -1;
+	
 	public GuiCameraMonitor(ItemCameraMonitor item, NBTTagCompound itemNBTTag){
 		this.cameraMonitor = item;
 		this.nbtTag = itemNBTTag;
@@ -49,6 +52,9 @@ public class GuiCameraMonitor extends GuiScreen {
 		}
 
 		this.buttonList.add(new GuiButton(this.page * 5 + 2, this.width - 25, this.height - 45, 20, 20, ">"));
+	
+		this.prevButtonID = (this.page * 5 - 4);
+		this.nextButtonID = (this.page * 5 + 2);
 	}
 
 	public void drawScreen(int par1, int par2, float par3) {
@@ -56,11 +62,13 @@ public class GuiCameraMonitor extends GuiScreen {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		if((guibutton.id == this.page * 5 - 4) && (this.page > 1)){
-			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, --this.page));
-		}else if((guibutton.id == this.page * 5 + 2) && (this.cameraMonitor.getCameraPositions(this.nbtTag).size() > this.page * 5 - 1)) {
-			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, ++this.page));
-		}else if((guibutton.id > this.page) && (guibutton.id <= this.page * 6)){
+		if(guibutton.id == this.prevButtonID && this.page > 1){
+			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, this.page - 1));
+		}else if(guibutton.id == this.nextButtonID && (this.cameraMonitor.getCameraPositions(this.nbtTag).size() > this.page * 5 - 1)) {
+			this.mc.displayGuiScreen(new GuiCameraMonitor(this.cameraMonitor, this.nbtTag, this.page + 1));
+		}else if(guibutton.id > this.page && (guibutton.id <= this.page * 6)){
+			if(this.cameraMonitor.getCameraPositions(this.nbtTag).size() < (guibutton.id - 2)){ return; } 
+			
 			int[] cameraPos = ((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2));
 			((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2])).mountCamera(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1, Minecraft.getMinecraft().thePlayer);
 			mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1));
