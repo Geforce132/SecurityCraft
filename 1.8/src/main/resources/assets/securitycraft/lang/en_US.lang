@@ -215,6 +215,8 @@ help.universalBlockReinforcerLvL1.info=The Universal Block Reinforcer reinforces
 help.universalBlockReinforcerLvL2.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL2 has 2700 uses. Break any block outside of Creative mode to reinforce it.
 help.universalBlockReinforcerLvL3.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL3 has unlimited uses. Break any block outside of Creative mode to reinforce it.
 
+gui.scManual.intro.1=Getting started with SecurityCraft
+gui.scManual.intro.2=by Geforce and bl4ckscor3
 gui.scManual.ownableBlock=Ownable: This block is resistant to explosions, and can only be broken by the player who placed it down using the Universal Block Remover.
 gui.scManual.passwordProtectedBlock=Password protected: This block can only be used if a password set by the owner is correctly entered.
 gui.scManual.viewActivatedBlock=View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.
