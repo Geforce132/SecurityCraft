@@ -208,19 +208,15 @@ public class ForgeEventHandler {
 	}
 	
 	private String getRandomTip(){
-    	Random random = new Random();
-    	int randomInt = random.nextInt(3);
-    	
-    	if(randomInt == 0){
-    		return "Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.";
-    	}else if(randomInt == 1){
-    		return "Use /sc connect to get personal support from the mod devs!";
-    	}else if(randomInt == 2){
-    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
-    	}else{
-    		return "";
-    	}
-    }
+		String[] tips = {
+				"Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.",
+				"Use /sc connect to get personal support from the mod devs!",
+				"Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft",
+				"Do you want to support SecurityCraft? https://www.patreon.com/Geforce"
+		};
+
+		return tips[new Random().nextInt(tips.length)];
+	}
   
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
     	if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){

@@ -50,7 +50,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent.Unload;
 
 public class ForgeEventHandler {
-	
+
 	/**
 	 * Called whenever a {@link EntityPlayer} joins the game.
 	 */
@@ -58,12 +58,12 @@ public class ForgeEventHandler {
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
 		ChatComponentText chatcomponenttext = new ChatComponentText("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip());
-    	
+
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
 			event.player.addChatComponentMessage(chatcomponenttext);	
 		}
 	}
-	
+
 	/**
 	 * Called whenever a {@link EntityPlayer} leaves the game.
 	 */
@@ -74,7 +74,7 @@ public class ForgeEventHandler {
 			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
 		}	
 	}
-	
+
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
@@ -82,11 +82,11 @@ public class ForgeEventHandler {
 			event.setCanceled(true);
 			return;
 		}
-		
+
 		if(event.source == CustomDamageSources.electricity)
 			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
-	
+
 	@SubscribeEvent
 	public void onBucketUsed(FillBucketEvent event){
 		ItemStack result = fillBucket(event.world, event.target);
@@ -94,41 +94,41 @@ public class ForgeEventHandler {
 		event.result = result;
 		event.setResult(Result.ALLOW);
 	}
-	
+
 	@SubscribeEvent
 	public void onWorldUnloaded(Unload event){
 		if(event.world.isRemote){
 			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.clear();
 		}
 	}
-	
+
 	@SubscribeEvent 
 	public void onPlayerInteracted(PlayerInteractEvent event){
 		if(!event.entityPlayer.worldObj.isRemote){	
 			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && isCustomizableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z), event.world.getTileEntity(event.x, event.y, event.z)) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
 				event.setCanceled(true);
-				
+
 				if(!BlockUtils.isOwnerOfBlock(((CustomizableSCTE) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)), event.entityPlayer)){
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockModifier.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName()), EnumChatFormatting.RED);
 					return;
 				}
-				
+
 				event.entityPlayer.openGui(mod_SecurityCraft.instance, 100, event.entityPlayer.worldObj, event.x, event.y, event.z);	
 				return;
 			}
-			
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z) == mod_SecurityCraft.portableRadar && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
-				
+
 				event.entityPlayer.getCurrentEquippedItem().stackSize--;
-				
+
 				((TileEntityPortableRadar) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
 				return;
 			}
-			
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z) != null && isOwnableBlock(event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z), event.world.getTileEntity(event.x, event.y, event.z)) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockRemover)){
 				event.setCanceled(true);
-				
+
 				if(!BlockUtils.isOwnerOfBlock((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z), event.entityPlayer)){
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockRemover.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((IOwnable) event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z)).getOwnerName()), EnumChatFormatting.RED);
 					return;
@@ -146,16 +146,16 @@ public class ForgeEventHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
-    public void onConfigChanged(OnConfigChangedEvent event) {
-        if(event.modID.equals("securitycraft")){
-        	mod_SecurityCraft.configFile.save();
-        	
-        	mod_SecurityCraft.configHandler.setupConfiguration();
-        }
-    }
-	
+	public void onConfigChanged(OnConfigChangedEvent event) {
+		if(event.modID.equals("securitycraft")){
+			mod_SecurityCraft.configFile.save();
+
+			mod_SecurityCraft.configHandler.setupConfiguration();
+		}
+	}
+
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
 		if(!event.world.isRemote){
@@ -165,7 +165,7 @@ public class ForgeEventHandler {
 						ItemStack stack = ((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).itemStacks[i];
 						EntityItem item = new EntityItem(event.world, (double) event.x, (double) event.y, (double) event.z, stack);
 						event.world.spawnEntityInWorld(item);
-						
+
 						((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 					}
 				}
@@ -190,7 +190,7 @@ public class ForgeEventHandler {
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void fovUpdateEvent(FOVUpdateEvent event){
@@ -198,7 +198,7 @@ public class ForgeEventHandler {
 			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
 		}
 	}
-	
+
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
@@ -206,21 +206,17 @@ public class ForgeEventHandler {
 			event.setCanceled(true);
 		}
 	}
-	
+
 	private String getRandomTip(){
-    	Random random = new Random();
-    	int randomInt = random.nextInt(3);
-    	
-    	if(randomInt == 0){
-    		return "Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.";
-    	}else if(randomInt == 1){
-    		return "Use /sc connect to get personal support from the mod devs!";
-    	}else if(randomInt == 2){
-    		return "Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft";
-    	}else{
-    		return "";
-    	}
-    }
+		String[] tips = {
+				"Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.",
+				"Use /sc connect to get personal support from the mod devs!",
+				"Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft",
+				"Do you want to support SecurityCraft? https://www.patreon.com/Geforce"
+		};
+
+		return tips[new Random().nextInt(tips.length)];
+	}
 
 	private ItemStack fillBucket(World world, MovingObjectPosition position){
 		Block block = world.getBlock(position.blockX, position.blockY, position.blockZ);
@@ -235,21 +231,21 @@ public class ForgeEventHandler {
 			return null;
 		}
 	}
-	
+
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
-    	if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
-	
+		if(tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	private boolean isCustomizableBlock(Block block, TileEntity tileEntity){
-    	if(tileEntity instanceof CustomizableSCTE){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
-    
+		if(tileEntity instanceof CustomizableSCTE){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }
