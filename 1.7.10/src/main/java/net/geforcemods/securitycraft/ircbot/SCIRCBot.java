@@ -9,6 +9,7 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -24,8 +25,15 @@ public class SCIRCBot extends PircBot{
 	}
 	
 	public void connectToChannel() throws IOException, IrcException, NickAlreadyInUseException{
+		String token = Minecraft.getMinecraft().getSession().getToken();
+
 		this.connect("irc.esper.net");
 		this.joinChannel("#GeforceMods");
+		
+		if(token == null)
+		{
+			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)"); //TODO: Add this to Geffy
+		}
 	}
 	
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
@@ -59,14 +67,18 @@ public class SCIRCBot extends PircBot{
     }
 	
 	protected void onKick(String channel, String user, String login, String hostname, String userKicked, String reason){
-    	if(mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")) != null){
-			mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
-		}
-					
-		try{
-			sendMessageToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
-		}catch(PlayerNotFoundException e){
-			e.printStackTrace();
+		
+		if(Minecraft.getMinecraft().getSession().getUsername().equals(userKicked.replaceFirst("SCUser_", "")))
+		{
+			if(mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")) != null){
+				mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
+			}
+			
+			try{
+				sendMessageToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+			}catch(PlayerNotFoundException e){
+				e.printStackTrace();
+			}
 		}
     }
     
