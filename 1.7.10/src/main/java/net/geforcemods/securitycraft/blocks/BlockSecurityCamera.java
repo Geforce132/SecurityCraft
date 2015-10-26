@@ -171,7 +171,7 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.securityCamera);
+		return Item.getItemFromBlock(mod_SecurityCraft.securityCamera);
 	}
 
 	public TileEntity createNewTileEntity(World world, int par2) {

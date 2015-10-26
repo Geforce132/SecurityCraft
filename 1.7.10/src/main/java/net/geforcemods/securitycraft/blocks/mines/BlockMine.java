@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -130,11 +129,11 @@ public class BlockMine extends BlockExplosive {
 	}
 	
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 	
 	public void activateMine(World world, int par2, int par3, int par4) {

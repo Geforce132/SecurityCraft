@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -165,14 +165,14 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
 	}
 
 	public IBlockState getStateFromMeta(int meta)

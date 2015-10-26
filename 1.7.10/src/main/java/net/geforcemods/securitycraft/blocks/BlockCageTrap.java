@@ -6,8 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -88,7 +88,7 @@ public class BlockCageTrap extends BlockOwnable {
 	}
 
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return this.deactivated ? BlockUtils.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : BlockUtils.getItemFromBlock(this);
+		return this.deactivated ? Item.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : Item.getItemFromBlock(this);
 	}
 
 	public void setTileEntities(World par1World, int par2, int par3, int par4, String uuid, String name)

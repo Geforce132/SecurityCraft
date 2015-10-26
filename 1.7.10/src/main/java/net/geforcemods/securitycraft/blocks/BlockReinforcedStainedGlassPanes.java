@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -34,6 +35,12 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	
     public int damageDropped(int par1){
         return par1;
+    }
+    
+    @Override
+    public int quantityDropped(Random random)
+    {
+    	return 1;
     }
     
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
@@ -78,4 +85,9 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 		return new TileEntityOwnable();
 	}
 
+    @Override
+    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+    {
+    	return Item.getItemFromBlock(this);
+    }
 }

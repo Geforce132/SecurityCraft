@@ -58,7 +58,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 
     @SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, BlockPos pos){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
 
     /**
@@ -66,7 +66,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
      */
     @SideOnly(Side.CLIENT)
     public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
 
 	public TileEntity createNewTileEntity(World par1, int par2) {

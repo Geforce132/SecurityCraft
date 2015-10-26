@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Random;
+
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.ITileEntityProvider;
@@ -33,5 +35,11 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
+	}
+	
+	@Override
+	public int quantityDropped(Random random)
+	{
+		return 1;
 	}
 }

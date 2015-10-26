@@ -5,7 +5,6 @@ import java.util.Random;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
@@ -56,7 +55,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 
     @SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
     
     /**
@@ -64,7 +63,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
      */
     @SideOnly(Side.CLIENT)
     public Item getItemDropped(int par1, Random par2Random, int par3){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
 
 	public TileEntity createNewTileEntity(World par1, int par2) {

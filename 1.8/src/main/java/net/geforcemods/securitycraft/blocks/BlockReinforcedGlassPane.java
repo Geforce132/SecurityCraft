@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
@@ -49,7 +48,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	
 	@SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, BlockPos pos){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
     
     /**
@@ -57,10 +56,16 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
      */
     @SideOnly(Side.CLIENT)
     public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-        return BlockUtils.getItemFromBlock(this);
+        return Item.getItemFromBlock(this);
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
+	}
+	
+	@Override
+	public int quantityDropped(Random random)
+	{
+		return 1;
 	}
 }

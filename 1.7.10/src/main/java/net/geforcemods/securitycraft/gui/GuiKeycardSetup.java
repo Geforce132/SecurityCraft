@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.minecraft.client.Minecraft;
@@ -11,8 +11,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class GuiKeycardSetup extends GuiContainer{
 	
@@ -78,7 +76,7 @@ public class GuiKeycardSetup extends GuiContainer{
 				break;
 			
 			case 1:
-				this.requiresExactCard = Utils.toggleBoolean(this.requiresExactCard);
+				this.requiresExactCard = !this.requiresExactCard;
 				this.requiresExactCardButton.displayString = this.requiresExactCard ? "equal to" : "equal to or higher then";
 				break;
 				

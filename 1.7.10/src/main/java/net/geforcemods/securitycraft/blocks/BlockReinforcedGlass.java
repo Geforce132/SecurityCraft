@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -40,5 +42,11 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
+	}
+	
+	@Override
+	public int quantityDropped(Random r)
+	{
+		return 1;
 	}
 }

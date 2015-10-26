@@ -208,15 +208,6 @@ public static class BlockUtils{
 	}
 	
 	/**
-	 * Gets the Item version of the given Block. <p>
-	 * 
-	 * Args: block
-	 */
-	public static Item getItemFromBlock(Block par1){
-		return Item.getItemFromBlock(par1);
-	}
-	
-	/**
 	 * Breaks the block at the given coordinates. <p>
 	 * 
 	 * Args: world, x, y, z, shouldDropItem.
@@ -675,13 +666,6 @@ public static class WorldUtils{
 	 */
 	public static String getFormattedCoordinates(int par1, int par2, int par3){
 		return " X:" + par1 + " Y:" + par2 + " Z:" + par3;
-	}
-	
-	/**
-	 * Returns the opposite value of the given boolean. <p>
-	 */
-	public static boolean toggleBoolean(boolean par1) {
-		return !par1;
 	}
 	
 	//----------------------//

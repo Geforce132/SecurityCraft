@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.entity.EntityTnTCompact;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -94,14 +93,14 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return BlockUtils.getItemFromBlock(this);
+		return Item.getItemFromBlock(this);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return BlockUtils.getItemFromBlock(this);
+		return Item.getItemFromBlock(this);
 	}
 
 	public void registerBlockIcons(IIconRegister par1IconRegister){

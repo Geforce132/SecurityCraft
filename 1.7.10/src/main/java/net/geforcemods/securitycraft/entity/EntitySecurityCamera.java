@@ -329,7 +329,7 @@ public class EntitySecurityCamera extends Entity {
 
 	public void enableNightVision(){
 		this.toggleNightVisionCooldown = 30;
-		this.shouldProvideNightVision = Utils.toggleBoolean(this.shouldProvideNightVision);
+		this.shouldProvideNightVision = !this.shouldProvideNightVision;
 	}
 
 	public void emitLight() {

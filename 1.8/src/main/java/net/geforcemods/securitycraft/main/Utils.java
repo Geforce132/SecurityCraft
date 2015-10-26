@@ -218,10 +218,6 @@ public static class BlockUtils{
 		par1World.notifyBlockOfStateChange(pos.down(), par1World.getBlockState(pos).getBlock());
 	}
 	
-	public static Item getItemFromBlock(Block par1){
-		return Item.getItemFromBlock(par1);
-	}
-	
 	public static void destroyBlock(World par1World, BlockPos pos, boolean par5){
 		par1World.destroyBlock(pos, par5);
 	}
@@ -829,10 +825,6 @@ public static class WorldUtils{
 
 	public static String getFormattedCoordinates(BlockPos pos){
 		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
-	}
-
-	public static boolean toggleBoolean(boolean par1) {
-		return !par1;
 	}
 	
 	//----------------------//

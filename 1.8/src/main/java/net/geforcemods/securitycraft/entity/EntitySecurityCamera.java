@@ -4,7 +4,6 @@ import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
@@ -312,7 +311,7 @@ public class EntitySecurityCamera extends Entity{
 	
 	public void enableNightVision() {
 		this.toggleNightVisionCooldown = 30;
-		this.shouldProvideNightVision = Utils.toggleBoolean(shouldProvideNightVision);		
+		this.shouldProvideNightVision = !this.shouldProvideNightVision;		
 	}
 	
 	public String getCameraInfo(){

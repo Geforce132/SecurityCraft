@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.main;
 
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,7 +14,7 @@ public class CreativeTabSCDecoration extends CreativeTabs{
 	
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
-		return BlockUtils.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak);
+		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak);
 	}
 	
 	public String getTranslatedTabLabel(){

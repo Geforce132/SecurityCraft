@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockStainedGlass;
@@ -48,4 +49,9 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 		return new TileEntityOwnable();
 	}
 
+	@Override
+	public int quantityDropped(Random random)
+	{
+		return 1;
+	}
 }

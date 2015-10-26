@@ -4,9 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.entity.EntityTnTCompact;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -95,14 +94,14 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 */
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
 	{
-		return BlockUtils.getItemFromBlock(this);
+		return Item.getItemFromBlock(this);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
-		return BlockUtils.getItemFromBlock(this);
+		return Item.getItemFromBlock(this);
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {

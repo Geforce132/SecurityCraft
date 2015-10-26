@@ -68,7 +68,7 @@ public class BlockReinforcedStainedGlass extends BlockBreakable implements ITile
     }
 
     public int quantityDropped(Random par1Random){
-        return 0;
+        return 1;
     }
     
     protected boolean canSilkHarvest(){
