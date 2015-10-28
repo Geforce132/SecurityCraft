@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class CommandSCHelp extends CommandBase implements ICommand{
 	
@@ -57,7 +58,7 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		}
 		
 		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.instance.configHandler.isIrcBotEnabled){
-			sendMessageToPlayer("The SecurityCraft IRC bot is disabled from the config file. Please enable to it to use this feature.", icommandsender);
+			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.botDisabled"), icommandsender);
 			return;
 		}
 
@@ -68,34 +69,27 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
-					sendMessageToPlayer("Error occurred when connecting to IRC. Do you have internet access, and access to the IRC server 'irc.esper.net'?", icommandsender);
+					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.error"), icommandsender);
 					return;
 				}
 				
-				sendMessageToPlayer("Bot connected successfully. You may now report bugs using '/sc bug <bug to report>' or contact me using '/sc contact <message>", icommandsender);
+				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.connected"), icommandsender);
 			}else if(par1String[0].matches("disconnect")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).disconnect();
 				}
 					
-				sendMessageToPlayer("Bot disconnected from EsperNet successfully.", icommandsender);
+				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.disconnected"), icommandsender);
 			}else if(par1String[0].matches("help")){
 				this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 		}else if(par1String.length >= 2){
-			if(par1String[0].matches("bug")){
-				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + " bug] Geforce: "  + getMessageFromArray(par1String, 1));
-					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
-				}else{
-					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);
-				}
-			}else if(par1String[0].matches("contact")){
+			if(par1String[0].matches("contact") || par1String[0].matches("bug")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + "] Geforce: " + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
 				}else{
-					sendMessageToPlayer("Bot is not connected to EsperNet. Use '/sc connect' to connect to IRC.", icommandsender);
+					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.notConnected"), icommandsender);
 				}
 			}
 		}else{

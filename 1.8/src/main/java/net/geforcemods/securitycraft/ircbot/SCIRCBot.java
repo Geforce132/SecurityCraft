@@ -23,30 +23,35 @@ public class SCIRCBot extends PircBot{
 	}
 
 	public void connectToChannel() throws IOException, IrcException, NickAlreadyInUseException{
-		String token = Minecraft.getMinecraft().getSession().getToken();
-
 		this.connect("irc.esper.net");
 		this.joinChannel("#GeforceMods");
 
-		if(token == null)
-		{
+		if(Minecraft.getMinecraft().getSession().getToken() == null)
 			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)"); //TODO: Add this to Geffy
-		}
 	}
 
+	@Override
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 		for(User user: this.getUsers(channel)){
 			if(channel.matches("#GeforceMods") && (user.hasVoice()|| user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
-				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))).getName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + this.getNick().replace("SCUser_", "") + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
 				break;
 			}
 		}
 	}
 
+	@Override
+	protected void onServerResponse(int code, String response)
+	{
+		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
+			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.banned"), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+	}
+	
 	/**
 	 * Not working yet!
 	 */
 	@Deprecated
+	@Override
 	protected void onPrivateMessage(String sender, String login, String hostname, String message) {
 		if(sender.matches("Cadbury") && message.toLowerCase().contains("more messages waiting")){
 			this.sendMessage("Cadbury", "$showtell");
@@ -64,6 +69,7 @@ public class SCIRCBot extends PircBot{
 		}
 	}
 
+	@Override
 	protected void onKick(String channel, String user, String login, String hostname, String userKicked, String reason){
 		if(Minecraft.getMinecraft().getSession().getUsername().equals(userKicked.replaceFirst("SCUser_", "")))
 		{
@@ -88,7 +94,7 @@ public class SCIRCBot extends PircBot{
 		}
 
 		if(sender.equals(this.getNick()))
-			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
+			sendMessage("#GeforceMods", "[" + Minecraft.getMinecraft().getVersion() + "] SecurityCraft version: " + mod_SecurityCraft.getVersion());
 	}
 
 	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
