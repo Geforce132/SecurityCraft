@@ -146,7 +146,7 @@ key.cameraNext=Nächste Kamera
 key.cameraPrevious=Vorherige Kamera
 
 help.laserBlock.info=Der Laser wird aktiviert in dem man 2 Laserblöcke innerhalb 5 Blöcke Abstand hinsetzt. Ein Laser sollte nun erscheinen. Sobald ein Spieler durchläuft, geben beide Blöcke ein 15 Block langes Redstonesignal ab.
-help.keypad.info=Das Nummernschloss wird verwendet, in dem man es durch Rechtsklicken aktiviert und einen numerischen Code eingibt. Sobald dies getan wurde fragt das Nummernschloss durch erneutes Rechtsklicken nach dem Code. Wenn er korrekt ist, gibt es ein 3 sekündiges Redstonesignal ab.
+help.keypad.info=Das Nummernschloss wird verwendet, in dem man es durch Rechtsklicken aktiviert und einen numerischen Code eingibt. Sobald dies getan wurde fragt das Nummernschloss durch erneutes Rechtsklicken nach dem Code. Wenn er korrekt ist, gibt es ein 3 sekündiges Redstonesignal ab. Rechtsklicke einen Rahmen mit einem Nummernfeld um es herzustellen.
 help.mine.info=Die Minen explodieren wenn ein Mob oder Spieler auf sie drauftritt (ausgenommen Creeper, Ozelot und Katze). Ein Rechtsklick mit dem Drahtschneider entschärft die Mine und man kann sie zerschlage. Ein Rechtsklick mit einem Feuerzeug macht sie wieder scharf.
 help.dirtMine.info=Blockminen sind wie normale Minen. Wenn man in sie rein läuft oder zebricht explodieren sie.
 help.furnaceMine.info=Ofenminen since wie normale Minen, ausser dass sie nur explodieren, wenn man sie rechtsklickt.
@@ -167,7 +167,7 @@ help.alarm.info=Der Alarm spielt einen wiederkehrenden Sirenensound ab, sobald e
 help.reinforcedFenceGate.info=Das Verstärkte Eisenzaungitter ist wie das normale Zaungitter, jedoch kann es nur mit Redstone geöffnet werden. Es gibt gibt jedem ausser dem Besitzer einen Stromschlag (tödlich!).
 help.reinforcedPlanks.info=Verstärkte Holzbretter sind wie normale Holzbretter, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.panicButton.info=Der Panik Knopf sieht aus wie ein Knopf, funktioniert aber wie ein Hebel.
-help.keypadFrame.info=Der Rahmen wird benutzt um Nummernschlösser und Kamera Monitor herzustellen. Ein Rechtsklick mit einem Nummernfeld erstellt ein Nummernschloss und ein Rechtsklick mit einem Kamera Monitor (Item) erstellt einen Kamera Monitor. Letzteres geht nach 5 Minuten aus um Ressourcen zu sparen.
+help.keypadFrame.info=Der Rahmen wird benutzt um Nummernschlösser und Kamera Monitor herzustellen. Ein Rechtsklick mit einem Nummernfeld erstellt ein Nummernschloss. Mit LookingGlass installiert erstellt ein Rechtsklick mit einem Kamera Monitor die Sicht einer Kamera. Letzteres geht nach 5 Minuten aus um Ressourcen zu sparen. (Erneuter Rechtsklick zum reaktivieren.)
 help.claymore.info=Claymores explodieren 1 Sekunde nachdem ein Mob oder Spieler sich ihnen auf 5 Blöcken nähert. Ein Rechtsklick mit dem Drahtschneider entschärft die Mine und man kann sie zerschlage. Ein Rechtsklick mit einem Feuerzeug macht sie wieder scharf.
 help.keypadFurnace.info=Der Password gesicherte Ofen besitzt das gleiche Passwortsystem wie das Nummernschloss. Der Ofen öffnet sich, sobald das richtige Passwort eingegeben wurde.
 help.securityCamera.info=Die Überwachungskamera erlaubt dir eine Region zu überwachen, in der du nicht bist. Platziere die Kamera und rechtsklicke sie mit einem Kamera Monitor (Item) um ihr Sichtfeld zu sehen. 
