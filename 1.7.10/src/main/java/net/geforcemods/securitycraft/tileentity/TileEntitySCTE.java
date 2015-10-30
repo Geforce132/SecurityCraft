@@ -30,8 +30,8 @@ public class TileEntitySCTE extends TileEntity{
 	        int j = yCoord;
 	        int k = zCoord;
 	        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(k)).expand(5, 5, 5);
-	        List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-	        Iterator iterator = list.iterator();
+	        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;
 
 	        while (iterator.hasNext())

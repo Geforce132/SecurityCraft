@@ -70,14 +70,14 @@ public class TileEntityFrame extends TileEntityOwnable {
 	
 	@SideOnly(Side.CLIENT)
 	public boolean shouldShowView(){
-		return mod_SecurityCraft.instance.configHandler.fiveMinAutoShutoff ? shouldShowView : true;
+		return mod_SecurityCraft.configHandler.fiveMinAutoShutoff ? shouldShowView : true;
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public void enableView(){
 		shouldShowView = true;
 		
-		if(mod_SecurityCraft.instance.configHandler.fiveMinAutoShutoff){
+		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff){
 			if(!mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
 				LookingGlassAPIProvider.createLookingGlassView(worldObj, 0, boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2], 192, 192);
 //				IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]), 192, 192); 
@@ -94,7 +94,7 @@ public class TileEntityFrame extends TileEntityOwnable {
 	
 	@SideOnly(Side.CLIENT)
 	public void disableView(){
-		if(mod_SecurityCraft.instance.configHandler.fiveMinAutoShutoff && mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
+		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff && mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
 			mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]).getView());
 			mod_SecurityCraft.instance.removeViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]);
 		}

@@ -95,8 +95,8 @@ public static class PlayerUtils{
 	
 	public static EntityPlayer getPlayerByUUID(String uuid){
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List players = Minecraft.getMinecraft().theWorld.playerEntities;
-	    	Iterator iterator = players.iterator();
+			List<?> players = Minecraft.getMinecraft().theWorld.playerEntities;
+	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
 	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
@@ -107,8 +107,8 @@ public static class PlayerUtils{
 	    	
 	    	return null;
 		}else{
-			List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-	    	Iterator iterator = players.iterator();
+			List<?> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
 	    		EntityPlayer tempPlayer = (EntityPlayer) iterator.next();

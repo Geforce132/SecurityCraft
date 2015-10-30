@@ -98,7 +98,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onWorldUnloaded(Unload event){
 		if(event.world.isRemote){
-			((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.clear();
+			((ClientProxy) mod_SecurityCraft.serverProxy).worldViews.clear();
 		}
 	}
 

@@ -241,7 +241,7 @@ public class GuiSCManual extends GuiScreen {
     	}
     }
     
-    private ItemStack[] toItemStackArray(List items){
+    private ItemStack[] toItemStackArray(List<?> items){
     	ItemStack[] array = new ItemStack[9];
     	
     	for(int i = 0; i < items.size(); i++){

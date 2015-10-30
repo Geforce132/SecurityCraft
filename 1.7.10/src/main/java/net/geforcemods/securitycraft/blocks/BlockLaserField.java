@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.EntityUtils;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.block.Block;
@@ -19,8 +21,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLaserField extends Block{
 	
@@ -164,7 +164,6 @@ public class BlockLaserField extends Block{
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
-    @SuppressWarnings("static-access")
 	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
     {
     	if(!par1World.isRemote){

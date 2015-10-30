@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.Utils.WorldUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,10 +40,10 @@ public class TileEntityIMS extends CustomizableSCTE {
 			double d0 = (double) mod_SecurityCraft.configHandler.imsRange;
 			
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(d0, d0, d0);
-	        List list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-	        List list2 = this.worldObj.getEntitiesWithinAABB(IMob.class, axisalignedbb);
-	        Iterator iterator1 = list1.iterator();
-	        Iterator iterator2 = list2.iterator();	       
+	        List<?> list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+	        List<?> list2 = this.worldObj.getEntitiesWithinAABB(IMob.class, axisalignedbb);
+	        Iterator<?> iterator1 = list1.iterator();
+	        Iterator<?> iterator2 = list2.iterator();	       
 	        
 	        while(targetingOption == 1 && iterator2.hasNext()){
 	        	EntityLivingBase entity = (EntityLivingBase) iterator2.next();

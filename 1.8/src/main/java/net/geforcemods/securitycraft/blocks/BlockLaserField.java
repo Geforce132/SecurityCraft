@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.EntityUtils;
 import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySCTE;
@@ -197,7 +197,6 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	/**
      * Called right before the block is destroyed by a player.  Args: world, pos, state
      */
-    @SuppressWarnings("static-access")
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state)
     {
     	if(!par1World.isRemote){

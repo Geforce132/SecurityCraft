@@ -60,7 +60,6 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		if(camera == null || cameraMeta == 0){ return; }
 		if(Minecraft.getMinecraft().theWorld.getBlock(xCoord, yCoord, zCoord) != mod_SecurityCraft.securityCamera){ return; }
 		
-		float yaw = this.camera.getYaw();
 		float cameraRotation = ((TileEntitySecurityCamera) Minecraft.getMinecraft().theWorld.getTileEntity(xCoord, yCoord, zCoord)).cameraRotation * 60;
 
 		if(cameraMeta == 4){ 

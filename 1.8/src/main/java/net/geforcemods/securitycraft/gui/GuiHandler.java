@@ -79,13 +79,13 @@ public class GuiHandler implements IGuiHandler {
     		return new GuiRemoteAccessMine(player.inventory, (TileEntityRAM) tile_entity);
     		
     	case 6:
-    		return new GuiRAMActivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATActivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
     	
     	case 7:
-    		return new GuiRAMDeactivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATDeactivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
     	
     	case 8:
-    		return new GuiRAMDetonate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATDetonate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
     	
     	case 9:
     		return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);

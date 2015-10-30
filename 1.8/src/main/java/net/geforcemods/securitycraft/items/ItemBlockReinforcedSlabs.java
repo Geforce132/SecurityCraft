@@ -57,7 +57,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
             if(iblockstate.getBlock() instanceof BlockReinforcedSlabs){
                 IProperty iproperty = this.singleSlab.getVariantProperty();
-                Comparable comparable = iblockstate.getValue(iproperty);
+                Comparable<?> comparable = iblockstate.getValue(iproperty);
                 BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
                 
                 String name = null;
@@ -97,7 +97,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         }
     }
 
-    private IBlockState getDoubleSlabBlock(Comparable comparable) {
+    private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
 		if(comparable == BlockReinforcedSlabs.EnumType.STONE){
 			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE){
@@ -143,7 +143,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         }
 
         if(iblockstate.getBlock() == this.singleSlab){
-            Comparable comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
+            Comparable<?> comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
 
             if(comparable == variantInStack){
                 IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(this.singleSlab.getVariantProperty(), comparable);

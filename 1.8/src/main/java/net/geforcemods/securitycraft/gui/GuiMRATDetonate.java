@@ -20,13 +20,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class GuiRAMDetonate extends GuiContainer{
+public class GuiMRATDetonate extends GuiContainer{
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
-	public GuiRAMDetonate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
+	public GuiMRATDetonate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
         super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}

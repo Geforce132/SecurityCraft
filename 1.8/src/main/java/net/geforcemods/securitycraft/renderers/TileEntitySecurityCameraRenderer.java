@@ -18,8 +18,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
 
-	private final float CAMERA_ROTATION_SPEED = 0.0025F;
-	
 	private ModelSecurityCamera modelSecurityCamera;
 	private ResourceLocation cameraTexture;
 

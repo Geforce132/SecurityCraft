@@ -7,13 +7,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,13 +29,6 @@ public class GuiInventoryScanner extends GuiContainer {
     private EntityPlayer playerObj;
     private boolean hasStorageModule = false;
     
-    private GuiTextField[] textFields = new GuiTextField[10];
-	
-	private boolean flag = false;
-	
-	private GuiButton saveAndContinueButton;
-	private GuiButton typeButton;
-
     public GuiInventoryScanner(IInventory par1IInventory, TileEntityInventoryScanner par2TileEntity, EntityPlayer par3EntityPlayer){
         super(new ContainerInventoryScanner(par1IInventory, par2TileEntity));
         this.tileEntity = par2TileEntity;
@@ -57,7 +49,7 @@ public class GuiInventoryScanner extends GuiContainer {
     	Keyboard.enableRepeatEvents(true); 		
     		
 		if(BlockUtils.isOwnerOfBlock(tileEntity, playerObj)){
-			this.buttonList.add(this.typeButton = new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
+			this.buttonList.add(new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? "Check inventory." : "Emit redstone."));
 		}
     }
     
@@ -88,7 +80,6 @@ public class GuiInventoryScanner extends GuiContainer {
     }
     
     public void onGuiClosed(){
-    	flag = false;
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
@@ -104,8 +95,6 @@ public class GuiInventoryScanner extends GuiContainer {
     
     protected void actionPerformed(GuiButton guibutton){
     	
-    	flag = false;
-
 		switch(guibutton.id){
 			case 0:
 				if(guibutton.displayString.matches("Check inventory.")){

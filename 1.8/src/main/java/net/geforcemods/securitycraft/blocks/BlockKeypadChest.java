@@ -36,7 +36,7 @@ public class BlockKeypadChest extends BlockChest {
 
             if (ilockablecontainer != null){ 
             	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-                    if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
+                    if(mod_SecurityCraft.configHandler.allowCodebreakerItem){
                         par5EntityPlayer.displayGUIChest(ilockablecontainer);
                         return true;
                     }else{	

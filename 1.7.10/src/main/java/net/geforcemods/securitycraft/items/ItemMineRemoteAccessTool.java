@@ -86,7 +86,7 @@ public class ItemMineRemoteAccessTool extends Item {
     				par3List.add("---");
     				continue;
     			}else{
-    				par3List.add("Mine " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
+    				par3List.add(StatCollector.translateToLocal("tooltip.mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
     			}
     		}else{
 				par3List.add("---");

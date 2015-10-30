@@ -62,7 +62,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 
             if(iblockstate.getBlock() == this.singleSlab){
                 IProperty iproperty = this.singleSlab.getVariantProperty();
-                Comparable comparable = iblockstate.getValue(iproperty);
+                Comparable<?> comparable = iblockstate.getValue(iproperty);
                 BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
                 
                 String name = null;
@@ -133,7 +133,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
         }
 
         if(iblockstate.getBlock() == this.singleSlab){
-            Comparable comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
+            Comparable<?> comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
 
             if(comparable == variantInStack){
                 IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(this.singleSlab.getVariantProperty(), comparable);

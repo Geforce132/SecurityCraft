@@ -2,13 +2,14 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.StatCollector;
 
 public class ItemModule extends Item{
 	
@@ -26,15 +27,15 @@ public class ItemModule extends Item{
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		if(nbtCanBeModified){
-			par3List.add("Module is modifiable!");
-			par3List.add("Use /module to add players.");
+			par3List.add(StatCollector.translateToLocal("tooltip.module.modifiable"));
+			par3List.add(StatCollector.translateToLocal("tooltip.module.usage"));
 		}else{
-			par3List.add("Module is not modifiable!");
+			par3List.add(StatCollector.translateToLocal("tooltip.module.notModifiable"));
 		}
 				
 		if(module == EnumCustomModules.WHITELIST || module == EnumCustomModules.BLACKLIST){
 			par3List.add(" ");
-			par3List.add("Players:");
+			par3List.add(StatCollector.translateToLocal("tooltip.module.players") + ":");
 			
 			if(par1ItemStack.stackTagCompound != null){
 				for(int i = 1; i <= 10; i++){

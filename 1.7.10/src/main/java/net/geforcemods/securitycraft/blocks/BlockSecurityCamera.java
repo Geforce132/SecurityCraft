@@ -79,7 +79,6 @@ public class BlockSecurityCamera extends BlockContainer {
 	
 	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9){
         int k1 = par9 & 8;
-        int j1 = par9 & 7;
         byte b0 = -1;
 
         if(par5 == 2 && par1World.isSideSolid(par2, par3, par4 + 1, NORTH)){

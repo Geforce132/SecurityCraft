@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.minecraft.client.Minecraft;
 
 public class PacketCCreateLGView implements IMessage{

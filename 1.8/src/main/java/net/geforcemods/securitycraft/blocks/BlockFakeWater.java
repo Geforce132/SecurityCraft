@@ -72,7 +72,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
             this.adjacentSourceBlocks = 0;
             EnumFacing enumfacing;
 
-            for (Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator(); iterator.hasNext(); k = this.checkAdjacentBlock(worldIn, pos.offset(enumfacing), k))
+            for (Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator(); iterator.hasNext(); k = this.checkAdjacentBlock(worldIn, pos.offset(enumfacing), k))
             {
                 enumfacing = (EnumFacing)iterator.next();
             }
@@ -165,7 +165,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
         }
         else if (i >= 0 && (i == 0 || this.isBlocked(worldIn, pos.down(), iblockstate1)))
         {
-            Set set = this.getPossibleFlowDirections(worldIn, pos);
+            Set<?> set = this.getPossibleFlowDirections(worldIn, pos);
             i1 = i + b0;
 
             if (i >= 8)
@@ -178,7 +178,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
                 return;
             }
 
-            Iterator iterator1 = set.iterator();
+            Iterator<?> iterator1 = set.iterator();
 
             while (iterator1.hasNext())
             {
@@ -211,7 +211,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
     private int func_176374_a(World worldIn, BlockPos pos, int distance, EnumFacing calculateFlowCost)
     {
         int j = 1000;
-        Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
+        Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 
         while (iterator.hasNext())
         {
@@ -245,11 +245,11 @@ public class BlockFakeWater extends BlockDynamicLiquid{
         return j;
     }
 
-    private Set getPossibleFlowDirections(World worldIn, BlockPos pos)
+    private Set<?> getPossibleFlowDirections(World worldIn, BlockPos pos)
     {
         int i = 1000;
-        EnumSet enumset = EnumSet.noneOf(EnumFacing.class);
-        Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
+        EnumSet<EnumFacing> enumset = EnumSet.noneOf(EnumFacing.class);
+        Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 
         while (iterator.hasNext())
         {

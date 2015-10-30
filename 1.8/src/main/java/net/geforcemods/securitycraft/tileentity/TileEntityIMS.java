@@ -53,10 +53,10 @@ public class TileEntityIMS extends CustomizableSCTE {
 			double d0 = (double) mod_SecurityCraft.configHandler.imsRange;
 			
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0);
-	        List list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-	        List list2 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
-	        Iterator iterator1 = list1.iterator();
-	        Iterator iterator2 = list2.iterator();	       
+	        List<?> list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+	        List<?> list2 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
+	        Iterator<?> iterator1 = list1.iterator();
+	        Iterator<?> iterator2 = list2.iterator();	       
 	        
 	        while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && iterator2.hasNext()){
 	        	EntityLivingBase entity = (EntityLivingBase) iterator2.next();

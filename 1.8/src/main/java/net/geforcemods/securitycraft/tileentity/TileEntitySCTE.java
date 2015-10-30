@@ -32,8 +32,8 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
 	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i + 1), (double)(j + 1), (double)(k + 1)));
-	        List list = this.worldObj.getEntitiesWithinAABB(Entity.class, axisalignedbb);
-	        Iterator iterator = list.iterator();
+	        List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, axisalignedbb);
+	        Iterator<?> iterator = list.iterator();
 	        Entity entity;
 	
 	        while (iterator.hasNext())
@@ -53,8 +53,8 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
 	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(k)).expand(5, 5, 5));
-	        List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-	        Iterator iterator = list.iterator();
+	        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;
 	
 	        while (iterator.hasNext())

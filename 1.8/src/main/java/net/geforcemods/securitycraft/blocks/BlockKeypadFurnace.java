@@ -59,7 +59,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				}
 			}else{
-				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
+				if(mod_SecurityCraft.configHandler.allowCodebreakerItem){
 					if(((IPasswordProtected) par1World.getTileEntity(pos)).getPassword() != null ){
 						activate(par1World, pos, par5EntityPlayer);
 					}

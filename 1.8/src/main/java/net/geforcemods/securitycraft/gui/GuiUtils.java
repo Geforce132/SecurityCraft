@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL12;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -68,14 +67,14 @@ public class GuiUtils extends Gui{
 		}
 	}
 
-	public static void drawTooltip(List list, int x, int y, FontRenderer fontRenderer){
+	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRenderer){
 		if (!list.isEmpty()){
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			int k = 0;
-			Iterator iterator = list.iterator();
+			Iterator<?> iterator = list.iterator();
 
 			while (iterator.hasNext())
 			{

@@ -18,12 +18,12 @@ import net.minecraft.util.StatCollector;
 
 public class CommandModule extends CommandBase implements ICommand {
 
-	private List nicknames;
+	private List<String> nicknames;
 
 	private final String usage = "/module add <playerName> OR /module remove <playerName> OR /module copy OR /module paste";
 
 	public CommandModule() {
-		this.nicknames = new ArrayList();
+		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("module");
 	}
 	
@@ -36,7 +36,7 @@ public class CommandModule extends CommandBase implements ICommand {
 		return "module";
 	}
 	
-	public List getAliases() {
+	public List<String> getAliases() {
 		return this.nicknames;
 	}
 

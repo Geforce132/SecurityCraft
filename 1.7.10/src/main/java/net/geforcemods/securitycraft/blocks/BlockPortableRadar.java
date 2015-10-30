@@ -68,8 +68,8 @@ public class BlockPortableRadar extends BlockContainer {
         	
             AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)par2, (double)par3, (double)par4, (double)(par2 + 1), (double)(par3 + 1), (double)(par4 + 1)).expand(d0, d0, d0);
             axisalignedbb.maxY = (double)par1World.getHeight();
-            List list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-            Iterator iterator = list.iterator();
+            List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+            Iterator<?> iterator = list.iterator();
             EntityPlayer entityplayer;
             
             if(list.isEmpty()){

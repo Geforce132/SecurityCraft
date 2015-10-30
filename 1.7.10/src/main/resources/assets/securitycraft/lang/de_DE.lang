@@ -264,4 +264,11 @@ messages.irc.error=Fehler beim Verbinden mit IRC. Hast du Internetzugang und Zug
 messages.irc.connected=Bot erfolgreich verbunden. Du kannst uns nun via '/sc contanct <message>' erreichen.
 messages.irc.disconnected=Bot erfolgreich von EsperNET getrennt.
 messages.irc.notConnected=Bot ist nicht mit EsperNET verbunden. Nutze '/sc connect' um dich mit IRC zu verbinden.
-messages.irc.banned=Du bist von IRC gebannt.
+messages.irc.banned=Du bist vom IRC gebannt.
+
+tooltip.mine=Mine
+tooltip.camera=Kamera
+tooltip.module.modifiable=Modul ist modifizierbar!
+tooltip.module.notModifiable=Modul ist nicht modifizierbar!
+tooltip.module.usage=Nutze /module um Spieler hinzuzufügen.
+tooltip.module.players=Spieler

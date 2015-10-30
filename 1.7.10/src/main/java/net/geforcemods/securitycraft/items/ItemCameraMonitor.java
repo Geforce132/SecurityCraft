@@ -151,7 +151,7 @@ public class ItemCameraMonitor extends ItemMap {
     	
     	for(int i = 1; i <= 10; i++){
 			if(par1ItemStack.getTagCompound().hasKey("Camera" + i)){
-				par3List.add("Camera #" + i + ": " + par1ItemStack.getTagCompound().getString(new StringBuilder().append("Camera").append(i).toString()));
+				par3List.add(StatCollector.translateToLocal("tooltip.camera") + " #" + i + ": " + par1ItemStack.getTagCompound().getString(new StringBuilder().append(StatCollector.translateToLocal("tooltip.camera")).append(i).toString()));
 			}
 		}
 	}
@@ -178,8 +178,12 @@ public class ItemCameraMonitor extends ItemMap {
 	public int getSlotFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
 		for(int i = 0; i <= 10; i++){
 			if(nbt.hasKey("Camera1" + i)){
-				Scanner scanner = new Scanner(nbt.getString("Camera1" + i)).useDelimiter(" ");
+				Scanner scanner = new Scanner(nbt.getString("Camera1" + i));
+				
+				scanner.useDelimiter(" ");
+				
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
+				
 				scanner.close();
 				
 				if((coords[0].matches(par2 + "")) && (coords[1].matches(par3 + "")) && (coords[2].matches(par4 + ""))){
@@ -194,8 +198,12 @@ public class ItemCameraMonitor extends ItemMap {
 	public String getTagNameFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
 		for(int i = 0; i <= 10; i++){
 			if(nbt.hasKey("Camera" + i)){
-				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
+				
+				scanner.useDelimiter(" ");
+				
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
+				
 				scanner.close();
 				
 				if((coords[0].matches(par2 + "")) && (coords[1].matches(par3 + "")) && (coords[2].matches(par4 + ""))){
@@ -210,8 +218,12 @@ public class ItemCameraMonitor extends ItemMap {
 	public boolean isCameraAdded(NBTTagCompound nbt, int par2, int par3, int par4){
 		for(int i = 0; i <= 10; i++){
 			if(nbt.hasKey("Camera" + i)){
-				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
+				
+				scanner.useDelimiter(" ");
+				
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
+				
 				scanner.close();
 				
 				if((coords[0].matches(par2 + "")) && (coords[1].matches(par3 + "")) && (coords[2].matches(par4 + ""))){
@@ -229,9 +241,13 @@ public class ItemCameraMonitor extends ItemMap {
 
 		for(int i = 1; i <= 10; i++){
 			if(nbt != null && nbt.hasKey("Camera" + i)){
-				Scanner scanner = new Scanner(nbt.getString("Camera" + i)).useDelimiter(" ");
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
+				
+				scanner.useDelimiter(" ");
+				
 				String[] coords = { scanner.next(), scanner.next(), scanner.next() };
 
+				scanner.close();
 				list.add(new int[] { Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]) });
 			}
 		}

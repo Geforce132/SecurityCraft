@@ -15,20 +15,20 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-public class GuiRAMActivate extends GuiContainer{
+public class GuiMRATDeactivate extends GuiContainer{
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
-	public GuiRAMActivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
+	public GuiMRATDeactivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
         super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}
 	
 	public void initGui(){
     	super.initGui();
-    	for(int i = 1; i < 7; i++){  		
+    	for(int i = 1; i < 7; i++){    		
     		this.buttons[i - 1] = new GuiButton(i - 1, this.width / 2 - 49 - 25, this.height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, "Not bound!");
     		this.buttons[i - 1].enabled = false;
     		
@@ -41,7 +41,7 @@ public class GuiRAMActivate extends GuiContainer{
     			}
     			
     			this.buttons[i - 1].displayString = "Mine at X: " + coords[0] + " Y: " + coords[1] + " Z: " + coords[2];
-    			this.buttons[i - 1].enabled = (mc.theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isDefusable() && !((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
+    			this.buttons[i - 1].enabled = (mc.theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
     		
@@ -58,7 +58,7 @@ public class GuiRAMActivate extends GuiContainer{
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + "Activate", this.xSize / 2 - this.fontRendererObj.getStringWidth("Detonate") / 2, 6, 4210752);
+        this.fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + "Deactivate", this.xSize / 2 - this.fontRendererObj.getStringWidth("Detonate") / 2, 6, 4210752);
     }
     
 	/**
@@ -69,22 +69,22 @@ public class GuiRAMActivate extends GuiContainer{
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);  
+        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
     
     protected void actionPerformed(GuiButton guibutton){
     	int[] coords = this.item.stackTagCompound.getIntArray("mine" + (guibutton.id + 1));
-    	
+
     	if(Minecraft.getMinecraft().theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive){
-    		mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
+    		mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
     	}
-    	
-		this.updateButton(guibutton);	 
+		
+		this.updateButton(guibutton);
     }
     
     private void updateButton(GuiButton guibutton) {
 		guibutton.enabled = false;
-		guibutton.displayString = guibutton.enabled ? "" : "Activated";
+		guibutton.displayString = guibutton.enabled ? "" : "Deactivated";
 	}
     
 }

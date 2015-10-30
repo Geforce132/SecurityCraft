@@ -77,7 +77,7 @@ public class BlockSecurityCamera extends BlockContainer{
         if(worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing)){
             return iblockstate.withProperty(FACING, BlockLever.EnumOrientation.forFacings(facing, placer.getHorizontalFacing())).withProperty(POWERED, false);
         }else{
-            Iterator iterator = EnumFacing.Plane.HORIZONTAL.iterator();
+            Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
             EnumFacing enumfacing1;
 
             do{

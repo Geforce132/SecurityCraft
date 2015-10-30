@@ -15,13 +15,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiRAMActivate extends GuiContainer{
+public class GuiMRATActivate extends GuiContainer{
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
-	public GuiRAMActivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
+	public GuiMRATActivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
         super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}

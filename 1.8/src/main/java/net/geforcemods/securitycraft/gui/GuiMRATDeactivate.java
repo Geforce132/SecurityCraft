@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,15 +15,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-
-public class GuiRAMDeactivate extends GuiContainer{
+public class GuiMRATDeactivate extends GuiContainer{
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
-	public GuiRAMDeactivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
+	public GuiMRATDeactivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
         super(new ContainerGeneric(inventory, tile_entity));
         this.item = item;
 	}
@@ -32,8 +32,8 @@ public class GuiRAMDeactivate extends GuiContainer{
     		this.buttons[i - 1] = new GuiButton(i - 1, this.width / 2 - 49 - 25, this.height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, "Not bound!");
     		this.buttons[i - 1].enabled = false;
     		
-    		if(this.item.getItem() != null && this.item.getItem() == mod_SecurityCraft.remoteAccessMine && this.item.stackTagCompound != null &&  this.item.stackTagCompound.getIntArray("mine" + i) != null && this.item.stackTagCompound.getIntArray("mine" + i).length > 0){
-    			int[] coords = this.item.stackTagCompound.getIntArray("mine" + i);
+    		if(this.item.getItem() != null && this.item.getItem() == mod_SecurityCraft.remoteAccessMine && this.item.getTagCompound() != null &&  this.item.getTagCompound().getIntArray("mine" + i) != null && this.item.getTagCompound().getIntArray("mine" + i).length > 0){
+    			int[] coords = this.item.getTagCompound().getIntArray("mine" + i);
     			
     			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
     				this.buttonList.add(this.buttons[i - 1]);
@@ -41,7 +41,7 @@ public class GuiRAMDeactivate extends GuiContainer{
     			}
     			
     			this.buttons[i - 1].displayString = "Mine at X: " + coords[0] + " Y: " + coords[1] + " Z: " + coords[2];
-    			this.buttons[i - 1].enabled = (mc.theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
+    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, BlockUtils.toPos(coords[0], coords[1], coords[2]))) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
     		
@@ -73,9 +73,9 @@ public class GuiRAMDeactivate extends GuiContainer{
     }
     
     protected void actionPerformed(GuiButton guibutton){
-    	int[] coords = this.item.stackTagCompound.getIntArray("mine" + (guibutton.id + 1));
+    	int[] coords = this.item.getTagCompound().getIntArray("mine" + (guibutton.id + 1));
 
-    	if(Minecraft.getMinecraft().theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive){
+    	if(BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive){
     		mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
     	}
 		

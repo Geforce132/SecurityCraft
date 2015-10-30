@@ -48,7 +48,7 @@ public class BlockKeypadFurnace extends BlockContainer {
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote){
 			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem)
+				if(mod_SecurityCraft.configHandler.allowCodebreakerItem)
 					activate(par1World, par2, par3, par4, par5EntityPlayer);
 				else
 					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);

@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
-- All chat messages are now translateable
+- All chat and item tooltip messages are now translateable
 - Improved cracked client detection to automatically kick them from IRC
 - Added notification if player is banned from IRC
 - Fix: Some messages and texts did not display correctly

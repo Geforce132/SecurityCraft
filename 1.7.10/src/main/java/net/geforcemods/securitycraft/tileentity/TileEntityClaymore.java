@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,8 +49,8 @@ public class TileEntityClaymore extends TileEntitySCTE{
 				axisalignedbb = axisalignedbb.addCoord(-mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
 			}
 			
-			List list = getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-			Iterator iterator = list.iterator();
+			List<?> list = getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+			Iterator<?> iterator = list.iterator();
 			EntityLivingBase entityliving;
 			
 			while(iterator.hasNext()){
