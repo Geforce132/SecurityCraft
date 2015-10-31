@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.Loader;
 
 public class SCIRCBot extends PircBot{
 
@@ -46,7 +47,7 @@ public class SCIRCBot extends PircBot{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
 			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.banned"), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
 	}
-	
+
 	/**
 	 * Not working yet!
 	 */
@@ -94,7 +95,11 @@ public class SCIRCBot extends PircBot{
 		}
 
 		if(sender.equals(this.getNick()))
-			sendMessage("#GeforceMods", "[" + Minecraft.getMinecraft().getVersion() + "] SecurityCraft version: " + mod_SecurityCraft.getVersion());
+		{
+			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
+			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
+//			sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
+		}
 	}
 
 	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){

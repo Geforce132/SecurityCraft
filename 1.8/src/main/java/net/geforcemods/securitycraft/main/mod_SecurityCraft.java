@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.commands.CommandModule;
-import net.geforcemods.securitycraft.commands.CommandSCHelp;
+import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.handlers.ForgeEventHandler;
 import net.geforcemods.securitycraft.imc.versionchecker.VersionUpdateChecker;
@@ -178,7 +178,7 @@ public class mod_SecurityCraft {
     
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event){
-    	event.registerServerCommand(new CommandSCHelp());
+    	event.registerServerCommand(new CommandSC());
     	event.registerServerCommand(new CommandModule());  	
     }
    

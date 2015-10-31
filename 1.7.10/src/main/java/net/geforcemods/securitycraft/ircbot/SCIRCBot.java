@@ -8,6 +8,7 @@ import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
+import cpw.mods.fml.common.Loader;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.PlayerNotFoundException;
@@ -103,7 +104,11 @@ public class SCIRCBot extends PircBot{
 		}
 
 		if(sender.equals(this.getNick()))
-			sendMessage("#GeforceMods", "[" + mod_SecurityCraft.getMcVersion() + "] SecurityCraft version: " + mod_SecurityCraft.getVersion());
+		{
+			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
+			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
+			sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
+		}
 	}
 
 	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){

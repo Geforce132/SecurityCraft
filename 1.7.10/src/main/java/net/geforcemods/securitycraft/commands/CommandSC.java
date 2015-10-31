@@ -5,10 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -16,13 +14,13 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-public class CommandSCHelp extends CommandBase implements ICommand{
+public class CommandSC extends CommandBase implements ICommand{
 	
 	private List<String> nicknames;
 	
 	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message>";
 	
-	public CommandSCHelp(){
+	public CommandSC(){
 		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("sc");
 	}
@@ -35,11 +33,11 @@ public class CommandSCHelp extends CommandBase implements ICommand{
         return 0;
     }
     
-	public String getName() {
+	public String getCommandName() {
 		return "sc";
 	}
 	
-	public List<String> getAliases() {
+	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
@@ -47,12 +45,12 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		return usage;
 	}
 	
-	public boolean canCommandSenderUse(ICommandSender icommandsender) {
+	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
 		return true;
 	}
 
 	@SuppressWarnings("static-access")
-	public void execute(ICommandSender icommandsender, String[] par1String) throws CommandException {
+	public void processCommand(ICommandSender icommandsender, String[] par1String) {
 		if(par1String.length == 0){
 			throw new WrongUsageException(usage);
 		}
@@ -61,12 +59,12 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.botDisabled"), icommandsender);
 			return;
 		}
-
+		
 		if(par1String.length == 1){
 			if(par1String[0].matches("connect")){
 								
 				try{
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).connectToChannel();
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
 					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.error"), icommandsender);
@@ -75,8 +73,8 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 				
 				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.connected"), icommandsender);
 			}else if(par1String[0].matches("disconnect")){
-				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).disconnect();
+				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).disconnect();
 				}
 					
 				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.disconnected"), icommandsender);
@@ -85,9 +83,9 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("contact") || par1String[0].matches("bug")){
-				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "[SecurityCraft " + mod_SecurityCraft.getVersion() + "] Geforce: " + getMessageFromArray(par1String, 1));
-					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1) + ".", icommandsender);
+				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).sendMessage("#GeforceMods", getMessageFromArray(par1String, 1));
+					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getCommandSenderName() + " --> IRC> " + getMessageFromArray(par1String, 1), icommandsender);
 				}else{
 					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.notConnected"), icommandsender);
 				}
@@ -106,9 +104,9 @@ public class CommandSCHelp extends CommandBase implements ICommand{
 		return startingString;
 	}
 
-	private void sendMessageToPlayer(String par1, ICommandSender par2) throws PlayerNotFoundException{
+	private void sendMessageToPlayer(String par1, ICommandSender par2){
 		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-		((EntityPlayerMP) getPlayer(par2, par2.getName())).addChatComponentMessage(chatcomponenttext);
+		((EntityPlayerMP) getPlayer(par2, par2.getCommandSenderName())).addChatComponentMessage(chatcomponenttext);
 	}
 	
 	public int compareTo(Object par1Obj)
