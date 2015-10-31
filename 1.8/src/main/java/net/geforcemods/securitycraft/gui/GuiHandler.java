@@ -76,7 +76,7 @@ public class GuiHandler implements IGuiHandler {
     		return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
     	
     	case 5:
-    		return new GuiRemoteAccessMine(player.inventory, (TileEntityRAM) tile_entity);
+    		return new GuiMRAT(player.inventory, (TileEntityRAM) tile_entity);
     		
     	case 6:
     		return new GuiMRATActivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());

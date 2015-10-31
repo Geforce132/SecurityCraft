@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 	
@@ -89,7 +90,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Redstone module:" + EnumChatFormatting.RESET + "\n\nAdding a redstone module to a portable radar will cause the radar to emit a redstone signal whenever a player is within range.", EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a portable radar will remove the whitelisted players from the radar's search."};
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.redstoneModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.radar.redstone"),
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.radar.whitelist")};
 	}
-	
 }

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 		
@@ -47,8 +48,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a keypad will allow players to use the block without knowing the code.", EnumChatFormatting.UNDERLINE + "Blacklist module:" + EnumChatFormatting.RESET + "\n\nAdding a blacklist module to a keypad will ban players from interacting with the block."};
-	}
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keypad.whitelist"),
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.blacklistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keypad.blacklist")};
+		}
 	
 	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad){
@@ -63,5 +65,4 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	public void setPassword(String password) {
 		passcode = password;
 	}	
-
 }

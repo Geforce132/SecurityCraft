@@ -12,6 +12,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiKeypadFurnaceInventory extends GuiContainer{
@@ -29,9 +30,9 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
      */
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
-        String s = this.tileFurnace.hasCustomInventoryName() ? this.tileFurnace.getInventoryName() : I18n.format("Protected Furnace", new Object[0]);
+        String s = this.tileFurnace.hasCustomInventoryName() ? this.tileFurnace.getInventoryName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString("Protected Furnace", 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.protectedFurnace.name"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)

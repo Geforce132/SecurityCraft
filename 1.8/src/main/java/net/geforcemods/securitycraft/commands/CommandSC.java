@@ -20,8 +20,6 @@ public class CommandSC extends CommandBase implements ICommand{
 	
 	private List<String> nicknames;
 	
-	private final String usage = "Usage: /sc connect OR /sc disconnect OR /sc bug <bug to report> OR /sc contact <message>";
-	
 	public CommandSC(){
 		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("sc");
@@ -44,7 +42,7 @@ public class CommandSC extends CommandBase implements ICommand{
 	}
 
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return usage;
+		return StatCollector.translateToLocal("messages.command.sc.usage");
 	}
 	
 	public boolean canCommandSenderUse(ICommandSender icommandsender) {
@@ -54,7 +52,7 @@ public class CommandSC extends CommandBase implements ICommand{
 	@SuppressWarnings("static-access")
 	public void execute(ICommandSender icommandsender, String[] par1String) throws CommandException {
 		if(par1String.length == 0){
-			throw new WrongUsageException(usage);
+			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
 		
 		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.instance.configHandler.isIrcBotEnabled){
@@ -93,7 +91,7 @@ public class CommandSC extends CommandBase implements ICommand{
 				}
 			}
 		}else{
-			throw new WrongUsageException(usage);
+			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
 	}
 

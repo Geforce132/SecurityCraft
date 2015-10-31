@@ -20,8 +20,6 @@ public class CommandModule extends CommandBase implements ICommand {
 
 	private List<String> nicknames;
 
-	private final String usage = "/module add <playerName> OR /module remove <playerName> OR /module copy OR /module paste";
-
 	public CommandModule() {
 		this.nicknames = new ArrayList<String>();
 		this.nicknames.add("module");
@@ -41,7 +39,7 @@ public class CommandModule extends CommandBase implements ICommand {
 	}
 
 	public String getCommandUsage(ICommandSender p_71518_1_) {
-		return usage;
+		return StatCollector.translateToLocal("messages.command.module.usage");
 	}
 	
 	public boolean canCommandSenderUse(ICommandSender p_71519_1_) {
@@ -123,7 +121,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			}
 		}
 		
-		throw new WrongUsageException(usage);
+		throw new WrongUsageException(StatCollector.translateToLocal("messages.command.module.usage"));
 	}
 
 	private int getNextSlot(NBTTagCompound stackTagCompound) {

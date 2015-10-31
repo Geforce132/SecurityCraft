@@ -68,7 +68,7 @@ public class ItemUniversalOwnerChanger extends Item
 				((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			PlayerUtils.sendMessageToPlayer(player, "Universal Owner Changer", "Owner successfully changed to " + newOwner + ".", EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), EnumChatFormatting.GREEN);
 			return true;
 		}
 

@@ -7,8 +7,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.ClientUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -41,7 +41,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? "Save & continue." : "Invalid code!"));
+		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode")));
 
 		this.keycodeTextbox = new GuiTextField(this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
 
@@ -72,11 +72,11 @@ public class GuiSetPassword extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
     	
     	//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line.
-    	if(this.fontRendererObj.getStringWidth(blockName + " setup") >= 170){
+    	if(this.fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.password.setup")) >= 170){
             this.fontRendererObj.drawString(blockName, this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
-            this.fontRendererObj.drawString("setup", this.xSize / 2 - this.fontRendererObj.getStringWidth("setup") / 2, 16, 4210752);
+            this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.password.setup"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.password.setup")) / 2, 16, 4210752);
     	}else{
-            this.fontRendererObj.drawString(blockName + " setup", this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName + " setup") / 2, 6, 4210752);
+            this.fontRendererObj.drawString(blockName + " " + StatCollector.translateToLocal("gui.password.setup"), this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.password.setup")) / 2, 6, 4210752);
     	}
     }
 
@@ -117,7 +117,7 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
     private void updateButtonText(){
-    	this.saveAndContinueButton.displayString = !this.flag ? "Save & continue." : "Invalid code!";
+    	this.saveAndContinueButton.displayString = !this.flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode");
     }
 
     protected void actionPerformed(GuiButton guibutton){

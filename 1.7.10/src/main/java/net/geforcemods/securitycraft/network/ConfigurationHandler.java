@@ -114,7 +114,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
+import net.geforcemods.securitycraft.tileentity.TileEntityMRAT;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySCTE;
@@ -487,7 +487,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "reinforcedDoor");
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
-		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
+		GameRegistry.registerTileEntity(TileEntityMRAT.class, "remoteAccessDoor");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
 		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");

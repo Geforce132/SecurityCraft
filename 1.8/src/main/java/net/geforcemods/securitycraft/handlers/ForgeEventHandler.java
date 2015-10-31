@@ -51,7 +51,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
-		ChatComponentText chatcomponenttext = new ChatComponentText("Thanks for using SecurityCraft " + mod_SecurityCraft.getVersion() + "! Tip: " + getRandomTip());
+		ChatComponentText chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + ": " + getRandomTip());
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
 			event.player.addChatComponentMessage(chatcomponenttext);	
@@ -209,10 +209,10 @@ public class ForgeEventHandler {
 	
 	private String getRandomTip(){
 		String[] tips = {
-				"Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.",
-				"Use /sc connect to get personal support from the mod devs!",
-				"Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft",
-				"Do you want to support SecurityCraft? https://www.patreon.com/Geforce"
+				StatCollector.translateToLocal("messages.tip.scHelp"),
+				StatCollector.translateToLocal("messages.tip.scConnect"),
+				StatCollector.translateToLocal("messages.tip.trello"),
+				StatCollector.translateToLocal("messages.tip.patreon")
 		};
 
 		return tips[new Random().nextInt(tips.length)];

@@ -235,9 +235,8 @@ public class ItemCameraMonitor extends ItemMap {
 		return false;
 	}
 
-	@SuppressWarnings({"rawtypes", "resource", "unchecked"})
 	public ArrayList<int[]> getCameraPositions(NBTTagCompound nbt){
-		ArrayList list = new ArrayList();
+		ArrayList<int[]> list = new ArrayList<int[]>();
 
 		for(int i = 1; i <= 10; i++){
 			if(nbt != null && nbt.hasKey("Camera" + i)){

@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ItemKeycardBase extends Item{
@@ -101,7 +102,7 @@ public class ItemKeycardBase extends Item{
 				par1ItemStack.stackTagCompound.setInteger("Uses", 5);
 			}
 			
-			par3List.add("Uses remaining: " + par1ItemStack.stackTagCompound.getInteger("Uses"));			
+			par3List.add(StatCollector.translateToLocal("tooltip.keycard.uses") + " " + par1ItemStack.stackTagCompound.getInteger("Uses"));			
 			
 		}
 	}

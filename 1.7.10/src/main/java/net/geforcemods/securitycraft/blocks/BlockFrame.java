@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class BlockFrame extends BlockOwnable {
@@ -68,7 +69,7 @@ public class BlockFrame extends BlockOwnable {
 			}
 		}else{
 			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, "Frame", "Right-click with a bound monitor to view it.", EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
 				return false;
 			}
 			

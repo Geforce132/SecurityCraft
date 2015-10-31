@@ -4,20 +4,21 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
+import net.geforcemods.securitycraft.tileentity.TileEntityMRAT;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 @SuppressWarnings({"unused", "unchecked"})
-public class GuiRemoteAccessMine extends GuiContainer{
+public class GuiMRAT extends GuiContainer{
 	
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private TileEntityRAM RADInventory;
+	private TileEntityMRAT RADInventory;
 
-	public GuiRemoteAccessMine(InventoryPlayer inventory, TileEntityRAM tile_entity) {
+	public GuiMRAT(InventoryPlayer inventory, TileEntityMRAT tile_entity) {
         super(new ContainerGeneric(inventory, tile_entity));
         this.RADInventory = tile_entity;
 	}
@@ -27,9 +28,9 @@ public class GuiRemoteAccessMine extends GuiContainer{
 
     	int j = (this.height - this.height) / 2;
     	
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, "Activate."));
-		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, "Deactivate."));
-		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, "Detonate!"));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, StatCollector.translateToLocal("gui.mrat.activate")));
+		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, StatCollector.translateToLocal("gui.mrat.deactivate")));
+		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, StatCollector.translateToLocal("gui.mrat.detonate")));
     }
 
 	/**
@@ -37,7 +38,7 @@ public class GuiRemoteAccessMine extends GuiContainer{
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString("Remote access tool for mines", this.xSize / 2 - this.fontRendererObj.getStringWidth("Remote access tool for mines") / 2, 6, 4210752);
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.mrat.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.mrat.name")) / 2, 6, 4210752);
     }
     
 	/**

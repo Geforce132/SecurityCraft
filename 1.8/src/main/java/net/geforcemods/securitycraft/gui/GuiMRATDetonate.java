@@ -4,8 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
@@ -15,8 +16,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,7 +37,7 @@ public class GuiMRATDetonate extends GuiContainer{
 	public void initGui(){
     	super.initGui();
     	for(int i = 1; i < 7; i++){    		
-    		this.buttons[i - 1] = new GuiButton(i - 1, this.width / 2 - 49 - 25, this.height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, "Not bound!");
+    		this.buttons[i - 1] = new GuiButton(i - 1, this.width / 2 - 49 - 25, this.height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, StatCollector.translateToLocal("gui.mrat.notBound"));
     		this.buttons[i - 1].enabled = false;
     		
     		if(this.item.getItem() != null && this.item.getItem() == mod_SecurityCraft.remoteAccessMine && this.item.getTagCompound() != null &&  this.item.getTagCompound().getIntArray("mine" + i) != null && this.item.getTagCompound().getIntArray("mine" + i).length > 0){
@@ -45,7 +48,7 @@ public class GuiMRATDetonate extends GuiContainer{
     				continue;
     			}
     			
-    			this.buttons[i - 1].displayString = "Mine at X: " + coords[0] + " Y: " + coords[1] + " Z: " + coords[2];
+    			this.buttons[i - 1].displayString = StatCollector.translateToLocal("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
     			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && (!((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() || ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, BlockUtils.toPos(coords[0], coords[1], coords[2])))) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
@@ -63,7 +66,7 @@ public class GuiMRATDetonate extends GuiContainer{
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + "Detonate", this.xSize / 2 - this.fontRendererObj.getStringWidth("Detonate") / 2, 6, 4210752);
+        this.fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.mrat.detonate"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.mrat.detonate")) / 2, 6, 4210752);
     }
     
 	/**
@@ -114,7 +117,7 @@ public class GuiMRATDetonate extends GuiContainer{
 
 	private void updateButton(GuiButton guibutton) {
 		guibutton.enabled = false;
-		guibutton.displayString = guibutton.enabled ? "" : "Detonated";
+		guibutton.displayString = guibutton.enabled ? "" : StatCollector.translateToLocal("gui.mrat.detonate");
 	}
 	
 }

@@ -15,7 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class BlockCageTrap extends BlockOwnable {
@@ -70,7 +72,7 @@ public class BlockCageTrap extends BlockOwnable {
 				setTileEntities(par1World, par2, par3, par4, originalTrap.getOwnerUUID(), originalTrap.getOwnerName());
 
 				par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(((EntityPlayer) par5Entity).getCommandSenderName() + " was captured in a trap at" + Utils.getFormattedCoordinates(par2, par3, par4)));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + "]" + EnumChatFormatting.RESET + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) par5Entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(par2, par3, par4))));
 			}
 		}
 	}

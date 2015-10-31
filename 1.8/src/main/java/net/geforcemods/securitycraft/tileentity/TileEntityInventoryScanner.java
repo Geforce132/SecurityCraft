@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 	
@@ -287,7 +288,10 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.", EnumChatFormatting.UNDERLINE + "Smart module:" + EnumChatFormatting.RESET + "\n\nAdding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory."};
+		return new String[]{
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.invScan.whitelist"),
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.smartModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.invScan.smart"),
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.storageModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.invScan.storage")};
 	}
     
 }

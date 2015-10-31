@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,8 +18,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -67,7 +69,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
 
 				world.playSoundAtEntity(entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation(((EntityPlayer) entity).getName() + " was captured in a trap at " + Utils.getFormattedCoordinates(pos)));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + "]" + EnumChatFormatting.RESET + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}

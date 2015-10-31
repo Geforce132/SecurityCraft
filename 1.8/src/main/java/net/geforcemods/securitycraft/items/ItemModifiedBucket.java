@@ -163,25 +163,4 @@ public class ItemModifiedBucket extends ItemBucket {
             }
         }
     }
-
-	public String getHelpInfo() {
-		if(containedBlock == mod_SecurityCraft.bogusLavaFlowing){
-			return "The fake lava acts the same as lava, except it heals you instead of hurting you.";
-		}else if(containedBlock == mod_SecurityCraft.bogusWaterFlowing){
-			return "The fake water acts the same as water, expect it hurts you when touched.";
-		}else{
-			return null;
-		}
-	}
-
-	public String[] getRecipe() {
-		if(containedBlock == mod_SecurityCraft.bogusLavaFlowing){
-			return new String[]{"The bucket of fake lava requires: 1 lava bucket, 1 healing potion.", "X", "Y", "   ", "X = healing potion, Y = lava bucket"};
-		}else if(containedBlock == mod_SecurityCraft.bogusWaterFlowing){
-			return new String[]{"The bucket of fake water requires: 1 water bucket, 1 harming potion.", "X", "Y", "   ", "X = harming potion, Y = water bucket"};
-		}else{
-			return null;
-		}
-	}
-	
 }

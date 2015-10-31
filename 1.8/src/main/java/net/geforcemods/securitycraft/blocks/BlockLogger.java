@@ -90,9 +90,4 @@ public class BlockLogger extends BlockContainer {
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger();
 	}
-
-	public String[] getRecipe() {
-		return new String[]{"The username logger requires: 7 stone, 1 portable radar, 1 redstone", "XXX", "XYX", "XZX", "X = stone, Y = portable radar, Z = redstone"};
-	}
-
 }

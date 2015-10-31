@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class GuiCameraMonitor extends GuiScreen {
 
@@ -38,7 +39,7 @@ public class GuiCameraMonitor extends GuiScreen {
 		int counter = 1;
 		for(int i = ((page * 5) - 3); i <= ((page * 5) + 1); i++){
 			if((i - 2) < this.cameraMonitor.getCameraPositions(this.nbtTag).size() && this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2) != null){
-				GuiButton button = new GuiButton(i, -25 + counter * 70, this.height - 45, 60, 20, "Camera #" + (i - 1));
+				GuiButton button = new GuiButton(i, -25 + counter * 70, this.height - 45, 60, 20, StatCollector.translateToLocal("tooltip.camera") + " #" + (i - 1));
 				
 				this.buttonList.add(button);
 				

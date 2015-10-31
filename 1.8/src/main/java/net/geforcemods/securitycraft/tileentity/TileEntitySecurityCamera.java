@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 	
@@ -31,7 +33,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[] { "Lets the camera emit a 15-block redstone signal when enabled." };
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.redstoneModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.camera.redstone")};
 	}
-
 }

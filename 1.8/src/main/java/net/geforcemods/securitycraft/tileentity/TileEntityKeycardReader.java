@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
 
@@ -68,7 +69,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a keycard reader will allow players to use the reader using any keycard.", EnumChatFormatting.UNDERLINE + "Blacklist module:" + EnumChatFormatting.RESET + "\n\nAdding a blacklist module to a keycard reader will ban players from interacting with the reader."};
-	}
-    
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.whitelist"),
+				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.blacklistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.blacklist")};
+	    }
 }

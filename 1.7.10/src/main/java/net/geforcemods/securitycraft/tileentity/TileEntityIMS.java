@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityIMS extends CustomizableSCTE {
 	
@@ -201,7 +202,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to an I.M.S will allow the whitelisted players to walk into the range of the I.M.S without being targeted."};
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.ims.whitelist")};
 	}
 
 }

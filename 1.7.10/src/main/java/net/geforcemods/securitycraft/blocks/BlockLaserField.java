@@ -242,35 +242,15 @@ public class BlockLaserField extends Block{
     {
         int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-        if (l == 0)
-        {
+        if(l == 0)
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-            
-        }
-
-        if (l == 1)
-        {
+        else if(l == 1)
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-           
 
-        }
-
-        if (l == 2)
-        {
+        else if(l == 2)
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-           
-
-
-        }
-
-        if (l == 3)
-        {
+        else if(l == 3)
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-           
-            
-
-        }
-    	
     }
 
     /**
@@ -278,24 +258,14 @@ public class BlockLaserField extends Block{
      */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-        if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1)
-        {
+        if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1)
     		this.setBlockBounds(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
-        }
-        else if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2)
-        {
-
+        else if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2)
     		this.setBlockBounds(0.250F, 0.300F, 0.000F, 0.750F, 0.700F, 1.000F);
-        }
-        else if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 3)
-        {
-
+        else if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 3)
     		this.setBlockBounds(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
-        }
         else
-        {
     		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
-        }
     }
 
 

@@ -9,22 +9,23 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 
 public class WailaDataProvider implements IWailaDataProvider {
 
 	public static void callbackRegister(IWailaRegistrar registrar){
 		mod_SecurityCraft.log("Adding Waila support!");
-		
-		registrar.addConfig("SecurityCraft", "securitycraft.showowner", "Display Owner?");
-		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", "Show Modules?");
-		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", "Show Passwords?");
+
+		registrar.addConfig("SecurityCraft", "securitycraft.showowner", StatCollector.translateToLocal("waila.displayOwner"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", StatCollector.translateToLocal("waila.showModules"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.showPasswords"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
 	}
 	
@@ -38,12 +39,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 
 	public ITipList getWailaBody(ItemStack itemStack, ITipList tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
 		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable){
-			tipList.add("Owner: " + ((IOwnable) iDataAccessor.getTileEntity()).getOwnerName());
+			tipList.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwnerName());
 		}
 		
 		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && BlockUtils.isOwnerOfBlock((CustomizableSCTE) iDataAccessor.getTileEntity(), iDataAccessor.getPlayer())){
 			if(!((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules().isEmpty()){
-				tipList.add("Equipped with:");
+				tipList.add(StatCollector.translateToLocal("waila.equipped"));
 			}
 			
 			for(EnumCustomModules module : ((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules()){
@@ -54,7 +55,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && BlockUtils.isOwnerOfBlock((TileEntityOwnable) iDataAccessor.getTileEntity(), iDataAccessor.getPlayer())){			
 			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
 			
-			tipList.add("Password: " + (password != null && !password.isEmpty() ? password : "????"));
+			tipList.add(StatCollector.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.password.notSet")));
 		}
 		
 		return tipList;

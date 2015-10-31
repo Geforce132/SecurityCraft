@@ -27,6 +27,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class GuiUtils extends Gui{
@@ -38,9 +39,9 @@ public class GuiUtils extends Gui{
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, int x, int y, int z, int mouseX, int mouseY) {
 		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(Utils.ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out", resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - Zoom in/out") / 2, resolution.getScaledHeight() - 60, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision", resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - Activate night vision") / 2, resolution.getScaledHeight() - 50, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal", resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - Toggle redstone signal") / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
+		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

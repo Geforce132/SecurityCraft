@@ -5,7 +5,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
-public class TileEntityRAM extends TileEntitySCTE{
+public class TileEntityMRAT extends TileEntitySCTE{
 	
 	public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                

@@ -345,9 +345,4 @@ public class mod_SecurityCraft {
 	public static String getVersion(){
 		return VERSION;
 	}
-
-	public static String getMcVersion()
-	{
-		return "1.7.10";
-	}
 }

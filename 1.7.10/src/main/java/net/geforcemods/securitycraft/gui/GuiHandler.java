@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
+import net.geforcemods.securitycraft.tileentity.TileEntityMRAT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -75,16 +75,16 @@ public class GuiHandler implements IGuiHandler {
     		return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
     	
     	case 5:
-    		return new GuiRemoteAccessMine(player.inventory, (TileEntityRAM) tile_entity);
+    		return new GuiMRAT(player.inventory, (TileEntityMRAT) tile_entity);
     		
     	case 6:
-    		return new GuiMRATActivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATActivate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
     	
     	case 7:
-    		return new GuiMRATDeactivate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATDeactivate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
     	
     	case 8:
-    		return new GuiMRATDetonate(player.inventory, (TileEntityRAM) tile_entity, player.getCurrentEquippedItem());
+    		return new GuiMRATDetonate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
     	
     	case 9:
     		return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
