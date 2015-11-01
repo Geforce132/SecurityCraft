@@ -35,17 +35,17 @@ import net.minecraft.world.World;
 public class EntitySecurityCamera extends Entity {
 
 	private final float CAMERA_SPEED = 2F;
-	
+
 	public int blockPosX;
 	public int blockPosY;
 	public int blockPosZ;
-	
+
 	private double cameraUseX;
 	private double cameraUseY;
 	private double cameraUseZ;
 	private float cameraUseYaw;
 	private float cameraUsePitch;
-	
+
 	private int id;
 	private int screenshotCooldown = 0;
 	private int redstoneCooldown = 0;
@@ -53,7 +53,7 @@ public class EntitySecurityCamera extends Entity {
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	private float zoomAmount = 1F;
-	
+
 	private String playerViewingName = null;
 
 	public EntitySecurityCamera(World world){
@@ -91,7 +91,7 @@ public class EntitySecurityCamera extends Entity {
 			this.rotationYaw = 270.0F;
 		}
 	}
-	
+
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
 		this(world);
 		this.blockPosX = (int) x;
@@ -135,7 +135,7 @@ public class EntitySecurityCamera extends Entity {
 
 	public void onUpdate() {		
 		if(this.worldObj.isRemote && this.riddenByEntity != null){
-			
+
 			if(this.screenshotCooldown > 0){
 				this.screenshotCooldown -= 1;
 			}
@@ -155,7 +155,7 @@ public class EntitySecurityCamera extends Entity {
 			if((this.id == 0) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor)){
 				this.id = ((ItemCameraMonitor)((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
 			}
-			
+
 			if(((EntityPlayer)this.riddenByEntity).rotationYaw != this.rotationYaw){
 				((EntityPlayer)this.riddenByEntity).rotationYaw = this.rotationYaw;
 			}
@@ -204,10 +204,13 @@ public class EntitySecurityCamera extends Entity {
 			moveViewRight();
 		}
 
-		if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ)) != null && ((CustomizableSCTE)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).hasModule(EnumCustomModules.REDSTONE) && this.redstoneCooldown == 0){
-			int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
-			setRedstonePower(meta);
-			this.redstoneCooldown = 30;
+		if(this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ)) instanceof CustomizableSCTE)
+		{
+			if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ)) != null && ((CustomizableSCTE)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).hasModule(EnumCustomModules.REDSTONE) && this.redstoneCooldown == 0){
+				int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
+				setRedstonePower(meta);
+				this.redstoneCooldown = 30;
+			}
 		}
 
 		if(KeyBindings.cameraActivateNightVision.getIsKeyPressed() && this.toggleNightVisionCooldown == 0){
@@ -227,7 +230,7 @@ public class EntitySecurityCamera extends Entity {
 		if(this.rotationPitch > -25.0F){
 			setRotation(this.rotationYaw, this.rotationPitch -= CAMERA_SPEED);
 		}
-		
+
 		this.updateServerRotation();
 	}
 
@@ -235,13 +238,13 @@ public class EntitySecurityCamera extends Entity {
 		if(this.rotationPitch < 60.0F){
 			setRotation(this.rotationYaw, this.rotationPitch += CAMERA_SPEED);
 		}
-		
+
 		this.updateServerRotation();
 	}
 
 	public void moveViewLeft(){
 		int meta = this.worldObj.getBlockMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
-		
+
 		if(meta == 4 || meta == 8){
 			if(this.rotationYaw < 0){
 				if(this.rotationYaw - CAMERA_SPEED < 180F){
@@ -265,7 +268,7 @@ public class EntitySecurityCamera extends Entity {
 				setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
 		}
-		
+
 		this.updateServerRotation();
 	}
 
@@ -295,7 +298,7 @@ public class EntitySecurityCamera extends Entity {
 				setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
 		}
-		
+
 		this.updateServerRotation();
 	}
 
@@ -362,12 +365,12 @@ public class EntitySecurityCamera extends Entity {
 		String viewingFrom = (this.riddenByEntity != null) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int)Math.floor(cameraUseX) + " Y: " + (int)Math.floor(cameraUseY) + " Z: " + (int)Math.floor(cameraUseZ) : "";
 		return nowViewing + pos + viewingFrom;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	private void updateServerRotation(){
 		mod_SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(this.rotationYaw, this.rotationPitch));
 	}
-	
+
 	public float getZoomAmount(){
 		return zoomAmount;
 	}
@@ -376,68 +379,68 @@ public class EntitySecurityCamera extends Entity {
 		super.setDead();
 
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
-        	EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
-        	player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
-        	mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
-        }
+			EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
+			player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
+			mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
+		}
 	}
 
 	protected void entityInit() {}
 
 	public void writeEntityToNBT(NBTTagCompound tagCompound){
 		tagCompound.setInteger("CameraID", id);
-		
+
 		if(playerViewingName != null){
 			tagCompound.setString("playerName", playerViewingName);
 		}
-		
+
 		if(cameraUseX != 0.0D){
 			tagCompound.setDouble("cameraUseX", cameraUseX);
 		}
-		
+
 		if(cameraUseY != 0.0D){
 			tagCompound.setDouble("cameraUseY", cameraUseY);
 		}
-		
+
 		if(cameraUseZ != 0.0D){
 			tagCompound.setDouble("cameraUseZ", cameraUseZ);
 		}
-		
+
 		if(cameraUseYaw != 0.0D){
 			tagCompound.setDouble("cameraUseYaw", cameraUseYaw);
 		}
-		
+
 		if(cameraUsePitch != 0.0D){
 			tagCompound.setDouble("cameraUsePitch", cameraUsePitch);
 		}
 	}
 
-    public void readEntityFromNBT(NBTTagCompound tagCompound){
-    	this.id = tagCompound.getInteger("CameraID");
-    	
-    	if(tagCompound.hasKey("playerName")){
-    		this.playerViewingName = tagCompound.getString("playerName");
-    	}
-    	
-    	if(tagCompound.hasKey("cameraUseX")){
-    		this.cameraUseX = tagCompound.getDouble("cameraUseX");
-    	}
-    	
-    	if(tagCompound.hasKey("cameraUseY")){
-    		this.cameraUseY = tagCompound.getDouble("cameraUseY");
-    	}
-    	
-    	if(tagCompound.hasKey("cameraUseZ")){
-    		this.cameraUseZ = tagCompound.getDouble("cameraUseZ");
-    	}
-    	
-    	if(tagCompound.hasKey("cameraUseYaw")){
-    		this.cameraUseYaw = tagCompound.getFloat("cameraUseYaw");
-    	}
-    	
-    	if(tagCompound.hasKey("cameraUsePitch")){
-    		this.cameraUsePitch = tagCompound.getFloat("cameraUsePitch");
-    	}
-    }
+	public void readEntityFromNBT(NBTTagCompound tagCompound){
+		this.id = tagCompound.getInteger("CameraID");
+
+		if(tagCompound.hasKey("playerName")){
+			this.playerViewingName = tagCompound.getString("playerName");
+		}
+
+		if(tagCompound.hasKey("cameraUseX")){
+			this.cameraUseX = tagCompound.getDouble("cameraUseX");
+		}
+
+		if(tagCompound.hasKey("cameraUseY")){
+			this.cameraUseY = tagCompound.getDouble("cameraUseY");
+		}
+
+		if(tagCompound.hasKey("cameraUseZ")){
+			this.cameraUseZ = tagCompound.getDouble("cameraUseZ");
+		}
+
+		if(tagCompound.hasKey("cameraUseYaw")){
+			this.cameraUseYaw = tagCompound.getFloat("cameraUseYaw");
+		}
+
+		if(tagCompound.hasKey("cameraUsePitch")){
+			this.cameraUsePitch = tagCompound.getFloat("cameraUsePitch");
+		}
+	}
 
 }
