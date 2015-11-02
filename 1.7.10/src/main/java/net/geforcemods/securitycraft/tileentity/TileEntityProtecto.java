@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 	
@@ -26,15 +27,15 @@ public class TileEntityProtecto extends CustomizableSCTE {
 			cooldown++;
 		}
 			
-		if(canAttack()){		
+		if(canAttack()){
 		    attack();
 		}
 	}
 	
 	public void attack(){
 		AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double) xCoord, (double) yCoord, (double) zCoord, (double)(xCoord + 1), (double)(yCoord + 1), (double)(zCoord + 1)).expand(10, 10, 10); 
-		List list1 = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-	    Iterator iterator = list1.iterator();
+		List<?> list1 = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+	    Iterator<?> iterator = list1.iterator();
 	    
 	    boolean attacked = false;
 	    
@@ -80,7 +81,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	}
 
 	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + "Whitelist module:" + EnumChatFormatting.RESET + "\n\nAdding a whitelist module to a protecto will allow the whitelisted players to walk into the range of the protecto without being targeted."};
+		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + StatCollector.translateToLocal("module.description.protecto.whitelist")};
 	}
 
 }

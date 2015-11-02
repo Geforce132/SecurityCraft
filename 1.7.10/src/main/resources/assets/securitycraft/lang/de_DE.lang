@@ -106,6 +106,7 @@ tile.reinforcedStoneSlabs_stone.name=Verstärkte Steinstufen
 tile.reinforcedStoneSlabs_cobble.name=Verstärkte Pflastersteinstufen
 tile.reinforcedStoneSlabs_sandstone.name=Verstärkte Sandsteinstufen
 tile.reinforcedDirtSlab.name=Verstärkte Erdstufen
+tile.protecto.name=Protecto
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -185,6 +186,7 @@ help.reinforcedCobblestone.info=Verstärkter Pflasterstein ist wie normaler Pfla
 help.reinforcedSandstone.info=Verstärkter Sandstein ist wie normaler Sandstein, jedoch kann er nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.reinforcedWoodSlabs.info=Verstärkte Holzstufen sind wie normale Holzstufen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.reinforcedStoneSlabs.info=Verstärkte Steinstufen sind wie normale Steinstufen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
+help.protecto.info=Der Protecto, inspiriert von dem Spiel "Megaman: Battle Network 2" von Capcom, attakiert jeden Mob innerhalb eines 10 Blöcke Radius mit einem Blitz alle 10 Sekunden. Der Protecto darf keinen Block über sich haben und es muss regnen, damit er angreift.
 
 help.codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick.
 help.doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
@@ -352,3 +354,4 @@ module.description.radar.redstone=Ein Redstone Modul in einem Tragbaren Radar gi
 module.description.radar.whitelist=Ein Whitelist Modul in einem Radar erlaubt gewhitelisteten Spielern sich unerkannt in dem Radius des Radars zu bewegen.
 module.description.retinalScanner.whitelist=Ein Whitelist Modul in einem Augenscanner erlaubt gewhitelisteten Spielern den Scanner zu nutzen, wenn sie nicht der Besitzer sind.
 module.description.camera.redstone=Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.
+module.description.protecto.whitelist=Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.

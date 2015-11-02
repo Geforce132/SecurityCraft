@@ -358,3 +358,4 @@ module.description.radar.redstone=Adding a redstone module to a portable radar w
 module.description.radar.whitelist=Adding a whitelist module to a portable radar will remove the whitelisted players from the radar's search.
 module.description.retinalScanner.whitelist=Adding the whitelist module to a retinal scanner will allow players to use the scanner even if they aren't the player who placed down the block.
 module.description.camera.redstone=Adding the redstone module to a camera lets the camera emit a 15-block redstone signal when enabled.
+module.description.protecto.whitelist=Adding a whitelist module to a protecto will allow the whitelisted players to walk into the range of the protecto without being targeted.
