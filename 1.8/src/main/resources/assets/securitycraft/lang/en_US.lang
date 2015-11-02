@@ -105,6 +105,7 @@ tile.reinforcedStoneSlabs_stone.name=Reinforced Stone Slab
 tile.reinforcedStoneSlabs_cobble.name=Reinforced Cobblestone Slab
 tile.reinforcedStoneSlabs_sandstone.name=Reinforced Sandstone Slab
 tile.reinforcedDirtSlab.name=Reinforced Dirt Slab
+tile.protecto.name=Protecto
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -184,6 +185,7 @@ help.reinforcedCobblestone.info=Reinforced cobblestone is an unbreakable buildin
 help.reinforcedSandstone.info=Reinforced sandstone is an unbreakable building block. Only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedWoodSlabs.info=Reinforced wood slabs are the same as vanilla wood slabs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedStoneSlabs.info=Reinforced stone slabs are the same as vanilla stone slabs, except only the person who placed it down can destroy it using the universal block remover.
+help.protecto.info=The protecto, inspired by the enemy from the game "Megaman: Battle Network 2" made by Capcom, will attack any mob in a 10-block radius with lightning bolts every 10 seconds. It must be raining, and able to see the sky to do so.
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.

@@ -14,8 +14,8 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
 	
-	private ResourceLocation activeFurnaceTexture;
-	private ResourceLocation deactivatedFurnaceTexture;
+	private ResourceLocation activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
+	private ResourceLocation deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
 
 	public TileEntityKeypadFurnaceRenderer(){
 		this.activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");

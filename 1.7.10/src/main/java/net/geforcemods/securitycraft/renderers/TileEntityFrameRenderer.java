@@ -18,11 +18,10 @@ import com.xcompwiz.lookingglass.api.view.IWorldView;
 public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 	
 	private ModelFrame frameModel;
-	private ResourceLocation frameTexture;
+	private ResourceLocation frameTexture = new ResourceLocation("securitycraft:textures/blocks/frame.png");
 
 	public TileEntityFrameRenderer() {
 		this.frameModel = new ModelFrame();
-		this.frameTexture = new ResourceLocation("securitycraft:textures/blocks/frame.png");
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {

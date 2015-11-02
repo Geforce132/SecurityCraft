@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.models.ModelClaymore;
+import org.lwjgl.opengl.GL11;
+
+import net.geforcemods.securitycraft.models.ModelProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -10,22 +12,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
+public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 
-public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
-	
-	private ModelClaymore claymoreModel;
-	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/claymore.png");
+	private ModelProtecto protectoModel;
+	private ResourceLocation activeTexture = new ResourceLocation("securitycraft:textures/blocks/protectoActive.png");
+	private ResourceLocation deactivatedTexture = new ResourceLocation("securitycraft:textures/blocks/protectoDeactivated.png");
 
-	public TileEntityClaymoreRenderer() {
-		this.claymoreModel = new ModelClaymore();
+	public TileEntityProtectoRenderer() {
+		this.protectoModel = new ModelProtecto();
 	}
-
+	
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		this.claymoreModel.setActive(par1TileEntity.hasWorldObj() && par1TileEntity.blockType != null && par1TileEntity.blockType == mod_SecurityCraft.claymoreActive);
-		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
-		float rotation = 0F;
-
 		if(par1TileEntity.hasWorldObj()){
 			Tessellator tessellator = Tessellator.instance;
 			float f = par1TileEntity.getWorldObj().getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);
@@ -39,26 +36,20 @@ public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		if(par1TileEntity != null && ((TileEntityProtecto) par1TileEntity).canAttack()){
+			Minecraft.getMinecraft().renderEngine.bindTexture(activeTexture);
+		}else{
+			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedTexture);
+		}
 		
 		GL11.glPushMatrix();
 		
-		if(meta == 1){
-			rotation = 0F;
-		}else if(meta == 2){
-			rotation = 1F;
-		}else if(meta == 3){
-			rotation = -10000F; 
-		}else if(meta == 4){
-			rotation = -1F;
-		}
+		GL11.glRotatef(180F, 0, 0.0F, 1.0F);
 		
-		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
-		
-		this.claymoreModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		this.protectoModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-	
+
 }
