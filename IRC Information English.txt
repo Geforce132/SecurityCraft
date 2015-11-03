@@ -1,0 +1,4 @@
+IRC means Internet Relay Chat and is basically a server where you can find tons of chatrooms with different topics.
+SecurityCraft connects to such a chatroom as soon as you do '/sc connect' and sends all messages from '/sc contact' into that room.
+Anyone who is in that room is able to contact you by prefixing your name to their message.
+Please note that that person, and noone else either, cannot connect to your world to play with you as this is not possible.
