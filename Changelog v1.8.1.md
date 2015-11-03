@@ -5,6 +5,7 @@
 - Improved cracked client detection to automatically kick them from IRC
 - Added notification if player is banned from IRC
 - Improved IRC messaging system
+- Added information on how IRC works
 - Fix: Some messages and texts did not display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera
