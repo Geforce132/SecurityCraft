@@ -96,7 +96,7 @@ public class SCIRCBot extends PircBot{
 	{
 		try
 		{
-			Thread.sleep(500);
+			Thread.sleep(2000);
 		}
 		catch (InterruptedException e)
 		{
@@ -106,8 +106,8 @@ public class SCIRCBot extends PircBot{
 		if(sender.equals(this.getNick()))
 		{
 			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
-			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
 			sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
+			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
 		}
 	}
 
