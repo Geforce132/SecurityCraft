@@ -49,13 +49,12 @@ public class CommandSC extends CommandBase implements ICommand{
 		return true;
 	}
 
-	@SuppressWarnings("static-access")
 	public void execute(ICommandSender icommandsender, String[] par1String) throws CommandException {
 		if(par1String.length == 0){
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
 		
-		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.instance.configHandler.isIrcBotEnabled){
+		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.configHandler.isIrcBotEnabled){
 			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.botDisabled"), icommandsender);
 			return;
 		}
@@ -72,6 +71,7 @@ public class CommandSC extends CommandBase implements ICommand{
 				}
 				
 				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.connected"), icommandsender);
+				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.info"), icommandsender);
 			}else if(par1String[0].matches("disconnect")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).disconnect();
@@ -79,7 +79,7 @@ public class CommandSC extends CommandBase implements ICommand{
 					
 				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.disconnected"), icommandsender);
 			}else if(par1String[0].matches("help")){
-				this.getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
+				getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("contact") || par1String[0].matches("bug")){

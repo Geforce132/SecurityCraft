@@ -96,7 +96,7 @@ public class SCIRCBot extends PircBot{
 	{
 		try
 		{
-			Thread.sleep(2000);
+			Thread.sleep(500);
 		}
 		catch (InterruptedException e)
 		{
