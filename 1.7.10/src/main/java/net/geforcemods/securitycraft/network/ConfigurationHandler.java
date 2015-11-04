@@ -136,6 +136,7 @@ public class ConfigurationHandler{
 	private int[]  harmingPotions = {8268, 8236, 16460, 16428};
 	private int[]  healingPotions = {8261, 8229, 16453, 16421};
 
+	//******************configuration options
 	public boolean allowCodebreakerItem;
 	public boolean allowAdminTool;
 	public boolean shouldSpawnFire;
@@ -154,7 +155,6 @@ public class ConfigurationHandler{
 	public boolean fiveMinAutoShutoff;
 	public boolean useLookingGlass;
 	public boolean useOldKeypadRecipe;
-
 	public int portableRadarSearchRadius;
 	public int usernameLoggerSearchRadius;	
 	public int laserBlockRange;
@@ -165,7 +165,9 @@ public class ConfigurationHandler{
 	public int portableRadarDelay;
 	public int claymoreRange;
 	public int imsRange;
-
+	public float cameraSpeed;
+	//***************************************
+	
 	public void setupAdditions(){
 		this.setupTechnicalBlocks();
 		this.setupMines();
@@ -387,7 +389,8 @@ public class ConfigurationHandler{
 		isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
 		disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
 		useOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false).getBoolean(false);
-
+		cameraSpeed = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass (Default: 2)", 2).getInt(2);
+		
 		if(mod_SecurityCraft.configFile.hasChanged()){
 			mod_SecurityCraft.configFile.save();
 		}

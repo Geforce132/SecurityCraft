@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 
 public class EntitySecurityCamera extends Entity {
 
-	private final float CAMERA_SPEED = 2F;
+	private final float CAMERA_SPEED = mod_SecurityCraft.configHandler.cameraSpeed;
 
 	public int blockPosX;
 	public int blockPosY;

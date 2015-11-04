@@ -3,6 +3,7 @@
 - New: [Protecto](http://megaman.wikia.com/wiki/Protecto)
 - New: Notification if player is banned from IRC
 - New: Information on how IRC works
+- New: Added config option to configure camera speed when not using LookingGlass
 - Change: All chat messages/item tooltips/GUI elements etc. are now translateable
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
