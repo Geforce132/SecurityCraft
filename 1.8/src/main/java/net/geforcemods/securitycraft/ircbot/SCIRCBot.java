@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.ircbot;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
@@ -28,7 +27,7 @@ public class SCIRCBot extends PircBot{
 		this.joinChannel("#GeforceMods");
 
 		if(Minecraft.getMinecraft().getSession().getToken() == null)
-			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)"); //TODO: Add this to Geffy
+			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)");
 	}
 
 	@Override
@@ -46,28 +45,6 @@ public class SCIRCBot extends PircBot{
 	{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
 			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.banned"), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
-	}
-
-	/**
-	 * Not working yet!
-	 */
-	@Deprecated
-	@Override
-	protected void onPrivateMessage(String sender, String login, String hostname, String message) {
-		if(sender.matches("Cadbury") && message.toLowerCase().contains("more messages waiting")){
-			this.sendMessage("Cadbury", "$showtell");
-		}else if(sender.matches("Cadbury") && message.contains("--")){
-			mod_SecurityCraft.log("Cadbury sent message to " + this.getNick() + ": " + message);
-			Scanner scanner = new Scanner(message);
-
-			scanner.useDelimiter("--");
-			scanner.next();
-
-			String trimmedMessage = scanner.next();
-			mod_SecurityCraft.log(trimmedMessage);
-			PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", "[" + StatCollector.translateToLocal("messages.irc.reply") + "]: " + EnumChatFormatting.RESET + trimmedMessage, EnumChatFormatting.YELLOW);
-			scanner.close();
-		}
 	}
 
 	@Override
