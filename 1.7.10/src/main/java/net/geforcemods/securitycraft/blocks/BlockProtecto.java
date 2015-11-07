@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,8 +29,8 @@ public class BlockProtecto extends BlockOwnable {
         return par1World.isSideSolid(par2, par3 - 1, par4, ForgeDirection.UP);
     }
 	
-	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityProtecto();
+	public TileEntity createNewTileEntity(World var1, int var2) { 
+		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 	
 }

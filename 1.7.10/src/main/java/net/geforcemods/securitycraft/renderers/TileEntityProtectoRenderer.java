@@ -36,7 +36,7 @@ public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 		
-		if(par1TileEntity != null && ((TileEntityProtecto) par1TileEntity).canAttack()){
+		if(par1TileEntity.hasWorldObj() && ((TileEntityProtecto) par1TileEntity).canAttack()){
 			Minecraft.getMinecraft().renderEngine.bindTexture(activeTexture);
 		}else{
 			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedTexture);

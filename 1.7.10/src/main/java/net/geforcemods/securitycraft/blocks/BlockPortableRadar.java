@@ -55,7 +55,6 @@ public class BlockPortableRadar extends BlockContainer {
     
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         ((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-		((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).setUsername(((EntityPlayer)par5EntityLivingBase).getCommandSenderName());
     }
      
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
@@ -80,7 +79,7 @@ public class BlockPortableRadar extends BlockContainer {
             }
 
             while (iterator.hasNext()){      
-            	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername());            
+            	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwnerName());            
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
@@ -88,7 +87,7 @@ public class BlockPortableRadar extends BlockContainer {
                 
                 if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase())){ continue; }              
                 
-                if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getUsername())){
+                if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwnerName())){
                 	PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(par2, par3, par4))), EnumChatFormatting.BLUE);         
                 }   
                 
@@ -133,7 +132,7 @@ public class BlockPortableRadar extends BlockContainer {
     }
     
 	public TileEntity createNewTileEntity(World world, int par2) {
-		return new TileEntityPortableRadar();
+		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay);
 	}
 	
 }
