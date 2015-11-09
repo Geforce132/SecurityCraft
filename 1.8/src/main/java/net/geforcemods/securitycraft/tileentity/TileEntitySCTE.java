@@ -4,12 +4,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.api.IViewActivated;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -23,8 +25,15 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
+	private boolean attacks = false;
 	
+	private double attackRange = 0.0D;
+
 	private int blockPlaceCooldown = 30;
+	private int ticksBetweenAttacks = 0;
+	private int attackCooldown = 0;
+	
+	private Class<?> typeToAttack = Entity.class;
 
 	public void update() {
 		if(intersectsEntities){
@@ -67,10 +76,44 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 	        	MovingObjectPosition mop = getWorld().rayTraceBlocks(new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ()){
-	        			activatedByView(entity);
+	        			entityViewed(entity);
 	        		}
 	        	}
 	        }
+		}
+		
+		if (attacks) {	
+			if (attackCooldown < ticksBetweenAttacks) {
+				attackCooldown++;
+				return;
+			}
+			
+			if (canAttack()) {
+				int i = pos.getX();
+		        int j = pos.getY();
+		        int k = pos.getZ();
+		        AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(attackRange, attackRange, attackRange);
+		        List<?> list = this.worldObj.getEntitiesWithinAABB(typeToAttack, axisalignedbb);
+		        Iterator<?> iterator = list.iterator();
+		        
+		        boolean attacked = false;
+	
+		        while (iterator.hasNext()) {
+					Entity mobToAttack = (Entity) iterator.next();
+					
+					if (mobToAttack == null || mobToAttack instanceof EntityItem) {
+						continue;
+					}
+		        	
+					if (attackEntity(mobToAttack)) {
+						attacked = true;
+					}
+		        }
+		        
+		        if (attacked) {
+		        	attackCooldown = 0;
+		        }
+			}
 		}
 	}
 	
@@ -78,8 +121,25 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 		((IIntersectable) this.worldObj.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
 	}
 	
-	public void activatedByView(EntityLivingBase entity) {
-		((IViewActivated) this.worldObj.getBlockState(getPos()).getBlock()).onEntityLookedAtBlock(getWorld(), getPos(), entity);
+	/**
+	 * Called when {@link TileEntitySCTE}.isViewActivated(), and when an entity looks directly at this block.
+	 */
+    public void entityViewed(EntityLivingBase entity) {}
+	
+    /**
+	 * Handle your TileEntity's attack to entities here. <p>
+	 * Return true if it successfully attacked, false otherwise.
+	 */
+	public boolean attackEntity(Entity entity) {
+		return false;
+	}
+	
+	/**
+	 * Check if your TileEntity is ready to attack. (i.e: block conditions, metadata, etc.) <p>
+	 * Different from {@link TileEntitySCTE}.doesAttack(), which simply returns if your TileEntity <i>does</i> attack.
+	 */
+	public boolean canAttack() {
+		return false;
 	}
 	
 	/**
@@ -91,6 +151,9 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
     	
         par1NBTTagCompound.setBoolean("intersectsEntities", intersectsEntities);
         par1NBTTagCompound.setBoolean("viewActivated", viewActivated);
+        par1NBTTagCompound.setBoolean("attacks", attacks);
+        par1NBTTagCompound.setDouble("attackRange", attackRange);
+        par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
     }
 
     /**
@@ -109,10 +172,35 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
         {
             this.viewActivated = par1NBTTagCompound.getBoolean("viewActivated");
         }
+        
+        if (par1NBTTagCompound.hasKey("attacks"))
+        {
+            this.attacks = par1NBTTagCompound.getBoolean("attacks");
+        }
+
+        if (par1NBTTagCompound.hasKey("attackRange"))
+        {
+            this.attackRange = par1NBTTagCompound.getDouble("attackRange");
+        }
+        
+        if (par1NBTTagCompound.hasKey("attackCooldown"))
+        {
+            this.attackCooldown = par1NBTTagCompound.getInteger("attackCooldown");
+        }   
     }
     
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
     	return (oldState.getBlock() != newState.getBlock());
+    }
+    
+    public Packet getDescriptionPacket() {                
+    	NBTTagCompound tag = new NBTTagCompound();                
+    	this.writeToNBT(tag);                
+    	return new S35PacketUpdateTileEntity(pos, 1, tag);        
+    }        
+    
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    	readFromNBT(packet.getNbtCompound());        
     }
     
     /**
@@ -132,9 +220,9 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
     }
     
     /**
-     * Sets the TileEntity able to be activated when a player looks at the block. 
+     * Sets this TileEntity able to be activated when a player looks at the block. 
      * <p>
-     * Calls {@link IViewActivated}.onEntityLookedAtBlock(World, BlockPos, EntityLivingBase) when a {@link EntityPlayer} looks at this block.
+     * Calls {@link TileEntitySCTE}.entityViewed(EntityLivingBase) when an {@link EntityLivingBase} looks at this block.
      * <p>
      * Implement IViewActivated in your Block class in order to do stuff with that event.
      */
@@ -145,6 +233,61 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
     
     public boolean isActivatedByView(){
         return viewActivated;
+    }
+    
+    /**
+     * Sets this TileEntity able to attack.
+     * <p>
+     * Calls {@link TileEntitySCTE}.attackEntity(Entity) when this TE's cooldown equals 0.
+     */ 
+    public TileEntitySCTE attacks(Class<?> entityType, int range, int cooldown) {
+    	attacks = true;
+    	typeToAttack = entityType;
+    	attackRange = range;
+    	ticksBetweenAttacks = cooldown;
+    	return this;
+    }
+    
+    /**
+     * @return The range that this TileEntity checks for attackable entities.
+     */
+    public double getAttackRange() {
+    	return attackRange;
+    }
+    
+    /**
+     * @reutrn The number of ticks between attacks.
+     */
+    public int getTicksBetweenAttacks() {
+    	return ticksBetweenAttacks;
+    }
+    
+    /**
+     * @return Gets the number of ticks before {@link TileEntitySCTE}.attackEntity(Entity) is called.
+     */ 
+    public int getAttackCooldown() {
+    	return attackCooldown;
+    }
+    
+    /**
+     *  Set this TileEntity's attack cooldown.
+     */ 
+    public void setAttackCooldown(int cooldown) {
+    	attackCooldown = cooldown;
+    }
+    
+    /**
+     *  Maxes out this TileEntity's attack cooldown, so it'll attempt to attack next tick.
+     */ 
+    public void attackNextTick() {
+    	attackCooldown = ticksBetweenAttacks;
+    }
+    
+    /**
+     * @return If this TileEntity can attack.
+     */  
+    public boolean doesAttack() {
+    	return attacks;
     }
 
 }

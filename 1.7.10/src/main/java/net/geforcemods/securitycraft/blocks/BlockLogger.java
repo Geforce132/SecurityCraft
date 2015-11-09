@@ -42,7 +42,7 @@ public class BlockLogger extends BlockOwnable {
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block p_149695_5_){
     	if(!par1World.isRemote){              	       
         	if(par1World.isBlockIndirectlyGettingPowered(par2, par3, par4)){
-            	((TileEntityLogger)par1World.getTileEntity(par2, par3, par4)).logPlayers();
+		        ((TileEntityLogger) par1World.getTileEntity(par2, par3, par4)).attackNextTick();
             }
         }
     }
@@ -78,29 +78,25 @@ public class BlockLogger extends BlockOwnable {
 
     }
     
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-    {
-        if(p_149691_1_ == 3 && p_149691_2_ == 0){
+    public IIcon getIcon(int par1, int par2) {
+        if(par1 == 3 && par2 == 0){
     		return this.field_149936_O;
     	}
         
-        return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.field_149936_O));
+        return par1 == 1 ? this.field_149935_N : (par1 == 0 ? this.field_149935_N : (par1 != par2 ? this.blockIcon : this.field_149936_O));
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerBlockIcons(IIconRegister par1IIconRegister)
     {
-        this.blockIcon = p_149651_1_.registerIcon("securitycraft:usernameLoggerSide");
-        this.field_149936_O = p_149651_1_.registerIcon("securitycraft:usernameLoggerFront");
-        this.field_149935_N = p_149651_1_.registerIcon("securitycraft:usernameLoggerTop");
+        this.blockIcon = par1IIconRegister.registerIcon("securitycraft:usernameLoggerSide");
+        this.field_149936_O = par1IIconRegister.registerIcon("securitycraft:usernameLoggerFront");
+        this.field_149935_N = par1IIconRegister.registerIcon("securitycraft:usernameLoggerTop");
     }
 
 	public TileEntity createNewTileEntity(World world, int par1) {
-		return new TileEntityLogger();
+		return new TileEntityLogger().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
 	}
 
 }

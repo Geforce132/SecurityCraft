@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
@@ -145,6 +146,15 @@ public static class PlayerUtils{
 		}
 		
 		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
+	}
+	
+	/**
+	 * Is the entity mounted on to a security camera?
+	 * 
+	 * Args: entity.
+	 */
+	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
+		return entity.ridingEntity != null && entity.ridingEntity instanceof EntitySecurityCamera;
 	}
 	
 }

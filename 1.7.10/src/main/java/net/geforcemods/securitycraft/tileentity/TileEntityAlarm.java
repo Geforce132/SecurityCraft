@@ -21,9 +21,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 			}
 			
 			if(isPowered && cooldown == 0){
-				TileEntityAlarm TEA = (TileEntityAlarm) this.worldObj.getTileEntity(xCoord, yCoord, zCoord);
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, SCSounds.ALARM.path, mod_SecurityCraft.configHandler.alarmSoundVolume));
-				TEA.setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
+				setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
 			}			
 		}
 	}

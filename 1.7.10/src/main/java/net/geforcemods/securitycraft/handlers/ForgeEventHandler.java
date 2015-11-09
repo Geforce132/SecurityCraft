@@ -39,6 +39,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -78,7 +79,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.entityLiving != null && event.entityLiving.ridingEntity != null && event.entityLiving.ridingEntity instanceof EntitySecurityCamera){
+		if(event.entityLiving != null && PlayerUtils.isPlayerMountedOnCamera(event.entityLiving)){
 			event.setCanceled(true);
 			return;
 		}
@@ -176,7 +177,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event){
-		if(event.entityPlayer.ridingEntity != null && event.entityPlayer.ridingEntity instanceof EntitySecurityCamera){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.entityPlayer)){
 			event.setCanceled(true);
 		}
 	}
@@ -184,7 +185,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event){
-		if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.ridingEntity != null && Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
+		if(Minecraft.getMinecraft().thePlayer != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
 			if(event.type == RenderGameOverlayEvent.ElementType.EXPERIENCE && Minecraft.getMinecraft().theWorld.getBlock((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ)) instanceof BlockSecurityCamera){
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.resolution, Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ), event.mouseX, event.mouseY);
 			}
@@ -194,7 +195,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void fovUpdateEvent(FOVUpdateEvent event){
-		if(event.entity.ridingEntity != null && event.entity.ridingEntity instanceof EntitySecurityCamera){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.entity)){
 			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
 		}
 	}
@@ -202,8 +203,20 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
-		if(Minecraft.getMinecraft().thePlayer.ridingEntity instanceof EntitySecurityCamera){
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
 			event.setCanceled(true);
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onMouseClicked(MouseEvent event) {
+		if(Minecraft.getMinecraft().theWorld != null)
+		{
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
+			{
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -247,5 +260,5 @@ public class ForgeEventHandler {
 			return false;
 		}
 	}
-
+	
 }

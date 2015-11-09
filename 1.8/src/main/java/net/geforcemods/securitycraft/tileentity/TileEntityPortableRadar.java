@@ -3,30 +3,28 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 	
-	private String username;
 	private String customName;
-	
-	public int cooldown = 0;
-	
-	
-	/**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-    public void update()
-    {
-    	this.cooldown++;
-        
-    	if(cooldown == mod_SecurityCraft.configHandler.portableRadarDelay){
-    		this.worldObj.scheduleUpdate(pos, mod_SecurityCraft.portableRadar, 1);
-    		this.cooldown = 0;
+		
+	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
+    public boolean attackEntity(Entity entity) {
+    	if (entity instanceof EntityPlayer) {
+    		worldObj.scheduleUpdate(pos, mod_SecurityCraft.portableRadar, 1);
+    		return true;
+    	} else {
+    		return false;
     	}
+    }
+    
+    public boolean canAttack() {
+    	return true;
     }
     
     /**
@@ -35,23 +33,9 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);   
-        
-        if (par1NBTTagCompound.hasKey("username"))
-        {
-            this.username = par1NBTTagCompound.getString("username");
-        }
-        
-        if (par1NBTTagCompound.hasKey("owner"))
-        {
-            this.username = par1NBTTagCompound.getString("owner");
-        }     
-        
+         
         if (par1NBTTagCompound.hasKey("customName")){
         	this.customName = par1NBTTagCompound.getString("customName");
-        }
-        
-        if (par1NBTTagCompound.hasKey("cooldown")){
-        	this.cooldown = par1NBTTagCompound.getInteger("cooldown");
         }
     }
 
@@ -61,25 +45,11 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        
-        if(this.username != null && !this.username.isEmpty()){
-        	par1NBTTagCompound.setString("username", this.getOwnerName());
-        }
-          
+      
         if(this.customName != null && !this.customName.isEmpty()){
         	par1NBTTagCompound.setString("customName", this.customName);
         }
-
-        par1NBTTagCompound.setInteger("cooldown", this.cooldown);
     }
-    
-    public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getUsername(){
-		return this.username;
-	}
 	
 	public String getCustomName() {
 		return customName;

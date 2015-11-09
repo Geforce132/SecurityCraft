@@ -71,9 +71,14 @@ public class GuiCameraMonitor extends GuiScreen {
 			if(this.cameraMonitor.getCameraPositions(this.nbtTag).size() < (guibutton.id - 2)){ return; } 
 			
 			int[] cameraPos = ((int[])this.cameraMonitor.getCameraPositions(this.nbtTag).get(guibutton.id - 2));
-			((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2])).mountCamera(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1, Minecraft.getMinecraft().thePlayer);
-			mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1));
-			Minecraft.getMinecraft().thePlayer.closeScreen();
+			
+			if (BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2]) == mod_SecurityCraft.securityCamera) {
+				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2])).mountCamera(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1, Minecraft.getMinecraft().thePlayer);
+				mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(cameraPos[0], cameraPos[1], cameraPos[2], guibutton.id + 1));
+				Minecraft.getMinecraft().thePlayer.closeScreen();
+			} else {
+				guibutton.enabled = false;
+			}
 		}
 	}
 

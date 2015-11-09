@@ -7,6 +7,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
+import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
@@ -163,6 +164,15 @@ public static class PlayerUtils{
 		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
 	}
 	
+	/**
+	 * Is the entity mounted on to a security camera?
+	 * 
+	 * Args: entity.
+	 */
+	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
+		return entity.ridingEntity != null && entity.ridingEntity instanceof EntitySecurityCamera;
+	}
+	
 }
 
 public static class BlockUtils{
@@ -301,8 +311,8 @@ public static class BlockUtils{
 				password = ((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword();
 			}
 
-			if(par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown != 0){
-				cooldown = ((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown;
+			if(par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((TileEntityPortableRadar) par1World.getTileEntity(pos)).getAttackCooldown() != 0){
+				cooldown = ((TileEntityPortableRadar) par1World.getTileEntity(pos)).getAttackCooldown();
 			}
 
 			TileEntity tileEntity = par1World.getTileEntity(pos);
@@ -338,7 +348,7 @@ public static class BlockUtils{
 			}
 
 			if(cooldown != -1 && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar){
-				((TileEntityPortableRadar) par1World.getTileEntity(pos)).cooldown = cooldown;
+				((TileEntityPortableRadar) par1World.getTileEntity(pos)).setAttackCooldown(cooldown);
 			}
 		}else{
 			par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));

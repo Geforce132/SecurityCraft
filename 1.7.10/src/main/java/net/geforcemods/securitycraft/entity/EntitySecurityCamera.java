@@ -179,7 +179,7 @@ public class EntitySecurityCamera extends Entity {
 		}
 
 		if(!this.worldObj.isRemote){
-			if((this.riddenByEntity == null | this.worldObj.isAirBlock(this.blockPosX, this.blockPosY, this.blockPosZ))){
+			if(this.riddenByEntity == null | this.worldObj.getBlock(this.blockPosX, this.blockPosY, this.blockPosZ) != mod_SecurityCraft.securityCamera){
 				setDead();
 				return;
 			}

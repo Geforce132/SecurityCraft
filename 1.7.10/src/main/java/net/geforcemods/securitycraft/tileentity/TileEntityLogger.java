@@ -1,41 +1,27 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
 
-public class TileEntityLogger extends TileEntityOwnable{
+public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	
-	public void updateEntity(){
-		if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 80L == 0L && this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)){		
-			this.logPlayers();
+	public boolean attackEntity(Entity entity) {
+		if (!this.worldObj.isRemote) {		
+        	addPlayerName(((EntityPlayer) entity).getCommandSenderName());
+        	sendChangeToClient();
 		}
+		
+		return true;
 	}
 	
-	public void logPlayers(){
-		double d0 = (double)(mod_SecurityCraft.configHandler.usernameLoggerSearchRadius);
-		
-		AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand(d0, d0, d0);
-        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-        Iterator<?> iterator = list.iterator();
-        
-        while(iterator.hasNext()){
-        	addPlayerName(((EntityPlayer)iterator.next()).getCommandSenderName());
-        }
-        
-    	sendChangeToClient();
+	public boolean canAttack() {
+		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 	}
-    
 	
 	private void addPlayerName(String username){
 		if(!hasPlayerName(username)){
@@ -87,16 +73,6 @@ public class TileEntityLogger extends TileEntityOwnable{
         		this.players[i] = par1NBTTagCompound.getString("player" + i);
         	}
         }
-    }
-	
-    public Packet getDescriptionPacket() {                
-    	NBTTagCompound tag = new NBTTagCompound();                
-    	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);        
-    }        
-    
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
-    	readFromNBT(packet.func_148857_g());        
     }
 	
 	public void sendChangeToClient(){

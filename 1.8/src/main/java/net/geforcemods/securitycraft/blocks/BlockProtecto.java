@@ -42,14 +42,14 @@ public class BlockProtecto extends BlockOwnable {
     {
     	return ((Boolean) state.getValue(ACTIVATED)).booleanValue() == true ? 1 : 0;
     }
-
+    
     protected BlockState createBlockState()
     {
         return new BlockState(this, new IProperty[] {ACTIVATED});
     }
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityProtecto();
+		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 	
 }

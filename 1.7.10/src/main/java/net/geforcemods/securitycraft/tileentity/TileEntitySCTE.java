@@ -3,11 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.api.IViewActivated;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -29,7 +27,7 @@ public class TileEntitySCTE extends TileEntity {
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	
-	private Class typeToAttack = Entity.class;
+	private Class<?> typeToAttack = Entity.class;
 
 	public void updateEntity() {		
 		if(viewActivated){
@@ -56,7 +54,7 @@ public class TileEntitySCTE extends TileEntity {
 	        	MovingObjectPosition mop = worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.blockX == xCoord && mop.blockY == yCoord && mop.blockZ == zCoord){
-	        			activatedByView(entity);
+	        			entityViewed(entity);
 	        		}
 	        	}
 	        }
@@ -97,14 +95,23 @@ public class TileEntitySCTE extends TileEntity {
 		}
 	}
 	
-	public void activatedByView(EntityLivingBase entity) {
-		((IViewActivated) this.worldObj.getBlock(xCoord, yCoord, zCoord)).onEntityLookedAtBlock(worldObj, xCoord, yCoord, zCoord, entity);
-	}
+	/**
+	 * Called when {@link TileEntitySCTE}.isViewActivated(), and when an entity looks directly at this block.
+	 */
+	public void entityViewed(EntityLivingBase entity) {}
 	
+	/**
+	 * Handle your TileEntity's attack to entities here. <p>
+	 * Return true if it successfully attacked, false otherwise.
+	 */
 	public boolean attackEntity(Entity entity) {
 		return false;
 	}
 	
+	/**
+	 * Check if your TileEntity is ready to attack. (i.e: block conditions, metadata, etc.) <p>
+	 * Different from {@link TileEntitySCTE}.doesAttack(), which simply returns if your TileEntity <i>does</i> attack.
+	 */
 	public boolean canAttack() {
 		return false;
 	}
@@ -163,7 +170,7 @@ public class TileEntitySCTE extends TileEntity {
     /**
      * Sets this TileEntity able to be activated when a player looks at the block. 
      * <p>
-     * Calls {@link IViewActivated}.onEntityLookedAtBlock(World, BlockPos, EntityLivingBase) when a {@link EntityPlayer} looks at this block.
+     * Calls {@link TileEntitySCTE}.entityViewed(EntityLivingBase) when an {@link EntityLivingBase} looks at this block.
      * <p>
      * Implement IViewActivated in your Block class in order to do stuff with that event.
      */
@@ -180,14 +187,8 @@ public class TileEntitySCTE extends TileEntity {
      * Sets this TileEntity able to attack.
      * <p>
      * Calls {@link TileEntitySCTE}.attackEntity(Entity) when this TE's cooldown equals 0.
-     * 
-     * @param entityType
-     * @param range
-     * @param cooldown
-     * @return
-     */
-    
-    public TileEntitySCTE attacks(Class entityType, int range, int cooldown) {
+     */ 
+    public TileEntitySCTE attacks(Class<?> entityType, int range, int cooldown) {
     	attacks = true;
     	typeToAttack = entityType;
     	attackRange = range;
@@ -203,10 +204,31 @@ public class TileEntitySCTE extends TileEntity {
     }
     
     /**
-     *  Set the number of ticks before {@link TileEntitySCTE}.attackEntity(Entity) is called.
+     * @reutrn The number of ticks between attacks.
+     */
+    public int getTicksBetweenAttacks() {
+    	return ticksBetweenAttacks;
+    }
+    
+    /**
+     * @return Gets the number of ticks before {@link TileEntitySCTE}.attackEntity(Entity) is called.
      */ 
     public int getAttackCooldown() {
     	return attackCooldown;
+    }
+    
+    /**
+     *  Set this TileEntity's attack cooldown.
+     */ 
+    public void setAttackCooldown(int cooldown) {
+    	attackCooldown = cooldown;
+    }
+    
+    /**
+     *  Maxes out this TileEntity's attack cooldown, so it'll attempt to attack next tick.
+     */ 
+    public void attackNextTick() {
+    	attackCooldown = ticksBetweenAttacks;
     }
     
     /**
