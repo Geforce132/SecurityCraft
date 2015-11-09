@@ -12,5 +12,8 @@
 - Fix: Some messages and texts did not display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera
+- Fix: Crash when mounting a camera which is directly under a block
+- Fix: Crash when trying to mount a non-existing camera
+- Fix: Blocks can be broken when mounted to a camera
 - Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code
