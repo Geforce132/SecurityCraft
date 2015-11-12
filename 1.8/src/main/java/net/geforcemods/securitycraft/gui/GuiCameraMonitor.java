@@ -16,6 +16,9 @@ public class GuiCameraMonitor extends GuiScreen {
 	private ItemCameraMonitor cameraMonitor;
 	private NBTTagCompound nbtTag;
 	private int page = 1;
+	
+	private GuiButton prevButton;
+	private GuiButton nextButton;
 
 	private int prevButtonID = -1;
 	private int nextButtonID = -1;
@@ -33,14 +36,15 @@ public class GuiCameraMonitor extends GuiScreen {
 	public void initGui() {
 		super.initGui();
 
-		this.buttonList.add(new GuiButton(this.page * 5 - 4, 5, this.height - 45, 20, 20, "<"));
+		prevButton = new GuiButton(this.page * 5 - 4, 5, this.height - 45, 20, 20, "<");
+		this.buttonList.add(prevButton);
 
 		mod_SecurityCraft.log("'<' button: " + (this.page * 5 - 4) + " '>' button: " + (this.page * 5 + 2) + " Camera buttons: " + (this.page * 5 - 3) + " thru " + (this.page * 5 + 1) + " Array size: " + this.cameraMonitor.getCameraPositions(this.nbtTag).size());
 		
 		int counter = 1;
 		for(int i = this.page * 5 - 3; i <= this.page * 5 + 1; i++){
 			if ((i - 2 < this.cameraMonitor.getCameraPositions(this.nbtTag).size()) && (this.cameraMonitor.getCameraPositions(this.nbtTag).get(i - 2) != null)) {
-				GuiButton button = new GuiButton(i, -25 + counter * 70, this.height - 45, 60, 20, StatCollector.translateToLocal("tooltip.camera") + " #" + (i - 1));
+				GuiButton button = new GuiButton(i, ((this.width / 2) - 240) + (counter * 70), this.height - 45, 60, 20, StatCollector.translateToLocal("tooltip.camera") + " #" + (i - 1));
 				
 				this.buttonList.add(button);
 				
@@ -52,10 +56,17 @@ public class GuiCameraMonitor extends GuiScreen {
 			counter++;
 		}
 
-		this.buttonList.add(new GuiButton(this.page * 5 + 2, this.width - 25, this.height - 45, 20, 20, ">"));
+		nextButton = new GuiButton(this.page * 5 + 2, this.width - 25, this.height - 45, 20, 20, ">");
+		this.buttonList.add(nextButton);
 	
 		this.prevButtonID = (this.page * 5 - 4);
 		this.nextButtonID = (this.page * 5 + 2);
+		
+		if(page == 1)
+			prevButton.enabled = false;
+		
+		if(cameraMonitor.getCameraPositions(this.nbtTag).size() < (this.page * 5 - 1))
+			nextButton.enabled = false;
 	}
 
 	public void drawScreen(int par1, int par2, float par3) {

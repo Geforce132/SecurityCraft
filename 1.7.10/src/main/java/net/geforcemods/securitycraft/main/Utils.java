@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.network.packets.PacketCSpawnLightning;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -26,6 +27,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -656,6 +658,15 @@ public static class WorldUtils{
 	 */
 	public static boolean isPathObstructed(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
 		return world.rayTraceBlocks(Vec3.createVectorHelper(x1, y1, z1), Vec3.createVectorHelper(x2, y2, z2)) != null;
+	}
+	
+	public static void spawnLightning(World world, double x, double y, double z){
+		EntityLightningBolt lightning = new EntityLightningBolt(world, x, y, z);
+    	world.addWeatherEffect(lightning);
+    	
+    	if(!world.isRemote) {
+    		mod_SecurityCraft.network.sendToAll(new PacketCSpawnLightning(x, y, z));	
+    	}
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

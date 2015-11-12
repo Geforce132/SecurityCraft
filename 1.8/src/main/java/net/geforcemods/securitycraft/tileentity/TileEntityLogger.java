@@ -5,22 +5,27 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	
-    public void update(){
-        if(!this.worldObj.isRemote && this.worldObj.getTotalWorldTime() % 80L == 0L && this.worldObj.isBlockIndirectlyGettingPowered(this.getPos()) > 0){
-        	this.logPlayers();
-        }
-    }
+	public boolean attackEntity(Entity entity) {
+		if (!this.worldObj.isRemote) {		
+        	addPlayerName(((EntityPlayer) entity).getName());
+        	sendChangeToClient();
+		}
+		
+		return true;
+	}
+	
+	public boolean canAttack() {
+		return worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
+	}
 	
 	public void logPlayers(){
 		double d0 = (double)(mod_SecurityCraft.configHandler.usernameLoggerSearchRadius);
@@ -80,16 +85,6 @@ public class TileEntityLogger extends TileEntityOwnable {
         		this.players[i] = par1NBTTagCompound.getString("player" + i);
         	}
         }
-    }
-	 
-    public Packet getDescriptionPacket() {                
-    	NBTTagCompound tag = new NBTTagCompound();                
-    	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(pos, 1, tag);        
-    }        
-    
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
-    	readFromNBT(packet.getNbtCompound());        
     }
 	
 	public void sendChangeToClient(){

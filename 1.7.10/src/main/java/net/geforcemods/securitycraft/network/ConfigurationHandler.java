@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
@@ -85,6 +86,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.packets.PacketCSpawnLightning;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
@@ -119,7 +121,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntitySCTE;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -884,6 +885,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketCOpenMonitorGUI.Handler.class, PacketCOpenMonitorGUI.class, 21, Side.CLIENT);
 		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 22, Side.SERVER);
 		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 23, Side.CLIENT);
+		network.registerMessage(PacketCSpawnLightning.Handler.class, PacketCSpawnLightning.class, 24, Side.CLIENT);
 	}
 	
 }

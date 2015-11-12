@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -47,9 +46,9 @@ public class TileEntityProtecto extends CustomizableSCTE {
         return canAttack;
 	}
 	
-	public boolean isActive(){
-		return BlockUtils.getBlock(worldObj, pos) == mod_SecurityCraft.protecto && BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED);
-	}
+	public boolean shouldRefreshAttackCooldown() {
+    	return false;
+    }
 
 	public EnumCustomModules[] getCustomizableOptions() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};

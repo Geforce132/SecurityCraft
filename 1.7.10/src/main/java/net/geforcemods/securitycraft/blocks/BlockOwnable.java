@@ -16,11 +16,9 @@ public class BlockOwnable extends BlockContainer {
 	}
 	
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	if(!par1World.isRemote){
-    		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-    		}
-    	}
+    	if(par5EntityLivingBase instanceof EntityPlayer){
+    		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+    	}	
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

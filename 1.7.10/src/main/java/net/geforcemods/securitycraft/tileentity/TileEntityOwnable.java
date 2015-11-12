@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {

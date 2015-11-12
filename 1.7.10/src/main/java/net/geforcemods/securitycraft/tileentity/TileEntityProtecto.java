@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.main.Utils.WorldUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,14 +14,13 @@ import net.minecraft.util.StatCollector;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 	
-	public boolean attackEntity(Entity entity){	
-		if (entity instanceof EntityLivingBase) {
-	    	if ((entity instanceof EntityPlayer && BlockUtils.isOwnerOfBlock(this, (EntityPlayer) entity)) || entity instanceof EntityPigZombie || (entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) {
-	    		return false;
-	    	}
+	public boolean attackEntity(Entity entity){			
+		if(entity instanceof EntityLivingBase) 
+		{
+			if((entity instanceof EntityPlayer && BlockUtils.isOwnerOfBlock(this, (EntityPlayer) entity)) || entity instanceof EntityPigZombie || (entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) return false;
 	    	
-	    	EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ);
-	    	worldObj.addWeatherEffect(lightning);
+	    	WorldUtils.spawnLightning(worldObj, entity.posX, entity.posY, entity.posZ);
+	    	
 	    	return true;
 		}
 		
@@ -30,6 +29,10 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	
 	public boolean canAttack() {		
 		return getAttackCooldown() == 200 && worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord) && worldObj.isRaining();
+	}
+	
+	public boolean shouldRefreshAttackCooldown(){
+		return false;
 	}
 	
 	public EnumCustomModules[] getCustomizableOptions() {
