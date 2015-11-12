@@ -8,12 +8,11 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import cpw.mods.fml.common.Loader;
+import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -38,7 +37,7 @@ public class SCIRCBot extends PircBot{
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 		for(User user: this.getUsers(channel)){
 			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
-				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayerFromName((this.getNick())).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayerFromName((this.getNick())));
+				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")));
 				break;
 			}
 		}
@@ -48,7 +47,7 @@ public class SCIRCBot extends PircBot{
 	protected void onServerResponse(int code, String response)
 	{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
-			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.banned"), getPlayerFromName((this.getNick())));
+			PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")), "IRC", StatCollector.translateToLocal("messages.irc.banned"), EnumChatFormatting.RED);
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class SCIRCBot extends PircBot{
 			}
 
 			try{
-				sendMessageToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), getPlayerFromName((this.getNick())));
+				PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")), "IRC", StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), EnumChatFormatting.RED);
 			}catch(PlayerNotFoundException e){
 				e.printStackTrace();
 			}
@@ -92,18 +91,4 @@ public class SCIRCBot extends PircBot{
 		ChatComponentText component = new ChatComponentText(par1String);
 		par2EntityPlayer.addChatComponentMessage(component);
 	}
-
-	private EntityPlayer getPlayerFromName(String name){
-		EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name.replaceFirst("SCUser_", ""));//MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name);
-
-		if (entityplayermp == null)
-		{
-			throw new PlayerNotFoundException();
-		}
-		else
-		{
-			return entityplayermp;
-		}
-	}
-
 }

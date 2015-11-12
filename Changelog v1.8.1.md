@@ -5,6 +5,7 @@
 - New: Information on how IRC works
 - New: Added config option to configure camera speed when not using LookingGlass
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called.
+- API: General improvements
 - Change: All chat messages/item tooltips/GUI elements etc. are now translateable
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
@@ -15,5 +16,6 @@
 - Fix: Crash when mounting a camera which is directly under a block
 - Fix: Crash when trying to mount a non-existing camera
 - Fix: Blocks can be broken when mounted to a camera
+- Fix: Incorrect button layout in camera gui when changing window size and not using LookingGlass
 - Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code

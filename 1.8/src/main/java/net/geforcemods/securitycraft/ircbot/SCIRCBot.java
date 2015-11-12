@@ -44,7 +44,7 @@ public class SCIRCBot extends PircBot{
 	protected void onServerResponse(int code, String response)
 	{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
-			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.banned"), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+			PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))), "IRC", StatCollector.translateToLocal("messages.irc.banned"), EnumChatFormatting.RED);
 	}
 
 	@Override

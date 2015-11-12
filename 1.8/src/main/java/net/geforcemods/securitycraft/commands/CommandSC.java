@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -55,7 +56,7 @@ public class CommandSC extends CommandBase implements ICommand{
 		}
 		
 		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.configHandler.isIrcBotEnabled){
-			sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.botDisabled"), icommandsender);
+			PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.botDisabled"), EnumChatFormatting.RED);
 			return;
 		}
 
@@ -66,18 +67,18 @@ public class CommandSC extends CommandBase implements ICommand{
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
-					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.error"), icommandsender);
+					PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.error"), EnumChatFormatting.RED);
 					return;
 				}
 				
-				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.connected"), icommandsender);
-				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.info"), icommandsender);
+				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.connected"), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.info"), EnumChatFormatting.GREEN);
 			}else if(par1String[0].matches("disconnect")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).disconnect();
 				}
 					
-				sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.disconnected"), icommandsender);
+				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.disconnected"), EnumChatFormatting.RED);
 			}else if(par1String[0].matches("help")){
 				getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
@@ -87,7 +88,7 @@ public class CommandSC extends CommandBase implements ICommand{
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()).sendMessage("#GeforceMods", "> " + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1), icommandsender);
 				}else{
-					sendMessageToPlayer(StatCollector.translateToLocal("messages.irc.notConnected"), icommandsender);
+					PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
 				}
 			}
 		}else{
