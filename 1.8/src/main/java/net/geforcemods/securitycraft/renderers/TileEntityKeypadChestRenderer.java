@@ -17,11 +17,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation trappedDouble = new ResourceLocation("textures/entity/chest/trapped_double.png");
     private static final ResourceLocation christmasDouble = new ResourceLocation("securitycraft:textures/entity/chest/christmas_double.png");
     private static final ResourceLocation normalDoubleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestUnactive.png");
     private static final ResourceLocation normalDoubleActive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestActive.png");
-    private static final ResourceLocation trappedNormal = new ResourceLocation("textures/entity/chest/trapped.png");
     private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
     private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
     private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
@@ -78,10 +76,6 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
                     GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                     GlStateManager.matrixMode(5888);
                 }
-                else if (p_180538_1_.getChestType() == 1)
-                {
-                    this.bindTexture(trappedNormal);
-                }
                 else if (this.field_147509_j)
                 {
                     this.bindTexture(christmasNormal);
@@ -107,10 +101,6 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
                     GlStateManager.scale(8.0F, 4.0F, 1.0F);
                     GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
                     GlStateManager.matrixMode(5888);
-                }
-                else if (p_180538_1_.getChestType() == 1)
-                {
-                    this.bindTexture(trappedDouble);
                 }
                 else if (this.field_147509_j)
                 {
