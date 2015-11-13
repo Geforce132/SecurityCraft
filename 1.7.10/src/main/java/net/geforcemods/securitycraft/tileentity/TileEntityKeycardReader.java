@@ -64,7 +64,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 		passLV = Integer.parseInt(password);
 	}
 
-    public EnumCustomModules[] getCustomizableOptions() {
+    public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
     

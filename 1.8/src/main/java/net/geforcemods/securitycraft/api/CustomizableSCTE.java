@@ -391,13 +391,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 	
 	public int getNumberOfCustomizableOptions(){
-		return this.getCustomizableOptions().length;
+		return this.acceptedModules().length;
 	}
 	
 	public ArrayList<EnumCustomModules> getOptions(){
 		ArrayList<EnumCustomModules> list = new ArrayList<EnumCustomModules>();
 		
-		for(EnumCustomModules module : getCustomizableOptions()){
+		for(EnumCustomModules module : acceptedModules()){
 			list.add(module);
 		}
 		
@@ -408,7 +408,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * Return an array of what {@link EnumCustomModules} can be inserted
 	 * into this tile entity.
 	 */
-	public abstract EnumCustomModules[] getCustomizableOptions();
+	public abstract EnumCustomModules[] acceptedModules();
 	
 	/**
 	 *  Set the descriptions for each module that gets shown on the info buttons in 

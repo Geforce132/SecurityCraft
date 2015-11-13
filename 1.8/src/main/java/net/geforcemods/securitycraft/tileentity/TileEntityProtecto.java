@@ -50,7 +50,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
     	return false;
     }
 
-	public EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 

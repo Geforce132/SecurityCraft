@@ -103,28 +103,28 @@ public class BlockSecurityCamera extends BlockContainer {
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
 		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
-
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
-		int metadata = par1World.getBlockMetadata(par2, par3, par4);
-
-		if(metadata == 1){
-			if(!par1World.isSideSolid(par2, par3, par4 + 1, NORTH)){
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
-			}
-		}else if(metadata == 2){
-			if(!par1World.isSideSolid(par2 + 1, par3, par4, WEST)){
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
-			}
-		}else if(metadata == 3){
-			if(!par1World.isSideSolid(par2, par3, par4 - 1, SOUTH)){
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
-			}
-		}else if(metadata == 4){
-			if(!par1World.isSideSolid(par2 - 1, par3, par4, EAST)){
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
-			}
-		}
-	}
+	
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block) {    			
+    	int metadata = par1World.getBlockMetadata(par2, par3, par4);
+    	
+    	if(metadata == 1) {
+    		if(!par1World.isSideSolid(par2 - 1, par3, par4, EAST)) {
+    			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+    		}
+    	}else if(metadata == 2) {
+    		if(!par1World.isSideSolid(par2 + 1, par3, par4, WEST)) {
+    			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+    		}
+    	}else if(metadata == 3) {
+    		if(!par1World.isSideSolid(par2, par3, par4 - 1, SOUTH)) {
+    			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+    		}
+    	}else if(metadata == 4) {
+    		if(!par1World.isSideSolid(par2, par3, par4 + 1, NORTH)) {
+    			BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+    		}
+    	}
+    }
 
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
 		mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
@@ -146,6 +146,18 @@ public class BlockSecurityCamera extends BlockContainer {
         		world.isSideSolid(x, y, z - 1, SOUTH) ||
         		world.isSideSolid(x, y, z + 1, NORTH));
     }
+    
+    public boolean canProvidePower() {
+		return true;
+	}
+
+	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
+		return BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 7, 10) ? 15 : 0;
+	}
+	
+	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
+		return BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 7, 10) ? 15 : 0;
+	}
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
 		if(!world.isRemote && player.ridingEntity == null){

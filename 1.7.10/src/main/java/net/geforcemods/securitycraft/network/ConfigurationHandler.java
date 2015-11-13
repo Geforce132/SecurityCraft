@@ -267,6 +267,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setBlockName("reinforcedDoubleStoneSlabs");
 		mod_SecurityCraft.reinforcedDirtSlab = new BlockReinforcedSlabs(false, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedDirtSlab");
 		mod_SecurityCraft.reinforcedDoubleDirtSlab = new BlockReinforcedSlabs(true, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setBlockName("reinforcedDoubleDirtSlab");
+	
+		mod_SecurityCraft.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("protecto").setBlockTextureName("securitycraft:protectoParticleTexture");
 	}
 
 	public void setupMines(){
@@ -295,8 +297,6 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.claymoreDefused = new BlockClaymore(Material.circuits, false).setHardness(!ableToBreakMines ? -1F : 1F).setResistance(3F).setBlockName("claymoreDefused").setBlockTextureName("securitycraft:claymore");
 
 		mod_SecurityCraft.ims = new BlockIMS(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCMine).setBlockName("ims").setBlockTextureName("securitycraft:ims");
-	
-		mod_SecurityCraft.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCMine).setBlockName("protecto").setBlockTextureName("securitycraft:protectoParticleTexture");
 	}
 
 	public void setupItems(){

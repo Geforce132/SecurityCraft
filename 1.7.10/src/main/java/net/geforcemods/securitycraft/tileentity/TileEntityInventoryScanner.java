@@ -281,7 +281,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		}
 	}
 
-	public EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE};
 	}
     

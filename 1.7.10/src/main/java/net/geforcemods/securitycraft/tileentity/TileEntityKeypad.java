@@ -56,7 +56,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		passcode = password;
 	}
 
-	public EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
 	

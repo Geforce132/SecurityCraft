@@ -28,7 +28,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 		}
 	}
    
-	public EnumCustomModules[] getCustomizableOptions(){
+	public EnumCustomModules[] acceptedModules(){
 		return new EnumCustomModules[] { EnumCustomModules.REDSTONE };
 	}
 

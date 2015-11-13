@@ -331,6 +331,7 @@ waila.password.notSet=Not set
 
 tooltip.mine=Mine
 tooltip.camera=Camera
+tooltip.cameraMonitor=# of cameras bound: 
 tooltip.module.modifiable=Module is modifiable!
 tooltip.module.notModifiable=Module is not modifiable!
 tooltip.module.usage=Use /module to add players.

@@ -10,6 +10,7 @@
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
 - Change: Reinforced glass and reinforced glass panes drop after breaking again
+- Change: The camera monitor's tooltip now displays the number of cameras bound.
 - Fix: Some messages and texts did not display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera
@@ -17,5 +18,8 @@
 - Fix: Crash when trying to mount a non-existing camera
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Incorrect button layout in camera gui when changing window size and not using LookingGlass
+- Fix: Camera monitors can now store up to 30 camera positions(when not using LookingGlass).
+- Fix: Security cameras would automatically break if another camera was placed next to it when they faced north or west.
+- Fix: Cameras can now emit a redstone signal in the 1.7.10 version.
 - Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code

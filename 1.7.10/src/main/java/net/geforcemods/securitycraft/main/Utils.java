@@ -43,6 +43,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -285,7 +286,7 @@ public static class BlockUtils{
 	/**
 	 * Returns true if the metadata of the block at X, Y, and Z is within (or equal to) the minimum and maximum given.
 	 */
-	public static boolean isMetadataBetween(World world, int x, int y, int z, int min, int max) {
+	public static boolean isMetadataBetween(IBlockAccess world, int x, int y, int z, int min, int max) {
 		return (world.getBlockMetadata(x, y, z) >= min && world.getBlockMetadata(x, y, z) <= max);
 	}
 	

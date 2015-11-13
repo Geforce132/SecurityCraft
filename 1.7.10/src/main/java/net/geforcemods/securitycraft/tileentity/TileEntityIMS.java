@@ -197,7 +197,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		this.targetingOption = targetingOption;
 	}
 
-	public EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 

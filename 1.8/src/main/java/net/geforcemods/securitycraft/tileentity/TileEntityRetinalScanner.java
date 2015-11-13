@@ -26,7 +26,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
     	}
 	}
 
-	public EnumCustomModules[] getCustomizableOptions() {
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 

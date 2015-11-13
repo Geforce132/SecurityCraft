@@ -99,7 +99,7 @@ public class ItemCameraMonitor extends ItemMap {
 						return true;
 					}
 
-					for(int i = 1; i <= 10; i++){
+					for(int i = 1; i <= 30; i++){
 						if (!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
 							par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, par4 + " " + par5 + " " + par6);
 							Utils.PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.GREEN);
@@ -149,11 +149,7 @@ public class ItemCameraMonitor extends ItemMap {
     		return;
     	}
     	
-    	for(int i = 1; i <= 10; i++){
-			if(par1ItemStack.getTagCompound().hasKey("Camera" + i)){
-				par3List.add(StatCollector.translateToLocal("tooltip.camera") + " #" + i + ": " + par1ItemStack.getTagCompound().getString(new StringBuilder().append(StatCollector.translateToLocal("tooltip.camera")).append(i).toString()));
-			}
-		}
+		par3List.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -176,7 +172,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 	
 	public int getSlotFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
-		for(int i = 0; i <= 10; i++){
+		for(int i = 0; i <= 30; i++){
 			if(nbt.hasKey("Camera1" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera1" + i));
 				
@@ -196,7 +192,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 	
 	public String getTagNameFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
-		for(int i = 0; i <= 10; i++){
+		for(int i = 0; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				
@@ -216,7 +212,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 	
 	public boolean isCameraAdded(NBTTagCompound nbt, int par2, int par3, int par4){
-		for(int i = 0; i <= 10; i++){
+		for(int i = 0; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				
@@ -238,7 +234,7 @@ public class ItemCameraMonitor extends ItemMap {
 	public ArrayList<int[]> getCameraPositions(NBTTagCompound nbt){
 		ArrayList<int[]> list = new ArrayList<int[]>();
 
-		for(int i = 1; i <= 10; i++){
+		for(int i = 1; i <= 30; i++){
 			if(nbt != null && nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				
@@ -252,6 +248,22 @@ public class ItemCameraMonitor extends ItemMap {
 		}
 
 		return list;
+	}
+	
+	public int getNumberOfCamerasBound(NBTTagCompound nbt) {
+		if(nbt == null) return 0;
+		
+		for(int i = 1; i <= 30; i++) {
+			if(nbt.hasKey("Camera" + i)) {
+				continue;
+			}
+			else
+			{
+				return i - 1;
+			}
+		}
+		
+		return 0;
 	}
 
 }
