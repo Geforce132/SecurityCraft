@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.ForgeVersion;
 
 public class SCIRCBot extends PircBot{
 
@@ -82,6 +83,7 @@ public class SCIRCBot extends PircBot{
 		if(sender.equals(this.getNick()))
 		{
 			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
+			sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
 			sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes" : "No"));
 			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
 		}
