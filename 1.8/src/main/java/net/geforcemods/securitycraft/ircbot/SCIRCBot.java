@@ -35,7 +35,15 @@ public class SCIRCBot extends PircBot{
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 		for(User user: this.getUsers(channel)){
 			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
-				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + this.getNick().replace("SCUser_", "") + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+				if(message.split(" ")[1].equals("info"))
+				{
+					sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
+					sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
+//					sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
+				}
+				else
+					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + this.getNick().replace("SCUser_", "") + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", ""))));
+				
 				break;
 			}
 		}
@@ -73,12 +81,7 @@ public class SCIRCBot extends PircBot{
 		}
 
 		if(sender.equals(this.getNick()))
-		{
-			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
-			sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
-//			sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
 			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
-		}
 	}
 
 	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){

@@ -38,7 +38,15 @@ public class SCIRCBot extends PircBot{
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 		for(User user: this.getUsers(channel)){
 			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
-				sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")));
+				if(message.split(" ")[1].equals("info"))
+				{
+					sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
+					sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
+					sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes" : "No"));
+				}
+				else
+					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")).getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")));
+				
 				break;
 			}
 		}
@@ -81,12 +89,7 @@ public class SCIRCBot extends PircBot{
 		}
 
 		if(sender.equals(this.getNick()))
-		{
-			sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
-			sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
-			sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes" : "No"));
 			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
-		}
 	}
 
 	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
