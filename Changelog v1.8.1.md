@@ -6,6 +6,7 @@
 - New: Camera Monitor now shows how many cameras are bound to it
 - New: Added config option to configure camera speed when not using LookingGlass
 - New: All chat messages/item tooltips/GUI elements etc. are now translateable
+- New:[1.8] Updated to Forge v11.14.3.1556.
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: General improvements
