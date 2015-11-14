@@ -21,7 +21,7 @@
 - Fix: Crash when trying to mount a non-existing camera
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Incorrect button layout in camera gui when changing window size and not using LookingGlass
-- Fix: Security Cameras break when a block is placed next to them when they faced north or west
+- Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code
