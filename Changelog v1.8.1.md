@@ -3,14 +3,15 @@
 - New: [Protecto](http://megaman.wikia.com/wiki/Protecto)
 - New: Notification if player is banned from IRC
 - New: Information on how IRC works
-- New: Camera Monitor now shows how many cameras are bound to it
 - New: Added config option to configure camera speed when not using LookingGlass
-- New: All chat messages/item tooltips/GUI elements etc. are now translateable
+- New [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker.
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called.
 - API: General improvements
+- Change: All chat messages/item tooltips/GUI elements etc. are now translateable
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
 - Change: Reinforced glass and reinforced glass panes drop after breaking again
+- Change: The camera monitor's tooltip now displays the number of cameras bound.
 - Fix: Some messages and texts did not display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera
@@ -18,7 +19,8 @@
 - Fix: Crash when trying to mount a non-existing camera
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Incorrect button layout in camera gui when changing window size and not using LookingGlass
-- Fix: Security Cameras break when a block is placed next to them when they faced north or west.
-- Fix: Cameras don't emit a redstone signal in 1.7.10
+- Fix: Camera monitors can now store up to 30 camera positions(when not using LookingGlass).
+- Fix: Security cameras would automatically break if another camera was placed next to it when they faced north or west.
+- Fix: [1.7.10] Cameras can now emit a redstone signal.
 - Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code
