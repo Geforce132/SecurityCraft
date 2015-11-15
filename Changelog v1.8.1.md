@@ -19,6 +19,7 @@
 - Fix: Crash occuring when mounted to a camera
 - Fix: Crash when mounting a camera which is directly under a block
 - Fix: Crash when trying to mount a non-existing camera
+- Fix: Crash with Inventory Scanner
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Incorrect button layout in camera gui when changing window size and not using LookingGlass
 - Fix: Security Cameras break when a block is placed next to them if they face north or west

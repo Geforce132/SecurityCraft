@@ -185,7 +185,7 @@ public class BlockInventoryScanner extends BlockContainer {
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-    	if(((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).getType() == null){
+    	if(!(par1IBlockAccess.getTileEntity(par2, par3, par4) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(par2, par3, par4)).getType() == null){
     		return 0 ;
     	}
     	    	

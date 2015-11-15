@@ -216,7 +216,7 @@ public class BlockInventoryScanner extends BlockContainer {
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
     {
-    	if(((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(pos)).getType() == null){
+    	if(!(par1IBlockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(pos)).getType() == null){
     		mod_SecurityCraft.log("type is null on the " + FMLCommonHandler.instance().getEffectiveSide() + " side");
     		return 0 ;
     	}
