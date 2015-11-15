@@ -1,14 +1,14 @@
-package net.geforcemods.securitycraft.blocks;
+	package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockLever;

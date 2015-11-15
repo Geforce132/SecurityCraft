@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;

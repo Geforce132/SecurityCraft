@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;

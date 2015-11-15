@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.gui;
+	package net.geforcemods.securitycraft.gui;
 
 import java.io.IOException;
 
@@ -7,11 +7,11 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

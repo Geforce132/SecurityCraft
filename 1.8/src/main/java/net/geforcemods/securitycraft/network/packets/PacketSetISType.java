@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

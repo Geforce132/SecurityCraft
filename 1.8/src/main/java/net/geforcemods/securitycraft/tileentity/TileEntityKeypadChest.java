@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;

@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;

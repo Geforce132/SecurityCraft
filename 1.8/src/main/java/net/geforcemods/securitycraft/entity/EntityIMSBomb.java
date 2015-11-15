@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;

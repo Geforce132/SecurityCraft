@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.WorldUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;

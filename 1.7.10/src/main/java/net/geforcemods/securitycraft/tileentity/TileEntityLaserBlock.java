@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;

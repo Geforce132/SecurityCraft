@@ -8,8 +8,6 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.main.Utils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -21,6 +19,8 @@ import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlockAndMetadata;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlockMetadata;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -168,7 +168,7 @@ public class EntitySecurityCamera extends Entity {
 
 			if((Mouse.hasWheel()) && (Mouse.isButtonDown(2)) && (this.screenshotCooldown == 0)){
 				this.screenshotCooldown = 30;
-				Utils.ClientUtils.takeScreenshot();
+				ClientUtils.takeScreenshot();
 				Minecraft.getMinecraft().theWorld.playSound(this.posX, this.posY, this.posZ, SCSounds.CAMERASNAP.path, 1.0F, 1.0F, true);
 			}
 

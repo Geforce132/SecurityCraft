@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

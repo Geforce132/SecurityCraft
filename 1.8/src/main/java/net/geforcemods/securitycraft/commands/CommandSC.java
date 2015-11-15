@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;

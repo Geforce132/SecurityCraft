@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;

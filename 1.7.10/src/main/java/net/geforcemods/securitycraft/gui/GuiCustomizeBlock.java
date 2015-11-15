@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
-import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;

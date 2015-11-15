@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;

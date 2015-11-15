@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

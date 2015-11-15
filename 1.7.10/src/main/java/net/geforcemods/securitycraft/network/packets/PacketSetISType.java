@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.util.Utils;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

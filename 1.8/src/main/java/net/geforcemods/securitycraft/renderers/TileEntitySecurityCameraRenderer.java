@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.renderers;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;

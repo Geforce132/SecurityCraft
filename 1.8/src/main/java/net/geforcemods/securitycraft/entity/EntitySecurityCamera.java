@@ -4,9 +4,6 @@ import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -15,6 +12,9 @@ import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAnd
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.gui;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;

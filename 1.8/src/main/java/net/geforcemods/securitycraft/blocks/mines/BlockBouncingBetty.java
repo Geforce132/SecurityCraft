@@ -4,9 +4,9 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.entity.EntityTnTCompact;
-import net.geforcemods.securitycraft.main.Utils.PlayerUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

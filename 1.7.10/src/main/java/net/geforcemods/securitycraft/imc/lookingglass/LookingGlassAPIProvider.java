@@ -10,9 +10,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.Utils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.ClientProxy;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 

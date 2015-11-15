@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.gui;
+package net.geforcemods.securitycraft.util;
 
 import java.util.Iterator;
 import java.util.List;
@@ -8,8 +8,6 @@ import org.lwjgl.opengl.GL12;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
-import net.geforcemods.securitycraft.main.Utils.ClientUtils;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.minecraft.block.Block;
@@ -34,7 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-public class GuiUtils extends Gui{
+public class GuiUtils{
 	
 	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/cameraDashboard.png");
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
@@ -198,5 +196,4 @@ public class GuiUtils extends Gui{
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
-
 }

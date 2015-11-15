@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;

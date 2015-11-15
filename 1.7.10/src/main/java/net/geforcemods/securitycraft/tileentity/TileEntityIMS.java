@@ -5,11 +5,11 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.main.Utils.ModuleUtils;
-import net.geforcemods.securitycraft.main.Utils.WorldUtils;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.Utils.BlockUtils;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
