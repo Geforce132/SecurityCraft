@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.network.packets;
 
-import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class PacketSAddModules implements IMessage{
 	
@@ -62,7 +63,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null && getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof CustomizableSCTE){
 			for(ItemStack module : modules){
-				if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).insertModule(module);
 				}
 			}

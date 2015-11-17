@@ -6,8 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -40,42 +38,42 @@ public class ModuleUtils{
 	public static void checkForBlockAndInsertModule(World par1World, int par2, int par3, int par4, String dir, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		for(int i = 1; i <= range; i++){
 			if(dir.equalsIgnoreCase("x+")){
-				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2 + i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2 + i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("x-")){
-				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2 - i, par3, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2 - i, par3, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y+")){
-				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2, par3 + i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3 + i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y-")){
-				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2, par3 - i, par4) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3 - i, par4, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z+")){
-				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2, par3, par4 + i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 + i, blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z-")){
-				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlock(par2, par3, par4 - i) == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, par2, par3, par4 - i, blockToCheckFor, range, module, updateAdjecentBlocks);
@@ -155,30 +153,6 @@ public class ModuleUtils{
 		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "z+", blockToCheckFor, range, module, updateAdjecentBlocks);
 		checkForBlockAndRemoveModule(par1World, par2, par3, par4, "z-", blockToCheckFor, range, module, updateAdjecentBlocks);
 	}
-
-	/**
-	 * Get the {@link ItemModule} instance of the given module type. <p>
-	 * 
-	 * Args: moduleType.
-	 */
-	public static ItemModule getItemFromModule(EnumCustomModules module) { //TODO Add any new modules to this list!
-		if(module == EnumCustomModules.REDSTONE){
-			return mod_SecurityCraft.redstoneModule;
-		}else if(module == EnumCustomModules.WHITELIST){
-			return mod_SecurityCraft.whitelistModule;
-		}else if(module == EnumCustomModules.BLACKLIST){
-			return mod_SecurityCraft.blacklistModule;
-		}else if(module == EnumCustomModules.HARMING){
-			return mod_SecurityCraft.harmingModule;
-		}else if(module == EnumCustomModules.SMART){
-			return mod_SecurityCraft.smartModule;
-		}else if(module == EnumCustomModules.STORAGE){
-			return mod_SecurityCraft.storageModule;
-		}else{
-			return null;
-		}
-	}
-
 
 	/**
 	 * Gets the players added to customizable modules (such as the Whitelist Module.) <p>

@@ -47,7 +47,7 @@ public class ItemAdminTool extends Item {
 						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.equippedModules"), EnumChatFormatting.DARK_PURPLE);
 						
 						for(EnumCustomModules module : modules){
-							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), "-" + module.getModuleName(), EnumChatFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), "-" + module.getName(), EnumChatFormatting.DARK_PURPLE);
 						}
 					}
 				}

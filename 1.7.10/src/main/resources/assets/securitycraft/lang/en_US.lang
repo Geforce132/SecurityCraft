@@ -262,6 +262,7 @@ gui.password.setup=setup
 gui.camera.activateNightVision=Activate night vision
 gui.camera.toggleRedstone=Toggle redstone signal
 gui.camera.zoom=Zoom in/out
+gui.monitor.selectCameras=Select the camera to view:
 
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
 messages.retinalScanner.hello=Hello #.

@@ -818,7 +818,9 @@ public class ConfigurationHandler{
 		//GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
 	}
 	
-	public void setupOtherRegistrys(){}
+	public void setupOtherRegistries(){
+		EnumCustomModules.refresh();
+	}
 
 	public void setupEntityRegistry() {
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);

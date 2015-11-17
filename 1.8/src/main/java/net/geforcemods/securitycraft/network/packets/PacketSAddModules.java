@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,7 +63,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
 			for(ItemStack module : modules){
-				if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).insertModule(module);
 				}
 			}

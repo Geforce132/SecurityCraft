@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -31,7 +30,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(ModuleUtils.getItemFromModule(tileEntity.acceptedModules()[i])), "");
+    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()), "");
     		this.buttonList.add(button);
     		this.hoverCheckers[i] = new HoverChecker(button, 20);
     	}

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -33,42 +31,42 @@ public class ModuleUtils{
 	public static void checkForBlockAndInsertModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjecentBlocks){
 		for(int i = 1; i <= range; i++){
 			if(dir.equalsIgnoreCase("x+")){
-				if(par1World.getBlockState(pos.east(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.east(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.east(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.east(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("x-")){
-				if(par1World.getBlockState(pos.west(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.west(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.west(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.west(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y+")){
-				if(par1World.getBlockState(pos.up(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.up(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.up(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.up(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("y-")){
-				if(par1World.getBlockState(pos.down(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.down(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.down(i))).insertModule(module);
 					if(updateAdjecentBlocks){ 
 						checkInAllDirsAndInsertModule(par1World, pos.down(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z+")){
-				if(par1World.getBlockState(pos.south(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.south(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.south(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.south(i), blockToCheckFor, range, module, updateAdjecentBlocks);
 					}
 				}
 			}else if(dir.equalsIgnoreCase("z-")){
-				if(par1World.getBlockState(pos.north(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(CustomizableSCTE.getTypeFromModule(module))){
+				if(par1World.getBlockState(pos.north(i)).getBlock() == blockToCheckFor && !((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.getModuleFromStack(module))){
 					((CustomizableSCTE) par1World.getTileEntity(pos.north(i))).insertModule(module);
 					if(updateAdjecentBlocks){
 						checkInAllDirsAndInsertModule(par1World, pos.north(i), blockToCheckFor, range, module, updateAdjecentBlocks);
@@ -161,23 +159,6 @@ public class ModuleUtils{
 		
 		return list;
 	}
-
-	public static ItemModule getItemFromModule(EnumCustomModules module) { //TODO Add any new modules to this list!
-		if(module == EnumCustomModules.REDSTONE){
-			return mod_SecurityCraft.redstoneModule;
-		}else if(module == EnumCustomModules.WHITELIST){
-			return mod_SecurityCraft.whitelistModule;
-		}else if(module == EnumCustomModules.BLACKLIST){
-			return mod_SecurityCraft.blacklistModule;
-		}else if(module == EnumCustomModules.HARMING){
-			return mod_SecurityCraft.harmingModule;
-		}else if(module == EnumCustomModules.SMART){
-			return mod_SecurityCraft.smartModule;
-		}else{
-			return null;
-		}
-	}
-
 	
 	public static boolean checkForModule(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer, EnumCustomModules module){
 		TileEntity te = par1World.getTileEntity(pos);

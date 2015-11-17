@@ -6,13 +6,11 @@ import java.util.Scanner;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -59,7 +57,9 @@ public class ItemCameraMonitor extends Item {
 				return true;
 			}
 		}else if((par3World.isRemote) && (BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera)){
-			openMonitorGUI(par1ItemStack, par2EntityPlayer);
+			if(par2EntityPlayer.ridingEntity != null && par2EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return true; 
+
+			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par3World, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 
@@ -69,7 +69,9 @@ public class ItemCameraMonitor extends Item {
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) {
-			openMonitorGUI(par1ItemStack, par3EntityPlayer);
+			if(par3EntityPlayer.ridingEntity != null && par3EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return par1ItemStack; 
+
+			par3EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 		}
 
 		return par1ItemStack;
@@ -82,13 +84,6 @@ public class ItemCameraMonitor extends Item {
 		}
 
 		par3List.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void openMonitorGUI(ItemStack par1ItemStack, EntityPlayer player){
-		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){ return; }
-		
-		Minecraft.getMinecraft().displayGuiScreen(new GuiCameraMonitor((ItemCameraMonitor)par1ItemStack.getItem(), par1ItemStack.getTagCompound()));
 	}
 
 	public String getTagNameFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {

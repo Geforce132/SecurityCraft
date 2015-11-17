@@ -81,7 +81,6 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
-import net.geforcemods.securitycraft.network.packets.PacketCOpenMonitorGUI;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -831,7 +830,9 @@ public class ConfigurationHandler{
 		//GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
 	}
 
-	public void setupOtherRegistrys(){}
+	public void setupOtherRegistries(){
+		EnumCustomModules.refresh();
+	}
 
 	public void setupEntityRegistry() {
 		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
@@ -865,10 +866,9 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 18, Side.SERVER);
 		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 19, Side.SERVER);
 		network.registerMessage(PacketSMountCamera.Handler.class, PacketSMountCamera.class, 20, Side.SERVER);
-		network.registerMessage(PacketCOpenMonitorGUI.Handler.class, PacketCOpenMonitorGUI.class, 21, Side.CLIENT);
-		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 22, Side.SERVER);
-		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 23, Side.CLIENT);
-		network.registerMessage(PacketCSpawnLightning.Handler.class, PacketCSpawnLightning.class, 24, Side.CLIENT);
+		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 21, Side.SERVER);
+		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 22, Side.CLIENT);
+		network.registerMessage(PacketCSpawnLightning.Handler.class, PacketCSpawnLightning.class, 23, Side.CLIENT);
 	}
 	
 }

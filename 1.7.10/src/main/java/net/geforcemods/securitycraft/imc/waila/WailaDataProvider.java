@@ -50,7 +50,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 			
 			for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules()){
-				body.add("- " + module.getModuleName());
+				body.add("- " + module.getName());
 			}
 		}
 		

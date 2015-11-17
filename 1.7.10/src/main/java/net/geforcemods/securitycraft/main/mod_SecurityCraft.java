@@ -256,6 +256,7 @@ public class mod_SecurityCraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);
 
 		this.configHandler.setupEntityRegistry();
+		this.configHandler.setupOtherRegistries();
 		serverProxy.registerRenderThings();
 	}
 	

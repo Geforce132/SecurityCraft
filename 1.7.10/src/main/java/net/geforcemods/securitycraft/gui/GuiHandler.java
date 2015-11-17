@@ -6,12 +6,15 @@ import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityMRAT;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -56,6 +59,11 @@ public class GuiHandler implements IGuiHandler {
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
     	case 19:
+    		return new ContainerGeneric(player.inventory, tile_entity);
+    		
+    	case 20:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor)) return null;
+
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
     		
@@ -104,6 +112,11 @@ public class GuiHandler implements IGuiHandler {
     	case 19:
     		return new GuiIMS(player.inventory, (TileEntityIMS) tile_entity);
     		
+    	case 20:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor)) return null;
+    		
+    		return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
+    	
     		
     	case 100:
     		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);

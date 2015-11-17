@@ -58,6 +58,7 @@ public class BlockKeypad extends BlockContainer {
 				TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(pos);
 
 				if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+					activate(par1World, pos);
 					return true;
 				}
 
