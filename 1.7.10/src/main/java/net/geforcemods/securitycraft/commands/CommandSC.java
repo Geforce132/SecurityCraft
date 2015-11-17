@@ -80,8 +80,10 @@ public class CommandSC extends CommandBase implements ICommand{
 			}else if(par1String[0].matches("help")){
 				getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
+			else if(par1String[0].matches("bug"))
+				PlayerUtils.sendMessageToPlayer(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport").replace("#link", "http://goo.gl/forms/kfRpvvQzfl"), EnumChatFormatting.GOLD);
 		}else if(par1String.length >= 2){
-			if(par1String[0].matches("contact") || par1String[0].matches("bug")){
+			if(par1String[0].matches("contact")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).sendMessage("#GeforceMods", "> " + getMessageFromArray(par1String, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getCommandSenderName() + " --> IRC> " + getMessageFromArray(par1String, 1), icommandsender);
@@ -89,6 +91,8 @@ public class CommandSC extends CommandBase implements ICommand{
 					PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
 				}
 			}
+			else if(par1String[0].matches("bug"))
+				PlayerUtils.sendMessageToPlayer(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport").replace("#link", "http://goo.gl/forms/kfRpvvQzfl"), EnumChatFormatting.GOLD);
 		}else{
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}

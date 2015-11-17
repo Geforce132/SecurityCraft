@@ -8,6 +8,7 @@
 - New: All chat messages/item tooltips/GUI elements etc. are now translateable
 - New: [1.8] Updated to Forge v11.14.3.1556
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
+- New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: General improvements
 - Change: Improved IRC messaging system
@@ -24,5 +25,4 @@
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: [1.7.10] Cameras don't emit a redstone signal
-- Removed: Functionality of "/sc bug" though you can still use the command if you so wish 
 - Removed: Some redundant/unused code
