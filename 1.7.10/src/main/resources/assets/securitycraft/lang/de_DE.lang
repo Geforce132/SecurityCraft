@@ -263,6 +263,7 @@ gui.password.setup=setup
 gui.camera.activateNightVision=Nachtsicht aktivieren
 gui.camera.toggleRedstone=Redstonesignal umschalten
 gui.camera.zoom=Rein-/Rauszoomen
+gui.monitor.selectCameras=Wähle die Kamera aus, die du anschauen willst:
 
 messages.securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.
 messages.retinalScanner.hello=Hallo #.
@@ -291,6 +292,7 @@ messages.reinforcedSlab=Verstärkte Stufe
 messages.reinforcedSlab.cannotDoubleSlab=Du musst diesen Block besitzen um eine Doppelstufe daraus zu machen.
 messages.cameraMonitor.cannotView=Du kannst dir keine Kamera anschauen die nicht dir gehört.
 messages.cameraMonitor.bound=Kamera bei # mit Monitor verbunden.
+messages.cameraMonitor.unbound=Kamera bei # vom Monitor entbunden.
 messages.cameraMonitor.noCamera=Bei # ist keine Kamera. Rechtsklicke eine neue Kamera um den Monitor zu resetten.
 messages.cameraMonitor.rightclickToView=Rechtsklicke eine Kamera sie anzuschauen.
 messages.mrat.noSlots=Keine freien Plätze um die Mine zu verbinden mehr verfügbar!
