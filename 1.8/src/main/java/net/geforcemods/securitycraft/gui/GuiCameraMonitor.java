@@ -26,7 +26,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
-	private GuiButton[] cameraButtons = new GuiButton[12];
+	private GuiButton[] cameraButtons = new GuiButton[10];
 
 	private int page = 1;
 
@@ -50,7 +50,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		nextPageButton = new GuiButton(0, this.width / 2 + 52, this.height / 2 + 40, 20, 20, ">");
 		this.buttonList.add(prevPageButton);
 		this.buttonList.add(nextPageButton);
-		
+
 		cameraButtons[0] = new GuiButton(1, this.width / 2 - 38, this.height / 2 - 60 + 10, 20, 20, "#");
 		cameraButtons[1] = new GuiButton(2, this.width / 2 - 8, this.height / 2 - 60 + 10, 20, 20, "#");
 		cameraButtons[2] = new GuiButton(3, this.width / 2 + 22, this.height / 2 - 60 + 10, 20, 20, "#");
@@ -60,26 +60,32 @@ public class GuiCameraMonitor extends GuiContainer {
 		cameraButtons[6] = new GuiButton(7, this.width / 2 - 38, this.height / 2 + 10, 20, 20, "#");
 		cameraButtons[7] = new GuiButton(8, this.width / 2 - 8, this.height / 2 + 10, 20, 20, "#");
 		cameraButtons[8] = new GuiButton(9, this.width / 2 + 22, this.height / 2 + 10, 20, 20, "#");
-		cameraButtons[9] = new GuiButton(10, this.width / 2 - 38, this.height / 2 + 40, 20, 20, "#");
-		cameraButtons[10] = new GuiButton(11, this.width / 2 - 8, this.height / 2 + 40, 20, 20, "#");
-		cameraButtons[11] = new GuiButton(12, this.width / 2 + 22, this.height / 2 + 40, 20, 20, "#");
-
+		cameraButtons[9] = new GuiButton(10, this.width / 2 - 38, this.height / 2 + 40, 80, 20, "#");
 
 		for(GuiButton button : cameraButtons) {
-			button.displayString += (button.id + ((page - 1) * 12)); 
+			button.displayString += (button.id + ((page - 1) * 10)); 
 			this.buttonList.add(button);
+			
+			int camPos = (button.id + ((page - 1) * 10));
+			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
+				int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
+				
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2]) != mod_SecurityCraft.securityCamera) {
+					button.enabled = false;
+				}
+			}
 		}
 		
 		if(page == 1) {
 			prevPageButton.enabled = false;
 		}
 		
-		if(cameraMonitor.getCameraPositions(nbtTag).size() < (page * 12)) {
+		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() <= (page * 10)) {
 			nextPageButton.enabled = false;
 		}
 		
-		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 12); i++) {
-			cameraButtons[(i - 1) - ((page - 1) * 12)].enabled = false;
+		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
+			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
 		}
 			
 	}
@@ -96,7 +102,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	        this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
 		}
 		else { 
-			int camID = guibutton.id + ((page - 1) * 12);
+			int camID = guibutton.id + ((page - 1) * 10);
 			
 			int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
 

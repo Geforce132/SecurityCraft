@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -105,6 +106,15 @@ public class PlayerUtils{
 	
 	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, EnumChatFormatting color){
 		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
+	}
+	
+	/**
+	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
+	 * 
+	 * Args: sender, prefix, text, link, color.
+	 */
+	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, EnumChatFormatting color){
+		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**

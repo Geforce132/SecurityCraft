@@ -35,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -43,6 +44,7 @@ import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -58,7 +60,16 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
-		ChatComponentText chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + getRandomTip());
+		
+		String tipKey = getRandomTip();
+		
+		IChatComponent chatcomponenttext;
+		if(tipKey.endsWith("trello") || tipKey.endsWith("patreon")) {
+			chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(StatCollector.translateToLocal(tipKey + ".link")));
+		}
+		else {
+			chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
+		}
 
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
 			event.player.addChatComponentMessage(chatcomponenttext);	
@@ -222,10 +233,10 @@ public class ForgeEventHandler {
 
 	private String getRandomTip(){
 		String[] tips = {
-				StatCollector.translateToLocal("messages.tip.scHelp"),
-				StatCollector.translateToLocal("messages.tip.scConnect"),
-				StatCollector.translateToLocal("messages.tip.trello"),
-				StatCollector.translateToLocal("messages.tip.patreon")
+				"messages.tip.scHelp",
+				"messages.tip.scConnect",
+				"messages.tip.trello",
+				"messages.tip.patreon"
 		};
 
 		return tips[new Random().nextInt(tips.length)];

@@ -83,7 +83,7 @@ public class CommandSC extends CommandBase implements ICommand{
 				getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 			else if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageToPlayer(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport").replace("#link", "http://goo.gl/forms/kfRpvvQzfl"), EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("contact")){
 				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getName()) != null){

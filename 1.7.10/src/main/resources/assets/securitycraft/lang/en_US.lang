@@ -264,7 +264,7 @@ gui.camera.toggleRedstone=Toggle redstone signal
 gui.camera.zoom=Zoom in/out
 gui.monitor.selectCameras=Select the camera to view:
 
-messages.bugReport=You can report a crash or a bug using this GoogleDocs form: #link
+messages.bugReport=You can report a crash or a bug using this GoogleDocs form
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
 messages.retinalScanner.hello=Hello #.
 messages.portableRadar.withName=#p is near your portable radar named #n.
@@ -320,8 +320,10 @@ messages.thanks=Thanks for using SecurityCraft
 messages.tip=Tip:
 messages.tip.scHelp=Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.
 messages.tip.scConnect=Use /sc connect to get personal support from the mod devs!
-messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions! https://trello.com/b/dbCNZwx0/securitycraft
-messages.tip.patreon=Do you want to support SecurityCraft? https://www.patreon.com/Geforce
+messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions!
+messages.tip.trello.link=https://trello.com/b/dbCNZwx0/securitycraft
+messages.tip.patreon=Do you want to support SecurityCraft?
+messages.tip.patreon.link=https://www.patreon.com/Geforce
 
 waila.displayOwner=Display Owner?
 waila.showModules=Show Modules?
