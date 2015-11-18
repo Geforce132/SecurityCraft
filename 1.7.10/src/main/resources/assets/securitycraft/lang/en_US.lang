@@ -321,9 +321,7 @@ messages.tip=Tip:
 messages.tip.scHelp=Typing /sc help will give you a SecurityCraft manual, which will display help info for SecurityCraft blocks/items.
 messages.tip.scConnect=Use /sc connect to get personal support from the mod devs!
 messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions!
-messages.tip.trello.link=https://trello.com/b/dbCNZwx0/securitycraft
 messages.tip.patreon=Do you want to support SecurityCraft?
-messages.tip.patreon.link=https://www.patreon.com/Geforce
 
 waila.displayOwner=Display Owner?
 waila.showModules=Show Modules?

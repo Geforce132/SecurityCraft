@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.handlers;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -50,7 +51,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ForgeEventHandler {
-		
+	
+	private static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
+	
+	public ForgeEventHandler()
+	{
+		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
+		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
+	}
+	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
@@ -58,11 +67,11 @@ public class ForgeEventHandler {
         String tipKey = getRandomTip();
 		
 		IChatComponent chatcomponenttext;
-		if(tipKey.endsWith("trello") || tipKey.endsWith("patreon")) {
-			chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(StatCollector.translateToLocal(tipKey + ".link")));
+		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		}
 		else {
-			chatcomponenttext = new ChatComponentText(StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
 		}
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){

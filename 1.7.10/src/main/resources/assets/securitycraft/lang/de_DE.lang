@@ -322,9 +322,7 @@ messages.tip=Tipp:
 messages.tip.scHelp=Schreibe /sc help um eine SecurityCraft Anleitung zu bekommen, welche dir Informationen zu SecurityCraft Blöcken/Items anzeigt.
 messages.tip.scConnect=Nutze /sc connect um persönlichen Support von den Mod Developern zu bekommen!
 messages.tip.trello=Schau mal beim Trello board von SecurityCraft vorbei und reporte Bugs oder gib uns Vorschläge!
-messages.tip.trello.link=https://trello.com/b/dbCNZwx0/securitycraft
 messages.tip.patreon=Möchtest du SecurityCraft unterstützen?
-messages.tip.patreon.link=https://www.patreon.com/Geforce
 
 waila.displayOwner=Besitzer anzeigen?
 waila.showModules=Module anzeigen?

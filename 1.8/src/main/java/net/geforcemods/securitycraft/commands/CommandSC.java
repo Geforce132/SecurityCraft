@@ -94,7 +94,7 @@ public class CommandSC extends CommandBase implements ICommand{
 				}
 			}
 			else if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageToPlayer(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport").replace("#link", "http://goo.gl/forms/kfRpvvQzfl"), EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 		}else{
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
