@@ -162,6 +162,7 @@ public class mod_SecurityCraft {
 	public static Item universalBlockReinforcerLvL1;
 	public static Item universalBlockReinforcerLvL2;
 	public static Item universalBlockReinforcerLvL3;
+	public static Item briefcase;
 
     //Modules
     public static ItemModule redstoneModule;

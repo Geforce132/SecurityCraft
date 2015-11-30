@@ -62,6 +62,7 @@ import net.geforcemods.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlass;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
+import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCodebreaker;
 import net.geforcemods.securitycraft.items.ItemKeyPanel;
@@ -91,6 +92,7 @@ import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
+import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
@@ -131,6 +133,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.config.Property;
 
 public class ConfigurationHandler{
 	private int[]  harmingPotions = {8268, 8236, 16460, 16428};
@@ -327,6 +330,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL1").setTextureName("securitycraft:universalBlockReinforcerLvL1");
 		mod_SecurityCraft.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL2").setTextureName("securitycraft:universalBlockReinforcerLvL2");
 		mod_SecurityCraft.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL3").setTextureName("securitycraft:universalBlockReinforcerLvL3");
+	
+	    mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
 	}
 
 	public void setupDebuggingBlocks() {}
@@ -338,46 +343,128 @@ public class ConfigurationHandler{
 
 	public void setupConfiguration() {
 		mod_SecurityCraft.configFile.load();
+		
+		Property dummyProp;
 
-		allowCodebreakerItem = mod_SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true).getBoolean(true);
-		allowAdminTool = mod_SecurityCraft.configFile.get("options", "Is admin tool allowed?", false).getBoolean(false);
-		shouldSpawnFire = mod_SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true).getBoolean(true);
-		ableToBreakMines = mod_SecurityCraft.configFile.get("options", "Are mines unbreakable?", true).getBoolean(true);
-		ableToCraftKeycard1 = mod_SecurityCraft.configFile.get("options", "Craftable level 1 keycard?", true).getBoolean(true);
-		ableToCraftKeycard2 = mod_SecurityCraft.configFile.get("options", "Craftable level 2 keycard?", true).getBoolean(true);
-		ableToCraftKeycard3 = mod_SecurityCraft.configFile.get("options", "Craftable level 3 keycard?", true).getBoolean(true);
-		ableToCraftKeycard4 = mod_SecurityCraft.configFile.get("options", "Craftable level 4 keycard?", true).getBoolean(true);
-		ableToCraftKeycard5 = mod_SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true).getBoolean(true);
-		ableToCraftLUKeycard = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true).getBoolean(true);
-		smallerMineExplosion = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false).getBoolean(false);
-		mineExplodesWhenInCreative = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true).getBoolean(true);
-		fiveMinAutoShutoff = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true).getBoolean(true);
-
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true);
+		dummyProp.setLanguageKey("config.isCodebreakerAllowed");
+		allowCodebreakerItem = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Is admin tool allowed?", false);
+		dummyProp.setLanguageKey("config.allowAdminTool");
+		allowAdminTool = dummyProp.getBoolean(false);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true);
+		dummyProp.setLanguageKey("config.shouldSpawnFire");
+		shouldSpawnFire = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Are mines unbreakable?", true);
+		dummyProp.setLanguageKey("config.ableToBreakMines");
+		ableToBreakMines = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 1 keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftKeycard1");
+		ableToCraftKeycard1 = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 2 keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftKeycard2");
+		ableToCraftKeycard2 = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 3 keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftKeycard3");
+		ableToCraftKeycard3 = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 4 keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftKeycard4");
+		ableToCraftKeycard4 = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftKeycard5");
+		ableToCraftKeycard5 = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true);
+		dummyProp.setLanguageKey("config.ableToCraftLUKeycard");
+		ableToCraftLUKeycard = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false);
+		dummyProp.setLanguageKey("config.smallerMineExplosion");
+		smallerMineExplosion = dummyProp.getBoolean(false);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true);
+		dummyProp.setLanguageKey("config.mineExplodesWhenInCreative");
+		mineExplodesWhenInCreative = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true);
+		dummyProp.setLanguageKey("config.fiveMinAutoShutoff");
+		fiveMinAutoShutoff = dummyProp.getBoolean(true);
+		
 		if(!Loader.isModLoaded("LookingGlass")){
 			useLookingGlass = false;
 		}else{
-			useLookingGlass = mod_SecurityCraft.configFile.get("options", "Use LookingGlass for viewing cameras?", true).getBoolean(true);
+			dummyProp = mod_SecurityCraft.configFile.get("options", "Use LookingGlass for viewing cameras?", true);
+			dummyProp.setLanguageKey("config.useLookingGlass");
+			useLookingGlass = dummyProp.getBoolean(true);		
 		}
 		
-		portableRadarSearchRadius = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25).getInt(25);
-		usernameLoggerSearchRadius = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3).getInt(3);
-		laserBlockRange = mod_SecurityCraft.configFile.get("options", "Laser range:", 5).getInt(5);
-		alarmTickDelay = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2).getInt(2);
-		alarmSoundVolume = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D).getDouble(0.8D);
-		portableRadarDelay = (mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4).getInt(4) * 20);
-		claymoreRange = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5).getInt(5);
-		imsRange = mod_SecurityCraft.configFile.get("options", "IMS range:", 12).getInt(12);
-		sayThanksMessage = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true).getBoolean(true);
-		mod_SecurityCraft.debuggingMode = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false).getBoolean(false);
-		isIrcBotEnabled = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true).getBoolean(true);
-		disconnectOnWorldClose = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true).getBoolean(true);
-		useOldKeypadRecipe = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false).getBoolean(false);
-		cameraSpeed = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass (Default: 2)", 2).getInt(2);
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25);
+		dummyProp.setLanguageKey("config.portableRadarSearchRadius");
+		portableRadarSearchRadius = dummyProp.getInt(25);
 		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3);
+		dummyProp.setLanguageKey("config.usernameLoggerSearchRadius");
+		usernameLoggerSearchRadius = dummyProp.getInt(3);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Laser range:", 5);
+		dummyProp.setLanguageKey("config.laserBlockRange");
+		laserBlockRange = dummyProp.getInt(5);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2);
+		dummyProp.setLanguageKey("config.alarmTickDelay");
+		alarmTickDelay = dummyProp.getInt(2);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D);
+		dummyProp.setLanguageKey("config.alarmSoundVolume");
+		alarmSoundVolume = dummyProp.getDouble(0.8D);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4);
+		dummyProp.setLanguageKey("config.portableRadarDelay");
+		portableRadarDelay = dummyProp.getInt(4) * 20;
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5);
+		dummyProp.setLanguageKey("config.claymoreRange");
+		claymoreRange = dummyProp.getInt(5);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "IMS range:", 12);
+		dummyProp.setLanguageKey("config.imsRange");
+		imsRange = dummyProp.getInt(12);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true);
+		dummyProp.setLanguageKey("config.sayThanksMessage");
+		sayThanksMessage = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false);
+		dummyProp.setLanguageKey("config.debuggingMode");
+		mod_SecurityCraft.debuggingMode = dummyProp.getBoolean(false);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true);
+		dummyProp.setLanguageKey("config.isIrcBotEnabled");
+		isIrcBotEnabled = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true);
+		dummyProp.setLanguageKey("config.disconnectOnWorldClose");
+		disconnectOnWorldClose = dummyProp.getBoolean(true);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false);
+		dummyProp.setLanguageKey("config.useOldKeypadRecipe");
+		useOldKeypadRecipe = dummyProp.getBoolean(false);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
+		dummyProp.setLanguageKey("config.cameraSpeed");
+		cameraSpeed = dummyProp.getInt(2);
+				
 		if(mod_SecurityCraft.configFile.hasChanged()){
 			mod_SecurityCraft.configFile.save();
 		}
-
 	}
 
 	public void setupGameRegistry(){
@@ -471,6 +558,7 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL1);
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL2);
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL3);
+		registerItem(mod_SecurityCraft.briefcase);
 
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
@@ -869,6 +957,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 21, Side.SERVER);
 		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 22, Side.CLIENT);
 		network.registerMessage(PacketCSpawnLightning.Handler.class, PacketCSpawnLightning.class, 23, Side.CLIENT);
+		network.registerMessage(PacketSOpenGui.Handler.class, PacketSOpenGui.class, 24, Side.SERVER);
 	}
 	
 }

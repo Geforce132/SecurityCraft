@@ -20,7 +20,7 @@ public class ContainerInventoryScanner extends Container {
     	this.inventoryScannerTE = par2TileEntityInventoryScanner;
         
     	for(int i = 0; i < 10; i++){
-            this.addSlotToContainer(new SlotRestricted(par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
+            this.addSlotToContainer(new SlotOwnerRestricted(par2TileEntityInventoryScanner, par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
         }		
     	
     	if(((CustomizableSCTE) par2TileEntityInventoryScanner).hasModule(EnumCustomModules.STORAGE)){

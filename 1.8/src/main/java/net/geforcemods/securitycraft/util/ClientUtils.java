@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
@@ -83,6 +85,16 @@ public class ClientUtils{
 		NBTTagCompound tag = new NBTTagCompound();                
 		tileEntity.writeToNBT(tag);
 		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
+	}
+	
+	/**
+	 * Sends the client-side NBTTagCompound of a player's held item to the server.
+	 * 
+	 * Only works on the CLIENT side. 
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void syncItemNBT(ItemStack item){
+		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
 	}
 	
 	/**

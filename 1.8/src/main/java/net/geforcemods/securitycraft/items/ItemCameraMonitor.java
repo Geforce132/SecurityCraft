@@ -56,8 +56,13 @@ public class ItemCameraMonitor extends Item {
 
 				return true;
 			}
-		}else if((par3World.isRemote) && (BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera)){
+		}else if(par3World.isRemote && BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera){
 			if(par2EntityPlayer.ridingEntity != null && par2EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return true; 
+			
+			if(par1ItemStack.getTagCompound() == null || par1ItemStack.getTagCompound().hasNoTags()) {
+				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
+				return true;
+			}
 
 			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par3World, pos.getX(), pos.getY(), pos.getZ());
 			return true;
@@ -70,6 +75,11 @@ public class ItemCameraMonitor extends Item {
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) {
 			if(par3EntityPlayer.ridingEntity != null && par3EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return par1ItemStack; 
+			
+			if(par1ItemStack.getTagCompound() == null || par1ItemStack.getTagCompound().hasNoTags()) {
+				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
+			    return par1ItemStack;
+			}
 
 			par3EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 		}

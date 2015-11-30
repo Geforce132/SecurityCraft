@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.models.ModelKeypadFurnaceDeactivated;
 import net.geforcemods.securitycraft.models.ModelProtecto;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.renderers.CustomModeledBlockRenderer;
+import net.geforcemods.securitycraft.renderers.ItemBriefcaseRenderer;
 import net.geforcemods.securitycraft.renderers.ItemCameraMonitorRenderer;
 import net.geforcemods.securitycraft.renderers.ItemTaserRenderer;
 import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
@@ -69,6 +70,7 @@ public class ClientProxy extends ServerProxy{
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(mod_SecurityCraft.protecto), new CustomModeledBlockRenderer(new TileEntityProtecto(), new ModelProtecto(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.cameraMonitor, new ItemCameraMonitorRenderer());
 		MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.taser, new ItemTaserRenderer());
+		MinecraftForgeClient.registerItemRenderer(mod_SecurityCraft.briefcase, new ItemBriefcaseRenderer());
 	}
 
 }

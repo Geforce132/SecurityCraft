@@ -195,7 +195,7 @@
     "display": {
         "thirdperson": {
             "rotation": [ 270, -5, 0 ],
-            "translation": [ 0, 1.75, -3.75 ],
+            "translation": [ -0.5, 1.75, -3.75 ],
             "scale": [ 1.175, 1.175, 1.175 ]
         },
         "firstperson": {

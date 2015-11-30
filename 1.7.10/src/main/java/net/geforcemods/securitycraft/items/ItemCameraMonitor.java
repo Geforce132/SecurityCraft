@@ -52,19 +52,19 @@ public class ItemCameraMonitor extends ItemMap {
 					
 					return true;
 				}else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
-					if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera1")){ return false; }
+					if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) return false; 
 	
-					((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[2]));
-					mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[2])));
+					int[] camCoords = getCameraCoordinates(par1ItemStack.getTagCompound());
+
+					((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(camCoords[0], camCoords[1], camCoords[2]);
+					mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, camCoords[0], camCoords[1], camCoords[2]));
 					par1ItemStack.stackSize--;
 					
 					return true;
 				}else{
-					if(!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("Camera1")){ 
-						return false;
-					}
+					if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) return false;
 					
-					int[] camCoords = {Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[0]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[1]), Integer.parseInt(par1ItemStack.getTagCompound().getString("Camera1").split(" ")[2])};
+					int[] camCoords = getCameraCoordinates(par1ItemStack.getTagCompound());
 					
 		    		if(!(par3World.getBlock(camCoords[0], camCoords[1], camCoords[2]) instanceof BlockSecurityCamera)){
 		    			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(camCoords[0], camCoords[1], camCoords[2])), EnumChatFormatting.RED);
@@ -150,23 +150,33 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 
 	public int[] getCameraCoordinates(NBTTagCompound nbt){
-		if(nbt.hasKey("Camera1")){
-			String[] coords = nbt.getString("Camera1").split(" ");
+		for(int i = 1; i <= 30; i++) {
+			if(nbt.hasKey("Camera" + i)) {
+				String[] coords = nbt.getString("Camera" + i).split(" ");
 
-			return new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])};
+				return new int[]{Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2])};
+			}
 		}
 		
 		return null;
 	}
 	
 	public boolean hasCameraAdded(NBTTagCompound nbt){
-		return nbt != null && nbt.hasKey("Camera1");	
+		if(nbt == null) return false;
+		
+		for(int i = 1; i <= 30; i++) {
+			if(nbt.hasKey("Camera" + i)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public int getSlotFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
-		for(int i = 0; i <= 30; i++){
-			if(nbt.hasKey("Camera1" + i)){
-				Scanner scanner = new Scanner(nbt.getString("Camera1" + i));
+		for(int i = 1; i <= 30; i++){
+			if(nbt.hasKey("Camera" + i)){
+				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				
 				scanner.useDelimiter(" ");
 				
@@ -184,7 +194,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 	
 	public String getTagNameFromPosition(NBTTagCompound nbt, int par2, int par3, int par4) {
-		for(int i = 0; i <= 30; i++){
+		for(int i = 1; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				
@@ -204,7 +214,7 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 	
 	public boolean isCameraAdded(NBTTagCompound nbt, int par2, int par3, int par4){
-		for(int i = 0; i <= 30; i++){
+		for(int i = 1; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				Scanner scanner = new Scanner(nbt.getString("Camera" + i));
 				

@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.containers.BriefcaseInventory;
+import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
@@ -67,6 +69,21 @@ public class GuiHandler implements IGuiHandler {
 
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
+    	case 21:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+    		
+    		return null;
+    		
+    	case 22:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+    		
+    		return null;
+    		
+    	case 23:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+    		
+    		return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
+    		
     		
     	case 100:
         	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
@@ -117,6 +134,22 @@ public class GuiHandler implements IGuiHandler {
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor)) return null;
     		
     		return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
+    		
+    	case 21:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+    		
+    		return new GuiBriefcaseSetup(player.inventory, null);
+    		
+    	case 22:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+    		
+    		return new GuiBriefcase(player.inventory, null);
+    		
+    	case 23:
+    		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
+
+    		return new GuiBriefcaseInventory(player, player.inventory);
+    		
     		
     	case 100:
     		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);

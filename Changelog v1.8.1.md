@@ -1,12 +1,14 @@
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
 - New: [Protecto](http://megaman.wikia.com/wiki/Protecto)
+- New: [Briefcase]
 - New: Notification if player is banned from IRC
 - New: Information on how IRC works
 - New: Camera Monitor now shows how many cameras are bound to it
 - New: Added config option to configure camera speed when not using LookingGlass
-- New: All chat messages/item tooltips/GUI elements etc. are now translateable
-- New: [1.8] Updated to Forge v11.14.3.1556
+- New: All chat messages/item tooltips/GUI elements/config options etc. are now translateable
+- New: Added descriptions to all SecurityCraft config options
+- New: 1.7.10 updated to Forge 10.13.3.1420, 1.8 updated to Forge v11.14.3.1556
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
@@ -26,4 +28,5 @@
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: [1.7.10] Cameras don't emit a redstone signal
+- Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
 - Removed: Some redundant/unused code
