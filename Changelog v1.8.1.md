@@ -1,7 +1,7 @@
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
 - New: [Protecto](http://megaman.wikia.com/wiki/Protecto)
-- New: [Briefcase]
+- New: Briefcase
 - New: Notification if player is banned from IRC
 - New: Information on how IRC works
 - New: Camera Monitor now shows how many cameras are bound to it

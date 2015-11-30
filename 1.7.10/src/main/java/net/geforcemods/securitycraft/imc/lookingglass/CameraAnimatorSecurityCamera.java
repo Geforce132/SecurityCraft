@@ -56,7 +56,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 
 	public void refresh(){}
 
-	public void update(long arg0) {
+	public void update(float arg0) {
 		if(camera == null || cameraMeta == 0){ return; }
 		if(Minecraft.getMinecraft().theWorld.getBlock(xCoord, yCoord, zCoord) != mod_SecurityCraft.securityCamera){ return; }
 		
