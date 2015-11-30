@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom,variant=dirt": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=dirt": { "model": "securitycraft:reinforcedTopSlab_dirt" }
+    }
+}

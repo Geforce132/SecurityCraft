@@ -1,0 +1,7 @@
+{
+    "parent": "block/pane_ns",
+    "textures": {
+        "edge": "blocks/iron_bars",
+        "pane": "securitycraft:blocks/reinforcedIronBars"
+    }
+}
