@@ -8,7 +8,8 @@
 - New: Added config option to configure camera speed when not using LookingGlass
 - New: All chat messages/item tooltips/GUI elements/config options etc. are now translateable
 - New: Added descriptions to all SecurityCraft config options
-- New: 1.7.10 updated to Forge 10.13.3.1420, 1.8 updated to Forge v11.14.3.1556
+- New: 1.7.10 updated to Forge v10.13.3.1420, 1.8 updated to Forge v11.14.3.1556
+- New: 1.8.8 port using Forge v11.15.0.1596
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug

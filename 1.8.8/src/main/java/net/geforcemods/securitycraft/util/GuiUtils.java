@@ -184,12 +184,12 @@ public class GuiUtils{
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
-		worldrenderer.addVertex((double)p_73733_3_, (double)p_73733_2_, (double) zLevel);
-		worldrenderer.addVertex((double)p_73733_1_, (double)p_73733_2_, (double) zLevel);
-		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
-		worldrenderer.addVertex((double)p_73733_1_, (double)p_73733_4_, (double) zLevel);
-		worldrenderer.addVertex((double)p_73733_3_, (double)p_73733_4_, (double) zLevel);
+		worldrenderer.func_181666_a(f1, f2, f3, f); //func_181666_a = setColor
+		worldrenderer.func_181662_b((double)p_73733_3_, (double)p_73733_2_, (double) zLevel); //func_181662_b = addVertex
+		worldrenderer.func_181662_b((double)p_73733_1_, (double)p_73733_2_, (double) zLevel);
+		worldrenderer.func_181666_a(f5, f6, f7, f4);
+		worldrenderer.func_181662_b((double)p_73733_1_, (double)p_73733_4_, (double) zLevel);
+		worldrenderer.func_181662_b((double)p_73733_3_, (double)p_73733_4_, (double) zLevel);
 		tessellator.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glDisable(GL11.GL_BLEND);

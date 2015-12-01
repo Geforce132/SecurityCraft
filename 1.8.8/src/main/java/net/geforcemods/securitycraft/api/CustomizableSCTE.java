@@ -190,10 +190,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	public IChatComponent getDisplayName() {
-		return new ChatComponentTranslation(getName());
+		return new ChatComponentTranslation(getCommandSenderName());
 	}
 	
-	public String getName(){
+	public String getCommandSenderName(){
 		return "Customize";
 	}
 

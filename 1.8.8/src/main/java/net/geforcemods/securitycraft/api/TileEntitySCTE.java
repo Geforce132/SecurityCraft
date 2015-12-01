@@ -15,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.util.Vec3;
@@ -30,7 +31,7 @@ import net.minecraft.world.World;
  * 
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
+public class TileEntitySCTE extends TileEntity implements ITickable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;

@@ -146,7 +146,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             Comparable comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
 
             if(comparable == variantInStack){
-                IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(this.singleSlab.getVariantProperty(), comparable);
+                IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty((IProperty) this.singleSlab.getVariantProperty(), comparable);
 
                 if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                     worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);

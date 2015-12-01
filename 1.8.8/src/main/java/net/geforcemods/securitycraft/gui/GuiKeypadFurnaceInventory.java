@@ -30,7 +30,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
      */
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
-        String s = this.tileFurnace.hasCustomName() ? this.tileFurnace.getName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]);
+        String s = this.tileFurnace.hasCustomName() ? this.tileFurnace.getCommandSenderName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.protectedFurnace.name"), 8, this.ySize - 96 + 2, 4210752);
     }

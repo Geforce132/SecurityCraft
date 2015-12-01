@@ -327,7 +327,7 @@ public class BlockUtils{
 		}
 		
 		if(owner != null && !owner.matches("owner")){
-			return owner.matches(player.getName());
+			return owner.matches(player.getCommandSenderName());
 		}
 		
 		return false;

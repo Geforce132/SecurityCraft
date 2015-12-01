@@ -116,7 +116,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public String getName()
+    public String getCommandSenderName()
     {
         return this.hasCustomName() ? this.furnaceCustomName : "container.furnace";
     }
@@ -505,7 +505,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     }
 
 	public IChatComponent getDisplayName() {
-		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getCommandSenderName()) : new ChatComponentTranslation(this.getCommandSenderName(), new Object[0]));
 	}
 	
 	public void activate(EntityPlayer player) {
