@@ -28,6 +28,7 @@
 - Fix: Crash with Inventory Scanner
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
+- Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
 - Removed: Some redundant/unused code
