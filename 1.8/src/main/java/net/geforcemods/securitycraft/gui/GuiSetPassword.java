@@ -135,7 +135,7 @@ public class GuiSetPassword extends GuiContainer {
     		mod_SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), this.keycodeTextbox.getText()));
     			
     		ClientUtils.closePlayerScreen();
-    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 18, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());	
+    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());	
     	}
     }	
 

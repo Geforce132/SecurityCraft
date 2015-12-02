@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -89,7 +90,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		return true;
     	}else{
     		if(this.isFacingAnotherBlock(par1World, pos)){
-    			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, pos.getX(), pos.getY(), pos.getZ());
+    			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
     		}else{
     			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.inventoryScanner.name"), StatCollector.translateToLocal("messages.invScan.notConnected"), EnumChatFormatting.RED);
     		}

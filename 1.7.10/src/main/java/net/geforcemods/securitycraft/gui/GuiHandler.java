@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.geforcemods.securitycraft.tileentity.TileEntityMRAT;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -23,68 +22,82 @@ import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 	
-	public static final int SETUP_PASSWORD_ID = 17;
-	public static final int INSERT_PASSWORD_ID = 18;
+	public static final int SETUP_KEYCARD_READER_ID = 1;
+	public static final int MRAT_MENU_ID = 2;
+	public static final int MRAT_ACTIVATE_ID = 3;
+	public static final int MRAT_DEACTIVATE_ID = 4;
+	public static final int MRAT_DETONATE_ID = 5;
+	public static final int INVENTORY_SCANNER_GUI_ID = 6;
+	public static final int USERNAME_LOGGER_GUI_ID = 7;
+	public static final int KEYPAD_FURNACE_GUI_ID = 8;
+	public static final int SETUP_PASSWORD_ID = 9;
+	public static final int INSERT_PASSWORD_ID = 10;
+	public static final int IMS_GUI_ID = 11;
+	public static final int CAMERA_MONITOR_GUI_ID = 12;
+	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
+	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
+	public static final int BRIEFCASE_GUI_ID = 15;
+	public static final int CUSTOMIZE_BLOCK = 100;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 				
     	switch(ID){
-    	case 4:
+    	case SETUP_KEYCARD_READER_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     	
-    	case 5:
+    	case MRAT_MENU_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     	
-    	case 6:
+    	case MRAT_ACTIVATE_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     	
-    	case 7:
+    	case MRAT_DEACTIVATE_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     	
-    	case 8:
+    	case MRAT_DETONATE_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
 
-    	case 9:
+    	case INVENTORY_SCANNER_GUI_ID:
     		return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity);
     	
-    	case 11:
+    	case USERNAME_LOGGER_GUI_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
-    	case 16:
+    	case KEYPAD_FURNACE_GUI_ID:
     		return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
     		
-    	case 17:
+    	case SETUP_PASSWORD_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     	
-    	case 18:
+    	case INSERT_PASSWORD_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
-    	case 19:
+    	case IMS_GUI_ID:
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
-    	case 20:
+    	case CAMERA_MONITOR_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor)) return null;
 
     		return new ContainerGeneric(player.inventory, tile_entity);
     		
-    	case 21:
+    	case BRIEFCASE_CODE_SETUP_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
     		
     		return null;
     		
-    	case 22:
+    	case BRIEFCASE_INSERT_CODE_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
     		
     		return null;
     		
-    	case 23:
+    	case BRIEFCASE_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
     		
     		return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
     		
     		
-    	case 100:
+    	case CUSTOMIZE_BLOCK:
         	return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
         	
     	default:
@@ -96,61 +109,61 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		
 		switch(ID){	
-    	case 4:
+    	case SETUP_KEYCARD_READER_ID:
     		return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
     	
-    	case 5:
-    		return new GuiMRAT(player.inventory, (TileEntityMRAT) tile_entity);
+    	case MRAT_MENU_ID:
+    		return new GuiMRAT(player.inventory);
     		
-    	case 6:
-    		return new GuiMRATActivate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
+    	case MRAT_ACTIVATE_ID:
+    		return new GuiMRATActivate(player.inventory, player.getCurrentEquippedItem());
     	
-    	case 7:
-    		return new GuiMRATDeactivate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
+    	case MRAT_DEACTIVATE_ID:
+    		return new GuiMRATDeactivate(player.inventory, player.getCurrentEquippedItem());
     	
-    	case 8:
-    		return new GuiMRATDetonate(player.inventory, (TileEntityMRAT) tile_entity, player.getCurrentEquippedItem());
+    	case MRAT_DETONATE_ID:
+    		return new GuiMRATDetonate(player.inventory, player.getCurrentEquippedItem());
     	
-    	case 9:
+    	case INVENTORY_SCANNER_GUI_ID:
     		return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
     	
-    	case 11:
+    	case USERNAME_LOGGER_GUI_ID:
     		return new GuiLogger(player.inventory, (TileEntityLogger) tile_entity);
     		
-    	case 16:
+    	case KEYPAD_FURNACE_GUI_ID:
     		return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) tile_entity);
     	
-    	case 17:
+    	case SETUP_PASSWORD_ID:
     		return new GuiSetPassword(player.inventory, tile_entity, world.getBlock(x, y, z));
     		
-    	case 18:
+    	case INSERT_PASSWORD_ID:
     		return new GuiCheckPassword(player.inventory, tile_entity, world.getBlock(x, y, z));
     		
-    	case 19:
+    	case IMS_GUI_ID:
     		return new GuiIMS(player.inventory, (TileEntityIMS) tile_entity);
     		
-    	case 20:
+    	case CAMERA_MONITOR_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor)) return null;
     		
     		return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
     	
-    	case 21:
+    	case BRIEFCASE_CODE_SETUP_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
     		
     		return new GuiBriefcaseSetup(player.inventory, null);
     		
-    	case 22:
+    	case BRIEFCASE_INSERT_CODE_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
     		
     		return new GuiBriefcase(player.inventory, null);
     		
-    	case 23:
+    	case BRIEFCASE_GUI_ID:
     		if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase)) return null;
 
     		return new GuiBriefcaseInventory(player, player.inventory);
     		
     	
-    	case 100:
+    	case CUSTOMIZE_BLOCK:
     		return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
     		
     	default:

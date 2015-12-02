@@ -78,7 +78,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 		}
 		
 		par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-		player.openGui(mod_SecurityCraft.instance, 16, par1World, pos.getX(), pos.getY(), pos.getZ());
+		player.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)

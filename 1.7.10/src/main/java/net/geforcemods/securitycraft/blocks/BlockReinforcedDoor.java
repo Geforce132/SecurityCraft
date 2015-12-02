@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -19,8 +21,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockReinforcedDoor extends BlockContainer{
     
@@ -354,6 +354,6 @@ public class BlockReinforcedDoor extends BlockContainer{
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityReinforcedDoor();
+		return new TileEntityOwnable();
 	}
 }

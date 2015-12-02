@@ -114,7 +114,7 @@ public class GuiBriefcase extends GuiContainer {
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 	
 					if(nbt.getString("passcode").matches(code)) {
-						mod_SecurityCraft.network.sendToServer(new PacketSOpenGui(23, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ));
+						mod_SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ));
 					}
 				}
 				

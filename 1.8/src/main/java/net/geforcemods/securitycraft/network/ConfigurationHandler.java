@@ -45,10 +45,10 @@ import net.geforcemods.securitycraft.blocks.mines.BlockFurnaceMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
 import net.geforcemods.securitycraft.items.ItemAdminTool;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSandstone;
@@ -106,8 +106,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
@@ -552,9 +550,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
 		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
-		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "reinforcedDoor");
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
-		GameRegistry.registerTileEntity(TileEntityRAM.class, "remoteAccessDoor");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
 		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");
@@ -904,7 +900,7 @@ public class ConfigurationHandler{
 	}
 
 	public void setupEntityRegistry() {
-		EntityRegistry.registerModEntity(EntityTnTCompact.class, "TnTCompact", 0, mod_SecurityCraft.instance, 128, 1, true);
+		EntityRegistry.registerModEntity(EntityBouncingBetty.class, "BBetty", 0, mod_SecurityCraft.instance, 128, 1, true);
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, mod_SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntityIMSBomb.class, "IMSBomb", 3, mod_SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "SecurityCamera", 4, mod_SecurityCraft.instance, 256, 20, false);

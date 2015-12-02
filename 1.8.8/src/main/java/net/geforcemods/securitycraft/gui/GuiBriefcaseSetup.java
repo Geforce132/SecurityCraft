@@ -117,7 +117,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
     			
     			Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
 	    		ClientUtils.syncItemNBT(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem());
-	    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 22, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+	    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
     		}
     	}
     }	

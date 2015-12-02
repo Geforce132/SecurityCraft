@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -78,7 +79,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		return true;
     	}else{
     		if(this.isFacingAnotherBlock(par1World, par2, par3, par4)){
-    			par5EntityPlayer.openGui(mod_SecurityCraft.instance, 9, par1World, par2, par3, par4);
+    			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, par1World, par2, par3, par4);
     		}else{
     			PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.inventoryScanner.name"), StatCollector.translateToLocal("messages.invScan.notConnected"), EnumChatFormatting.RED);
     		}

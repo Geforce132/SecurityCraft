@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -74,7 +75,7 @@ public class ItemCameraMonitor extends ItemMap {
 					if(mod_SecurityCraft.instance.useLookingGlass()){
 						mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(camCoords[0], camCoords[1], camCoords[2], 0), (EntityPlayerMP) par2EntityPlayer);
 					}else{
-						par2EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par3World, par4, par5, par6);
+						par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, par4, par5, par6);
 					}
 					
 					return false;
@@ -131,7 +132,7 @@ public class ItemCameraMonitor extends ItemMap {
         		
     			mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(camCoords[0], camCoords[1], camCoords[2], 0), (EntityPlayerMP) par3EntityPlayer);
     		}else{
-				par3EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+				par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
     		}
     	}
     	

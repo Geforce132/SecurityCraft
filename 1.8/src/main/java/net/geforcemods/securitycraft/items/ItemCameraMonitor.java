@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -64,7 +65,7 @@ public class ItemCameraMonitor extends Item {
 				return true;
 			}
 
-			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par3World, pos.getX(), pos.getY(), pos.getZ());
+			par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 
@@ -81,7 +82,7 @@ public class ItemCameraMonitor extends Item {
 			    return par1ItemStack;
 			}
 
-			par3EntityPlayer.openGui(mod_SecurityCraft.instance, 20, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+			par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 		}
 
 		return par1ItemStack;

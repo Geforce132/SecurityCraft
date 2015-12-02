@@ -69,7 +69,7 @@ public class BlockKeypadFurnace extends BlockContainer {
 	}
 	
 	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 16, par1World, par2, par3, par4); 
+		par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, par2, par3, par4); 
 		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
 	}
 

@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,15 +11,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unused"})
 public class GuiMRAT extends GuiContainer{
 	
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private TileEntityRAM RADInventory;
 
-	public GuiMRAT(InventoryPlayer inventory, TileEntityRAM tile_entity) {
-        super(new ContainerGeneric(inventory, tile_entity));
-        this.RADInventory = tile_entity;
+	public GuiMRAT(InventoryPlayer inventory) {
+        super(new ContainerGeneric(inventory, null));
 	}
 	
 	public void initGui(){
@@ -56,15 +53,15 @@ public class GuiMRAT extends GuiContainer{
 	 protected void actionPerformed(GuiButton guibutton){
 		 switch(guibutton.id){
 		 case 0:
-			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 6, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_ACTIVATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 case 1:
-			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 7, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_DEACTIVATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 case 2:
-			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, 8, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+			 Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_DETONATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 			 break;
 			 
 		 }

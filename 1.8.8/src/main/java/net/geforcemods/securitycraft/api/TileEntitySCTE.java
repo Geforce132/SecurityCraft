@@ -105,7 +105,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
 		        AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(attackRange, attackRange, attackRange);
 		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
-		        
+
 		        if(!worldObj.isRemote){
 			        boolean attacked = false;
 		
@@ -209,7 +209,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
     	return (oldState.getBlock() != newState.getBlock());
     }
     
-    public Packet getDescriptionPacket() {                
+    public Packet<?> getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
     	return new S35PacketUpdateTileEntity(pos, 1, tag);        

@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -32,7 +33,7 @@ public class ItemMineRemoteAccessTool extends Item {
     	if(par2World.isRemote){
     		return par1ItemStack;
     	}else{
-    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
+    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
     		return par1ItemStack;
     	}
     }
@@ -65,7 +66,7 @@ public class ItemMineRemoteAccessTool extends Item {
   	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.RED);
   	  			}
   	  		}else{
-    			par2EntityPlayer.openGui(mod_SecurityCraft.instance, 5, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+    			par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
   	  		}
   	  	}
     	

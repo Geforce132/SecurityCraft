@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -69,7 +69,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		if(par1World.isRemote){ return; }
 
 		par1World.setBlockToAir(pos);
-		EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F));
+		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F));
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		par1World.spawnEntityInWorld(entitytntprimed);

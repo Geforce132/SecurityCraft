@@ -25,7 +25,7 @@ public class ItemModule extends Item{
 	}
 	
 	@SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		if(nbtCanBeModified){
 			par3List.add(StatCollector.translateToLocal("tooltip.module.modifiable"));
 			par3List.add(StatCollector.translateToLocal("tooltip.module.usage"));

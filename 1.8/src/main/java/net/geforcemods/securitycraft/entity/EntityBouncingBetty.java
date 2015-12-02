@@ -3,23 +3,23 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTnTCompact extends Entity {
-    
+public class EntityBouncingBetty extends Entity {
+	
     /** How long the fuse is */
     public int fuse;
 
-    public EntityTnTCompact(World par1World){
+    public EntityBouncingBetty(World par1World){
         super(par1World);
         this.preventEntitySpawning = true;
         this.setSize(0.500F, 0.200F);
-        this.yOffset = this.height / 2.0F;
     }
 
-    public EntityTnTCompact(World par1World, double par2, double par4, double par6){
+    public EntityBouncingBetty(World par1World, double par2, double par4, double par6){
         this(par1World);
         this.setPosition(par2, par4, par6);
         float f = (float)(Math.random() * Math.PI * 2.0D);
@@ -83,14 +83,14 @@ public class EntityTnTCompact extends Entity {
         }
         else
         {
-            this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
         }
     }
 
     private void explode()
     {
         float f = 6.0F;
-        
+               
         if(mod_SecurityCraft.configHandler.smallerMineExplosion){
         	this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, (f / 2), true);
         }else{

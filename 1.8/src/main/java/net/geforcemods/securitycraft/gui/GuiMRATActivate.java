@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
-import net.geforcemods.securitycraft.tileentity.TileEntityRAM;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
@@ -24,8 +23,8 @@ public class GuiMRATActivate extends GuiContainer{
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
-	public GuiMRATActivate(InventoryPlayer inventory, TileEntityRAM tile_entity, ItemStack item) {
-        super(new ContainerGeneric(inventory, tile_entity));
+	public GuiMRATActivate(InventoryPlayer inventory, ItemStack item) {
+        super(new ContainerGeneric(inventory, null));
         this.item = item;
 	}
 	

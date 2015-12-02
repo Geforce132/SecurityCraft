@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -193,7 +193,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     }
 
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityReinforcedDoor();
+		return new TileEntityOwnable();
 	}
 
 	

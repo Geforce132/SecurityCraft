@@ -10,13 +10,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
+public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
 	
 	private ModelSecurityCamera modelSecurityCamera;
 	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
@@ -25,17 +23,13 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		this.modelSecurityCamera = new ModelSecurityCamera();
 	}
 
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5, int par6) {
+	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
 		float rotation = 0F;
 		
 		if(par1TileEntity.hasWorldObj()){
-			Tessellator tessellator = Tessellator.getInstance();
-			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
 			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
 			int l1 = l % 65536;
 			int l2 = l / 65536;
-			tessellator.getWorldRenderer().func_181666_a(f, f, f, 255); //setColorRGBA_F
-
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 		}
 		

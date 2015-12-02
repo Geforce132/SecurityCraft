@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
 import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -20,8 +20,8 @@ import net.geforcemods.securitycraft.renderers.CustomModeledBlockRenderer;
 import net.geforcemods.securitycraft.renderers.ItemBriefcaseRenderer;
 import net.geforcemods.securitycraft.renderers.ItemCameraMonitorRenderer;
 import net.geforcemods.securitycraft.renderers.ItemTaserRenderer;
+import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
 import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
-import net.geforcemods.securitycraft.renderers.RenderTnTCompact;
 import net.geforcemods.securitycraft.renderers.TileEntityAlarmRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityFrameRenderer;
@@ -49,7 +49,7 @@ public class ClientProxy extends ServerProxy{
 	public void registerRenderThings(){
 		KeyBindings.init();
 				
-		RenderingRegistry.registerEntityRenderingHandler(EntityTnTCompact.class, new RenderTnTCompact());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFrame.class, new TileEntityFrameRenderer());

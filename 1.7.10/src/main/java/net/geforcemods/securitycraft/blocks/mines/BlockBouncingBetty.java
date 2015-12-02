@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -40,16 +40,10 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 */
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
 		if(par5Entity instanceof EntityLivingBase){
-			par1World.setBlockToAir(par2, par3, par4);
-			EntityTnTCompact entitytntprimed = new EntityTnTCompact(par1World, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
-			entitytntprimed.fuse = 15;
-			entitytntprimed.motionY = 0.50D;
-			par1World.spawnEntityInWorld(entitytntprimed);
-			par1World.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
+			explode(par1World, par2, par3, par4);
 		}else{
 			return;
 		}
-
 	}
 
 	/**
@@ -69,7 +63,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 
 	public void explode(World world, int par2, int par3, int par4) {
 		world.setBlockToAir(par2, par3, par4);
-		EntityTnTCompact entitytntprimed = new EntityTnTCompact(world, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
+		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		world.spawnEntityInWorld(entitytntprimed);

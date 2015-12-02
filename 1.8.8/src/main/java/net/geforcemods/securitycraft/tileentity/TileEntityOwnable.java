@@ -45,7 +45,7 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
         }      
     }
     
-    public Packet getDescriptionPacket() {                
+    public Packet<?> getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
     	return new S35PacketUpdateTileEntity(pos, 1, tag);        

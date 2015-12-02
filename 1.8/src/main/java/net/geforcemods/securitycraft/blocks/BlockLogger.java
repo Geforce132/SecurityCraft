@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -36,7 +37,7 @@ public class BlockLogger extends BlockContainer {
     	if(par1World.isRemote){
     		return true;
     	}else{
-    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, 11, par1World, pos.getX(), pos.getY(), pos.getZ());
+    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
     		return true;
     	}
     }

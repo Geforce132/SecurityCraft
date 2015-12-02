@@ -8,18 +8,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityTnTCompact extends Entity {
+public class EntityBouncingBetty extends Entity {
 	
     /** How long the fuse is */
     public int fuse;
 
-    public EntityTnTCompact(World par1World){
+    public EntityBouncingBetty(World par1World){
         super(par1World);
         this.preventEntitySpawning = true;
         this.setSize(0.500F, 0.200F);
     }
 
-    public EntityTnTCompact(World par1World, double par2, double par4, double par6){
+    public EntityBouncingBetty(World par1World, double par2, double par4, double par6){
         this(par1World);
         this.setPosition(par2, par4, par6);
         float f = (float)(Math.random() * Math.PI * 2.0D);

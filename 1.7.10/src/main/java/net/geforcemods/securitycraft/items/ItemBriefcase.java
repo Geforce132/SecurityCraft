@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +25,10 @@ public class ItemBriefcase extends Item {
 	    	}
 	    	
 	    	if(!par1ItemStack.getTagCompound().hasKey("passcode")) {
-	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, 21, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
 	    	}
 	    	else {
-	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, 22, par3World, par4, par5, par6);
+	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par3World, par4, par5, par6);
 	    	}
     	}
     	
@@ -42,10 +43,10 @@ public class ItemBriefcase extends Item {
 	    	}
 	    	
 	    	if(!par1ItemStack.getTagCompound().hasKey("passcode")) {
-	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, 21, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 	    	}
 	    	else {
-	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, 22, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 	    	}
     	}
     	

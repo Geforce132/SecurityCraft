@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -8,22 +8,21 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderTnTCompact extends Render{
+public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 
-    public RenderTnTCompact(RenderManager p_i46134_1_)
+    public RenderBouncingBetty(RenderManager p_i46134_1_)
     {
         super(p_i46134_1_);
         this.shadowSize = 0.5F;
     }
 
-    public void doRender(EntityTnTCompact entity, double x, double y, double z, float p_76986_8_, float partialTicks)
+    public void doRender(EntityBouncingBetty entity, double x, double y, double z, float p_76986_8_, float partialTicks)
     {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
@@ -68,18 +67,14 @@ public class RenderTnTCompact extends Render{
         super.doRender(entity, x, y, z, p_76986_8_, partialTicks);
     }
 
-    protected ResourceLocation func_180563_a(EntityTnTCompact p_180563_1_)
+    protected ResourceLocation func_180563_a(EntityBouncingBetty p_180563_1_)
     {
         return TextureMap.locationBlocksTexture;
     }
 
-    protected ResourceLocation getEntityTexture(Entity entity)
+    protected ResourceLocation getEntityTexture(EntityBouncingBetty entity)
     {
-        return this.func_180563_a((EntityTnTCompact)entity);
+        return this.func_180563_a((EntityBouncingBetty)entity);
     }
-
-    public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float partialTicks)
-    {
-        this.doRender((EntityTnTCompact)entity, x, y, z, p_76986_8_, partialTicks);
-    }
+    
 }

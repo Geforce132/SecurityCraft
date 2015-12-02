@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.renderers;
 
-import net.geforcemods.securitycraft.entity.EntityTnTCompact;
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
@@ -8,22 +12,17 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 @SideOnly(Side.CLIENT)
-public class RenderTnTCompact extends Render
+public class RenderBouncingBetty extends Render
 {
     private RenderBlocks blockRenderer = new RenderBlocks();
 
-    public RenderTnTCompact()
+    public RenderBouncingBetty()
     {
         this.shadowSize = 0.5F;
     }
 
-    public void renderPrimedTNT(EntityTnTCompact par1EntityTNTPrimed, double par2, double par4, double par6, float par8, float par9)
+    public void renderPrimedTNT(EntityBouncingBetty par1EntityTNTPrimed, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
@@ -70,7 +69,7 @@ public class RenderTnTCompact extends Render
         GL11.glPopMatrix();
     }
 
-    protected ResourceLocation func_110808_a(EntityTnTCompact par1EntityTNTPrimed)
+    protected ResourceLocation func_110808_a(EntityBouncingBetty par1EntityTNTPrimed)
     {
         return TextureMap.locationBlocksTexture;
     }
@@ -80,7 +79,7 @@ public class RenderTnTCompact extends Render
      */
     protected ResourceLocation getEntityTexture(Entity par1Entity)
     {
-        return this.func_110808_a((EntityTnTCompact)par1Entity);
+        return this.func_110808_a((EntityBouncingBetty)par1Entity);
     }
 
     /**
@@ -91,6 +90,6 @@ public class RenderTnTCompact extends Render
      */
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        this.renderPrimedTNT((EntityTnTCompact)par1Entity, par2, par4, par6, par8, par9);
+        this.renderPrimedTNT((EntityBouncingBetty)par1Entity, par2, par4, par6, par8, par9);
     }
 }
