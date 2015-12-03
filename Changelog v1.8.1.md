@@ -20,7 +20,7 @@
 - Change: Reinforced glass and reinforced glass panes drop after breaking again
 - Change: Camera monitors can now store up to 30 cameras when not using LookingGlass
 - Change: Camera selection GUI when not using LookingGlass
-- Change: Changed the name of some SecurityCraft classes
+- Change: Changed the name of some SecurityCraft files
 - Fix: Some messages and texts did not display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera

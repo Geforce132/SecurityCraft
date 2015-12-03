@@ -19,6 +19,8 @@ import net.minecraftforge.fml.common.Loader;
 
 public class SCIRCBot extends PircBot{
 
+	private static final char prefix = '!';
+	
 	public SCIRCBot(String par1String){
 		this.setName(par1String);
 	}
@@ -26,6 +28,7 @@ public class SCIRCBot extends PircBot{
 	public void connectToChannel() throws IOException, IrcException, NickAlreadyInUseException{
 		this.connect("irc.esper.net");
 		this.joinChannel("#GeforceMods");
+		this.setVerbose(true);
 
 		if(Minecraft.getMinecraft().getSession().getToken() == null)
 			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)");
@@ -35,7 +38,8 @@ public class SCIRCBot extends PircBot{
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
 		for(User user: this.getUsers(channel)){
 			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
-				if(message.split(" ")[1].equals("info"))
+				//commands
+				if(message.split(" ")[1].equals(prefix + "info"))
 				{
 					sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
 					sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
