@@ -14,6 +14,7 @@
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
+- API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: General improvements
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
