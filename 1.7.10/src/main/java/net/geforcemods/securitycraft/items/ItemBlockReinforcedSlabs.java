@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -101,14 +101,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             int j1 = i1 & 7;
             boolean flag = (i1 & 8) != 0;
             
-            String name = null;
-            String uuid = null;
+            Owner owner = null;
 
             if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable){
-            	name = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerName();
-            	uuid = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerUUID();
+            	owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
 
-            	if(!BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
+            	if(!((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
             		if(!par3World.isRemote){
             			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
             		}
@@ -122,8 +120,8 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                     par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.getBlockVariant(block, i1).stepSound.func_150496_b(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getPitch() * 0.8F);
                     --par1ItemStack.stackSize;
                     
-                    if(name != null && uuid != null){
-                    	((IOwnable) par3World.getTileEntity(par4, par5, par6)).setOwner(uuid, name);
+                    if(owner != null){
+                    	((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner.getUUID(), owner.getName());
                     }
                 }
 
@@ -207,12 +205,10 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         int i1 = par3World.getBlockMetadata(par4, par5, par6);
         int j1 = i1 & 7;
         
-        String name = null;
-        String uuid = null;
+        Owner owner = null;
 
         if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable){
-        	name = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerName();
-        	uuid = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwnerUUID();
+        	owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
         }
 
         if(block == this.singleSlab && j1 == par1ItemStack.getItemDamage()){
@@ -220,8 +216,8 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             	par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.getBlockVariant(i1).stepSound.func_150496_b(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getPitch() * 0.8F);
                 --par1ItemStack.stackSize;
                 
-                if(name != null && uuid != null){
-                	((IOwnable) par3World.getTileEntity(par4, par5, par6)).setOwner(uuid, name);
+                if(owner != null){
+                	((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner.getUUID(), owner.getName());
                 }
             }
 

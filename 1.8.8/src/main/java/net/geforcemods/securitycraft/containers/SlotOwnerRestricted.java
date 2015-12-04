@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -22,7 +21,7 @@ public class SlotOwnerRestricted extends Slot {
      * Return whether this slot's stack can be taken from this slot.
      */
     public boolean canTakeStack(EntityPlayer par1EntityPlayer){
-    	return (BlockUtils.isOwnerOfBlock(tileEntity, par1EntityPlayer));
+    	return (tileEntity.getOwner().isOwner(par1EntityPlayer));
     }
     
     public void putStack(ItemStack p_75215_1_){

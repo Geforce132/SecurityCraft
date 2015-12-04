@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -153,12 +154,11 @@ public class BlockAlarm extends BlockOwnable {
     		boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
     		if(!isPowered){
-    			String name = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerName();
-				String uuid = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerUUID();
+    			Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarmLit);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(uuid, name);
+				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(true);
 			}
     		
@@ -166,12 +166,11 @@ public class BlockAlarm extends BlockOwnable {
     		boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
 			if(isPowered){
-				String name = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerName();
-				String uuid = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwnerUUID();
+    			Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarm);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).setOwner(uuid, name);
+				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(false);
 			}
 		}

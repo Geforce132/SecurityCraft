@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
@@ -39,7 +38,7 @@ public class ItemCameraMonitor extends ItemMap {
 			//When the mod is using the LookingGlass system.
 			if(mod_SecurityCraft.instance.useLookingGlass()){
 				if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
-					if(!BlockUtils.isOwnerOfBlock((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
+					if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
 						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 						return false;
 					}
@@ -82,7 +81,7 @@ public class ItemCameraMonitor extends ItemMap {
 				}
 			}else{ //When the mod is using the built-in mounting system.
 				if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.securityCamera){
-					if(!BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(par4, par5, par6), par2EntityPlayer)){
+					if(!((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
 						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 						return true;
 					}

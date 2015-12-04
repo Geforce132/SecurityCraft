@@ -37,7 +37,7 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 		
 		if(!par1World.isRemote){
     		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
     		}
     	}
     }

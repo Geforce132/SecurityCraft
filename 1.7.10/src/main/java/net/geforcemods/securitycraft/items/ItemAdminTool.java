@@ -32,8 +32,8 @@ public class ItemAdminTool extends Item {
 				TileEntity te = par3World.getTileEntity(par4, par5, par6);
 				
 				if(te instanceof IOwnable){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.name").replace("#", (((IOwnable) te).getOwnerName() == null ? "????" : ((IOwnable) te).getOwnerName())), EnumChatFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwnerUUID() == null ? "????" : ((IOwnable) te).getOwnerUUID())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), EnumChatFormatting.DARK_PURPLE);
 				}
 				
 				if(te instanceof IPasswordProtected){

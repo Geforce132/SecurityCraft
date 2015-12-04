@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -65,14 +65,12 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                 Comparable<?> comparable = iblockstate.getValue(iproperty);
                 BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
                 
-                String name = null;
-                String uuid = null;
+                Owner owner = null;
 
                 if(worldIn.getTileEntity(pos) instanceof IOwnable){
-                	name = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerName();
-                	uuid = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerUUID();
+                	owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
                 	
-                	if(!BlockUtils.isOwnerOfBlock((IOwnable) worldIn.getTileEntity(pos), playerIn)){
+                	if(!owner.owns((IOwnable) worldIn.getTileEntity(pos))){
                 		if(!worldIn.isRemote){
                 			PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
                 		}
@@ -88,8 +86,8 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                         worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
                         --stack.stackSize;
                         
-                        if(name != null && uuid != null){
-                        	((IOwnable) worldIn.getTileEntity(pos)).setOwner(uuid, name);
+                        if(owner != null){
+                        	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
                         }
                     }
 
@@ -124,12 +122,10 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
     private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack){
         IBlockState iblockstate = worldIn.getBlockState(pos);
         
-        String name = null;
-        String uuid = null;
+        Owner owner = null;
 
         if(worldIn.getTileEntity(pos) instanceof IOwnable){
-        	name = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerName();
-        	uuid = ((IOwnable) worldIn.getTileEntity(pos)).getOwnerUUID();
+        	owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
         }
 
         if(iblockstate.getBlock() == this.singleSlab){
@@ -142,8 +138,8 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                     worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
                     --stack.stackSize;
                     
-                    if(name != null && uuid != null){
-                    	((IOwnable) worldIn.getTileEntity(pos)).setOwner(uuid, name);
+                    if(owner != null){
+                    	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
                     }
                 }
 

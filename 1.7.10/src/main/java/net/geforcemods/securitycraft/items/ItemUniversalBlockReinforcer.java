@@ -59,7 +59,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			}
 			
 			//the following only happens if a block has been changed, as the else statement terminates in itself
-			((IOwnable)world.getTileEntity(x, y, z)).setOwner(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+			((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
 			stack.damageItem(1, player);
 			return true;
 		}

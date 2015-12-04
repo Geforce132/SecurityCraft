@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -9,8 +10,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	
-	private String ownerUUID = "ownerUUID";
-	private String owner = "owner";
+	private Owner owner = new Owner();
     
     /**
      * Writes a tile entity to NBT.
@@ -18,13 +18,11 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        if(this.owner != null && this.owner != ""){
-        	par1NBTTagCompound.setString("owner", this.owner);
-        }
         
-        if(this.ownerUUID != null && this.ownerUUID != ""){
-        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
-        }  
+        if(this.owner != null){
+        	par1NBTTagCompound.setString("owner", this.owner.getName());
+        	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
+        }
     }
 
     /**
@@ -36,12 +34,12 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 
         if (par1NBTTagCompound.hasKey("owner"))
         {
-            this.owner = par1NBTTagCompound.getString("owner");
+            this.owner.setOwnerName(par1NBTTagCompound.getString("owner"));
         }
         
         if (par1NBTTagCompound.hasKey("ownerUUID"))
         {
-            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
+            this.owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
         }      
     }
     
@@ -60,22 +58,8 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
         return this;
     }
     
-    public String getOwnerName(){
+    public Owner getOwner(){
     	return owner;
-    }
-	
-	public String getOwnerUUID(){
-    	return ownerUUID;
-    }
-    
-    /**
-	 * 
-	 * @param par1 The owner's UUID.
-	 * @param par2 The owner's name.
-	 */
-    public void setOwner(String par1, String par2){
-    	ownerUUID = par1;
-    	owner = par2;
     }
   
 }

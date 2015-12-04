@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.IBlockAccess;
@@ -103,30 +101,6 @@ public class BlockUtils{
 		}else{
 			return false;
 		}
-	}
-
-	/**
-	 * Returns true if the player is the owner of the given block.
-	 * 
-	 * Args: block's TileEntity, player.
-	 */
-	public static boolean isOwnerOfBlock(IOwnable block, EntityPlayer player){
-		if(!(block instanceof IOwnable) || block == null){
-			throw new ClassCastException("You must provide an instance of IOwnable when using Utils.isOwnerOfBlock!");
-		}
-
-		String uuid = block.getOwnerUUID();
-		String owner = block.getOwnerName();
-
-		if(uuid != null && !uuid.matches("ownerUUID")){
-			return uuid.matches(player.getGameProfile().getId().toString());
-		}
-
-		if(owner != null && !owner.matches("owner")){
-			return owner.matches(player.getCommandSenderName());
-		}
-
-		return false;
 	}
 
 	/**

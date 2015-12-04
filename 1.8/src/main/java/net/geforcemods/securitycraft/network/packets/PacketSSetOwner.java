@@ -49,7 +49,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IOwnable){
-			((IOwnable) getWorld(player).getTileEntity(pos)).setOwner(packet.uuid, packet.name);
+			((IOwnable) getWorld(player).getTileEntity(pos)).getOwner().set(packet.uuid, packet.name);
 		}
 		
 		return null;

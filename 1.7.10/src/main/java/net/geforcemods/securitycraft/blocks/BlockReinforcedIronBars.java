@@ -37,7 +37,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
     		return;
     	}else{
     		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
     		}
     	}
     }

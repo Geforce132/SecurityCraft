@@ -350,7 +350,7 @@ public class EntitySecurityCamera extends Entity {
 
 			if(block == mod_SecurityCraft.securityCamera){
 				mod_SecurityCraft.network.sendToServer(new PacketSetBlockAndMetadata((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), "securitycraft:securityCameraLit", meta));
-				mod_SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), ((IOwnable)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).getOwnerUUID(), ((IOwnable)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).getOwnerName()));
+				mod_SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), ((IOwnable)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).getOwner().getUUID(), ((IOwnable)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).getOwner().getName()));
 
 				if(modules != null){
 					mod_SecurityCraft.network.sendToServer(new PacketSAddModules((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), modules));

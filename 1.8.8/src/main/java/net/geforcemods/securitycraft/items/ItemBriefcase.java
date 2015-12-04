@@ -7,6 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemBriefcase extends Item {
@@ -17,7 +19,7 @@ public class ItemBriefcase extends Item {
 		return true;
 	}
 	
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
     	if(par3World.isRemote) {
 	    	if(!par1ItemStack.hasTagCompound()) {
 	    		par1ItemStack.setTagCompound(new NBTTagCompound());
@@ -28,7 +30,7 @@ public class ItemBriefcase extends Item {
 	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
 	    	}
 	    	else {
-	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, par3World, par4, par5, par6);
+	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
 	    	}
     	}
     	
@@ -46,7 +48,7 @@ public class ItemBriefcase extends Item {
 	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 	    	}
 	    	else {
-	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 	    	}
     	}
     	

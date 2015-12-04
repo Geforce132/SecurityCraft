@@ -30,7 +30,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
     	if(p_149689_1_.isRemote){
     		return;
     	}else{
-    		((TileEntityOwnable) p_149689_1_.getTileEntity(pos)).setOwner(((EntityPlayer) p_149689_5_).getGameProfile().getId().toString(), p_149689_5_.getName());
+    		((TileEntityOwnable) p_149689_1_.getTileEntity(pos)).getOwner().set(((EntityPlayer) p_149689_5_).getGameProfile().getId().toString(), p_149689_5_.getName());
     	}
     }
 

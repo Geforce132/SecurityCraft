@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -49,7 +48,7 @@ public class GuiInventoryScanner extends GuiContainer {
     	super.initGui();
     	Keyboard.enableRepeatEvents(true); 		
     		
-		if(BlockUtils.isOwnerOfBlock(tileEntity, playerObj)){
+		if(tileEntity.getOwner().isOwner(playerObj)){
 			this.buttonList.add(new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? StatCollector.translateToLocal("gui.invScan.checkInv") : StatCollector.translateToLocal("gui.invScan.emitRedstone")));
 		}
     }
@@ -122,9 +121,9 @@ public class GuiInventoryScanner extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.prohibitedItems"), 8, 6, 4210752);
-        this.fontRendererObj.drawString(BlockUtils.isOwnerOfBlock(tileEntity, playerObj) ? (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.admin")) : (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.view")), 112, 6, 4210752);
+        this.fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.admin")) : (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.view")), 112, 6, 4210752);
         
-        if(hasStorageModule && BlockUtils.isOwnerOfBlock(tileEntity, playerObj)){
+        if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj)){
         	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.storage"), 183, 6, 4210752);
         }
         

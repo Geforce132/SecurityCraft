@@ -51,7 +51,7 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  			return false;
 		  	  		}
 		  	  		
-		  	  		if(par3World.getTileEntity(pos) instanceof IOwnable && !BlockUtils.isOwnerOfBlock((IOwnable) par3World.getTileEntity(pos), par2EntityPlayer)){
+		  	  		if(par3World.getTileEntity(pos) instanceof IOwnable && !((IOwnable) par3World.getTileEntity(pos)).getOwner().isOwner(par2EntityPlayer)){
 		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.cantBind"), EnumChatFormatting.RED);
 		  	  			return false;
 		  	  		}

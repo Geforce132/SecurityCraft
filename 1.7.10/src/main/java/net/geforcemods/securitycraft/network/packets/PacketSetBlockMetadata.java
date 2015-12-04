@@ -71,7 +71,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		
 		if(!extraOwnerUUID.isEmpty() && !extraOwnerName.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null){
 			if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof TileEntityOwnable){
-				((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).setOwner(extraOwnerUUID, extraOwnerName);
+				((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).getOwner().set(extraOwnerUUID, extraOwnerName);
 			}
 		}
 		

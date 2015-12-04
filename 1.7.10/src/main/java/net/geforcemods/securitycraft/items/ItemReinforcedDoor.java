@@ -34,8 +34,8 @@ public class ItemReinforcedDoor extends Item {
 					}else{
 						int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
 						placeDoorBlock(par3World, par4, par5, par6, i1, block);
-						((TileEntityOwnable) par3World.getTileEntity(par4, par5, par6)).setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
-						((TileEntityOwnable) par3World.getTileEntity(par4, par5 + 1, par6)).setOwner(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
+						((TileEntityOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
+						((TileEntityOwnable) par3World.getTileEntity(par4, par5 + 1, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
 						--par1ItemStack.stackSize;
 						return true;
 					}

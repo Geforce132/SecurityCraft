@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -39,10 +38,10 @@ public class WailaDataProvider implements IWailaDataProvider {
 
 	public ITipList getWailaBody(ItemStack itemStack, ITipList tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
 		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable){
-			tipList.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwnerName());
+			tipList.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
 		}
 		
-		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && BlockUtils.isOwnerOfBlock((CustomizableSCTE) iDataAccessor.getTileEntity(), iDataAccessor.getPlayer())){
+		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
 			if(!((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules().isEmpty()){
 				tipList.add(StatCollector.translateToLocal("waila.equipped"));
 			}
@@ -52,7 +51,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 		}
 		
-		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && BlockUtils.isOwnerOfBlock((TileEntityOwnable) iDataAccessor.getTileEntity(), iDataAccessor.getPlayer())){			
+		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && ((TileEntityOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){			
 			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
 			
 			tipList.add(StatCollector.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.password.notSet")));

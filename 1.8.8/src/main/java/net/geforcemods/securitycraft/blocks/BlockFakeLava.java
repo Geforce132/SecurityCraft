@@ -7,11 +7,9 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
-import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -42,21 +40,21 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
     	par1World.setBlockState(pos, getStaticBlock(this.blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
     }
 
-    public static BlockStaticLiquid getStaticBlock(Material materialIn)
-    {
-        if (materialIn == Material.water)
-        {
-            return mod_SecurityCraft.bogusWater;
-        }
-        else if (materialIn == Material.lava)
-        {
-            return mod_SecurityCraft.bogusLava;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid material");
-        }
-    }
+//    public static BlockStaticLiquid getStaticBlock(Material materialIn)
+//    {
+//        if (materialIn == Material.water)
+//        {
+//            return mod_SecurityCraft.bogusWater;
+//        }
+//        else if (materialIn == Material.lava)
+//        {
+//            return mod_SecurityCraft.bogusLava;
+//        }
+//        else
+//        {
+//            throw new IllegalArgumentException("Invalid material");
+//        }
+//    }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {

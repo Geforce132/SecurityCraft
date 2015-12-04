@@ -46,7 +46,7 @@ public class BlockIMS extends BlockOwnable {
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote){
-			if(BlockUtils.isOwnerOfBlock(((IOwnable) par1World.getTileEntity(pos)), par5EntityPlayer)){
+			if(((IOwnable) par1World.getTileEntity(pos)).getOwner().isOwner(par5EntityPlayer)){
 				par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}

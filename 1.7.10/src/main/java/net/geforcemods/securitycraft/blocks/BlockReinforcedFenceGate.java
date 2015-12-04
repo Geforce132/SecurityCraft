@@ -5,7 +5,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.ITileEntityProvider;
@@ -37,7 +36,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
 		super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
 		
-		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
 
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
@@ -64,7 +63,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(x, y, z), (EntityPlayer)entity))
+			if(((TileEntityOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner((EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)

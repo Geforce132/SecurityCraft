@@ -101,7 +101,7 @@ public class BlockSecurityCamera extends BlockContainer {
     }
 
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
 	
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block) {    			

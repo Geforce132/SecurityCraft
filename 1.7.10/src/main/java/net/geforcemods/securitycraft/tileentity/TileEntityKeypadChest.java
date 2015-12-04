@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,8 +14,7 @@ import net.minecraft.tileentity.TileEntityChest;
 public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, IPasswordProtected {
 	
 	private String passcode;
-    private String ownerUUID;
-    private String ownerName;
+    private Owner owner;
 
 	public TileEntityKeypadChest adjacentChestZNeg;
     public TileEntityKeypadChest adjacentChestXPos;
@@ -33,12 +33,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
         	par1NBTTagCompound.setString("passcode", this.passcode);
         }
         
-        if(this.ownerName != null && this.ownerName != ""){
-        	par1NBTTagCompound.setString("owner", this.ownerName);
-        }
-        
-        if(this.ownerUUID != null && this.ownerUUID != ""){
-        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
+        if(this.owner != null){
+        	par1NBTTagCompound.setString("owner", this.owner.getName());
+        	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
         }
     }
 
@@ -60,12 +57,12 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
         
         if (par1NBTTagCompound.hasKey("owner"))
         {
-            this.ownerName = par1NBTTagCompound.getString("owner");
+            this.owner.setOwnerName(par1NBTTagCompound.getString("owner"));
         }
         
         if (par1NBTTagCompound.hasKey("ownerUUID"))
         {
-            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
+            this.owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
         }        
     }
     
@@ -83,17 +80,13 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
         return "Protected chest";
     }
     
-    public String getOwnerUUID(){
-    	return ownerUUID;
+    public Owner getOwner(){
+    	return owner;
     }
     
-    public String getOwnerName(){
-    	return ownerName;
-    }
-    
-    public void setOwner(String par1, String par2){
-    	ownerUUID = par1;
-    	ownerName = par2;
+    public void setOwner(String uuid, String name){
+    	owner.setOwnerName(name);
+    	owner.setOwnerUUID(uuid);
     }
 
 	public void activate(EntityPlayer player) {

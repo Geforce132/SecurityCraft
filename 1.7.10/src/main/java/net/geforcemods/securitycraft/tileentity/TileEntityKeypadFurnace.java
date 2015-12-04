@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -16,8 +17,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnable, ISidedInventory, IPasswordProtected {
 
 	private String passcode;
-	private String ownerUUID = "ownerUUID";
-	private String owner = "owner";
+	private Owner owner = new Owner();
 	
     public void updateEntity(){
         boolean flag = this.furnaceBurnTime > 0;
@@ -89,12 +89,9 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
         	par1NBTTagCompound.setString("passcode", this.passcode);
         }
 		
-		if(this.owner != null && this.owner != ""){
-        	par1NBTTagCompound.setString("owner", this.owner);
-        }
-        
-        if(this.ownerUUID != null && this.ownerUUID != ""){
-        	par1NBTTagCompound.setString("ownerUUID", this.ownerUUID);
+		if(this.owner != null){
+        	par1NBTTagCompound.setString("owner", this.owner.getName());
+        	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
         }
 	}
 	
@@ -112,12 +109,12 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 		
 		if (par1NBTTagCompound.hasKey("owner"))
         {
-            this.owner = par1NBTTagCompound.getString("owner");
+            this.owner.setOwnerName(par1NBTTagCompound.getString("owner"));
         }
         
         if (par1NBTTagCompound.hasKey("ownerUUID"))
         {
-            this.ownerUUID = par1NBTTagCompound.getString("ownerUUID");
+            this.owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
         }
 	}
 	
@@ -131,17 +128,13 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
     	readFromNBT(packet.func_148857_g());        
     }
 	
-	public String getOwnerName(){
+	public Owner getOwner(){
     	return owner;
     }
-	
-	public String getOwnerUUID(){
-    	return ownerUUID;
-    }
     
-    public void setOwner(String par1, String par2){
-    	ownerUUID = par1;
-    	owner = par2;
+    public void setOwner(String uuid, String name){
+    	owner.setOwnerName(name);
+    	owner.setOwnerUUID(uuid);
     }
 	
 	public void activate(EntityPlayer player) {

@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,10 +40,10 @@ public class WailaDataProvider implements IWailaDataProvider {
 
 	public List<String> getWailaBody(ItemStack itemstack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
 		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable){
-			body.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) data.getTileEntity()).getOwnerName());
+			body.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());
 		}
 		
-		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && BlockUtils.isOwnerOfBlock((CustomizableSCTE) data.getTileEntity(), data.getPlayer())){
+		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty()){
 				body.add(StatCollector.translateToLocal("waila.equipped"));
 			}
@@ -54,7 +53,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 		}
 		
-		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && BlockUtils.isOwnerOfBlock((TileEntityOwnable) data.getTileEntity(), data.getPlayer())){
+		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && ((TileEntityOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 			
 			body.add(StatCollector.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.password.notSet")));

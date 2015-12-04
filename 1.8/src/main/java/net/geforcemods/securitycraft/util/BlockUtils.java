@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -15,7 +15,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -127,8 +126,7 @@ public class BlockUtils{
 			ItemStack[] inventory = null;
 			int[] times = new int[4];
 			String password = "";
-			String ownerUUID = "";
-			String ownerName = "";
+			Owner owner = null;
 			int cooldown = -1;
 
 			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
@@ -143,9 +141,8 @@ public class BlockUtils{
 				times[3] = ((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).totalCookTime;
 			}
 
-			if(par1World.getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerUUID() != null){
-				ownerUUID = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerUUID();
-				ownerName = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwnerName();
+			if(par1World.getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner() != null){
+				owner = ((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner();
 			}
 
 			if(par1World.getTileEntity(pos) instanceof TileEntityKeypad && ((TileEntityKeypad) par1World.getTileEntity(pos)).getPassword() != null){
@@ -180,8 +177,8 @@ public class BlockUtils{
 				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).totalCookTime = times[3];
 			}
 
-			if(!ownerUUID.isEmpty() && !ownerName.isEmpty()){
-				((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(ownerUUID, ownerName);
+			if(owner != null){
+				((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
 			}
 
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypad){
@@ -307,30 +304,6 @@ public class BlockUtils{
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Returns true if the player is the owner of the given block.
-	 * 
-	 * Args: block's TileEntity, player.
-	 */
-	public static boolean isOwnerOfBlock(IOwnable block, EntityPlayer player){
-		if(!(block instanceof IOwnable) || block == null){
-			throw new ClassCastException("You must provide an instance of IOwnable when using Utils.isOwnerOfBlock!");
-		}
-		
-		String uuid = block.getOwnerUUID();
-		String owner = block.getOwnerName();
-		
-		if(uuid != null && !uuid.matches("ownerUUID")){
-			return uuid.matches(player.getGameProfile().getId().toString());
-		}
-		
-		if(owner != null && !owner.matches("owner")){
-			return owner.matches(player.getName());
-		}
-		
-		return false;
 	}
 	
 	public static BlockPos toPos(int x, int y, int z){

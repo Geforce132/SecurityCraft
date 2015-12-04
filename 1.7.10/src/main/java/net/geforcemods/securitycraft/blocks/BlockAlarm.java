@@ -11,6 +11,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -143,7 +144,7 @@ public class BlockAlarm extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack p_149689_6_){
-		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 		int l = par1World.getBlockMetadata(par2, par3, par4);
 
 		if (l == 0)
@@ -284,10 +285,9 @@ public class BlockAlarm extends BlockContainer {
 			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).isPowered();
 
 			if(!isPowered){
-				String name = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwnerName();
-				String uuid = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwnerUUID();
+				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarmLit, par1World.getBlockMetadata(par2, par3, par4), 3);
-				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setOwner(uuid, name);
+				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner.getUUID(), owner.getName());
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(true);
 			}
 
@@ -295,10 +295,9 @@ public class BlockAlarm extends BlockContainer {
 			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).isPowered();
 
 			if(isPowered){
-				String name = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwnerName();
-				String uuid = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwnerUUID();
+				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarm, par1World.getBlockMetadata(par2, par3, par4), 3);
-				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setOwner(uuid, name);
+				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner.getUUID(), owner.getName());
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(false);
 			}
 		}

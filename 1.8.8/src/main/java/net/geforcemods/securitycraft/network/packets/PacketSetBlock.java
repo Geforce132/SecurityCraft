@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -64,8 +65,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		ItemStack[] inventory = null;
 		int[] times = new int[4];
 		String password = "";
-		String ownerUUID = "";
-		String ownerName = "";
+		Owner owner = null;
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
 			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks;
@@ -79,9 +79,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			times[3] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime;
 		}
 		
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerUUID() != null){
-			ownerUUID = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerUUID();
-			ownerName = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwnerName();
+		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner() != null){
+			owner = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner();
 		}
 		
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getPassword() != null){
@@ -103,8 +102,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime = times[3];
 		}
 		
-		if(!ownerName.isEmpty() && !ownerUUID.isEmpty()){
-			((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).setOwner(ownerUUID, ownerName);
+		if(owner != null){
+			((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner().set(owner);
 		}
 		
 		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest){

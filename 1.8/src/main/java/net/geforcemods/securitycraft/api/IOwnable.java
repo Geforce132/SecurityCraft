@@ -17,20 +17,10 @@ import net.minecraft.tileentity.TileEntity;
 public interface IOwnable {
 	
 	/**
-	 * @return The owner's UUID tag.
-	 */
-	public String getOwnerUUID();
-	
-	/**
-	 * @return The owner's username.
+	 * @return An Owner object containing the player's name and UUID.
+	 *         You are responsible for reading and writing the name and UUID variables
+	 *         to your TileEntity's NBTTagCompound in writeToNBT() and readFromNBT().
 	 */	
-	public String getOwnerName();
-	
-	/**
-	 * Save the UUID and name of the player who placed the Block down to
-	 * your TileEntity. You are responsible for reading and writing the variables
-	 * to your NBTTagCompound in writeToNBT() and readFromNBT().
-	 */
-	public void setOwner(String uuid, String name);
+	public Owner getOwner();
 
 }

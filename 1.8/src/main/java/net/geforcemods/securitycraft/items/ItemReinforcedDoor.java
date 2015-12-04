@@ -55,9 +55,9 @@ public class ItemReinforcedDoor extends Item {
 	            }
 	            else
 	            {
-	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);                    //TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
-                    ((TileEntityOwnable) world.getTileEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName());
-	                ((TileEntityOwnable) world.getTileEntity(pos.up())).setOwner(player.getGameProfile().getId().toString(), player.getName());
+	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+                    ((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+	                ((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 	                --stack.stackSize;
 	                return true;
 	            }

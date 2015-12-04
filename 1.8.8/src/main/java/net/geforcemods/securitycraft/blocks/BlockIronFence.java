@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -60,7 +59,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			if(BlockUtils.isOwnerOfBlock((TileEntityOwnable) world.getTileEntity(pos), (EntityPlayer)entity));
+			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity));
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
@@ -79,7 +78,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
     public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
 		super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
 
-		((TileEntityOwnable) par1World.getTileEntity(pos)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
 
 	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)
