@@ -132,11 +132,6 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
     	return owner;
     }
     
-    public void setOwner(String uuid, String name){
-    	owner.setOwnerName(name);
-    	owner.setOwnerUUID(uuid);
-    }
-	
 	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadFurnace){
 			BlockKeypadFurnace.activate(worldObj, xCoord, yCoord, zCoord, player);
