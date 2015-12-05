@@ -178,7 +178,7 @@ public class BlockUtils{
 			}
 
 			if(owner != null){
-				((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+				((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(owner);
 			}
 
 			if(!password.isEmpty() && par1World.getTileEntity(pos) instanceof TileEntityKeypad){

@@ -8,10 +8,7 @@ import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -25,14 +22,6 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 		super(par1Material, par2);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 26);
 	}
-    
-    public void onBlockPlacedBy(World p_149689_1_, BlockPos pos, IBlockState state, EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
-    	if(p_149689_1_.isRemote){
-    		return;
-    	}else{
-    		((TileEntityOwnable) p_149689_1_.getTileEntity(pos)).getOwner().set(((EntityPlayer) p_149689_5_).getGameProfile().getId().toString(), p_149689_5_.getCommandSenderName());
-    	}
-    }
 
     public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state){
         super.breakBlock(p_149749_1_, pos, state);

@@ -10,12 +10,10 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -73,12 +71,6 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		}
 
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
-	}
-
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
-
-		((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 	}
 
 	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)

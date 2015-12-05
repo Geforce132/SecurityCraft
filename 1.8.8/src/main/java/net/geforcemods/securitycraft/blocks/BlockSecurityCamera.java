@@ -5,7 +5,6 @@ import java.util.Iterator;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -20,7 +19,6 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -91,15 +89,6 @@ public class BlockSecurityCamera extends BlockContainer{
             return iblockstate.withProperty(FACING, BlockLever.EnumOrientation.forFacings(enumfacing1, placer.getHorizontalFacing())).withProperty(POWERED, false);
         }
     }
-
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        if(par5EntityLivingBase instanceof EntityPlayer){
-    		((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), ((EntityPlayer) par5EntityLivingBase).getCommandSenderName());
-    	}
-    }	
     
     public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){    			
 		if(BlockUtils.getBlockPropertyAsOrientation(par1World, pos, FACING) == BlockLever.EnumOrientation.NORTH){

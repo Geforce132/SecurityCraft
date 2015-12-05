@@ -62,7 +62,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && iterator2.hasNext()){
 	        	EntityLivingBase entity = (EntityLivingBase) iterator2.next();
 				int launchHeight = this.getLaunchHeight();
-
+				
 				if(WorldUtils.isPathObstructed(worldObj, (double) pos.getX() + 0.5D, (double) pos.getY() + (((launchHeight - 1) / 3) + 0.5D), (double) pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())){ continue; }
 
