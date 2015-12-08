@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.BlockLever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -75,15 +75,15 @@ public class EntitySecurityCamera extends Entity{
 		
 		this.rotationPitch = 30F;
 			
-		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
-		if(facing == BlockLever.EnumOrientation.NORTH){
+		if(facing == EnumFacing.NORTH){
 			this.rotationYaw = 180F;
-		}else if(facing == BlockLever.EnumOrientation.WEST){
+		}else if(facing == EnumFacing.WEST){
 			this.rotationYaw = 90F;
-		}else if(facing == BlockLever.EnumOrientation.SOUTH){
+		}else if(facing == EnumFacing.SOUTH){
 			this.rotationYaw = 0F;
-		}else if(facing == BlockLever.EnumOrientation.EAST){
+		}else if(facing == EnumFacing.EAST){
 			this.rotationYaw = 270F;
 		}
 	}
@@ -104,15 +104,15 @@ public class EntitySecurityCamera extends Entity{
 
 		this.rotationPitch = 30.0F;
 
-		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
-		if(facing == BlockLever.EnumOrientation.NORTH){
+		if(facing == EnumFacing.NORTH){
 			this.rotationYaw = 180F;
-		}else if(facing == BlockLever.EnumOrientation.WEST){
+		}else if(facing == EnumFacing.WEST){
 			this.rotationYaw = 90F;
-		}else if(facing == BlockLever.EnumOrientation.SOUTH){
+		}else if(facing == EnumFacing.SOUTH){
 			this.rotationYaw = 0F;
-		}else if(facing == BlockLever.EnumOrientation.EAST){
+		}else if(facing == EnumFacing.EAST){
 			this.rotationYaw = 270F;
 		}
 	}
@@ -230,21 +230,21 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewLeft() {
-		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == BlockLever.EnumOrientation.EAST){
+		if(facing == EnumFacing.EAST){
 			if((this.rotationYaw - CAMERA_SPEED) > -180F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.WEST){
+		}else if(facing == EnumFacing.WEST){
 			if((this.rotationYaw - CAMERA_SPEED) > 0F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.NORTH){
+		}else if(facing == EnumFacing.NORTH){
 			if((this.rotationYaw - CAMERA_SPEED) > -270F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.SOUTH){
+		}else if(facing == EnumFacing.SOUTH){
 			if((this.rotationYaw - CAMERA_SPEED) > -90F){
 				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 			}
@@ -254,21 +254,21 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewRight(){
-		BlockLever.EnumOrientation facing = BlockUtils.getBlockPropertyAsOrientation(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == BlockLever.EnumOrientation.EAST){
+		if(facing == EnumFacing.EAST){
 			if((this.rotationYaw + CAMERA_SPEED) < 0F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.WEST){
+		}else if(facing == EnumFacing.WEST){
 			if((this.rotationYaw + CAMERA_SPEED) < 180F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.NORTH){
+		}else if(facing == EnumFacing.NORTH){
 			if((this.rotationYaw + CAMERA_SPEED) < -90F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}
-		}else if(facing == BlockLever.EnumOrientation.SOUTH){
+		}else if(facing == EnumFacing.SOUTH){
 			if((this.rotationYaw + CAMERA_SPEED) < 90F){
 				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 			}

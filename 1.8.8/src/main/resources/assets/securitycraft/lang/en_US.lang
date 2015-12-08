@@ -296,6 +296,7 @@ messages.adminTool.owner.name=Owner: #
 messages.adminTool.owner.uuid=Owner's UUID: #
 messages.adminTool.password=Password: #
 messages.adminTool.equippedModules=Equipped Modules:
+messages.adminTool.noInfo=This block has no information to display!
 messages.reinforcedSlab=Reinforced Slab
 messages.reinforcedSlab.cannotDoubleSlab=You must be the owner of this block to turn it into a double slab.
 messages.cameraMonitor.cannotView=You can't view a camera that doesn't belong to you.

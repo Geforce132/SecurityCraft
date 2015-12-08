@@ -102,7 +102,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
     protected void actionPerformed(GuiButton guibutton) {
     	switch(guibutton.id){
     	case 0:
-    		if(this.keycodeTextbox.getText().isEmpty()) {
+    		if(this.keycodeTextbox.getText().length() < 4) {
     			this.flag  = true;
     			this.updateButtonText();
     			return;

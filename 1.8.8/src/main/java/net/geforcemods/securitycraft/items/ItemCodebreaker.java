@@ -12,7 +12,7 @@ public class ItemCodebreaker extends Item {
 		super();
 		this.maxStackSize = 1;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
  	public boolean hasEffect(ItemStack par1ItemStack){
         return true;

@@ -158,7 +158,7 @@ public class BlockAlarm extends BlockOwnable {
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarmLit);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(true);
 			}
     		
@@ -170,7 +170,7 @@ public class BlockAlarm extends BlockOwnable {
     			EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
     			BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarm);
     			BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
     			((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(false);
 			}
 		}

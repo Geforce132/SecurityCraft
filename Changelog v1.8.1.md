@@ -13,6 +13,7 @@
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
+- New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted.
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: General improvements
@@ -33,4 +34,5 @@
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
+- Fix: [1.8] Security cameras and fake water/lava causing "Model definition for location securitycraft:X#Y not found" errors
 - Removed: Some redundant/unused code

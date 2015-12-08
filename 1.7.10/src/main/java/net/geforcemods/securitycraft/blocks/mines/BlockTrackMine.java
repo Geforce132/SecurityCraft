@@ -14,10 +14,7 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -30,14 +27,6 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	public BlockTrackMine() {
 		super(false);
 	}
-	
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	if(!par1World.isRemote){
-    		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-    		}
-    	}
-    }
 	
 	public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z){
 		BlockUtils.destroyBlock(world, x, y, z, false);

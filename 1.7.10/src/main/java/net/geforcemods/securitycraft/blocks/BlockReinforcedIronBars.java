@@ -10,11 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -27,19 +24,6 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {	
     	par1World.setBlock(par2, par3, par4, Blocks.iron_bars);
-    }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack) {
-    	if(par1World.isRemote){
-    		return;
-    	}else{
-    		if(par5EntityLivingBase instanceof EntityPlayer){
-    			((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
-    		}
-    	}
     }
      
     public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){

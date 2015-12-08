@@ -22,5 +22,15 @@ public interface IOwnable {
 	 *         to your TileEntity's NBTTagCompound in writeToNBT() and readFromNBT().
 	 */
 	public Owner getOwner();
-
+	
+	/**
+	 * Save a new owner to your Owner object here. <p>
+	 * The easiest way is to use Owner.set(UUID, name), this method is
+	 * here mainly for convenience.
+	 * 
+	 * @param uuid The UUID of the new player.
+	 * @param name The name of the new player.
+	 */
+	public void setOwner(String uuid, String name);
+		
 }

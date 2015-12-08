@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -116,6 +117,11 @@ public class ForgeEventHandler {
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
 			Block block = event.entityPlayer.worldObj.getBlockState(event.pos).getBlock();
 			
+			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.Codebreaker) && handleCodebreaking(event)) {
+				event.setCanceled(true);
+				return;
+			}
+			
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
 				event.setCanceled(true);
 				
@@ -158,6 +164,17 @@ public class ForgeEventHandler {
 		}
 	}
 	
+	private boolean handleCodebreaking(PlayerInteractEvent event) {
+		World world = event.entityPlayer.worldObj;
+		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
+		
+		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
+		}
+		
+		return false;
+	}
+
 	@SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent event) {
         if(event.modID.equals("securitycraft")){
@@ -169,14 +186,9 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
-		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
-			String name = event.player.getCommandSenderName();
-			String uuid = event.player.getGameProfile().getId().toString();
-
-			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);
-		}
+		handleOwnableTEs(event);
 	}
-	
+
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
 		if(!event.world.isRemote){
@@ -252,6 +264,15 @@ public class ForgeEventHandler {
 		}else{
 			return null;
 		}
+	}
+	
+	private void handleOwnableTEs(PlaceEvent event) {
+		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
+			String name = event.player.getCommandSenderName();
+			String uuid = event.player.getGameProfile().getId().toString();
+
+			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);
+		}		
 	}
 	
 	private String getRandomTip(){

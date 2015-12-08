@@ -1,0 +1,17 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "water": {
+            "model": "forge:fluid"
+        },
+        "water_flowing": {
+            "model": "forge:fluid"
+        },
+        "lava": {
+            "model": "forge:fluid"
+        },
+        "lava_flowing": {
+            "model": "forge:fluid"
+        }
+    }
+}

@@ -75,12 +75,6 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
-
-		((TileEntityOwnable) par1World.getTileEntity(pos)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getName());
-	}
-
 	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)
 	{
 		super.breakBlock(par1World, pos, par3IBlockState);

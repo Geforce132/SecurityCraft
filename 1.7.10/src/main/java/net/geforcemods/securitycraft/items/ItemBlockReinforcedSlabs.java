@@ -121,7 +121,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                     --par1ItemStack.stackSize;
                     
                     if(owner != null){
-                    	((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner.getUUID(), owner.getName());
+                    	((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner);
                     }
                 }
 

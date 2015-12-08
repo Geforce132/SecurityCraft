@@ -14,12 +14,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -144,7 +142,6 @@ public class BlockAlarm extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack p_149689_6_){
-		((TileEntityOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().set(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
 		int l = par1World.getBlockMetadata(par2, par3, par4);
 
 		if (l == 0)
@@ -287,7 +284,7 @@ public class BlockAlarm extends BlockContainer {
 			if(!isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarmLit, par1World.getBlockMetadata(par2, par3, par4), 3);
-				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner.getUUID(), owner.getName());
+				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(true);
 			}
 
@@ -297,7 +294,7 @@ public class BlockAlarm extends BlockContainer {
 			if(isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarm, par1World.getBlockMetadata(par2, par3, par4), 3);
-				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner.getUUID(), owner.getName());
+				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(false);
 			}
 		}

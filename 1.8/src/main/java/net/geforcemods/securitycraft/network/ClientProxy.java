@@ -11,10 +11,16 @@ import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -55,6 +61,73 @@ public class ClientProxy extends ServerProxy{
 		Item reinforcedStoneSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
 		ModelBakery.addVariantName(reinforcedStoneSlabs, "securitycraft:reinforcedStoneSlabs_stone", "securitycraft:reinforcedStoneSlabs_cobblestone", "securitycraft:reinforcedStoneSlabs_sandstone", "securitycraft:reinforcedDirtSlab");
 		
+		Item fakeWater = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWater");
+		ModelBakery.addVariantName(fakeWater);
+		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+            }
+        });
+		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+            }
+        });
+		
+		Item fakeWaterFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
+		ModelBakery.addVariantName(fakeWaterFlowing);
+		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+            }
+        });
+		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+            }
+        });
+		
+		Item fakeLava = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLava");
+		ModelBakery.addVariantName(fakeLava);
+		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+            }
+        });
+		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+            }
+        });
+		
+		Item fakeLavaFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
+		ModelBakery.addVariantName(fakeLavaFlowing);
+		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
+        {
+            public ModelResourceLocation getModelLocation(ItemStack stack)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+            }
+        });
+		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
+        {
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            {
+                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+            }
+        });
 	}
 	
 	@Override

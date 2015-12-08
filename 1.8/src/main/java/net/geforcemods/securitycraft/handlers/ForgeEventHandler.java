@@ -43,6 +43,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -165,6 +166,16 @@ public class ForgeEventHandler {
         	mod_SecurityCraft.configHandler.setupConfiguration();
         }
     }
+	
+	@SubscribeEvent
+	public void onBlockPlaced(PlaceEvent event) {
+		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
+			String name = event.player.getName();
+			String uuid = event.player.getGameProfile().getId().toString();
+
+			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);
+		}
+	}
 	
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
