@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -112,10 +111,7 @@ public class BlockKeycardReader extends BlockOwnable  {
     	}
     	
     	if(par5EntityPlayer.getCurrentEquippedItem() == null || !(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase)){
-    		if(((TileEntityKeycardReader) par1World.getTileEntity(pos)).getPassword() == null){    	
-		    	par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
-		    	return true;
-    		}
+    		((TileEntityKeycardReader) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
     	}else{
     		((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
     	}

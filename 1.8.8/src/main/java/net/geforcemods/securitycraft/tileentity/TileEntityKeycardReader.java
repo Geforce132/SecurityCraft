@@ -64,6 +64,10 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	    	player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 		}
 	}
+    
+    public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+		return false;
+	}
       
     public String getPassword() {
 		return passLV == 0 ? null : String.valueOf(passLV);
@@ -81,9 +85,5 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.whitelist"),
 				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.blacklistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.blacklist")};
 	    }
-
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
-		return false;
-	}
 
 }

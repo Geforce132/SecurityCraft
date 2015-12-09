@@ -3,13 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,9 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,42 +39,24 @@ public class BlockKeypad extends BlockContainer {
 		return 3;
 	}
     
-    @SuppressWarnings("static-access")
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
     	if(par1World.isRemote){
-			return true;
-		}else{
+    		return true;
+    	}
+    	else {
 			if(((Boolean) state.getValue(POWERED)).booleanValue()){
 				return false;
 			}
 
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.Codebreaker){
-				TileEntityKeypad TEK = (TileEntityKeypad) par1World.getTileEntity(pos);
+			if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+				activate(par1World, pos);
+				return true;
+			}
 
-				if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
-					activate(par1World, pos);
-					return true;
-				}
+			((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 
-				if(((IPasswordProtected) TEK).getPassword() == null){
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
-				}else{
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
-				}
-
-				return true;       		
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-				if(mod_SecurityCraft.instance.configHandler.allowCodebreakerItem){
-					if(((IPasswordProtected) par1World.getTileEntity(pos)).getPassword() != null && !((Boolean) state.getValue(POWERED)).booleanValue()){
-						activate(par1World, pos);
-					}
-				}else{	
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);  				
-				}	
-			}     	    	     	
+			return true;       		 	    	     	
 		}
-
-    	return false;
     }
     
     public static void activate(World par1World, BlockPos pos){

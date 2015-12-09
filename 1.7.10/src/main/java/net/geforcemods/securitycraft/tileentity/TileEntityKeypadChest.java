@@ -4,12 +4,17 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
+import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, IPasswordProtected {
 	
@@ -93,6 +98,27 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
 		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadChest){
 			BlockKeypadChest.activate(worldObj, xCoord, yCoord, zCoord, player);
     	}
+	}
+	
+	public void openPasswordGUI(EntityPlayer player) {
+		if(getPassword() != null) {
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+		}
+		else {
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+		}		
+	}
+	
+	public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled) {
+		if(isCodebreakerDisabled) {
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadChest.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+		}
+		else {
+			activate(player);
+			return true;
+		}
+		
+		return false;
 	}
 
 	public String getPassword() {

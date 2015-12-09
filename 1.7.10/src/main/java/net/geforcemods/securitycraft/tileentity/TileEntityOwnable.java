@@ -43,5 +43,9 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     public Owner getOwner(){
     	return owner;
     }
+
+	public void setOwner(String uuid, String name) {
+		owner.set(uuid, name);
+	}
     
 }

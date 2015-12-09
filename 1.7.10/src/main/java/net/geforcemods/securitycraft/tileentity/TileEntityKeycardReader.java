@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
+import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,6 +56,16 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
     	if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeycardReader){
     		BlockKeycardReader.activate(worldObj, xCoord, yCoord, zCoord);
     	}
+	}
+    
+    public void openPasswordGUI(EntityPlayer player) {
+		if(getPassword() == null) {    	
+	    	player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, worldObj, xCoord, yCoord, zCoord);
+		}
+	}
+    
+    public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled) {
+		return false;
 	}
     
     public String getPassword() {

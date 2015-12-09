@@ -163,17 +163,6 @@ public class ForgeEventHandler {
 			}
 		}
 	}
-	
-	private boolean handleCodebreaking(PlayerInteractEvent event) {
-		World world = event.entityPlayer.worldObj;
-		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
-		
-		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
-		}
-		
-		return false;
-	}
 
 	@SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent event) {
@@ -273,6 +262,17 @@ public class ForgeEventHandler {
 
 			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);
 		}		
+	}
+	
+	private boolean handleCodebreaking(PlayerInteractEvent event) {
+		World world = event.entityPlayer.worldObj;
+		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
+		
+		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
+		}
+		
+		return false;
 	}
 	
 	private String getRandomTip(){

@@ -56,7 +56,7 @@ public class BlockKeypad extends BlockContainer {
 			((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 
 			return true;       		 	    	     	
-		}	
+		}
     }
     
     public static void activate(World par1World, BlockPos pos){

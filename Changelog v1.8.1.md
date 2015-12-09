@@ -16,6 +16,7 @@
 - New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted.
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
+- API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
 - API: General improvements
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
@@ -35,4 +36,5 @@
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
 - Fix: [1.8] Security cameras and fake water/lava causing "Model definition for location securitycraft:X#Y not found" errors
+- Fix: [1.8] Waila showing "<ERROR>" while looking at a newly placed password-protected chest
 - Removed: Some redundant/unused code

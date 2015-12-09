@@ -1,10 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
@@ -13,10 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
 public class BlockKeypadChest extends BlockChest {
@@ -29,35 +23,15 @@ public class BlockKeypadChest extends BlockChest {
      * Called upon block activation (right click on the block.)
      */
     public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-        if(par1World.isRemote){
-            return true;
-        }else{
-        	ILockableContainer ilockablecontainer = this.getLockableContainer(par1World, pos);
-
-            if (ilockablecontainer != null){ 
-            	if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-                    if(mod_SecurityCraft.configHandler.allowCodebreakerItem){
-                        par5EntityPlayer.displayGUIChest(ilockablecontainer);
-                        return true;
-                    }else{	
-                        PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadChest.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);  	
-                        return true;
-                    }                    
-				}
-            	
-            	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest){
-            		if(((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword() != null && !((TileEntityKeypadChest) par1World.getTileEntity(pos)).getPassword().isEmpty()){
-            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
-            		}else{
-            			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
-
-            		}
-            	}
-            	
-            }
+    	if(!par1World.isRemote) {
+            if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest) {
+            	((TileEntityKeypadChest) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+            }  
 
             return true;
         }
+        
+        return true;
     }
     
     public static void activate(World par1World, BlockPos pos, EntityPlayer player){

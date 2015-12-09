@@ -7,16 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * Implementing this interface designates a TileEntity as being password-protected.
- * Implementing this allows you to use {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password. <p>
- * 
- * The following code can be used in your Block.onBlockActivated() method to correctly set and insert passwords:
- * <pre>
- * if(((IPasswordProtected) yourTileEntity).getPassword() == null){
-       entityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, x, y, z);
-  }else{
-	   entityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, x, y, z);
-  }
- * </pre>
+ * Implementing this allows you to use {@link GuiSetPassword} and {@link GuiCheckPassword} to easily set your block's password.
  * 
  * @author Geforce
  */
@@ -37,6 +28,29 @@ public interface IPasswordProtected {
 	 * @param player The player who entered the password.
 	 */
 	public void activate(EntityPlayer player);
+	
+	/**
+	 * Open the correct password GUI depending on if a password is already set or not. <p>
+	 * 
+	 * To open the "password setup" GUI:
+	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());</pre>
+	 * 
+	 * To open the "insert password" GUI:
+	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());</pre>
+	 * 
+	 * @param player The player who the GUI should be opened to.
+	 */
+	public void openPasswordGUI(EntityPlayer player);
+	
+	/**
+	 * Called when a codebreaker is used on a password-protected block.
+	 * 
+	 * @param meta The block's metadata.
+	 * @param player The player who used the codebreaker.
+	 * @param isCodebreakerDisabled If the codebreaker is disabled through the SC configuration file.
+	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
+	 */
+	public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled);
 	
 	/**
 	 * Return your TileEntity's password variable here. 

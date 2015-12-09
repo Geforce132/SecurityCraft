@@ -161,8 +161,6 @@ public class ConfigurationHandler{
 	public int laserBlockRange;
 	public int alarmTickDelay;
 	public double alarmSoundVolume;
-	public int cageTrapTextureIndex;
-	public int empRadius;
 	public int portableRadarDelay;
 	public int claymoreRange;
 	public int imsRange;
@@ -205,8 +203,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.inventoryScanner = new BlockInventoryScanner(Material.rock).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeStone).setBlockName("inventoryScanner");
 		mod_SecurityCraft.inventoryScannerField = new BlockInventoryScannerField(Material.glass).setBlockUnbreakable().setResistance(1000F).setBlockName("inventoryScannerField");
 
-		mod_SecurityCraft.cageTrap = new BlockCageTrap(Material.rock, false, cageTrapTextureIndex).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("cageTrap").setBlockTextureName("securitycraft:reinforcedIronBars");
-		mod_SecurityCraft.deactivatedCageTrap = new BlockCageTrap(Material.rock, true, cageTrapTextureIndex).setBlockUnbreakable().setResistance(1000F).setBlockName("deactivatedCageTrap").setBlockTextureName("iron_bars");
+		mod_SecurityCraft.cageTrap = new BlockCageTrap(Material.rock, false).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("cageTrap").setBlockTextureName("securitycraft:reinforcedIronBars");
+		mod_SecurityCraft.deactivatedCageTrap = new BlockCageTrap(Material.rock, true).setBlockUnbreakable().setResistance(1000F).setBlockName("deactivatedCageTrap").setBlockTextureName("iron_bars");
 
 		mod_SecurityCraft.portableRadar = new BlockPortableRadar(Material.circuits).setHardness(1F).setResistance(50F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("portableRadar");
 

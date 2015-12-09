@@ -5,11 +5,11 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
@@ -81,19 +81,19 @@ public class BlockKeycardReader extends BlockOwnable {
 	}
 	
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-    	if(!par1World.isRemote){
-    		int meta = par1World.getBlockMetadata(par2, par3, par4);
-    		
-    		if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() == null){    	
-    			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, par1World, par2, par3, par4);
-    			return true;
-    		}else if(meta >= 2 && meta <= 5 && par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase){
-    			insertCard(par1World, par2, par3, par4, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
-    			return true;
+    	if(par1World.isRemote){
+    		return true;
+    	}
+    	
+    	if(par5EntityPlayer.getCurrentEquippedItem() == null || !(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase)){
+    		((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
+    	}else{
+    		if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 2, 5)) {
+    		    ((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
     		}
     	}
     	
-    	return true;
+		return true;
     }
     
     public static void activate(World par1World, int par2, int par3, int par4){

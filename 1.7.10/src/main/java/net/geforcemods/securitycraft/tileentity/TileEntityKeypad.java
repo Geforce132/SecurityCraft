@@ -3,7 +3,10 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -46,6 +49,29 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
     	if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypad){
     		BlockKeypad.activate(worldObj, xCoord, yCoord, zCoord);
     	}
+	}
+    
+    public void openPasswordGUI(EntityPlayer player) {
+		if(getPassword() == null) {
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+		}
+		else {
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+		}
+	}
+	
+	public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled) {
+		if(isCodebreakerDisabled) {
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+		}
+		else {
+			if(meta > 6 && meta < 11) {
+				activate(player);
+				return true;
+			}
+		}
+		
+		return false;
 	}
     
 	public String getPassword() {

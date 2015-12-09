@@ -23,15 +23,13 @@ import net.minecraft.world.World;
 public class BlockCageTrap extends BlockOwnable {
 
 	public final boolean deactivated;
-	private final int blockTextureIndex;
 
 	@SideOnly(Side.CLIENT)
 	private IIcon topIcon;
 
-	public BlockCageTrap(Material par2Material, boolean deactivated, int blockTextureIndex) {
+	public BlockCageTrap(Material par2Material, boolean deactivated) {
 		super(par2Material);
 		this.deactivated = deactivated;
-		this.blockTextureIndex = blockTextureIndex;
 	}
 
 	@Override
@@ -78,11 +76,7 @@ public class BlockCageTrap extends BlockOwnable {
 	}
 
 	public IIcon getIcon(int par1, int par2){
-		if(this.blockTextureIndex == 9999){
-			return par1 == 1 ? this.topIcon : this.blockIcon;
-		}else{
-			return this.blockIcon;
-		}
+		return this.blockIcon;
 	}
 
 	public int quantityDropped(Random par1Random){

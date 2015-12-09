@@ -12,6 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -131,6 +132,11 @@ public class ForgeEventHandler {
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
 			Block block = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 			
+			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.Codebreaker) && handleCodebreaking(event)) {
+				event.setCanceled(true);
+				return;
+			}
+			
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
 				event.setCanceled(true);
 
@@ -184,12 +190,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
-		if(event.world.getTileEntity(event.x, event.y, event.z) instanceof IOwnable) {
-			String name = event.player.getCommandSenderName();
-			String uuid = event.player.getGameProfile().getId().toString();
-
-			((IOwnable) event.world.getTileEntity(event.x, event.y, event.z)).getOwner().set(uuid, name);
-		}
+		handleOwnableTEs(event);
 	}
 
 	@SubscribeEvent
@@ -278,6 +279,26 @@ public class ForgeEventHandler {
 		}else{
 			return null;
 		}
+	}
+	
+	private void handleOwnableTEs(PlaceEvent event) {
+		if(event.world.getTileEntity(event.x, event.y, event.z) instanceof IOwnable) {
+			String name = event.player.getCommandSenderName();
+			String uuid = event.player.getGameProfile().getId().toString();
+
+			((IOwnable) event.world.getTileEntity(event.x, event.y, event.z)).getOwner().set(uuid, name);
+		}		
+	}
+	
+	private boolean handleCodebreaking(PlayerInteractEvent event) {
+		World world = event.entityPlayer.worldObj;
+		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
+		
+		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockMetadata(event.x, event.y, event.z), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
+		}
+		
+		return false;
 	}
 
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){

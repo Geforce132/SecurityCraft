@@ -2,11 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,9 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class BlockKeypadFurnace extends BlockContainer {
@@ -46,26 +42,11 @@ public class BlockKeypadFurnace extends BlockContainer {
 	}
 
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(!par1World.isRemote){
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.Codebreaker){
-				if(mod_SecurityCraft.configHandler.allowCodebreakerItem)
-					activate(par1World, par2, par3, par4, par5EntityPlayer);
-				else
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
-				
-				return true;
-			}
-
-			if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadFurnace){
-				if(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() == null){
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, par1World, par2, par3, par4);
-				}else{
-					par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, par1World, par2, par3, par4);
-				}
-			}
-		}
-
-		return true;
+		if(!par1World.isRemote){     
+    		((TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
+    	}
+        
+        return true;
 	}
 	
 	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
