@@ -5,8 +5,6 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 public class TileEntityLaserBlock extends CustomizableSCTE {
 	
@@ -22,8 +20,4 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST};
 	}
 	
-	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.harmingModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.laser.harming"), 
-				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.laser.whitelist")};
-	}
 }

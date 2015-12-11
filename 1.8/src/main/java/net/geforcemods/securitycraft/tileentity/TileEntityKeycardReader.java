@@ -10,8 +10,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
 
@@ -81,8 +79,4 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
 
-	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.whitelist"),
-				EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.blacklistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.keycardReader.blacklist")};
-	    }
 }

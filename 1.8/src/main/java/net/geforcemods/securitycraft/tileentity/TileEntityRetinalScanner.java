@@ -30,7 +30,4 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
-	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.retinalScanner.whitelist")};
-	}
 }

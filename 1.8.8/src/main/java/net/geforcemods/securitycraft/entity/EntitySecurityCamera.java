@@ -230,51 +230,55 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewLeft() {
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+		    EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);	
 
-		if(facing == EnumFacing.EAST){
-			if((this.rotationYaw - CAMERA_SPEED) > -180F){
-				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+			if(facing == EnumFacing.EAST){
+				if((this.rotationYaw - CAMERA_SPEED) > -180F){
+					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.WEST){
+				if((this.rotationYaw - CAMERA_SPEED) > 0F){
+					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.NORTH){
+				if((this.rotationYaw - CAMERA_SPEED) > -270F){
+					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.SOUTH){
+				if((this.rotationYaw - CAMERA_SPEED) > -90F){
+					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
+				}
 			}
-		}else if(facing == EnumFacing.WEST){
-			if((this.rotationYaw - CAMERA_SPEED) > 0F){
-				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
-			}
-		}else if(facing == EnumFacing.NORTH){
-			if((this.rotationYaw - CAMERA_SPEED) > -270F){
-				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
-			}
-		}else if(facing == EnumFacing.SOUTH){
-			if((this.rotationYaw - CAMERA_SPEED) > -90F){
-				this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
-			}
+			
+			this.updateServerRotation();
 		}
-		
-		this.updateServerRotation();
 	}
 	
 	public void moveViewRight(){
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
-
-		if(facing == EnumFacing.EAST){
-			if((this.rotationYaw + CAMERA_SPEED) < 0F){
-				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+	
+			if(facing == EnumFacing.EAST){
+				if((this.rotationYaw + CAMERA_SPEED) < 0F){
+					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.WEST){
+				if((this.rotationYaw + CAMERA_SPEED) < 180F){
+					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.NORTH){
+				if((this.rotationYaw + CAMERA_SPEED) < -90F){
+					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
+			}else if(facing == EnumFacing.SOUTH){
+				if((this.rotationYaw + CAMERA_SPEED) < 90F){
+					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
+				}
 			}
-		}else if(facing == EnumFacing.WEST){
-			if((this.rotationYaw + CAMERA_SPEED) < 180F){
-				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
-			}
-		}else if(facing == EnumFacing.NORTH){
-			if((this.rotationYaw + CAMERA_SPEED) < -90F){
-				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
-			}
-		}else if(facing == EnumFacing.SOUTH){
-			if((this.rotationYaw + CAMERA_SPEED) < 90F){
-				this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
-			}
+			
+			this.updateServerRotation();
 		}
-		
-		this.updateServerRotation();
 	}
 	
 	public void zoomCameraView(int zoom) {

@@ -37,4 +37,5 @@
 - Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
 - Fix: [1.8] Security cameras and fake water/lava causing "Model definition for location securitycraft:X#Y not found" errors
 - Fix: [1.8] Waila showing "<ERROR>" while looking at a newly placed password-protected chest
+- Fix: [1.8] Inventory scanners not accepting storage modules
 - Removed: Some redundant/unused code

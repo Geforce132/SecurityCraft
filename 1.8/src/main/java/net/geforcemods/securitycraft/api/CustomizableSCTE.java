@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -367,11 +366,5 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * into this tile entity.
 	 */
 	public abstract EnumCustomModules[] acceptedModules();
-	
-	/**
-	 *  Set the descriptions for each module that gets shown on the info buttons in 
-	 *  the Universal Block Modifier's "Customize" GUI. ({@link GuiCustomizeBlock})
-	 */
-	public abstract String[] getOptionDescriptions();
 	
 }

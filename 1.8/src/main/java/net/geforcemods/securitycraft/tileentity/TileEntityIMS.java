@@ -18,8 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 public class TileEntityIMS extends CustomizableSCTE {
 	
@@ -227,10 +225,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
-	public String[] getOptionDescriptions() {
-		return new String[]{EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("item.whitelistModule.name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal("module.description.ims.whitelist")};
-	}
-	
 public static enum EnumIMSTargetingMode {
 	
 	PLAYERS(0),

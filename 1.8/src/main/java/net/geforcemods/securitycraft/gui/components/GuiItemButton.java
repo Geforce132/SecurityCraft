@@ -12,17 +12,15 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class GuiPictureButton extends GuiButton{
+public class GuiItemButton extends GuiButton{
 	
 	private final RenderItem itemRenderer;
 	private Block blockToRender;
 	private Item itemToRender;
-	public String extraData;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem par7, ItemStack itemToRender, String extraData) {
+	public GuiItemButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem par7, ItemStack itemToRender) {
 		super(id, xPos, yPos, width, height, displayString);
 		this.itemRenderer = par7;
-		this.extraData = extraData;
 		
 		if(itemToRender != null && itemToRender.getItem().getUnlocalizedName().startsWith("tile.")){
 			this.blockToRender = Block.getBlockFromItem(itemToRender.getItem());
@@ -82,13 +80,17 @@ public class GuiPictureButton extends GuiButton{
     public void setDisplayItem(ItemStack par1ItemStack){
     	this.blockToRender = null;
     	this.itemToRender = null;
-		//if(this.itemToRender != null && par1ItemStack.getUnlocalizedName().startsWith("tile.")){
-		if(par1ItemStack.getUnlocalizedName().startsWith("tile.")){
+		
+    	if(par1ItemStack.getUnlocalizedName().startsWith("tile.")){
     		this.blockToRender = Block.getBlockFromItem(par1ItemStack.getItem());
 		}else{
 			this.itemToRender = par1ItemStack.getItem();
 		}
 
+    }
+    
+    public Item getItemStack() {
+    	return (blockToRender != null ? Item.getItemFromBlock(blockToRender) : itemToRender);
     }
 
 }

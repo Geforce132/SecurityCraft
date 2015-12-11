@@ -7,32 +7,39 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
-import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
+import net.geforcemods.securitycraft.gui.components.GuiItemButton;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
 	
     private CustomizableSCTE tileEntity;
+    private GuiItemButton[] buttons = new GuiItemButton[5];
     private HoverChecker[] hoverCheckers = new HoverChecker[5];
+    
+    private final String blockName;
     
     public GuiCustomizeBlock(InventoryPlayer par1InventoryPlayer, CustomizableSCTE par2TileEntity)
     {
         super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
         this.tileEntity = par2TileEntity;
+        this.blockName = Minecraft.getMinecraft().theWorld.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getUnlocalizedName().substring(5);
     }
     
     public void initGui(){
     	super.initGui();
 
     	for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-    		GuiPictureButton button = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()), "");
-    		this.buttonList.add(button);
-    		this.hoverCheckers[i] = new HoverChecker(button, 20);
+    		buttons[i] = new GuiItemButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+    		this.buttonList.add(buttons[i]);
+    		this.hoverCheckers[i] = new HoverChecker(buttons[i], 20);
     	}
     }
     
@@ -41,7 +48,7 @@ public class GuiCustomizeBlock extends GuiContainer{
     	
     	for(int i = 0; i < hoverCheckers.length; i++){
     		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-    			this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(tileEntity.getOptionDescriptions()[i], 150), mouseX, mouseY, this.mc.fontRenderer);
+    			this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, this.mc.fontRenderer);
     		}
     	}
     }
@@ -64,4 +71,11 @@ public class GuiCustomizeBlock extends GuiContainer{
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
+    
+    private String getModuleDescription(int buttonID) {
+    	String moduleDescription = "module." + blockName + "." + buttons[buttonID].getItemStack().getUnlocalizedName().substring(5) + ".description";
+    	
+    	return StatCollector.translateToLocal(buttons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal(moduleDescription);
+    }
+    
 }
