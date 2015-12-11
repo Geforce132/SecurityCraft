@@ -34,8 +34,8 @@
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
 - Fix: [1.7.10] Cameras don't emit a redstone signal
-- Fix: [1.8] Tasers weren't held in the middle of the player's hand in 3rd person mode
-- Fix: [1.8] Security cameras and fake water/lava causing "Model definition for location securitycraft:X#Y not found" errors
-- Fix: [1.8] Waila showing "<ERROR>" while looking at a newly placed password-protected chest
-- Fix: [1.8] Inventory scanners not accepting storage modules
+- Fix: [1.8] Tasers are held incorrectly in 3rd person mode
+- Fix: [1.8] Security cameras and fake water/lava cause "Model definition for location securitycraft:X#Y not found" errors
+- Fix: [1.8] Waila shows "<ERROR>" while looking at a newly placed password-protected chest
+- Fix: [1.8] Inventory scanners don't accept storage modules
 - Removed: Some redundant/unused code
