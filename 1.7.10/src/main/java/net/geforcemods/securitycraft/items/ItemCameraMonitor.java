@@ -47,7 +47,14 @@ public class ItemCameraMonitor extends ItemMap {
 						par1ItemStack.setTagCompound(new NBTTagCompound());
 			    	}
 					
+					if(isCameraAdded(par1ItemStack.getTagCompound(), par4, par5, par6)){
+						par1ItemStack.getTagCompound().removeTag(getTagNameFromPosition(par1ItemStack.getTagCompound(), par4, par5, par6));
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.RED);
+						return true;
+					}
+					
 					par1ItemStack.getTagCompound().setString("Camera1", par4 + " " + par5 + " " + par6);
+	    			mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(par4, par5, par6, 0), (EntityPlayerMP) par2EntityPlayer);
 					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.GREEN);
 					
 					return true;

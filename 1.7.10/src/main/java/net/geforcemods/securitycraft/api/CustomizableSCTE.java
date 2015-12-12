@@ -42,7 +42,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
             {
                 this.itemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
-        }      
+        }
+        
+        if(customOptions() != null) {
+	        for(Option<?> option : customOptions()) {
+	        	option.readFromNBT(par1NBTTagCompound);
+	        }
+        }
     }
 	
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
@@ -61,7 +67,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
             }
         }
 
-        par1NBTTagCompound.setTag("Modules", nbttaglist);           
+        par1NBTTagCompound.setTag("Modules", nbttaglist);
+        
+        if(customOptions() != null) {
+            for(Option<?> option : customOptions()) {
+        	    option.writeToNBT(par1NBTTagCompound);
+            }
+        }
     }
 	
 	public Packet getDescriptionPacket() {                
@@ -341,7 +353,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return this.acceptedModules().length;
 	}
 	
-	public ArrayList<EnumCustomModules> getOptions(){
+	public ArrayList<EnumCustomModules> getAcceptedModules(){
 		ArrayList<EnumCustomModules> list = new ArrayList<EnumCustomModules>();
 		
 		for(EnumCustomModules module : acceptedModules()){
@@ -356,5 +368,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * into this tile entity.
 	 */
 	public abstract EnumCustomModules[] acceptedModules();
+	
+	public abstract Option<?>[] customOptions();
 	
 }

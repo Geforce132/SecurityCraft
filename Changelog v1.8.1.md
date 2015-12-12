@@ -17,6 +17,7 @@
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
+- API: Added Option, which allows you to add custom, "per-block" configuration values
 - API: General improvements
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
@@ -34,6 +35,7 @@
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
 - Fix: [1.7.10] Cameras don't emit a redstone signal
+- Fix: [1.7.10] Monitors require a second right-click to display a camera's view (when using LookingGlass)
 - Fix: [1.8] Tasers are held incorrectly in 3rd person mode
 - Fix: [1.8] Security cameras and fake water/lava cause "Model definition for location securitycraft:X#Y not found" errors
 - Fix: [1.8] Waila shows "<ERROR>" while looking at a newly placed password-protected chest

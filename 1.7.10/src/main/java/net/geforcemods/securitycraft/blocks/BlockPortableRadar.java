@@ -2,14 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -18,10 +16,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -53,13 +49,9 @@ public class BlockPortableRadar extends BlockContainer {
         return false;
     }
      
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-        this.addEffectsToPlayers(par1World, par2, par3, par4); 
-    }
-    
-    public void addEffectsToPlayers(World par1World, int par2, int par3, int par4){
+    public static void searchForPlayers(World par1World, int par2, int par3, int par4, int searchRadius){
         if(!par1World.isRemote){	
-            double d0 = (double)(mod_SecurityCraft.configHandler.portableRadarSearchRadius);
+            double d0 = (double)(searchRadius);
         	
             AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)par2, (double)par3, (double)par4, (double)(par2 + 1), (double)(par3 + 1), (double)(par4 + 1)).expand(d0, d0, d0);
             axisalignedbb.maxY = (double)par1World.getHeight();
@@ -69,7 +61,7 @@ public class BlockPortableRadar extends BlockContainer {
             
             if(list.isEmpty()){
             	if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && par1World.getBlockMetadata(par2, par3, par4) == 1){
-            		this.togglePowerOutput(par1World, par2, par3, par4, false);
+            		togglePowerOutput(par1World, par2, par3, par4, false);
             		return;
                 }
             }
@@ -88,13 +80,13 @@ public class BlockPortableRadar extends BlockContainer {
                 }   
                 
                 if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE)){
-                	this.togglePowerOutput(par1World, par2, par3, par4, true);
+                	togglePowerOutput(par1World, par2, par3, par4, true);
                 }
             }     
         }
     }
 
-    private void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
+    private static void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
 		if(par5){
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
 		}else{

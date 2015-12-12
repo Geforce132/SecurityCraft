@@ -424,7 +424,7 @@ public class ConfigurationHandler{
 		
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4);
 		dummyProp.setLanguageKey("config.portableRadarDelay");
-		portableRadarDelay = dummyProp.getInt(4) * 20;
+		portableRadarDelay = dummyProp.getInt(4);
 		
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5);
 		dummyProp.setLanguageKey("config.claymoreRange");

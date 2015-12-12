@@ -57,7 +57,7 @@ public class ContainerCustomizeBlock extends Container{
                 	this.tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
                 }
             }
-            else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getOptions().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))
+            else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))
             {
                 return null;
             }
@@ -98,7 +98,7 @@ public class ContainerCustomizeBlock extends Container{
          */
         public boolean isItemValid(ItemStack par1ItemStack)
         {
-            if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getOptions().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule())){
+            if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule())){
             	return true;
             }else{
             	return false;

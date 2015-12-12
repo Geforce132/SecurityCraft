@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -72,7 +73,7 @@ public class TileEntitySCTE extends TileEntity {
 		}
 
 		if (attacks) {	
-			if (attackCooldown < ticksBetweenAttacks) {
+			if (attackCooldown < getTicksBetweenAttacks()) {
 				attackCooldown++;
 				return;
 			}
@@ -81,7 +82,7 @@ public class TileEntitySCTE extends TileEntity {
 				int i = xCoord;
 		        int j = yCoord;
 		        int k = zCoord;
-		        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(attackRange, attackRange, attackRange);
+		        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(getAttackRange(), getAttackRange(), getAttackRange());
 		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
 		        
@@ -102,6 +103,9 @@ public class TileEntitySCTE extends TileEntity {
 			        
 			        if (attacked || shouldRefreshAttackCooldown()) {
 			        	attackCooldown = 0;
+			        }
+			        
+			        if(attacked || shouldSyncToClient()) {
 				    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
 			        }
 		        }
@@ -144,6 +148,7 @@ public class TileEntitySCTE extends TileEntity {
         par1NBTTagCompound.setBoolean("attacks", attacks);
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
+        par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
     }
 
     /**
@@ -171,7 +176,12 @@ public class TileEntitySCTE extends TileEntity {
         if (par1NBTTagCompound.hasKey("attackCooldown"))
         {
             this.attackCooldown = par1NBTTagCompound.getInteger("attackCooldown");
-        }  
+        }
+        
+        if (par1NBTTagCompound.hasKey("ticksBetweenAttacks"))
+        {
+            this.ticksBetweenAttacks = par1NBTTagCompound.getInteger("ticksBetweenAttacks");
+        }
     }
     
     public Packet getDescriptionPacket() {                
@@ -182,6 +192,19 @@ public class TileEntitySCTE extends TileEntity {
     
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
     	readFromNBT(packet.func_148857_g());        
+    }
+    
+    public void sync() {
+    	if(worldObj == null) return;
+    	
+    	if(worldObj.isRemote) {
+    		ClientUtils.syncTileEntity(this);
+    		System.out.println("Sending to server");
+    	}
+    	else {
+	    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
+    		System.out.println("Sending to clients");
+    	}
     }
     
     /**
@@ -263,6 +286,14 @@ public class TileEntitySCTE extends TileEntity {
      *         it should start again automatically from 0.
      */
     public boolean shouldRefreshAttackCooldown() {
+    	return true;
+    }
+    
+    /**
+     * @return Should this TileEntity send an update packet
+     *         to all clients if it attacks unsuccessfully?
+     */
+    public boolean shouldSyncToClient() {
     	return true;
     }
     
