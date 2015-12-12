@@ -17,7 +17,7 @@
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
-- API: Added Option, which allows you to add custom, "per-block" configuration values
+- API: Added option, which allows you to add custom, "per-block" configuration values
 - API: General improvements
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
