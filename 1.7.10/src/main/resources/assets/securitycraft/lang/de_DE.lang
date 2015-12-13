@@ -382,7 +382,6 @@ config.ableToCraftKeycard4=Craftbare Level 4 Schlüsselkarte?
 config.ableToCraftKeycard4.tooltip=Ist die Level 4 Schlüsselkarte craftbar?
 config.ableToCraftKeycard5=Craftbare Level 5 Schlüsselkarte?
 config.ableToCraftKeycard5.tooltip=Ist die Level 5 Schlüsselkarte craftbar?
-config.ableToCraftKeycard5.tooltip=Ist die Level 5 Schlüsselkarte craftbar?
 config.ableToCraftLUKeycard=Craftbare begrenzt nutzbare Schlüsselkarte?
 config.ableToCraftLUKeycard.tooltip=Ist die begrenzt nutzbare Schlüsselkarte craftbar?
 config.smallerMineExplosion=Minen explodieren weniger?
@@ -421,3 +420,7 @@ config.useOldKeypadRecipe=Altes Nummernfeld Rezept nutzen? (9 Knöpfe)?
 config.useOldKeypadRecipe.tooltip=Soll das veraltete Nummernfeld Rezept mit 9 Knöpfen aktiviert sein?
 config.cameraSpeed=Kamera Schnelligkeit ohne LookingGlass:
 config.cameraSpeed.tooltip=Wie schnell kannst du dich bewegen wenn du in einer Kamera bist und W-A-S-D drückst?
+
+option.portableRadar.searchRadius=Suchradius: #
+option.portableRadar.searchDelay=Suchverzögerung: # Sek.
+option.securityCamera.rotationOption=Rotationsschnelligkeit: #
