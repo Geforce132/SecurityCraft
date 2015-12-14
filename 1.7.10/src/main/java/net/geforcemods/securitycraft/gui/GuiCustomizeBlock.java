@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiItemButton;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -45,10 +47,13 @@ public class GuiCustomizeBlock extends GuiContainer{
     		this.hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
     	}
     	
-    	for(int i = 0; i < tileEntity.customOptions().length; i++){
-    		optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + ((i + tileEntity.getNumberOfCustomizableOptions() - 2) * 25), 120, 20, getOptionButtonTitle(tileEntity.customOptions()[i]));
-    		this.buttonList.add(optionButtons[i]);
-    		this.hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
+    	if(tileEntity.customOptions() != null) {
+	    	for(int i = 0; i < tileEntity.customOptions().length; i++){
+	    		optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(tileEntity.customOptions()[i]));
+	    		optionButtons[i].packedFGColour = tileEntity.customOptions()[i].toString().matches(tileEntity.customOptions()[i].getDefaultValue().toString()) ? 16777120 : 14737632; 
+	    		this.buttonList.add(optionButtons[i]);
+	    		this.hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
+	    	}
     	}
     }
     
@@ -59,9 +64,6 @@ public class GuiCustomizeBlock extends GuiContainer{
     		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
     			if(i < tileEntity.getNumberOfCustomizableOptions()) {
         			this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, this.mc.fontRenderer);
-    			}
-    			else {
-        			this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, this.mc.fontRenderer);
     			}
     		}
     	}
@@ -88,9 +90,11 @@ public class GuiCustomizeBlock extends GuiContainer{
     
 	protected void actionPerformed(GuiButton guibutton) {
 		if(!(guibutton instanceof GuiItemButton)) {
-			tileEntity.customOptions()[guibutton.id].toggle();
-			guibutton.displayString = getOptionButtonTitle(tileEntity.customOptions()[guibutton.id]);
-			tileEntity.sync();
+			Option<?> tempOption = tileEntity.customOptions()[guibutton.id];
+			tempOption.toggle();
+			guibutton.packedFGColour = tempOption.toString().matches(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
+			guibutton.displayString = getOptionButtonTitle(tempOption);
+			mod_SecurityCraft.network.sendToServer(new PacketSToggleOption(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, guibutton.id));
 		}
 	}
     
@@ -100,6 +104,8 @@ public class GuiCustomizeBlock extends GuiContainer{
     	return StatCollector.translateToLocal(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal(moduleDescription);
     }
     
+    //Not used right at the moment
+    @SuppressWarnings("unused")
     private String getOptionDescription(int buttonID) {
     	String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName();
     	

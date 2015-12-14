@@ -421,3 +421,9 @@ config.useOldKeypadRecipe=Use old keypad recipe (9 buttons)?
 config.useOldKeypadRecipe.tooltip=Should the outdated keypad recipe of nine buttons be enabled?
 config.cameraSpeed=Camera rotation speed:
 config.cameraSpeed.tooltip=How fast can you rotate when mounted to a camera and holding W-A-S-D?
+
+option.portableRadar.searchRadius=Search radius: #
+option.portableRadar.searchDelay=Search delay: # sec.
+option.securityCamera.rotationSpeed=Rotation speed: #
+option.securityCamera.shouldRotate=Should rotate: #
+option.keypad.isAlwaysActive=Is always active: #

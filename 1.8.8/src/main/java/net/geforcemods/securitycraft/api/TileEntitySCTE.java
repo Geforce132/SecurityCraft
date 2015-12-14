@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -93,7 +94,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
 		}
 		
 		if (attacks) {	
-			if (attackCooldown < ticksBetweenAttacks) {
+			if (attackCooldown < getTicksBetweenAttacks()) {
 				attackCooldown++;
 				return;
 			}
@@ -102,7 +103,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
 				int i = pos.getX();
 		        int j = pos.getY();
 		        int k = pos.getZ();
-		        AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(attackRange, attackRange, attackRange);
+		        AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(getAttackRange(), getAttackRange(), getAttackRange());
 		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
 
@@ -123,7 +124,10 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
 			        
 			        if (attacked || shouldRefreshAttackCooldown()) {
 			        	attackCooldown = 0;
-				    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
+			        }
+			        
+			        if(attacked || shouldSyncToClient()) {
+				    	sync();
 			        }
 		        }
 			}
@@ -170,6 +174,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
         par1NBTTagCompound.setBoolean("attacks", attacks);
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
+        par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
     }
 
     /**
@@ -202,7 +207,12 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
         if (par1NBTTagCompound.hasKey("attackCooldown"))
         {
             this.attackCooldown = par1NBTTagCompound.getInteger("attackCooldown");
-        }   
+        }
+        
+        if (par1NBTTagCompound.hasKey("ticksBetweenAttacks"))
+        {
+            this.ticksBetweenAttacks = par1NBTTagCompound.getInteger("ticksBetweenAttacks");
+        }
     }
     
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
@@ -217,6 +227,23 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
     
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
+    }
+    
+    /**
+     * Automatically detects the side this method was called on, and 
+     * sends the client-side value of this TileEntity's NBTTagCompound
+     * to the server-side, or the server-side value to the client-side,
+     * respectively.
+     */
+    public void sync() {
+    	if(worldObj == null) return;
+    	
+    	if(worldObj.isRemote) {
+    		ClientUtils.syncTileEntity(this);
+    	}
+    	else {
+	    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
+    	}
     }
     
     /**
@@ -314,6 +341,14 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
      *         it should start again automatically from 0.
      */
     public boolean shouldRefreshAttackCooldown() {
+    	return true;
+    }
+    
+    /**
+     * @return Should this TileEntity send an update packet
+     *         to all clients if it attacks unsuccessfully?
+     */
+    public boolean shouldSyncToClient() {
     	return true;
     }
     

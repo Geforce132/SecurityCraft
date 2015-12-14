@@ -364,11 +364,15 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 	
 	/**
-	 * Return an array of what {@link EnumCustomModules} can be inserted
-	 * into this tile entity.
+	 * @return An array of what {@link EnumCustomModules} can be inserted
+	 *         into this TileEntity.
 	 */
 	public abstract EnumCustomModules[] acceptedModules();
 	
+	/**
+	 * @return An array of what custom {@link Option}s this
+	 *         TileEntity has.
+	 */
 	public abstract Option<?>[] customOptions();
 	
 }

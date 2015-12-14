@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -16,6 +17,21 @@ import net.minecraft.util.StatCollector;
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 	
 	private String passcode;
+	
+	private OptionBoolean isAlwaysActive = new OptionBoolean("isAlwaysActive", false) {
+		public void toggle() {
+			super.toggle();
+			
+			if(getValue()) {
+				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_SecurityCraft.Keypad);
+			}
+			else {
+				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) - 5, 3);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_SecurityCraft.Keypad);
+			}		
+		}
+	};
     
     /**
      * Writes a tile entity to NBT.
@@ -88,7 +104,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	}
 
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{ isAlwaysActive };
 	}
 	
 }

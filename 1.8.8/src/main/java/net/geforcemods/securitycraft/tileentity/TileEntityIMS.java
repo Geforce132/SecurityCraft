@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -223,6 +224,10 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
+	}
+	
+	public Option<?>[] customOptions() {
+		return null;
 	}
 	
 public static enum EnumIMSTargetingMode {

@@ -424,4 +424,6 @@ config.cameraSpeed.tooltip=How fast can you rotate when mounted to a camera and 
 
 option.portableRadar.searchRadius=Search radius: #
 option.portableRadar.searchDelay=Search delay: # sec.
-option.securityCamera.rotationOption=Rotation speed: #
+option.securityCamera.rotationSpeed=Rotation speed: #
+option.securityCamera.shouldRotate=Should rotate: #
+option.keypad.isAlwaysActive=Is always active: #

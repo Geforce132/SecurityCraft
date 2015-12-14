@@ -106,7 +106,7 @@ public class TileEntitySCTE extends TileEntity {
 			        }
 			        
 			        if(attacked || shouldSyncToClient()) {
-				    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
+				    	sync();
 			        }
 		        }
 			}
@@ -194,16 +194,20 @@ public class TileEntitySCTE extends TileEntity {
     	readFromNBT(packet.func_148857_g());        
     }
     
+    /**
+     * Automatically detects the side this method was called on, and 
+     * sends the client-side value of this TileEntity's NBTTagCompound
+     * to the server-side, or the server-side value to the client-side,
+     * respectively.
+     */
     public void sync() {
     	if(worldObj == null) return;
     	
     	if(worldObj.isRemote) {
     		ClientUtils.syncTileEntity(this);
-    		System.out.println("Sending to server");
     	}
     	else {
 	    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
-    		System.out.println("Sending to clients");
     	}
     }
     

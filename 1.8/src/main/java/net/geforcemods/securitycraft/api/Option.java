@@ -187,7 +187,7 @@ public static class OptionInt extends Option<Integer>{
 		super(optionName, value, min, max, step);
 	}
 	
-	public void toggle() {
+	public void toggle() {		
 		if(getValue() >= getMax()) {
 			setValue(getMin());
 			return;

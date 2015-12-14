@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -64,7 +65,7 @@ public class BlockKeypad extends BlockContainer {
     		return true;
     	}
     	else {
-    		if(par1World.getBlockMetadata(par2, par3, par4) > 6 && par1World.getBlockMetadata(par2, par3, par4) < 11){
+    		if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 7, 10)){
 				return false;
 			}
 			

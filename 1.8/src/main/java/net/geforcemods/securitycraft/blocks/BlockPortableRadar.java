@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -58,14 +57,8 @@ public class BlockPortableRadar extends BlockContainer {
     	return 3;
     }
      
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-        this.addEffectsToPlayers(par1World, pos, state); 
-    }
-    
-    public void addEffectsToPlayers(World par1World, BlockPos pos, IBlockState state){
-        if (par1World.isRemote){      	
-        	return;       	
-        }else{
+    public static void searchForPlayers(World par1World, BlockPos pos, IBlockState state){
+        if(!par1World.isRemote){
             double d0 = (double)(mod_SecurityCraft.configHandler.portableRadarSearchRadius);
         	
             AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0).addCoord(0.0D, (double) par1World.getHeight(), 0.0D);
@@ -75,13 +68,13 @@ public class BlockPortableRadar extends BlockContainer {
             
             if(list.isEmpty()){
             	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) && ((Boolean) state.getValue(POWERED)).booleanValue()){
-            		this.togglePowerOutput(par1World, pos, false);
+            		togglePowerOutput(par1World, pos, false);
             		return;
                 }
             }
             
             if(!((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
-            	this.togglePowerOutput(par1World, pos, false);
+            	togglePowerOutput(par1World, pos, false);
             }
 
             while (iterator.hasNext()){      
@@ -91,31 +84,18 @@ public class BlockPortableRadar extends BlockContainer {
                 
                 if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getName().toLowerCase())){ continue; }              
                 
-                if(this.isOwnerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName())){
+                if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName())){
                 	PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((TileEntityPortableRadar)par1World.getTileEntity(pos)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((TileEntityPortableRadar)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), EnumChatFormatting.BLUE);               
                 }   
                 
                 if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
-                	this.togglePowerOutput(par1World, pos, true);
+                	togglePowerOutput(par1World, pos, true);
                 }
             }
-            
-            
-
         }
     }
 
-	private boolean isOwnerOnline(String username) {
-    	if(MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(username) != null){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    		
-    	
-    }
-
-    private void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
+    private static void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
     	if(par5 && !((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
     		BlockUtils.setBlockProperty(par1World, pos, POWERED, true, true);
     		BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
