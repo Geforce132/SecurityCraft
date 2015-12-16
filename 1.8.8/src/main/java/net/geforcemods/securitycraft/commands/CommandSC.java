@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.commands;
 
+import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
@@ -75,7 +76,7 @@ public class CommandSC extends CommandBase implements ICommand{
 		}else if(args.length >= 2){
 			if(args[0].matches("contact")){
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()) != null){
-					mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()).sendMessage("#GeforceMods", "> " + getMessageFromArray(args, 1));
+					((SCIRCBot) mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName())).sendMessage("> " + getMessageFromArray(args, 1));
 					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + sender.getCommandSenderName() + " --> IRC> " + getMessageFromArray(args, 1), sender);
 				}else{
 					PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);

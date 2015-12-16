@@ -19,7 +19,7 @@ import net.minecraft.util.StatCollector;
 public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, IPasswordProtected {
 	
 	private String passcode;
-    private Owner owner;
+    private Owner owner = new Owner();
 
 	public TileEntityKeypadChest adjacentChestZNeg;
     public TileEntityKeypadChest adjacentChestXPos;

@@ -15,6 +15,7 @@
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
 - New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted.
 - New: Custom options for keypads, portable radars, and security cameras
+- New: Spam detection while using /sc contact will not allow users to send the same message more than two times consecutively
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
@@ -35,10 +36,10 @@
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
+- Fix: Waila shows "<ERROR>" while looking at a newly placed password-protected chest
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Fix: [1.7.10] Monitors require a second right-click to display a camera's view (when using LookingGlass)
 - Fix: [1.8] Tasers are held incorrectly in 3rd person mode
 - Fix: [1.8] Security cameras and fake water/lava cause "Model definition for location securitycraft:X#Y not found" errors
-- Fix: [1.8] Waila shows "<ERROR>" while looking at a newly placed password-protected chest
 - Fix: [1.8] Inventory scanners don't accept storage modules
 - Removed: Some redundant/unused code

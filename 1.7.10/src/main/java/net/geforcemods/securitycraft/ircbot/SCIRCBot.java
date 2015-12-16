@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.ircbot;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
@@ -22,6 +23,8 @@ public class SCIRCBot extends PircBot{
 
 	private static final char prefix = '!';
 	
+	private HashMap<String, Integer> messageFrequency = new HashMap<String, Integer>(); 
+	
 	public SCIRCBot(String par1String){
 		this.setName(par1String);
 	}
@@ -33,6 +36,28 @@ public class SCIRCBot extends PircBot{
 
 		if(Minecraft.getMinecraft().getSession().getToken() == null)
 			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)");
+	}
+	
+	public void sendMessage(String message) {
+		// If the message is different than the previous message sent,
+		// reset the message "counter".
+		if(messageFrequency.size() > 0 && !messageFrequency.containsKey(message)) {
+			messageFrequency.clear();
+		}
+		
+		if(messageFrequency.containsKey(message)) {
+			messageFrequency.put(message, messageFrequency.get(message) + 1);
+		}
+		else {
+			messageFrequency.put(message, 1);
+		}
+		
+		if(messageFrequency.get(message) > 2) {
+			PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", "")), "IRC", StatCollector.translateToLocal("messages.irc.spam"), EnumChatFormatting.RED);
+			return;
+		}
+		
+		sendMessage("#GeforceMods", message);
 	}
 
 	@Override
