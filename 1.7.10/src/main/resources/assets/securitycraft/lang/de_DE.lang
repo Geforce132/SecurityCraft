@@ -317,6 +317,7 @@ messages.irc.disconnected=Bot erfolgreich von EsperNET getrennt.
 messages.irc.notConnected=Bot ist nicht mit EsperNET verbunden. Nutze '/sc connect' um dich mit IRC zu verbinden.
 messages.irc.banned=Du bist vom IRC gebannt und wurdest daher vom IRC getrennt.
 messages.irc.info=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert: https://raw.githubusercontent.com/Geforce132/SecurityCraft/master/IRC%20Information%20Deutsch.txt
+messages.irc.spam=Deine Nachricht wurde nicht gesendet, da du sie schon einmal kurz vorher gesendet hast. Bitte spamme nicht.
 messages.cageTrap.captured=#player wurde bei #location gefangen genommen.
 messages.frame.rightclick=Rechtsklicke mit einem verbundenen Monitor um ihn anzuschauen.
 messages.command.module.usage=Nutzungsweise: /module add <spielerName> ODER /module remove <spielerName> ODER /module copy ODER /module paste
