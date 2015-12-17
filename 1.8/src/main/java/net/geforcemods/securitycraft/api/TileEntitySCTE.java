@@ -37,6 +37,9 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
+    private boolean canBeNamed = false;
+	
+	private String customName = "name";
 	
 	private double attackRange = 0.0D;
 
@@ -175,6 +178,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
         par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
+        par1NBTTagCompound.setString("customName", customName);
     }
 
     /**
@@ -212,6 +216,11 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
         if (par1NBTTagCompound.hasKey("ticksBetweenAttacks"))
         {
             this.ticksBetweenAttacks = par1NBTTagCompound.getInteger("ticksBetweenAttacks");
+        }
+        
+        if (par1NBTTagCompound.hasKey("customName"))
+        {
+            this.customName = par1NBTTagCompound.getString("customName");
         }
     }
     
@@ -358,5 +367,27 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox{
     public boolean doesAttack() {
     	return attacks;
     }
+    
+    public TileEntitySCTE nameable() {
+    	canBeNamed = true;
+    	return this;
+    }
+
+	public String getCustomName() {
+		return customName;
+	}
+
+	public void setCustomName(String customName) {
+		this.customName = customName;
+		sync();
+	}
+
+	public boolean hasCustomName() {
+		return (customName != null && !customName.matches("name"));
+	}
+	
+	public boolean canBeNamed() {
+		return canBeNamed;
+	}
 
 }

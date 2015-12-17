@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
@@ -134,12 +135,12 @@ public class ForgeEventHandler {
 				return;
 			}
 			
-			if(event.action == Action.RIGHT_CLICK_BLOCK && block == mod_SecurityCraft.portableRadar && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
 				
 				event.entityPlayer.getCurrentEquippedItem().stackSize--;
 				
-				((TileEntityPortableRadar) tileEntity).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
+				((INameable) tileEntity).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
 				return;
 			}
 			

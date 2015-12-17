@@ -68,18 +68,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
         }
 
     }
-    
-	public String getCustomName() {
-		return customName;
-	}
-
-	public void setCustomName(String customName) {
-		this.customName = customName;
-	}
-	
-	public boolean hasCustomName(){
-		return (this.customName != null && !this.customName.isEmpty()) ? true : false;
-	}
 
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};

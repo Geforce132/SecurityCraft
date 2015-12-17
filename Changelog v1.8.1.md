@@ -20,6 +20,7 @@
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
 - API: Added option, which allows you to add custom, "per-block" configuration values
+- API: Added INameable, which allows you to set a custom name for a specific TileEntity
 - API: General improvements
 - Change: Improved IRC messaging system
 - Change: Improved cracked client detection to automatically kick them from IRC
