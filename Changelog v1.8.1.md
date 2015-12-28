@@ -28,7 +28,7 @@
 - Change: Camera monitors can now store up to 30 cameras when not using LookingGlass
 - Change: Camera selection GUI when not using LookingGlass
 - Change: Changed the name of some SecurityCraft files
-- Fix: Some messages and texts did not display correctly
+- Fix: Some messages and texts don't display correctly
 - Fix: Everyone connected to IRC from Minecraft gets kicked if a kick in the channel occurs
 - Fix: Crash occuring when mounted to a camera
 - Fix: Crash when mounting a camera which is directly under a block
@@ -37,7 +37,7 @@
 - Fix: Blocks can be broken when mounted to a camera
 - Fix: Security Cameras break when a block is placed next to them if they face north or west
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
-- Fix: Waila shows "<ERROR>" while looking at a newly placed password-protected chest
+- Fix: Waila shows "\<ERROR\>" while looking at a newly placed password-protected chest
 - Fix: [1.7.10] Cameras don't emit a redstone signal
 - Fix: [1.7.10] Monitors require a second right-click to display a camera's view (when using LookingGlass)
 - Fix: [1.8] Tasers are held incorrectly in 3rd person mode
