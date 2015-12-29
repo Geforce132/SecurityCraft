@@ -132,6 +132,8 @@ public class ForgeEventHandler {
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
 			Block block = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 			
+			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
+			
 			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.Codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
@@ -151,6 +153,18 @@ public class ForgeEventHandler {
 
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
+				
+				for(String character : new String[]{"(", ")"}) {
+					if(event.entityPlayer.getCurrentEquippedItem().getDisplayName().contains(character)) {
+						PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.error").replace("#n", event.entityPlayer.getCurrentEquippedItem().getDisplayName()).replace("#c", character), EnumChatFormatting.RED);
+						return;
+					}
+				}		
+				
+				if(((INameable) tileEntity).getCustomName().matches(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
+					return;
+				}
 
 				event.entityPlayer.getCurrentEquippedItem().stackSize--;
 

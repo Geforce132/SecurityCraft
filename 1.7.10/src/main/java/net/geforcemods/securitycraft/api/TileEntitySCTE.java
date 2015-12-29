@@ -149,6 +149,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
     	
         par1NBTTagCompound.setBoolean("viewActivated", viewActivated);
         par1NBTTagCompound.setBoolean("attacks", attacks);
+        par1NBTTagCompound.setBoolean("canBeNamed", canBeNamed);
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
         par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -170,6 +171,11 @@ public class TileEntitySCTE extends TileEntity implements INameable{
         if (par1NBTTagCompound.hasKey("attacks"))
         {
             this.attacks = par1NBTTagCompound.getBoolean("attacks");
+        }
+        
+        if (par1NBTTagCompound.hasKey("canBeNamed"))
+        {
+            this.canBeNamed = par1NBTTagCompound.getBoolean("canBeNamed");
         }
 
         if (par1NBTTagCompound.hasKey("attackRange"))

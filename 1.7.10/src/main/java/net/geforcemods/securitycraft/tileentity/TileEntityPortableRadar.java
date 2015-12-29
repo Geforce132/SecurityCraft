@@ -8,12 +8,9 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 	
-	private String customName;
-
 	private OptionInt searchRadiusOption = new OptionInt("searchRadius", mod_SecurityCraft.configHandler.portableRadarSearchRadius, 5, 50, 5);
 	private OptionInt searchDelayOption = new OptionInt("searchDelay", mod_SecurityCraft.configHandler.portableRadarDelay, 4, 10, 1);
 		
@@ -43,32 +40,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     	return searchDelayOption.asInteger() * 20;
     }
     
-    /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readFromNBT(par1NBTTagCompound);
-         
-        if (par1NBTTagCompound.hasKey("customName"))
-        {
-        	this.customName = par1NBTTagCompound.getString("customName");
-        }      
-    }
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeToNBT(par1NBTTagCompound);
-
-        if (this.customName != null && !this.customName.isEmpty()) {
-        	par1NBTTagCompound.setString("customName", this.customName);
-        }
-
-    }
-
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};
 	}

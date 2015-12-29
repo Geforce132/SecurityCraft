@@ -7,6 +7,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -26,6 +27,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 		registrar.addConfig("SecurityCraft", "securitycraft.showowner", StatCollector.translateToLocal("waila.displayOwner"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", StatCollector.translateToLocal("waila.showModules"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.showPasswords"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", StatCollector.translateToLocal("waila.showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
 	}
 	
@@ -56,6 +58,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 			
 			body.add(StatCollector.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.password.notSet")));
+		}
+		
+		if(config.getConfig("securitycraft.showcustomname") && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
+			String name = ((INameable) data.getTileEntity()).getCustomName();
+			
+			body.add(StatCollector.translateToLocal("waila.customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : StatCollector.translateToLocal("waila.customName.notSet")));
 		}
 		
 		return body;

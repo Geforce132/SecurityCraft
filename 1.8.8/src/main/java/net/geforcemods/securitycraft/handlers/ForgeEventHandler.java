@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -118,6 +117,8 @@ public class ForgeEventHandler {
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
 			Block block = event.entityPlayer.worldObj.getBlockState(event.pos).getBlock();
 			
+			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.Codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
@@ -138,8 +139,20 @@ public class ForgeEventHandler {
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
 				
-				event.entityPlayer.getCurrentEquippedItem().stackSize--;
+				for(String character : new String[]{"(", ")"}) {
+					if(event.entityPlayer.getCurrentEquippedItem().getDisplayName().contains(character)) {
+						PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.error").replace("#n", event.entityPlayer.getCurrentEquippedItem().getDisplayName()).replace("#c", character), EnumChatFormatting.RED);
+						return;
+					}
+				}		
 				
+				if(((INameable) tileEntity).getCustomName().matches(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
+					return;
+				}
+
+				event.entityPlayer.getCurrentEquippedItem().stackSize--;
+
 				((INameable) tileEntity).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
 				return;
 			}

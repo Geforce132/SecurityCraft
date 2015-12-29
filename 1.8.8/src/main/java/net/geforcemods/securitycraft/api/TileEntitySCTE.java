@@ -32,7 +32,7 @@ import net.minecraft.world.World;
  * 
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntity implements ITickable {
+public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -175,6 +175,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
         par1NBTTagCompound.setBoolean("intersectsEntities", intersectsEntities);
         par1NBTTagCompound.setBoolean("viewActivated", viewActivated);
         par1NBTTagCompound.setBoolean("attacks", attacks);
+        par1NBTTagCompound.setBoolean("canBeNamed", canBeNamed);
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
         par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -201,6 +202,11 @@ public class TileEntitySCTE extends TileEntity implements ITickable {
         if (par1NBTTagCompound.hasKey("attacks"))
         {
             this.attacks = par1NBTTagCompound.getBoolean("attacks");
+        }
+        
+        if (par1NBTTagCompound.hasKey("canBeNamed"))
+        {
+            this.canBeNamed = par1NBTTagCompound.getBoolean("canBeNamed");
         }
 
         if (par1NBTTagCompound.hasKey("attackRange"))

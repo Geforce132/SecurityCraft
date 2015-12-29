@@ -209,7 +209,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	public boolean hasCustomName() {
-		return true;
+		return (getCustomName() != null && !getCustomName().matches("name"));
 	}
 
 	public int getInventoryStackLimit() {

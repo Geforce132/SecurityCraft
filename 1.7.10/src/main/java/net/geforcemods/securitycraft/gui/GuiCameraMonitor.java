@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.config.HoverChecker;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -26,6 +28,8 @@ public class GuiCameraMonitor extends GuiContainer {
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
 	private GuiButton[] cameraButtons = new GuiButton[10];
+    private HoverChecker[] hoverCheckers = new HoverChecker[10];
+    private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
 
 	private int page = 1;
 
@@ -71,8 +75,13 @@ public class GuiCameraMonitor extends GuiContainer {
 				
 				if(Minecraft.getMinecraft().theWorld.getBlock(cameraPos[0], cameraPos[1], cameraPos[2]) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
+					cameraTEs[button.id] = null;
+					continue;
 				}
-			}
+				
+				cameraTEs[button.id] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(cameraPos[0], cameraPos[1], cameraPos[2]);
+				hoverCheckers[button.id] = new HoverChecker(button, 20);
+			}			
 		}
 		
 		if(page == 1) {
@@ -86,11 +95,22 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
 		}
-			
+		
+//		for(int i = 0; i < cameraButtons.length; i++) {
+//			hoverCheckers[i] = new HoverChecker(cameraButtons[i], 20);
+//		}	
 	}
 
-	public void drawScreen(int par1, int par2, float par3) {
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		
+		for(int i = 0; i < hoverCheckers.length; i++){
+    		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
+    			if(cameraTEs[i] != null && cameraTEs[i].hasCustomName()) {
+        		    this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRenderer);
+    			}
+    		}	
+    	}
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {	

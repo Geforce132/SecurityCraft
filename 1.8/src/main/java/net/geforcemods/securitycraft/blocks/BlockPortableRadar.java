@@ -135,7 +135,7 @@ public class BlockPortableRadar extends BlockContainer {
     }
 
 	public TileEntity createNewTileEntity(World world, int par2) {
-		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay);
+		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay).nameable();
 	}
 
 }
