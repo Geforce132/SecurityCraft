@@ -2,6 +2,8 @@
 - New: Added config option to disable SecurityCraft's built-in version checking feature.
 
 
+---
+
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
 - New: [Protecto](http://megaman.wikia.com/wiki/Protecto)

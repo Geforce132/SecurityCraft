@@ -429,3 +429,11 @@ config.useOldKeypadRecipe=Altes Nummernfeld Rezept nutzen? (9 Knöpfe)?
 config.useOldKeypadRecipe.tooltip=Soll das veraltete Nummernfeld Rezept mit 9 Knöpfen aktiviert sein?
 config.cameraSpeed=Kamera Schnelligkeit ohne LookingGlass:
 config.cameraSpeed.tooltip=Wie schnell kannst du dich bewegen wenn du in einer Kamera bist und W-A-S-D drückst?
+config.checkForUpdates=Soll für Updates auf GitHub geprüft werden?
+config.checkForUpdates.tooltip=Soll SecurityCraft nach Updates für den Mod mittels SecurityCraft's GitHub repo suchen?
+
+option.portableRadar.searchRadius=Suchradius: #
+option.portableRadar.searchDelay=Suchverzögerung: # Sek.
+option.securityCamera.rotationOption=Rotationsschnelligkeit: #
+option.securityCamera.shouldRotate=Rotieren: #
+option.keypad.isAlwaysActive=Immer aktiv: #
