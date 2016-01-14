@@ -150,6 +150,7 @@ public class ConfigurationHandler{
 	public boolean isIrcBotEnabled;
 	public boolean disconnectOnWorldClose;
 	public boolean useOldKeypadRecipe;
+	public boolean checkForUpdates;
 	public int portableRadarSearchRadius;
 	public int usernameLoggerSearchRadius;	
     public int laserBlockRange;
@@ -445,6 +446,10 @@ public class ConfigurationHandler{
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
 		dummyProp.setLanguageKey("config.cameraSpeed");
 		cameraSpeed = dummyProp.getInt(2);
+		
+		dummyProp = mod_SecurityCraft.configFile.get("options", "Should check for updates on Github?", true);
+		dummyProp.setLanguageKey("config.checkForUpdates");
+		checkForUpdates = dummyProp.getBoolean(true);
 
         if(mod_SecurityCraft.configFile.hasChanged()){
         	mod_SecurityCraft.configFile.save();

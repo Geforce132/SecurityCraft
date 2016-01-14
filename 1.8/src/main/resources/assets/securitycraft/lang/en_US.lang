@@ -426,6 +426,8 @@ config.useOldKeypadRecipe=Use old keypad recipe (9 buttons)?
 config.useOldKeypadRecipe.tooltip=Should the outdated keypad recipe of nine buttons be enabled?
 config.cameraSpeed=Camera rotation speed:
 config.cameraSpeed.tooltip=How fast can you rotate when mounted to a camera and holding W-A-S-D?
+config.checkForUpdates=Should check for updates on Github?
+config.checkForUpdates.tooltip=Should SecurityCraft check for new updates of the mod through SecurityCraft's Github repository?
 
 option.portableRadar.searchRadius=Search radius: #
 option.portableRadar.searchDelay=Search delay: # sec.

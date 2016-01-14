@@ -45,8 +45,8 @@ public class mod_SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
 	
-	//TODO ********************************* This is v1.8.1 for MC 1.8.8!
-	protected static final String VERSION = "v1.8.1";
+	//TODO ********************************* This is v1.8.2 for MC 1.8.8!
+	protected static final String VERSION = "v1.8.2";
 	protected static final String DEPENDENCIES = "required-after:Forge@[11.15.0.1596,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	
@@ -230,9 +230,11 @@ public class mod_SecurityCraft {
 		
 		FMLInterModComms.sendMessage("Waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
 						
-		NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
-		if(vcUpdateTag != null){
-			FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
+		if(configHandler.checkForUpdates) {
+			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+			if(vcUpdateTag != null){
+				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
+			}
 		}
 		
 		this.serverProxy.setupTextureRegistry();
