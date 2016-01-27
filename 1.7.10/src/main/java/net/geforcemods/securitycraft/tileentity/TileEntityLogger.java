@@ -10,7 +10,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	
-	public boolean attackEntity(Entity entity) {
+	public boolean attackEntity(Entity entity) {		
 		if (!this.worldObj.isRemote) {		
         	addPlayerName(((EntityPlayer) entity).getCommandSenderName());
         	sendChangeToClient();

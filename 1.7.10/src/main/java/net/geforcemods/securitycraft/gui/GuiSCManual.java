@@ -194,24 +194,29 @@ public class GuiSCManual extends GuiScreen {
     	
 		this.hoverCheckers.clear();
 
-    	for(Object object : CraftingManager.getInstance().getRecipeList()){
-			if(object instanceof ShapedRecipes){
-				ShapedRecipes recipe = (ShapedRecipes) object;
-				
-				if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-					this.recipe = recipe.recipeItems;
-					break;
-				}
-			}else if(object instanceof ShapelessRecipes){
-				ShapelessRecipes recipe = (ShapelessRecipes) object;
+		if(mod_SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe()) {
+			this.recipe = mod_SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
+		}
+		else {
+			for(Object object : CraftingManager.getInstance().getRecipeList()){
+				if(object instanceof ShapedRecipes){
+					ShapedRecipes recipe = (ShapedRecipes) object;
+					
+					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+						this.recipe = recipe.recipeItems;
+						break;
+					}
+				}else if(object instanceof ShapelessRecipes){
+					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
-				if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-					this.recipe = this.toItemStackArray(recipe.recipeItems);
-					break;
+					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+						this.recipe = this.toItemStackArray(recipe.recipeItems);
+						break;
+					}
 				}
+				
+				this.recipe = null;
 			}
-			
-			this.recipe = null;
 		}
     	
 	    int k = (this.width - 256) / 2;

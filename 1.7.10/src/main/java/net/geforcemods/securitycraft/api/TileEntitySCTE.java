@@ -4,9 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -95,7 +99,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 			        while (iterator.hasNext()) {
 						Entity mobToAttack = (Entity) iterator.next();
 						
-						if (mobToAttack == null || mobToAttack instanceof EntityItem) {
+						if (mobToAttack == null || mobToAttack instanceof EntityItem || !shouldAttackEntityType(mobToAttack)) {
 							continue;
 						}
 			        	
@@ -138,6 +142,15 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	 */
 	public boolean canAttack() {
 		return false;
+	}
+	
+	private boolean shouldAttackEntityType(Entity entity) {
+		if(entity.getClass() == EntityPlayer.class) {
+			return (entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class || entity.getClass() == EntityPlayerSP.class || entity.getClass() == EntityClientPlayerMP.class);
+		}
+		else {
+			return (entity.getClass() == typeToAttack);
+		}
 	}
 	
 	/**

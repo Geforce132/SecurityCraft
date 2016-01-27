@@ -109,6 +109,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
@@ -483,7 +484,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
 		registerBlock(mod_SecurityCraft.unbreakableIronBars);
-		registerBlock(mod_SecurityCraft.keypadChest);
+		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ null, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), null, null, ItemUtils.toItemStack(Items.redstone), null, null, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.chest)), null});
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerBlock(mod_SecurityCraft.reinforcedGlassPane);
 		registerBlock(mod_SecurityCraft.alarm);
@@ -883,6 +884,17 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
 		
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	/**
+	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
+	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
+	 * 
+	 */
+	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){ 
+		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal(block.getUnlocalizedName() + ".name"), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info"), customRecipe));
 	}
 	
 	/**

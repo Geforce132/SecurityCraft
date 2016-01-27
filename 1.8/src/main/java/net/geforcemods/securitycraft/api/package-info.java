@@ -1,4 +1,4 @@
-@API(owner = "securitycraft", provides = "SecurityCraftAPI", apiVersion = "1.1")
+@API(owner = "securitycraft", provides = "SecurityCraftAPI", apiVersion = "1.2")
 package net.geforcemods.securitycraft.api;
 
 import net.minecraftforge.fml.common.API;

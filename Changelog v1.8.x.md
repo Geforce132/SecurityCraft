@@ -1,8 +1,10 @@
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
+
 - New: Added config option to disable SecurityCraft's built-in version checking feature.
+- Fix: Username logger not checking if the player's name it saves is actually a player or not.
+- Fix: Rare crash with blocks implementing IIntersectable.
+- Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual.
 
-
----
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
