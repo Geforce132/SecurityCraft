@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -10,6 +11,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -49,51 +51,53 @@ public class CommandSC extends CommandBase implements ICommand{
 		return true;
 	}
 
-	public void processCommand(ICommandSender icommandsender, String[] par1String) {
+	public void processCommand(ICommandSender sender, String[] par1String) {
 		if(par1String.length == 0){
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
 		
 		if((par1String[0].matches("connect") || par1String[0].matches("disconnect") || par1String[0].matches("contact") || par1String[0].matches("bug")) && !mod_SecurityCraft.configHandler.isIrcBotEnabled){
-			PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.botDisabled"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.botDisabled"), EnumChatFormatting.RED);
 			return;
 		}
 		
 		if(par1String.length == 1){
 			if(par1String[0].matches("connect")){
-								
+				EntityPlayer p = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				
+				p.openGui(mod_SecurityCraft.instance, GuiHandler.IRC_INFORMATION, p.worldObj, p.chunkCoordX, p.chunkCoordY, p.chunkCoordZ);
+				
 				try{
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).connectToChannel();
+					mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
-					PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.error"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.error"), EnumChatFormatting.RED);
 					return;
 				}
 				
-				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.connected"), EnumChatFormatting.GREEN);
-				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC",StatCollector.translateToLocal("messages.irc.info"), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.connected"), EnumChatFormatting.GREEN);
 			}else if(par1String[0].matches("disconnect")){
-				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()) != null){
-					mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()).disconnect();
+				if(mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()).disconnect();
 				}
 					
-				PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.disconnected"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.disconnected"), EnumChatFormatting.RED);
 			}else if(par1String[0].matches("help")){
-				getCommandSenderAsPlayer(icommandsender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
+				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 			else if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("contact")){
-				if(mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName()) != null){
-					((SCIRCBot) mod_SecurityCraft.instance.getIrcBot(icommandsender.getCommandSenderName())).sendMessage("> " + getMessageFromArray(par1String, 1));
-					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + icommandsender.getCommandSenderName() + " --> IRC> " + getMessageFromArray(par1String, 1), icommandsender);
+				if(mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()) != null){
+					((SCIRCBot) mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName())).sendMessage("> " + getMessageFromArray(par1String, 1));
+					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + sender.getCommandSenderName() + " --> IRC> " + getMessageFromArray(par1String, 1), sender);
 				}else{
-					PlayerUtils.sendMessageToPlayer(icommandsender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
 				}
 			}
 			else if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(icommandsender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 		}else{
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}

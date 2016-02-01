@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.commands;
 
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -9,6 +10,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -51,7 +53,10 @@ public class CommandSC extends CommandBase implements ICommand{
 
 		if(args.length == 1){
 			if(args[0].matches("connect")){
-								
+				EntityPlayer p = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				
+				p.openGui(mod_SecurityCraft.instance, GuiHandler.IRC_INFORMATION, p.worldObj, p.chunkCoordX, p.chunkCoordY, p.chunkCoordZ);
+				
 				try{
 					mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()).connectToChannel();
 				}catch(Exception e){
@@ -61,7 +66,6 @@ public class CommandSC extends CommandBase implements ICommand{
 				}
 				
 				PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.connected"), EnumChatFormatting.GREEN);
-				PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.info"), EnumChatFormatting.GREEN);
 			}else if(args[0].matches("disconnect")){
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(sender.getCommandSenderName()).disconnect();

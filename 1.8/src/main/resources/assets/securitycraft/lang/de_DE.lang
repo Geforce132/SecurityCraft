@@ -272,6 +272,7 @@ gui.camera.zoom=Rein-/Rauszoomen
 gui.monitor.selectCameras=Wähle die Kamera aus, die du anschauen willst:
 gui.briefcase.setupTitle=Gebe einen vierstelligen Code ein:
 gui.briefcase.enterPasscode=Codeeingabe:
+gui.ircInfo.explanation=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert: https://goo.gl/tqrW8X
 
 messages.bugReport=Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden
 messages.securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.
@@ -319,7 +320,6 @@ messages.irc.connected=Bot erfolgreich verbunden. Du kannst uns nun via '/sc con
 messages.irc.disconnected=Bot erfolgreich von EsperNET getrennt.
 messages.irc.notConnected=Bot ist nicht mit EsperNET verbunden. Nutze '/sc connect' um dich mit IRC zu verbinden.
 messages.irc.banned=Du bist vom IRC gebannt und wurdest daher vom IRC getrennt.
-messages.irc.info=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert: https://raw.githubusercontent.com/Geforce132/SecurityCraft/master/IRC%20Information%20Deutsch.txt
 messages.irc.spam=Deine Nachricht wurde nicht gesendet, da du sie schon einmal kurz vorher gesendet hast. Bitte spamme nicht.
 messages.cageTrap.captured=#player wurde bei #location gefangen genommen.
 messages.frame.rightclick=Rechtsklicke mit einem verbundenen Monitor um ihn anzuschauen.
