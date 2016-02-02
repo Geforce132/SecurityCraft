@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.containers.ContainerIRCInfo;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -87,7 +86,7 @@ public class GuiHandler implements IGuiHandler {
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
-				return new ContainerIRCInfo();
+				return new ContainerGeneric(null, null);
 			default:
 				return null;
 		}

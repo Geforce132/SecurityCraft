@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import net.geforcemods.securitycraft.containers.ContainerIRCInfo;
+import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -19,7 +19,7 @@ public class GuiIRCInfo extends GuiContainer
 
 	public GuiIRCInfo()
 	{
-		super(new ContainerIRCInfo());
+		super(new ContainerGeneric(null, null));
 	}
 
 	public void initGui()
