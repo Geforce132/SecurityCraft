@@ -15,7 +15,12 @@ import net.minecraft.util.StatCollector;
 public class TileEntityRetinalScanner extends CustomizableSCTE {
 	
 	public void entityViewed(EntityLivingBase entity) {
-		if(!worldObj.isRemote && !BlockUtils.isMetadataBetween(worldObj, xCoord, yCoord, zCoord, 7, 10)){
+		if(!worldObj.isRemote && entity instanceof EntityPlayer && !BlockUtils.isMetadataBetween(worldObj, xCoord, yCoord, zCoord, 7, 10)){
+			if(!getOwner().isOwner((EntityPlayer) entity)) {
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				return;
+			}
+			
     		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
     		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.retinalScanner, 60);
     		
@@ -24,6 +29,10 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
             }
     	}
 	}
+	
+	public int getViewCooldown() {
+    	return 30;
+    }
 
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};

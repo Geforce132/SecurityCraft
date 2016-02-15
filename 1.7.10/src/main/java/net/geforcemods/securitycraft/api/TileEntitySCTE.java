@@ -28,7 +28,7 @@ import net.minecraft.util.Vec3;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * 
  * @author Geforce
  */
@@ -43,6 +43,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	private double attackRange = 0.0D;
 
 	private int blockPlaceCooldown = 30;
+	private int viewCooldown = getViewCooldown();
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	
@@ -52,6 +53,11 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 		if(viewActivated){
 			if(blockPlaceCooldown > 0){ 
 				blockPlaceCooldown--; 
+				return;
+			}
+			
+			if(viewCooldown > 0){ 
+				viewCooldown--; 
 				return;
 			}
 			
@@ -74,6 +80,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.blockX == xCoord && mop.blockY == yCoord && mop.blockZ == zCoord){
 	        			entityViewed(entity);
+	        			viewCooldown = getViewCooldown();
 	        		}
 	        	}
 	        }
@@ -145,7 +152,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	}
 	
 	private boolean shouldAttackEntityType(Entity entity) {
-		if(entity.getClass() == EntityPlayer.class) {
+		if(entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class) {
 			return (entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class || entity.getClass() == EntityPlayerSP.class || entity.getClass() == EntityClientPlayerMP.class);
 		}
 		else {
@@ -163,6 +170,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
         par1NBTTagCompound.setBoolean("viewActivated", viewActivated);
         par1NBTTagCompound.setBoolean("attacks", attacks);
         par1NBTTagCompound.setBoolean("canBeNamed", canBeNamed);
+        par1NBTTagCompound.setInteger("viewCooldown", viewCooldown);
         par1NBTTagCompound.setDouble("attackRange", attackRange);
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
         par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -189,6 +197,11 @@ public class TileEntitySCTE extends TileEntity implements INameable{
         if (par1NBTTagCompound.hasKey("canBeNamed"))
         {
             this.canBeNamed = par1NBTTagCompound.getBoolean("canBeNamed");
+        }
+        
+        if (par1NBTTagCompound.hasKey("viewCooldown"))
+        {
+            this.viewCooldown = par1NBTTagCompound.getInteger("viewCooldown");
         }
 
         if (par1NBTTagCompound.hasKey("attackRange"))
@@ -245,10 +258,20 @@ public class TileEntitySCTE extends TileEntity implements INameable{
      * Calls {@link TileEntitySCTE}.entityViewed(EntityLivingBase) when an {@link EntityLivingBase} looks at this block.
      * <p>
      * Implement IViewActivated in your Block class in order to do stuff with that event.
+     * 
+     * @param cooldown The cooldown between activations (in ticks)
      */
     public TileEntitySCTE activatedByView(){
         viewActivated = true;
         return this;
+    }
+    
+    /**
+     * @return The amount of ticks the block should "cooldown"
+     *         for after an Entity looks at this block.
+     */
+    public int getViewCooldown() {
+    	return 0;
     }
     
     /**

@@ -31,7 +31,7 @@ import net.minecraft.world.World;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  * 
- * @version 1.1.0
+ * @version 1.1.1
  * 
  * @author Geforce
  */
@@ -47,6 +47,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	private double attackRange = 0.0D;
 
 	private int blockPlaceCooldown = 30;
+	private int viewCooldown = getViewCooldown();
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	
@@ -75,6 +76,11 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 				return;
 			}
 			
+			if(viewCooldown > 0){ 
+				viewCooldown--; 
+				return;
+			}
+			
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
@@ -94,6 +100,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ()){
 	        			entityViewed(entity);
+	        			viewCooldown = getViewCooldown();
 	        		}
 	        	}
 	        }
@@ -171,7 +178,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	}
 	
 	private boolean shouldAttackEntityType(Entity entity) {
-		if(entity.getClass() == EntityPlayer.class) {
+		if(entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class) {
 			return (entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class || entity.getClass() == EntityPlayerSP.class);
 		}
 		else {
@@ -301,6 +308,14 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
     public TileEntitySCTE activatedByView(){
         viewActivated = true;
         return this;
+    }
+    
+    /**
+     * @return The amount of ticks the block should "cooldown"
+     *         for after an Entity looks at this block.
+     */
+    public int getViewCooldown() {
+    	return 0;
     }
     
     /**

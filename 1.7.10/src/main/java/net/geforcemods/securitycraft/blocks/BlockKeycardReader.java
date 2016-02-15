@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ItemUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
@@ -85,9 +86,13 @@ public class BlockKeycardReader extends BlockOwnable {
     		return true;
     	}
     	
-    	if(par5EntityPlayer.getCurrentEquippedItem() == null || !(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase)){
+    	if(par5EntityPlayer.getCurrentEquippedItem() == null || (!(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase) && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.adminTool)){
     		((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
-    	}else{
+    	}
+    	else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.adminTool) {
+    		((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, ItemUtils.toItemStack(mod_SecurityCraft.keycards, 3), par5EntityPlayer);
+    	}
+    	else {
     		if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 2, 5)) {
     		    ((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
     		}

@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiLinkedText;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiIRCInfo extends GuiContainer
 {
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+    private static final String ircInfoHelpLink = "https://goo.gl/YVdDTO";
 
 	public GuiIRCInfo()
 	{
@@ -27,6 +29,7 @@ public class GuiIRCInfo extends GuiContainer
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(new GuiButton(0, width / 2 - 48, height / 2 + 50, 100, 20, "Ok."));
+		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, ircInfoHelpLink));
 	}
 	
 	public void onGuiClosed()
@@ -64,7 +67,9 @@ public class GuiIRCInfo extends GuiContainer
     
     protected void actionPerformed(GuiButton guibutton)
     {
-    	ClientUtils.closePlayerScreen();
+    	if(guibutton.id == 0) {
+    	    ClientUtils.closePlayerScreen();
+    	}
     }
     
     @Override

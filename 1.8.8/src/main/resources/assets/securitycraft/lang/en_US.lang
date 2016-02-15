@@ -271,11 +271,12 @@ gui.camera.zoom=Zoom in/out
 gui.monitor.selectCameras=Select the camera to view:
 gui.briefcase.setupTitle=Enter a 4-digit passcode:
 gui.briefcase.enterPasscode=Enter passcode:
-gui.ircInfo.explanation=Please talk English or you will not receive any support. Please also note that the people talking to you can only see what you write after '/sc contact' and cannot enter your world. For more information on how this works, please see: https://goo.gl/YVdDTO
+gui.ircInfo.explanation=Please talk English or you will not receive any support. Please also note that the people talking to you can only see what you write after '/sc contact' and cannot enter your world. For more information on how this works, please see:
 
 messages.bugReport=You can report a crash or a bug using this GoogleDocs form
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
 messages.retinalScanner.hello=Hello #.
+messages.retinalScanner.notOwner=I'm sorry, you cannot use this retinal scanner. This scanner is owned by #.
 messages.portableRadar.withName=#p is near your portable radar named #n.
 messages.portableRadar.withoutName=#p is near your portable radar at #l.
 messages.codebreakerDisabled=The codebreaker has been disabled through the config file.
@@ -431,6 +432,7 @@ config.checkForUpdates.tooltip=Should SecurityCraft check for new updates of the
 
 option.portableRadar.searchRadius=Search radius: #
 option.portableRadar.searchDelay=Search delay: # sec.
+option.portableRadar.repeatMessage=Repeat message: #
 option.securityCamera.rotationSpeed=Rotation speed: #
 option.securityCamera.shouldRotate=Should rotate: #
 option.keypad.isAlwaysActive=Is always active: #

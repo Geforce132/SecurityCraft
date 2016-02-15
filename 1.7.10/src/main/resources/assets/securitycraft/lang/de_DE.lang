@@ -268,7 +268,7 @@ gui.camera.zoom=Rein-/Rauszoomen
 gui.monitor.selectCameras=Wähle die Kamera aus, die du anschauen willst:
 gui.briefcase.setupTitle=Gebe einen vierstelligen Code ein:
 gui.briefcase.enterPasscode=Codeeingabe:
-gui.ircInfo.explanation=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert: https://goo.gl/tqrW8X
+gui.ircInfo.explanation=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert:
 
 messages.bugReport=Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden
 messages.securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.

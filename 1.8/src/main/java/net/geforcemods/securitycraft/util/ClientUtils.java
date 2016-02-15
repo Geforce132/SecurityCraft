@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
@@ -106,4 +109,28 @@ public class ClientUtils{
 	public static boolean isInLANWorld(){
 		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
 	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SideOnly(Side.CLIENT)
+	public static void openURL(String url) {
+		URI uri = null;
+		
+		try {
+			uri = new URI(url);
+		}
+		catch(URISyntaxException e) {
+			e.printStackTrace();
+		}
+		
+		if(uri == null) return;
+		
+        try {
+            Class oclass = Class.forName("java.awt.Desktop");
+            Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+            oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {uri});
+        }
+        
+        catch (Throwable throwable) {}
+	}
+	
 }

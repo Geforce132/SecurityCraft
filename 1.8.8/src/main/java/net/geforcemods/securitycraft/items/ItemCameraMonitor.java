@@ -180,7 +180,7 @@ public class ItemCameraMonitor extends Item {
 	public int getNumberOfCamerasBound(NBTTagCompound nbt) {
 		if(nbt == null) return 0;
 		
-		for(int i = 1; i <= 30; i++) {
+		for(int i = 1; i <= 31; i++) {
 			if(nbt.hasKey("Camera" + i)) {
 				continue;
 			}
