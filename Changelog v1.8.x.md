@@ -3,7 +3,7 @@
 - New: Added config option to disable SecurityCraft's built-in version checking feature.
 - New: The admin tool can automatically open keycard readers by right-clicking on it.
 - New: GUI displaying IRC information opens after typing "/sc connect".
-- Fix: Username logger not checking if the name it saves is actually a player or not.
+- Fix: Crash with username logger not checking if the name it saves is actually a player or not.
 - Fix: Rare crash with blocks implementing IIntersectable.
 - Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual.
 - Fix: Retinal scanners can be activated by non-whitelisted players that are not the owner.
