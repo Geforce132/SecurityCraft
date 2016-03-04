@@ -28,7 +28,7 @@ public class GuiIRCInfo extends GuiContainer
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(new GuiButton(0, width / 2 - 48, height / 2 + 50, 100, 20, "Ok."));
-		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, StatCollector.translateToLocal("gui.ircInfo.infoLink"));
+		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, StatCollector.translateToLocal("gui.ircInfo.infoLink")));
 	}
 	
 	public void onGuiClosed()

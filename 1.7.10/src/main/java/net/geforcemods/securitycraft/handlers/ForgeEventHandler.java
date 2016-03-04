@@ -134,7 +134,7 @@ public class ForgeEventHandler {
 			
 			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
 			
-			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.Codebreaker) && handleCodebreaking(event)) {
+			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
@@ -180,7 +180,7 @@ public class ForgeEventHandler {
 					return;
 				}
 
-				if(block == mod_SecurityCraft.LaserBlock){
+				if(block == mod_SecurityCraft.laserBlock){
 					world.func_147480_a(event.x, event.y, event.z, true);
 					BlockLaserBlock.destroyAdjacentLasers(event.world, event.x, event.y, event.z);
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);

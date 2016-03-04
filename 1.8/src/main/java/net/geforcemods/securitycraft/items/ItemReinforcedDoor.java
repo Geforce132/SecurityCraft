@@ -49,13 +49,13 @@ public class ItemReinforcedDoor extends Item {
 	            {
 	                return false;
 	            }
-	            else if (!mod_SecurityCraft.doorIndestructableIron.canPlaceBlockAt(world, pos))
+	            else if (!mod_SecurityCraft.reinforcedDoor.canPlaceBlockAt(world, pos))
 	            {
 	                return false;
 	            }
 	            else
 	            {
-	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.doorIndestructableIron);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+	                placeDoor(world, pos, EnumFacing.fromAngle((double)player.rotationYaw), mod_SecurityCraft.reinforcedDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
                     ((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 	                ((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 	                --stack.stackSize;
@@ -80,7 +80,7 @@ public class ItemReinforcedDoor extends Item {
         }
 
         BlockPos blockpos3 = pos.up();
-        IBlockState iblockstate = mod_SecurityCraft.doorIndestructableIron.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+        IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
         worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
         worldIn.notifyNeighborsOfStateChange(pos, door);

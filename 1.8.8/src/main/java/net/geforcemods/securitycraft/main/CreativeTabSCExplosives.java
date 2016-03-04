@@ -15,7 +15,7 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 	
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
-		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 	
 	public String getTranslatedTabLabel(){

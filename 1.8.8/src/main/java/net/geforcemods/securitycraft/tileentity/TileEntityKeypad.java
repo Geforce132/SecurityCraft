@@ -26,11 +26,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			
 			if(getValue()) {
 		    	BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, true);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
+				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
 			}
 			else {
 		    	BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, false);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
+				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
 			}		
 		}
 	};

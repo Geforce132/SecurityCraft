@@ -77,7 +77,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
 	{
-		return mod_SecurityCraft.doorIndestructableIron.getBlockTextureFromSide(p_149691_1_);
+		return mod_SecurityCraft.reinforcedDoor.getBlockTextureFromSide(p_149691_1_);
 	}
 
 	public TileEntity createNewTileEntity(World var1, int var2) {

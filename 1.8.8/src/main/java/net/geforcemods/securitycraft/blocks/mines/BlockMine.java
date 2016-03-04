@@ -100,11 +100,11 @@ public class BlockMine extends BlockExplosive {
 				this.explode(par1World, pos);
 				return false;
 			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && !((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
-				par1World.setBlockState(pos, mod_SecurityCraft.Mine.getDefaultState().withProperty(DEACTIVATED, true));
+				par1World.setBlockState(pos, mod_SecurityCraft.mine.getDefaultState().withProperty(DEACTIVATED, true));
 				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
 				return true;
 			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && ((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
-				par1World.setBlockState(pos, mod_SecurityCraft.Mine.getDefaultState().withProperty(DEACTIVATED, false));
+				par1World.setBlockState(pos, mod_SecurityCraft.mine.getDefaultState().withProperty(DEACTIVATED, false));
 				return true;
 			}else{
 				return false;	   		
@@ -165,14 +165,14 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	public Item getItem(World par1World, BlockPos pos){
-		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 
 	public IBlockState getStateFromMeta(int meta)

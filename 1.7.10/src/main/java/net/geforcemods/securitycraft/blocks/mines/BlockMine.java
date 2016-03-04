@@ -78,12 +78,12 @@ public class BlockMine extends BlockExplosive {
 			if(par5EntityPlayer.getCurrentEquippedItem() == null || !isInteractibleItem(par5EntityPlayer.getCurrentEquippedItem().getItem())){
 				this.explode(par1World, par2, par3, par4);
 				return false;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.Mine){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.MineCut);
+			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.mine){
+				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.mineCut);
 				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
 				return true;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.MineCut){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.Mine);
+			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.mineCut){
+				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.mine);
 				return true;
 			}else{
 				return false;	   		
@@ -129,22 +129,22 @@ public class BlockMine extends BlockExplosive {
 	}
 	
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return Item.getItemFromBlock(mod_SecurityCraft.Mine);
+		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 	
 	public void activateMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.Mine);
+			world.setBlock(par2, par3, par4, mod_SecurityCraft.mine);
 		}
 	}
 
 	public void defuseMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.MineCut);
+			world.setBlock(par2, par3, par4, mod_SecurityCraft.mineCut);
 		}
 	}
 

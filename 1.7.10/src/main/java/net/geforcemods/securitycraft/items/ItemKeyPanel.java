@@ -18,7 +18,7 @@ public class ItemKeyPanel extends Item {
 		if(!par3World.isRemote){
 			if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
 				Owner owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
-				par3World.setBlock(par4, par5, par6, mod_SecurityCraft.Keypad, par3World.getBlockMetadata(par4, par5, par6), 3);
+				par3World.setBlock(par4, par5, par6, mod_SecurityCraft.keypad, par3World.getBlockMetadata(par4, par5, par6), 3);
 				((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner);
 				par1ItemStack.stackSize -= 1;
 			}

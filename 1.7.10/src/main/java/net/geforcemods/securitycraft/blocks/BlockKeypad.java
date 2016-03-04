@@ -82,8 +82,8 @@ public class BlockKeypad extends BlockContainer {
 	
 	public static void activate(World par1World, int par2, int par3, int par4){
 		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
-		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, mod_SecurityCraft.Keypad);
-		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.Keypad, 60);
+		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, mod_SecurityCraft.keypad);
+		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.keypad, 60);
 	}
 
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){

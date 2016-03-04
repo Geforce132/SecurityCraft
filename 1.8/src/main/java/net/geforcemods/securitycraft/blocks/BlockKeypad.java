@@ -61,13 +61,13 @@ public class BlockKeypad extends BlockContainer {
     
     public static void activate(World par1World, BlockPos pos){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
-		par1World.scheduleUpdate(pos, mod_SecurityCraft.Keypad, 60);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		par1World.scheduleUpdate(pos, mod_SecurityCraft.keypad, 60);
 	}
     
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.Keypad);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
     }
     
     /**

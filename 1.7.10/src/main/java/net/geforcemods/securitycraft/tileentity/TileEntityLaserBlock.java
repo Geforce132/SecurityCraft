@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 public class TileEntityLaserBlock extends CustomizableSCTE {
 	
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
-		ModuleUtils.checkInAllDirsAndInsertModule(worldObj, xCoord, yCoord, zCoord, mod_SecurityCraft.LaserBlock, mod_SecurityCraft.configHandler.laserBlockRange, stack, true);
+		ModuleUtils.checkInAllDirsAndInsertModule(worldObj, xCoord, yCoord, zCoord, mod_SecurityCraft.laserBlock, mod_SecurityCraft.configHandler.laserBlockRange, stack, true);
 	}
 	
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		ModuleUtils.checkInAllDirsAndRemoveModule(worldObj, xCoord, yCoord, zCoord, mod_SecurityCraft.LaserBlock, mod_SecurityCraft.configHandler.laserBlockRange, module, true);
+		ModuleUtils.checkInAllDirsAndRemoveModule(worldObj, xCoord, yCoord, zCoord, mod_SecurityCraft.laserBlock, mod_SecurityCraft.configHandler.laserBlockRange, module, true);
 	}
 
 	public EnumCustomModules[] acceptedModules() {

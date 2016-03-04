@@ -182,13 +182,13 @@ public class BlockReinforcedDoor extends BlockContainer{
     }
     
     private boolean hasActiveLaserNextTo(World par1World, int par2, int par3, int par4) {
-    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.LaserBlock && par1World.getBlockMetadata(par2 + 1, par3, par4) == 2){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 + 1, par3, par4) == 2){
     		return true;
-    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.LaserBlock && par1World.getBlockMetadata(par2 - 1, par3, par4) == 2){
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 - 1, par3, par4) == 2){
     		return true;
-    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.LaserBlock && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
     		return true;
-    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.LaserBlock && par1World.getBlockMetadata(par2, par3, par4 - 1) == 2){
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 - 1) == 2){
     		return true;
     	}else{
     		return false;
@@ -210,13 +210,13 @@ public class BlockReinforcedDoor extends BlockContainer{
 	}
 
 	private boolean hasActiveKeypadNextTo(World par1World, int par2, int par3, int par4){
-    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.Keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
     		return true;
-    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.Keypad && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
     		return true;
-    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.Keypad && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
     		return true;
-    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.Keypad && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
     		return true;
     	}else{
     		return false;
@@ -252,7 +252,7 @@ public class BlockReinforcedDoor extends BlockContainer{
     }
     
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_){
-    	return (p_149650_1_ & 8) != 0 ? null : mod_SecurityCraft.doorIndestructableIronItem;
+    	return (p_149650_1_ & 8) != 0 ? null : mod_SecurityCraft.reinforcedDoorItem;
     }
 
     public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_){
@@ -288,7 +288,7 @@ public class BlockReinforcedDoor extends BlockContainer{
 
     @SideOnly(Side.CLIENT)
     public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
-        return mod_SecurityCraft.doorIndestructableIronItem;
+        return mod_SecurityCraft.reinforcedDoorItem;
     }
 
     public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_){

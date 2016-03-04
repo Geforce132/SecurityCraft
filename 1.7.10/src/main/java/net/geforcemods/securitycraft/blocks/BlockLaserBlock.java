@@ -52,11 +52,11 @@ public class BlockLaserBlock extends BlockContainer {
     private void setLaser(World par1World, int par2, int par3, int par4) {
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air){
-						par1World.setBlock(par2 + j, par3, par4, mod_SecurityCraft.Laser, 3, 3);
+						par1World.setBlock(par2 + j, par3, par4, mod_SecurityCraft.laser, 3, 3);
 					}
 				}
 			}else{
@@ -66,11 +66,11 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air){
-						par1World.setBlock(par2 - j, par3, par4, mod_SecurityCraft.Laser, 3, 3);
+						par1World.setBlock(par2 - j, par3, par4, mod_SecurityCraft.laser, 3, 3);
 					}
 				}
 			}else{
@@ -80,11 +80,11 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air){
-						par1World.setBlock(par2, par3, par4 + j, mod_SecurityCraft.Laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 + j, mod_SecurityCraft.laser, 2, 3);
 					}
 				}
 			}else{
@@ -94,11 +94,11 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air){
-						par1World.setBlock(par2, par3, par4 - j, mod_SecurityCraft.Laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 - j, mod_SecurityCraft.laser, 2, 3);
 					}
 				}
 			}else{
@@ -108,11 +108,11 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air){
-						par1World.setBlock(par2, par3 + j, par4, mod_SecurityCraft.Laser, 1, 3);
+						par1World.setBlock(par2, par3 + j, par4, mod_SecurityCraft.laser, 1, 3);
 					}
 				}
 			}else{
@@ -122,11 +122,11 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.LaserBlock){ break; }
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
 					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air){
-						par1World.setBlock(par2, par3 - j, par4, mod_SecurityCraft.Laser, 1, 3);
+						par1World.setBlock(par2, par3 - j, par4, mod_SecurityCraft.laser, 1, 3);
 					}
 				}
 			}else{
@@ -147,9 +147,9 @@ public class BlockLaserBlock extends BlockContainer {
     public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
     	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2 + j, par3, par4) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2 + j, par3, par4) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2 + j, par3, par4, false);
 					}else{
 						return;
@@ -162,9 +162,9 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2 - j, par3, par4) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2 - j, par3, par4) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2 - j, par3, par4, false);
 					}else{
 						return;
@@ -177,9 +177,9 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3, par4 + j) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2, par3, par4 + j) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2, par3, par4 + j, false);
 					}else{
 						return;
@@ -192,9 +192,9 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3, par4 - j) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2, par3, par4 - j) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2, par3, par4 - j, false);
 					}else{
 						return;
@@ -207,9 +207,9 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3 + j, par4) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2, par3 + j, par4) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2, par3 + j, par4, false);
 					}else{
 						return;
@@ -222,9 +222,9 @@ public class BlockLaserBlock extends BlockContainer {
 		
 		for(int i = 0; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
-			if(id == mod_SecurityCraft.LaserBlock){
+			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlock(par2, par3 - j, par4) == mod_SecurityCraft.Laser){
+					if(par1World.getBlock(par2, par3 - j, par4) == mod_SecurityCraft.laser){
 						par1World.func_147480_a(par2, par3 - j, par4, false);
 					}else{
 						return;

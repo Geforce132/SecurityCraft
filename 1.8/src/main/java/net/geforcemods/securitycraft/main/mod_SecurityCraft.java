@@ -74,19 +74,19 @@ public class mod_SecurityCraft {
 	public static Configuration configFile;	
 	
 	//Blocks
-	public static Block LaserBlock;
-	public static Block Laser;
-	public static Block Keypad;
-	public static BlockMine Mine;
-	public static BlockMine MineCut;
-	public static Block DirtMine;
-	public static Block StoneMine;
-	public static Block CobblestoneMine;
-	public static Block SandMine;
-	public static Block DiamondOreMine;
-	public static Block FurnaceMine;
+	public static Block laserBlock;
+	public static Block laser;
+	public static Block keypad;
+	public static BlockMine mine;
+	public static BlockMine mineCut;
+	public static Block dirtMine;
+	public static Block stoneMine;
+	public static Block cobblestoneMine;
+	public static Block sandMine;
+	public static Block diamondOreMine;
+	public static Block furnaceMine;
 	public static Block retinalScanner;
-    public static Block doorIndestructableIron;
+    public static Block reinforcedDoor;
     public static BlockStaticLiquid bogusLava;
     public static Block bogusLavaFlowing;
     public static BlockStaticLiquid bogusWater;
@@ -139,8 +139,8 @@ public class mod_SecurityCraft {
     public static Block protecto;
     
     //Items
-    public static Item Codebreaker;
-    public static Item doorIndestructableIronItem;
+    public static Item codebreaker;
+    public static Item reinforcedDoorItem;
     public static Item universalBlockRemover;
     public static Item keycardLV1;
     public static Item keycardLV2;
