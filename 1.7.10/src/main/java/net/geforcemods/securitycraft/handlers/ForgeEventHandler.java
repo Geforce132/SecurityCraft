@@ -11,6 +11,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -211,13 +212,16 @@ public class ForgeEventHandler {
 	public void onBlockBroken(BreakEvent event){
 		if(!event.world.isRemote){
 			if(event.world.getTileEntity(event.x, event.y, event.z) != null && event.world.getTileEntity(event.x, event.y, event.z) instanceof CustomizableSCTE){
-				for(int i = 0; i < ((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).getNumberOfCustomizableOptions(); i++){
-					if(((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).itemStacks[i] != null){
-						ItemStack stack = ((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).itemStacks[i];
+				CustomizableSCTE te = (CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z);
+				
+				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++){
+					if(te.itemStacks[i] != null){
+						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.world, (double) event.x, (double) event.y, (double) event.z, stack);
 						event.world.spawnEntityInWorld(item);
 
-						((CustomizableSCTE) event.world.getTileEntity(event.x, event.y, event.z)).onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
+						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
+						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
 					}
 				}
 			}

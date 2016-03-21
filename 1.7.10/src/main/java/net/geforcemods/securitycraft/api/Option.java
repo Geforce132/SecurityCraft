@@ -46,6 +46,11 @@ public class Option<T> {
 	 */
 	public void toggle() {}
 	
+	@SuppressWarnings("unchecked")
+	public void copy(Option<?> option) {
+		value = (T) option.getValue();
+	}
+	
 	/**
 	 * @return This option, casted to a boolean.
 	 */

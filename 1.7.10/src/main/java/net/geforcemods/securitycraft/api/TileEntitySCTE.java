@@ -235,6 +235,14 @@ public class TileEntitySCTE extends TileEntity implements INameable{
     	readFromNBT(packet.func_148857_g());        
     }
     
+    public void invalidate() {
+		super.invalidate();
+		
+		onTileEntityDestroyed();
+	}
+    
+    public void onTileEntityDestroyed() {}
+    
     /**
      * Automatically detects the side this method was called on, and 
      * sends the client-side value of this TileEntity's NBTTagCompound

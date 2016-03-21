@@ -106,5 +106,5 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	public Option<?>[] customOptions() {
 		return new Option[]{ isAlwaysActive };
 	}
-	
+
 }

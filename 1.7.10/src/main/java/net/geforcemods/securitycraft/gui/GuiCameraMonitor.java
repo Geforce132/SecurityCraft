@@ -71,16 +71,17 @@ public class GuiCameraMonitor extends GuiContainer {
 			
 			int camPos = (button.id + ((page - 1) * 10));
 			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
+				System.out.println(this.cameraMonitor.getCameraPositions(this.nbtTag).size() + " " + button.id);
 				int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
-				
+				//TODO: Finish this.
 				if(Minecraft.getMinecraft().theWorld.getBlock(cameraPos[0], cameraPos[1], cameraPos[2]) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
-					cameraTEs[button.id] = null;
+					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 				
-				cameraTEs[button.id] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(cameraPos[0], cameraPos[1], cameraPos[2]);
-				hoverCheckers[button.id] = new HoverChecker(button, 20);
+				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(cameraPos[0], cameraPos[1], cameraPos[2]);
+				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 			}			
 		}
 		
