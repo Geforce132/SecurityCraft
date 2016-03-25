@@ -87,7 +87,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	public Option<?>[] customOptions() {
-		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption };
+		return new Option[]{ searchRadiusOption, searchDelayOption };
 	}
 
 }

@@ -266,6 +266,7 @@ gui.camera.activateNightVision=Nachtsicht aktivieren
 gui.camera.toggleRedstone=Redstonesignal umschalten
 gui.camera.zoom=Rein-/Rauszoomen
 gui.monitor.selectCameras=Wähle die Kamera aus, die du anschauen willst:
+gui.monitor.cameraName=Kamera Name: #
 gui.briefcase.setupTitle=Gebe einen vierstelligen Code ein:
 gui.briefcase.enterPasscode=Codeeingabe:
 gui.ircInfo.explanation=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert:

@@ -27,6 +27,8 @@ public class VersionUpdateChecker {
 		
 			Update update = gson.fromJson(in, Update.class);
 			
+			if(update == null) return null;
+			
 			if((update.getVersion().matches("0.0.0") && update.getFileName().matches("test")) || update.getVersion().matches(mod_SecurityCraft.getVersion())){
 				mod_SecurityCraft.log("Running the latest version, no new updates avaliable.");
 				return null;

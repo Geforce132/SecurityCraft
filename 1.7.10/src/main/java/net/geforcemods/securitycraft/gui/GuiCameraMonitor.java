@@ -68,12 +68,11 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(GuiButton button : cameraButtons) {
 			button.displayString += (button.id + ((page - 1) * 10)); 
 			this.buttonList.add(button);
-			
+
 			int camPos = (button.id + ((page - 1) * 10));
 			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
-				System.out.println(this.cameraMonitor.getCameraPositions(this.nbtTag).size() + " " + button.id);
 				int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
-				//TODO: Finish this.
+
 				if(Minecraft.getMinecraft().theWorld.getBlock(cameraPos[0], cameraPos[1], cameraPos[2]) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
@@ -89,17 +88,13 @@ public class GuiCameraMonitor extends GuiContainer {
 			prevPageButton.enabled = false;
 		}
 		
-		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10)) {
+		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1) {
 			nextPageButton.enabled = false;
 		}
 		
 		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
 		}
-		
-//		for(int i = 0; i < cameraButtons.length; i++) {
-//			hoverCheckers[i] = new HoverChecker(cameraButtons[i], 20);
-//		}	
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {

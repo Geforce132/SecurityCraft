@@ -188,7 +188,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
     
     public TileEntity createNewTileEntity(World world, int par2){
-    	return new TileEntitySecurityCamera();
+    	return new TileEntitySecurityCamera().nameable();
     }
 
 }

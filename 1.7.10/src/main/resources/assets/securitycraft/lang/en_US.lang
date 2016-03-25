@@ -439,3 +439,4 @@ option.portableRadar.repeatMessage=Repeat message: #
 option.securityCamera.rotationSpeed=Rotation speed: #
 option.securityCamera.shouldRotate=Should rotate: #
 option.keypad.isAlwaysActive=Is always active: #
+option.laserBlock.enabled=Enabled: #
