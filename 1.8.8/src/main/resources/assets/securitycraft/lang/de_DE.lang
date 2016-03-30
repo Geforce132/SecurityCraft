@@ -319,7 +319,6 @@ messages.irc.disconnected=Getrennt von EsperNET: #
 messages.irc.botDisabled=Der SecurityCraft IRC Bot ist in der Konfigurationsdatei deaktiviert. Bitte aktiviere ihn um dieses Feature zu nutzen.
 messages.irc.error=Fehler beim Verbinden mit IRC. Hast du Internetzugang und Zugang zum IRC Server 'irc.esper.net'? Bist du vielleicht schon verbunden?
 messages.irc.connected=Bot erfolgreich verbunden. Du kannst uns nun via '/sc contanct <message>' erreichen.
-messages.irc.disconnected=Bot erfolgreich von EsperNET getrennt.
 messages.irc.notConnected=Bot ist nicht mit EsperNET verbunden. Nutze '/sc connect' um dich mit IRC zu verbinden.
 messages.irc.banned=Du bist vom IRC gebannt und wurdest daher vom IRC getrennt.
 messages.cageTrap.captured=#player wurde bei #location gefangen genommen.

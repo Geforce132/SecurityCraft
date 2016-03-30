@@ -1,19 +1,20 @@
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
-- New: Added config option to disable SecurityCraft's built-in version checking feature.
-- New: The admin tool can automatically open keycard readers by right-clicking on it.
-- New: GUI displaying IRC information opens after typing "/sc connect".
-- New: Security cameras can now have a custom name which is displayed in the monitor GUI.
-- New: Laser blocks can now be enabled/disabled.
-- New: Links sent through IRC are now clickable.
-- API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them.
-- Fix: Crash with username logger not checking if the name it saves is actually a player or not.
-- Fix: Rare crash with blocks implementing IIntersectable.
-- Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual.
-- Fix: Retinal scanners can be activated by non-whitelisted players that are not the owner.
-- Fix: Camera monitor displaying "0/30 cameras" in the monitor's tooltip when 30 cameras are bound to it.
-- Fix: NullPointerException which occurs when SecurityCraft's update .json file isn't downloaded properly at startup.
-- Fix: Crash when opening a monitor with more than 10 cameras bound to it.
+- New: Added config option to disable SecurityCraft's built-in version checking feature
+- New: The admin tool can automatically open keycard readers by right-clicking on it
+- New: GUI displaying IRC information opens after typing "/sc connect"
+- New: Security cameras can now have a custom name which is displayed in the monitor GUI
+- New: Laser blocks can now be enabled/disabled
+- New: Links sent through IRC are now clickable
+- API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
+- Fix: Crash with username logger not checking if the name it saves is actually a player or not
+- Fix: Rare crash with blocks implementing IIntersectable
+- Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual
+- Fix: Retinal scanners can be activated by non-whitelisted players that are not the owner
+- Fix: Camera monitor displaying "0/30 cameras" in the monitor's tooltip when 30 cameras are bound to it
+- Fix: NullPointerException which occurs when SecurityCraft's update .json file isn't downloaded properly at startup
+- Fix: Crash when opening a monitor with more than 10 cameras bound to it
+- Fix: When being kicked from IRC, the reason does not show up in chat
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
@@ -30,7 +31,7 @@
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
-- New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted.
+- New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted
 - New: Custom options for keypads, portable radars, and security cameras
 - New: Spam detection while using /sc contact will not allow users to send the same message more than two times consecutively
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
