@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,6 +56,7 @@ public class ContainerCustomizeBlock extends Container{
                     return null;
                 }else{
                 	this.tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
+                	this.tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack1, EnumCustomModules.getModuleFromStack(itemstack1) }, tileEntity);
                 }
             }
             else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))

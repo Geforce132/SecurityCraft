@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -196,13 +197,16 @@ public class ForgeEventHandler {
 	public void onBlockBroken(BreakEvent event){
 		if(!event.world.isRemote){
 			if(event.world.getTileEntity(event.pos) != null && event.world.getTileEntity(event.pos) instanceof CustomizableSCTE){
-				for(int i = 0; i < ((CustomizableSCTE) event.world.getTileEntity(event.pos)).getNumberOfCustomizableOptions(); i++){
-					if(((CustomizableSCTE) event.world.getTileEntity(event.pos)).itemStacks[i] != null){
-						ItemStack stack = ((CustomizableSCTE) event.world.getTileEntity(event.pos)).itemStacks[i];
+				CustomizableSCTE te = (CustomizableSCTE) event.world.getTileEntity(event.pos);
+
+				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++){
+					if(te.itemStacks[i] != null){
+						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.world, (double) event.pos.getX(), (double) event.pos.getY(), (double) event.pos.getZ(), stack);
 						event.world.spawnEntityInWorld(item);
 						
-						((CustomizableSCTE) event.world.getTileEntity(event.pos)).onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
+						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
+						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
 					}
 				}
 			}

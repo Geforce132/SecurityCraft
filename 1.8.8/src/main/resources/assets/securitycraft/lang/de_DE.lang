@@ -438,3 +438,4 @@ option.portableRadar.searchDelay=Suchverzögerung: # Sek.
 option.securityCamera.rotationOption=Rotationsschnelligkeit: #
 option.securityCamera.shouldRotate=Rotieren: #
 option.keypad.isAlwaysActive=Immer aktiv: #
+option.laserBlock.enabled=Aktiviert: #

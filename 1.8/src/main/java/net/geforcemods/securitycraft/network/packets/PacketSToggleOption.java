@@ -48,6 +48,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
 			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();
+			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
 			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
 		}
 		
