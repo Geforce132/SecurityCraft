@@ -22,7 +22,11 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 	
 	public boolean canAttack() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                if (worldObj != null) {
+		    return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                } else {
+                    return false;
+                }
 	}
 	
 	private void addPlayerName(String username){
