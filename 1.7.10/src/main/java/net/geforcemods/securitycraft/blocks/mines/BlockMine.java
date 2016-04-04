@@ -13,7 +13,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
@@ -70,30 +69,6 @@ public class BlockMine extends BlockExplosive {
 		
 		return super.removedByPlayer(world, player, x, y, z, willHarvest);
     }
-
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote){
-			return true;
-		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || !isInteractibleItem(par5EntityPlayer.getCurrentEquippedItem().getItem())){
-				this.explode(par1World, par2, par3, par4);
-				return false;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.mine){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.mineCut);
-				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
-				return true;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && par1World.getBlock(par2, par3, par4) == mod_SecurityCraft.mineCut){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.mine);
-				return true;
-			}else{
-				return false;	   		
-			}
-		}
-	}
-
-	private boolean isInteractibleItem(Item item){
-		return item == mod_SecurityCraft.wireCutters || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel;
-	}
 	
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity

@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/bouncingBetty",
+    "parent": "securitycraft:block/bouncingBettyActive",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

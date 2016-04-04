@@ -7,6 +7,7 @@
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
+- Change: Bouncing betties can now be defused
 - Fix: Crash with username logger not checking if the name it saves is actually a player or not
 - Fix: Rare crash with blocks implementing IIntersectable
 - Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual

@@ -7,6 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -84,6 +85,10 @@ public class BlockFullMineBase extends BlockExplosive {
 	}
 	
 	public boolean isDefusable(){
+		return false;
+	}
+	
+	public boolean explodesWhenInteractedWith() {
 		return false;
 	}
 

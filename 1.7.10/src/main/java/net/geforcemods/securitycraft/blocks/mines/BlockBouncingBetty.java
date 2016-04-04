@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -11,10 +13,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
-
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon defusedIcon;
+	
+	@SideOnly(Side.CLIENT)
+	private IIcon activeIcon;
+	
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
 		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
@@ -34,6 +44,13 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	public void setBlockBoundsForItemRender(){
 		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
+	
+	/**
+	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
+	 */
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
+		return par1World.isSideSolid(par2, par3 - 1, par4, ForgeDirection.UP);
+	}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
@@ -41,8 +58,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
 		if(par5Entity instanceof EntityLivingBase){
 			explode(par1World, par2, par3, par4);
-		}else{
-			return;
 		}
 	}
 
@@ -52,35 +67,39 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
 		if(par5EntityPlayer instanceof EntityLivingBase){
 			this.explode(par1World, par2, par3, par4);
-		}else{
-			return;
 		}
 	}
+	
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest){
+        if(!world.isRemote){
+        	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative){
+            	return super.removedByPlayer(world, player, x, y, z, willHarvest);
+        	}else{
+        		this.explode(world, x, y, z);
+            	return super.removedByPlayer(world, player, x, y, z, willHarvest);
+        	}
+        }
 		
-	public void activateMine(World world, int par2, int par3, int par4) {}
+		return super.removedByPlayer(world, player, x, y, z, willHarvest);
+    }
+		
+	public void activateMine(World world, int par2, int par3, int par4) {
+		world.setBlockMetadataWithNotify(par2, par3, par4, 0, 3);
+	}
 
-	public void defuseMine(World world, int par2, int par3, int par4) {}
+	public void defuseMine(World world, int par2, int par3, int par4) {
+		world.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+	}
 
 	public void explode(World world, int par2, int par3, int par4) {
+		if(world.getBlockMetadata(par2, par3, par4) == 1) return;
+		
 		world.setBlockToAir(par2, par3, par4);
 		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		world.spawnEntityInWorld(entitytntprimed);
 		world.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
-	}
-
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote){
-			return true;
-		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
-				this.explode(par1World, par2, par3, par4);
-				return false;
-			}else{
-				return false;
-			}
-		}
 	}
 
 	/**
@@ -96,17 +115,23 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	public Item getItem(World par1World, int par2, int par3, int par4){
 		return Item.getItemFromBlock(this);
 	}
+	
+	@SideOnly(Side.CLIENT)
+    public IIcon getIcon(int par1, int par2) {
+		return par2 == 0 ? activeIcon : defusedIcon;
+	}
 
 	public void registerBlockIcons(IIconRegister par1IconRegister){
-		this.blockIcon = par1IconRegister.registerIcon("securitycraft:bouncingBetty");
+		this.activeIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyActive");
+		this.defusedIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyDefused");
 	}
 	
 	public boolean isActive(World world, int par2, int par3, int par4) {
-		return false;
+		return world.getBlockMetadata(par2, par3, par4) == 0;
 	}
 
 	public boolean isDefusable() {
-		return false;
+		return true;
 	}
 
 }

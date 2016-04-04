@@ -76,6 +76,10 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable 
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
+	
+	public boolean explodesWhenInteractedWith() {
+		return false;
+	}
 
 	public boolean isDefusable() {
 		return false;

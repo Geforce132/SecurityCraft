@@ -1,7 +1,6 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:bouncingBetty" }
-        ]
+        "deactivated=false": { "model": "securitycraft:bouncingBettyActive" },
+        "deactivated=true": { "model": "securitycraft:bouncingBettyDefused" }
     }
 }

@@ -92,35 +92,6 @@ public class BlockMine extends BlockExplosive {
 		return super.removedByPlayer(world, pos, player, willHarvest);
     }
 
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote){
-			return true;
-		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || !isInteractibleItem(par5EntityPlayer.getCurrentEquippedItem().getItem())){
-				this.explode(par1World, pos);
-				return false;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters && !((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
-				par1World.setBlockState(pos, mod_SecurityCraft.mine.getDefaultState().withProperty(DEACTIVATED, true));
-				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
-				return true;
-			}else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel && ((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
-				par1World.setBlockState(pos, mod_SecurityCraft.mine.getDefaultState().withProperty(DEACTIVATED, false));
-				return true;
-			}else{
-				return false;	   		
-			}
-		}
-	}
-
-	private boolean isInteractibleItem(Item item){
-		if(item == mod_SecurityCraft.wireCutters || item == mod_SecurityCraft.remoteAccessMine || item == Items.flint_and_steel){
-			return true;
-		}else{
-			return false;
-		}
-
-	}  
-	
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
