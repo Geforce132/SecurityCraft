@@ -18,7 +18,7 @@ public class Option<T> {
 	
 	protected T value;
 	private T defaultValue;
-	private T step;
+	private T increment;
 	private T minimum;
 	private T maximum;
 		
@@ -28,11 +28,11 @@ public class Option<T> {
 		this.defaultValue = value;
 	}
 	
-	public Option(String optionName, T value, T min, T max, T step) {
+	public Option(String optionName, T value, T min, T max, T increment) {
 		this.name = optionName;
 		this.value = value;
 		this.defaultValue = value;
-		this.step = step;
+		this.increment = increment;
 		this.minimum = min;
 		this.maximum = max;
 	}
@@ -139,8 +139,8 @@ public class Option<T> {
 	 *         return the amount the number should increase/decrease every time
 	 *         the option is toggled in {@link GuiCustomizeBlock}.
 	 */
-	public T getStep() {
-		return step;
+	public T getIncrement() {
+		return increment;
 	}
 	
 	/**
@@ -188,8 +188,8 @@ public static class OptionInt extends Option<Integer>{
 		super(optionName, value);
 	}
 	
-	public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer step) {
-		super(optionName, value, min, max, step);
+	public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer increment) {
+		super(optionName, value, min, max, increment);
 	}
 	
 	public void toggle() {		
@@ -198,12 +198,12 @@ public static class OptionInt extends Option<Integer>{
 			return;
 		}
 		
-		if((getValue() + getStep()) >= getMax()) {
+		if((getValue() + getIncrement()) >= getMax()) {
 			setValue(getMax());
 			return;
 		}
 		
-		setValue(getValue() + getStep());
+		setValue(getValue() + getIncrement());
 	}
 	
 	public Integer getValue() {
@@ -224,8 +224,8 @@ public static class OptionDouble extends Option<Double>{
 		super(optionName, value);
 	}
 	
-	public OptionDouble(String optionName, Double value, Double min, Double max, Double step) {
-		super(optionName, value, min, max, step);
+	public OptionDouble(String optionName, Double value, Double min, Double max, Double increment) {
+		super(optionName, value, min, max, increment);
 	}
 	
 	public void toggle() {
@@ -234,12 +234,12 @@ public static class OptionDouble extends Option<Double>{
 			return;
 		}
 		
-		if((getValue() + getStep()) >= getMax()) {
+		if((getValue() + getIncrement()) >= getMax()) {
 			setValue(getMax());
 			return;
 		}
 		
-		setValue(getValue() + getStep());
+		setValue(getValue() + getIncrement());
 	}
 	
 	public Double getValue() {
@@ -261,8 +261,8 @@ public static class OptionFloat extends Option<Float>{
 		super(optionName, value);
 	}
 	
-	public OptionFloat(String optionName, Float value, Float min, Float max, Float step) {
-		super(optionName, value, min, max, step);
+	public OptionFloat(String optionName, Float value, Float min, Float max, Float increment) {
+		super(optionName, value, min, max, increment);
 	}
 	
 	public void toggle() {
@@ -271,12 +271,12 @@ public static class OptionFloat extends Option<Float>{
 			return;
 		}
 		
-		if((getValue() + getStep()) >= getMax()) {
+		if((getValue() + getIncrement()) >= getMax()) {
 			setValue(getMax());
 			return;
 		}
 		
-		setValue(getValue() + getStep());
+		setValue(getValue() + getIncrement());
 	}
 	
 	public Float getValue() {

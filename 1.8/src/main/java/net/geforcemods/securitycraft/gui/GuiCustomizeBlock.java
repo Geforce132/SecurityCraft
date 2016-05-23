@@ -66,6 +66,9 @@ public class GuiCustomizeBlock extends GuiContainer{
     			if(i < tileEntity.getNumberOfCustomizableOptions()) {
         			this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, this.mc.fontRendererObj);
     			}
+    			else {
+        			this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, this.mc.fontRendererObj);
+    			}
     		}
     	}
     }
@@ -105,10 +108,8 @@ public class GuiCustomizeBlock extends GuiContainer{
     	return StatCollector.translateToLocal(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal(moduleDescription);
     }
     
-    //Not used right at the moment
-    @SuppressWarnings("unused")
     private String getOptionDescription(int buttonID) {
-    	String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName();
+    	String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
     	
     	return StatCollector.translateToLocal(optionDescription);
     }

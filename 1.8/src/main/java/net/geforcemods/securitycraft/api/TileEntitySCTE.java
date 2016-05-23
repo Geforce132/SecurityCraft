@@ -31,7 +31,7 @@ import net.minecraft.world.World;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * 
  * @author Geforce
  */
@@ -93,14 +93,17 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	        {
 	        	entity = (EntityLivingBase)iterator.next();
 	        	double eyeHeight = (double) entity.getEyeHeight();
-	        	
+	        	boolean isPlayer = (entity instanceof EntityPlayer);
+
 	        	Vec3 lookVec = new Vec3((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
 	        	
 	        	MovingObjectPosition mop = getWorld().rayTraceBlocks(new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ()){
-	        			entityViewed(entity);
-	        			viewCooldown = getViewCooldown();
+	        			if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
+	        			    entityViewed(entity);
+	        			    viewCooldown = getViewCooldown();
+	        			}
 	        		}
 	        	}
 	        }
@@ -324,6 +327,13 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
      */
     public int getViewCooldown() {
     	return 0;
+    }
+    
+    /**
+     * @return Can this TileEntity can only be activated by an EntityPlayer?
+     */
+    public boolean activatedOnlyByPlayer() {
+    	return true;
     }
     
     /**

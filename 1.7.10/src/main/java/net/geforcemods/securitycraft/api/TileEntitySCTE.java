@@ -28,7 +28,7 @@ import net.minecraft.util.Vec3;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  * 
- * @version 1.1.1
+ * @version 1.1.2
  * 
  * @author Geforce
  */
@@ -73,14 +73,17 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	        {
 	        	entity = (EntityLivingBase)iterator.next();
 	        	double eyeHeight = (double) entity.getEyeHeight();
-	        	
+	        	boolean isPlayer = (entity instanceof EntityPlayer);
+
 	        	Vec3 lookVec = Vec3.createVectorHelper((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
 	        	
 	        	MovingObjectPosition mop = worldObj.rayTraceBlocks(Vec3.createVectorHelper(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
 	        		if(mop.blockX == xCoord && mop.blockY == yCoord && mop.blockZ == zCoord){
-	        			entityViewed(entity);
-	        			viewCooldown = getViewCooldown();
+	        			if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
+	        			    entityViewed(entity);
+		        			viewCooldown = getViewCooldown();
+	        			}     			
 	        		}
 	        	}
 	        }
@@ -280,6 +283,13 @@ public class TileEntitySCTE extends TileEntity implements INameable{
      */
     public int getViewCooldown() {
     	return 0;
+    }
+    
+    /**
+     * @return Can this TileEntity can only be activated by an EntityPlayer?
+     */
+    public boolean activatedOnlyByPlayer() {
+    	return true;
     }
     
     /**

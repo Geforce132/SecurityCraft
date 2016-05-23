@@ -439,3 +439,5 @@ option.securityCamera.rotationSpeed=Rotation speed: #
 option.securityCamera.shouldRotate=Should rotate: #
 option.keypad.isAlwaysActive=Is always active: #
 option.laserBlock.enabled=Enabled: #
+option.retinalScanner.activatedByEntities=NPC-activated: #
+option.retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
