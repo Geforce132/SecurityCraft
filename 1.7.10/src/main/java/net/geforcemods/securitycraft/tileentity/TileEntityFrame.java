@@ -5,20 +5,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraShutoffTimer;
+import net.geforcemods.securitycraft.misc.CameraView;
 import net.minecraft.nbt.NBTTagCompound;
 
 
 public class TileEntityFrame extends TileEntityOwnable {
 
-	private int[] boundCameraLocation = new int[3];
+	//private int[] boundCameraLocation = new int[3];
+	private CameraView cameraView;
 	private boolean shouldShowView = false;
 	private boolean createdView = false;
 	
 	public void updateEntity(){
-		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && this.hasCameraLocation() && !mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]) && !createdView){
+		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && this.hasCameraLocation() && !mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()) && !createdView){
 			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0 || this.createdView) return; 
 			
-			LookingGlassAPIProvider.createLookingGlassView(worldObj, 0, xCoord, yCoord, zCoord, 192, 192);
+			LookingGlassAPIProvider.createLookingGlassView(worldObj, cameraView.dimension, xCoord, yCoord, zCoord, 192, 192);
 			
 			this.createdView = true;
 		}
@@ -27,8 +29,8 @@ public class TileEntityFrame extends TileEntityOwnable {
 	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
 		super.writeToNBT(par1NBTTagCompound);
 
-		if(this.boundCameraLocation != null && this.hasCameraLocation()){
-			par1NBTTagCompound.setString("cameraLoc", this.boundCameraLocation[0] + " " + this.boundCameraLocation[1] + " " + this.boundCameraLocation[2]);
+		if(hasCameraLocation()){
+			par1NBTTagCompound.setString("cameraLoc", cameraView.toNBTString());
 		}    	
 	}
 
@@ -36,36 +38,31 @@ public class TileEntityFrame extends TileEntityOwnable {
 		super.readFromNBT(par1NBTTagCompound);
 
 		if(par1NBTTagCompound.hasKey("cameraLoc")){
-			this.boundCameraLocation[0] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[0]);
-			this.boundCameraLocation[1] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[1]);
-			this.boundCameraLocation[2] = Integer.parseInt(par1NBTTagCompound.getString("cameraLoc").split(" ")[2]);
+			String[] coords = par1NBTTagCompound.getString("cameraLoc").split(" ");
+			
+			setCameraLocation(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), coords.length == 4 ? Integer.parseInt(coords[3]) : 0);
 		}   
 	}
 
-	public void setCameraLocation(int x, int y, int z){
-		this.boundCameraLocation[0] = x;
-		this.boundCameraLocation[1] = y;
-		this.boundCameraLocation[2] = z;
+	public void setCameraLocation(int x, int y, int z, int dimension){
+		if(cameraView == null) {
+		    cameraView = new CameraView(x, y, z, dimension);
+		    return;
+		}
+		
+		cameraView.setLocation(x, y, z, dimension);
 	}
 
-	public int getCamX(){
-		return this.boundCameraLocation[0];
+	public CameraView getCameraView(){
+		return cameraView;
 	}
-
-	public int getCamY(){
-		return this.boundCameraLocation[1];
-	}
-
-	public int getCamZ(){
-		return this.boundCameraLocation[2];
+	
+	public int getCamDimension(){
+		return cameraView.dimension;
 	}
 
 	public boolean hasCameraLocation(){
-		if(this.boundCameraLocation[0] != 0 || this.boundCameraLocation[1] != 0 || this.boundCameraLocation[2] != 0){
-			return true;
-		}else{
-			return false;
-		}
+		return cameraView != null;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -78,14 +75,8 @@ public class TileEntityFrame extends TileEntityOwnable {
 		shouldShowView = true;
 		
 		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff){
-			if(!mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
-				LookingGlassAPIProvider.createLookingGlassView(worldObj, 0, boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2], 192, 192);
-//				IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(0, new ChunkCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]), 192, 192); 
-//				
-//				lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), worldObj.getBlockMetadata(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2])));
-//	
-//				mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(boundCameraLocation[0], boundCameraLocation[1], boundCameraLocation[2]));
-//				((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2], new IWorldViewHelper(lgView));		
+			if(!mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
+				LookingGlassAPIProvider.createLookingGlassView(worldObj, cameraView.dimension, cameraView.x, cameraView.y, cameraView.z, 192, 192);
 			}
 			
 			new CameraShutoffTimer(this);
@@ -94,9 +85,9 @@ public class TileEntityFrame extends TileEntityOwnable {
 	
 	@SideOnly(Side.CLIENT)
 	public void disableView(){
-		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff && mod_SecurityCraft.instance.hasViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2])){
-			mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]).getView());
-			mod_SecurityCraft.instance.removeViewForCoords(boundCameraLocation[0] + " " + boundCameraLocation[1] + " " + boundCameraLocation[2]);
+		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff && mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
+			mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(cameraView.toNBTString()).getView());
+			mod_SecurityCraft.instance.removeViewForCoords(cameraView.toNBTString());
 		}
 		
 		shouldShowView = false;

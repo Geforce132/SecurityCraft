@@ -39,8 +39,8 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 		}
 		
-		if(par1TileEntity.hasWorldObj() && lgView == null && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCamX() + " " + ((TileEntityFrame) par1TileEntity).getCamY() + " " + ((TileEntityFrame) par1TileEntity).getCamZ()) && ((TileEntityFrame) par1TileEntity).shouldShowView()){
-			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCamX() + " " + ((TileEntityFrame) par1TileEntity).getCamY() + " " + ((TileEntityFrame) par1TileEntity).getCamZ()).getView();
+		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView()){
+			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()).getView();
 		}
 		
 		GL11.glPushMatrix();

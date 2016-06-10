@@ -43,7 +43,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCCreateLGView packet, MessageContext ctx) {
-		if(!mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ)){
+		if(!mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ + " " + packet.dimension)){
 			//IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().createWorldView(packet.dimension, new ChunkCoordinates(packet.camX, packet.camY, packet.camZ), 192, 192);
 			//lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), Minecraft.getMinecraft().theWorld.getBlockMetadata(packet.camX, packet.camY, packet.camZ)));
 			

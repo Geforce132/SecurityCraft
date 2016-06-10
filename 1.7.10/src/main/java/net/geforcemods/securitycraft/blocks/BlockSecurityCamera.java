@@ -120,7 +120,7 @@ public class BlockSecurityCamera extends BlockContainer {
     }
 
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4));
+		mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4, par1World.provider.dimensionId));
 	}
 	
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5){

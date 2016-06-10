@@ -1,16 +1,17 @@
 package net.geforcemods.securitycraft.renderers;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.lookingglass.api.view.IWorldView;
+
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.misc.CameraView;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 /**
  * The custom IItemRenderer for the handheld camera monitors.
@@ -43,19 +44,17 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
             //
             
 			if(item != null && item.getItem() instanceof ItemCameraMonitor && ((ItemCameraMonitor) item.getItem()).hasCameraAdded(item.getTagCompound())){
-				int camX = ((ItemCameraMonitor) item.getItem()).getCameraCoordinates(item.getTagCompound())[0];
-				int camY = ((ItemCameraMonitor) item.getItem()).getCameraCoordinates(item.getTagCompound())[1];
-				int camZ = ((ItemCameraMonitor) item.getItem()).getCameraCoordinates(item.getTagCompound())[2];
+				CameraView view = ((ItemCameraMonitor) item.getItem()).getCameraView(item.getTagCompound());
 
-				if(mod_SecurityCraft.instance.hasViewForCoords(camX + " " + camY + " " + camZ)){
-					IWorldView view = mod_SecurityCraft.instance.getViewFromCoords(camX + " " + camY + " " + camZ).getView();
+				if(mod_SecurityCraft.instance.hasViewForCoords(view.toNBTString())){
+					IWorldView worldView = mod_SecurityCraft.instance.getViewFromCoords(view.toNBTString()).getView();
 					
-				    if(view.isReady() && view.getTexture() != 0){
+				    if(worldView.isReady() && worldView.getTexture() != 0){
 				    	//Bind the IWorldView texture then draw it.
 				    	GL11.glDisable(3008);
 				        GL11.glDisable(2896);
 
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, view.getTexture()); 
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, worldView.getTexture()); 
 
 						tessellator.startDrawingQuads();
 						tessellator.addVertexWithUV((double)(128 + 7), (double)(0 - 7), 0.0D, 0.0D, 1.0D);
@@ -72,7 +71,7 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 						//
 					}
 					
-					view.markDirty(); //Update the camera.
+				    worldView.markDirty(); //Update the camera.
 				}
 			}	
 		}

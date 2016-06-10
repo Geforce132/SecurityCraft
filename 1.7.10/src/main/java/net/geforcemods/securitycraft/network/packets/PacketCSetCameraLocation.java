@@ -12,19 +12,20 @@ import net.minecraft.client.Minecraft;
 
 public class PacketCSetCameraLocation implements IMessage{
 	
-	private int x, y, z, camX, camY, camZ;
+	private int x, y, z, camX, camY, camZ, camDim;
 	
 	public PacketCSetCameraLocation(){
 		
 	}
 	
-	public PacketCSetCameraLocation(int x, int y, int z, int camX, int camY, int camZ){
+	public PacketCSetCameraLocation(int x, int y, int z, int camX, int camY, int camZ, int camDim){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.camX = camX;
 		this.camY = camY;
 		this.camZ = camZ;
+		this.camDim = camDim;
 	}
 	
 	public void toBytes(ByteBuf par1ByteBuf) {
@@ -34,6 +35,7 @@ public class PacketCSetCameraLocation implements IMessage{
 		par1ByteBuf.writeInt(camX);
 		par1ByteBuf.writeInt(camY);
 		par1ByteBuf.writeInt(camZ);
+		par1ByteBuf.writeInt(camDim);
 	}
 
 	public void fromBytes(ByteBuf par1ByteBuf) {
@@ -43,6 +45,7 @@ public class PacketCSetCameraLocation implements IMessage{
 		this.camX = par1ByteBuf.readInt();
 		this.camY = par1ByteBuf.readInt();
 		this.camZ = par1ByteBuf.readInt();
+		this.camDim = par1ByteBuf.readInt();
 	}
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCSetCameraLocation, IMessage> {
@@ -55,9 +58,10 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int camX = packet.camX;
 		int camY = packet.camY;
 		int camZ = packet.camZ;
+		int camDim = packet.camDim;
 	
 		if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.frame){
-			((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ);
+			((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ, camDim);
 			((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).enableView();
 		}
 		
