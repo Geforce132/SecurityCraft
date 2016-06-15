@@ -153,7 +153,7 @@ public class EntitySecurityCamera extends Entity {
 			}
 
 			if((this.id == 0) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor)){
-				this.id = ((ItemCameraMonitor)((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ));
+				this.id = ((ItemCameraMonitor)((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), riddenByEntity.dimension);
 			}
 
 			if(((EntityPlayer)this.riddenByEntity).rotationYaw != this.rotationYaw){
