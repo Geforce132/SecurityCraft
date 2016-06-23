@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -153,7 +154,7 @@ public class EntitySecurityCamera extends Entity {
 			}
 
 			if((this.id == 0) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor)){
-				this.id = ((ItemCameraMonitor)((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, (int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), riddenByEntity.dimension);
+				this.id = ((ItemCameraMonitor)((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)this.riddenByEntity).getCurrentEquippedItem().stackTagCompound, new CameraView((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ), riddenByEntity.dimension));
 			}
 
 			if(((EntityPlayer)this.riddenByEntity).rotationYaw != this.rotationYaw){
