@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
@@ -72,15 +73,15 @@ public class GuiCameraMonitor extends GuiContainer {
 			
 			int camPos = (button.id + ((page - 1) * 10));
 			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
-				int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
+				CameraView view = ((CameraView) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
 				
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2]) != mod_SecurityCraft.securityCamera) {
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 				
-				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(BlockUtils.toPos(cameraPos[0], cameraPos[1], cameraPos[2]));
+				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(view.getLocation());
 				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 			}	
 		}
@@ -121,11 +122,11 @@ public class GuiCameraMonitor extends GuiContainer {
 		else { 
 			int camID = guibutton.id + ((page - 1) * 10);
 			
-			int[] cameraPos = ((int[]) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
+			CameraView view = ((CameraView) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
 
-			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2]) == mod_SecurityCraft.securityCamera) {
-				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2])).mountCamera(Minecraft.getMinecraft().theWorld, cameraPos[0], cameraPos[1], cameraPos[2], camID, Minecraft.getMinecraft().thePlayer);
-				mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(cameraPos[0], cameraPos[1], cameraPos[2], camID));
+			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == mod_SecurityCraft.securityCamera) {
+				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation())).mountCamera(Minecraft.getMinecraft().theWorld, view.x, view.y, view.z, camID, Minecraft.getMinecraft().thePlayer);
+				mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
 				Minecraft.getMinecraft().thePlayer.closeScreen();
 			}
 			else {
