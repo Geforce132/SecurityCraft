@@ -233,7 +233,7 @@ public class EntitySecurityCamera extends Entity{
 		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
 		    EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);	
 
-			if(facing == EnumFacing.EAST){
+		    if(facing == EnumFacing.EAST){
 				if((this.rotationYaw - CAMERA_SPEED) > -180F){
 					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 				}
@@ -242,7 +242,8 @@ public class EntitySecurityCamera extends Entity{
 					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 				}
 			}else if(facing == EnumFacing.NORTH){
-				if((this.rotationYaw - CAMERA_SPEED) > -270F){
+				// Handles some problems the occurs from the way the rotationYaw value works in MC
+				if((((this.rotationYaw - CAMERA_SPEED) > 90F) && ((this.rotationYaw - CAMERA_SPEED) < 185F)) || (((this.rotationYaw - CAMERA_SPEED) > -190F) && ((this.rotationYaw - CAMERA_SPEED) < -90F))){
 					this.setRotation(this.rotationYaw -= CAMERA_SPEED, this.rotationPitch);
 				}
 			}else if(facing == EnumFacing.SOUTH){
@@ -258,7 +259,7 @@ public class EntitySecurityCamera extends Entity{
 	public void moveViewRight(){
 		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
 			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
-	
+
 			if(facing == EnumFacing.EAST){
 				if((this.rotationYaw + CAMERA_SPEED) < 0F){
 					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
@@ -268,7 +269,7 @@ public class EntitySecurityCamera extends Entity{
 					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 				}
 			}else if(facing == EnumFacing.NORTH){
-				if((this.rotationYaw + CAMERA_SPEED) < -90F){
+				if((((this.rotationYaw + CAMERA_SPEED) > 85F) && ((this.rotationYaw + CAMERA_SPEED) < 185F)) || ((this.rotationYaw + CAMERA_SPEED) < -95F) && ((this.rotationYaw + CAMERA_SPEED) > -180F)){
 					this.setRotation(this.rotationYaw += CAMERA_SPEED, this.rotationPitch);
 				}
 			}else if(facing == EnumFacing.SOUTH){

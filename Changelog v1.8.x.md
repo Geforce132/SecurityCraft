@@ -7,6 +7,7 @@
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
+- API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
 - Fix: Crash with username logger not checking if the name it saves is actually a player or not
 - Fix: Rare crash with blocks implementing IIntersectable
@@ -15,7 +16,7 @@
 - Fix: Camera monitor displaying "0/30 cameras" in the monitor's tooltip when 30 cameras are bound to it
 - Fix: NullPointerException which occurs when SecurityCraft's update .json file isn't downloaded properly at startup
 - Fix: Crash when opening a monitor with more than 10 cameras bound to it
-- Fix: When being kicked from IRC, the reason does not show up in chat
+- Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 

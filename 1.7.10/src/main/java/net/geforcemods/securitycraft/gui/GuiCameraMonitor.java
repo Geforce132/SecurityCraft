@@ -31,6 +31,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	private GuiButton[] cameraButtons = new GuiButton[10];
     private HoverChecker[] hoverCheckers = new HoverChecker[10];
     private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
+    private int[] cameraViewDim = new int[10];
 
 	private int page = 1;
 
@@ -74,6 +75,11 @@ public class GuiCameraMonitor extends GuiContainer {
 			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
 				CameraView view = (CameraView) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1);
 
+				if(view.dimension != Minecraft.getMinecraft().thePlayer.dimension) {
+					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
+					cameraViewDim[button.id - 1] = view.dimension;
+				}
+				
 				if(Minecraft.getMinecraft().theWorld.getBlock(view.x, view.y, view.z) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
@@ -103,6 +109,10 @@ public class GuiCameraMonitor extends GuiContainer {
 		
 		for(int i = 0; i < hoverCheckers.length; i++){
     		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
+    			if(cameraTEs[i] == null) {
+        		    this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, this.mc.fontRenderer);
+    			}
+    			
     			if(cameraTEs[i] != null && cameraTEs[i].hasCustomName()) {
         		    this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRenderer);
     			}
