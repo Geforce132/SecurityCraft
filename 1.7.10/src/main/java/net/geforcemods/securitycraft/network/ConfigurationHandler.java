@@ -331,6 +331,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL3").setTextureName("securitycraft:universalBlockReinforcerLvL3");
 	
 	    mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
+	
+	    mod_SecurityCraft.universalKeyChanger = new Item().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger").setTextureName("securitycraft:universalKeyChanger");
 	}
 
 	public void setupDebuggingBlocks() {}
@@ -562,6 +564,7 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL2);
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL3);
 		registerItem(mod_SecurityCraft.briefcase);
+		registerItem(mod_SecurityCraft.universalKeyChanger);
 
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");

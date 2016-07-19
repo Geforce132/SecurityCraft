@@ -139,6 +139,7 @@ item.universalBlockReinforcerLvL1.name=Universal Block Reinforcer (LvL1)
 item.universalBlockReinforcerLvL2.name=Universal Block Reinforcer (LvL2)
 item.universalBlockReinforcerLvL3.name=Universal Block Reinforcer (LvL3)
 item.briefcase.name=Briefcase
+item.universalKeyChanger.name=Universal Key Changer
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
@@ -271,6 +272,10 @@ gui.briefcase.setupTitle=Enter a 4-digit passcode:
 gui.briefcase.enterPasscode=Enter passcode:
 gui.ircInfo.explanation=Please talk English or you will not receive any support. Please also note that the people talking to you can only see what you write after '/sc contact' and cannot enter your world. For more information on how this works, please see:
 gui.ircInfo.infoLink=https://goo.gl/YVdDTO
+gui.universalKeyChanger.enterCurrentPasscode=Enter current passcode:
+gui.universalKeyChanger.enterNewPasscode=Enter new passcode:
+gui.universalKeyChanger.confirmNewPasscode=Re-enter new passcode:
+gui.universalKeyChanger.confirm=Confirm
 
 messages.bugReport=You can report a crash or a bug using this GoogleDocs form
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
@@ -333,6 +338,8 @@ messages.tip.scHelp=Typing /sc help will give you a SecurityCraft manual, which 
 messages.tip.scConnect=Use /sc connect to get personal support from the mod devs!
 messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions!
 messages.tip.patreon=Do you want to support SecurityCraft?
+messages.universalKeyChanger.notKeypad=Right-click a keypad with the universal key changer to change its passcode.
+messages.universalKeyChanger.passcodeChanged=The passcode has been changed.
 
 waila.displayOwner=Display Owner?
 waila.showModules=Show Modules?
