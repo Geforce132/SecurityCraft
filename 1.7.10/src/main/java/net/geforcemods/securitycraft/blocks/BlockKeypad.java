@@ -4,15 +4,12 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,10 +17,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -72,16 +67,6 @@ public class BlockKeypad extends BlockContainer {
     	else {
     		if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 7, 10)){
 				return false;
-			}
-
-    		if(PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.universalKeyChanger)) {
-    			if(((IOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().isOwner(par5EntityPlayer)) {
-    			    par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, par1World, par2, par3, par4);
-    			}
-    			else {
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("item.universalKeyChanger.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((IOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().getName()), EnumChatFormatting.RED);
-    			}
-    			return true;
     		}
 
 			if(ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
@@ -89,9 +74,7 @@ public class BlockKeypad extends BlockContainer {
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.universalKeyChanger)) {
-			    ((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
-			} 
+			((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
 
 			return true;       		 	    	     	
 		}
