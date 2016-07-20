@@ -79,7 +79,7 @@ public class BlockKeypad extends BlockContainer {
     			    par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, par1World, par2, par3, par4);
     			}
     			else {
-					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("item.universalKeyChanger.name"), StatCollector.translateToLocal("messages.notOwned"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("item.universalKeyChanger.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((IOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().getName()), EnumChatFormatting.RED);
     			}
     			return true;
     		}

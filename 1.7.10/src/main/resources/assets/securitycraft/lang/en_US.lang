@@ -215,6 +215,7 @@ help.universalBlockReinforcerLvL1.info=The Universal Block Reinforcer reinforces
 help.universalBlockReinforcerLvL2.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL2 has 2700 uses.
 help.universalBlockReinforcerLvL3.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL3 has unlimited uses.
 help.briefcase.info=The briefcase is a simple keypad-locked item that allows you to store up to twelve items in it. After crafting it, right-click it to setup the 4-digit passcode to use from then on. Right-click it again and insert the code to view the items.
+help.universalKeyChanger.info=The universal key changer allows you to change the passcode of passcode-protected blocks you own. Right-click a passcode-protected block to open a GUI, then type in the new passcode you want.
 
 gui.scManual.intro.1=Getting started with SecurityCraft
 gui.scManual.intro.2=by Geforce and bl4ckscor3
@@ -272,7 +273,6 @@ gui.briefcase.setupTitle=Enter a 4-digit passcode:
 gui.briefcase.enterPasscode=Enter passcode:
 gui.ircInfo.explanation=Please talk English or you will not receive any support. Please also note that the people talking to you can only see what you write after '/sc contact' and cannot enter your world. For more information on how this works, please see:
 gui.ircInfo.infoLink=https://goo.gl/YVdDTO
-gui.universalKeyChanger.enterCurrentPasscode=Enter current passcode:
 gui.universalKeyChanger.enterNewPasscode=Enter new passcode:
 gui.universalKeyChanger.confirmNewPasscode=Re-enter new passcode:
 gui.universalKeyChanger.confirm=Confirm
