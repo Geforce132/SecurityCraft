@@ -38,6 +38,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
 	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
 	public static final int BRIEFCASE_GUI_ID = 15;
+	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int IRC_INFORMATION = 101;
 
@@ -84,6 +85,10 @@ public class GuiHandler implements IGuiHandler {
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
 					return null;
 				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
+			case KEY_CHANGER_GUI_ID:
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
+						return null;
+					return new ContainerGeneric(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
@@ -136,6 +141,10 @@ public class GuiHandler implements IGuiHandler {
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
 					return null;
 				return new GuiBriefcaseInventory(player, player.inventory);
+			case KEY_CHANGER_GUI_ID:
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
+					return null;
+				return new GuiKeyChanger(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
