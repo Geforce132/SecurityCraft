@@ -273,6 +273,7 @@ gui.camera.toggleRedstone=Redstonesignal umschalten
 gui.camera.zoom=Rein-/Rauszoomen
 gui.monitor.selectCameras=Wähle die Kamera aus, die du anschauen willst:
 gui.monitor.cameraName=Kameraname: #
+gui.monitor.cameraInDifferentDim=Da diese Kamera in einer anderen Dimension ist (DIM-ID #), kannst du sie dir jetzt nicht anschauen.
 gui.briefcase.setupTitle=Gebe einen vierstelligen Code ein:
 gui.briefcase.enterPasscode=Codeeingabe:
 gui.ircInfo.explanation=Bitte sprich Englisch oder dir wird nicht geholfen. Bitte beachte ebenfalls, dass die Leute, die zu dir schreiben, nur das sehen können, was du hinter '/sc contact' schreibst, und nicht deiner Welt beitreten können. Siehe hier für mehr Informationen wie es funktioniert:
