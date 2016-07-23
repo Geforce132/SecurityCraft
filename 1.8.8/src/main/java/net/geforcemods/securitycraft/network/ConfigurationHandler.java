@@ -71,6 +71,7 @@ import net.geforcemods.securitycraft.items.ItemTestItem;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
+import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -329,6 +330,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL3");
 	
 	    mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
+	
+	    mod_SecurityCraft.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger");
 	}
 	
 	public void setupDebuggingBlocks() {}
@@ -551,7 +554,8 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL2);
 		registerItem(mod_SecurityCraft.universalBlockReinforcerLvL3);
 		registerItem(mod_SecurityCraft.briefcase);
-		
+		registerItem(mod_SecurityCraft.universalKeyChanger);
+
 		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
@@ -1078,6 +1082,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockReinforcerLvL2, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL2", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalBlockReinforcerLvL3, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL3", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.briefcase, 0, new ModelResourceLocation("securitycraft:briefcase", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universalKeyChanger", "inventory"));
 
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(mod_SecurityCraft.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

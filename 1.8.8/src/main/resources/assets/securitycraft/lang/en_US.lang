@@ -138,6 +138,7 @@ item.universalBlockReinforcerLvL1.name=Universal Block Reinforcer (LvL1)
 item.universalBlockReinforcerLvL2.name=Universal Block Reinforcer (LvL2)
 item.universalBlockReinforcerLvL3.name=Universal Block Reinforcer (LvL3)
 item.briefcase.name=Briefcase
+item.universalKeyChanger.name=Universal Key Changer
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
@@ -218,6 +219,7 @@ help.universalBlockReinforcerLvL1.info=The Universal Block Reinforcer reinforces
 help.universalBlockReinforcerLvL2.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL2 has 2700 uses. Break any block outside of Creative mode to reinforce it.
 help.universalBlockReinforcerLvL3.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL3 has unlimited uses. Break any block outside of Creative mode to reinforce it.
 help.briefcase.info=The briefcase is a simple keypad-locked item that allows you to store up to twelve additional items in it. After crafting it, right-click it to setup the 4-digit passcode to use from then on. Right-click it again and insert the code to view the items.
+help.universalKeyChanger.info=The universal key changer allows you to change the passcode of passcode-protected blocks you own. Right-click a passcode-protected block to open a GUI, then type in the new passcode you want.
 
 gui.scManual.intro.1=Getting started with SecurityCraft
 gui.scManual.intro.2=by Geforce and bl4ckscor3
@@ -275,6 +277,9 @@ gui.briefcase.setupTitle=Enter a 4-digit passcode:
 gui.briefcase.enterPasscode=Enter passcode:
 gui.ircInfo.explanation=Please talk English or you will not receive any support. Please also note that the people talking to you can only see what you write after '/sc contact' and cannot enter your world. For more information on how this works, please see:
 gui.ircInfo.infoLink=https://goo.gl/YVdDTO
+gui.universalKeyChanger.enterNewPasscode=Enter new passcode:
+gui.universalKeyChanger.confirmNewPasscode=Re-enter new passcode:
+gui.universalKeyChanger.confirm=Confirm
 
 messages.bugReport=You can report a crash or a bug using this GoogleDocs form
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
@@ -337,6 +342,8 @@ messages.tip.scHelp=Typing /sc help will give you a SecurityCraft manual, which 
 messages.tip.scConnect=Use /sc connect to get personal support from the mod devs!
 messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions!
 messages.tip.patreon=Do you want to support SecurityCraft?
+messages.universalKeyChanger.notKeypad=Right-click a keypad with the universal key changer to change its passcode.
+messages.universalKeyChanger.passcodeChanged=The passcode has been changed.
 
 waila.displayOwner=Display Owner?
 waila.showModules=Show Modules?
