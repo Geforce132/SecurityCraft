@@ -4,9 +4,11 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -17,11 +19,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IIntersectable {
 
 	public BlockReinforcedFenceGate(){
 		super(EnumType.BIRCH); //doesn't matter what gets put in here
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.iron, 35);
 	}
 
 	/**

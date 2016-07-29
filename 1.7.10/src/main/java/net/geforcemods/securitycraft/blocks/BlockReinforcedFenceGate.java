@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -8,6 +9,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
@@ -21,6 +23,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	public BlockReinforcedFenceGate(){
 		super();
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.iron, 34);
 	}
 
 	/**
