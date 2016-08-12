@@ -9,6 +9,7 @@
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
+- Change: /sc contact now doesn't require a message, instead it changes your normal chat to send to IRC. You can use /sc resume to go back to normal Minecraft chat
 - Fix: Crash with username logger not checking if the name it saves is actually a player or not
 - Fix: Rare crash with blocks implementing IIntersectable
 - Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual

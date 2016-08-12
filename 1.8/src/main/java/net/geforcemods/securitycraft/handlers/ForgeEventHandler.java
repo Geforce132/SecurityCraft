@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -40,6 +41,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -101,6 +103,19 @@ public class ForgeEventHandler {
 		if(result == null){ return; }
 		event.result = result;
 		event.setResult(Result.ALLOW);	
+	}
+	
+	@SubscribeEvent
+	public void onServerChatEvent(ServerChatEvent event)
+	{
+		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getName());
+		
+		if(bot.getMessageMode())
+		{
+			event.setCanceled(true);
+			bot.sendMessage("> " + event.message);
+			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getName() + " --> IRC> " + event.message, event.player);
+		}
 	}
 	
 	@SubscribeEvent 

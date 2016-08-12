@@ -11,6 +11,7 @@ import org.jibble.pircbot.User;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -21,7 +22,7 @@ import net.minecraftforge.fml.common.Loader;
 public class SCIRCBot extends PircBot{
 
 	private static final char prefix = '!';
-	
+	private static boolean message = false;
 	private HashMap<String, Integer> messageFrequency = new HashMap<String, Integer>(); 
 	
 	public SCIRCBot(String par1String){
@@ -113,7 +114,7 @@ public class SCIRCBot extends PircBot{
 			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
 	}
 
-	private void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
+	public void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
 		par2EntityPlayer.addChatComponentMessage(ForgeHooks.newChatWithLinks(par1String));
 	}
 	
@@ -121,4 +122,21 @@ public class SCIRCBot extends PircBot{
 		return PlayerUtils.getPlayerFromName((this.getNick().replace("SCUser_", "")));
 	}
 
+	public void setMessageMode(boolean enable, ICommandSender sender)
+	{
+		message = enable;
+		
+		if(enable)
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.contacted"), EnumChatFormatting.GREEN);
+		else
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.resumed"), EnumChatFormatting.GREEN);
+	}
+	
+	/**
+	 * @return true if sending messages to IRC, false if sending messages to Minecraft chat
+	 */
+	public boolean getMessageMode()
+	{
+		return message;
+	}
 }

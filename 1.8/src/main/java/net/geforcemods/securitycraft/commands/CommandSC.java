@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
@@ -14,7 +13,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -89,17 +87,27 @@ public class CommandSC extends CommandBase implements ICommand{
 			}
 			else if(par1String[0].matches("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+			else if(par1String[0].equals("resume"))
+				mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(false, sender);
+			else if(par1String[0].matches("contact")){
+				if(mod_SecurityCraft.instance.getIrcBot(sender.getName()) != null){
+					mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(true, sender);
+				}else{
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
+				}
+			}
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("contact")){
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getName()) != null){
-					((SCIRCBot) mod_SecurityCraft.instance.getIrcBot(sender.getName())).sendMessage("> " + getMessageFromArray(par1String, 1));
-					sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + sender.getName() + " --> IRC> " + getMessageFromArray(par1String, 1), sender);
+					mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(true, sender);
 				}else{
 					PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.notConnected"), EnumChatFormatting.RED);
 				}
 			}
 			else if(par1String[0].matches("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+			else if(par1String[0].equals("resume"))
+				mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(false, sender);
 		}else{
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 		}
@@ -116,7 +124,7 @@ public class CommandSC extends CommandBase implements ICommand{
 
 	private void sendMessageToPlayer(String par1, ICommandSender par2) throws PlayerNotFoundException{
 		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-		((EntityPlayerMP) getPlayer(par2, par2.getName())).addChatComponentMessage(chatcomponenttext);
+		getPlayer(par2, par2.getName()).addChatComponentMessage(chatcomponenttext);
 	}
 	
 	public int compareTo(Object par1Obj)
