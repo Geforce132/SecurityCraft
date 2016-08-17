@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -34,6 +35,20 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			}		
 		}
 	};
+	
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {		
+    	if(module == EnumCustomModules.DISGUISE) {
+		    BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.DISGUISED, true);
+		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
+    	}
+	}
+	
+    public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {		
+    	if(module == EnumCustomModules.DISGUISE) {
+		    BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.DISGUISED, false);
+		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
+		}
+	}
     
     /**
      * Writes a tile entity to NBT.
@@ -63,14 +78,10 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
         	}
         }
     }
-
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
-	}
 	
 	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad){
-    		BlockKeypad.activate(worldObj, pos);
+			BlockKeypad.activate(worldObj, pos);
     	}
 	}
 	
@@ -103,6 +114,10 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	public void setPassword(String password) {
 		passcode = password;
+	}
+	
+	public EnumCustomModules[] acceptedModules() {
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST, EnumCustomModules.DISGUISE};
 	}
 
 	public Option<?>[] customOptions() {

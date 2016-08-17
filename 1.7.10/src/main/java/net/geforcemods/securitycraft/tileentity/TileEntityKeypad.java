@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -32,6 +33,22 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			}		
 		}
 	};
+    
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
+		if(!worldObj.isRemote) return;
+		
+		if(module == EnumCustomModules.DISGUISE) {
+		    worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+		}
+	}
+	
+    public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
+		if(!worldObj.isRemote) return;
+		
+    	if(module == EnumCustomModules.DISGUISE) {
+		    worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+		}
+	}
     
     /**
      * Writes a tile entity to NBT.
@@ -100,7 +117,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	}
 
 	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST, EnumCustomModules.DISGUISE};
 	}
 
 	public Option<?>[] customOptions() {

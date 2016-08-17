@@ -34,6 +34,8 @@ public class BlockKeypad extends BlockContainer {
 	private IIcon keypadIconFront;
 	@SideOnly(Side.CLIENT)
 	private IIcon keypadIconFrontActive;
+	@SideOnly(Side.CLIENT)
+	private IIcon keypadIconDisguised;
 
 	/**
 	 * Called when the block is placed in the world.
@@ -111,17 +113,30 @@ public class BlockKeypad extends BlockContainer {
 			return 0;
 		}
 	}
-
+	
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2){
 		if(par1 == 3 && par2 == 0){
 			return this.keypadIconFront;
 		}
 
-		if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
-			return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.keypadIconFrontActive));
-		}else{
-			return par1 == 1 ? this.keypadIconTop : (par1 == 0 ? this.keypadIconTop : (par1 != par2 ? this.blockIcon : this.keypadIconFront));
+		return this.blockIcon;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){		
+		int meta = access.getBlockMetadata(x, y, z);
+        boolean isDisguised = ((TileEntityKeypad) access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.DISGUISE);
+
+		if(isDisguised) {
+			return this.keypadIconDisguised;
+		}
+
+		if(meta > 6 && meta < 11) {
+			return side == 1 ? this.keypadIconTop : (side == 0 ? this.keypadIconTop : (side != (meta - 5) ? this.blockIcon : this.keypadIconFrontActive));
+		}
+		else{
+			return side == 1 ? this.keypadIconTop : (side == 0 ? this.keypadIconTop : (side != meta ? this.blockIcon : this.keypadIconFront));
 		}
 	}
 
@@ -131,6 +146,7 @@ public class BlockKeypad extends BlockContainer {
 		this.keypadIconFront = par1IconRegister.registerIcon("securitycraft:keypadUnactive");
 		this.keypadIconTop = par1IconRegister.registerIcon("securitycraft:iron_block");
 		this.keypadIconFrontActive = par1IconRegister.registerIcon("securitycraft:keypadActive");
+		this.keypadIconDisguised = par1IconRegister.registerIcon("bookshelf");
 	}
 
 	/**

@@ -309,6 +309,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setUnlocalizedName("harmingModule");
 		mod_SecurityCraft.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setUnlocalizedName("smartModule");
 		mod_SecurityCraft.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setUnlocalizedName("storageModule");
+		mod_SecurityCraft.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false).setUnlocalizedName("disguiseModule");
 
 		mod_SecurityCraft.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters");
 	
@@ -543,6 +544,7 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.harmingModule);
 		registerItem(mod_SecurityCraft.smartModule);
 		registerItem(mod_SecurityCraft.storageModule);
+		registerItem(mod_SecurityCraft.disguiseModule);
 		registerItem(mod_SecurityCraft.wireCutters);
 		registerItem(mod_SecurityCraft.adminTool);
 		registerItem(mod_SecurityCraft.keyPanel);
@@ -734,6 +736,10 @@ public class ConfigurationHandler{
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.storageModule, 1), new Object[]{
 			"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', mod_SecurityCraft.keypadChest
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.disguiseModule, 1), new Object[]{
+				"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.painting
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{
@@ -1071,6 +1077,7 @@ public class ConfigurationHandler{
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.harmingModule, 0, new ModelResourceLocation("securitycraft:harmingModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.storageModule, 0, new ModelResourceLocation("securitycraft:storageModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.smartModule, 0, new ModelResourceLocation("securitycraft:smartModule", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.disguiseModule, 0, new ModelResourceLocation("securitycraft:disguiseModule", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.wireCutters, 0, new ModelResourceLocation("securitycraft:wireCutters", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.keyPanel, 0, new ModelResourceLocation("securitycraft:keypadItem", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(mod_SecurityCraft.adminTool, 0, new ModelResourceLocation("securitycraft:adminTool", "inventory"));

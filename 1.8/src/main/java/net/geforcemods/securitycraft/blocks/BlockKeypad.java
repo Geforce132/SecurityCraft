@@ -30,7 +30,8 @@ public class BlockKeypad extends BlockContainer {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
-    
+    public static final PropertyBool DISGUISED = PropertyBool.create("disguised");
+
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
 	}
@@ -136,7 +137,7 @@ public class BlockKeypad extends BlockContainer {
     
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false).withProperty(DISGUISED, false);
     }
     
     @SideOnly(Side.CLIENT)
@@ -162,10 +163,15 @@ public class BlockKeypad extends BlockContainer {
     		return ((EnumFacing) state.getValue(FACING)).getIndex();
     	}
     }
+    
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    	if(!(world.getTileEntity(pos) instanceof TileEntityKeypad)) return state;
+    	return state.withProperty(DISGUISED, ((TileEntityKeypad) world.getTileEntity(pos)).hasModule(EnumCustomModules.DISGUISE));
+    }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED});
+        return new BlockState(this, new IProperty[] {FACING, POWERED, DISGUISED});
     }
 
     /**

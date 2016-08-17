@@ -177,6 +177,7 @@ public class mod_SecurityCraft {
     public static ItemModule harmingModule;
     public static ItemModule smartModule;
     public static ItemModule storageModule;
+    public static ItemModule disguiseModule;
 
     public static Item testItem;
     

@@ -19,8 +19,9 @@ public enum EnumCustomModules {
 	BLACKLIST(mod_SecurityCraft.blacklistModule, "blacklistModule", "Blacklist module"),
 	HARMING(mod_SecurityCraft.harmingModule, "harmingModule", "Harming module"),
 	SMART(mod_SecurityCraft.smartModule, "smartModule", "Smart module"),
-	STORAGE(mod_SecurityCraft.storageModule, "storageModule", "Storage module");
-	
+	STORAGE(mod_SecurityCraft.storageModule, "storageModule", "Storage module"),
+	DISGUISE(mod_SecurityCraft.disguiseModule, "disguiseModule", "Disguise module");
+
 	private ItemModule module;
 	private String moduleUnlocalizedName;
 	private String moduleLocalizedName;

@@ -312,6 +312,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setUnlocalizedName("harmingModule").setTextureName("securitycraft:harmingModule");
 		mod_SecurityCraft.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setUnlocalizedName("smartModule").setTextureName("securitycraft:smartModule");
 		mod_SecurityCraft.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setUnlocalizedName("storageModule").setTextureName("securitycraft:storageModule");
+		mod_SecurityCraft.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false).setUnlocalizedName("disguiseModule").setTextureName("securitycraft:disguiseModule");
 
 		mod_SecurityCraft.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("wireCutters").setTextureName("securitycraft:wireCutter");
 
@@ -554,6 +555,7 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.harmingModule);
 		registerItem(mod_SecurityCraft.smartModule);
 		registerItem(mod_SecurityCraft.storageModule);
+		registerItem(mod_SecurityCraft.disguiseModule);
 		registerItem(mod_SecurityCraft.wireCutters);
 		registerItem(mod_SecurityCraft.adminTool);
 		registerItem(mod_SecurityCraft.keyPanel);
@@ -746,6 +748,10 @@ public class ConfigurationHandler{
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.storageModule, 1), new Object[]{
 				"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', mod_SecurityCraft.keypadChest
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.disguiseModule, 1), new Object[]{
+				"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.painting
 		});
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockModifier, 1), new Object[]{

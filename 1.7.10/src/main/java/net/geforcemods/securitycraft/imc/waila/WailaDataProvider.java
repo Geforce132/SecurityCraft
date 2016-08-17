@@ -10,9 +10,12 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -29,9 +32,14 @@ public class WailaDataProvider implements IWailaDataProvider {
 		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.showPasswords"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", StatCollector.translateToLocal("waila.showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
+		registrar.registerStackProvider(new WailaDataProvider(), BlockKeypad.class);
 	}
 	
 	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
+		if(data.getBlock() == mod_SecurityCraft.keypad && ((TileEntityKeypad) data.getTileEntity()).hasModule(EnumCustomModules.DISGUISE)) {
+			return new ItemStack(Blocks.bookshelf);
+		}
+		
 		return null;
 	}
 
@@ -40,6 +48,8 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	public List<String> getWailaBody(ItemStack itemstack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
+		if(data.getBlock() == mod_SecurityCraft.keypad && ((TileEntityKeypad) data.getTileEntity()).hasModule(EnumCustomModules.DISGUISE)) return body;
+
 		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable){
 			body.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());
 		}
