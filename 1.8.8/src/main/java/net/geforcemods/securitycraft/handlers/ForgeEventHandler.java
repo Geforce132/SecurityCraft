@@ -108,13 +108,13 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onServerChatEvent(ServerChatEvent event)
 	{
-		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getName());
+		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName());
 		
 		if(bot.getMessageMode())
 		{
 			event.setCanceled(true);
 			bot.sendMessage("> " + event.message);
-			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getName() + " --> IRC> " + event.message, event.player);
+			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getCommandSenderName() + " --> IRC> " + event.message, event.player);
 		}
 	}
 	
