@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.util.ArrayList;
+
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
@@ -26,19 +28,19 @@ public class GuiCameraMonitor extends GuiContainer {
 	private InventoryPlayer playerInventory;
 	private ItemCameraMonitor cameraMonitor;
 	private NBTTagCompound nbtTag;
-	
+
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
 	private GuiButton[] cameraButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-    private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
-    private int[] cameraViewDim = new int[10];
+	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
+	private int[] cameraViewDim = new int[10];
 
 	private int page = 1;
 
 	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag) {
-        super(new ContainerGeneric(inventory, null));
-        this.playerInventory = inventory;
+		super(new ContainerGeneric(inventory, null));
+		this.playerInventory = inventory;
 		this.cameraMonitor = item;
 		this.nbtTag = itemNBTTag;
 	}
@@ -51,7 +53,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
-		
+
 		prevPageButton = new GuiButton(-1, this.width / 2 - 68, this.height / 2 + 40, 20, 20, "<");
 		nextPageButton = new GuiButton(0, this.width / 2 + 52, this.height / 2 + 40, 20, 20, ">");
 		this.buttonList.add(prevPageButton);
@@ -68,70 +70,78 @@ public class GuiCameraMonitor extends GuiContainer {
 		cameraButtons[8] = new GuiButton(9, this.width / 2 + 22, this.height / 2 + 10, 20, 20, "#");
 		cameraButtons[9] = new GuiButton(10, this.width / 2 - 38, this.height / 2 + 40, 80, 20, "#");
 
-		for(GuiButton button : cameraButtons) {
-			button.displayString += (button.id + ((page - 1) * 10)); 
+		for(int i = 0; i < 10; i++) {
+			GuiButton button = cameraButtons[i];
+			int camID = (button.id + ((page - 1) * 10));
+			ArrayList<CameraView> views = this.cameraMonitor.getCameraPositions(this.nbtTag);
+			CameraView view;
+
+			button.displayString += camID;
 			this.buttonList.add(button);
-			
-			int camPos = (button.id + ((page - 1) * 10));
-			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
-				CameraView view = this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1);
-				
+
+			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getMinecraft().thePlayer.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
-				
+
 				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) != mod_SecurityCraft.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
-				
+
 				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(view.getLocation());
 				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
-			}	
+			}
+			else
+			{
+				button.enabled = false;
+				cameraTEs[button.id - 1] = null;
+				continue;
+			}
 		}
-		
+
 		if(page == 1) {
 			prevPageButton.enabled = false;
 		}
-		
+
 		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1) {
 			nextPageButton.enabled = false;
 		}
-		
+
 		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++) {
 			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
 		}
-			
+
 	}
 
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		
+
 		for(int i = 0; i < hoverCheckers.length; i++){
-    		if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
-    			if(cameraTEs[i] == null) {
-        		    this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, this.mc.fontRendererObj);
-    			}
-    			
-    			if(cameraTEs[i] != null && cameraTEs[i].hasCustomName()) {
-        		    this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRendererObj);
-    			}
-    		}	
-    	}
+			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
+				if(cameraTEs[i] == null) {
+					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, this.mc.fontRendererObj);
+				}
+
+				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName()) {
+					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRendererObj);
+				}
+			}	
+		}
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {	
 		if(guibutton.id == -1) {
-	        this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
+			this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
 		}
 		else if(guibutton.id == 0) {
-	        this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
+			this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
 		}
 		else { 
 			int camID = guibutton.id + ((page - 1) * 10);
-			
+
 			CameraView view = (this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
 
 			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == mod_SecurityCraft.securityCamera) {
@@ -144,10 +154,10 @@ public class GuiCameraMonitor extends GuiContainer {
 			}
 		}
 	}
-	
+
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
-    }
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
+	}
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

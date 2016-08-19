@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.util.ArrayList;
+
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
@@ -67,14 +69,16 @@ public class GuiCameraMonitor extends GuiContainer {
 		cameraButtons[8] = new GuiButton(9, this.width / 2 + 22, this.height / 2 + 10, 20, 20, "#");
 		cameraButtons[9] = new GuiButton(10, this.width / 2 - 38, this.height / 2 + 40, 80, 20, "#");
 
-		for(GuiButton button : cameraButtons) {
-			button.displayString += (button.id + ((page - 1) * 10)); 
+		for(int i = 0; i < 10; i++) {
+			GuiButton button = cameraButtons[i];
+			int camID = (button.id + ((page - 1) * 10));
+			ArrayList<CameraView> views = this.cameraMonitor.getCameraPositions(this.nbtTag);
+			CameraView view;
+
+			button.displayString += camID;
 			this.buttonList.add(button);
 			
-			int camPos = (button.id + ((page - 1) * 10));
-			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
-				CameraView view = (this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
-				
+			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getMinecraft().thePlayer.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 					cameraViewDim[button.id - 1] = view.dimension;
@@ -88,7 +92,13 @@ public class GuiCameraMonitor extends GuiContainer {
 				
 				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(view.getLocation());
 				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
-			}	
+			}
+			else
+			{
+				button.enabled = false;
+				cameraTEs[button.id - 1] = null;
+				continue;
+			}
 		}
 		
 		if(page == 1) {

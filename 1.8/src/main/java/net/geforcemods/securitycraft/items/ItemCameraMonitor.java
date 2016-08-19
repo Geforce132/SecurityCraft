@@ -79,7 +79,7 @@ public class ItemCameraMonitor extends Item {
 		if (par2World.isRemote) {
 			if(par3EntityPlayer.ridingEntity != null && par3EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return par1ItemStack; 
 			
-			if(par1ItemStack.getTagCompound() == null || par1ItemStack.getTagCompound().hasNoTags()) {
+			if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) {
 				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
 			    return par1ItemStack;
 			}
@@ -127,6 +127,18 @@ public class ItemCameraMonitor extends Item {
 		return -1;
 	}
 
+	public boolean hasCameraAdded(NBTTagCompound nbt){
+		if(nbt == null) return false;
+		
+		for(int i = 1; i <= 30; i++) {
+			if(nbt.hasKey("Camera" + i)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public boolean isCameraAdded(NBTTagCompound nbt, CameraView view){
 		for(int i = 1; i <= 30; i++){			
 			if(nbt.hasKey("Camera" + i)){
@@ -150,6 +162,8 @@ public class ItemCameraMonitor extends Item {
 
 				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
 			}
+			else
+				list.add(null);
 		}
 
 		return list;
