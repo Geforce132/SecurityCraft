@@ -307,18 +307,18 @@ public class EntitySecurityCamera extends Entity {
 		if(zoom > 0){
 			if(zoomAmount == -0.5F){
 				zoomAmount = 1F;
-				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}else if(zoomAmount == 1F){
 				zoomAmount = 2F;
-				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}
 		}else if(zoom < 0){
 			if(zoomAmount == 2F){
 				zoomAmount = 1F;
-				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}else if(zoomAmount == 1F){
 				zoomAmount = -0.5F;
-				Minecraft.getMinecraft().theWorld.playSound((double) this.posX,(double) this.posY,(double) this.posZ, SCSounds.CAMERAZOOMIN.path, (float) 1.0F, 1.0F, true);	
+				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}
 		}
 	}
@@ -346,7 +346,7 @@ public class EntitySecurityCamera extends Entity {
 			ItemStack[] modules = null;
 
 			if(!((CustomizableSCTE)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).getModules().isEmpty()){
-				modules = (ItemStack[])((CustomizableSCTE)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).itemStacks;
+				modules = ((CustomizableSCTE)this.worldObj.getTileEntity((int)Math.floor(this.posX), (int)(this.posY - 1.0D), (int)Math.floor(this.posZ))).itemStacks;
 			}
 
 			if(block == mod_SecurityCraft.securityCamera){

@@ -287,9 +287,9 @@ public class BlockLaserBlock extends BlockOwnable {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
             if(((Boolean) state.getValue(POWERED)).booleanValue()){
-            double d0 = (double)((float)pos.getX() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = (double)((float)pos.getY() + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = (double)((float)pos.getZ() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d1 = pos.getY() + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d3 = 0.2199999988079071D;
             double d4 = 0.27000001072883606D;
 

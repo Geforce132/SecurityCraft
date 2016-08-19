@@ -273,16 +273,16 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
      */
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
     {
-        if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 1)
+        if (par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
         {
     		this.setBlockBounds(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
         }
-        else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 2)
+        else if (par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
         {
 
     		this.setBlockBounds(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
         }
-        else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 3)
+        else if (par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
         {
 
     		this.setBlockBounds(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
@@ -306,7 +306,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer) state.getValue(BOUNDTYPE)).intValue();
+        return state.getValue(BOUNDTYPE).intValue();
     }
 
     protected BlockState createBlockState()

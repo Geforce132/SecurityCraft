@@ -87,7 +87,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 			password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(BlockUtils.toPos(x, y, z))).getPassword();
 		}
 		
-		Block block = (Block)Block.blockRegistry.getObject(new ResourceLocation(blockID));
+		Block block = Block.blockRegistry.getObject(new ResourceLocation(blockID));
 		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
 		
 		if(modules != null){

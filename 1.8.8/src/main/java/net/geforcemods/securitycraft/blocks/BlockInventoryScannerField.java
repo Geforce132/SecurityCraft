@@ -248,19 +248,19 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     
     private static void checkAndUpdateTEAppropriately(World par1World, BlockPos pos, TileEntityInventoryScanner par5TileEntityIS) {
     	mod_SecurityCraft.log("Updating te");
-		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
+		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == Blocks.air && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.west(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
+		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == Blocks.air && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.east(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
+		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == Blocks.air && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.north(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
+		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == Blocks.air && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.south(2), BlockUtils.getBlock(par1World, pos), 1, true);
@@ -290,7 +290,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing) state.getValue(FACING)).getIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     protected BlockState createBlockState()

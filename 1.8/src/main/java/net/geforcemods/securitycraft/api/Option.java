@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -280,7 +281,7 @@ public static class OptionFloat extends Option<Float>{
 	}
 	
 	public Float getValue() {
-		return (Float) value;
+		return value;
 	}
 	
 	public String toString() {

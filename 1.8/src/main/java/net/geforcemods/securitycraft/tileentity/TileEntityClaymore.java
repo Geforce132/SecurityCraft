@@ -40,7 +40,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 			
 			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1));
+			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 			
 			if(dir == EnumFacing.NORTH){
 				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
@@ -64,7 +64,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 				entityZ = entityliving.posZ;
 				cooldown = 20;
 				
-				getWorld().playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+				getWorld().playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
 				break;
 			}
 		}

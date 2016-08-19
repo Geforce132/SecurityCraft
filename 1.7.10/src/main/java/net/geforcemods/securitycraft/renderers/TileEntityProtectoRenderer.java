@@ -30,7 +30,7 @@ public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 			int l1 = l % 65536;
 			int l2 = l / 65536;
 			tessellator.setColorOpaque_F(f, f, f);
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 		
 		GL11.glPushMatrix();

@@ -52,10 +52,10 @@ public class BlockPortableRadar extends BlockContainer {
      
     public static void searchForPlayers(World par1World, int par2, int par3, int par4, int searchRadius){
         if(!par1World.isRemote){	
-            double d0 = (double)(searchRadius);
+            double d0 = (searchRadius);
         	
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)par2, (double)par3, (double)par4, (double)(par2 + 1), (double)(par3 + 1), (double)(par4 + 1)).expand(d0, d0, d0);
-            axisalignedbb.maxY = (double)par1World.getHeight();
+            AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1).expand(d0, d0, d0);
+            axisalignedbb.maxY = par1World.getHeight();
             List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
             Iterator<?> iterator = list.iterator();
             EntityPlayer entityplayer;

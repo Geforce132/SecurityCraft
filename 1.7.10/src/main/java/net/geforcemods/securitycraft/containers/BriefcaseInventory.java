@@ -38,7 +38,7 @@ public class BriefcaseInventory implements IInventory {
 		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = (NBTTagCompound) items.getCompoundTagAt(i);
+			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory()) {

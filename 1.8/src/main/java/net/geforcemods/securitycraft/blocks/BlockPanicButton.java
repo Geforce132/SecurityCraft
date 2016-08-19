@@ -30,13 +30,13 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         if(((Boolean)state.getValue(POWERED)).booleanValue()){
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
+            worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
         }else{
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, true, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            worldIn.playSoundEffect((double)pos.getX() + 0.5D, (double)pos.getY() + 0.5D, (double)pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+            worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
         }
@@ -68,7 +68,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
-        float f2 = (float)(flag ? 1 : 2) / 16.0F;
+        float f2 = (flag ? 1 : 2) / 16.0F;
                       
         switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
         {

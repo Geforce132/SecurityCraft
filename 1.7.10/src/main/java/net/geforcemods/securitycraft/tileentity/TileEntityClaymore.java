@@ -38,7 +38,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 			
 			int meta = getWorldObj().getBlockMetadata(xCoord, yCoord, zCoord);
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double) xCoord, (double) yCoord, (double) zCoord, (double)(xCoord + 1), (double)(yCoord + 1), (double)(zCoord + 1));
+			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
 			
 			if(meta == 3){
 				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
@@ -62,7 +62,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 				entityZ = entityliving.posZ;
 				cooldown = 20;
 				
-				getWorldObj().playSoundEffect((double) xCoord + 0.5D, (double) yCoord + 0.5D, (double) zCoord + 0.5D, "random.click", 0.3F, 0.6F);
+				getWorldObj().playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.3F, 0.6F);
 				break;
 			}
 		}

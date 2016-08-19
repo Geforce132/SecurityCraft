@@ -95,7 +95,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 		if(world.getBlockMetadata(par2, par3, par4) == 1) return;
 		
 		world.setBlockToAir(par2, par3, par4);
-		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, (double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F));
+		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, par2 + 0.5F, par3 + 0.5F, par4 + 0.5F);
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		world.spawnEntityInWorld(entitytntprimed);

@@ -92,7 +92,7 @@ public class BlockInventoryScanner extends BlockContainer {
      * Called when the block is placed in the world.
      */
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){    	
-        int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         
         if (l == 0){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);

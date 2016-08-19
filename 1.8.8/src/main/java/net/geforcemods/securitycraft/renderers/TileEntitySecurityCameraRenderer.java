@@ -30,7 +30,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
 			int l1 = l % 65536;
 			int l2 = l / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 		
 		GL11.glPushMatrix();
@@ -58,7 +58,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 		
-		this.modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) par1TileEntity).cameraRotation;
+		this.modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 		
 		this.modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		

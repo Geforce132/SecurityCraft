@@ -43,8 +43,8 @@ public class BlockFrame extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
     
-    public int getMetaFromState(IBlockState state){
-    	return ((EnumFacing) state.getValue(FACING)).getIndex();
+	public int getMetaFromState(IBlockState state){
+    	return state.getValue(FACING).getIndex();
     }
     
     protected BlockState createBlockState(){

@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityLaserBlock extends CustomizableSCTE {

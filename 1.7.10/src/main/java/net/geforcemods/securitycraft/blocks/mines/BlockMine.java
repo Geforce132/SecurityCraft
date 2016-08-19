@@ -127,9 +127,9 @@ public class BlockMine extends BlockExplosive {
 		if(!cut){
 			par1World.func_147480_a(par2, par3, par4, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
-				this.newExplosion((Entity)null, (double) par2, (double) par3, (double) par4,  1.0F, true, true, par1World);
+				this.newExplosion((Entity)null, par2, par3, par4,  1.0F, true, true, par1World);
 			}else{
-				this.newExplosion((Entity)null, (double) par2, (double) par3, (double) par4,  3.0F, true, true, par1World);
+				this.newExplosion((Entity)null, par2, par3, par4,  3.0F, true, true, par1World);
 			}
 		}
 	}

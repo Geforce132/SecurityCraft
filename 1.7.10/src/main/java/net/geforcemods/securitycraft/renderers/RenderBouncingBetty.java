@@ -28,9 +28,9 @@ public class RenderBouncingBetty extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         float f2;
 
-        if ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F < 10.0F)
+        if (par1EntityTNTPrimed.fuse - par9 + 1.0F < 10.0F)
         {
-            f2 = 1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 10.0F;
+            f2 = 1.0F - (par1EntityTNTPrimed.fuse - par9 + 1.0F) / 10.0F;
 
             if (f2 < 0.0F)
             {
@@ -48,7 +48,7 @@ public class RenderBouncingBetty extends Render
             GL11.glScalef(f3, f3, f3);
         }
 
-        f2 = (1.0F - ((float)par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
+        f2 = (1.0F - (par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
         this.bindEntityTexture(par1EntityTNTPrimed);
         this.blockRenderer.renderBlockAsItem(mod_SecurityCraft.bouncingBetty, 0, par1EntityTNTPrimed.getBrightness(par9));
 

@@ -50,9 +50,9 @@ public class TileEntityIMS extends CustomizableSCTE {
 		boolean launchedMine = false;
 		
 		if(bombsRemaining > 0){
-			double d0 = (double) mod_SecurityCraft.configHandler.imsRange;
+			double d0 = mod_SecurityCraft.configHandler.imsRange;
 			
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds((double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), (double)(pos.getX() + 1), (double)(pos.getY() + 1), (double)(pos.getZ() + 1)).expand(d0, d0, d0);
+			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
 	        List<?> list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
 	        List<?> list2 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
 	        Iterator<?> iterator1 = list1.iterator();
@@ -62,12 +62,12 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        	EntityLivingBase entity = (EntityLivingBase) iterator2.next();
 				int launchHeight = this.getLaunchHeight();
 
-				if(WorldUtils.isPathObstructed(worldObj, (double) pos.getX() + 0.5D, (double) pos.getY() + (((launchHeight - 1) / 3) + 0.5D), (double) pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())){ continue; }
+				if(WorldUtils.isPathObstructed(worldObj, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase())){ continue; }
 
-		        double d5 = entity.posX - ((double) pos.getX() + 0.5D);
-		        double d6 = entity.getEntityBoundingBox().minY + (double)(entity.height / 2.0F) - ((double) pos.getY() + 1.25D);
-		        double d7 = entity.posZ - ((double) pos.getZ() + 0.5D);
+		        double d5 = entity.posX - (pos.getX() + 0.5D);
+		        double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+		        double d7 = entity.posZ - (pos.getZ() + 0.5D);
 
 		        this.spawnMine(entity, d5, d6, d7, launchHeight);
 		            
@@ -91,15 +91,15 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        	EntityPlayer entity = (EntityPlayer) iterator1.next();
 				int launchHeight = this.getLaunchHeight();
 
-	        	if(entity instanceof EntityPlayer && getOwner().isOwner(((EntityPlayer) entity))){ continue; }
-				if(WorldUtils.isPathObstructed(worldObj, (double) pos.getX() + 0.5D, (double) pos.getY() + (((launchHeight - 1) / 3) + 0.5D), (double) pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityPlayer) entity).getName())){ continue; }
+	        	if(entity instanceof EntityPlayer && getOwner().isOwner((entity))){ continue; }
+				if(WorldUtils.isPathObstructed(worldObj, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getName())){ continue; }
 
-		        double d5 = entity.posX - ((double) pos.getX() + 0.5D);
-		        double d6 = entity.getEntityBoundingBox().minY + (double)(entity.height / 2.0F) - ((double) pos.getY() + 1.25D);
-		        double d7 = entity.posZ - ((double) pos.getZ() + 0.5D);
+		        double d5 = entity.posX - (pos.getX() + 0.5D);
+		        double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+		        double d7 = entity.posZ - (pos.getZ() + 0.5D);
 					
-		        this.spawnMine((EntityPlayer) entity, d5, d6, d7, launchHeight);
+		        this.spawnMine(entity, d5, d6, d7, launchHeight);
 		            
 		        if(worldObj.isRemote){
 		        	mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));

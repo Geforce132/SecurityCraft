@@ -75,7 +75,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     }
     
     public double getAttackRange() {
-    	return (double) searchRadiusOption.asInteger();
+    	return searchRadiusOption.asDouble();
     }
     
     public int getTicksBetweenAttacks() {

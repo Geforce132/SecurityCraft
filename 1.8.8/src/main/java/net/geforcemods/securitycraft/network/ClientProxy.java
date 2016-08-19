@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends ServerProxy{
-	
+	//TODO: Change methods BEFORE v1.8.2 release!!
 	/**
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.
 	 */

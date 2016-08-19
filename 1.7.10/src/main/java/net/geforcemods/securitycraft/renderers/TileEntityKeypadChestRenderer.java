@@ -146,7 +146,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 			}
 
-			GL11.glRotatef((float)short1, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			float f1 = p_147502_1_.prevLidAngle + (p_147502_1_.lidAngle - p_147502_1_.prevLidAngle) * p_147502_8_;
 			float f2;

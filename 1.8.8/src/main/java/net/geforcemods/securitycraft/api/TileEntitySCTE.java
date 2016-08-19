@@ -58,7 +58,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
-	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i + 1), (double)(j + 1), (double)(k + 1)));
+	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1));
 	        List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        Entity entity;
@@ -84,7 +84,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
-	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(k)).expand(5, 5, 5));
+	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, (i), (j), (k)).expand(5, 5, 5));
 	        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;
@@ -92,7 +92,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	        while (iterator.hasNext())
 	        {
 	        	entity = (EntityLivingBase)iterator.next();
-	        	double eyeHeight = (double) entity.getEyeHeight();
+	        	double eyeHeight = entity.getEyeHeight();
 	        	boolean isPlayer = (entity instanceof EntityPlayer);
 
 	        	Vec3 lookVec = new Vec3((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
@@ -119,7 +119,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 				int i = pos.getX();
 		        int j = pos.getY();
 		        int k = pos.getZ();
-		        AxisAlignedBB axisalignedbb = new AxisAlignedBB((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(getAttackRange(), getAttackRange(), getAttackRange());
+		        AxisAlignedBB axisalignedbb = new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
 		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
 

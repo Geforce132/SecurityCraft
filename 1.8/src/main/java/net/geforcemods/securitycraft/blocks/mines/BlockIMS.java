@@ -67,9 +67,9 @@ public class BlockIMS extends BlockOwnable {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
     	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) par1World.getTileEntity(pos)).getBombsRemaining() == 0){
-    		double d0 = (double)((float)pos.getX() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-    		double d1 = (double)((float)pos.getY() + 0.4F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-    		double d2 = (double)((float)pos.getZ() + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d1 = pos.getY() + 0.4F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+    		double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
     		double d3 = 0.2199999988079071D;
     		double d4 = 0.27000001072883606D;
 

@@ -169,14 +169,14 @@ public class GuiUtils{
 	}
 	
 	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel){
-		float f = (float)(p_73733_5_ >> 24 & 255) / 255.0F;
-		float f1 = (float)(p_73733_5_ >> 16 & 255) / 255.0F;
-		float f2 = (float)(p_73733_5_ >> 8 & 255) / 255.0F;
-		float f3 = (float)(p_73733_5_ & 255) / 255.0F;
-		float f4 = (float)(p_73733_6_ >> 24 & 255) / 255.0F;
-		float f5 = (float)(p_73733_6_ >> 16 & 255) / 255.0F;
-		float f6 = (float)(p_73733_6_ >> 8 & 255) / 255.0F;
-		float f7 = (float)(p_73733_6_ & 255) / 255.0F;
+		float f = (p_73733_5_ >> 24 & 255) / 255.0F;
+		float f1 = (p_73733_5_ >> 16 & 255) / 255.0F;
+		float f2 = (p_73733_5_ >> 8 & 255) / 255.0F;
+		float f3 = (p_73733_5_ & 255) / 255.0F;
+		float f4 = (p_73733_6_ >> 24 & 255) / 255.0F;
+		float f5 = (p_73733_6_ >> 16 & 255) / 255.0F;
+		float f6 = (p_73733_6_ >> 8 & 255) / 255.0F;
+		float f7 = (p_73733_6_ & 255) / 255.0F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -185,11 +185,11 @@ public class GuiUtils{
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
-		worldrenderer.addVertex((double)p_73733_3_, (double)p_73733_2_, (double) zLevel);
-		worldrenderer.addVertex((double)p_73733_1_, (double)p_73733_2_, (double) zLevel);
+		worldrenderer.addVertex(p_73733_3_, p_73733_2_, zLevel);
+		worldrenderer.addVertex(p_73733_1_, p_73733_2_, zLevel);
 		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
-		worldrenderer.addVertex((double)p_73733_1_, (double)p_73733_4_, (double) zLevel);
-		worldrenderer.addVertex((double)p_73733_3_, (double)p_73733_4_, (double) zLevel);
+		worldrenderer.addVertex(p_73733_1_, p_73733_4_, zLevel);
+		worldrenderer.addVertex(p_73733_3_, p_73733_4_, zLevel);
 		tessellator.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glDisable(GL11.GL_BLEND);

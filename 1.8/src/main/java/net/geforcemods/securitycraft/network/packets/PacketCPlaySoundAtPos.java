@@ -55,7 +55,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
-		Minecraft.getMinecraft().theWorld.playSound((double) message.x,(double) message.y,(double) message.z, message.sound, (float) message.volume, 1.0F, true);
+		Minecraft.getMinecraft().theWorld.playSound(message.x,message.y,message.z, message.sound, (float) message.volume, 1.0F, true);
 		return null;
 	}
 	

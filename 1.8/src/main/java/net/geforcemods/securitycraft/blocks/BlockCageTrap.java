@@ -52,7 +52,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		if(BlockUtils.getBlock(par1World, pos) == mod_SecurityCraft.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(par1World, pos, DEACTIVATED)){
 			return null;
 		}else{
-			return AxisAlignedBB.fromBounds((double) pos.getX() + this.minX, (double) pos.getY() + this.minY, (double) pos.getZ() + this.minZ, (double) pos.getX() + this.maxX, (double) pos.getY() + this.maxY, (double) pos.getZ() + this.maxZ);
+			return AxisAlignedBB.fromBounds(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ, pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
 		}
 	}
 	

@@ -58,7 +58,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        int i = ((Integer)state.getValue(LEVEL)).intValue();
+        int i = state.getValue(LEVEL).intValue();
         byte b0 = 1;
 
         if (this.blockMaterial == Material.lava && !worldIn.provider.doesWaterVaporize())
@@ -109,7 +109,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
                 {
                     l = 0;
                 }
-                else if (iblockstate2.getBlock().getMaterial() == this.blockMaterial && ((Integer)iblockstate2.getValue(LEVEL)).intValue() == 0)
+                else if (iblockstate2.getBlock().getMaterial() == this.blockMaterial && iblockstate2.getValue(LEVEL).intValue() == 0)
                 {
                     l = 0;
                 }
@@ -225,7 +225,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
                 BlockPos blockpos1 = pos.offset(enumfacing1);
                 IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-                if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+                if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
                 {
                     if (!this.isBlocked(worldIn, blockpos1.down(), iblockstate))
                     {
@@ -260,7 +260,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
             BlockPos blockpos1 = pos.offset(enumfacing);
             IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-            if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+            if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
             {
                 int j;
 

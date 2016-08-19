@@ -42,7 +42,7 @@ public class ContainerCustomizeBlock extends Container{
     public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
     {
     	ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(par2);
+        Slot slot = this.inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
         {

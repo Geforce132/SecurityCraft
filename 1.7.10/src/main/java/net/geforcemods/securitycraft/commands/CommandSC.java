@@ -12,7 +12,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -111,19 +110,19 @@ public class CommandSC extends CommandBase implements ICommand{
 		}
 	}
 
-	private static String getMessageFromArray(String[] par1String, int index) {
-		String startingString = "";
-		for(int i = index; i < par1String.length; i++){
-			startingString += (i == index ? "" : " ") + par1String[i];
-		}
-		
-		return startingString;
-	}
-
-	private void sendMessageToPlayer(String par1, ICommandSender par2){
-		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-		getPlayer(par2, par2.getCommandSenderName()).addChatComponentMessage(chatcomponenttext);
-	}
+//	private static String getMessageFromArray(String[] par1String, int index) {
+//		String startingString = "";
+//		for(int i = index; i < par1String.length; i++){
+//			startingString += (i == index ? "" : " ") + par1String[i];
+//		}
+//		
+//		return startingString;
+//	}
+//
+//	private void sendMessageToPlayer(String par1, ICommandSender par2){
+//		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
+//		getPlayer(par2, par2.getCommandSenderName()).addChatComponentMessage(chatcomponenttext);
+//	}
 	
 	public int compareTo(Object par1Obj)
     {

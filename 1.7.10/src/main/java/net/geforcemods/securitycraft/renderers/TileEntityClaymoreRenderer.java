@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
+import org.lwjgl.opengl.GL11;
+
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelClaymore;
 import net.minecraft.client.Minecraft;
@@ -9,8 +11,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
 	
@@ -33,7 +33,7 @@ public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
 			int l1 = l % 65536;
 			int l2 = l / 65536;
 			tessellator.setColorOpaque_F(f, f, f);
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 		
 		GL11.glPushMatrix();

@@ -32,14 +32,14 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	        if(worldIn.getBlockMetadata(par2, par3, par4) > 4 && worldIn.getBlockMetadata(par2, par3, par4) < 10){
 	        	worldIn.setBlockMetadataWithNotify(par2, par3, par4, worldIn.getBlockMetadata(par2, par3, par4) - 5, 3);
 	        	worldIn.markBlockForUpdate(par2, par3, par4);
-	            worldIn.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.4D, "random.click", 0.3F, 0.5F);
+	            worldIn.playSoundEffect(par2 + 0.5D, par3 + 0.5D, par4 + 0.4D, "random.click", 0.3F, 0.5F);
 	            worldIn.scheduleBlockUpdate(par2, par3, par4, this, 1);
 	            this.notifyNeighbors(worldIn, par2, par3, par4);
 	            return true;
 	        }else{
 	        	worldIn.setBlockMetadataWithNotify(par2, par3, par4, worldIn.getBlockMetadata(par2, par3, par4) + 5, 3);
 	            worldIn.markBlockRangeForRenderUpdate(par2, par3, par4, par2, par3, par4);
-	            worldIn.playSoundEffect((double)par2 + 0.5D, (double)par3 + 0.5D, (double)par4 + 0.5D, "random.click", 0.3F, 0.6F);
+	            worldIn.playSoundEffect(par2 + 0.5D, par3 + 0.5D, par4 + 0.5D, "random.click", 0.3F, 0.6F);
 	            worldIn.scheduleBlockUpdate(par2, par3, par4, this, 1);
 	            this.notifyNeighbors(worldIn, par2, par3, par4);
 	            return true;
@@ -74,7 +74,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	private void updateBlockBounds(int par1) {
 		int j = par1 & 15;
 		boolean flag = (par1 == 6 || par1 == 7 || par1 == 8 || par1 == 9);
-        float f2 = (float)(flag ? 1 : 2) / 16.0F;
+        float f2 = (flag ? 1 : 2) / 16.0F;
                 
         if(j == 0){
         	this.setBlockBounds(0.1800F, 0.300F, 0.95F, 0.8150F, 0.700F, 1.0F);

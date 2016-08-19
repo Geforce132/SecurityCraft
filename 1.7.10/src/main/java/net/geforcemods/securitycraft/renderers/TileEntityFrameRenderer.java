@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.lookingglass.api.view.IWorldView;
+
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
@@ -10,10 +14,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 	
@@ -36,7 +36,7 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 			int l1 = l % 65536;
 			int l2 = l / 65536;
 			tessellator.setColorOpaque_F(f, f, f);
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 		
 		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView()){

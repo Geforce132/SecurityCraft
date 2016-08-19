@@ -64,7 +64,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 			int i = xCoord;
 	        int j = yCoord;
 	        int k = zCoord;
-	        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double)i, (double)j, (double)k, (double)(i), (double)(j), (double)(k)).expand(5, 5, 5);
+	        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k).expand(5, 5, 5);
 	        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;
@@ -72,7 +72,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	        while (iterator.hasNext())
 	        {
 	        	entity = (EntityLivingBase)iterator.next();
-	        	double eyeHeight = (double) entity.getEyeHeight();
+	        	double eyeHeight = entity.getEyeHeight();
 	        	boolean isPlayer = (entity instanceof EntityPlayer);
 
 	        	Vec3 lookVec = Vec3.createVectorHelper((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
@@ -99,7 +99,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 				int i = xCoord;
 		        int j = yCoord;
 		        int k = zCoord;
-		        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox((double) i, (double) j, (double) k, (double) (i + 1), (double) (j + 1), (double) (k + 1)).expand(getAttackRange(), getAttackRange(), getAttackRange());
+		        AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
 		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
 		        

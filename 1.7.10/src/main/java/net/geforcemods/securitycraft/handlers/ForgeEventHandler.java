@@ -328,7 +328,7 @@ public class ForgeEventHandler {
 		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
 		
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockMetadata(event.x, event.y, event.z), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockMetadata(event.x, event.y, event.z), event.entityPlayer, !mod_SecurityCraft.configHandler.allowCodebreakerItem);
 		}
 		
 		return false;

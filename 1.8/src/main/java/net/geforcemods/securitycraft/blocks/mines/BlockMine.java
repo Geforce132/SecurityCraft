@@ -17,11 +17,9 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class BlockMine extends BlockExplosive {
@@ -125,9 +123,9 @@ public class BlockMine extends BlockExplosive {
 		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
 			par1World.destroyBlock(pos, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
-				par1World.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 1.0F, true);
+				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			}else{
-				par1World.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 3.0F, true);
+				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
 			}
 		}
 	}

@@ -143,7 +143,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
     
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
+    	if(state.getValue(POWERED).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
     		return 15;
     	}else{
     		return 0;
@@ -151,7 +151,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
     
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){  	
-    	if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
+    	if(state.getValue(POWERED).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
     		return 15;
     	}else{
     		return 0;
@@ -175,10 +175,10 @@ public class BlockSecurityCamera extends BlockContainer{
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getValue(POWERED).booleanValue()){
+    		return (state.getValue(FACING).getIndex() + 6);
     	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
 

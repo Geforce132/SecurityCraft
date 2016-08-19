@@ -36,7 +36,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 			int l2 = l / 65536;
 			tessellator.getWorldRenderer().setColorOpaque_F(f, f, f);
 
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 		
 		GL11.glPushMatrix();

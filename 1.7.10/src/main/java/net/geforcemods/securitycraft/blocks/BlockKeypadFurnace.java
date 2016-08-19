@@ -58,7 +58,7 @@ public class BlockKeypadFurnace extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		if(l == 0){
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);    
@@ -104,7 +104,7 @@ public class BlockKeypadFurnace extends BlockContainer {
 						}
 
 						itemstack.stackSize -= j1;
-						EntityItem entityitem = new EntityItem(par1World, (double)((float)par2 + f), (double)((float)par3 + f1), (double)((float)par4 + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+						EntityItem entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 
 						if (itemstack.hasTagCompound())
 						{
@@ -112,9 +112,9 @@ public class BlockKeypadFurnace extends BlockContainer {
 						}
 
 						float f3 = 0.05F;
-						entityitem.motionX = (double)((float)this.random.nextGaussian() * f3);
-						entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
-						entityitem.motionZ = (double)((float)this.random.nextGaussian() * f3);
+						entityitem.motionX = (float)this.random.nextGaussian() * f3;
+						entityitem.motionY = (float)this.random.nextGaussian() * f3 + 0.2F;
+						entityitem.motionZ = (float)this.random.nextGaussian() * f3;
 						par1World.spawnEntityInWorld(entityitem);
 					}
 				}

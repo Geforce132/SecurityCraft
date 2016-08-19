@@ -32,7 +32,7 @@ public class ItemReinforcedDoor extends Item {
 					if (!block.canPlaceBlockAt(par3World, par4, par5, par6)){
 						return false;
 					}else{
-						int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
+						int i1 = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
 						placeDoorBlock(par3World, par4, par5, par6, i1, block);
 						((TileEntityOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
 						((TileEntityOwnable) par3World.getTileEntity(par4, par5 + 1, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());

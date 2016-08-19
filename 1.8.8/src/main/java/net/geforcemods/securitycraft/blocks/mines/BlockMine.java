@@ -17,11 +17,9 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class BlockMine extends BlockExplosive {
@@ -122,12 +120,12 @@ public class BlockMine extends BlockExplosive {
 	public void explode(World par1World, BlockPos pos) {
 		if(par1World.isRemote){ return; }
 
-		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
+		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			par1World.destroyBlock(pos, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
-				par1World.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 1.0F, true);
+				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			}else{
-				par1World.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 3.0F, true);
+				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
 			}
 		}
 	}
@@ -153,7 +151,7 @@ public class BlockMine extends BlockExplosive {
 
 	public int getMetaFromState(IBlockState state)
 	{
-		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
+		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
 	protected BlockState createBlockState()
@@ -162,7 +160,7 @@ public class BlockMine extends BlockExplosive {
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
-		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
 	public boolean isDefusable() {

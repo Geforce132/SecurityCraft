@@ -26,7 +26,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	
 	public ItemBlockReinforcedSlabs(Block par1Block, BlockReinforcedWoodSlabs par2Block, Boolean par3, ReinforcedSlabType slabType){
         super(par1Block);
-        this.singleSlab = (BlockSlab) par2Block;
+        this.singleSlab = par2Block;
         this.isNotSlab = par3;
         this.slabType = slabType;
         this.setMaxDamage(0);
@@ -35,7 +35,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	
 	public ItemBlockReinforcedSlabs(Block par1Block, BlockReinforcedSlabs par2Block, Boolean par3, ReinforcedSlabType slabType){
 		super(par1Block);
-        this.singleSlab = (BlockSlab) par2Block;
+        this.singleSlab = par2Block;
         this.isNotSlab = par3;
         this.slabType = slabType;
         this.setMaxDamage(0);
@@ -117,7 +117,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             
             if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getItemDamage()){
                 if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == mod_SecurityCraft.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
-                    par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.getBlockVariant(block, i1).stepSound.func_150496_b(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getPitch() * 0.8F);
+                    par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(block, i1).stepSound.func_150496_b(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getPitch() * 0.8F);
                     --par1ItemStack.stackSize;
                     
                     if(owner != null){
@@ -213,7 +213,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
         if(block == this.singleSlab && j1 == par1ItemStack.getItemDamage()){
             if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(i1), j1, 3)){
-            	par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.getBlockVariant(i1).stepSound.func_150496_b(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getPitch() * 0.8F);
+            	par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(i1).stepSound.func_150496_b(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getPitch() * 0.8F);
                 --par1ItemStack.stackSize;
                 
                 if(owner != null){

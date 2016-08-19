@@ -238,19 +238,19 @@ public class BlockUtils{
 	}
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, BlockPos pos, PropertyBool property){
-		return ((Boolean) par1World.getBlockState(pos).getValue(property)).booleanValue();
+		return par1World.getBlockState(pos).getValue(property).booleanValue();
 	}
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, int par2, int par3, int par4, PropertyBool property){
-		return ((Boolean) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property)).booleanValue();
+		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property).booleanValue();
 	}
 	
 	public static int getBlockPropertyAsInteger(World par1World, BlockPos pos, PropertyInteger property){
-		return ((Integer) par1World.getBlockState(pos).getValue(property)).intValue();
+		return par1World.getBlockState(pos).getValue(property).intValue();
 	}
 
 	public static int getBlockPropertyAsInteger(World par1World, int par2, int par3, int par4, PropertyInteger property){
-		return ((Integer) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property)).intValue();
+		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property).intValue();
 	}
 	
 	public static EnumFacing getBlockPropertyAsEnum(World par1World, BlockPos pos, PropertyEnum property){
@@ -270,11 +270,11 @@ public class BlockUtils{
 	}
 
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {
-		return (EnumFacing) par1World.getBlockState(pos).getValue(property);
+		return par1World.getBlockState(pos).getValue(property);
 	}
 
 	public static EnumFacing getBlockProperty(World par1World, int par2, int par3, int par4, PropertyDirection property) {
-		return (EnumFacing) par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
+		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
 	}
 	
 	public static Material getBlockMaterial(World par1World, BlockPos pos){

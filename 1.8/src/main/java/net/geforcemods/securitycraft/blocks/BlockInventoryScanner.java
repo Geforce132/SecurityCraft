@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -170,7 +169,7 @@ public class BlockInventoryScanner extends BlockContainer {
     public void breakBlock(World par1World, BlockPos pos, IBlockState state){	    	
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().length; i++){
     		if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i] != null){
-    			EntityItem item = new EntityItem(par1World, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
+    			EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
     			par1World.spawnEntityInWorld(item);
     		}
     	}

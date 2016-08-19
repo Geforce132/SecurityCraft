@@ -63,7 +63,7 @@ public class GuiInventoryScanner extends GuiContainer {
 			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.explanation.1"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
 			this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.explanation.2"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
 			
-			if(((GuiButton)this.buttonList.get(0)).displayString.matches(StatCollector.translateToLocal("gui.invScan.checkInv"))){
+			if(this.buttonList.get(0).displayString.matches(StatCollector.translateToLocal("gui.invScan.checkInv"))){
 				this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.explanation.checkInv.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
 				this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.explanation.checkInv.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
 			}else{

@@ -124,7 +124,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), 3.5F, true);
+			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true);
 		}
 	}
 	

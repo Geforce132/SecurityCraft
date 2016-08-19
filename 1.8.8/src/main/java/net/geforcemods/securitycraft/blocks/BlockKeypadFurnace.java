@@ -84,10 +84,10 @@ public class BlockKeypadFurnace extends BlockOwnable {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(((Boolean) state.getValue(OPEN)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getValue(OPEN).booleanValue()){
+    		return state.getValue(FACING).getIndex() + 6;
     	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
 

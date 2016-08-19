@@ -7,7 +7,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -66,9 +65,9 @@ public class BlockFullMineBase extends BlockExplosive {
 		world.func_147480_a(par2, par3, par4, false);
 
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
-			world.createExplosion((Entity)null, par2, (double)par3 + 0.5D, par4, 2.5F, true);
+			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 2.5F, true);
 		}else{
-			world.createExplosion((Entity)null, par2, (double)par3 + 0.5D, par4, 5.0F, true);
+			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 5.0F, true);
 		}
 	}
 

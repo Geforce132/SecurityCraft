@@ -80,7 +80,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		if(par1World.isRemote){ return; }
 
 		par1World.setBlockToAir(pos);
-		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(par1World, (double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F));
+		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(par1World, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		par1World.spawnEntityInWorld(entitytntprimed);
@@ -109,7 +109,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	public int getMetaFromState(IBlockState state)
 	{
-		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
+		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
 	protected BlockState createBlockState()
@@ -118,7 +118,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
-		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
 	public boolean isDefusable() {

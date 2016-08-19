@@ -57,7 +57,7 @@ public class EntityIMSBomb extends EntityFireball {
 			EntityPlayer target = PlayerUtils.getPlayerFromName(playerName);
 						
 			double d5 = target.posX - posX;
-            double d6 = target.boundingBox.minY + (double)(target.height / 2.0F) - ((double) posY + 1.25D);
+            double d6 = target.boundingBox.minY + target.height / 2.0F - (posY + 1.25D);
             double d7 = target.posZ - posZ;
 			
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7, 0);
@@ -66,7 +66,7 @@ public class EntityIMSBomb extends EntityFireball {
             this.setDead();
 		}else if(targetMob != null && !targetMob.isDead){	
 			double d5 = targetMob.posX - posX;
-            double d6 = targetMob.boundingBox.minY + (double)(targetMob.height / 2.0F) - ((double) posY + 1.25D);
+            double d6 = targetMob.boundingBox.minY + targetMob.height / 2.0F - (posY + 1.25D);
             double d7 = targetMob.posZ - posZ;
 			
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7, 0);

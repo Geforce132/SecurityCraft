@@ -40,7 +40,7 @@ public class BlockKeycardReader extends BlockOwnable {
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
     	
-    	int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+    	int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         
         if (l == 0){
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);      
@@ -130,9 +130,9 @@ public class BlockKeycardReader extends BlockOwnable {
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
     	
         if(meta > 6 && meta < 11){
-            double d0 = (double)((float)par2 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = (double)((float)par3 + 0.7F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = (double)((float)par4 + 0.5F) + (double)(par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d0 = par2 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d1 = par3 + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+            double d2 = par4 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d3 = 0.2199999988079071D;
             double d4 = 0.27000001072883606D;
        

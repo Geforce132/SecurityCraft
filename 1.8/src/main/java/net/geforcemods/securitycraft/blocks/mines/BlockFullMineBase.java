@@ -60,9 +60,9 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable 
 		par1World.destroyBlock(pos, false);
 
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
-			par1World.createExplosion((Entity)null, pos.getX(), (double) pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
+			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
 		}else{
-			par1World.createExplosion((Entity)null, pos.getX(), (double) pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
+			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
 		}
 	}
 

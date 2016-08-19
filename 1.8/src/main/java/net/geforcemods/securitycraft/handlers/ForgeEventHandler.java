@@ -217,7 +217,7 @@ public class ForgeEventHandler {
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++){
 					if(te.itemStacks[i] != null){
 						ItemStack stack = te.itemStacks[i];
-						EntityItem item = new EntityItem(event.world, (double) event.pos.getX(), (double) event.pos.getY(), (double) event.pos.getZ(), stack);
+						EntityItem item = new EntityItem(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ(), stack);
 						event.world.spawnEntityInWorld(item);
 						
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
@@ -302,7 +302,7 @@ public class ForgeEventHandler {
 		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
 		
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.instance.configHandler.allowCodebreakerItem);
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.configHandler.allowCodebreakerItem);
 		}
 		
 		return false;

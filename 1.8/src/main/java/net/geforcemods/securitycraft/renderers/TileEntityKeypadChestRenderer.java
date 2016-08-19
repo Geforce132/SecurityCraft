@@ -159,7 +159,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
                 GlStateManager.translate(0.0F, 0.0F, -1.0F);
             }
 
-            GlStateManager.rotate((float)short1, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(short1, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
             float f1 = p_180538_1_.prevLidAngle + (p_180538_1_.lidAngle - p_180538_1_.prevLidAngle) * p_180538_8_;
             float f2;

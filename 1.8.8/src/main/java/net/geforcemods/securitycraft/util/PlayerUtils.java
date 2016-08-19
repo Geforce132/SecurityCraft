@@ -87,7 +87,7 @@ public class PlayerUtils{
 	public static boolean isPlayerOnline(String par1) {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
-	    		EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
+	    		EntityPlayer player = Minecraft.getMinecraft().theWorld.playerEntities.get(i);
 	    		
 	    		if(player != null && player.getCommandSenderName().matches(par1)){
 	    			return true;

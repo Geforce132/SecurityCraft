@@ -74,7 +74,7 @@ public class GuiCameraMonitor extends GuiContainer {
 			
 			int camPos = (button.id + ((page - 1) * 10));
 			if(camPos <= cameraMonitor.getCameraPositions(nbtTag).size()) {
-				CameraView view = ((CameraView) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1));
+				CameraView view = this.cameraMonitor.getCameraPositions(this.nbtTag).get(camPos - 1);
 				
 				if(view.dimension != Minecraft.getMinecraft().thePlayer.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
@@ -132,7 +132,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		else { 
 			int camID = guibutton.id + ((page - 1) * 10);
 			
-			CameraView view = ((CameraView) this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
+			CameraView view = (this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
 
 			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == mod_SecurityCraft.securityCamera) {
 				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation())).mountCamera(Minecraft.getMinecraft().theWorld, view.x, view.y, view.z, camID, Minecraft.getMinecraft().thePlayer);

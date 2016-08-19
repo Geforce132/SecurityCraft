@@ -36,10 +36,10 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 			Tessellator tessellator = Tessellator.instance;
 			
 			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV((double)(0 - 7), (double)(128 + 7), 0.0D, 0.0D, 1.0D);
-            tessellator.addVertexWithUV((double)(128 + 7), (double)(128 + 7), 0.0D, 1.0D, 1.0D);
-            tessellator.addVertexWithUV((double)(128 + 7), (double)(0 - 7), 0.0D, 1.0D, 0.0D);
-            tessellator.addVertexWithUV((double)(0 - 7), (double)(0 - 7), 0.0D, 0.0D, 0.0D);
+			tessellator.addVertexWithUV(0 - 7, 128 + 7, 0.0D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV(128 + 7, 128 + 7, 0.0D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV(128 + 7, 0 - 7, 0.0D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV(0 - 7, 0 - 7, 0.0D, 0.0D, 0.0D);
             tessellator.draw();
             //
             
@@ -57,10 +57,10 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, worldView.getTexture()); 
 
 						tessellator.startDrawingQuads();
-						tessellator.addVertexWithUV((double)(128 + 7), (double)(0 - 7), 0.0D, 0.0D, 1.0D);
-						tessellator.addVertexWithUV((double)(0 - 7), (double)(0 - 7), 0.0D, -1.0D, 1.0D);	  
-						tessellator.addVertexWithUV((double)(0 - 7), (double)(128 + 7), 0.0D, -1.0D, 0.0D);
-						tessellator.addVertexWithUV((double)(128 + 7), (double)(128 + 7), 0.0D, 0.0D, 0.0D);	  
+						tessellator.addVertexWithUV(128 + 7, 0 - 7, 0.0D, 0.0D, 1.0D);
+						tessellator.addVertexWithUV(0 - 7, 0 - 7, 0.0D, -1.0D, 1.0D);	  
+						tessellator.addVertexWithUV(0 - 7, 128 + 7, 0.0D, -1.0D, 0.0D);
+						tessellator.addVertexWithUV(128 + 7, 128 + 7, 0.0D, 0.0D, 0.0D);	  
 
 						tessellator.draw();
 						
