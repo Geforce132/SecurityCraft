@@ -159,7 +159,7 @@ public class ConfigurationHandler{
 	public boolean useLookingGlass;
 	public boolean useOldKeypadRecipe;
 	public boolean checkForUpdates;
-	public int portableRadarSearchRadius;
+	public double portableRadarSearchRadius;
 	public int usernameLoggerSearchRadius;	
 	public int laserBlockRange;
 	public int alarmTickDelay;
@@ -410,7 +410,7 @@ public class ConfigurationHandler{
 		
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25);
 		dummyProp.setLanguageKey("config.portableRadarSearchRadius");
-		portableRadarSearchRadius = dummyProp.getInt(25);
+		portableRadarSearchRadius = dummyProp.getDouble(25);
 		
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3);
 		dummyProp.setLanguageKey("config.usernameLoggerSearchRadius");

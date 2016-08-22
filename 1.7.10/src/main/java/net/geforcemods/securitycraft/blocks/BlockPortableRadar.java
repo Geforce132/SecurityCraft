@@ -50,7 +50,7 @@ public class BlockPortableRadar extends BlockContainer {
         return false;
     }
      
-    public static void searchForPlayers(World par1World, int par2, int par3, int par4, int searchRadius){
+    public static void searchForPlayers(World par1World, int par2, int par3, int par4, double searchRadius){
         if(!par1World.isRemote){	
             double d0 = (searchRadius);
         	

@@ -212,7 +212,7 @@ public static class OptionInt extends Option<Integer>{
 	}
 	
 	public String toString() {
-		return ((int) value) + "";
+		return (value) + "";
 	}
 }
 
@@ -281,7 +281,7 @@ public static class OptionFloat extends Option<Float>{
 	}
 	
 	public Float getValue() {
-		return (Float) value;
+		return value;
 	}
 	
 	public String toString() {

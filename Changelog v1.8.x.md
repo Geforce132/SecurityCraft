@@ -19,6 +19,9 @@
 - Fix: Crash when opening a monitor with more than 10 cameras bound to it
 - Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: Unbinding the first bound camera from a monitor restricts access to other cameras bound to the same monitor
+- Fix: Portable Radar option to disable repeating message does not show
+- Fix: Language strings regarding block options
+- Fix: Portable Radar crash
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 

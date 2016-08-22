@@ -348,7 +348,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
      * <p>
      * Calls {@link TileEntitySCTE}.attackEntity(Entity) when this TE's cooldown equals 0.
      */ 
-    public TileEntitySCTE attacks(Class<?> type, int range, int cooldown) {
+    public TileEntitySCTE attacks(Class<?> type, double range, int cooldown) {
     	attacks = true;
     	typeToAttack = type;
     	attackRange = range;
