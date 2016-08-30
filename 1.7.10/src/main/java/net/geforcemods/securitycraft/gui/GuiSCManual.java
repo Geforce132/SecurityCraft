@@ -134,19 +134,10 @@ public class GuiSCManual extends GuiScreen {
 		    	}
 	    	}	
 	    	
-	    	for(int i = 0; i < hoverCheckers.size(); i++){
-	    		if(hoverCheckers.get(i) != null && hoverCheckers.get(i).checkHover(par1, par2)){
-	    			if(hoverCheckers.get(i).getX() == (k + 29)){
-	    				this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.ownableBlock"), 150), par1, par2, this.mc.fontRenderer);
-	    			}else if(hoverCheckers.get(i).getX() == (k + 55)){
-	    				this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.passwordProtectedBlock"), 150), par1, par2, this.mc.fontRenderer);
-	    			}else if(hoverCheckers.get(i).getX() == (k + 81)){
-	    				this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.viewActivatedBlock"), 150), par1, par2, this.mc.fontRenderer);
-	    			}else if(hoverCheckers.get(i).getX() == (k + 107)){
-	    				this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.explosiveBlock"), 150), par1, par2, this.mc.fontRenderer);
-	    			}else if(hoverCheckers.get(i).getX() == (k + 213)){
-	    				this.drawHoveringText(this.mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.scManual.customizableBlock"), 150), par1, par2, this.mc.fontRenderer);
-	    			}
+	    	for(CustomHoverChecker chc : hoverCheckers){
+	    		if(chc != null && chc.checkHover(par1, par2)){
+	    			if(chc.getName() != null)
+	    				drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(chc.getName(), 250), par1, par2, mc.fontRenderer);
 	    		}
 	    	}
 	    }
@@ -219,30 +210,47 @@ public class GuiSCManual extends GuiScreen {
 			}
 		}
     	
-	    int k = (this.width - 256) / 2;
+		int k = (this.width - 256) / 2;
+		
+		if(recipe != null)
+		{
+			outer:
+			for(int i = 0; i < 3; i++)
+			{
+				for(int j = 0; j < 3; j++)
+				{
+					if((i * 3) + j == recipe.length)
+						break outer;
+					
+					if(recipe[(i * 3) + j] != null)
+						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe[(i * 3) + j].getDisplayName()));	
+				}
+			}
+		}
+		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
     	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).field_150939_a instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).field_150939_a).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
     	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).field_150939_a : null);
 
     	if(te != null){
 	    	if(te instanceof IOwnable){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20)); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20, StatCollector.translateToLocal("gui.scManual.ownableBlock"))); 
 	    	}	
 	    	
 	    	if(te instanceof IPasswordProtected){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20)); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20, StatCollector.translateToLocal("gui.scManual.passwordProtectedBlock"))); 
 	    	}
 	    	
 	    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20)); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20, StatCollector.translateToLocal("gui.scManual.viewActivatedBlock"))); 
 	    	}
 	    	
 	    	if(itemBlock instanceof IExplosive){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20)); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20, StatCollector.translateToLocal("gui.scManual.explosiveBlock"))); 
 	    	}
 	    	
 	    	if(te instanceof CustomizableSCTE){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20)); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, StatCollector.translateToLocal("gui.scManual.customizableBlock"))); 
 	    	}
     	}
     }

@@ -6,11 +6,13 @@ import net.minecraft.client.gui.GuiButton;
 public class CustomHoverChecker extends HoverChecker {
 	
 	private int xPos = 0, yPos = 0;
-
-	public CustomHoverChecker(int top, int bottom, int left, int right, int threshold) {
+	private String name;
+	
+	public CustomHoverChecker(int top, int bottom, int left, int right, int threshold, String name) {
 		super(top, bottom, left, right, threshold);
 		this.xPos = left;
 		this.yPos = top;
+		this.name = name;
 	}
 	
 	public CustomHoverChecker(GuiButton button, int threshold) {
@@ -25,4 +27,8 @@ public class CustomHoverChecker extends HoverChecker {
 		return yPos;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
 }

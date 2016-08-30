@@ -6,6 +6,7 @@
 - New: Security cameras can now have a custom name which is displayed in the monitor GUI
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
+- New: Recipe tooltips in the SecurityCraft Manual
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
