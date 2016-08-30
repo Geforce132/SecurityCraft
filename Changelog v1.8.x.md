@@ -23,6 +23,7 @@
 - Fix: Portable Radar option to disable repeating message does not show
 - Fix: Language strings regarding block options
 - Fix: Portable Radar crash
+- Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't display tooltips correctly
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 

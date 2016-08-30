@@ -41,18 +41,23 @@ public class GuiSCManual extends GuiScreen {
     private List<CustomHoverChecker> hoverCheckers = new ArrayList<CustomHoverChecker>();
     private int currentPage = -1;
     private ItemStack[] recipe;
+    int k = -1;
+    boolean update = false;
     
 	public GuiSCManual() {
 		super();
 	}
 	
 	public void initGui(){		
-		Keyboard.enableRepeatEvents(true);
+		byte b0 = 2;
+		
+		if((this.width - 256) / 2 != k && k != -1)
+			update = true;
 
-        int i = (this.width - 256) / 2;
-        byte b0 = 2;
-        GuiSCManual.NextPageButton nextButton = new GuiSCManual.NextPageButton(1, i + 210, b0 + 158, true);
-        GuiSCManual.NextPageButton prevButton = new GuiSCManual.NextPageButton(2, i + 16, b0 + 158, false);
+		k = (this.width - 256) / 2;
+		Keyboard.enableRepeatEvents(true);
+        GuiSCManual.NextPageButton nextButton = new GuiSCManual.NextPageButton(1, k + 210, b0 + 158, true);
+        GuiSCManual.NextPageButton prevButton = new GuiSCManual.NextPageButton(2, k + 16, b0 + 158, false);
 
         this.buttonList.add(nextButton);
         this.buttonList.add(prevButton);
@@ -61,13 +66,19 @@ public class GuiSCManual extends GuiScreen {
 	public void drawScreen(int par1, int par2, float par3){		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
+		if(update)
+		{
+			updateButtons();
+			updateRecipeAndIcons();
+			update = false;
+		}
+		
 		if(this.currentPage == -1){
 	    	this.mc.getTextureManager().bindTexture(infoBookTitlePage);
 		}else{
 	    	this.mc.getTextureManager().bindTexture(infoBookTexture);
 		}
 		
-	    int k = (this.width - 256) / 2;
 	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 	    
 	    if(this.currentPage > -1){
@@ -210,8 +221,6 @@ public class GuiSCManual extends GuiScreen {
 			}
 		}
     	
-		int k = (this.width - 256) / 2;
-		
 		if(recipe != null)
 		{
 			outer:
