@@ -24,6 +24,7 @@
 - Fix: Language strings regarding block options
 - Fix: Portable Radar crash
 - Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't display tooltips correctly
+- Fix: Hostile mobs attack the player when he is viewing a camera
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 

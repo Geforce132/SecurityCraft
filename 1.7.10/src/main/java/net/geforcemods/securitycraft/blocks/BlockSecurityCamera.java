@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -167,6 +168,15 @@ public class BlockSecurityCamera extends BlockContainer {
 		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
+
+		for(Object e : world.loadedEntityList)
+		{
+			if(e instanceof EntityLiving)
+			{
+				if(((EntityLiving)e).getAttackTarget() == player)
+					((EntityLiving)e).setAttackTarget(null);
+			}
+		}
 	}
 
 	public Item getItemDropped(int par1, Random par2Random, int par3){

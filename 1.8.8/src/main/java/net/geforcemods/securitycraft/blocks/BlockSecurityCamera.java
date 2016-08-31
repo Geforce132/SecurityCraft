@@ -16,6 +16,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -124,6 +125,15 @@ public class BlockSecurityCamera extends BlockContainer{
     	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
     	world.spawnEntityInWorld(dummyEntity);
     	player.mountEntity(dummyEntity);
+		
+		for(Object e : world.loadedEntityList)
+		{
+			if(e instanceof EntityLiving)
+			{
+				if(((EntityLiving)e).getAttackTarget() == player)
+					((EntityLiving)e).setAttackTarget(null);
+			}
+		}
     }
     
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
