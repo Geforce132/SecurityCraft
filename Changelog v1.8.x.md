@@ -7,6 +7,7 @@
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
 - New: Recipe tooltips in the SecurityCraft Manual
+- New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused

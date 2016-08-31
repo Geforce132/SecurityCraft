@@ -35,6 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiSCManual extends GuiScreen {
 
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/infoBookTexture.png");
+	private ResourceLocation infoBookTextureSpecial = new ResourceLocation("securitycraft:textures/gui/infoBookTextureSpecial.png"); //for items without a recipe
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/infoBookTitlePage.png");
 	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/infoBookIcons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
@@ -77,7 +78,10 @@ public class GuiSCManual extends GuiScreen {
 		if(this.currentPage == -1){
 	    	this.mc.getTextureManager().bindTexture(infoBookTitlePage);
 		}else{
-	    	this.mc.getTextureManager().bindTexture(infoBookTexture);
+			if(this.recipe != null)
+				this.mc.getTextureManager().bindTexture(infoBookTexture);
+			else
+				this.mc.getTextureManager().bindTexture(infoBookTextureSpecial);
 		}
 		
 	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
@@ -236,6 +240,13 @@ public class GuiSCManual extends GuiScreen {
 						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe[(i * 3) + j].getDisplayName()));	
 				}
 			}
+		}
+		else
+		{
+			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
+			
+			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
 		}
 		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
