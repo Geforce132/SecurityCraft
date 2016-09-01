@@ -137,6 +137,7 @@ public class mod_SecurityCraft {
     public static Block reinforcedDirtSlab;
     public static Block reinforcedDoubleDirtSlab;
     public static Block protecto;
+    public static Block scannerDoor;
     
     //Items
     public static Item codebreaker;
@@ -164,6 +165,7 @@ public class mod_SecurityCraft {
 	public static Item universalBlockReinforcerLvL3;
 	public static Item briefcase;
     public static Item universalKeyChanger;
+    public static Item scannerDoorItem;
 
     //Modules
     public static ItemModule redstoneModule;

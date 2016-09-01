@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -59,6 +60,9 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED)){
+				if(((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
+					return;
+				
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 				BlockUtils.setBlock(world, pos.up(4), mod_SecurityCraft.unbreakableIronBars);
 				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), mod_SecurityCraft.unbreakableIronBars);	
@@ -69,7 +73,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
 
 				world.playSoundAtEntity(entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + "]" + EnumChatFormatting.RESET + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}

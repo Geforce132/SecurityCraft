@@ -106,6 +106,7 @@ tile.reinforcedStoneSlabs_cobble.name=Reinforced Cobblestone Slab
 tile.reinforcedStoneSlabs_sandstone.name=Reinforced Sandstone Slab
 tile.reinforcedDirtSlab.name=Reinforced Dirt Slab
 tile.protecto.name=Protecto
+tile.scannerDoor.name=Scanner Door
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -140,6 +141,7 @@ item.universalBlockReinforcerLvL2.name=Universal Block Reinforcer (LvL2)
 item.universalBlockReinforcerLvL3.name=Universal Block Reinforcer (LvL3)
 item.briefcase.name=Briefcase
 item.universalKeyChanger.name=Universal Key Changer
+item.scannerDoorItem.name=Scanner Door
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
@@ -192,6 +194,7 @@ help.protecto.info=The protecto, inspired by the enemy from the game "Megaman: B
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it.
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
+help.scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner, but opens itself upon looking at the top part. It has to be closed manually again.
 help.universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
 help.keycardLV1.info=The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.
 help.keycardLV2.info=The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.
@@ -297,7 +300,7 @@ gui.universalKeyChanger.confirm=Confirm
 messages.bugReport=You can report a crash or a bug using this GoogleDocs form
 messages.securityCamera.mounted=You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.
 messages.retinalScanner.hello=Hello #.
-messages.retinalScanner.notOwner=I'm sorry, you cannot use this retinal scanner. This scanner is owned by #.
+messages.retinalScanner.notOwner=I'm sorry, you cannot use this scanner. It is owned by #.
 messages.portableRadar.withName=#p is near your portable radar named #n.
 messages.portableRadar.withoutName=#p is near your portable radar at #l.
 messages.codebreakerDisabled=The codebreaker has been disabled through the config file.

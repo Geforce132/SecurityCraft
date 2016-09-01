@@ -27,7 +27,7 @@ public class Utils {
 	 * Args: x, y, z.
 	 */
 	public static String getFormattedCoordinates(int par1, int par2, int par3){
-		return " X:" + par1 + " Y:" + par2 + " Z:" + par3;
+		return "X: " + par1 + " Y: " + par2 + " Z: " + par3;
 	}
 	
 	public static void setISinTEAppropriately(World par1World, int par2, int par3, int par4, ItemStack[] contents, String type) {

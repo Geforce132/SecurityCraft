@@ -58,6 +58,9 @@ public class BlockCageTrap extends BlockOwnable {
 			if(par5Entity instanceof EntityPlayer && !deactivated){
 				IOwnable originalTrap = (IOwnable)par1World.getTileEntity(par2, par3, par4);
 				
+				if(originalTrap.getOwner().isOwner((EntityPlayer)par5Entity))
+					return;
+				
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.deactivatedCageTrap);
 
 				par1World.setBlock(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
@@ -70,7 +73,7 @@ public class BlockCageTrap extends BlockOwnable {
 				setTileEntities(par1World, par2, par3, par4, originalTrap.getOwner().getUUID(), originalTrap.getOwner().getName());
 
 				par1World.playSoundAtEntity(par5Entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + "]" + EnumChatFormatting.RESET + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) par5Entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(par2, par3, par4))));
+				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) par5Entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(par2, par3, par4))));
 			}
 		}
 	}

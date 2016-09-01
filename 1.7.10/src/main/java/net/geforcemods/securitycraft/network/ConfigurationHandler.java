@@ -44,6 +44,7 @@ import net.geforcemods.securitycraft.blocks.BlockReinforcedStairs;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWood;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
+import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
@@ -72,6 +73,7 @@ import net.geforcemods.securitycraft.items.ItemModifiedBucket;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
+import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemTestItem;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
@@ -122,6 +124,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
@@ -266,6 +269,8 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.reinforcedDoubleDirtSlab = new BlockReinforcedSlabs(true, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setBlockName("reinforcedDoubleDirtSlab");
 	
 		mod_SecurityCraft.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("protecto").setBlockTextureName("securitycraft:protectoParticleTexture");
+		
+		mod_SecurityCraft.scannerDoor = new BlockScannerDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setBlockName("scannerDoor");
 	}
 
 	public void setupMines(){
@@ -294,7 +299,7 @@ public class ConfigurationHandler{
 
 		mod_SecurityCraft.keycards = new ItemKeycardBase().setUnlocalizedName("keycards");
 
-		mod_SecurityCraft.reinforcedDoorItem = new ItemReinforcedDoor(Material.iron).setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:doorReinforcedIron");
+		mod_SecurityCraft.reinforcedDoorItem = new ItemReinforcedDoor().setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:doorReinforcedIron");
 
 		mod_SecurityCraft.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover").setTextureName("securitycraft:universalBlockRemover");
 
@@ -334,6 +339,8 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
 	
 	    mod_SecurityCraft.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger").setTextureName("securitycraft:universalKeyChanger");
+	
+	    mod_SecurityCraft.scannerDoorItem = new ItemScannerDoor().setUnlocalizedName("scannerDoorItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:scannerDoor");
 	}
 
 	public void setupDebuggingBlocks() {}
@@ -539,9 +546,11 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedDoubleStoneSlabs, mod_SecurityCraft.reinforcedDoubleStoneSlabs.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedDoubleDirtSlab, mod_SecurityCraft.reinforcedDoubleDirtSlab.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.protecto);
+		GameRegistry.registerBlock(mod_SecurityCraft.scannerDoor, mod_SecurityCraft.scannerDoor.getUnlocalizedName().substring(5));
 
 		registerItem(mod_SecurityCraft.codebreaker);
 		registerItem(mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.reinforcedDoorItem.getUnlocalizedName().substring(5));
+		registerItem(mod_SecurityCraft.scannerDoorItem, mod_SecurityCraft.scannerDoorItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
 		registerItem(mod_SecurityCraft.keycards);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
@@ -586,6 +595,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
+		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
 		if(useOldKeypadRecipe){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
@@ -889,6 +899,7 @@ public class ConfigurationHandler{
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.sandMine, 1), new Object[] {Blocks.sand, mod_SecurityCraft.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.furnaceMine, 1), new Object[] {Blocks.furnace, mod_SecurityCraft.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalOwnerChanger, 1), new Object[] {mod_SecurityCraft.universalBlockModifier, Items.name_tag});
+		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.scannerDoorItem), new Object[]{mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.retinalScanner});
 	}
 
 	/**

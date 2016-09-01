@@ -107,6 +107,7 @@ tile.reinforcedStoneSlabs_cobble.name=Verstärkte Pflastersteinstufen
 tile.reinforcedStoneSlabs_sandstone.name=Verstärkte Sandsteinstufen
 tile.reinforcedDirtSlab.name=Verstärkte Erdstufen
 tile.protecto.name=Protecto
+tile.scannerDoor.name=Scannertür
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -141,6 +142,7 @@ item.universalBlockReinforcerLvL2.name=Universeller Block Verstärker (LvL2)
 item.universalBlockReinforcerLvL3.name=Universeller Block Verstärker (LvL3)
 item.briefcase.name=Aktenkoffer
 item.universalKeyChanger.name=Universeller Passwort Wechsler
+item.scannerDoorItem.name=Scannertür
 
 death.attack.securitycraft.laser=%s wurde von einem Laser zerschnitten.
 death.attack.securitycraft.fakeWater=%s fiel in giftiges Wasser...?
@@ -193,6 +195,7 @@ help.protecto.info=Der Protecto, inspiriert von dem Spiel "Megaman: Battle Netwo
 
 help.codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick.
 help.doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
+help.scannerDoorItem.info=Die Scannertür verhält sich wie der Augenscanner, aber sie öffnet sich von selbst wenn man auf den oberen Teil guckt. Sie muss manuell wieder geschlossen werden.
 help.universalBlockRemover.info=Der Universelle Block Entferner wird benutzt um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat kann ihn auch entfernen.
 help.keycards.info=Die Schlüsselkarten werden im Schlüsselkarten Leser benutzt. Es gibt 6 Karten: Level 1, Level 2, Level 3, Level 4, Level 5 und eine begrenzt nutzbare Karte, die der Level 5 Karte gleich ist, aber im Survivalmodus nur fünfmal benutzt werden kann.
 help.remoteAccessMine.info=Die kabellose Minensteuerungseinheit erlaubt dir, Minen kabellos anzusteuern. Rechtsklicke eine Mine um sie in der Einheit zu registrieren. Nun kannst du mit einem Rechtsklick in die Luft diese Mine detonieren, entschärfen oder scharf machen.
@@ -294,6 +297,7 @@ gui.universalKeyChanger.confirm=Bestätigen
 messages.bugReport=Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden
 messages.securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.
 messages.retinalScanner.hello=Hallo #.
+messages.retinalScanner.notOwner=Sorry, du kannst diesen Scanner nicht benutzen. Er gehört #.
 messages.portableRadar.withName=#p ist nahe deines tragbaren Radars namens #n.
 messages.portableRadar.withoutName=#p ist nahe deines tragbaren Radars bei #l.
 messages.codebreakerDisabled=Der Codebrecher wurde in der Configdatei deaktiviert.

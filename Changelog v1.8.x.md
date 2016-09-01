@@ -8,6 +8,7 @@
 - New: Links sent through IRC are now clickable
 - New: Recipe tooltips in the SecurityCraft Manual
 - New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
+- New: Scanner Door (Acts like a Retinal Scanner)
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
@@ -19,13 +20,15 @@
 - Fix: Camera monitor displaying "0/30 cameras" in the monitor's tooltip when 30 cameras are bound to it
 - Fix: NullPointerException which occurs when SecurityCraft's update .json file isn't downloaded properly at startup
 - Fix: Crash when opening a monitor with more than 10 cameras bound to it
-- Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: Unbinding the first bound camera from a monitor restricts access to other cameras bound to the same monitor
 - Fix: Portable Radar option to disable repeating message does not show
 - Fix: Language strings regarding block options
 - Fix: Portable Radar crash
 - Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't display tooltips correctly
 - Fix: Hostile mobs attack the player when he is viewing a camera
+- Fix: Cage Trap can be activated by its owner
+- Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
+- Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
