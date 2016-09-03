@@ -27,6 +27,7 @@
 - Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't display tooltips correctly
 - Fix: Hostile mobs attack the player when he is viewing a camera
 - Fix: Cage Trap can be activated by its owner
+- Fix: Protecto attacks whitelisted players
 - Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
 
