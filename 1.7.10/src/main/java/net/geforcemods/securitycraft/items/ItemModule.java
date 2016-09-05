@@ -5,7 +5,6 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -23,23 +22,25 @@ public class ItemModule extends Item{
 	
 	private final EnumCustomModules module;
 	private final boolean nbtCanBeModified;
+	private boolean canBeCustomized;
+	private int guiToOpen;
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified){
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized){
+		this(module, nbtCanBeModified, canBeCustomized, -1, 0, 0);
+	}
+	
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
-		numberOfItemAddons = 0;
-		numberOfBlockAddons = 0;
+		this.canBeCustomized = canBeCustomized;
+		this.guiToOpen = guiToOpen;
+		numberOfItemAddons = itemAddons;
+		numberOfBlockAddons = blockAddons;
 
 		this.setMaxStackSize(1);
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
-	}
-	
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, int itemAddons, int blockAddons){
-		this(module, nbtCanBeModified);
-		numberOfItemAddons = itemAddons;
-		numberOfBlockAddons = blockAddons;
 	}
 	
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) { 
@@ -50,7 +51,7 @@ public class ItemModule extends Item{
 	    	}
 	    	
 	    	if(canBeCustomized()) {
-	    	    par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MODULE_CUSTOMIZATION, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ); 
+	    	    par3EntityPlayer.openGui(mod_SecurityCraft.instance, guiToOpen, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ); 
 	    	}
     	}
     	
@@ -172,7 +173,7 @@ public class ItemModule extends Item{
 	}
 	
 	public boolean canBeCustomized(){
-		return getNumberOfAddons() > 0;
+		return canBeCustomized;
 	}
 
 }

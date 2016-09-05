@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.geforcemods.securitycraft.containers.ContainerModuleCustomization;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,13 +10,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-public class GuiModuleInventory extends GuiContainer {
+public class GuiDisguiseModule extends GuiContainer {
 	
-	private int numberOfSlots = 0;
-
-	public GuiModuleInventory(EntityPlayer player, InventoryPlayer inventory) {
-		super(new ContainerModuleCustomization(player, inventory, new ModuleInventory(player.getCurrentEquippedItem())));
-		numberOfSlots = new ModuleInventory(player.getCurrentEquippedItem()).SIZE;
+	public GuiDisguiseModule(EntityPlayer player, InventoryPlayer inventory) {
+		super(new ContainerDisguiseModule(player, inventory, new ModuleInventory(player.getCurrentEquippedItem())));
 	}
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
@@ -25,7 +22,7 @@ public class GuiModuleInventory extends GuiContainer {
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + numberOfSlots + ".png"));
+		this.mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize1.png"));
 		int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);

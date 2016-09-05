@@ -6,25 +6,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerModuleCustomization extends Container {
+public class ContainerDisguiseModule extends Container {
 	
 	private ModuleInventory inventory;
-	private int moduleInventorySize = 0;
 	
-	public ContainerModuleCustomization(EntityPlayer par1Player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(EntityPlayer par1Player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
 		this.inventory = moduleInventory;
-		moduleInventorySize = moduleInventory.SIZE;
-		
-		if(moduleInventorySize == 1){
-			this.addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
-		}else if(moduleInventorySize == 2){
-			this.addSlotToContainer(new AddonSlot(inventory, 0, 70, 20));
-			this.addSlotToContainer(new AddonSlot(inventory, 1, 88, 20));
-		}else if(moduleInventorySize == 3){
-			this.addSlotToContainer(new AddonSlot(inventory, 0, 61, 20));
-			this.addSlotToContainer(new AddonSlot(inventory, 1, 79, 20));
-			this.addSlotToContainer(new AddonSlot(inventory, 2, 97, 20));
-		}
+		this.addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
@@ -45,16 +33,16 @@ public class ContainerModuleCustomization extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if(index < moduleInventorySize) {
-				if(!this.mergeItemStack(itemstack1, moduleInventorySize, 48, true)) {
+			if(index < inventory.SIZE) {
+				if(!this.mergeItemStack(itemstack1, inventory.SIZE, 48, true)) {
 					return null;
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
 			}
 			else {
-				if(index >= moduleInventorySize) {
-					if(!this.mergeItemStack(itemstack1, 0, moduleInventorySize, false)) {
+				if(index >= inventory.SIZE) {
+					if(!this.mergeItemStack(itemstack1, 0, inventory.SIZE, false)) {
 						return null;
 					}
 				}
