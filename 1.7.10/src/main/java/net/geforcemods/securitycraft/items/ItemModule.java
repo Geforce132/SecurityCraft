@@ -83,7 +83,7 @@ public class ItemModule extends Item{
 		
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0) {
-				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocksAndItems").replace("#", numberOfBlockAddons + "").replace("$", numberOfItemAddons + ""));
+				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
 			}
 			
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0) {

@@ -379,7 +379,7 @@ tooltip.module.playerCustomization.usage=Use /module to add players.
 tooltip.module.playerCustomization.players=Players
 tooltip.module.itemAddons.usage.blocks=You may add # block(s).
 tooltip.module.itemAddons.usage.items=You may add # item(s).
-tooltip.module.itemAddons.usage.blocksAndItems=You may add # block(s) and $ item(s).
+tooltip.module.itemAddons.usage.blocksAndItems=You may add #blocks block(s) and #items item(s).
 tooltip.module.itemAddons.added=Added
 tooltip.keycard.uses=Uses remaining:
 

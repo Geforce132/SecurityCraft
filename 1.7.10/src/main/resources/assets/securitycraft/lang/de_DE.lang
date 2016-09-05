@@ -376,6 +376,10 @@ tooltip.module.modifiable=Modul ist modifizierbar!
 tooltip.module.notModifiable=Modul ist nicht modifizierbar!
 tooltip.module.usage=Nutze /module um Spieler hinzuzufügen.
 tooltip.module.players=Spieler
+tooltip.module.itemAddons.usage.blocks=Du kannst # Blöcke hinzufügen.
+tooltip.module.itemAddons.usage.items=Du kannst # Item(s) hinzufügen.
+tooltip.module.itemAddons.usage.blocksAndItems=Du kannst #blocks Blöcke und #items Item(s) hinzufügen.
+tooltip.module.itemAddons.added=Hinzugefügt
 tooltip.keycard.uses=Verbleibende Benutzungen:
 
 creativeTabDecoration=Dekoration
