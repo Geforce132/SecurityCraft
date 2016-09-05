@@ -27,8 +27,12 @@ public class ItemModule extends Item{
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized){
-		this(module, nbtCanBeModified, canBeCustomized, -1, 0, 0);
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified){
+		this(module, nbtCanBeModified, false, -1, 0, 0);
+	}
+	
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen){
+		this(module, nbtCanBeModified, canBeCustomized, guiToOpen, 0, 0);
 	}
 	
 	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
