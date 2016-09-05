@@ -18,8 +18,9 @@ import net.minecraft.util.StatCollector;
 
 public class GuiBriefcase extends GuiContainer {
 	
-    public static final String UP_ARROW  = "\u2191";
-    public static final String DOWN_ARROW  = "\u2193";
+    public static final String UP_ARROW  = "\u2b06";
+    public static final String DOWN_ARROW  = "\u2b07";
+    public static final String RIGHT_ARROW  = "\u27a1";
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
@@ -45,7 +46,7 @@ public class GuiBriefcase extends GuiContainer {
 			this.buttonList.add(keycodeBottomButtons[i]);
 		}
 		
-		continueButton = new GuiButton(8, (this.width / 2 + 42), this.height / 2 - 26, 20, 20, ">");
+		continueButton = new GuiButton(8, (this.width / 2 + 42), this.height / 2 - 26, 20, 20, RIGHT_ARROW);
 		this.buttonList.add(continueButton);
 		
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
