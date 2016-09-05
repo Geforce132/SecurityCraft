@@ -152,7 +152,7 @@ public class GuiSCManual extends GuiScreen {
 	    	for(CustomHoverChecker chc : hoverCheckers){
 	    		if(chc != null && chc.checkHover(par1, par2)){
 	    			if(chc.getName() != null)
-	    				drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(chc.getName(), 250), par1, par2, mc.fontRenderer);
+	    				drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(chc.getName(), 220), par1, par2, mc.fontRenderer);
 	    		}
 	    	}
 	    }

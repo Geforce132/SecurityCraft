@@ -6,8 +6,10 @@ import java.util.Iterator;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -457,6 +459,26 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		}
 		
 		return false;
+	}
+	
+	public ArrayList<Item> getItemAddonsFromModule(EnumCustomModules module) {
+		for(int i = 0; i < this.itemStacks.length; i++){
+			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
+				return ((ItemModule) this.itemStacks[i].getItem()).getItemAddons(this.itemStacks[i].getTagCompound());
+			}
+		}
+		
+		return null;
+	}
+	
+	public ArrayList<Block> getBlockAddonsFromModule(EnumCustomModules module) {
+		for(int i = 0; i < this.itemStacks.length; i++){
+			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
+				return ((ItemModule) this.itemStacks[i].getItem()).getBlockAddons(this.itemStacks[i].getTagCompound());
+			}
+		}
+		
+		return null;
 	}
 	
 	public int getNumberOfCustomizableOptions(){

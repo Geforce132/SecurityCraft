@@ -1,20 +1,26 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends BlockExplosive {
+public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDisplay {
+	
+	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material par2Material) {
+	public BlockFullMineBase(Material par2Material, Block disguisedBlock) {
 		super(par2Material);
+		blockDisguisedAs = disguisedBlock;
 	}
 
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
@@ -88,6 +94,14 @@ public class BlockFullMineBase extends BlockExplosive {
 	}
 	
 	public boolean explodesWhenInteractedWith() {
+		return false;
+	}
+	
+	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+		return new ItemStack(blockDisguisedAs);
+	}
+
+	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
 		return false;
 	}
 

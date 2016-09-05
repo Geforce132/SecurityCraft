@@ -4,16 +4,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFurnaceMine extends BlockOwnable implements IExplosive {
+public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICustomWailaDisplay {
 
 	@SideOnly(Side.CLIENT)
     private IIcon field_149935_N;
@@ -99,6 +102,14 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive {
 	}
 
 	public boolean isDefusable() {
+		return false;
+	}
+	
+	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+		return new ItemStack(Blocks.furnace);
+	}
+
+	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
 		return false;
 	}
 

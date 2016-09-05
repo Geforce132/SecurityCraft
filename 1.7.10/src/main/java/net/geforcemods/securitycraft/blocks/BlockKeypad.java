@@ -5,6 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
@@ -15,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -22,7 +24,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockKeypad extends BlockContainer {
+public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -114,6 +116,22 @@ public class BlockKeypad extends BlockContainer {
 		}
 	}
 	
+	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+		TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
+		
+		if(tileEntity.hasModule(EnumCustomModules.DISGUISE)) {
+			return !tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty() ? new ItemStack(tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).get(0)) : new ItemStack(Blocks.bookshelf);
+		}
+		
+		return null;
+	}
+	
+	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
+        TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
+		
+		return !tileEntity.hasModule(EnumCustomModules.DISGUISE);
+	}
+	
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2){
 		if(par1 == 3 && par2 == 0){
@@ -126,10 +144,12 @@ public class BlockKeypad extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){		
 		int meta = access.getBlockMetadata(x, y, z);
-        boolean isDisguised = ((TileEntityKeypad) access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.DISGUISE);
+        TileEntityKeypad tileEntity = ((TileEntityKeypad) access.getTileEntity(x, y, z));
+		
+        boolean isDisguised = tileEntity.hasModule(EnumCustomModules.DISGUISE);
 
-		if(isDisguised) {
-			return this.keypadIconDisguised;
+        if(isDisguised) {
+            return !tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty() ? tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).get(0).getIcon(side, meta) : this.keypadIconDisguised;
 		}
 
 		if(meta > 6 && meta < 11) {
