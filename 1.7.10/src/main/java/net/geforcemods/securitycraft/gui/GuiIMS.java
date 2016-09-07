@@ -70,7 +70,7 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(this.targetingOption == 0){
-			targetButton.displayString = StatCollector.translateToLocal("tooltip.module.players");
+			targetButton.displayString = StatCollector.translateToLocal("tooltip.module.playerCustomization.players");
 		}else if(this.targetingOption == 1){
 			targetButton.displayString = StatCollector.translateToLocal("gui.ims.hostileAndPlayers");
 		}
