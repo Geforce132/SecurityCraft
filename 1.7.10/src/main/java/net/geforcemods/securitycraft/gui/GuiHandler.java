@@ -5,10 +5,10 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
-import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -21,7 +21,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
@@ -45,7 +44,6 @@ public class GuiHandler implements IGuiHandler {
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int IRC_INFORMATION = 101;
 	public static final int DISGUISE_MODULE = 102;
-	public static final int WHITEBLACKLIST_MODULES = 103;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
@@ -102,10 +100,6 @@ public class GuiHandler implements IGuiHandler {
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;
 				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.getCurrentEquippedItem()));
-			case WHITEBLACKLIST_MODULES:
-				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
-					return null;
-				return new ContainerGeneric(null, null);
 			default:
 				return null;
 		}
@@ -166,10 +160,6 @@ public class GuiHandler implements IGuiHandler {
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;
 				return new GuiDisguiseModule(player, player.inventory);
-			case WHITEBLACKLIST_MODULES:
-				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
-					return null;
-				return new GuiWhiteBlacklistModule(player, StatCollector.translateToLocal(player.getCurrentEquippedItem().getItem().getUnlocalizedName() + ".name"));
 			default:
 				return null;
 		}
