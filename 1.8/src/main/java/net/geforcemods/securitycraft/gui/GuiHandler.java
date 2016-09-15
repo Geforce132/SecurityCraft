@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
+import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
@@ -41,6 +42,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int IRC_INFORMATION = 101;
+	public static final int BLOCK_REINFORCER = 103;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
@@ -93,6 +95,8 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
 				return new ContainerGeneric(null, null);
+			case BLOCK_REINFORCER:
+				return new ContainerBlockReinforcer(player, player.inventory);
 			default:
 				return null;
 		}
@@ -149,6 +153,8 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
 				return new GuiIRCInfo();
+			case BLOCK_REINFORCER:
+				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 			default:
 				return null;
 		}

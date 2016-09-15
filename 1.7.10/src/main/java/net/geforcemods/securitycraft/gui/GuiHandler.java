@@ -3,12 +3,13 @@ package net.geforcemods.securitycraft.gui;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
+import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
-import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -44,6 +45,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int IRC_INFORMATION = 101;
 	public static final int DISGUISE_MODULE = 102;
+	public static final int BLOCK_REINFORCER = 103;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
@@ -100,6 +102,8 @@ public class GuiHandler implements IGuiHandler {
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;
 				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.getCurrentEquippedItem()));
+			case BLOCK_REINFORCER:
+				return new ContainerBlockReinforcer(player, player.inventory);
 			default:
 				return null;
 		}
@@ -160,6 +164,8 @@ public class GuiHandler implements IGuiHandler {
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;
 				return new GuiDisguiseModule(player, player.inventory);
+			case BLOCK_REINFORCER:
+				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 			default:
 				return null;
 		}

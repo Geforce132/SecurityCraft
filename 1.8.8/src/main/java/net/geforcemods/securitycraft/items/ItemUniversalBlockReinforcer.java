@@ -5,6 +5,7 @@ import java.util.HashSet;
 import com.google.common.collect.Sets;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -27,6 +28,14 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 		super(2.0F, ToolMaterial.GOLD, getBreakableBlocks());
 
 		setMaxDamage(damage);
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	{
+		if(!world.isRemote)
+			player.openGui(mod_SecurityCraft.MODID, GuiHandler.BLOCK_REINFORCER, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+		return super.onItemRightClick(stack, world, player);
 	}
 
 	@Override

@@ -9,6 +9,7 @@
 - New: Recipe tooltips in the SecurityCraft Manual
 - New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
 - New: Scanner Door (Acts like a Retinal Scanner)
+- New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce your blocks.
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
