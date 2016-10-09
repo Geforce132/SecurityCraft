@@ -10,12 +10,9 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -33,12 +30,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.showPasswords"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", StatCollector.translateToLocal("waila.showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
-		registrar.registerStackProvider(new WailaDataProvider(), BlockKeypad.class);
+		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
 	}
 	
 	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
-		if(data.getBlock() == mod_SecurityCraft.keypad && ((TileEntityKeypad) data.getTileEntity()).hasModule(EnumCustomModules.DISGUISE)) {
-			return new ItemStack(Blocks.bookshelf);
+		if(data.getBlock() instanceof ICustomWailaDisplay) {			
+            return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getPosition().getX(), data.getPosition().getY(), data.getPosition().getZ());
 		}
 		
 		return null;
@@ -49,7 +46,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	public List<String> getWailaBody(ItemStack itemStack, List<String> tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
-		if(iDataAccessor.getBlock() == mod_SecurityCraft.keypad && ((TileEntityKeypad) iDataAccessor.getTileEntity()).hasModule(EnumCustomModules.DISGUISE)) return tipList;
+		if(iDataAccessor.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) iDataAccessor.getBlock()).shouldShowSCInfo(iDataAccessor.getWorld(), iDataAccessor.getPosition().getX(), iDataAccessor.getPosition().getY(), iDataAccessor.getPosition().getZ())) return tipList;
 		
 		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable){
 			tipList.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());

@@ -380,8 +380,12 @@ tooltip.camera=Camera
 tooltip.cameraMonitor=# of cameras bound:
 tooltip.module.modifiable=Module is modifiable!
 tooltip.module.notModifiable=Module is not modifiable!
-tooltip.module.usage=Use /module to add players.
-tooltip.module.players=Players
+tooltip.module.playerCustomization.usage=Use /module to add players.
+tooltip.module.playerCustomization.players=Players
+tooltip.module.itemAddons.usage.blocks=You may add # block(s).
+tooltip.module.itemAddons.usage.items=You may add # item(s).
+tooltip.module.itemAddons.usage.blocksAndItems=You may add # block(s) and $ item(s).
+tooltip.module.itemAddons.added=Added
 tooltip.keycard.uses=Uses remaining:
 
 creativeTabDecoration=Decoration

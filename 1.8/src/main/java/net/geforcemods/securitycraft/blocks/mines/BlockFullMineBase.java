@@ -1,22 +1,28 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends BlockExplosive implements IIntersectable {
-
-	public BlockFullMineBase(Material par1Material) {
+public class BlockFullMineBase extends BlockExplosive implements IIntersectable, ICustomWailaDisplay {
+	
+	private final Block blockDisguisedAs;
+	
+	public BlockFullMineBase(Material par1Material, Block disguisedBlock) {
 		super(par1Material);
+		 blockDisguisedAs = disguisedBlock; 
 	}
 
 	public int getRenderType(){
@@ -87,6 +93,14 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable 
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
+	}
+
+	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+		return new ItemStack(blockDisguisedAs);
+	}
+
+	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
+		return false;
 	}
 
 }

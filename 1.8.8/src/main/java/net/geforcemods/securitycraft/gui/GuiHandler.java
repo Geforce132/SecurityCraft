@@ -5,10 +5,13 @@ import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -42,6 +45,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int IRC_INFORMATION = 101;
+	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
 
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -95,6 +99,10 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
 				return new ContainerGeneric(null, null);
+			case DISGUISE_MODULE:
+				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
+					return null;
+				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.getCurrentEquippedItem()));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			default:
@@ -153,6 +161,10 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
 				return new GuiIRCInfo();
+			case DISGUISE_MODULE:
+				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
+					return null;
+				return new GuiDisguiseModule(player, player.inventory);
 			case BLOCK_REINFORCER:
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 			default:
