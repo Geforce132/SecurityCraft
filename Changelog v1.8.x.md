@@ -9,7 +9,8 @@
 - New: Recipe tooltips in the SecurityCraft Manual
 - New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
 - New: Scanner Door (Acts like a Retinal Scanner)
-- New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce your blocks.
+- New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce your blocks
+- New: Option to disable the Portable Radar using the Universal Block Modifier
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
@@ -29,6 +30,7 @@
 - Fix: Hostile mobs attack the player when he is viewing a camera
 - Fix: Cage Trap can be activated by its owner
 - Fix: Protecto attacks whitelisted players
+- Fix: The Portable Radar sends a message when the owner of itself is in its radius
 - Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
 
