@@ -8,7 +8,9 @@ import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
 import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityKeypadRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.state.IBlockState;
@@ -145,6 +147,7 @@ public class ClientProxy extends ServerProxy{
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypad.class, new TileEntityKeypadRenderer());
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
 	}

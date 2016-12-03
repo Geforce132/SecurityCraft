@@ -37,7 +37,7 @@ public class BlockKeypad extends BlockContainer {
 	}
 	
 	public int getRenderType(){
-		return 3;
+		return -1;
 	}
     
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
