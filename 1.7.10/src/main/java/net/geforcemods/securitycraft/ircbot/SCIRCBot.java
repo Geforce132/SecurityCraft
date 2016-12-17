@@ -70,7 +70,7 @@ public class SCIRCBot extends PircBot{
 				{
 					sendMessage("#GeforceMods", "Minecraft version: " + Loader.MC_VERSION);
 					sendMessage("#GeforceMods", "Forge version: " + ForgeVersion.getVersion());
-					sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes" : "No"));
+					sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes (" + Loader.instance().getIndexedModList().get("LookingGlass").getVersion() + ")" : "No"));
 				}
 				else
 					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayer().getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayer());
