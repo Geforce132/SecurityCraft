@@ -38,14 +38,12 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
-		    BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.DISGUISED, true);
 		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
     	}
 	}
 	
     public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
-		    BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.DISGUISED, false);
 		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
 		}
 	}

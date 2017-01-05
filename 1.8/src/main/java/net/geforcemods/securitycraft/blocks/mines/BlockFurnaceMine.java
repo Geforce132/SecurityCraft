@@ -113,11 +113,11 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 		return false;
 	}
 
-	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Blocks.furnace);
 	}
 
-	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}
 

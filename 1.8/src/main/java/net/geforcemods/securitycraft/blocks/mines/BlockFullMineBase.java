@@ -95,11 +95,11 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		return new TileEntityOwnable().intersectsEntities();
 	}
 
-	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(blockDisguisedAs);
 	}
 
-	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}
 

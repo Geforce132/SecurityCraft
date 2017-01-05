@@ -1,20 +1,12 @@
 {
     "variants": {
-        "disguised=false,facing=north,powered=false": { "model": "securitycraft:keypad" },
-        "disguised=false,facing=south,powered=false": { "model": "securitycraft:keypad", "y": 180 },
-        "disguised=false,facing=west,powered=false":  { "model": "securitycraft:keypad", "y": 270 },
-        "disguised=false,facing=east,powered=false":  { "model": "securitycraft:keypad", "y": 90 },
-        "disguised=false,facing=north,powered=true": { "model": "securitycraft:keypadPowered" },
-        "disguised=false,facing=south,powered=true": { "model": "securitycraft:keypadPowered", "y": 180 },
-        "disguised=false,facing=west,powered=true":  { "model": "securitycraft:keypadPowered", "y": 270 },
-        "disguised=false,facing=east,powered=true":  { "model": "securitycraft:keypadPowered", "y": 90 },
-        "disguised=true,facing=north,powered=false": { "model": "securitycraft:keypadDisguised" },
-        "disguised=true,facing=south,powered=false": { "model": "securitycraft:keypadDisguised", "y": 180 },
-        "disguised=true,facing=west,powered=false":  { "model": "securitycraft:keypadDisguised", "y": 270 },
-        "disguised=true,facing=east,powered=false":  { "model": "securitycraft:keypadDisguised", "y": 90 },
-        "disguised=true,facing=north,powered=true": { "model": "securitycraft:keypadDisguised" },
-        "disguised=true,facing=south,powered=true": { "model": "securitycraft:keypadDisguised", "y": 180 },
-        "disguised=true,facing=west,powered=true":  { "model": "securitycraft:keypadDisguised", "y": 270 },
-        "disguised=true,facing=east,powered=true":  { "model": "securitycraft:keypadDisguised", "y": 90 }
+        "facing=north,powered=false": { "model": "securitycraft:keypad" },
+        "facing=south,powered=false": { "model": "securitycraft:keypad", "y": 180 },
+        "facing=west,powered=false":  { "model": "securitycraft:keypad", "y": 270 },
+        "facing=east,powered=false":  { "model": "securitycraft:keypad", "y": 90 },
+        "facing=north,powered=true": { "model": "securitycraft:keypadPowered" },
+        "facing=south,powered=true": { "model": "securitycraft:keypadPowered", "y": 180 },
+        "facing=west,powered=true":  { "model": "securitycraft:keypadPowered", "y": 270 },
+        "facing=east,powered=true":  { "model": "securitycraft:keypadPowered", "y": 90 }
     }
 }

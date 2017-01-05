@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
@@ -18,6 +19,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -30,7 +32,6 @@ public class BlockKeypad extends BlockContainer {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
-    public static final PropertyBool DISGUISED = PropertyBool.create("disguised");
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -137,7 +138,7 @@ public class BlockKeypad extends BlockContainer {
 
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false).withProperty(DISGUISED, false);
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
     
     @SideOnly(Side.CLIENT)
@@ -165,13 +166,29 @@ public class BlockKeypad extends BlockContainer {
     }
     
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    	if(!(world.getTileEntity(pos) instanceof TileEntityKeypad)) return state;
-    	return state.withProperty(DISGUISED, ((TileEntityKeypad) world.getTileEntity(pos)).hasModule(EnumCustomModules.DISGUISE));
+        if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
+        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
+            
+        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+            
+        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
+                Block block = ((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).get(0);
+                IBlockState disguisedModel = block.getStateFromMeta(stack.getItemDamage());
+                
+                if (block != this) {
+                    return block.getActualState(disguisedModel, world, pos);
+                }
+            }
+        	
+            return state;
+        }
+        
+        return state;
     }
 
     protected BlockState createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED, DISGUISED});
+        return new BlockState(this, new IProperty[] {FACING, POWERED});
     }
 
     /**
@@ -180,5 +197,33 @@ public class BlockKeypad extends BlockContainer {
     public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
+    
+    public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypad) {
+        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
+            
+        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+            
+        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
+                return new ItemStack(((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).get(0));
+            }
+        }
+		
+        return null;
+	}
+
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypad) {
+        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
+            
+        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+            
+        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
+                return false;
+            }
+        }
+		
+		return true;
+	}
 
 }
