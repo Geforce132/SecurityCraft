@@ -52,5 +52,23 @@ public class ItemBriefcase extends Item {
     	
     	return par1ItemStack;
     }
-    
+
+	@Override
+	public ItemStack getContainerItem(ItemStack stack)
+	{
+		stack.getTagCompound().removeTag("passcode");
+		return stack;
+	}
+	
+	@Override
+	public boolean hasContainerItem()
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean doesContainerItemLeaveCraftingGrid(ItemStack stack)
+	{
+		return false;
+	}
 }
