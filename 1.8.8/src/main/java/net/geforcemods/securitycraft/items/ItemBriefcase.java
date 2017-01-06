@@ -58,7 +58,10 @@ public class ItemBriefcase extends Item {
 	@Override
 	public ItemStack getContainerItem(ItemStack stack)
 	{
-		stack.getTagCompound().removeTag("passcode");
+		if(stack.getTagCompound() != null && stack.getTagCompound().hasKey("passcode")) {
+		    stack.getTagCompound().removeTag("passcode");
+		}
+
 		return stack;
 	}
 	
