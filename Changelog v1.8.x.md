@@ -2,36 +2,36 @@
 
 - New: Added config option to disable SecurityCraft's built-in version checking feature
 - New: The admin tool can automatically open keycard readers by right-clicking on it
-- New: GUI displaying IRC information opens after typing "/sc connect"
+- New: A GUI displaying IRC information opens after typing "/sc connect"
 - New: Security cameras can now have a custom name which is displayed in the monitor GUI
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
 - New: Recipe tooltips in the SecurityCraft Manual
 - New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
-- New: Scanner Door (Acts like a Retinal Scanner)
-- New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce your blocks
+- New: Scanner Door (Acts like a Retinal Scanner and Reinforced Door in one)
+- New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce stacks of blocks
 - New: Option to disable the Portable Radar using the Universal Block Modifier
 - New: Keypads can now be disguised as other blocks by inserting a Disguise Module into it
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
-- Change: /sc contact now doesn't require a message, instead it changes your normal chat to send to IRC. You can use /sc resume to go back to normal Minecraft chat
+- Change: /sc contact now doesn't require a message, instead it changes your normal chat to send to IRC instead of Minecraft chat. You can use /sc resume to go back to normal Minecraft chat
 - Fix: Crash with username logger not checking if the name it saves is actually a player or not
 - Fix: Rare crash with blocks implementing IIntersectable
 - Fix: Incorrect password-protected chest recipe being shown in the SecurityCraft manual
 - Fix: Retinal scanners can be activated by non-whitelisted players that are not the owner
 - Fix: Camera monitor displaying "0/30 cameras" in the monitor's tooltip when 30 cameras are bound to it
-- Fix: NullPointerException which occurs when SecurityCraft's update .json file isn't downloaded properly at startup
+- Fix: Crash which occurs when SecurityCraft's update .json file isn't downloaded properly at startup
 - Fix: Crash when opening a monitor with more than 10 cameras bound to it
 - Fix: Unbinding the first bound camera from a monitor restricts access to other cameras bound to the same monitor
 - Fix: Portable Radar option to disable repeating message does not show
 - Fix: Language strings regarding block options
 - Fix: Portable Radar crash
-- Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't display tooltips correctly
+- Fix: Resizing Minecraft while having the SecurityCraft Manual open doesn't update tooltips correctly
 - Fix: Hostile mobs attack the player when he is viewing a camera
 - Fix: Cage Trap can be activated by its owner
 - Fix: Protecto attacks whitelisted players
-- Fix: The Portable Radar sends a message when the owner of itself is in its radius
+- Fix: The Portable Radar sends a message when its owner is in its radius
 - Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
 
