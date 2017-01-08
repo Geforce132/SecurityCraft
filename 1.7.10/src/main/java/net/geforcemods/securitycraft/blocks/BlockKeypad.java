@@ -11,12 +11,13 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -38,6 +39,10 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	private IIcon keypadIconFrontActive;
 	@SideOnly(Side.CLIENT)
 	private IIcon keypadIconDisguised;
+	
+	public boolean isOpaqueCube() {
+		return false;
+	}
 
 	/**
 	 * Called when the block is placed in the world.
@@ -116,21 +121,10 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		}
 	}
 	
-	public ItemStack getDisplayStack(World world, int x, int y, int z) {
-		TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
-		
-		if(tileEntity.hasModule(EnumCustomModules.DISGUISE)) {
-			return !tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty() ? new ItemStack(tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).get(0)) : new ItemStack(Blocks.bookshelf);
-		}
-		
-		return null;
-	}
-	
-	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
-        TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
-		
-		return !tileEntity.hasModule(EnumCustomModules.DISGUISE);
-	}
+	@SideOnly(Side.CLIENT)
+    public Item getItem(World worldIn, int x, int y, int z) {
+    	return null;
+    }
 	
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2){
@@ -148,8 +142,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		
         boolean isDisguised = tileEntity.hasModule(EnumCustomModules.DISGUISE);
 
-        if(isDisguised) {
-            return !tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty() ? tileEntity.getBlockAddonsFromModule(EnumCustomModules.DISGUISE).get(0).getIcon(side, meta) : this.keypadIconDisguised;
+        if(isDisguised && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {
+            ItemStack stack = tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).get(0);
+            Block disguisedAs = Block.getBlockFromItem(stack.getItem());
+            
+        	return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
 		}
 
 		if(meta > 6 && meta < 11) {
@@ -174,6 +171,22 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	 */
 	public TileEntity createNewTileEntity(World par1World, int par2){
 		return new TileEntityKeypad();
+	}
+	
+	public ItemStack getDisplayStack(World world, int x, int y, int z) {
+		TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
+		
+		if(tileEntity.hasModule(EnumCustomModules.DISGUISE) && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {           
+            return tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).get(0);
+		}
+		
+		return null;
+	}
+	
+	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
+        TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
+		
+		return !tileEntity.hasModule(EnumCustomModules.DISGUISE);
 	}
 
 }

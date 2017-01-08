@@ -481,6 +481,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return null;
 	}
 	
+	public ArrayList<ItemStack> getAddonsFromModule(EnumCustomModules module) {
+		for(int i = 0; i < this.itemStacks.length; i++){
+			if(this.itemStacks[i] != null && this.itemStacks[i].getItem() instanceof ItemModule && ((ItemModule) this.itemStacks[i].getItem()).getModule() == module){
+				return ((ItemModule) this.itemStacks[i].getItem()).getAddons(this.itemStacks[i].getTagCompound());
+			}
+		}
+		
+		return null;
+	}
+	
 	public int getNumberOfCustomizableOptions(){
 		return this.acceptedModules().length;
 	}

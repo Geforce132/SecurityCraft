@@ -180,6 +180,25 @@ public class ItemModule extends Item{
 		return list;
 	}
 	
+	public ArrayList<ItemStack> getAddons(NBTTagCompound tag){
+		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+		
+		if(tag == null) return list;
+		
+		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+
+		for(int i = 0; i < items.tagCount(); i++) {
+			NBTTagCompound item = items.getCompoundTagAt(i);
+			int slot = item.getInteger("Slot");
+
+			if(slot < numberOfBlockAddons) {
+		        list.add(ItemStack.loadItemStackFromNBT(item));				
+			}
+		}
+		
+		return list;
+	}
+
 	public boolean canBeCustomized(){
 		return canBeCustomized;
 	}

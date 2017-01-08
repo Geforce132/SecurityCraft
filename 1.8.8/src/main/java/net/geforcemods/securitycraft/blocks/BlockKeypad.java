@@ -19,10 +19,12 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,6 +38,15 @@ public class BlockKeypad extends BlockContainer {
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
 	}
+	
+	public boolean isOpaqueCube() {
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer() {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 	
 	public int getRenderType(){
 		return 3;
@@ -166,24 +177,54 @@ public class BlockKeypad extends BlockContainer {
     }
     
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
+        IBlockState disguisedState = getDisguisedBlockState(world, pos);
+    	
+        return disguisedState != null ? disguisedState : state;
+    }
+    
+    public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
+    	if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
+        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
+            
+        	ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+            
+        	if(module != null && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty()) {
+                ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTagCompound()).get(0);
+                Block block = Block.getBlockFromItem(disguisedStack.getItem());
+                boolean hasMeta = disguisedStack.getHasSubtypes();
+                
+                IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+                
+                if (block != this) {
+                    return block.getActualState(disguisedModel, world, pos);
+                }
+            }     	
+        }
+        
+        return null;
+    }
+    
+    public Block getDisguisedBlock(IBlockAccess world, BlockPos pos) {
+    	if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
         	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
             
         	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
             
         	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
                 Block block = ((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).get(0);
-                IBlockState disguisedModel = block.getStateFromMeta(stack.getItemDamage());
                 
                 if (block != this) {
-                    return block.getActualState(disguisedModel, world, pos);
+                    return block;
                 }
-            }
-        	
-            return state;
+            }      	
         }
         
-        return state;
+        return null;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World worldIn, BlockPos pos) {
+    	return null;
     }
 
     protected BlockState createBlockState()
@@ -199,31 +240,13 @@ public class BlockKeypad extends BlockContainer {
     }
     
     public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypad) {
-        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-            
-        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
-            
-        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
-                return new ItemStack(((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).get(0));
-            }
-        }
+		Block block = getDisguisedBlock(world, pos);
 		
-        return null;
+		return block != null ? new ItemStack(block) : new ItemStack(this);	
 	}
 
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypad) {
-        	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-            
-        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
-            
-        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
-                return false;
-            }
-        }
-		
-		return true;
+		return !(getDisguisedBlock(world, pos) != null);
 	}
 
 }

@@ -11,6 +11,7 @@
 - New: Scanner Door (Acts like a Retinal Scanner)
 - New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce your blocks
 - New: Option to disable the Portable Radar using the Universal Block Modifier
+- New: Keypads can now be disguised as other blocks by inserting a Disguise Module into it
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
