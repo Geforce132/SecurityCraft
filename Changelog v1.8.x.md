@@ -12,6 +12,7 @@
 - New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce stacks of blocks
 - New: Option to disable the Portable Radar using the Universal Block Modifier
 - New: Keypads can now be disguised as other blocks by inserting a Disguise Module into it
+- New: Buttons at the beginning and end of the SecuritCraft Manual for easier navigation
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused
@@ -32,6 +33,7 @@
 - Fix: Cage Trap can be activated by its owner
 - Fix: Protecto attacks whitelisted players
 - Fix: The Portable Radar sends a message when its owner is in its radius
+- Fix: Translations don't work in the SC Manual under certain circumstances
 - Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
 - Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
 

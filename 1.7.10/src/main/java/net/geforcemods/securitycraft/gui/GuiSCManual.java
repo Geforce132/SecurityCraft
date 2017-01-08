@@ -69,7 +69,6 @@ public class GuiSCManual extends GuiScreen {
 		
 		if(update)
 		{
-			updateButtons();
 			updateRecipeAndIcons();
 			update = false;
 		}
@@ -86,7 +85,7 @@ public class GuiSCManual extends GuiScreen {
 	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 	    
 	    if(this.currentPage > -1){
-	    	this.fontRendererObj.drawString(mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName(), k + 39, 27, 0, false);	
+	    	this.fontRendererObj.drawString(StatCollector.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);	
 	    	this.fontRendererObj.drawSplitString(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo(), k + 18, 45, 225, 0);	
 	    }else{
 	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.1"), k + 39, 27, 0, false);	
@@ -156,8 +155,6 @@ public class GuiSCManual extends GuiScreen {
 	    		}
 	    	}
 	    }
-	    
-	    this.updateButtons();
 	}
 	
 	public void onGuiClosed(){
@@ -168,27 +165,41 @@ public class GuiSCManual extends GuiScreen {
 	protected void keyTyped(char par1, int par2){
 		super.keyTyped(par1, par2);
 		
-		if(par2 == Keyboard.KEY_LEFT && (this.currentPage - 1) > -2){
-			this.currentPage--;
+		if(par2 == Keyboard.KEY_LEFT){
+    		this.currentPage--;
+    		
+    		if(currentPage < -1)
+    			currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
+    		
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
-		}else if(par2 == Keyboard.KEY_RIGHT && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
+		}else if(par2 == Keyboard.KEY_RIGHT){
 			this.currentPage++;
+    		
+    		if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
+    			currentPage = -1;
+    		
 			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
 		}
 	}
 	
     protected void actionPerformed(GuiButton par1GuiButton){
-    	if(par1GuiButton.id == 1 && (this.currentPage + 1) < mod_SecurityCraft.instance.manualPages.size()){
+    	if(par1GuiButton.id == 1){
     		this.currentPage++;
+    		
+    		if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
+    			currentPage = -1;
+    		
     		this.updateRecipeAndIcons();
-    	}else if(par1GuiButton.id == 2 && (this.currentPage - 1) > -2){
+    	}else if(par1GuiButton.id == 2){
     		this.currentPage--;
+    		
+    		if(currentPage < -1)
+    			currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
+    		
     		this.updateRecipeAndIcons();
     	}
-    	    	
-    	this.updateButtons();
     }
     
     private void updateRecipeAndIcons(){
@@ -285,17 +296,6 @@ public class GuiSCManual extends GuiScreen {
     	return array;
     }
     
-    private void updateButtons(){
-    	if(this.currentPage == -1){
-    		((NextPageButton) this.buttonList.get(1)).visible = false;
-    	}else if(this.currentPage == mod_SecurityCraft.instance.manualPages.size() - 1){
-    		((NextPageButton) this.buttonList.get(0)).visible = false;
-    	}else{
-    		((NextPageButton) this.buttonList.get(0)).visible = true;
-    		((NextPageButton) this.buttonList.get(1)).visible = true;
-    	}
-    }
-
 	@SideOnly(Side.CLIENT)
     static class NextPageButton extends GuiButton {
 		private final boolean field_146151_o;

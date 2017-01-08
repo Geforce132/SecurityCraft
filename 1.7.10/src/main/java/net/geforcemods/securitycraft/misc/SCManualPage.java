@@ -6,20 +6,17 @@ import net.minecraft.item.ItemStack;
 public class SCManualPage {
 	
 	private Item item;
-	private String itemName;
 	private String helpInfo;
 	private ItemStack[] customRecipe;
 	
-	public SCManualPage(Item item, String itemName, String helpInfo){
+	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
-		this.itemName = itemName;
 		this.helpInfo = helpInfo;
 		this.customRecipe = null;
 	}
 	
-	public SCManualPage(Item item, String itemName, String helpInfo, ItemStack[] customRecipe){
+	public SCManualPage(Item item, String helpInfo, ItemStack[] customRecipe){
 		this.item = item;
-		this.itemName = itemName;
 		this.helpInfo = helpInfo;
 		this.customRecipe = customRecipe;
 	}
@@ -29,9 +26,9 @@ public class SCManualPage {
 	}
 
 	public String getItemName() {
-		return itemName;
+		return item.getUnlocalizedName().substring(5).split("\\.")[0];
 	}
-
+	
 	public String getHelpInfo() {
 		return helpInfo;
 	}
