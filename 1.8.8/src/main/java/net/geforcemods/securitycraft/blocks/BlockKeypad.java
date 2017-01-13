@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -19,6 +20,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer {
+public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -46,6 +48,15 @@ public class BlockKeypad extends BlockContainer {
 	@SideOnly(Side.CLIENT)
     public EnumWorldBlockLayer getBlockLayer() {
         return EnumWorldBlockLayer.CUTOUT;
+    }
+	
+	@SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        if(worldIn.getBlockState(pos).getBlock() != Blocks.air && (worldIn.getBlockState(pos).getBlock().isFullCube() || !worldIn.getBlockState(pos).getBlock().isOpaqueCube())) {
+        	return false;
+        }
+
+        return true;
     }
 	
 	public int getRenderType(){
@@ -160,6 +171,8 @@ public class BlockKeypad extends BlockContainer {
 
     public IBlockState getStateFromMeta(int meta)
     {
+		if(meta == 15) return this.getDefaultState();
+
         if(meta <= 5){
         	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
         }else{
@@ -169,10 +182,12 @@ public class BlockKeypad extends BlockContainer {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(state.getValue(POWERED).booleanValue()){
-    		return (state.getValue(FACING).getIndex() + 6);
+    	if(state.getProperties().containsKey(POWERED) && ((Boolean) state.getValue(POWERED)).booleanValue()){
+    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
     	}else{
-    		return state.getValue(FACING).getIndex();
+    		if(!state.getProperties().containsKey(FACING)) return 15;
+    		
+    		return ((EnumFacing) state.getValue(FACING)).getIndex();
     	}
     }
     
@@ -204,17 +219,17 @@ public class BlockKeypad extends BlockContainer {
         return null;
     }
     
-    public Block getDisguisedBlock(IBlockAccess world, BlockPos pos) {
+    public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
     	if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
         	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
             
         	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
             
         	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
-                Block block = ((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).get(0);
+                ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTagCompound()).get(0);
                 
-                if (block != this) {
-                    return block;
+                if(Block.getBlockFromItem(disguisedStack.getItem()) != this) {
+                    return disguisedStack;
                 }
             }      	
         }
@@ -240,13 +255,13 @@ public class BlockKeypad extends BlockContainer {
     }
     
     public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		Block block = getDisguisedBlock(world, pos);
+		ItemStack stack = getDisguisedStack(world, pos);
 		
-		return block != null ? new ItemStack(block) : new ItemStack(this);	
+		return stack != null ? stack : new ItemStack(this);	
 	}
 
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return !(getDisguisedBlock(world, pos) != null);
+		return !(getDisguisedStack(world, pos) != null);
 	}
 
 }
