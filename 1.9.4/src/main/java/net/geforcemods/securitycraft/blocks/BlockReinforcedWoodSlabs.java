@@ -6,10 +6,11 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,6 +21,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	
 	public BlockReinforcedWoodSlabs(boolean isDouble){		
 		this.isDouble = isDouble;
+		setSoundType(SoundType.WOOD);
 		
 		if(this.isDouble()){
 			this.setCreativeTab(null);
@@ -48,7 +50,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 		return isDouble;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 

@@ -23,7 +23,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	    		return false;
 	    	}
 	    	
-	    	EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ);
+	    	EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ, true);
 	    	worldObj.addWeatherEffect(lightning);
 	    	
 	    	BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
@@ -59,5 +59,4 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public Option<?>[] customOptions() {
 		return null;
 	}
-
 }

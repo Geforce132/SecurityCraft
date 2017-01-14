@@ -9,8 +9,8 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
@@ -27,7 +27,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			{
 				if(!getOwner().isOwner((EntityPlayer) entity))
 				{
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 					return;
 				}
 				
@@ -35,7 +35,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
 				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
                 worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
 			}
 		}
 	}

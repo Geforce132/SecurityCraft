@@ -7,11 +7,13 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +24,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	{
 		super(materialIn);
 		this.isBlockContainer = true;
+		setSoundType(SoundType.METAL);
 	}
 
 	/**
@@ -52,7 +55,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 				flag1 = true;
 			}
 
-			if(!World.doesBlockHaveSolidTopSurface(worldIn, pos.down()))
+			if(!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
 			{
 				worldIn.setBlockToAir(pos);
 				flag1 = true;
@@ -75,13 +78,14 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		worldIn.removeTileEntity(pos);
 	}
 
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+	@Override
+	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
 	{
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+		super.eventReceived(state, worldIn, pos, id, param);
 
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -95,7 +99,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.scannerDoorItem;
 	}
 
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createTileEntity(World var1, int var2)
 	{
 		return new TileEntityScannerDoor().activatedByView();
 	}

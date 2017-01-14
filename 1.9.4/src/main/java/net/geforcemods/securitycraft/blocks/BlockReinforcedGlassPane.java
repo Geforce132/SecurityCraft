@@ -6,11 +6,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,6 +22,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	public BlockReinforcedGlassPane(Material par1Material, boolean par2) {
 		super(par1Material, par2);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 26);
+		setSoundType(SoundType.GLASS);
 	}
 
     public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state){
@@ -48,7 +50,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
         return Item.getItemFromBlock(this);
     }
 
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 	

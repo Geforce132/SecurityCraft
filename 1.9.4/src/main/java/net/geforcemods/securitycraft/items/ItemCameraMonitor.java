@@ -17,10 +17,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,26 +31,26 @@ public class ItemCameraMonitor extends Item {
 		if(!par3World.isRemote){
 			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.securityCamera){
 				if(!((IOwnable) par3World.getTileEntity(pos)).getOwner().isOwner(par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.cannotView"), TextFormatting.RED);
 					return true;
 				}
 
-				if(par2EntityPlayer.getCurrentEquippedItem().getTagCompound() == null){
-					par2EntityPlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());
+				if(par2EntityPlayer.inventory.getCurrentItem().getTagCompound() == null){
+					par2EntityPlayer.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 				}
 
 				CameraView view = new CameraView(pos, par2EntityPlayer.dimension);
 				
-				if(isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), view)){
-					par2EntityPlayer.getCurrentEquippedItem().getTagCompound().removeTag(getTagNameFromPosition(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.RED);
+				if(isCameraAdded(par2EntityPlayer.inventory.getCurrentItem().getTagCompound(), view)){
+					par2EntityPlayer.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(par2EntityPlayer.inventory.getCurrentItem().getTagCompound(), view));
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return true;
 				}
 
 				for(int i = 1; i <= 30; i++){
-					if (!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
-						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.GREEN);
+					if (!par2EntityPlayer.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
+						par2EntityPlayer.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 				}
@@ -60,10 +60,10 @@ public class ItemCameraMonitor extends Item {
 				return true;
 			}
 		}else if(par3World.isRemote && BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera){
-			if(par2EntityPlayer.ridingEntity != null && par2EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return true; 
+			if(par2EntityPlayer.getRidingEntity() != null && par2EntityPlayer.getRidingEntity() instanceof EntitySecurityCamera) return true; 
 			
 			if(par1ItemStack.getTagCompound() == null || par1ItemStack.getTagCompound().hasNoTags()) {
-				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return true;
 			}
 
@@ -77,10 +77,10 @@ public class ItemCameraMonitor extends Item {
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) {
-			if(par3EntityPlayer.ridingEntity != null && par3EntityPlayer.ridingEntity instanceof EntitySecurityCamera) return par1ItemStack; 
+			if(par3EntityPlayer.getRidingEntity() != null && par3EntityPlayer.getRidingEntity() instanceof EntitySecurityCamera) return par1ItemStack; 
 			
 			if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
 			    return par1ItemStack;
 			}
 
@@ -96,7 +96,7 @@ public class ItemCameraMonitor extends Item {
 			return;
 		}
 
-		par3List.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
+		par3List.add(I18n.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
 	}
 
 	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {

@@ -19,11 +19,13 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	
 	/**
      * Writes a tile entity to NBT.
+	 * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("passLV", this.passLV);
         par1NBTTagCompound.setBoolean("requiresExactKeycard", this.requiresExactKeycard);
+        return par1NBTTagCompound;
     }
 
     /**

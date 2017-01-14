@@ -18,7 +18,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityIMS extends CustomizableSCTE {
 	
@@ -52,7 +52,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		if(bombsRemaining > 0){
 			double d0 = mod_SecurityCraft.configHandler.imsRange;
 			
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
+			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
 	        List<?> list1 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
 	        List<?> list2 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
 	        Iterator<?> iterator1 = list1.iterator();
@@ -163,7 +163,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		int height;
 		
 		for(height = 1; height <= 9; height++){
-			if(BlockUtils.getBlock(getWorld(), getPos().up(height)) == null || BlockUtils.getBlock(getWorld(), getPos().up(height)) == Blocks.air){
+			if(BlockUtils.getBlock(getWorld(), getPos().up(height)) == null || BlockUtils.getBlock(getWorld(), getPos().up(height)) == Blocks.AIR){
 				continue;
 			}else{
 				break;
@@ -175,13 +175,15 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	/**
      * Writes a tile entity to NBT.
+	 * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
         par1NBTTagCompound.setInteger("targetingOption", targetingOption.modeIndex);
         par1NBTTagCompound.setBoolean("updateBombCount", updateBombCount);
+        return par1NBTTagCompound;
     }
 
     /**

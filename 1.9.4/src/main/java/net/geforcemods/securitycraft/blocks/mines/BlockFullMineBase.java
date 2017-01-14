@@ -5,14 +5,15 @@ import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -22,7 +23,14 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	
 	public BlockFullMineBase(Material par1Material, Block disguisedBlock) {
 		super(par1Material);
-		 blockDisguisedAs = disguisedBlock; 
+		 blockDisguisedAs = disguisedBlock;
+		 
+		 if(par1Material == Material.SAND)
+			 setSoundType(SoundType.SAND);
+		 else if(par1Material == Material.GROUND)
+			 setSoundType(SoundType.GROUND);
+		 else
+			 setSoundType(SoundType.STONE);
 	}
 
 	public int getRenderType(){
@@ -91,7 +99,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		return false;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 

@@ -9,16 +9,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -68,15 +68,15 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn, pos.down(), EnumFacing.UP);
+        return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn.getBlockState(pos.down()), worldIn, pos.down(), EnumFacing.UP);
     }
     
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote){
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters){
+			if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
 				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
-			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
+			}else if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
 				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
@@ -84,15 +84,16 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		
 		return false;
 	}
-    
-	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+	
+    @Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
     	if (!world.isRemote && !((Boolean) world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
         {
             BlockUtils.destroyBlock(world, pos, false);
             world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
         }
     	
-    	return super.removedByPlayer(world, pos, player, willHarvest);
+    	return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
     
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
@@ -128,26 +129,18 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		}
 	}
 	
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
-    {
-        if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
-        {
-    		this.setBlockBounds(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-        }
-        else if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-        {
-    		this.setBlockBounds(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-        }
-        else if ((EnumFacing) par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
-        {
-    		this.setBlockBounds(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
-        }
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+    		return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
+        else if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+        	return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
+        else if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+        	return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
         else
-        {
-    		this.setBlockBounds(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
-        }
-        
-    } 
+        	return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
+	}
 	
 	@SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
@@ -173,9 +166,9 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     	}
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, DEACTIVATED});
+        return new BlockStateContainer(this, new IProperty[] {FACING, DEACTIVATED});
     }
     
     public boolean isActive(World world, BlockPos pos) {
@@ -186,7 +179,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		return true;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
 	}
 

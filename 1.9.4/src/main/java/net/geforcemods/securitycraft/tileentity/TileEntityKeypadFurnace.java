@@ -27,13 +27,13 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -166,7 +166,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public void writeToNBT(NBTTagCompound compound)
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setShort("BurnTime", (short)this.furnaceBurnTime);
@@ -195,6 +195,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         {
             compound.setString("CustomName", this.furnaceCustomName);
         }
+        
+        return compound;
     }
 
     public int getInventoryStackLimit()
@@ -352,9 +354,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
                 this.furnaceItemStacks[2].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
             }
 
-            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.sponge) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.bucket)
+            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
             {
-                this.furnaceItemStacks[1] = new ItemStack(Items.water_bucket);
+                this.furnaceItemStacks[1] = new ItemStack(Items.WATER_BUCKET);
             }
 
             --this.furnaceItemStacks[0].stackSize;
@@ -376,21 +378,21 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         {
             Item item = p_145952_0_.getItem();
 
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
+            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
             {
                 Block block = Block.getBlockFromItem(item);
 
-                if (block == Blocks.wooden_slab)
+                if (block == Blocks.WOODEN_SLAB)
                 {
                     return 150;
                 }
 
-                if (block.getMaterial() == Material.wood)
+                if (block.getMaterial(block.getDefaultState()) == Material.WOOD)
                 {
                     return 300;
                 }
 
-                if (block == Blocks.coal_block)
+                if (block == Blocks.COAL_BLOCK)
                 {
                     return 16000;
                 }
@@ -399,11 +401,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
             if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
             if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
             if (item instanceof ItemHoe && ((ItemHoe)item).getMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
+            if (item == Items.STICK) return 100;
+            if (item == Items.COAL) return 1600;
+            if (item == Items.LAVA_BUCKET) return 20000;
+            if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
+            if (item == Items.BLAZE_ROD) return 2400;
             return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(p_145952_0_);
         }
     }
@@ -443,7 +445,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         {
             Item item = stack.getItem();
 
-            if (item != Items.water_bucket && item != Items.bucket)
+            if (item != Items.WATER_BUCKET && item != Items.BUCKET)
             {
                 return false;
             }
@@ -510,8 +512,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-	public IChatComponent getDisplayName() {
-		return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]);
+	public ITextComponent getDisplayName() {
+		return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
 	}
 	
 	public void activate(EntityPlayer player) {
@@ -531,7 +533,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypadFurnace.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {	
 			activate(player);

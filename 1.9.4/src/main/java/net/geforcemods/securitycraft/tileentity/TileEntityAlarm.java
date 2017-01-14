@@ -36,12 +36,14 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 	/**
      * Writes a tile entity to NBT.
+	 * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("cooldown", this.cooldown);
         par1NBTTagCompound.setBoolean("isPowered", this.isPowered);
+        return par1NBTTagCompound;
     }
 
     /**

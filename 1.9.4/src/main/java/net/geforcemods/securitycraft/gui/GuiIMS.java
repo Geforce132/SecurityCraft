@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiIMS extends GuiContainer{
 	
@@ -29,7 +29,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 		
-		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? StatCollector.translateToLocal("gui.ims.hostileAndPlayers") : StatCollector.translateToLocal("tooltip.module.players")));
+		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? I18n.translateToLocal("gui.ims.hostileAndPlayers") : I18n.translateToLocal("tooltip.module.players")));
 	}
 	
     public void drawScreen(int par1, int par2, float par3){
@@ -40,8 +40,8 @@ public class GuiIMS extends GuiContainer{
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("tile.ims.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.ims.target"), this.xSize / 2 - 78, 30, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("tile.ims.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.ims.target"), this.xSize / 2 - 78, 30, 4210752);
     }
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -71,9 +71,9 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS){
-			targetButton.displayString = StatCollector.translateToLocal("tooltip.module.players");
+			targetButton.displayString = I18n.translateToLocal("tooltip.module.players");
 		}else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS){
-			targetButton.displayString = StatCollector.translateToLocal("gui.ims.hostileAndPlayers");
+			targetButton.displayString = I18n.translateToLocal("gui.ims.hostileAndPlayers");
 		}
 	}	
 

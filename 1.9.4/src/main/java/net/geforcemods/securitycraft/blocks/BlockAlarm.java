@@ -11,13 +11,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,16 +60,16 @@ public class BlockAlarm extends BlockOwnable {
      * Check whether this Block can be placed on the given side
      */
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-        return side == EnumFacing.UP && World.doesBlockHaveSolidTopSurface(worldIn, pos.down()) ? true : worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+        return side == EnumFacing.UP && worldIn.isSideSolid(pos.down(), EnumFacing.UP) ? true : worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
     }
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos){
-        return worldIn.isSideSolid(pos.west(),  EnumFacing.EAST ) ||
-               worldIn.isSideSolid(pos.east(),  EnumFacing.WEST ) ||
-               worldIn.isSideSolid(pos.north(), EnumFacing.SOUTH) ||
-               worldIn.isSideSolid(pos.south(), EnumFacing.NORTH) ||
-               worldIn.isSideSolid(pos.down(),  EnumFacing.UP   ) ||
-               worldIn.isSideSolid(pos.up(),    EnumFacing.DOWN );
+        return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
+               worldIn.isSideSolid(pos.east(),	EnumFacing.WEST ) ||
+               worldIn.isSideSolid(pos.north(),	EnumFacing.SOUTH) ||
+               worldIn.isSideSolid(pos.south(),	EnumFacing.NORTH) ||
+               worldIn.isSideSolid(pos.down(),	EnumFacing.UP   ) ||
+               worldIn.isSideSolid(pos.up(),	EnumFacing.DOWN );
     }
     
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
@@ -117,36 +118,34 @@ public class BlockAlarm extends BlockOwnable {
         }
     }
     
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos){
-        float f = 0.1875F;
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+    	float f = 0.1875F;
 		float ySideMin = 0.5F - f; //bottom of the alarm when placed on a block side
 		float ySideMax = 0.5F + f; //top of the alarm when placed on a block side
 		float hSideMin = 0.5F - f; //the left start for s/w and right start for n/e
 		float hSideMax = 0.5F + f; //the left start for n/e and right start for s/w
+        EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
         
-        EnumFacing enumfacing = (EnumFacing) worldIn.getBlockState(pos).getValue(FACING);
         switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]){
             case 1: //east
-    			this.setBlockBounds(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
-                break;
+    			return new AxisAlignedBB(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
             case 2: //west
-    			this.setBlockBounds(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
-                break;
+            	return new AxisAlignedBB(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
             case 3: //north
-    			this.setBlockBounds(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
-                break;
+            	return new AxisAlignedBB(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
             case 4: //south
-    			this.setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
-                break;
+            	return new AxisAlignedBB(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
             case 5: //up
                 f = 0.25F;
-    			this.setBlockBounds(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
-    			break;
+                return new AxisAlignedBB(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
             case 6: //down
                 f = 0.25F;
-    			this.setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-                break;
+                return new AxisAlignedBB(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         }
+        
+    	return super.getBoundingBox(state, source, pos);
     }
     
     private void playSoundAndUpdate(World par1World, BlockPos pos){
@@ -247,11 +246,11 @@ public class BlockAlarm extends BlockOwnable {
         return i;
     }
     
-    protected BlockState createBlockState(){
-        return new BlockState(this, new IProperty[] {FACING});
+    protected BlockStateContainer createBlockState(){
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityAlarm();
 	}
 

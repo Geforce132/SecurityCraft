@@ -14,7 +14,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcase extends GuiContainer {
 	
@@ -69,7 +69,7 @@ public class GuiBriefcase extends GuiContainer {
     }
     
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
     }
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -110,7 +110,7 @@ public class GuiBriefcase extends GuiContainer {
 				break;
 			case 8:
 				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, mod_SecurityCraft.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound();
+					NBTTagCompound nbt = Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 	
 					if(nbt.getString("passcode").matches(code)) {

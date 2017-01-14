@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,6 +19,7 @@ public class BlockFrame extends BlockOwnable {
 	
 	public BlockFrame(Material par1Material){
 		super(par1Material);
+		setSoundType(SoundType.STONE);
 	}
 	
     public boolean isNormalCube(){
@@ -47,8 +49,8 @@ public class BlockFrame extends BlockOwnable {
     	return ((EnumFacing) state.getValue(FACING)).getIndex();
     }
     
-    protected BlockState createBlockState(){
-        return new BlockState(this, new IProperty[] {FACING});
+    protected BlockStateContainer createBlockState(){
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     
 }

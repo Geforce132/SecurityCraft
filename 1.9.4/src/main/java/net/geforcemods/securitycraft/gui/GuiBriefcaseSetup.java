@@ -17,7 +17,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcaseSetup extends GuiContainer {
 
@@ -35,7 +35,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode")));
+		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode")));
 
 		this.keycodeTextbox = new GuiTextField(1, this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
 
@@ -61,7 +61,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
     }
     
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.briefcase.setupTitle")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.setupTitle")) / 2, 6, 4210752);
     }
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
@@ -98,7 +98,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
     private void updateButtonText() {
-    	this.saveAndContinueButton.displayString = !this.flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode");
+    	this.saveAndContinueButton.displayString = !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode");
     }
 
     protected void actionPerformed(GuiButton guibutton) {
@@ -111,12 +111,12 @@ public class GuiBriefcaseSetup extends GuiContainer {
     		}	
     		
     		if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, mod_SecurityCraft.briefcase)) {
-    			if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound() == null) {
-    				Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());
+    			if(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound() == null) {
+    				Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
     			}
     			
-    			Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
-	    		ClientUtils.syncItemNBT(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem());
+    			Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
+	    		ClientUtils.syncItemNBT(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem());
 	    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
     		}
     	}

@@ -25,5 +25,4 @@ public class ItemUtils {
 	public static ItemStack toItemStack(Item item, int meta) {
 		return new ItemStack(item, 1, meta);
 	}
-
 }

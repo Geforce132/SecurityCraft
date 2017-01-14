@@ -16,17 +16,16 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -36,7 +35,6 @@ public class BlockPortableRadar extends BlockContainer {
 	
 	public BlockPortableRadar(Material par2Material) {
 		super(par2Material);
-		this.setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);	
 	}
 	
 	/**
@@ -57,12 +55,18 @@ public class BlockPortableRadar extends BlockContainer {
     public int getRenderType(){
     	return 3;
     }
-     
+    
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+    	return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
+    }
+    
     public static void searchForPlayers(World par1World, BlockPos pos, IBlockState state){
         if(!par1World.isRemote){
             double d0 = (mod_SecurityCraft.configHandler.portableRadarSearchRadius);
         	
-            AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
+            AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
             List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
             Iterator<?> iterator = list.iterator();
             EntityPlayer entityplayer;                 
@@ -79,7 +83,7 @@ public class BlockPortableRadar extends BlockContainer {
             }
 
             while (iterator.hasNext()){      
-            	EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName());            
+            	EntityPlayerMP entityplayermp = par1World.getMinecraftServer().getPlayerList().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName());            
                 
                 entityplayer = (EntityPlayer)iterator.next();
                 
@@ -88,7 +92,7 @@ public class BlockPortableRadar extends BlockContainer {
                 if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName())){
                     if(!((TileEntityPortableRadar) par1World.getTileEntity(pos)).shouldSendMessage(entityplayer)) { continue; }
                 	
-                	PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((INameable)par1World.getTileEntity(pos)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), EnumChatFormatting.BLUE);               
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, I18n.translateToLocal("tile.portableRadar.name"), ((INameable)par1World.getTileEntity(pos)).hasCustomName() ? (I18n.translateToLocal("messages.portableRadar.withName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + ((INameable)par1World.getTileEntity(pos)).getCustomName() + TextFormatting.RESET)) : (I18n.translateToLocal("messages.portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);               
                 	((TileEntityPortableRadar) par1World.getTileEntity(pos)).setSentMessage();
                 }   
                 
@@ -132,12 +136,12 @@ public class BlockPortableRadar extends BlockContainer {
         return ((Boolean) state.getValue(POWERED)).booleanValue() ? 1 : 0;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {POWERED});
+        return new BlockStateContainer(this, new IProperty[] {POWERED});
     }
 
-	public TileEntity createNewTileEntity(World world, int par2) {
+	public TileEntity createTileEntity(World world, int par2) {
 		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay).nameable();
 	}
 

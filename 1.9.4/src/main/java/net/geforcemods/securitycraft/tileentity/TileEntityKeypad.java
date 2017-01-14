@@ -14,8 +14,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 		
@@ -50,14 +50,17 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
     
     /**
      * Writes a tile entity to NBT.
+     * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
         if(this.passcode != null && !this.passcode.isEmpty()){
         	par1NBTTagCompound.setString("passcode", this.passcode);
         }
+        
+        return par1NBTTagCompound;
     }
 
     /**
@@ -94,7 +97,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypad.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypad.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {
 			if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockKeypad.POWERED)) {

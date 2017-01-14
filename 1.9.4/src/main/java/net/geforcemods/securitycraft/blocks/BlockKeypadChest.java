@@ -2,21 +2,23 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockKeypadChest extends BlockChest {
 
-	public BlockKeypadChest(int par1){
-		super(par1);	
+	public BlockKeypadChest(){
+		super(Type.BASIC);
+		setSoundType(SoundType.WOOD);
 	}
 	
 	/**
@@ -54,14 +56,11 @@ public class BlockKeypadChest extends BlockChest {
 			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.north())).getPassword());
 		}
     }
-    
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){
-        super.onNeighborBlockChange(par1World, pos, state, par5Block);
-        TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)par1World.getTileEntity(pos);
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+        super.onNeighborChange(world, pos, neighbor);
+        TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)world.getTileEntity(pos);
 
         if (tileentitychest != null)
         {
@@ -73,7 +72,7 @@ public class BlockKeypadChest extends BlockChest {
 	/**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2)
+    public TileEntity createTileEntity(World par1World, int par2)
     {
         return new TileEntityKeypadChest();
     }

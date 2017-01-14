@@ -13,7 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,11 +42,11 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
     
     public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
     {
-        if (materialIn == Material.water)
+        if (materialIn == Material.WATER)
         {
             return (BlockDynamicLiquid) mod_SecurityCraft.bogusWaterFlowing;
         }
-        else if (materialIn == Material.lava)
+        else if (materialIn == Material.LAVA)
         {
             return (BlockDynamicLiquid) mod_SecurityCraft.bogusLavaFlowing;
         }
@@ -75,7 +75,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 		return null;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 }

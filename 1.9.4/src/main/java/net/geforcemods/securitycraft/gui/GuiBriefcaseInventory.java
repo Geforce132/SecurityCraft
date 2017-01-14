@@ -8,18 +8,18 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcaseInventory extends GuiContainer {
 
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/briefcaseInventory.png");
 
 	public GuiBriefcaseInventory(EntityPlayer player, InventoryPlayer inventory) {
-		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.getCurrentEquippedItem())));
+		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
 	}
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("item.briefcase.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.briefcase.name")) / 2, 6, 4210752);
+		this.fontRendererObj.drawString(I18n.translateToLocal("item.briefcase.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.briefcase.name")) / 2, 6, 4210752);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

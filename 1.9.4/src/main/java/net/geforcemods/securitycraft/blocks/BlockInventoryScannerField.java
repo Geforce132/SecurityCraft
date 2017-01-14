@@ -14,7 +14,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -23,10 +23,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -47,9 +47,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     }
 	
 	@SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.TRANSLUCENT;
+        return BlockRenderLayer.TRANSLUCENT;
     }
 	
 	/**
@@ -248,19 +248,19 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     
     private static void checkAndUpdateTEAppropriately(World par1World, BlockPos pos, TileEntityInventoryScanner par5TileEntityIS) {
     	mod_SecurityCraft.log("Updating te");
-		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
+		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.west(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
+		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.east(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
+		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.north(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == Blocks.air && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
+		}else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, pos.south(2), BlockUtils.getBlock(par1World, pos), 1, true);
@@ -268,19 +268,14 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		}
 	}
     
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
-        {
-    		this.setBlockBounds(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
-        }
-        else if (par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-        {
-    		this.setBlockBounds(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
-        }
+    	if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
+    		return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
+        else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+        	return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
+    	return super.getBoundingBox(state, source, pos);
     }
     
     public IBlockState getStateFromMeta(int meta)
@@ -293,9 +288,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return ((EnumFacing) state.getValue(FACING)).getIndex();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING});
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     
     @SideOnly(Side.CLIENT)
@@ -308,7 +303,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return null;
     }
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
    

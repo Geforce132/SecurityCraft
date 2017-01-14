@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityIMSBomb extends EntityFireball {
@@ -79,10 +79,10 @@ public class EntityIMSBomb extends EntityFireball {
 		}
 	}
 
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
+	protected void onImpact(RayTraceResult par1RayTraceResult){
 		if(!this.worldObj.isRemote){
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && BlockUtils.getBlock(worldObj, par1MovingObjectPosition.getBlockPos()) != mod_SecurityCraft.ims){
-				this.worldObj.createExplosion(this, par1MovingObjectPosition.getBlockPos().getX(), par1MovingObjectPosition.getBlockPos().getY() + 1D, par1MovingObjectPosition.getBlockPos().getZ(), 7F, true);
+			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(worldObj, par1RayTraceResult.getBlockPos()) != mod_SecurityCraft.ims){
+				this.worldObj.createExplosion(this, par1RayTraceResult.getBlockPos().getX(), par1RayTraceResult.getBlockPos().getY() + 1D, par1RayTraceResult.getBlockPos().getZ(), 7F, true);
 				this.setDead();
 			}
 		}

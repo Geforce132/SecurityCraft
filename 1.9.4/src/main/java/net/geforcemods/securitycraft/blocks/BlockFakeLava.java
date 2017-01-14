@@ -19,8 +19,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,11 +44,11 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
     public static BlockStaticLiquid getStaticBlock(Material materialIn)
     {
-        if (materialIn == Material.water)
+        if (materialIn == Material.WATER)
         {
             return mod_SecurityCraft.bogusWater;
         }
-        else if (materialIn == Material.lava)
+        else if (materialIn == Material.LAVA)
         {
             return mod_SecurityCraft.bogusLava;
         }
@@ -63,7 +63,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         int i = ((Integer)state.getValue(LEVEL)).intValue();
         byte b0 = 1;
 
-        if (this.blockMaterial == Material.lava && !worldIn.provider.doesWaterVaporize())
+        if (this.blockMaterial == Material.LAVA && !worldIn.provider.doesWaterVaporize())
         {
             b0 = 2;
         }
@@ -89,9 +89,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
                 l = -1;
             }
 
-            if (this.getLevel(worldIn, pos.up()) >= 0)
+            if (this.getDepth(worldIn.getBlockState(pos.up())) >= 0)
             {
-                i1 = this.getLevel(worldIn, pos.up());
+                i1 = this.getDepth(worldIn.getBlockState(pos.up()));
 
                 if (i1 >= 8)
                 {
@@ -103,21 +103,21 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
                 }
             }
 
-            if (this.adjacentSourceBlocks >= 2 && this.blockMaterial == Material.water)
+            if (this.adjacentSourceBlocks >= 2 && this.blockMaterial == Material.WATER)
             {
                 IBlockState iblockstate2 = worldIn.getBlockState(pos.down());
 
-                if (iblockstate2.getBlock().getMaterial().isSolid())
+                if (iblockstate2.getBlock().getMaterial(iblockstate2).isSolid())
                 {
                     l = 0;
                 }
-                else if (iblockstate2.getBlock().getMaterial() == this.blockMaterial && ((Integer)iblockstate2.getValue(LEVEL)).intValue() == 0)
+                else if (iblockstate2.getBlock().getMaterial(iblockstate2) == this.blockMaterial && ((Integer)iblockstate2.getValue(LEVEL)).intValue() == 0)
                 {
                     l = 0;
                 }
             }
 
-            if (this.blockMaterial == Material.lava && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
+            if (this.blockMaterial == Material.LAVA && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
             {
                 j *= 4;
             }
@@ -152,9 +152,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
         if (this.canFlowInto(worldIn, pos.down(), iblockstate1))
         {
-            if (this.blockMaterial == Material.lava && worldIn.getBlockState(pos.down()).getBlock().getMaterial() == Material.water)
+            if (this.blockMaterial == Material.LAVA && worldIn.getBlockState(pos.down()).getBlock().getMaterial(worldIn.getBlockState(pos.down())) == Material.WATER)
             {
-                worldIn.setBlockState(pos.down(), Blocks.stone.getDefaultState());
+                worldIn.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
                 this.triggerMixEffects(worldIn, pos.down());
                 return;
             }
@@ -197,9 +197,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
     {
         if (this.canFlowInto(worldIn, pos, state))
         {
-            if (state.getBlock() != Blocks.air)
+            if (state.getBlock() != Blocks.AIR)
             {
-                if (this.blockMaterial == Material.lava)
+                if (this.blockMaterial == Material.LAVA)
                 {
                     this.triggerMixEffects(worldIn, pos);
                 }
@@ -227,7 +227,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
                 BlockPos blockpos1 = pos.offset(enumfacing1);
                 IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-                if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+                if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
                 {
                     if (!this.isBlocked(worldIn, blockpos1.down(), iblockstate))
                     {
@@ -262,7 +262,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
             BlockPos blockpos1 = pos.offset(enumfacing);
             IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-            if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+            if (!this.isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != this.blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
             {
                 int j;
 
@@ -294,12 +294,12 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
     private boolean isBlocked(World worldIn, BlockPos pos, IBlockState state)
     {
         Block block = worldIn.getBlockState(pos).getBlock();
-        return !(block instanceof BlockDoor) && block != Blocks.standing_sign && block != Blocks.ladder && block != Blocks.reeds ? (block.getMaterial() == Material.portal ? true : block.getMaterial().blocksMovement()) : true;
+        return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (block.getMaterial(worldIn.getBlockState(pos)) == Material.PORTAL ? true : block.getMaterial(worldIn.getBlockState(pos)).blocksMovement()) : true;
     }
 
     protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
     {
-        int j = this.getLevel(worldIn, pos);
+        int j = this.getDepth(worldIn.getBlockState(pos));
 
         if (j < 0)
         {
@@ -323,8 +323,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
     private boolean canFlowInto(World worldIn, BlockPos pos, IBlockState state)
     {
-        Material material = state.getBlock().getMaterial();
-        return material != this.blockMaterial && material != Material.lava && !this.isBlocked(worldIn, pos, state);
+        Material material = state.getBlock().getMaterial(state);
+        return material != this.blockMaterial && material != Material.LAVA && !this.isBlocked(worldIn, pos, state);
     }
 
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
@@ -353,7 +353,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         return null;
     }
     
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 }

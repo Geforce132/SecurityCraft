@@ -7,7 +7,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiYesNoCallback;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 /**
  * Invisible "button" which allows you to add clickable links to your GUIs.
@@ -41,7 +41,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
             FontRenderer fontrenderer = mc.fontRendererObj;
             this.mouseDragged(mc, mouseX, mouseY);
 
-            this.drawCenteredString(fontrenderer, EnumChatFormatting.UNDERLINE + this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, textColor);
+            this.drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, textColor);
         }
     }
 	

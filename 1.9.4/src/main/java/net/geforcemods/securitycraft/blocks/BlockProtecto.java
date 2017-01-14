@@ -1,15 +1,16 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockProtecto extends BlockOwnable {
@@ -18,6 +19,7 @@ public class BlockProtecto extends BlockOwnable {
 
 	public BlockProtecto(Material par1) {
 		super(par1);
+		setSoundType(SoundType.METAL);
 	}
 	
 	public boolean isOpaqueCube(){
@@ -43,12 +45,12 @@ public class BlockProtecto extends BlockOwnable {
     	return ((Boolean) state.getValue(ACTIVATED)).booleanValue() == true ? 1 : 0;
     }
     
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {ACTIVATED});
+        return new BlockStateContainer(this, new IProperty[] {ACTIVATED});
     }
 	
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 	

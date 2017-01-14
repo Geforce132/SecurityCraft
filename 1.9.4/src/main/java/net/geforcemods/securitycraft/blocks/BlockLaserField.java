@@ -14,17 +14,17 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,8 +36,6 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	public BlockLaserField(Material material) {
 		super(material);
-		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
-
 	}
 	
 	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
@@ -46,9 +44,9 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     }
 	
 	@SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.TRANSLUCENT;
+        return BlockRenderLayer.TRANSLUCENT;
     }
 	
 	/**
@@ -83,7 +81,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     }
     
     public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-    	if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) entity, Potion.invisibility)){	
+    	if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) entity, Potion.getPotionFromResourceLocation("invisibility"))){	
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = BlockUtils.getBlock(world, pos.east(i));
 				if(id == mod_SecurityCraft.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.east(i), BlockLaserBlock.POWERED)){
@@ -268,32 +266,18 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     	}
     }
     
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, pos, state
-     */
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
+	@Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 1)
-        {
-    		this.setBlockBounds(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
-        }
-        else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 2)
-        {
-
-    		this.setBlockBounds(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
-        }
-        else if (((Integer) par1IBlockAccess.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 3)
-        {
-
-    		this.setBlockBounds(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
-        }
-        else
-        {
-    		this.setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
-        }
-        
-    } 
-    
+    	if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 1)
+    		return new AxisAlignedBB(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
+        else if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 2)
+        	return new AxisAlignedBB(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
+        else if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 3)
+        	return new AxisAlignedBB(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
+    	return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
+    }
+	
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(BOUNDTYPE, 1);
@@ -309,9 +293,9 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
         return ((Integer) state.getValue(BOUNDTYPE)).intValue();
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {BOUNDTYPE});
+        return new BlockStateContainer(this, new IProperty[] {BOUNDTYPE});
     }
     
     @SideOnly(Side.CLIENT)
@@ -324,7 +308,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
         return null;
     }
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 

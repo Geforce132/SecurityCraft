@@ -14,16 +14,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * Simple TileEntity that SecurityCraft uses to easily create blocks like
@@ -35,7 +35,7 @@ import net.minecraft.world.World;
  * 
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, INameable {
+public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -51,7 +51,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	
-	private Class<?> typeToAttack = Entity.class;
+	private Class<? extends Entity> typeToAttack = Entity.class;
 	
 	public void update() {
 		if(intersectsEntities){
@@ -95,10 +95,10 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	        	double eyeHeight = entity.getEyeHeight();
 	        	boolean isPlayer = (entity instanceof EntityPlayer);
 
-	        	Vec3 lookVec = new Vec3((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
+	        	Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
 	        	
-	        	MovingObjectPosition mop = getWorld().rayTraceBlocks(new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
-	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK){
+	        	RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
+	        	if(mop != null && mop.typeOfHit == Type.BLOCK){
 	        		if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ()){
 	        			if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
 	        			    entityViewed(entity);
@@ -192,7 +192,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	/**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
     	
@@ -204,6 +204,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
         par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
         par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
         par1NBTTagCompound.setString("customName", customName);
+        return par1NBTTagCompound;
     }
 
     /**
@@ -261,10 +262,10 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
     public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(pos, 1, tag);        
+    	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }        
     
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }
     
@@ -289,7 +290,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
     		ClientUtils.syncTileEntity(this);
     	}
     	else {
-	    	MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(getDescriptionPacket());
+	    	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getDescriptionPacket());
     	}
     }
     
@@ -348,7 +349,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
      * <p>
      * Calls {@link TileEntitySCTE}.attackEntity(Entity) when this TE's cooldown equals 0.
      */ 
-    public TileEntitySCTE attacks(Class<?> type, double range, int cooldown) {
+    public TileEntitySCTE attacks(Class<? extends Entity> type, double range, int cooldown) {
     	attacks = true;
     	typeToAttack = type;
     	attackRange = range;
@@ -359,7 +360,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
     /**
      * @return The class of the entity that this TileEntity should attack.
      */
-    public Class<?> entityTypeToAttack(){
+    public Class<? extends Entity> entityTypeToAttack(){
     	return typeToAttack;
     }
     

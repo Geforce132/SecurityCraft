@@ -9,8 +9,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemScannerDoor extends Item
@@ -55,8 +55,8 @@ public class ItemScannerDoor extends Item
 	{
 		BlockPos blockpos1 = pos.offset(facing.rotateY());
 		BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
-		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube() ? 1 : 0);
-		int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube() ? 1 : 0);
+		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
+		int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
 		boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
 		boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
 		boolean flag2 = false;

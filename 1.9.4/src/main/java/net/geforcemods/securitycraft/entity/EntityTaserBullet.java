@@ -6,8 +6,8 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityTaserBullet extends EntityThrowable {
@@ -48,24 +48,24 @@ public class EntityTaserBullet extends EntityThrowable {
 			setDead();
 	}
 	
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
+	protected void onImpact(RayTraceResult par1RayTraceResult)
 	{
 		if(!this.worldObj.isRemote)
 		{
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.ENTITY)
+			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
 			{
-				if(par1MovingObjectPosition.entityHit instanceof EntityPlayer)
+				if(par1RayTraceResult.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1MovingObjectPosition.entityHit).capabilities.isCreativeMode)
+					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode)
 						return;
 				}
 
-				if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
 				{
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).attackEntityFrom(DamageSource.generic, 1F);
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 500, 2));
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, 500, 2));
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 500, 2));
+					((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.generic, 1F);
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 500, 2));
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), 500, 2));
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 500, 2));
 					this.setDead();
 				}
 			}

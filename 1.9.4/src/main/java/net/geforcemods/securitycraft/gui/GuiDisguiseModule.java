@@ -8,16 +8,16 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiDisguiseModule extends GuiContainer {
 	
 	public GuiDisguiseModule(EntityPlayer player, InventoryPlayer inventory) {
-		super(new ContainerDisguiseModule(player, inventory, new ModuleInventory(player.getCurrentEquippedItem())));
+		super(new ContainerDisguiseModule(player, inventory, new ModuleInventory(player.inventory.getCurrentItem())));
 	}
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(StatCollector.translateToLocal("item.disguiseModule.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.disguiseModule.name")) / 2, 6, 4210752);
+		this.fontRendererObj.drawString(I18n.translateToLocal("item.disguiseModule.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.disguiseModule.name")) / 2, 6, 4210752);
 	}
 
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

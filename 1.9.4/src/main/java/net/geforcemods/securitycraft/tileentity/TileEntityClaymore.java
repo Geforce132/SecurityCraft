@@ -10,8 +10,8 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityClaymore extends TileEntitySCTE{
 
@@ -40,7 +40,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 			
 			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 			
 			if(dir == EnumFacing.NORTH){
 				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
@@ -73,15 +73,16 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	
 	/**
      * Writes a tile entity to NBT.
+	 * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("cooldown", cooldown);
         par1NBTTagCompound.setDouble("entityX", entityX);
         par1NBTTagCompound.setDouble("entityY", entityY);
         par1NBTTagCompound.setDouble("entityZ", entityZ);
-
+        return par1NBTTagCompound;
     }
 
     /**

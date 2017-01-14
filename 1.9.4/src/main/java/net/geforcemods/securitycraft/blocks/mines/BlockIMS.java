@@ -8,17 +8,20 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,7 +32,7 @@ public class BlockIMS extends BlockOwnable {
 
 	public BlockIMS(Material par1) {
 		super(par1);
-		this.setBlockBounds(0F, 0F, 0F, 1F, 0.45F, 1F);
+		setSoundType(SoundType.METAL);
 	}
 	
 	public boolean isOpaqueCube(){
@@ -44,6 +47,12 @@ public class BlockIMS extends BlockOwnable {
     	return 3;
     }
 
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+    	return new AxisAlignedBB(0F, 0F, 0F, 1F, 0.45F, 1F);
+    }
+    
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote){
 			if(((IOwnable) par1World.getTileEntity(pos)).getOwner().isOwner(par5EntityPlayer)){
@@ -105,12 +114,12 @@ public class BlockIMS extends BlockOwnable {
     	return (((Integer) state.getValue(MINES)).intValue());
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {MINES});
+        return new BlockStateContainer(this, new IProperty[] {MINES});
     }
 	
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityIMS();
 	}
 

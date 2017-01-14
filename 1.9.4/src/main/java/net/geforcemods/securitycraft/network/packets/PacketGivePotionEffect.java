@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -35,7 +36,7 @@ public class PacketGivePotionEffect implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
 
 	public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-		ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(packet.potionID, packet.duration, packet.amplifier, false, true));
+		ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true));
 		return null;
 	}
 	

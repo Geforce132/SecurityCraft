@@ -7,18 +7,19 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,6 +31,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	    
 	public BlockLaserBlock(Material par2Material) {
 		super(par2Material);
+		setSoundType(SoundType.METAL);
 	}
 	
 	public boolean isNormalCube(IBlockAccess world, BlockPos pos){
@@ -62,12 +64,12 @@ public class BlockLaserBlock extends BlockOwnable {
     public void setLaser(World par1World, BlockPos pos) {
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.east(i)).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.east(i)));
 				
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.east(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.east(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.east(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 					}
 				}
@@ -78,12 +80,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(new BlockPos(pos.west(i))).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.west(i)));
 
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.west(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.west(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.west(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 					}
 				}
@@ -94,12 +96,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.south(i)).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.south(i)));
 
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.south(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.south(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.south(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 					}
 				}
@@ -110,12 +112,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.north(i)).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.north(i)));
 
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.north(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.north(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.north(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 					}
 				}
@@ -126,12 +128,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.up(i)).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.up(i)));
 
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.up(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.up(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.up(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 					}
 				}
@@ -142,12 +144,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		
 		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = par1World.getBlockState(pos.down(i)).getBlock();
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock){ break; }
+			if(id != Blocks.AIR && id != mod_SecurityCraft.laserBlock){ break; }
 			if(id == mod_SecurityCraft.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(pos), (CustomizableSCTE) par1World.getTileEntity(pos.down(i)));
 
 				for(int j = 1; j < i; j++){
-					if(par1World.getBlockState(pos.down(j)).getBlock() == Blocks.air){
+					if(par1World.getBlockState(pos.down(j)).getBlock() == Blocks.AIR){
 						par1World.setBlockState(pos.down(j), mod_SecurityCraft.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 					}
 				}
@@ -313,12 +315,12 @@ public class BlockLaserBlock extends BlockOwnable {
         return (((Boolean) state.getValue(POWERED)).booleanValue() ? 1 : 0);
     }
     
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {POWERED});
+        return new BlockStateContainer(this, new IProperty[] {POWERED});
     }
 
-	public TileEntity createNewTileEntity(World par1World, int par2) {
+	public TileEntity createTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock().linkable();
 	}
 

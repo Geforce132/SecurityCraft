@@ -6,17 +6,18 @@ import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,6 +30,7 @@ public class BlockRetinalScanner extends BlockContainer {
 
 	public BlockRetinalScanner(Material par1) {
 		super(par1);
+		setSoundType(SoundType.METAL);
 	}
 	
 	public int getRenderType(){
@@ -45,19 +47,19 @@ public class BlockRetinalScanner extends BlockContainer {
         Block block3 = par1World.getBlockState(pos.east()).getBlock();
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
 
-        if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
+        if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
         {
             enumfacing = EnumFacing.SOUTH;
         }
-        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
+        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock(state) && !block.isFullBlock(state))
         {
             enumfacing = EnumFacing.NORTH;
         }
-        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
+        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock(state) && !block3.isFullBlock(state))
         {
             enumfacing = EnumFacing.EAST;
         }
-        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
+        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock(state) && !block2.isFullBlock(state))
         {
             enumfacing = EnumFacing.WEST;
         }
@@ -126,12 +128,12 @@ public class BlockRetinalScanner extends BlockContainer {
     	}
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

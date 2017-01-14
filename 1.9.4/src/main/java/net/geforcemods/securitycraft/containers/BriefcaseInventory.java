@@ -7,8 +7,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 public class BriefcaseInventory implements IInventory {
@@ -132,8 +132,8 @@ public class BriefcaseInventory implements IInventory {
 		return true;
 	}
 	
-	public IChatComponent getDisplayName() {
-		return new ChatComponentText(getName());
+	public ITextComponent getDisplayName() {
+		return new TextComponentString(getName());
 	}
 
 	public int getField(int id) {

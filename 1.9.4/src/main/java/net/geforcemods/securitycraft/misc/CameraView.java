@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Simple wrapper class for LookingGlass camera views 

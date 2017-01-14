@@ -28,7 +28,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -86,14 +86,14 @@ public class GuiSCManual extends GuiScreen {
 	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 	    
 	    if(this.currentPage > -1){
-	    	this.fontRendererObj.drawString(StatCollector.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);	
+	    	this.fontRendererObj.drawString(I18n.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);	
 	    		this.fontRendererObj.drawSplitString(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo(), k + 18, 45, 225, 0);	
 	    }else{
-	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.1"), k + 39, 27, 0, false);	
-	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.2"), k + 60, 159, 0, false);	
+	    	this.fontRendererObj.drawString(I18n.translateToLocal("gui.scManual.intro.1"), k + 39, 27, 0, false);	
+	    	this.fontRendererObj.drawString(I18n.translateToLocal("gui.scManual.intro.2"), k + 60, 159, 0, false);	
 	    
-	    	if(StatCollector.canTranslate("gui.scManual.author")){
-		    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.author"), k + 65, 170, 0, false);
+	    	if(I18n.canTranslate("gui.scManual.author")){
+		    	this.fontRendererObj.drawString(I18n.translateToLocal("gui.scManual.author"), k + 65, 170, 0, false);
 	    	}
 	    }
 	    
@@ -257,7 +257,7 @@ public class GuiSCManual extends GuiScreen {
 			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
 			
 			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, I18n.translateToLocal("gui.scManual.recipe." + name)));
 		}
 		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
@@ -266,23 +266,23 @@ public class GuiSCManual extends GuiScreen {
 
     	if(te != null){
 	    	if(te instanceof IOwnable){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20, StatCollector.translateToLocal("gui.scManual.ownableBlock"))); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20, I18n.translateToLocal("gui.scManual.ownableBlock"))); 
 	    	}	
 	    	
 	    	if(te instanceof IPasswordProtected){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20, StatCollector.translateToLocal("gui.scManual.passwordProtectedBlock"))); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20, I18n.translateToLocal("gui.scManual.passwordProtectedBlock"))); 
 	    	}
 	    	
 	    	if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView()){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20, StatCollector.translateToLocal("gui.scManual.viewActivatedBlock"))); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20, I18n.translateToLocal("gui.scManual.viewActivatedBlock"))); 
 	    	}
 	    	
 	    	if(itemBlock instanceof IExplosive){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20, StatCollector.translateToLocal("gui.scManual.explosiveBlock"))); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20, I18n.translateToLocal("gui.scManual.explosiveBlock"))); 
 	    	}
 	    	
 	    	if(te instanceof CustomizableSCTE){
-	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, StatCollector.translateToLocal("gui.scManual.customizableBlock"))); 
+	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, I18n.translateToLocal("gui.scManual.customizableBlock"))); 
 	    	}
     	}
     }

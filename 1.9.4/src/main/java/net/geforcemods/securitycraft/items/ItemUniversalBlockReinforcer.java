@@ -18,24 +18,26 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemUniversalBlockReinforcer extends ItemTool
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		super(2.0F, ToolMaterial.GOLD, getBreakableBlocks());
+		super(2.0F, -5.0F, ToolMaterial.GOLD, getBreakableBlocks());
 
 		setMaxDamage(damage);
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{
 		if(!world.isRemote)
 			player.openGui(mod_SecurityCraft.MODID, GuiHandler.BLOCK_REINFORCER, world, (int)player.posX, (int)player.posY, (int)player.posZ);
-		return super.onItemRightClick(stack, world, player);
+		return super.onItemRightClick(stack, world, player, hand);
 	}
 	
 	@Override
@@ -51,17 +53,17 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			else if(block instanceof BlockStone)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getDefaultState());
 			else if(block instanceof BlockPlanks)
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getStateFromMeta(block.getDamageValue(world, pos)), 2);
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getActualState(player.getEntityWorld().getBlockState(pos), player.getEntityWorld(), pos));
 			else if(block instanceof BlockGlass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlass.getDefaultState());
-			else if(block.getUnlocalizedName().equals(Blocks.glass_pane.getUnlocalizedName())) //glass panes and iron bars share the same class
+			else if(block.getUnlocalizedName().equals(Blocks.GLASS_PANE.getUnlocalizedName())) //glass panes and iron bars share the same class
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlassPane.getDefaultState());
-			else if(block.getUnlocalizedName().equals(Blocks.cobblestone.getUnlocalizedName())) //cobblestone doesn't have its own class
+			else if(block.getUnlocalizedName().equals(Blocks.COBBLESTONE.getUnlocalizedName())) //cobblestone doesn't have its own class
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedCobblestone.getDefaultState());
-			else if(block.getUnlocalizedName().equals(Blocks.iron_bars.getUnlocalizedName())) //glass panes and iron bars share the same class
+			else if(block.getUnlocalizedName().equals(Blocks.IRON_BARS.getUnlocalizedName())) //glass panes and iron bars share the same class
 				world.setBlockState(pos, mod_SecurityCraft.unbreakableIronBars.getDefaultState());
 			else if(block instanceof BlockSandStone)
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedSandstone.getStateFromMeta(block.getDamageValue(world, pos)), 2);
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedSandstone.getActualState(player.getEntityWorld().getBlockState(pos), player.getEntityWorld(), pos));
 			else
 			{
 				world.destroyBlock(pos, true); //destroy the block without the ubr taking damage
@@ -80,15 +82,15 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 	private static HashSet<Block> getBreakableBlocks()
 	{
 		return Sets.newHashSet(new Block[]{
-				Blocks.dirt,
-				Blocks.grass,
-				Blocks.stone,
-				Blocks.planks,
-				Blocks.glass,
-				Blocks.glass_pane,
-				Blocks.cobblestone,
-				Blocks.iron_bars,
-				Blocks.sandstone
+				Blocks.DIRT,
+				Blocks.GRASS,
+				Blocks.STONE,
+				Blocks.PLANKS,
+				Blocks.GLASS,
+				Blocks.GLASS_PANE,
+				Blocks.COBBLESTONE,
+				Blocks.IRON_BARS,
+				Blocks.SANDSTONE
 		});
 	}
 }

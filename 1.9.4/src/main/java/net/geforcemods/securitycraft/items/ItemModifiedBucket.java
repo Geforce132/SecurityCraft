@@ -11,11 +11,14 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class ItemModifiedBucket extends ItemBucket {
 	
@@ -28,21 +31,21 @@ public class ItemModifiedBucket extends ItemBucket {
 	
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
-        boolean flag = this.containedBlock == Blocks.air;
-        MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, flag);
+        boolean flag = this.containedBlock == Blocks.AIR;
+        RayTraceResult rayTraceResult = this.rayTrace(worldIn, playerIn, flag);
 
-        if (movingobjectposition == null)
+        if (rayTraceResult == null)
         {
             return itemStackIn;
         }
         else
         {
-            ItemStack ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, movingobjectposition);
-            if (ret != null) return ret;
+            ActionResult<ItemStack> result = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, rayTraceResult);
+            if (result.getType() != EnumActionResult.FAIL) return result.getResult();
 
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+            if (rayTraceResult.typeOfHit == Type.BLOCK)
             {
-                BlockPos blockpos = movingobjectposition.getBlockPos();
+                BlockPos blockpos = rayTraceResult.getBlockPos();
 
                 if (!worldIn.isBlockModifiable(playerIn, blockpos))
                 {
@@ -51,46 +54,46 @@ public class ItemModifiedBucket extends ItemBucket {
 
                 if (flag)
                 {
-                    if (!playerIn.canPlayerEdit(blockpos.offset(movingobjectposition.sideHit), movingobjectposition.sideHit, itemStackIn))
+                    if (!playerIn.canPlayerEdit(blockpos.offset(rayTraceResult.sideHit), rayTraceResult.sideHit, itemStackIn))
                     {
                         return itemStackIn;
                     }
 
                     IBlockState iblockstate = worldIn.getBlockState(blockpos);
-                    Material material = iblockstate.getBlock().getMaterial();
-
-                    if (material == Material.water && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                    Material material = iblockstate.getBlock().getMaterial(iblockstate);
+                    //StatList.OBJECT_USE_STATS no longer accessible TODO check for 1.10.2 and 1.11.2
+                    if (material == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
                     {
                         worldIn.setBlockToAir(blockpos);
-                        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                    	//TODO StatList.OBJECT_USE_STATS
                         return this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket);
                     }
 
-                    if (material == Material.lava && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+                    if (material == Material.LAVA && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
                     {
                         worldIn.setBlockToAir(blockpos);
-                        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+                    	//TODO StatList.OBJECT_USE_STATS
                         return this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket);
                     }
                 }
                 else
                 {
-                    if (this.containedBlock == Blocks.air)
+                    if (this.containedBlock == Blocks.AIR)
                     {
-                        return new ItemStack(Items.bucket);
+                        return new ItemStack(Items.BUCKET);
                     }
 
-                    BlockPos blockpos1 = blockpos.offset(movingobjectposition.sideHit);
+                    BlockPos blockpos1 = blockpos.offset(rayTraceResult.sideHit);
 
-                    if (!playerIn.canPlayerEdit(blockpos1, movingobjectposition.sideHit, itemStackIn))
+                    if (!playerIn.canPlayerEdit(blockpos1, rayTraceResult.sideHit, itemStackIn))
                     {
                         return itemStackIn;
                     }
 
                     if (this.tryPlaceContainedLiquid(worldIn, blockpos1) && !playerIn.capabilities.isCreativeMode)
                     {
-                        playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-                        return new ItemStack(Items.bucket);
+                    	//TODO StatList.OBJECT_USE_STATS
+                        return new ItemStack(Items.BUCKET);
                     }
                 }
             }
@@ -113,7 +116,7 @@ public class ItemModifiedBucket extends ItemBucket {
         {
             if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket)))
             {
-                player.dropPlayerItemWithRandomChoice(new ItemStack(fullBucket, 1, 0), false);
+                player.dropItem(new ItemStack(fullBucket, 1, 0), false);
             }
 
             return emptyBuckets;
@@ -122,13 +125,13 @@ public class ItemModifiedBucket extends ItemBucket {
 	
 	public boolean tryPlaceContainedLiquid(World worldIn, BlockPos pos)
     {
-        if (this.containedBlock == Blocks.air)
+        if (this.containedBlock == Blocks.AIR)
         {
             return false;
         }
         else
         {
-            Material material = worldIn.getBlockState(pos).getBlock().getMaterial();
+            Material material = worldIn.getBlockState(pos).getBlock().getMaterial(worldIn.getBlockState(pos));
             boolean flag = !material.isSolid();
 
             if (!worldIn.isAirBlock(pos) && !flag)
@@ -137,7 +140,7 @@ public class ItemModifiedBucket extends ItemBucket {
             }
             else
             {
-                if (worldIn.provider.doesWaterVaporize() && this.containedBlock == Blocks.flowing_water)
+                if (worldIn.provider.doesWaterVaporize() && this.containedBlock == Blocks.FLOWING_WATER)
                 {
                     int i = pos.getX();
                     int j = pos.getY();

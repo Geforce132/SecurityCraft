@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {
@@ -24,7 +24,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean()) return;
 			
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity)) {
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("tile.retinalScanner.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 			
@@ -32,7 +32,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
     		worldObj.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
     		
             if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), EnumChatFormatting.GREEN);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("tile.retinalScanner.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
             }             
     	}
 	}

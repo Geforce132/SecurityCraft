@@ -19,8 +19,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockUtils{
@@ -85,11 +86,11 @@ public class BlockUtils{
 	}
 	
 	public static boolean isAirBlock(World par1World, BlockPos pos){
-		return par1World.getBlockState(pos).getBlock() == Blocks.air;
+		return par1World.getBlockState(pos).getBlock() == Blocks.AIR;
 	}
 
 	public static boolean isAirBlock(World par1World, int par2, int par3, int par4){
-		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock() == Blocks.air;
+		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock() == Blocks.AIR;
 	}
 	
 	public static int getBlockMeta(World par1World, BlockPos pos){
@@ -278,8 +279,22 @@ public class BlockUtils{
 	}
 	
 	public static Material getBlockMaterial(World par1World, BlockPos pos){
-		return par1World.getBlockState(pos).getBlock().getMaterial();
+		return par1World.getBlockState(pos).getBlock().getMaterial(par1World.getBlockState(pos));
 	}
+	
+	/**
+     * returns an AABB with corners x1, y1, z1 and x2, y2, z2
+     */
+    public static AxisAlignedBB fromBounds(double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        double d6 = Math.min(x1, x2);
+        double d7 = Math.min(y1, y2);
+        double d8 = Math.min(z1, z2);
+        double d9 = Math.max(x1, x2);
+        double d10 = Math.max(y1, y2);
+        double d11 = Math.max(z1, z2);
+        return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
+    }
 	
 	/**
 	 * Checks if the block at x, y, z is touching the specified block on any side.

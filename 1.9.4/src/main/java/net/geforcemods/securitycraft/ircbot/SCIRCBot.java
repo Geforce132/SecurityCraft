@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.Loader;
@@ -53,7 +53,7 @@ public class SCIRCBot extends PircBot{
 		}
 		
 		if(messageFrequency.get(message) > 2) {
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", StatCollector.translateToLocal("messages.irc.spam"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.translateToLocal("messages.irc.spam"), TextFormatting.RED);
 			return;
 		}
 		
@@ -72,7 +72,7 @@ public class SCIRCBot extends PircBot{
 //					sendMessage("#GeforceMods", "LookingGlass installed: " + (Loader.isModLoaded("LookingGlass") ? "Yes" : "No"));
 				}
 				else
-					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + this.getNick().replace("SCUser_", "") + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayer());
+					sendMessageToPlayer(TextFormatting.YELLOW + "<" + sender + " (IRC) --> " + this.getNick().replace("SCUser_", "") + "> " + TextFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayer());
 				
 				break;
 			}
@@ -83,7 +83,7 @@ public class SCIRCBot extends PircBot{
 	protected void onServerResponse(int code, String response)
 	{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", StatCollector.translateToLocal("messages.irc.banned"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.translateToLocal("messages.irc.banned"), TextFormatting.RED);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class SCIRCBot extends PircBot{
 				mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 			}
 
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.translateToLocal("messages.irc.disconnected").replace("#", reason), TextFormatting.RED);
 		}
 	}
 
@@ -127,9 +127,9 @@ public class SCIRCBot extends PircBot{
 		message = enable;
 		
 		if(enable)
-			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.contacted"), EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.translateToLocal("messages.irc.contacted"), TextFormatting.GREEN);
 		else
-			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.resumed"), EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.translateToLocal("messages.irc.resumed"), TextFormatting.GREEN);
 	}
 	
 	/**

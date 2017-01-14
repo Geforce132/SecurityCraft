@@ -7,15 +7,15 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,7 +51,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 		if(par1World.isRemote){
 			return true;
 		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+			if(par5EntityPlayer.inventory.getCurrentItem() == null || par5EntityPlayer.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
 				this.explode(par1World, pos);
 				return true;
 			}else{
@@ -101,8 +101,8 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
         return ((EnumFacing)state.getValue(FACING)).getIndex();
     }
 
-    protected BlockState createBlockState(){
-        return new BlockState(this, new IProperty[] {FACING});
+    protected BlockStateContainer createBlockState(){
+        return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 	
 	public boolean isActive(World world, BlockPos pos) {
@@ -114,7 +114,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	}
 
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		return new ItemStack(Blocks.furnace);
+		return new ItemStack(Blocks.FURNACE);
 	}
 
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {

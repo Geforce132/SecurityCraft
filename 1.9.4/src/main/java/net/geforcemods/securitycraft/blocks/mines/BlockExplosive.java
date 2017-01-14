@@ -7,8 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
@@ -19,22 +19,22 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 	
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9) {
 		if(!par1World.isRemote){
-			if(par5EntityPlayer.getCurrentEquippedItem() == null && explodesWhenInteractedWith() && isActive(par1World, pos)) {
+			if(par5EntityPlayer.inventory.getCurrentItem() == null && explodesWhenInteractedWith() && isActive(par1World, pos)) {
 				this.explode(par1World, pos);
 				return false;
 			}
 			
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
+			if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
 				return false;
 			}
 			
-			if(isActive(par1World, pos) && isDefusable() && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters) {
+			if(isActive(par1World, pos) && isDefusable() && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters) {
 				defuseMine(par1World, pos);
-				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
+				par5EntityPlayer.inventory.getCurrentItem().damageItem(1, par5EntityPlayer);
 				return false;
 			}
 			
-			if(!isActive(par1World, pos) && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel) {
+			if(!isActive(par1World, pos) && par5EntityPlayer.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL) {
 				activateMine(par1World, pos);
 				return false;
 			}

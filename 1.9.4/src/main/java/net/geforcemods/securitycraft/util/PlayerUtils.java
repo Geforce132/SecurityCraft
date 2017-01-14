@@ -9,9 +9,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,7 +36,7 @@ public class PlayerUtils{
 	    	
 	    	return null;
 		}else{
-			List<?> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -65,7 +64,7 @@ public class PlayerUtils{
 	    	
 	    	return null;
 		}else{
-			List<?> players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -96,16 +95,16 @@ public class PlayerUtils{
 			
 			return false;
 		}else{
-			return (MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(par1) != null);  	
+			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(par1) != null);  	
 		}
     }
 	
-	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, EnumChatFormatting color){
-		player.addChatComponentMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
+	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
+		player.addChatComponentMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 	
-	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, EnumChatFormatting color){
-		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
+	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, TextFormatting color){
+		sender.addChatMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 	
 	/**
@@ -113,8 +112,8 @@ public class PlayerUtils{
 	 * 
 	 * Args: sender, prefix, text, link, color.
 	 */
-	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, EnumChatFormatting color){
-		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, TextFormatting color){
+		sender.addChatMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**
@@ -123,11 +122,11 @@ public class PlayerUtils{
 	 * Args: player, item.
 	 */
 	public static boolean isHoldingItem(EntityPlayer player, Item item){
-		if(item == null && player.getCurrentEquippedItem() == null){
+		if(item == null && player.inventory.getCurrentItem() == null){
 			return true;
 		}
 		
-		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
+		return (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == item);
 	}
 	
 	/**
@@ -136,6 +135,6 @@ public class PlayerUtils{
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
-		return entity.ridingEntity != null && entity.ridingEntity instanceof EntitySecurityCamera;
+		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
 	}
 }

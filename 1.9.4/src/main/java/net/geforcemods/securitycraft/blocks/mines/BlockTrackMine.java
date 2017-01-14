@@ -6,17 +6,19 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider {
 	
 	public BlockTrackMine() {
 		super();
+		setSoundType(SoundType.METAL);
 	}
 
 	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos){
@@ -49,7 +51,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		return false;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 

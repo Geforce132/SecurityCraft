@@ -11,8 +11,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -81,7 +81,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         }
     }
 	
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
 		super.writeToNBT(par1NBTTagCompound);
 		
@@ -133,6 +133,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	
 	        par1NBTTagCompound.setTag("linkedBlocks", tagList);
         }
+        
+        return par1NBTTagCompound;
     }
 	
 	private void readLinkedBlocks(NBTTagList list) {
@@ -286,8 +288,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         }    
 	}
 
-	public IChatComponent getDisplayName() {
-		return new ChatComponentTranslation(getName());
+	public ITextComponent getDisplayName() {
+		return new TextComponentTranslation(getName());
 	}
 	
 	public String getName(){
@@ -339,6 +341,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	        }  
         }
     }
+	
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return null;
+	}
 	
 	////////////////////////
 	   // MODULE STUFF //

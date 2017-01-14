@@ -1,4 +1,4 @@
-	package net.geforcemods.securitycraft.blocks;
+package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
@@ -14,17 +14,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,18 +55,19 @@ public class BlockSecurityCamera extends BlockContainer{
 		return false;
 	}
 	
-	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) world, pos, FACING);
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) source, pos, FACING);
         
-    	if(dir == EnumFacing.SOUTH){
-    		this.setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
-    	}else if(dir == EnumFacing.NORTH){
-    		this.setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
-        }else if(dir == EnumFacing.WEST){
-    		this.setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
-        }else{
-    		this.setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
-        }
+    	if(dir == EnumFacing.SOUTH)
+    		return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
+    	else if(dir == EnumFacing.NORTH)
+    		return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
+        else if(dir == EnumFacing.WEST)
+        	return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+        else
+        	return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
 	
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
@@ -111,20 +112,20 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
     
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
-    	if(!world.isRemote && player.ridingEntity == null) {
-    		PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
+    	if(!world.isRemote && player.getRidingEntity() == null) {
+    		PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.securityCamera.name"), I18n.translateToLocal("messages.securityCamera.mounted"), TextFormatting.GREEN);
     	}
     	
-    	if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){
-			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.ridingEntity);
+    	if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
+			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.getRidingEntity());
 			world.spawnEntityInWorld(dummyEntity);
-			player.mountEntity(dummyEntity);
+			player.startRiding(dummyEntity);
 			return;
 		}
 
     	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
     	world.spawnEntityInWorld(dummyEntity);
-    	player.mountEntity(dummyEntity);
+    	player.startRiding(dummyEntity);
 		
 		for(Object e : world.loadedEntityList)
 		{
@@ -192,12 +193,12 @@ public class BlockSecurityCamera extends BlockContainer{
     	}
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createNewTileEntity(World world, int par2){
+    public TileEntity createTileEntity(World world, int par2){
     	return new TileEntitySecurityCamera().nameable();
     }
 

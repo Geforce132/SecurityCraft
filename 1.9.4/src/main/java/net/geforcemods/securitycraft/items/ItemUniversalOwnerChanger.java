@@ -7,12 +7,11 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,19 +39,19 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			if(!stack.hasDisplayName())
 			{
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.noName"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalOwnerChanger.name"), I18n.translateToLocal("messages.universalOwnerChanger.noName"), TextFormatting.RED);
 				return false;
 			}
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.cantChange"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalOwnerChanger.name"), I18n.translateToLocal("messages.universalOwnerChanger.cantChange"), TextFormatting.RED);
 				return false;
 			}
 
 			if(!((IOwnable)te).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.notOwned"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalOwnerChanger.name"), I18n.translateToLocal("messages.universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return false;
 			}
 
@@ -67,8 +66,8 @@ public class ItemUniversalOwnerChanger extends Item
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), EnumChatFormatting.GREEN);
+			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalOwnerChanger.name"), I18n.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return true;
 		}
 

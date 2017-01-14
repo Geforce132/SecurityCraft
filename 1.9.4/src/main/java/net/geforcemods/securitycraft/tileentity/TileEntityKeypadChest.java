@@ -13,10 +13,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
 	
@@ -30,8 +30,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
     /**
      * Writes a tile entity to NBT.
+     * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
@@ -43,6 +44,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
         	par1NBTTagCompound.setString("owner", this.owner.getName());
         	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
         }
+        
+        return par1NBTTagCompound;
     }
 
     /**
@@ -75,10 +78,10 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
     public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(pos, 1, tag);        
+    	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }
     
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }  
     
@@ -107,7 +110,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadChest.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypadChest.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {
 			activate(player);

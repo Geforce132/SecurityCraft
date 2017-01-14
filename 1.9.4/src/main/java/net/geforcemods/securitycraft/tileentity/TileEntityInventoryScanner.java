@@ -56,7 +56,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	
     }
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){   
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){   
     	super.writeToNBT(par1NBTTagCompound);
     	
         NBTTagList nbttaglist = new NBTTagList();
@@ -73,11 +73,9 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         }
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
-        
         par1NBTTagCompound.setInteger("cooldown", cooldown);
-        
         par1NBTTagCompound.setString("type", type);
-        
+        return par1NBTTagCompound;
     }
     
 	public int getSizeInventory() {

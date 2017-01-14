@@ -11,7 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class GuiKeycardSetup extends GuiContainer{
 	
@@ -31,8 +31,8 @@ public class GuiKeycardSetup extends GuiContainer{
     	super.initGui();
 
 		this.buttonList.add(this.lvlOfSecurityButton = new GuiButton(0, this.width / 2 - (48 * 2 - 23), this.height / 2 + 20, 150, 20, ""));
-		this.buttonList.add(this.requiresExactCardButton = new GuiButton(1, this.width / 2 - (48 * 2 - 11), this.height / 2 - 28, 125, 20, this.requiresExactCard ? StatCollector.translateToLocal("gui.keycardSetup.equal") : StatCollector.translateToLocal("gui.keycardSetup.equalOrHigher")));
-		this.buttonList.add(new GuiButton(2, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, StatCollector.translateToLocal("gui.keycardSetup.save")));
+		this.buttonList.add(this.requiresExactCardButton = new GuiButton(1, this.width / 2 - (48 * 2 - 11), this.height / 2 - 28, 125, 20, this.requiresExactCard ? I18n.translateToLocal("gui.keycardSetup.equal") : I18n.translateToLocal("gui.keycardSetup.equalOrHigher")));
+		this.buttonList.add(new GuiButton(2, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, I18n.translateToLocal("gui.keycardSetup.save")));
 		
 		this.updateButtonText();
     }
@@ -42,13 +42,13 @@ public class GuiKeycardSetup extends GuiContainer{
      */
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
+    	this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
+        this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
    }
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
@@ -62,10 +62,10 @@ public class GuiKeycardSetup extends GuiContainer{
 	 private void updateButtonText(){
 		 this.lvlOfSecurity++;
 		 if(this.lvlOfSecurity <= 5){
-			 this.lvlOfSecurityButton.displayString = StatCollector.translateToLocal("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
+			 this.lvlOfSecurityButton.displayString = I18n.translateToLocal("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
 		 }else{
 			 this.lvlOfSecurity = 1;
-			 this.lvlOfSecurityButton.displayString = StatCollector.translateToLocal("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
+			 this.lvlOfSecurityButton.displayString = I18n.translateToLocal("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
 
 		 }
 	 }
@@ -78,7 +78,7 @@ public class GuiKeycardSetup extends GuiContainer{
 			
 			case 1:
 				this.requiresExactCard = !this.requiresExactCard;
-				this.requiresExactCardButton.displayString = this.requiresExactCard ? StatCollector.translateToLocal("gui.keycardSetup.equal") : StatCollector.translateToLocal("gui.keycardSetup.equalOrHigher");
+				this.requiresExactCardButton.displayString = this.requiresExactCard ? I18n.translateToLocal("gui.keycardSetup.equal") : I18n.translateToLocal("gui.keycardSetup.equalOrHigher");
 				break;
 				
 			case 2:

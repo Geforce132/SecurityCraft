@@ -90,7 +90,7 @@ public class GuiHandler implements IGuiHandler {
 			case BRIEFCASE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
 					return null;
-				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
+				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
 			case KEY_CHANGER_GUI_ID:
 				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
 						return null;
@@ -100,9 +100,9 @@ public class GuiHandler implements IGuiHandler {
 			case IRC_INFORMATION:
 				return new ContainerGeneric(null, null);
 			case DISGUISE_MODULE:
-				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
+				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
-				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.getCurrentEquippedItem()));
+				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			default:
@@ -120,11 +120,11 @@ public class GuiHandler implements IGuiHandler {
 			case MRAT_MENU_ID:
 				return new GuiMRAT(player.inventory);
 			case MRAT_ACTIVATE_ID:
-				return new GuiMRATActivate(player.inventory, player.getCurrentEquippedItem());
+				return new GuiMRATActivate(player.inventory, player.inventory.getCurrentItem());
 			case MRAT_DEACTIVATE_ID:
-				return new GuiMRATDeactivate(player.inventory, player.getCurrentEquippedItem());
+				return new GuiMRATDeactivate(player.inventory, player.inventory.getCurrentItem());
 			case MRAT_DETONATE_ID:
-				return new GuiMRATDetonate(player.inventory, player.getCurrentEquippedItem());
+				return new GuiMRATDetonate(player.inventory, player.inventory.getCurrentItem());
 			case INVENTORY_SCANNER_GUI_ID:
 				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
 			case USERNAME_LOGGER_GUI_ID:
@@ -140,7 +140,7 @@ public class GuiHandler implements IGuiHandler {
 			case CAMERA_MONITOR_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor))
 					return null;
-				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
+				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTagCompound());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
 					return null;
@@ -162,7 +162,7 @@ public class GuiHandler implements IGuiHandler {
 			case IRC_INFORMATION:
 				return new GuiIRCInfo();
 			case DISGUISE_MODULE:
-				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
+				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
 				return new GuiDisguiseModule(player, player.inventory);
 			case BLOCK_REINFORCER:

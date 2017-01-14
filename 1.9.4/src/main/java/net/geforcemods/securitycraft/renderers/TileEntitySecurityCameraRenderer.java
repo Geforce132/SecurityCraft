@@ -34,7 +34,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
 			int l1 = l % 65536;
 			int l2 = l / 65536;
-			tessellator.getWorldRenderer().setColorOpaque_F(f, f, f);
+			tessellator.getBuffer().putColorRGBA(0, (int)(f * 255.0F), (int)(f * 255.0F), (int)(f * 255.0F), 255); //TODO: does this work?
 
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}

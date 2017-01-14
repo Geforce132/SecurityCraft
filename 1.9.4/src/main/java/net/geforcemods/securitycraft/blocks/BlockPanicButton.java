@@ -7,8 +7,9 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -53,18 +54,15 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         worldIn.removeTileEntity(pos);
     }
 
-    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam){
-        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+    @Override
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param){
+        super.eventReceived(state, worldIn, pos, id, param);
         TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+        return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
     }
     
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        this.updateBlockBounds(worldIn.getBlockState(pos));
-    }
-    
-    private void updateBlockBounds(IBlockState state)
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
         boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
@@ -73,26 +71,23 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
         {
             case 1:
-                this.setBlockBounds(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
-                break;
+                return new AxisAlignedBB(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
             case 2:
-                this.setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
-                break;
+            	return new AxisAlignedBB(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
             case 3:
-                this.setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
-                break;
+            	return new AxisAlignedBB(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
             case 4:
-                this.setBlockBounds(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
-                break;
+            	return new AxisAlignedBB(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
             case 5:
-                this.setBlockBounds(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + f2, 0.700F);
-                break;
+            	return new AxisAlignedBB(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + f2, 0.700F);
             case 6:
-                this.setBlockBounds(0.175F, 1.0F - f2, 0.300F, 0.8225F, 1.0F, 0.700F);
+            	return new AxisAlignedBB(0.175F, 1.0F - f2, 0.300F, 0.8225F, 1.0F, 0.700F);
         }
+        
+        return super.getBoundingBox(state, source, pos);
     }
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 	

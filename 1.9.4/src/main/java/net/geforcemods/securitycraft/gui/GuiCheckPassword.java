@@ -17,7 +17,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,7 +35,7 @@ public class GuiCheckPassword extends GuiContainer {
 	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
         super(new ContainerGeneric(inventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;   
-		this.blockName = StatCollector.translateToLocal(block.getUnlocalizedName() + ".name");
+		this.blockName = I18n.translateToLocal(block.getUnlocalizedName() + ".name");
     }
     
     public void initGui(){

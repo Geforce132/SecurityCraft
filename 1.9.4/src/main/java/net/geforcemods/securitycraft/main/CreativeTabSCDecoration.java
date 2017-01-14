@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.main;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,7 +19,7 @@ public class CreativeTabSCDecoration extends CreativeTabs{
 	}
 	
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: " + StatCollector.translateToLocal("creativeTabDecoration");	
+		return "SecurityCraft: " + I18n.translateToLocal("creativeTabDecoration");	
 	}
 
 }

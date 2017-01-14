@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -71,12 +72,13 @@ public class ContainerBriefcase extends Container {
 		return itemstack;
 	}
 
-	public ItemStack slotClick(int slot, int button, int flag, EntityPlayer player) {
-		if(slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack() == player.getHeldItem()) {
+	@Override
+	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		if(slot >= 0 && getSlot(slot) != null && (getSlot(slot).getStack() == player.getHeldItemMainhand() || getSlot(slot).getStack() == player.getHeldItemOffhand())) {
 			return null;
 		}
 		
-		return super.slotClick(slot, button, flag, player);
+		return super.slotClick(slot, dragType, clickTypeIn, player);
 	}
 
 	public boolean canInteractWith(EntityPlayer player) {

@@ -9,15 +9,17 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockBouncingBetty extends BlockExplosive implements IIntersectable {
@@ -26,7 +28,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
-		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
 	public boolean isOpaqueCube(){
@@ -41,12 +42,10 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		return 3;
 	}
 
-	/**
-	 * Sets the block's bounds for rendering it as an item
-	 */
-	public void setBlockBoundsForItemRender()
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
+		return new AxisAlignedBB(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 	
 	/**
@@ -112,9 +111,9 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
 	}
 
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
-		return new BlockState(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
@@ -125,7 +124,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		return true;
 	}
 	
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 	

@@ -5,10 +5,11 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityLogger extends TileEntityOwnable {
 	
@@ -30,7 +31,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public void logPlayers(){
 		double d0 = mod_SecurityCraft.configHandler.usernameLoggerSearchRadius;
 		
-		AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
+		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
         List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
         Iterator<?> iterator = list.iterator();
         
@@ -66,7 +67,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		return false;
 	}
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -74,6 +75,8 @@ public class TileEntityLogger extends TileEntityOwnable {
         		par1NBTTagCompound.setString("player" + i, this.players[i]);
         	}
         }
+        
+        return par1NBTTagCompound;
     }
 
     public void readFromNBT(NBTTagCompound par1NBTTagCompound){

@@ -7,17 +7,18 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,10 +40,10 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			this.useNeighborBrightness = true;
 		}
 		
-		if(blockMaterial == Material.ground){
-			this.setStepSound(soundTypeGravel);
+		if(blockMaterial == Material.GROUND){
+			this.setSoundType(SoundType.GROUND);
 		}else{
-			this.setStepSound(soundTypeStone);
+			this.setSoundType(SoundType.STONE);
 		}	
 		
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
@@ -54,12 +55,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
     }
 	
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-        return slabMaterial == Material.ground ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+        return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
     }
 	
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List list){
-        if(slabMaterial != Material.ground){
+        if(slabMaterial != Material.GROUND){
         	BlockReinforcedSlabs.EnumType[] aenumtype = BlockReinforcedSlabs.EnumType.values();
 
             for(int i = 0; i < aenumtype.length - 1; i++){
@@ -74,7 +75,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
     @SideOnly(Side.CLIENT)
     public Item getItem(World worldIn, BlockPos pos){
-        return slabMaterial == Material.ground ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+        return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
     }
     
     public int damageDropped(IBlockState state){
@@ -112,15 +113,15 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return i;
     }
     
-    protected BlockState createBlockState(){
-        return slabMaterial == Material.ground ? new BlockState(this, new IProperty[] {HALF}) : new BlockState(this, new IProperty[] {HALF, VARIANT});
+    protected BlockStateContainer createBlockState(){
+        return slabMaterial == Material.GROUND ? new BlockStateContainer(this, new IProperty[] {HALF}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
     }
     
     public boolean isDouble(){
 		return isDouble;
 	}
 
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 

@@ -12,11 +12,12 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,9 +25,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,6 +40,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
+		setSoundType(SoundType.STONE);
 	}
 	
 	public boolean isOpaqueCube() {
@@ -46,13 +48,13 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	}
 	
 	@SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer() {
-        return EnumWorldBlockLayer.CUTOUT;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 	
 	@SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        if(worldIn.getBlockState(pos).getBlock() != Blocks.air && (worldIn.getBlockState(pos).getBlock().isFullCube() || !worldIn.getBlockState(pos).getBlock().isOpaqueCube())) {
+        if(worldIn.getBlockState(pos).getBlock() != Blocks.AIR && (worldIn.getBlockState(pos).getBlock().isFullCube(worldIn.getBlockState(pos)) || !worldIn.getBlockState(pos).getBlock().isOpaqueCube(worldIn.getBlockState(pos)))) {
         	return false;
         }
 
@@ -109,19 +111,19 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         Block block3 = par1World.getBlockState(pos.east()).getBlock();
         EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
 
-        if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
+        if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
         {
             enumfacing = EnumFacing.SOUTH;
         }
-        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
+        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock(state) && !block.isFullBlock(state))
         {
             enumfacing = EnumFacing.NORTH;
         }
-        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
+        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock(state) && !block3.isFullBlock(state))
         {
             enumfacing = EnumFacing.EAST;
         }
-        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
+        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock(state) && !block2.isFullBlock(state))
         {
             enumfacing = EnumFacing.WEST;
         }
@@ -242,15 +244,15 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	return null;
     }
 
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {FACING, POWERED});
+        return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
 
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2){
+    public TileEntity createTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
 

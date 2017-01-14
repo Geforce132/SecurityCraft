@@ -32,12 +32,13 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     	}
     }
     
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
     	
         par1NBTTagCompound.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
         par1NBTTagCompound.setString("lastPlayerName", lastPlayerName);
+        return par1NBTTagCompound;
     }
 
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)

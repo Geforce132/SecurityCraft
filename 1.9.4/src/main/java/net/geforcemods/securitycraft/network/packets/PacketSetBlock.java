@@ -10,7 +10,8 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -85,8 +86,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getPassword() != null){
 			password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(BlockUtils.toPos(x, y, z))).getPassword();
 		}
-		
-		Block block = (Block)Block.blockRegistry.getObject(blockID);
+
+		Block block = Block.REGISTRY.getObject(new ResourceLocation(blockID));
 		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
 		
 		if(modules != null){

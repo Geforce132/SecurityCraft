@@ -37,8 +37,8 @@ public class PacketSUpdateNBTTag implements IMessage{
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateNBTTag, IMessage> {
 
 	public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
-		if(context.getServerHandler().playerEntity.getCurrentEquippedItem() != null && context.getServerHandler().playerEntity.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(packet.itemName)){
-			context.getServerHandler().playerEntity.getCurrentEquippedItem().setTagCompound(packet.stack);	
+		if(context.getServerHandler().playerEntity.inventory.getCurrentItem() != null && context.getServerHandler().playerEntity.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+			context.getServerHandler().playerEntity.inventory.getCurrentItem().setTagCompound(packet.stack);	
 		}
 		
 		return null;

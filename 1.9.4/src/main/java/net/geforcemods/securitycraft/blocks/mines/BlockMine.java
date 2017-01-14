@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -19,7 +19,9 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockMine extends BlockExplosive {
@@ -28,9 +30,6 @@ public class BlockMine extends BlockExplosive {
 
 	public BlockMine(Material par1Material) {
 		super(par1Material);
-		float f = 0.2F;
-		float g = 0.1F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
 	}
 
 	/**
@@ -59,7 +58,7 @@ public class BlockMine extends BlockExplosive {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5){
-		if (par1World.getBlockState(pos.down()).getBlock().getMaterial() != Material.air){
+		if (par1World.getBlockState(pos.down()).getBlock().getMaterial(par1World.getBlockState(pos.down())) != Material.AIR){
 			return;  	   
 		}else{    	   
 			this.explode(par1World, pos);   
@@ -70,25 +69,35 @@ public class BlockMine extends BlockExplosive {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.glass || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cactus || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.air || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cake || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.plants){
+		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.PLANTS){
 			return false;
 		}else{
 			return true;
 		}
 	}
 
-	public boolean removedByPlayer(World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
         if(!world.isRemote){
         	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative){
-            	return super.removedByPlayer(world, pos, player, willHarvest);
+            	return super.removedByPlayer(state, world, pos, player, willHarvest);
         	}else{
         		this.explode(world, pos);
-            	return super.removedByPlayer(world, pos, player, willHarvest);
+            	return super.removedByPlayer(state, world, pos, player, willHarvest);
         	}
         }
 		
-		return super.removedByPlayer(world, pos, player, willHarvest);
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		float f = 0.2F;
+		float g = 0.1F;
+		
+		return BlockUtils.fromBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
+	}
 	
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
@@ -154,9 +163,9 @@ public class BlockMine extends BlockExplosive {
 		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
 	}
 
-	protected BlockState createBlockState()
+	protected BlockStateContainer createBlockState()
 	{
-		return new BlockState(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
@@ -167,7 +176,7 @@ public class BlockMine extends BlockExplosive {
 		return true;
 	}      
 
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 

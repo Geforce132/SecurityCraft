@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -15,8 +17,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -24,7 +26,8 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 
 	public BlockIronFence(Material material)
 	{
-		super(material);
+		super(material, MapColor.IRON);
+		setSoundType(SoundType.METAL);
 	}
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9)
@@ -40,8 +43,8 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//split up oneliner to be more readable
 		if(block != this && !(block instanceof BlockFenceGate) && block != mod_SecurityCraft.reinforcedFencegate)
 		{
-			if(block.getMaterial().isOpaque())
-				return block.getMaterial() != Material.gourd;
+			if(block.getMaterial(block.getDefaultState()).isOpaque())
+				return block.getMaterial(block.getDefaultState()) != Material.GOURD;
 			else
 				return false;
 		}
@@ -63,7 +66,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		else if(entity instanceof EntityCreeper)
 		{
 			EntityCreeper creeper = (EntityCreeper)entity;
-			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ());
+			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
 			creeper.onStruckByLightning(lightning);
 			creeper.extinguish();
@@ -81,13 +84,13 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 
 	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
     {
-        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+        super.eventReceived(state, worldIn, pos, eventID, eventParam);
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	public TileEntity createTileEntity(World p_149915_1_, int p_149915_2_)
 	{
 		return new TileEntityOwnable().intersectsEntities();
 	}

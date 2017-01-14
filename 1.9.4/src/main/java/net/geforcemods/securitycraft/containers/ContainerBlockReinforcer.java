@@ -18,7 +18,7 @@ public class ContainerBlockReinforcer extends Container
 
 	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory)
 	{
-		blockReinforcer = player.getCurrentEquippedItem();
+		blockReinforcer = player.inventory.getCurrentItem();
 		addSlotToContainer(new SlotBlockReinforcer(itemInventory, 0, 79, 20)); //input & output slot
 
 		//main player inventory
@@ -46,77 +46,77 @@ public class ContainerBlockReinforcer extends Container
 	@Override
 	public void onContainerClosed(EntityPlayer player)
 	{
-		ItemStack stack = itemInventory.getStackInSlotOnClosing(0);
+		ItemStack stack = itemInventory.getStackInSlot(0);
 
 		if(stack != null)
 		{
 			String name = stack.getItem().getUnlocalizedName();
 
-			if(name.equals(Item.getItemFromBlock(Blocks.dirt).getUnlocalizedName()) || name.equals(Item.getItemFromBlock(Blocks.grass).getUnlocalizedName()))
+			if(name.equals(Item.getItemFromBlock(Blocks.DIRT).getUnlocalizedName()) || name.equals(Item.getItemFromBlock(Blocks.GRASS).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.stone).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.STONE).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.planks).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.PLANKS).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
 
 				newStack.stackSize = stack.stackSize;
 				newStack.setItemDamage(stack.getItemDamage());
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.GLASS).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass_pane).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.GLASS_PANE).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlassPane);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.cobblestone).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.COBBLESTONE).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.iron_bars).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.IRON_BARS).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.sandstone).getUnlocalizedName()))
+			else if(name.equals(Item.getItemFromBlock(Blocks.SANDSTONE).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
 
 				newStack.stackSize = stack.stackSize;
 				newStack.setItemDamage(stack.getItemDamage());
 				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				player.dropItem(newStack, false);
 			}
 		}
 	}
@@ -251,15 +251,15 @@ public class ContainerBlockReinforcer extends Container
 		{
 			String name = stack.getItem().getUnlocalizedName();
 
-			return (name.equals(Item.getItemFromBlock(Blocks.dirt).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.grass).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.stone).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.planks).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.glass).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.glass_pane).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.cobblestone).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.iron_bars).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.sandstone).getUnlocalizedName())) &&
+			return (name.equals(Item.getItemFromBlock(Blocks.DIRT).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.GRASS).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.STONE).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.PLANKS).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.GLASS).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.GLASS_PANE).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.COBBLESTONE).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.IRON_BARS).getUnlocalizedName()) ||
+					name.equals(Item.getItemFromBlock(Blocks.SANDSTONE).getUnlocalizedName())) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
 		}

@@ -21,9 +21,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -130,7 +130,7 @@ public class EntitySecurityCamera extends Entity{
     }
 
 	public void onUpdate(){	
-		if(this.worldObj.isRemote && this.riddenByEntity != null){	
+		if(this.worldObj.isRemote && getRidingEntity() != null){	
 			if(this.screenshotCooldown > 0){
 				this.screenshotCooldown -= 1;
 			}
@@ -147,13 +147,13 @@ public class EntitySecurityCamera extends Entity{
 				this.toggleLightCooldown -= 1;
 			}
 			
-			if(((EntityPlayer) this.riddenByEntity).rotationYaw != this.rotationYaw){
-				((EntityPlayer) this.riddenByEntity).setPositionAndRotation(this.riddenByEntity.posX, this.riddenByEntity.posY, this.riddenByEntity.posZ, this.rotationYaw, this.rotationPitch);
-				((EntityPlayer) this.riddenByEntity).rotationYaw = this.rotationYaw;
+			if(((EntityPlayer) getRidingEntity()).rotationYaw != this.rotationYaw){
+				((EntityPlayer) getRidingEntity()).setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, this.rotationYaw, this.rotationPitch);
+				((EntityPlayer) getRidingEntity()).rotationYaw = this.rotationYaw;
 			}
 			
-			if(((EntityPlayer) this.riddenByEntity).rotationPitch != this.rotationPitch){
-				((EntityPlayer) this.riddenByEntity).setPositionAndRotation(this.riddenByEntity.posX, this.riddenByEntity.posY, this.riddenByEntity.posZ, this.rotationYaw, this.rotationPitch);
+			if(((EntityPlayer) getRidingEntity()).rotationPitch != this.rotationPitch){
+				((EntityPlayer) getRidingEntity()).setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, this.rotationYaw, this.rotationPitch);
 			}
 		
 			this.checkKeysPressed();
@@ -164,13 +164,13 @@ public class EntitySecurityCamera extends Entity{
 				Minecraft.getMinecraft().theWorld.playSound(posX, posY, posZ, SCSounds.CAMERASNAP.path, 1.0F, 1.0F, true);
 			}
 					
-			if(this.riddenByEntity != null && this.shouldProvideNightVision){
-				mod_SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.nightVision.id, 3, -1));
+			if(getRidingEntity() != null && this.shouldProvideNightVision){
+				mod_SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("night_vision")), 3, -1));
 			}
 		}
 		
 		if(!this.worldObj.isRemote){
-			if(this.riddenByEntity == null | BlockUtils.getBlock(worldObj, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
+			if(getRidingEntity() == null | BlockUtils.getBlock(worldObj, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
 				this.setDead();
 				return;
 			}	
@@ -320,9 +320,9 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public String getCameraInfo(){
-		String nowViewing = EnumChatFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
-		String viewingFrom = (this.riddenByEntity != null && mod_SecurityCraft.instance.hasUsePosition(this.riddenByEntity.getName())) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[0]) + " Y: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[1]) + " Z: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(this.riddenByEntity.getName())[2]) : "";
+		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
+		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
+		String viewingFrom = (getRidingEntity() != null && mod_SecurityCraft.instance.hasUsePosition(getRidingEntity().getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[0]) + " Y: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[1]) + " Z: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[2]) : "";
 		return nowViewing + pos + viewingFrom;
 	}
 	

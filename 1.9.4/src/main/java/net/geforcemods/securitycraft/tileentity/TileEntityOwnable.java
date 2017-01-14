@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	
@@ -14,8 +14,9 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     
     /**
      * Writes a tile entity to NBT.
+     * @return 
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
@@ -23,6 +24,8 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
         	par1NBTTagCompound.setString("owner", this.owner.getName());
         	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
         }
+        
+        return par1NBTTagCompound;
     }
 
     /**
@@ -46,10 +49,10 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     public Packet getDescriptionPacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(pos, 1, tag);        
+    	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }        
     
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }  
     
