@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
@@ -31,11 +32,15 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 					return;
 				}
 				
+				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
+
 				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !upperState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
 				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !lowerState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
 				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
                 worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
+                
+                if(open)
+				    PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
 			}
 		}
 	}
