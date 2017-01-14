@@ -1,20 +1,20 @@
 {
   "homepage": "http://minecraft.curseforge.com/mc-mods/64760-securitycraft-mod/files",
   "promos": {
-    "1.7.10-latest": "v1.8.1",
-    "1.7.10-recommended": "v1.8.1",
-    "1.8-latest": "v1.8.1",
-    "1.8-recommended": "v1.8.1",
-    "1.8.8-latest": "v1.8.1",
-    "1.8.8-recommended": "v1.8.1"
+    "1.7.10-latest": "v1.8.2",
+    "1.7.10-recommended": "v1.8.2",
+    "1.8-latest": "v1.8.2",
+    "1.8-recommended": "v1.8.2",
+    "1.8.8-latest": "v1.8.2",
+    "1.8.8-recommended": "v1.8.2"
   },
   "1.7.10": {
-    "v1.8.1": "The second revision of the Security Camera update! New blocks, lots of fixes, and more!"
+    "v1.8.2": "The third revision of the Security Camera update! New blocks, lots of fixes, and more!"
   },
   "1.8": {
-    "v1.8.1": "The second revision of the Security Camera update! New blocks, lots of fixes, and more!"
+    "v1.8.2": "The third revision of the Security Camera update! New blocks, lots of fixes, and more!"
   },
   "1.8.8": {
-    "v1.8.1": "The second revision of the Security Camera update! New blocks, lots of fixes, and more!"
+    "v1.8.2": "The third revision of the Security Camera update! New blocks, lots of fixes, and more!"
   }    
 }
