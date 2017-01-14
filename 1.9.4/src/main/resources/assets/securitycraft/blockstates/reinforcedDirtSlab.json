@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "half=bottom,variant=dirt": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=dirt": { "model": "securitycraft:reinforcedTopSlab_dirt" },
+        "half=bottom,variant=stone": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=stone": { "model": "securitycraft:reinforcedTopSlab_dirt" },
+        "half=bottom,variant=cobblestone": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=cobblestone": { "model": "securitycraft:reinforcedTopSlab_dirt" },
+        "half=bottom,variant=sandstone": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=sandstone": { "model": "securitycraft:reinforcedTopSlab_dirt" }
+    }
+}
