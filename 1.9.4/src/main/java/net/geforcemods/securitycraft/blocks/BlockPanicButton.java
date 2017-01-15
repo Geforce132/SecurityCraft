@@ -170,7 +170,9 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	@Override
 	protected void playReleaseSound(World worldIn, BlockPos pos)
 	{
-        worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+		for(EntityPlayer player : worldIn.playerEntities)
+		{
+			worldIn.playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), SoundCategory.BLOCKS, 0.3F, 0.6F);
+		}
 	}
-
 }

@@ -163,7 +163,7 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && this.screenshotCooldown == 0){	
 				this.screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), new SoundEvent(SCSounds.CAMERASNAP.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 					
 			if(getRidingEntity() != null && this.shouldProvideNightVision){
@@ -299,7 +299,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 		}
 		
-		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), new SoundEvent(SCSounds.CAMERAZOOMIN.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
+		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
 	}
 	
 	public void setRedstonePower() {

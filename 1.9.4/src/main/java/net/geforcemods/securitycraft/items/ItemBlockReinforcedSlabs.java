@@ -55,7 +55,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         }else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)){
             return EnumActionResult.FAIL;
         }else{
-            Object object = this.singleSlab.getVariant(stack);
+            Object object = this.singleSlab.getTypeForItem(stack);
             IBlockState iblockstate = worldIn.getBlockState(pos);
 
             if(iblockstate.getBlock() instanceof BlockReinforcedSlabs){
@@ -116,7 +116,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
         BlockPos blockpos1 = pos;
         IProperty iproperty = this.singleSlab.getVariantProperty();
-        Object object = this.singleSlab.getVariant(stack);
+        Object object = this.singleSlab.getTypeForItem(stack);
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
         if(iblockstate.getBlock() == this.singleSlab){

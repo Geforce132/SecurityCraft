@@ -90,7 +90,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return VARIANT;
     }
     
-    public Object getVariant(ItemStack stack) {
+    public Comparable<?> getTypeForItem(ItemStack stack) {
 		return BlockReinforcedSlabs.EnumType.byMetadata(stack.getMetadata() & 7);
 	}
     
@@ -181,11 +181,4 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
             }
         }
     }
-
-
-	@Override
-	public Comparable<?> getTypeForItem(ItemStack stack) //TODO: what?
-	{
-		return null;
-	}
 }

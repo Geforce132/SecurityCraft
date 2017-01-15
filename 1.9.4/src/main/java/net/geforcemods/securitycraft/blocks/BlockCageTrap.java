@@ -17,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -72,7 +74,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
 
-				world.playSoundAtEntity(entity, "random.anvil_use", 3.0F, 1.0F);
+				entity.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.anvil_use")), 3.0F, 1.0F);
 				world.getMinecraftServer().addChatMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + I18n.translateToLocal("tile.cageTrap.name") + TextFormatting.RESET + "] " + I18n.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}

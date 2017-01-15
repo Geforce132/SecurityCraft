@@ -79,6 +79,7 @@ import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -125,6 +126,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -588,6 +590,13 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
+		//TODO not sure if this is the correct way to do it
+		GameRegistry.register(new SoundEvent(SCSounds.ALARM.path), SCSounds.ALARM.path);
+		GameRegistry.register(new SoundEvent(SCSounds.CAMERAZOOMIN.path), SCSounds.CAMERAZOOMIN.path);
+		GameRegistry.register(new SoundEvent(SCSounds.CAMERASNAP.path), SCSounds.CAMERASNAP.path);
+		GameRegistry.register(new SoundEvent(SCSounds.TASERFIRED.path), SCSounds.TASERFIRED.path);
+		GameRegistry.register(new SoundEvent(SCSounds.ELECTRIFIED.path), SCSounds.ELECTRIFIED.path);
+		
 		if(useOldKeypadRecipe){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
 				"III", "III", "III", 'I', Blocks.STONE_BUTTON

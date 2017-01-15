@@ -17,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -83,7 +85,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
 		par1World.spawnEntityInWorld(entitytntprimed);
-		par1World.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
+		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
 	}
 
 	/**
