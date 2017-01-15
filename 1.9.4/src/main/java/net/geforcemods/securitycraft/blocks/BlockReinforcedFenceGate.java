@@ -75,7 +75,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
         return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
     }
     
-    public TileEntity createTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
     }
 

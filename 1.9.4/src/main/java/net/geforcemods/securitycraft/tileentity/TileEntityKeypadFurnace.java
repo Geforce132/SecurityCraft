@@ -549,6 +549,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	
 	public void setPassword(String password) {
 		passcode = password;
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return null;
 	}	
 
 }

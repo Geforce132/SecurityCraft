@@ -37,7 +37,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
         }
     }
     
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 

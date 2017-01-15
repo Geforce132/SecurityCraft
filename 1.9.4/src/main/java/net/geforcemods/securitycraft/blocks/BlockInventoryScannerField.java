@@ -303,7 +303,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return null;
     }
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
    

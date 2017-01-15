@@ -28,6 +28,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -172,7 +173,7 @@ public class GuiSCManual extends GuiScreen {
     		if(currentPage < -1)
     			currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
     		
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
 		}else if(par2 == Keyboard.KEY_RIGHT){
 			this.currentPage++;
@@ -180,7 +181,7 @@ public class GuiSCManual extends GuiScreen {
     		if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
     			currentPage = -1;
     		
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
 		}
 	}

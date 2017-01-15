@@ -263,7 +263,7 @@ public class BlockInventoryScanner extends BlockContainer {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
-	public TileEntity createTileEntity(World world, int par2) {
+	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityInventoryScanner();
 	}
 

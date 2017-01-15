@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +19,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	{
 		IBlockState upperState = worldObj.getBlockState(pos);
 		IBlockState lowerState = worldObj.getBlockState(pos.down());
-		
+
 		if(!worldObj.isRemote && upperState.getValue(BlockScannerDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
 			if(!(entity instanceof EntityPlayer))
@@ -30,12 +31,16 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 					return;
 				}
-				
+
+				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
+
 				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !((Boolean)upperState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
 				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
 				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-                worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
+				worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+
+				if(open) 
+					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
 			}
 		}
 	}

@@ -99,7 +99,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.scannerDoorItem;
 	}
 
-	public TileEntity createTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return new TileEntityScannerDoor().activatedByView();
 	}

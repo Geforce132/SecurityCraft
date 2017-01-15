@@ -35,10 +35,11 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
         par1World.removeTileEntity(pos);
     }
 
-    public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
-        super.onBlockEventReceived(par1World, pos, state, par5, par6);
-        TileEntity tileentity = par1World.getTileEntity(pos);
-        return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+    @Override
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param){
+        super.eventReceived(state, worldIn, pos, id, param);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
     }
 
     @SideOnly(Side.CLIENT)
@@ -54,7 +55,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
         return Item.getItemFromBlock(this);
     }
 
-	public TileEntity createTileEntity(World par1, int par2) {
+	public TileEntity createNewTileEntity(World par1, int par2) {
 		return new TileEntityOwnable();
 	}
 

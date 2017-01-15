@@ -151,4 +151,10 @@ public class BriefcaseInventory implements IInventory {
 			briefcaseInventory[i] = null;
 		}
 	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return null;
+	}
 }

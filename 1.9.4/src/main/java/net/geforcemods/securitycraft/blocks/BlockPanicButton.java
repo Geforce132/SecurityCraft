@@ -6,8 +6,13 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -27,17 +32,20 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         return false;
     }
     
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+    	return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
         if(((Boolean)state.getValue(POWERED)).booleanValue()){
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
         }else{
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, true, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
             this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
             return true;
         }
@@ -87,7 +95,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         return super.getBoundingBox(state, source, pos);
     }
 
-    public TileEntity createTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 	
@@ -152,5 +160,17 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
             }
         }
     }
+
+	@Override
+	protected void playClickSound(EntityPlayer player, World worldIn, BlockPos pos)
+	{
+        worldIn.playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), SoundCategory.BLOCKS, 0.3F, 0.5F);
+    }
+
+	@Override
+	protected void playReleaseSound(World worldIn, BlockPos pos)
+	{
+        worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+	}
 
 }

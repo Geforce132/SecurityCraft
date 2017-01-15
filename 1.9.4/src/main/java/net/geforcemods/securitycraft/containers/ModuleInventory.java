@@ -158,4 +158,10 @@ public class ModuleInventory implements IInventory {
 
 	public void clear() {}
 
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return null;
+	}
+
 }

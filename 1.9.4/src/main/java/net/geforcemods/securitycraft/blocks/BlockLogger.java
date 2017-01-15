@@ -82,7 +82,7 @@ public class BlockLogger extends BlockContainer {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
-	public TileEntity createTileEntity(World world, int par1) {
+	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
 	}
 }

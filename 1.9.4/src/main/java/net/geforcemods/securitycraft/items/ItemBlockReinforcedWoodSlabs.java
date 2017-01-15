@@ -11,7 +11,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -51,11 +53,11 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 		}
 	}
 	
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
         if(stack.stackSize == 0){
-            return false;
+            return EnumActionResult.FAIL;
         }else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)){
-            return false;
+            return EnumActionResult.FAIL;
         }else{
             Object object = this.singleSlab.getVariant(stack);
             IBlockState iblockstate = worldIn.getBlockState(pos);
@@ -75,7 +77,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                 			PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("messages.reinforcedSlab"), I18n.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
                 		}
                 		
-                		return false;
+                		return EnumActionResult.FAIL;
                 	}             
                 }
                 
@@ -91,11 +93,11 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                         }
                     }
 
-                    return true;
+                    return EnumActionResult.SUCCESS;
                 }
             }
 
-            return this.tryPlace(stack, worldIn, pos.offset(side), object) ? true : super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
+            return this.tryPlace(stack, worldIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
         }
     }
 

@@ -51,7 +51,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		return false;
 	}
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 

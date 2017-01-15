@@ -252,7 +252,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createTileEntity(World par1World, int par2){
+    public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
 

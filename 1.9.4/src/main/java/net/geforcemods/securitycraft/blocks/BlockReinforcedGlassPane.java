@@ -30,10 +30,11 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
         p_149749_1_.removeTileEntity(pos);
     }
 
-    public boolean onBlockEventReceived(World p_149696_1_, BlockPos pos, IBlockState state, int p_149696_5_, int p_149696_6_){
-        super.onBlockEventReceived(p_149696_1_, pos, state, p_149696_5_, p_149696_6_);
-        TileEntity tileentity = p_149696_1_.getTileEntity(pos);
-        return tileentity != null ? tileentity.receiveClientEvent(p_149696_5_, p_149696_6_) : false;
+    @Override
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param){
+        super.eventReceived(state, worldIn, pos, id, param);
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+        return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
     }
     
 	
@@ -50,7 +51,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
         return Item.getItemFromBlock(this);
     }
 
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 	

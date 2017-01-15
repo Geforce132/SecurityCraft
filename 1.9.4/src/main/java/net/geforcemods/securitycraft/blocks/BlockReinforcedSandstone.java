@@ -28,7 +28,7 @@ public class BlockReinforcedSandstone extends BlockSandStone implements ITileEnt
         par1World.removeTileEntity(pos);
     }
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 

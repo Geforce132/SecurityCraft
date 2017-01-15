@@ -75,7 +75,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 		return null;
 	}
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 }

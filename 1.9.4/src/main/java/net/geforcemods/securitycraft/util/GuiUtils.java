@@ -57,9 +57,9 @@ public class GuiUtils{
 	    	gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 	    }
 
-	    if((BlockUtils.getBlock(world, pos).isProvidingWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
+	    if((BlockUtils.getBlock(world, pos).getWeakPower(world.getBlockState(pos), world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
 	    	gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		}else if((BlockUtils.getBlock(world, pos).isProvidingWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
+		}else if((BlockUtils.getBlock(world, pos).getWeakPower(world.getBlockState(pos), world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
 	    	gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
 		}else{
 	    	drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);

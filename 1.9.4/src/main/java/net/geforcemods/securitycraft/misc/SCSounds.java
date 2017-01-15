@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.minecraft.util.ResourceLocation;
+
 public enum SCSounds {
 	
 	ALARM("securitycraft:alarm", 20),
@@ -8,11 +10,11 @@ public enum SCSounds {
 	TASERFIRED("securitycraft:taserFire", 20),
 	ELECTRIFIED("securitycraft:electrified", 20);
 
-	public final String path;
+	public final ResourceLocation path;
 	public final int tickLength;
 
 	private SCSounds(String path, int tickLength){
-		this.path = path;
+		this.path = new ResourceLocation(path);
 		this.tickLength = tickLength;
 	}
 	

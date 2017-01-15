@@ -13,6 +13,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
@@ -30,11 +31,11 @@ public class CommandModule extends CommandBase implements ICommand {
         return 0;
     }
 
-	public String getName() {
+	public String getCommandName() {
 		return "module";
 	}
 	
-	public List<String> getAliases() {
+	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
@@ -42,14 +43,15 @@ public class CommandModule extends CommandBase implements ICommand {
 		return I18n.translateToLocal("messages.command.module.usage");
 	}
 	
-	public boolean canCommandSenderUse(ICommandSender p_71519_1_) {
+	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
 		return true;
 	}
 
-	public void execute(ICommandSender par1ICommandSender, String[] par2String) throws CommandException{
-		if(par2String.length == 1){
-			if(par2String[0].matches("copy")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException{
+		if(args.length == 1){
+			if(args[0].matches("copy")){
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
 					mod_SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
@@ -59,8 +61,8 @@ public class CommandModule extends CommandBase implements ICommand {
 				}
 				
 				return;
-			}else if(par2String[0].matches("paste")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+			}else if(args[0].matches("paste")){
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(mod_SecurityCraft.instance.getSavedModule() == null){
 					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.nothingSaved"), TextFormatting.RED);
@@ -75,9 +77,9 @@ public class CommandModule extends CommandBase implements ICommand {
 				
 				return;
 			}
-		}else if(par2String.length == 2){
-			if(par2String[0].matches("add")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+		}else if(args.length == 2){
+			if(args[0].matches("add")){
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 				
 				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
 					if(player.inventory.getCurrentItem().getTagCompound() == null){
@@ -85,21 +87,21 @@ public class CommandModule extends CommandBase implements ICommand {
 					}
 					
 					for(int i = 1; i <= 10; i++){
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(par2String[1])){
-							PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.alreadyContained").replace("#", par2String[1]), TextFormatting.RED);
+						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(args[1])){
+							PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.alreadyContained").replace("#", args[1]), TextFormatting.RED);
 							return;
 						}
 					}
                     
-					player.inventory.getCurrentItem().getTagCompound().setString("Player" + getNextSlot(player.inventory.getCurrentItem().getTagCompound()), par2String[1]);
-					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.added").replace("#", par2String[1]), TextFormatting.GREEN);
+					player.inventory.getCurrentItem().getTagCompound().setString("Player" + getNextSlot(player.inventory.getCurrentItem().getTagCompound()), args[1]);
+					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.added").replace("#", args[1]), TextFormatting.GREEN);
 					return;
 				}else{
 					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.notHoldingForModify"), TextFormatting.RED);
 					return;
 				}
-			}else if(par2String[0].matches("remove")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+			}else if(args[0].matches("remove")){
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 				
 				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
 					if(player.inventory.getCurrentItem().getTagCompound() == null){
@@ -107,12 +109,12 @@ public class CommandModule extends CommandBase implements ICommand {
 					}
 					
 					for(int i = 1; i <= 10; i++){
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(par2String[1])){
+						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(args[1])){
 							player.inventory.getCurrentItem().getTagCompound().removeTag("Player" + i);
 						}
 					}
 					
-					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.removed").replace("#", par2String[1]), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.removed").replace("#", args[1]), TextFormatting.GREEN);
 					return;
 				}else{
 					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("messages.module.manager"), I18n.translateToLocal("messages.module.notHoldingForModify"), TextFormatting.RED);

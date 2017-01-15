@@ -179,8 +179,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		return true;
 	}
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
 	}
-
 }

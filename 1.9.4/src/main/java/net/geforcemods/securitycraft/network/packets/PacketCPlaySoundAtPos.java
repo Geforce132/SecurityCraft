@@ -2,6 +2,10 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -34,6 +38,22 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		this.sound = par4String;
 		this.volume = par5;
 	}
+	
+	public PacketCPlaySoundAtPos(int par1, int par2, int par3, ResourceLocation par4ResourceLocation, double par5){
+		this.x = par1;
+		this.y = par2;
+		this.z = par3;
+		this.sound = par4ResourceLocation.getResourcePath();
+		this.volume = par5;
+	}
+	
+	public PacketCPlaySoundAtPos(double par1, double par2, double par3, ResourceLocation par4ResourceLocation, double par5){
+		this.x = (int) par1;
+		this.y = (int) par2;
+		this.z = (int) par3;
+		this.sound = par4ResourceLocation.getResourcePath();
+		this.volume = par5;
+	}
 
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readInt();
@@ -55,7 +75,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
-		Minecraft.getMinecraft().theWorld.playSound(message.x,message.y,message.z, message.sound, (float) message.volume, 1.0F, true);
+		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.MASTER, (float) message.volume, 1.0F, true);
 		return null;
 	}
 	

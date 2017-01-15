@@ -121,7 +121,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		return isDouble;
 	}
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -181,5 +181,11 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
             }
         }
     }
-	
+
+
+	@Override
+	public Comparable<?> getTypeForItem(ItemStack stack) //TODO: what?
+	{
+		return null;
+	}
 }

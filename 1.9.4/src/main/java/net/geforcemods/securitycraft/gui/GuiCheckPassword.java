@@ -17,6 +17,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -93,12 +94,12 @@ public class GuiCheckPassword extends GuiContainer {
      
     protected void keyTyped(char par1, int par2) throws IOException {
 		if(this.isValidChar(par1) && par1 != ''){
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.currentString += par1;
 			this.setTextboxCensoredText(this.keycodeTextbox, currentString);
 			this.checkCode(this.currentString);			
 		}else if(this.isValidChar(par1) && par1 == ''){
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
+			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.keycodeTextbox, currentString);
 			this.checkCode(this.currentString);

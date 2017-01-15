@@ -133,7 +133,7 @@ public class BlockRetinalScanner extends BlockContainer {
         return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

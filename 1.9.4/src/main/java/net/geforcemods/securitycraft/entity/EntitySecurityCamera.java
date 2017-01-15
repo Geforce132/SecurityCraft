@@ -22,6 +22,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -161,7 +163,7 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && this.screenshotCooldown == 0){	
 				this.screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().theWorld.playSound(posX, posY, posZ, SCSounds.CAMERASNAP.path, 1.0F, 1.0F, true);
+				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), new SoundEvent(SCSounds.CAMERASNAP.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 					
 			if(getRidingEntity() != null && this.shouldProvideNightVision){
@@ -286,20 +288,18 @@ public class EntitySecurityCamera extends Entity{
 		if(zoom > 0){
 			if(zoomAmount == -0.5F){
 				zoomAmount = 1F;
-				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}else if(zoomAmount == 1F){
 				zoomAmount = 2F;
-				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}
 		}else if(zoom < 0){
 			if(zoomAmount == 2F){
 				zoomAmount = 1F;
-				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}else if(zoomAmount == 1F){
 				zoomAmount = -0.5F;
-				Minecraft.getMinecraft().theWorld.playSound(this.posX,this.posY,this.posZ, SCSounds.CAMERAZOOMIN.path, 1.0F, 1.0F, true);	
 			}
 		}
+		
+		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), new SoundEvent(SCSounds.CAMERAZOOMIN.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
 	}
 	
 	public void setRedstonePower() {

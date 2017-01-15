@@ -24,7 +24,7 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
         par1World.removeTileEntity(pos);
 	}
 
-    public TileEntity createTileEntity(World var1, int var2) {
+    public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 
