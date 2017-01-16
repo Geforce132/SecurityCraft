@@ -74,7 +74,7 @@ public class BlockLogger extends BlockContainer {
 
     public int getMetaFromState(IBlockState state)
     {   	
-    	return ((EnumFacing) state.getValue(FACING)).getIndex();
+    	return state.getValue(FACING).getIndex();
     }
 
     protected BlockStateContainer createBlockState()

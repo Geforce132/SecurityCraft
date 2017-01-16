@@ -34,10 +34,10 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 
 				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
 
-				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !((Boolean)upperState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
-				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
+				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !upperState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
+				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !lowerState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
 				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-				worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+				worldObj.playEvent((EntityPlayer)null, 1006, pos, 0);
 
 				if(open) 
 					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);

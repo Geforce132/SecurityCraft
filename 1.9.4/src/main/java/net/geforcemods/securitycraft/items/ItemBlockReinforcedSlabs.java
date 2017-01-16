@@ -61,7 +61,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             if(iblockstate.getBlock() instanceof BlockReinforcedSlabs){
                 IProperty iproperty = this.singleSlab.getVariantProperty();
                 Comparable<?> comparable = iblockstate.getValue(iproperty);
-                BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
+                BlockSlab.EnumBlockHalf enumblockhalf = iblockstate.getValue(BlockSlab.HALF);
                 
                 Owner owner = null;
 

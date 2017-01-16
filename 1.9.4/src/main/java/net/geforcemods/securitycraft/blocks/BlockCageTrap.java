@@ -92,7 +92,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
     public int getMetaFromState(IBlockState state)
     {
-    	return ((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0;
+    	return state.getValue(DEACTIVATED).booleanValue() ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()

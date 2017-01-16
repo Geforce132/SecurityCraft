@@ -63,7 +63,7 @@ public class BlockInventoryScanner extends BlockContainer {
             Block block1 = worldIn.getBlockState(pos.south()).getBlock();
             Block block2 = worldIn.getBlockState(pos.west()).getBlock();
             Block block3 = worldIn.getBlockState(pos.east()).getBlock();
-            EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+            EnumFacing enumfacing = state.getValue(FACING);
 
             if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
             {
@@ -108,7 +108,7 @@ public class BlockInventoryScanner extends BlockContainer {
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
         Block block2 = par1World.getBlockState(pos.west()).getBlock();
         Block block3 = par1World.getBlockState(pos.east()).getBlock();
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
 
         if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
         {
@@ -134,33 +134,33 @@ public class BlockInventoryScanner extends BlockContainer {
     }
     
     private void checkAndPlaceAppropriately(World par1World, BlockPos pos) {
-		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
+		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == Blocks.AIR && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
 			par1World.setBlockState(pos.west(), mod_SecurityCraft.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == Blocks.AIR && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
 			par1World.setBlockState(pos.east(), mod_SecurityCraft.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == Blocks.AIR && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
 			par1World.setBlockState(pos.north(), mod_SecurityCraft.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == Blocks.AIR && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == Blocks.AIR && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
 			par1World.setBlockState(pos.south(), mod_SecurityCraft.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
 		}
 	}
     
     private boolean isFacingAnotherBlock(World par1World, BlockPos pos){
-    	if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.inventoryScannerField && (EnumFacing) par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
+    	if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
 			return true;
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.inventoryScannerField && (EnumFacing) par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
-			return true;
-
-		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.inventoryScannerField && (EnumFacing) par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
 			return true;
 
 		}
-		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.inventoryScannerField && (EnumFacing) par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
+			return true;
+
+		}
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
 			return true;
 
 		}else{
@@ -255,7 +255,7 @@ public class BlockInventoryScanner extends BlockContainer {
 
     public int getMetaFromState(IBlockState state)
     {   	
-    	return ((EnumFacing) state.getValue(FACING)).getIndex(); 	
+    	return state.getValue(FACING).getIndex(); 	
     }
 
     protected BlockStateContainer createBlockStateContainer()

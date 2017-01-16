@@ -42,7 +42,7 @@ public class BlockProtecto extends BlockOwnable {
 
     public int getMetaFromState(IBlockState state)
     {
-    	return ((Boolean) state.getValue(ACTIVATED)).booleanValue() == true ? 1 : 0;
+    	return state.getValue(ACTIVATED).booleanValue() == true ? 1 : 0;
     }
     
     protected BlockStateContainer createBlockState()

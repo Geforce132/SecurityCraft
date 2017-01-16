@@ -22,7 +22,7 @@ public class ItemKeyPanel extends Item {
 		if(!par3World.isRemote){
 			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.frame){
 				Owner owner = ((IOwnable) par3World.getTileEntity(pos)).getOwner();
-		        EnumFacing enumfacing = (EnumFacing) par3World.getBlockState(pos).getValue(BlockKeypad.FACING);
+		        EnumFacing enumfacing = par3World.getBlockState(pos).getValue(BlockKeypad.FACING);
 				par3World.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, enumfacing).withProperty(BlockKeypad.POWERED, false));
 				((IOwnable) par3World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
 				par1ItemStack.stackSize -= 1;

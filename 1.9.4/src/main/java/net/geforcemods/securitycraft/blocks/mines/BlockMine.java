@@ -129,7 +129,7 @@ public class BlockMine extends BlockExplosive {
 	public void explode(World par1World, BlockPos pos) {
 		if(par1World.isRemote){ return; }
 
-		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
+		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			par1World.destroyBlock(pos, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
@@ -160,7 +160,7 @@ public class BlockMine extends BlockExplosive {
 
 	public int getMetaFromState(IBlockState state)
 	{
-		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
+		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
 	protected BlockStateContainer createBlockState()
@@ -169,7 +169,7 @@ public class BlockMine extends BlockExplosive {
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
-		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
 	public boolean isDefusable() {

@@ -72,7 +72,7 @@ public class BlockPortableRadar extends BlockContainer {
             EntityPlayer entityplayer;                 
             
             if(list.isEmpty()){
-            	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) && ((Boolean) state.getValue(POWERED)).booleanValue()){
+            	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) && state.getValue(POWERED).booleanValue()){
             		togglePowerOutput(par1World, pos, false);
             		return;
                 }
@@ -104,10 +104,10 @@ public class BlockPortableRadar extends BlockContainer {
     }
 
     private static void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
-    	if(par5 && !((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
+    	if(par5 && !par1World.getBlockState(pos).getValue(POWERED).booleanValue()){
     		BlockUtils.setBlockProperty(par1World, pos, POWERED, true, true);
     		BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
-		}else if(!par5 && ((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
+		}else if(!par5 && par1World.getBlockState(pos).getValue(POWERED).booleanValue()){
 			BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
 			BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
 		}
@@ -119,7 +119,7 @@ public class BlockPortableRadar extends BlockContainer {
     }
     
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(state.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -133,7 +133,7 @@ public class BlockPortableRadar extends BlockContainer {
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Boolean) state.getValue(POWERED)).booleanValue() ? 1 : 0;
+        return state.getValue(POWERED).booleanValue() ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState()

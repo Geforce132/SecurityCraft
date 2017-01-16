@@ -125,7 +125,7 @@ public class ContainerBlockReinforcer extends Container
 	public ItemStack transferStackInSlot(EntityPlayer player, int id)
 	{
 		ItemStack stack = null;
-		Slot slot = (Slot) inventorySlots.get(id);
+		Slot slot = inventorySlots.get(id);
 
 		if(slot != null && slot.getHasStack())
 		{
@@ -178,7 +178,7 @@ public class ContainerBlockReinforcer extends Container
         {
             while(stack.stackSize > 0 && (!useEndIndex && k < endIndex || useEndIndex && k >= startIndex))
             {
-                slot = (Slot)inventorySlots.get(k);
+                slot = inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
                 if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
@@ -217,7 +217,7 @@ public class ContainerBlockReinforcer extends Container
 
             while(!useEndIndex && k < endIndex || useEndIndex && k >= startIndex)
             {
-                slot = (Slot)inventorySlots.get(k);
+                slot = inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
                 if(itemstack1 == null && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.

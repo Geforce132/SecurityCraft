@@ -38,15 +38,15 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     	return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
-        if(((Boolean)state.getValue(POWERED)).booleanValue()){
+        if(state.getValue(POWERED).booleanValue()){
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
+            this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
             return true;
         }else{
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, true, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
-            this.notifyNeighbors(worldIn, pos, (EnumFacing)state.getValue(FACING));
+            this.notifyNeighbors(worldIn, pos, state.getValue(FACING));
             return true;
         }
     }
@@ -72,8 +72,8 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-        boolean flag = ((Boolean)state.getValue(POWERED)).booleanValue();
+        EnumFacing enumfacing = state.getValue(FACING);
+        boolean flag = state.getValue(POWERED).booleanValue();
         float f2 = (flag ? 1 : 2) / 16.0F;
                       
         switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])

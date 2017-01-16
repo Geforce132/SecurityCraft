@@ -28,7 +28,7 @@ public class ContainerDisguiseModule extends Container {
 	
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
 		ItemStack itemstack = null;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
 			ItemStack itemstack1 = slot.getStack();

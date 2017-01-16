@@ -70,7 +70,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     		return true;
     	}
     	else {
-			if(((Boolean) state.getValue(POWERED)).booleanValue()){
+			if(state.getValue(POWERED).booleanValue()){
 				return false;
 			}
 
@@ -109,7 +109,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
         Block block2 = par1World.getBlockState(pos.west()).getBlock();
         Block block3 = par1World.getBlockState(pos.east()).getBlock();
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
 
         if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
         {
@@ -141,7 +141,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(state.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -153,7 +153,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){  	
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(state.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -184,12 +184,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(state.getProperties().containsKey(POWERED) && ((Boolean) state.getValue(POWERED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue()){
+    		return (state.getValue(FACING).getIndex() + 6);
     	}else{
     		if(!state.getProperties().containsKey(FACING)) return 15;
     		
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
     

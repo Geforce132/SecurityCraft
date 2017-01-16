@@ -111,7 +111,7 @@ public class BlockIMS extends BlockOwnable {
 
     public int getMetaFromState(IBlockState state)
     {
-    	return (((Integer) state.getValue(MINES)).intValue());
+    	return (state.getValue(MINES).intValue());
     }
 
     protected BlockStateContainer createBlockState()

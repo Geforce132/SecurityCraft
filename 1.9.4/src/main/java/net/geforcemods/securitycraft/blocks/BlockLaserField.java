@@ -269,11 +269,11 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-    	if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 1)
+    	if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
     		return new AxisAlignedBB(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
-        else if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 2)
+        else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
         	return new AxisAlignedBB(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
-        else if (((Integer) source.getBlockState(pos).getValue(BOUNDTYPE)).intValue() == 3)
+        else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
         	return new AxisAlignedBB(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
     	return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
     }
@@ -290,7 +290,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 
     public int getMetaFromState(IBlockState state)
     {
-        return ((Integer) state.getValue(BOUNDTYPE)).intValue();
+        return state.getValue(BOUNDTYPE).intValue();
     }
 
     protected BlockStateContainer createBlockState()

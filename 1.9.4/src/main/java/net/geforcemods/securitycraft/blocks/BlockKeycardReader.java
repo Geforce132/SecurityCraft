@@ -57,7 +57,7 @@ public class BlockKeycardReader extends BlockOwnable  {
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
         Block block2 = par1World.getBlockState(pos.west()).getBlock();
         Block block3 = par1World.getBlockState(pos.east()).getBlock();
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
 
         if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
         {
@@ -144,7 +144,7 @@ public class BlockKeycardReader extends BlockOwnable  {
      */
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-    	if(((Boolean) state.getValue(POWERED))){
+    	if((state.getValue(POWERED))){
             double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d1 = pos.getY() + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
@@ -167,7 +167,7 @@ public class BlockKeycardReader extends BlockOwnable  {
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
     {
-    	if(((Boolean) state.getValue(POWERED))){
+    	if((state.getValue(POWERED))){
     		return 15;
     	}else{
     		return 0;
@@ -204,10 +204,10 @@ public class BlockKeycardReader extends BlockOwnable  {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getValue(POWERED).booleanValue()){
+    		return (state.getValue(FACING).getIndex() + 6);
     	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
 

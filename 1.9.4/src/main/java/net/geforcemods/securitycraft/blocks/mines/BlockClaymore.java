@@ -87,7 +87,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	
     @Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-    	if (!world.isRemote && !((Boolean) world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
+    	if (!world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
         {
             BlockUtils.destroyBlock(world, pos, false);
             world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
@@ -98,7 +98,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     
     public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
-        if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !((Boolean) worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED)).booleanValue())
+        if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
         {
             BlockUtils.destroyBlock(worldIn, pos, false);
             worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
@@ -132,11 +132,11 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
     		return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-        else if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+        else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
         	return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-        else if ((EnumFacing) source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+        else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
         	return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
         else
         	return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
@@ -159,10 +159,10 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(((Boolean) state.getValue(DEACTIVATED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getValue(DEACTIVATED).booleanValue()){
+    		return (state.getValue(FACING).getIndex() + 6);
     	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
 
@@ -172,7 +172,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     }
     
     public boolean isActive(World world, BlockPos pos) {
-		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
     
     public boolean isDefusable() {

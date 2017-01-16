@@ -99,7 +99,7 @@ public class GuiSCManual extends GuiScreen {
 	    }
 	    
 	    for(int i = 0; i < this.buttonList.size(); i++){
-            ((GuiButton) this.buttonList.get(i)).drawButton(this.mc, par1, par2);
+            this.buttonList.get(i).drawButton(this.mc, par1, par2);
         }
 	    
 	    if(this.currentPage > -1){

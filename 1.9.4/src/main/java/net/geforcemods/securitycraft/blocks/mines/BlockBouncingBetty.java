@@ -110,7 +110,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	public int getMetaFromState(IBlockState state)
 	{
-		return (((Boolean) state.getValue(DEACTIVATED)).booleanValue() ? 1 : 0);
+		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
 	protected BlockStateContainer createBlockState()
@@ -119,7 +119,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 	
 	public boolean isActive(World world, BlockPos pos) {
-		return !((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
 	public boolean isDefusable() {

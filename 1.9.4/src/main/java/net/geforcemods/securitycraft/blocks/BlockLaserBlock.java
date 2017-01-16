@@ -258,7 +258,7 @@ public class BlockLaserBlock extends BlockOwnable {
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(state.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -270,7 +270,7 @@ public class BlockLaserBlock extends BlockOwnable {
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){   	
-    	if(((Boolean) state.getValue(POWERED)).booleanValue()){
+    	if(state.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -281,14 +281,14 @@ public class BlockLaserBlock extends BlockOwnable {
      * Ticks the block if it's been scheduled
      */
     public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-        if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue()){
+        if (!par1World.isRemote && state.getValue(POWERED).booleanValue()){
         	BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
         }                      
     }
     
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
-            if(((Boolean) state.getValue(POWERED)).booleanValue()){
+            if(state.getValue(POWERED).booleanValue()){
             double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d1 = pos.getY() + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
             double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
@@ -312,7 +312,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
     public int getMetaFromState(IBlockState state)
     {
-        return (((Boolean) state.getValue(POWERED)).booleanValue() ? 1 : 0);
+        return (state.getValue(POWERED).booleanValue() ? 1 : 0);
     }
     
     protected BlockStateContainer createBlockState()

@@ -88,15 +88,15 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 //                	System.out.println("Powered by SC block");
 //                }
                 
-                if (((flag || neighborBlock.canProvidePower(iblockstate2))) && neighborBlock != this && flag != ((Boolean)iblockstate2.getValue(POWERED)).booleanValue())
+                if (((flag || neighborBlock.canProvidePower(iblockstate2))) && neighborBlock != this && flag != iblockstate2.getValue(POWERED).booleanValue())
                 {
                     worldIn.setBlockState(blockpos2, iblockstate2.withProperty(POWERED, Boolean.valueOf(flag)), 2);
 
-                    if (flag != ((Boolean)state.getValue(OPEN)).booleanValue())
+                    if (flag != state.getValue(OPEN).booleanValue())
                     {
                         worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                        worldIn.playAuxSFXAtEntity((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
+                        worldIn.playEvent((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
                     }
                 }
             }
