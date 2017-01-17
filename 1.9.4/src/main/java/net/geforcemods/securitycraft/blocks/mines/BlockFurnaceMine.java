@@ -18,8 +18,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICustomWailaDisplay {
 
@@ -87,11 +85,12 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 		return false;
 	}
 	
+	/* TODO: no clue about this
 	@SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
 	public IBlockState getStateFromMeta(int meta){
         return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);

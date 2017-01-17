@@ -18,10 +18,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +39,8 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 		super(material);
 	}
 	
-	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
@@ -53,7 +55,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -61,12 +63,12 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube()
+    public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -76,8 +78,8 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
         return true;
     }  
     
-    public int getRenderType(){
-    	return 3;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+    	return EnumBlockRenderType.MODEL;
     }
     
     public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
@@ -303,7 +305,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item getItem(World par1World, BlockPos pos)
+    public ItemStack getItem(World par1World, BlockPos pos, IBlockState state)
     {
         return null;
     }

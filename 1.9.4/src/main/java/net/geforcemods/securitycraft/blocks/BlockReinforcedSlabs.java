@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -13,7 +12,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -58,6 +56,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
     }
 	
+	/* TODO: no clue about this, also check registration, maybe it changed
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List list){
         if(slabMaterial != Material.GROUND){
@@ -71,11 +70,11 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         }else{
             list.add(new ItemStack(itemIn, 1, BlockReinforcedSlabs.EnumType.DIRT.getMetadata()));              
         }
-    }
+    }*/
 
     @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos){
-        return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+        return new ItemStack(slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
     }
     
     public int damageDropped(IBlockState state){
@@ -86,7 +85,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return super.getUnlocalizedName() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getUnlocalizedName();
     }
     
-    public IProperty getVariantProperty(){
+    public IProperty<?> getVariantProperty(){
         return VARIANT;
     }
     

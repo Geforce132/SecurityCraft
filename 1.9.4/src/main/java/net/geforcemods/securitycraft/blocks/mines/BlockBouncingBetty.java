@@ -15,7 +15,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -32,16 +34,16 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		super(par2Material);
 	}
 
-	public boolean isOpaqueCube(){
+	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 
-	public boolean isNormalCube(){
+	public boolean isNormalCube(IBlockState state){
 		return false;
 	} 
 
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
@@ -99,8 +101,8 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public Item getItem(World par1World, BlockPos pos){
-		return Item.getItemFromBlock(this);
+	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
+		return new ItemStack(Item.getItemFromBlock(this));
 	}
 	
 	public IBlockState getStateFromMeta(int meta)
@@ -126,7 +128,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		return true;
 	}
 	
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 	

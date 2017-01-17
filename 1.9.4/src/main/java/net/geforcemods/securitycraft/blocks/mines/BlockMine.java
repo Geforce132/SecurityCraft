@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -18,7 +17,9 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -36,7 +37,7 @@ public class BlockMine extends BlockExplosive {
 	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
 	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
 	 */
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
 	}
@@ -44,24 +45,25 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
-	public boolean isNormalCube()
+	public boolean isNormalCube(IBlockState state)
 	{
 		return false;
 	} 
 
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
 
 	/**
 	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
-	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5){
-		if (par1World.getBlockState(pos.down()).getBlock().getMaterial(par1World.getBlockState(pos.down())) != Material.AIR){
+	@Override
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+		if (world.getBlockState(pos.down()).getBlock().getMaterial(world.getBlockState(pos.down())) != Material.AIR){
 			return;  	   
 		}else{    	   
-			this.explode(par1World, pos);   
+			this.explode((World)world, pos);   
 		}
 	}
 
@@ -102,14 +104,15 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-		if(par1World.isRemote){
+	@Override
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
+		if(worldIn.isRemote){
 			return;
 		}else{
-			if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem){
+			if(entityIn instanceof EntityCreeper || entityIn instanceof EntityOcelot || entityIn instanceof EntityEnderman || entityIn instanceof EntityItem){
 				return;
 			}else{
-				this.explode(par1World, pos);
+				this.explode(worldIn, pos);
 			}  		
 		}
 	}
@@ -149,8 +152,8 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public Item getItem(World par1World, BlockPos pos){
-		return Item.getItemFromBlock(mod_SecurityCraft.mine);
+	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.mine));
 	}
 
 	public IBlockState getStateFromMeta(int meta)
@@ -176,7 +179,7 @@ public class BlockMine extends BlockExplosive {
 		return true;
 	}      
 
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 

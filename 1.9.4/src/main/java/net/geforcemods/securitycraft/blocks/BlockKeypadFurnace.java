@@ -13,12 +13,12 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockKeypadFurnace extends BlockOwnable {
 	
@@ -34,7 +34,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -42,14 +42,15 @@ public class BlockKeypadFurnace extends BlockOwnable {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube()
+    public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
 	
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote){     
-    		((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+    @Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(!worldIn.isRemote){     
+    		((TileEntityKeypadFurnace) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
     	}
         
         return true;
@@ -69,11 +70,12 @@ public class BlockKeypadFurnace extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
     }
     
+	/* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
     public IBlockState getStateFromMeta(int meta)
     {
@@ -98,7 +100,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
         return new BlockStateContainer(this, new IProperty[] {FACING, OPEN});
     }
 	
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
 	}
 

@@ -17,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,16 +36,16 @@ public class BlockIMS extends BlockOwnable {
 		setSoundType(SoundType.METAL);
 	}
 	
-	public boolean isOpaqueCube(){
+	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
     
-    public boolean isNormalCube(){
+    public boolean isNormalCube(IBlockState state){
         return false;
     } 
     
-    public int getRenderType(){
-    	return 3;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+    	return EnumBlockRenderType.MODEL;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class BlockIMS extends BlockOwnable {
         return new BlockStateContainer(this, new IProperty[] {MINES});
     }
 	
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityIMS();
 	}
 

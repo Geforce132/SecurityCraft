@@ -22,7 +22,7 @@ public class BlockProtecto extends BlockOwnable {
 		setSoundType(SoundType.METAL);
 	}
 	
-	public boolean isOpaqueCube(){
+	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 	
@@ -50,7 +50,7 @@ public class BlockProtecto extends BlockOwnable {
         return new BlockStateContainer(this, new IProperty[] {ACTIVATED});
     }
 	
-	public TileEntity createTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 	

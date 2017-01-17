@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -19,18 +18,7 @@ public class BlockOwnable extends BlockContainer {
 			setSoundType(SoundType.STONE);
 	}
 	
-	public int getRenderType()
-    {
-        return 3;
-    }
-	
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
-	}
-
-	@Override
-	public Block setSoundType(SoundType sound)
-	{
-		return super.setSoundType(sound);
 	}
 }

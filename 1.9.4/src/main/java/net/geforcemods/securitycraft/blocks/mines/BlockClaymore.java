@@ -15,15 +15,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockClaymore extends BlockContainer implements IExplosive {
 	
@@ -34,7 +35,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		super(materialIn);
 	}
 	
-	public boolean isOpaqueCube()
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -42,21 +43,22 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube()
+    public boolean isNormalCube(IBlockState state)
     {
         return false;
     } 
     
-    public int getRenderType(){
-    	return 3;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+    	return EnumBlockRenderType.MODEL;
     }
     
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
     
-    public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
@@ -71,13 +73,14 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn.getBlockState(pos.down()), worldIn, pos.down(), EnumFacing.UP);
     }
     
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote){
-			if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
-				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
+    @Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(!worldIn.isRemote){
+			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
+				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
-			}else if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				par1World.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
+			}else if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
+				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
 		}
@@ -142,11 +145,12 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         	return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
 	}
 	
+	/* TODO: no clue about this
 	@SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
     public IBlockState getStateFromMeta(int meta)
     {

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,10 +19,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,8 +39,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	public BlockInventoryScannerField(Material par2Material) {
 		super(par2Material);
 	}
-
-	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
@@ -56,7 +56,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -64,12 +64,12 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube()
+    public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -79,20 +79,23 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return true;
     }  
     
-    public int getRenderType(){
-    	return 3;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+    	return EnumBlockRenderType.MODEL;
     }
     
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
-    public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block block) {
-    	if(par1World.isRemote){
+    @Override
+    public void onNeighborChange(IBlockAccess w, BlockPos pos, BlockPos neighbor) {
+    	World world = (World)w;
+    	
+    	if(world.isRemote){
     		return;
     	}else{
-    		if(!Utils.hasInventoryScannerFacingBlock(par1World, pos)){
-        		par1World.destroyBlock(pos, false);
+    		if(!Utils.hasInventoryScannerFacingBlock(world, pos)){
+    			world.destroyBlock(pos, false);
         	}
     	}
     }
@@ -298,7 +301,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    public Item getItem(World par1World, BlockPos pos)
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
         return null;
     }

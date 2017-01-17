@@ -22,11 +22,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -43,7 +44,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		setSoundType(SoundType.STONE);
 	}
 	
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
@@ -53,20 +54,22 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     }
 	
 	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        if(worldIn.getBlockState(pos).getBlock() != Blocks.AIR && (worldIn.getBlockState(pos).getBlock().isFullCube(worldIn.getBlockState(pos)) || !worldIn.getBlockState(pos).getBlock().isOpaqueCube(worldIn.getBlockState(pos)))) {
+	@Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        if(blockAccess.getBlockState(pos).getBlock() != Blocks.AIR && (blockAccess.getBlockState(pos).getBlock().isFullCube(blockAccess.getBlockState(pos)) || !blockAccess.getBlockState(pos).getBlock().isOpaqueCube(blockAccess.getBlockState(pos)))) {
         	return false;
         }
 
         return true;
     }
 	
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
     
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(par1World.isRemote){
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    	if(worldIn.isRemote){
     		return true;
     	}
     	else {
@@ -74,12 +77,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 				return false;
 			}
 
-			if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
-				activate(par1World, pos);
+			if(ModuleUtils.checkForModule(worldIn, pos, playerIn, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(worldIn, pos, playerIn, EnumCustomModules.BLACKLIST)){
+				activate(worldIn, pos);
 				return true;
 			}
 
-			((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+			((IPasswordProtected) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
 
 			return true;       		 	    	     	
 		}
@@ -131,7 +134,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);		
 	}
 
-    public boolean canProvidePower(){
+    public boolean canProvidePower(IBlockState state){
         return true;
     }
     
@@ -140,8 +143,9 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(state.getValue(POWERED).booleanValue()){
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+    	if(blockState.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -152,8 +156,9 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){  	
-    	if(state.getValue(POWERED).booleanValue()){
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){  	
+    	if(blockState.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -165,11 +170,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
     
+    /* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
     public IBlockState getStateFromMeta(int meta)
     {
@@ -240,7 +246,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     }
     
     @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos) {
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
     	return null;
     }
 

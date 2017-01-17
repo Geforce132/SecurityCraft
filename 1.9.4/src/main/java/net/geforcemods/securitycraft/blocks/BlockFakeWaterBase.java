@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+//TODO: look at this class for changed method signatures
 public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersectable {
 
 	public BlockFakeWaterBase(Material par2Material)

@@ -23,7 +23,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -43,8 +45,8 @@ public class BlockKeycardReader extends BlockOwnable  {
 		setSoundType(SoundType.METAL);
 	}
 	
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
 	    	     
     /**
@@ -108,19 +110,20 @@ public class BlockKeycardReader extends BlockOwnable  {
 		
 	}
 	
-    public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(par1World.isRemote){
+	@Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    	if(worldIn.isRemote){
     		return true;
     	}
     	
-    	if(par5EntityPlayer.inventory.getCurrentItem() == null || (!(par5EntityPlayer.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && par5EntityPlayer.inventory.getCurrentItem().getItem() != mod_SecurityCraft.adminTool)){
-    		((TileEntityKeycardReader) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+    	if(playerIn.inventory.getCurrentItem() == null || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.adminTool)){
+    		((TileEntityKeycardReader) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
     	}
-    	else if(par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.adminTool) {
-    		((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, ItemUtils.toItemStack(mod_SecurityCraft.limitedUseKeycard), par5EntityPlayer);
+    	else if(playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.adminTool) {
+    		((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, ItemUtils.toItemStack(mod_SecurityCraft.limitedUseKeycard), playerIn);
     	}
     	else {
-    		((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, par5EntityPlayer.inventory.getCurrentItem(), par5EntityPlayer);
+    		((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, playerIn.inventory.getCurrentItem(), playerIn);
     	}
     	
 		return false;
@@ -142,21 +145,22 @@ public class BlockKeycardReader extends BlockOwnable  {
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-    	if((state.getValue(POWERED))){
-            double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = pos.getY() + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){
+    	if((stateIn.getValue(POWERED))){
+            double d0 = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
+            double d1 = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
+            double d2 = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
             double d3 = 0.2199999988079071D;
             double d4 = 0.27000001072883606D;
 
             
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
         } 
     }
     
@@ -165,9 +169,10 @@ public class BlockKeycardReader extends BlockOwnable  {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
-    	if((state.getValue(POWERED))){
+    	if((blockState.getValue(POWERED))){
     		return 15;
     	}else{
     		return 0;
@@ -177,7 +182,7 @@ public class BlockKeycardReader extends BlockOwnable  {
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean canProvidePower()
+    public boolean canProvidePower(IBlockState state)
     {
     	return true;
     }
@@ -187,11 +192,12 @@ public class BlockKeycardReader extends BlockOwnable  {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
     
+    /* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
     public IBlockState getStateFromMeta(int meta)
     {
@@ -216,7 +222,7 @@ public class BlockKeycardReader extends BlockOwnable  {
         return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createTileEntity(World world, int par2) {
+    public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityKeycardReader();
 	}
 

@@ -7,7 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,30 +19,31 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 		super(par1);
 	}
 	
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9) {
-		if(!par1World.isRemote){
-			if(par5EntityPlayer.inventory.getCurrentItem() == null && explodesWhenInteractedWith() && isActive(par1World, pos)) {
-				this.explode(par1World, pos);
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(!worldIn.isRemote){
+			if(playerIn.inventory.getCurrentItem() == null && explodesWhenInteractedWith() && isActive(worldIn, pos)) {
+				this.explode(worldIn, pos);
 				return false;
 			}
 			
-			if(par5EntityPlayer.inventory.getCurrentItem() != null && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
+			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
 				return false;
 			}
 			
-			if(isActive(par1World, pos) && isDefusable() && par5EntityPlayer.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters) {
-				defuseMine(par1World, pos);
-				par5EntityPlayer.inventory.getCurrentItem().damageItem(1, par5EntityPlayer);
+			if(isActive(worldIn, pos) && isDefusable() && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters) {
+				defuseMine(worldIn, pos);
+				playerIn.inventory.getCurrentItem().damageItem(1, playerIn);
 				return false;
 			}
 			
-			if(!isActive(par1World, pos) && par5EntityPlayer.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL) {
-				activateMine(par1World, pos);
+			if(!isActive(worldIn, pos) && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL) {
+				activateMine(worldIn, pos);
 				return false;
 			}
 			
-			if(explodesWhenInteractedWith() && isActive(par1World, pos)) {
-			    this.explode(par1World, pos);
+			if(explodesWhenInteractedWith() && isActive(worldIn, pos)) {
+			    this.explode(worldIn, pos);
 			}
 
 			return false;

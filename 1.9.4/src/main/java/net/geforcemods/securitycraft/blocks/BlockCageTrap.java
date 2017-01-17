@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -36,12 +37,12 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		super(par2Material);
 	}
 	
-	public boolean isOpaqueCube(){
+	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
 	
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -100,7 +101,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
         return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
     }
 
-	public TileEntity createTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
     

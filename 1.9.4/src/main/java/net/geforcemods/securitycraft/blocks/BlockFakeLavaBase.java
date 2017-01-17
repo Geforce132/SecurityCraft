@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+//TODO: look at this class for changed method signatures
 public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectable {
 
 	public BlockFakeLavaBase(Material p_i45429_1_){

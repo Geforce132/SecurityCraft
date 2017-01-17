@@ -16,8 +16,10 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -33,7 +35,8 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	/**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World p_149727_1_, BlockPos pos, IBlockState state, EntityPlayer p_149727_5_, EnumFacing facing, float p_149727_7_, float p_149727_8_, float p_149727_9_){
+	@Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
         return false;
     }
     
@@ -69,7 +72,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 
-    public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
+    public boolean eventReceived(IBlockState state, World par1World, BlockPos pos, int par5, int par6){
         super.eventReceived(state, par1World, pos, par5, par6);
         TileEntity tileentity = par1World.getTileEntity(pos);
         return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;

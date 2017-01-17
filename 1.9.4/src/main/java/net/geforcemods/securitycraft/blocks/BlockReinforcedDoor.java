@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,8 +34,14 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock){
-        if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
+	@Override
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+	{
+		World worldIn = (World)world;
+		IBlockState state = worldIn.getBlockState(pos);
+		Block neighborBlock = worldIn.getBlockState(neighbor).getBlock();
+		
+		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
         {
             BlockPos blockpos1 = pos.down();
             IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
@@ -45,7 +52,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
             }
             else if (neighborBlock != this)
             {
-                this.onNeighborBlockChange(worldIn, blockpos1, iblockstate1, neighborBlock);
+                this.onNeighborChange(world, blockpos1, neighbor);
             }
         }
         else

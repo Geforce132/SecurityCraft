@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -34,12 +35,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		setSoundType(SoundType.METAL);
 	}
 	
-	public boolean isNormalCube(IBlockAccess world, BlockPos pos){
+	public boolean isNormalCube(IBlockState state){
 		return true;
 	}
 	
-	public int getRenderType(){
-		return 3;
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
 	}
 	
 	/**
@@ -164,11 +165,11 @@ public class BlockLaserBlock extends BlockOwnable {
      */
     public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state) {
     	if(!par1World.isRemote){
-    		destroyAdjecentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
+    		destroyAdjacentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
     	}
     }
     
-    public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
+    public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
     	for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 			Block id = BlockUtils.getBlock(par1World, par2 + i, par3, par4);
 			if(id == mod_SecurityCraft.laserBlock){
@@ -248,7 +249,7 @@ public class BlockLaserBlock extends BlockOwnable {
 		}
     }
     
-    public boolean canProvidePower(){
+    public boolean canProvidePower(IBlockState state){
         return true;
     }
     
@@ -257,8 +258,9 @@ public class BlockLaserBlock extends BlockOwnable {
      * returns true, standard redstone propagation rules will apply instead and this will not be called. Args: World, X,
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(state.getValue(POWERED).booleanValue()){
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+    	if(blockState.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -269,8 +271,9 @@ public class BlockLaserBlock extends BlockOwnable {
      * Returns true if the block is emitting direct/strong redstone power on the specified side. Args: World, X, Y, Z,
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
-    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){   	
-    	if(state.getValue(POWERED).booleanValue()){
+    @Override
+    public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){   	
+    	if(blockState.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;
@@ -287,20 +290,21 @@ public class BlockLaserBlock extends BlockOwnable {
     }
     
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
-            if(state.getValue(POWERED).booleanValue()){
-            double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d1 = pos.getY() + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-            double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+    @Override
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand){      
+            if(stateIn.getValue(POWERED).booleanValue()){
+            double d0 = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
+            double d1 = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
+            double d2 = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
             double d3 = 0.2199999988079071D;
             double d4 = 0.27000001072883606D;
 
             
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-            par1World.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
         }
         
     }
@@ -320,7 +324,7 @@ public class BlockLaserBlock extends BlockOwnable {
         return new BlockStateContainer(this, new IProperty[] {POWERED});
     }
 
-	public TileEntity createTileEntity(World par1World, int par2) {
+	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock().linkable();
 	}
 

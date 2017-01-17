@@ -6,16 +6,16 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockAlarm extends BlockOwnable {
 	
 	public final boolean isLit;
-    public static final PropertyEnum FACING = PropertyDirection.create("facing");
+    public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
 	public BlockAlarm(Material par1Material, boolean isLit) {
 		super(par1Material);
@@ -44,16 +44,18 @@ public class BlockAlarm extends BlockOwnable {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(){
+    public boolean isOpaqueCube(IBlockState state){
         return false;
     }
    
-    public boolean isFullCube(){
+    public boolean isFullCube(IBlockState state){
         return false;
     }
-    
-    public int getRenderType(){
-    	return 3;
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+    	return EnumBlockRenderType.MODEL;
     }
 	
     /**
@@ -98,23 +100,21 @@ public class BlockAlarm extends BlockOwnable {
         }
     }
 	
-	/**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
-     */
-    public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){
-    	if(par1World.isRemote){
-    		return;
-    	}else{
-    		this.playSoundAndUpdate(par1World, pos);
-    	}
+    @Override
+    public void onNeighborChange(IBlockAccess w, BlockPos pos, BlockPos neighbor){
+    	World world = ((World)w);
     	
-    	EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+    	if(world.isRemote)
+    		return;
+    	
+    	this.playSoundAndUpdate((world), pos);
+    	
+    	EnumFacing enumfacing = world.getBlockState(pos).getValue(FACING);
 
-        if (!par1World.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+        if (!world.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
         {
-            this.dropBlockAsItem(par1World, pos, state, 0);
-            par1World.setBlockToAir(pos);
+            this.dropBlockAsItem((world), pos, world.getBlockState(pos), 0);
+            world.setBlockToAir(pos);
         }
     }
     
@@ -126,7 +126,7 @@ public class BlockAlarm extends BlockOwnable {
 		float ySideMax = 0.5F + f; //top of the alarm when placed on a block side
 		float hSideMin = 0.5F - f; //the left start for s/w and right start for n/e
 		float hSideMax = 0.5F + f; //the left start for n/e and right start for s/w
-        EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         
         switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]){
             case 1: //east
@@ -175,22 +175,21 @@ public class BlockAlarm extends BlockOwnable {
 		}
     }
     
-    /**
-     * Gets an item for the block being called on. Args: world, x, y, z
-     */
     @SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, BlockPos pos){
-        return Item.getItemFromBlock(mod_SecurityCraft.alarm);
+    @Override
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+        return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.alarm));
     }
     
     public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
         return Item.getItemFromBlock(mod_SecurityCraft.alarm);
     }
     
+    /* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state){
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+    }*/
 
     public IBlockState getStateFromMeta(int meta){
         EnumFacing enumfacing;
@@ -222,7 +221,7 @@ public class BlockAlarm extends BlockOwnable {
     public int getMetaFromState(IBlockState state){
         int i;
 
-        switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[((EnumFacing)state.getValue(FACING)).ordinal()]){
+        switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]){
             case 1:
                 i = 1;
                 break;
@@ -250,10 +249,11 @@ public class BlockAlarm extends BlockOwnable {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     
-	public TileEntity createTileEntity(World var1, int var2) {
-		return new TileEntityAlarm();
-	}
-
+    @Override
+    public TileEntity createNewTileEntity(World var1, int var2){
+    	return new TileEntityAlarm();
+    }
+    
     static final class SwitchEnumFacing{
         static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
 

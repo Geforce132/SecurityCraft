@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,10 +25,11 @@ public class BlockKeypadChest extends BlockChest {
 	/**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(!par1World.isRemote) {
-            if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadChest) {
-            	((TileEntityKeypadChest) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+	@Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    	if(!worldIn.isRemote) {
+            if(worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityKeypadChest) {
+            	((TileEntityKeypadChest) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
             }  
 
             return true;
@@ -72,7 +74,7 @@ public class BlockKeypadChest extends BlockChest {
 	/**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createTileEntity(World par1World, int par2)
+    public TileEntity createNewTileEntity(World par1World, int par2)
     {
         return new TileEntityKeypadChest();
     }

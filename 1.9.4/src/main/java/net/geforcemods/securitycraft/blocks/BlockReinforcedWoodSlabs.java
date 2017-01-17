@@ -9,6 +9,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -42,8 +43,8 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
     }
 
     @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos){
-        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+        return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs));
     }
 
     public boolean isDouble(){

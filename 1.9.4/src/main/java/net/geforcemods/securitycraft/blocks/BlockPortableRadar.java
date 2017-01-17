@@ -21,6 +21,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -41,19 +42,19 @@ public class BlockPortableRadar extends BlockContainer {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(){
+    public boolean isOpaqueCube(IBlockState state){
         return false;
     }
     
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(){
+    public boolean isNormalCube(IBlockState state){
         return false;
     }
     
-    public int getRenderType(){
-    	return 3;
+    public EnumBlockRenderType getRenderType(IBlockState state){
+    	return EnumBlockRenderType.MODEL;
     }
     
     @Override
@@ -113,13 +114,14 @@ public class BlockPortableRadar extends BlockContainer {
 		}
 	}
 	
-    public boolean canProvidePower()
+    public boolean canProvidePower(IBlockState state)
     {
         return true;
     }
     
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-    	if(state.getValue(POWERED).booleanValue()){
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
+    	if(blockState.getValue(POWERED).booleanValue()){
     		return 15;
     	}else{
     		return 0;

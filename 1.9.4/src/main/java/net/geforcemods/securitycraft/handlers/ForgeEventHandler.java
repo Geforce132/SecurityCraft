@@ -184,7 +184,7 @@ public class ForgeEventHandler {
 
 				if(block == mod_SecurityCraft.laserBlock){
 					world.destroyBlock(event.getPos(), true);
-					BlockLaserBlock.destroyAdjecentLasers(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+					BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
 					event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
 				}else{
 					world.destroyBlock(event.getPos(), true);
