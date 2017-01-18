@@ -7,7 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,40 +22,42 @@ public class ItemBriefcase extends Item {
 		return true;
 	}
 	
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing side, float par8, float par9, float par10) {
-    	if(par3World.isRemote) {
-	    	if(!par1ItemStack.hasTagCompound()) {
-	    		par1ItemStack.setTagCompound(new NBTTagCompound());
-	    		ClientUtils.syncItemNBT(par1ItemStack);
+	@Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	if(worldIn.isRemote) {
+	    	if(!stack.hasTagCompound()) {
+	    		stack.setTagCompound(new NBTTagCompound());
+	    		ClientUtils.syncItemNBT(stack);
 	    	}
 	    	
-	    	if(!par1ItemStack.getTagCompound().hasKey("passcode")) {
-	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+	    	if(!stack.getTagCompound().hasKey("passcode")) {
+	    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 	    	}
 	    	else {
-	    		par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+	    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 	    	}
     	}
     	
-    	return false;
+    	return EnumActionResult.FAIL;
     }
     
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {  	
-    	if(par2World.isRemote) {
-	    	if(!par1ItemStack.hasTagCompound()) {
-	    		par1ItemStack.setTagCompound(new NBTTagCompound());
-	    	    ClientUtils.syncItemNBT(par1ItemStack);
+	@Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {  	
+    	if(worldIn.isRemote) {
+	    	if(!itemStackIn.hasTagCompound()) {
+	    		itemStackIn.setTagCompound(new NBTTagCompound());
+	    	    ClientUtils.syncItemNBT(itemStackIn);
 	    	}
 	    	
-	    	if(!par1ItemStack.getTagCompound().hasKey("passcode")) {
-	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+	    	if(!itemStackIn.getTagCompound().hasKey("passcode")) {
+	    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 	    	}
 	    	else {
-	    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+	    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 	    	}
     	}
     	
-    	return par1ItemStack;
+    	return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     }
     
 	@Override

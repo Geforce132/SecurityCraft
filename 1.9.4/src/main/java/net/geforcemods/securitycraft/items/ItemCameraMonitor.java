@@ -17,7 +17,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -27,71 +30,75 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCameraMonitor extends Item {
 	
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing side, float par8, float par9, float par10){
-		if(!par3World.isRemote){
-			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.securityCamera){
-				if(!((IOwnable) par3World.getTileEntity(pos)).getOwner().isOwner(par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.cannotView"), TextFormatting.RED);
-					return true;
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!worldIn.isRemote){
+			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.securityCamera){
+				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
+					PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.cannotView"), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
 				}
 
-				if(par2EntityPlayer.inventory.getCurrentItem().getTagCompound() == null){
-					par2EntityPlayer.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+				if(playerIn.inventory.getCurrentItem().getTagCompound() == null){
+					playerIn.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 				}
 
-				CameraView view = new CameraView(pos, par2EntityPlayer.dimension);
+				CameraView view = new CameraView(pos, playerIn.dimension);
 				
-				if(isCameraAdded(par2EntityPlayer.inventory.getCurrentItem().getTagCompound(), view)){
-					par2EntityPlayer.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(par2EntityPlayer.inventory.getCurrentItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
-					return true;
+				if(isCameraAdded(playerIn.inventory.getCurrentItem().getTagCompound(), view)){
+					playerIn.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(playerIn.inventory.getCurrentItem().getTagCompound(), view));
+					PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++){
-					if (!par2EntityPlayer.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
-						par2EntityPlayer.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+					if (!playerIn.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
+						playerIn.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
+						PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 				}
 
-				mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP)par2EntityPlayer);
+				mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)playerIn);
 
-				return true;
+				return EnumActionResult.SUCCESS;
 			}
-		}else if(par3World.isRemote && BlockUtils.getBlock(par3World, pos) != mod_SecurityCraft.securityCamera){
-			if(par2EntityPlayer.getRidingEntity() != null && par2EntityPlayer.getRidingEntity() instanceof EntitySecurityCamera) return true; 
+		}else if(worldIn.isRemote && BlockUtils.getBlock(worldIn, pos) != mod_SecurityCraft.securityCamera){
+			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera)
+				return EnumActionResult.SUCCESS; 
 			
-			if(par1ItemStack.getTagCompound() == null || par1ItemStack.getTagCompound().hasNoTags()) {
-				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return true;
+			if(stack.getTagCompound() == null || stack.getTagCompound().hasNoTags()) {
+				PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
 			}
 
-			par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, pos.getX(), pos.getY(), pos.getZ());
-			return true;
+			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			return EnumActionResult.SUCCESS;
 		}
 
-		return true;
+		return EnumActionResult.SUCCESS;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		if (par2World.isRemote) {
-			if(par3EntityPlayer.getRidingEntity() != null && par3EntityPlayer.getRidingEntity() instanceof EntitySecurityCamera) return par1ItemStack; 
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		if (worldIn.isRemote) {
+			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera) 
+			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);; 
 			
-			if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
-			    return par1ItemStack;
+			if(!itemStackIn.hasTagCompound() || !hasCameraAdded(itemStackIn.getTagCompound())) {
+				PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 			}
 
-			par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 		}
 
-		return par1ItemStack;
+	    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		if(par1ItemStack.getTagCompound() == null){
 			return;
 		}

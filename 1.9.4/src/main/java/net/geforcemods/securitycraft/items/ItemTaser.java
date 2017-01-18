@@ -8,6 +8,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemTaser extends Item {
@@ -21,19 +24,20 @@ public class ItemTaser extends Item {
 		return true;
 	}
 	
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(!par2World.isRemote){
-			if(!par1ItemStack.isItemDamaged()){
-				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer));
-				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
+		if(!worldIn.isRemote){
+			if(!itemStackIn.isItemDamaged()){
+				worldIn.spawnEntityInWorld(new EntityTaserBullet(worldIn, playerIn));
+				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F));
 				
-				if(!par3EntityPlayer.capabilities.isCreativeMode){
-					par1ItemStack.damageItem(150, par3EntityPlayer);
+				if(!playerIn.capabilities.isCreativeMode){
+					itemStackIn.damageItem(150, playerIn);
 				}
 			}
 		}
 		
-		return par1ItemStack;
+		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
 	
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){

@@ -8,7 +8,9 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -20,7 +22,8 @@ public class ItemUniversalKeyChanger extends Item {
 		super();
 	}
 	
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+	@Override
+	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		if(!world.isRemote) {
         	if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {
         		if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
@@ -30,11 +33,11 @@ public class ItemUniversalKeyChanger extends Item {
 					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalKeyChanger.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
     			}
         		
-    			return true;
+    			return EnumActionResult.SUCCESS;
         	}
         }
         
-        return false;
+        return EnumActionResult.FAIL;
     }
 
 }

@@ -15,7 +15,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -31,52 +34,54 @@ public class ItemMineRemoteAccessTool extends Item {
 		super();
 	}
 	
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	    
-    	if(par2World.isRemote){
-    		return par1ItemStack;
+	@Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){  	    
+    	if(worldIn.isRemote){
+    		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     	}else{
-    		par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
-    		return par1ItemStack;
+    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int)playerIn.posX, (int)playerIn.posY, (int)playerIn.posZ);
+    		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     	}
     }
     
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par5EnumFacing, float hitX, float hitY, float hitZ){
-    	if(!par3World.isRemote){
-  	  		if(BlockUtils.getBlock(par3World, pos) instanceof IExplosive){
-  	  			if(!isMineAdded(par1ItemStack, par3World, pos)){
-		  	  		int availSlot = this.getNextAvaliableSlot(par1ItemStack);
+	@Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+    	if(!worldIn.isRemote){
+  	  		if(BlockUtils.getBlock(worldIn, pos) instanceof IExplosive){
+  	  			if(!isMineAdded(stack, worldIn, pos)){
+		  	  		int availSlot = this.getNextAvaliableSlot(stack);
 		  	  		
 		  	  		if(availSlot == 0){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.noSlots"), TextFormatting.RED);
-		  	  			return false;
+		  	  			PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.noSlots"), TextFormatting.RED);
+		  	  			return EnumActionResult.FAIL;
 		  	  		}
 		  	  		
-		  	  		if(par3World.getTileEntity(pos) instanceof IOwnable && !((IOwnable) par3World.getTileEntity(pos)).getOwner().isOwner(par2EntityPlayer)){
-		  	  			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.cantBind"), TextFormatting.RED);
-		  	  			return false;
+		  	  		if(worldIn.getTileEntity(pos) instanceof IOwnable && !((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
+		  	  			PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.cantBind"), TextFormatting.RED);
+		  	  			return EnumActionResult.FAIL;
 		  	  		}
 		  	  		
-		  	  		if(par1ItemStack.getTagCompound() == null){
-		  	  			par1ItemStack.setTagCompound(new NBTTagCompound());
+		  	  		if(stack.getTagCompound() == null){
+		  	  			stack.setTagCompound(new NBTTagCompound());
 		  	  		}
 		  	  		
-		  	  		par1ItemStack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-		  	  		mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par2EntityPlayer);
-		  	  		PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+		  	  		stack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
+		  	  		mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) playerIn);
+		  	  		PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
   	  			}else{
-  	  				this.removeTagFromItemAndUpdate(par1ItemStack, pos, par2EntityPlayer);
-  	  				PlayerUtils.sendMessageToPlayer(par2EntityPlayer, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+  	  				this.removeTagFromItemAndUpdate(stack, pos, playerIn);
+  	  				PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.remoteAccessMine.name"), I18n.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
   	  			}
   	  		}else{
-    			par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+    			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
   	  		}
   	  	}
     	
-	  	return true;
+	  	return EnumActionResult.SUCCESS;
     }
     
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
     	if(par1ItemStack.getTagCompound() == null){
     		return;
     	}

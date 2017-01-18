@@ -8,7 +8,9 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -18,20 +20,21 @@ public class ItemKeyPanel extends Item {
 		super();
 	}
 	
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par5EnumFacing, float hitX, float hitY, float hitZ){
-		if(!par3World.isRemote){
-			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.frame){
-				Owner owner = ((IOwnable) par3World.getTileEntity(pos)).getOwner();
-		        EnumFacing enumfacing = par3World.getBlockState(pos).getValue(BlockKeypad.FACING);
-				par3World.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, enumfacing).withProperty(BlockKeypad.POWERED, false));
-				((IOwnable) par3World.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
-				par1ItemStack.stackSize -= 1;
+	@Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!worldIn.isRemote){
+			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.frame){
+				Owner owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
+		        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(BlockKeypad.FACING);
+				worldIn.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, enumfacing).withProperty(BlockKeypad.POWERED, false));
+				((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+				stack.stackSize -= 1;
 			}
 			
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 		
-		return false;
+		return EnumActionResult.FAIL;
     }
 
 

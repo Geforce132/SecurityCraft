@@ -9,7 +9,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,33 +21,34 @@ public class ItemScannerDoor extends Item
 	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10)
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(world.isRemote)
-			return true;
+		if(worldIn.isRemote)
+			return EnumActionResult.SUCCESS;
 		else
 		{
-			if(side != EnumFacing.UP)
-				return false;
+			if(facing != EnumFacing.UP)
+				return EnumActionResult.FAIL;
 			else
 			{
-				IBlockState iblockstate = world.getBlockState(pos);
+				IBlockState iblockstate = worldIn.getBlockState(pos);
 				Block block = iblockstate.getBlock();
 
-				if(!block.isReplaceable(world, pos))
-					pos = pos.offset(side);
+				if(!block.isReplaceable(worldIn, pos))
+					pos = pos.offset(facing);
 
-				if(!player.canPlayerEdit(pos, side, stack))
-					return false;
-				else if(!mod_SecurityCraft.scannerDoor.canPlaceBlockAt(world, pos))
-					return false;
+				if(!playerIn.canPlayerEdit(pos, facing, stack))
+					return EnumActionResult.FAIL;
+				else if(!mod_SecurityCraft.scannerDoor.canPlaceBlockAt(worldIn, pos))
+					return EnumActionResult.FAIL;
 				else
 				{
-					placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					placeDoor(worldIn, pos, EnumFacing.fromAngle(playerIn.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
+					((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
 					stack.stackSize--;
-					return true;
+					return EnumActionResult.SUCCESS;
 				}
 			}
 		}

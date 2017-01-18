@@ -13,6 +13,7 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -32,19 +33,21 @@ public class ItemModifiedBucket extends ItemBucket {
 		this.containedBlock = containedBlock;
 	}
 	
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         boolean flag = this.containedBlock == Blocks.AIR;
         RayTraceResult rayTraceResult = this.rayTrace(worldIn, playerIn, flag);
 
         if (rayTraceResult == null)
         {
-            return itemStackIn;
+            return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
             ActionResult<ItemStack> result = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, rayTraceResult);
-            if (result.getType() != EnumActionResult.FAIL) return result.getResult();
+            if (result.getType() != EnumActionResult.FAIL)
+                return ActionResult.newResult(EnumActionResult.PASS, result.getResult());
 
             if (rayTraceResult.typeOfHit == Type.BLOCK)
             {
@@ -52,14 +55,14 @@ public class ItemModifiedBucket extends ItemBucket {
 
                 if (!worldIn.isBlockModifiable(playerIn, blockpos))
                 {
-                    return itemStackIn;
+                    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
                 }
 
                 if (flag)
                 {
                     if (!playerIn.canPlayerEdit(blockpos.offset(rayTraceResult.sideHit), rayTraceResult.sideHit, itemStackIn))
                     {
-                        return itemStackIn;
+                        return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
                     }
 
                     IBlockState iblockstate = worldIn.getBlockState(blockpos);
@@ -69,39 +72,39 @@ public class ItemModifiedBucket extends ItemBucket {
                     {
                         worldIn.setBlockToAir(blockpos);
                     	//TODO StatList.OBJECT_USE_STATS
-                        return this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket);
+                        return ActionResult.newResult(EnumActionResult.PASS, fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket));
                     }
 
                     if (material == Material.LAVA && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
                     {
                         worldIn.setBlockToAir(blockpos);
                     	//TODO StatList.OBJECT_USE_STATS
-                        return this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket);
+                        return ActionResult.newResult(EnumActionResult.PASS, fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket));
                     }
                 }
                 else
                 {
                     if (this.containedBlock == Blocks.AIR)
                     {
-                        return new ItemStack(Items.BUCKET);
+                        return ActionResult.newResult(EnumActionResult.PASS, new ItemStack(Items.BUCKET));
                     }
 
                     BlockPos blockpos1 = blockpos.offset(rayTraceResult.sideHit);
 
                     if (!playerIn.canPlayerEdit(blockpos1, rayTraceResult.sideHit, itemStackIn))
                     {
-                        return itemStackIn;
+                        return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
                     }
 
                     if (this.tryPlaceContainedLiquid(worldIn, blockpos1) && !playerIn.capabilities.isCreativeMode)
                     {
                     	//TODO StatList.OBJECT_USE_STATS
-                        return new ItemStack(Items.BUCKET);
+                        return ActionResult.newResult(EnumActionResult.PASS, new ItemStack(Items.BUCKET));
                     }
                 }
             }
 
-            return itemStackIn;
+            return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
         }
     }
 	

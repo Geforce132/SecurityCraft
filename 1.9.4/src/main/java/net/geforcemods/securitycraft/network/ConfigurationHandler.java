@@ -70,7 +70,6 @@ import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
-import net.geforcemods.securitycraft.items.ItemTestItem;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
@@ -180,9 +179,6 @@ public class ConfigurationHandler{
 	
 	public void setupDebugAdditions(){
 		this.setupDebuggingBlocks();
-		this.setupDebuggingItems();
-		
-		this.registerDebuggingAdditions();
 	}
 
 	public void setupTechnicalBlocks(){
@@ -348,11 +344,6 @@ public class ConfigurationHandler{
 	
 	public void setupDebuggingBlocks() {}
 	
-	public void setupDebuggingItems(){
-		mod_SecurityCraft.testItem = new ItemTestItem().setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("Test");
-	    //mod_SecurityCraft.testChestplate = new ItemModifiedArmor(3213, armorBase, 0, 1).setUnlocalizedName("testChestplate").setCreativeTab(mod_SecurityCraft.tabSCTechnical);
-	}
-		
 	public void setupConfiguration() {
 		mod_SecurityCraft.configFile.load();
 
@@ -948,10 +939,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerItem(item, customName);
 		
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, I18n.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
-	}
-	
-	public void registerDebuggingAdditions(){		
-		//GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
 	}
 	
 	public void setupOtherRegistries(){

@@ -12,6 +12,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -47,23 +50,24 @@ public class ItemModule extends Item{
 		this.setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
 	
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) { 
-    	if(!par2World.isRemote) {
-	    	if(!par1ItemStack.hasTagCompound()) {
-	    		par1ItemStack.setTagCompound(new NBTTagCompound());
-	    	    ClientUtils.syncItemNBT(par1ItemStack);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+    	if(!worldIn.isRemote) {
+	    	if(!itemStackIn.hasTagCompound()) {
+	    		itemStackIn.setTagCompound(new NBTTagCompound());
+	    	    ClientUtils.syncItemNBT(itemStackIn);
 	    	}
 	    	
 	    	if(canBeCustomized()) {
-	    	    par3EntityPlayer.openGui(mod_SecurityCraft.instance, guiToOpen, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ); 
+	    	    playerIn.openGui(mod_SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ); 
 	    	}
     	}
     	
-    	return par1ItemStack;
+    	return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     }
 	
 	@SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		if(nbtCanBeModified || canBeCustomized()) {
 			par3List.add(I18n.translateToLocal("tooltip.module.modifiable"));
 		}

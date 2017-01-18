@@ -7,6 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -16,12 +19,13 @@ public class ItemSCManual extends Item {
 		super();
 	}
 	
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-		if(world.isRemote){
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		if(worldIn.isRemote){
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 		}
 		
-		return stack;
+		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
 	
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
