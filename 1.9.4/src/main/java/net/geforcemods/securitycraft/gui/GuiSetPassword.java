@@ -40,6 +40,7 @@ public class GuiSetPassword extends GuiContainer {
 		this.blockName = I18n.translateToLocal(block.getUnlocalizedName() + ".name");
 	}
 
+	@Override
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
@@ -55,13 +56,15 @@ public class GuiSetPassword extends GuiContainer {
 		this.updateButtonText();
 	}
 	
+	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
 		this.flag = false;
 		Keyboard.enableRepeatEvents(false);
 	}
     
-    public void drawScreen(int par1, int par2, float par3){
+    @Override
+	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.keycodeTextbox.drawTextBox();
@@ -71,7 +74,8 @@ public class GuiSetPassword extends GuiContainer {
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2){
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2){
     	
     	//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line. TODO: change to drawSplitString
     	if(this.fontRendererObj.getStringWidth(blockName + " " + I18n.translateToLocal("gui.password.setup")) >= 170){
@@ -85,7 +89,8 @@ public class GuiSetPassword extends GuiContainer {
     /**
      * Draw the background layer for the GuiContainer (everything behind the items)
      */
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
+    @Override
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
@@ -93,7 +98,8 @@ public class GuiSetPassword extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
     
-    protected void keyTyped(char par1, int par2) throws IOException{
+    @Override
+	protected void keyTyped(char par1, int par2) throws IOException{
 		if(this.keycodeTextbox.isFocused() && isValidChar(par1)){
 			this.keycodeTextbox.textboxKeyTyped(par1, par2);
 		}else{
@@ -113,7 +119,8 @@ public class GuiSetPassword extends GuiContainer {
 		return false;
 	}
     
-    protected void mouseClicked(int par1, int par2, int par3) throws IOException{
+    @Override
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException{
 		super.mouseClicked(par1, par2, par3);
 		this.keycodeTextbox.mouseClicked(par1, par2, par3);
 	}
@@ -122,7 +129,8 @@ public class GuiSetPassword extends GuiContainer {
     	this.saveAndContinueButton.displayString = !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode");
     }
 
-    protected void actionPerformed(GuiButton guibutton){
+    @Override
+	protected void actionPerformed(GuiButton guibutton){
     	switch(guibutton.id){
     	case 0:
     		if(this.keycodeTextbox.getText().isEmpty()){

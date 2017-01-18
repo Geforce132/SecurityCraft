@@ -26,6 +26,7 @@ public class PacketSMountCamera implements IMessage {
 		this.id = id;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(this.x);
 		par1ByteBuf.writeInt(this.y);
@@ -33,6 +34,7 @@ public class PacketSMountCamera implements IMessage {
 		par1ByteBuf.writeInt(this.id);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -42,6 +44,7 @@ public class PacketSMountCamera implements IMessage {
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSMountCamera, IMessage>{
 		
+		@Override
 		public IMessage onMessage(PacketSMountCamera packet, MessageContext context) {
 			int x = packet.x;
 			int y = packet.y;

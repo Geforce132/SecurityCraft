@@ -28,6 +28,7 @@ public class ItemSCManual extends Item {
 		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
 	
+	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		if(par1ItemStack.getTagCompound() == null){
 			NBTTagList bookPages = new NBTTagList();

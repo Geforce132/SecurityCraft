@@ -39,7 +39,8 @@ public class ContainerCustomizeBlock extends Container{
         }
 	}
 	
-    public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
+    @Override
+	public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
     {
     	ItemStack itemstack = null;
         Slot slot = this.inventorySlots.get(par2);
@@ -83,6 +84,7 @@ public class ContainerCustomizeBlock extends Container{
         return itemstack;
     }
 
+	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return true;
 	}
@@ -98,7 +100,8 @@ public class ContainerCustomizeBlock extends Container{
 		/**
          * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
          */
-        public boolean isItemValid(ItemStack par1ItemStack)
+        @Override
+		public boolean isItemValid(ItemStack par1ItemStack)
         {
             if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule())){
             	return true;
@@ -107,11 +110,13 @@ public class ContainerCustomizeBlock extends Container{
             }
         }
         
-        public ItemStack getStack(){
+        @Override
+		public ItemStack getStack(){
         	return this.tileEntity.itemStacks[this.getSlotIndex()];
         }
         
-        public void putStack(ItemStack p_75215_1_)
+        @Override
+		public void putStack(ItemStack p_75215_1_)
         {
             this.tileEntity.safeSetInventorySlotContents(this.getSlotIndex(), p_75215_1_);
             this.onSlotChanged();
@@ -121,7 +126,8 @@ public class ContainerCustomizeBlock extends Container{
          * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
          * stack.
          */
-        public ItemStack decrStackSize(int p_75209_1_)
+        @Override
+		public ItemStack decrStackSize(int p_75209_1_)
         {
             return this.tileEntity.safeDecrStackSize(this.getSlotIndex(), p_75209_1_);
         }
@@ -130,7 +136,8 @@ public class ContainerCustomizeBlock extends Container{
          * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the
          * case of armor slots)
          */
-        public int getSlotStackLimit()
+        @Override
+		public int getSlotStackLimit()
         {
             return 1;
         }        

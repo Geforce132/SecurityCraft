@@ -44,11 +44,13 @@ public class BlockAlarm extends BlockOwnable {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(IBlockState state){
+    @Override
+	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
    
-    public boolean isFullCube(IBlockState state){
+    @Override
+	public boolean isFullCube(IBlockState state){
         return false;
     }
 
@@ -61,11 +63,13 @@ public class BlockAlarm extends BlockOwnable {
     /**
      * Check whether this Block can be placed on the given side
      */
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+    @Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
         return side == EnumFacing.UP && worldIn.isSideSolid(pos.down(), EnumFacing.UP) ? true : worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
     }
 
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos){
+    @Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos){
         return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
                worldIn.isSideSolid(pos.east(),	EnumFacing.WEST ) ||
                worldIn.isSideSolid(pos.north(),	EnumFacing.SOUTH) ||
@@ -74,14 +78,16 @@ public class BlockAlarm extends BlockOwnable {
                worldIn.isSideSolid(pos.up(),	EnumFacing.DOWN );
     }
     
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
         return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? this.getDefaultState().withProperty(FACING, facing) : this.getDefaultState().withProperty(FACING, EnumFacing.DOWN);
     }
     
 	/**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, BlockPos pos, IBlockState state) {
+    @Override
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state) {
     	if(par1World.isRemote){
     		return;
     	}else{
@@ -92,7 +98,8 @@ public class BlockAlarm extends BlockOwnable {
 	/**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if(!par1World.isRemote){
     		this.playSoundAndUpdate(par1World, pos);
     		
@@ -181,7 +188,8 @@ public class BlockAlarm extends BlockOwnable {
         return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.alarm));
     }
     
-    public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
+    @Override
+	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
         return Item.getItemFromBlock(mod_SecurityCraft.alarm);
     }
     
@@ -191,7 +199,8 @@ public class BlockAlarm extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta){
+    @Override
+	public IBlockState getStateFromMeta(int meta){
         EnumFacing enumfacing;
 
         switch (meta & 7){
@@ -218,7 +227,8 @@ public class BlockAlarm extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
-    public int getMetaFromState(IBlockState state){
+    @Override
+	public int getMetaFromState(IBlockState state){
         int i;
 
         switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]){
@@ -245,7 +255,8 @@ public class BlockAlarm extends BlockOwnable {
         return i;
     }
     
-    protected BlockStateContainer createBlockState(){
+    @Override
+	protected BlockStateContainer createBlockState(){
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     

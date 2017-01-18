@@ -38,10 +38,12 @@ public class ModuleInventory implements IInventory {
 		readFromNBT(module.getTagCompound());
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return SIZE;
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int index) {
 		return moduleInventory[index];
 	}
@@ -76,6 +78,7 @@ public class ModuleInventory implements IInventory {
 		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 
+	@Override
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 		
@@ -92,12 +95,14 @@ public class ModuleInventory implements IInventory {
 		return stack;
 	}
 
-	public ItemStack getStackInSlotOnClosing(int index) {
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
 		setInventorySlotContents(index, null);
 		return stack;
 	}
 
+	@Override
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		moduleInventory[index] = itemstack;
 
@@ -108,22 +113,27 @@ public class ModuleInventory implements IInventory {
 		markDirty();
 	}
 
+	@Override
 	public String getName() {
 		return "ModuleCustomization";
 	}
 	
+	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
 	}
 
+	@Override
 	public boolean hasCustomName() {
 		return true;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 
+	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
 			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
@@ -134,34 +144,35 @@ public class ModuleInventory implements IInventory {
 		writeToNBT(module.getTagCompound());
 	}
 
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {}
 
+	@Override
 	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
 		return true;
 	}
 
+	@Override
 	public int getField(int id) {
 		return 0;
     }
 
+	@Override
 	public void setField(int id, int value) {}
 
+	@Override
 	public int getFieldCount() {
 		return 5;
 	}
 
-	public void clear() {}
-
 	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return null;
-	}
-
+	public void clear() {}
 }

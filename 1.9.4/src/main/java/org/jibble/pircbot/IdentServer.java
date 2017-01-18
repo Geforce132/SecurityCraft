@@ -80,7 +80,8 @@ public class IdentServer extends Thread {
      * appropriate response.  Note that this method is started by the class
      * constructor.
      */
-    public void run() {
+    @Override
+	public void run() {
         try {
             Socket socket = _ss.accept();
             socket.setSoTimeout(60000);

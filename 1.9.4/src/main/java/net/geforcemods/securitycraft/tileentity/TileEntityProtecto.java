@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 	
+	@Override
 	public boolean attackEntity(Entity entity){	
 		if (entity instanceof EntityLivingBase) {
 	    	if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
@@ -33,6 +34,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 		return false;
 	}
 	
+	@Override
 	public boolean canAttack() {	
 		boolean canAttack = (getAttackCooldown() == 200 && worldObj.canBlockSeeSky(pos) && worldObj.isRaining());
 
@@ -48,14 +50,17 @@ public class TileEntityProtecto extends CustomizableSCTE {
         return canAttack;
 	}
 	
+	@Override
 	public boolean shouldRefreshAttackCooldown() {
     	return false;
     }
 
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}

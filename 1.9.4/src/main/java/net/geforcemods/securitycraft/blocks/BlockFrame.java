@@ -21,7 +21,8 @@ public class BlockFrame extends BlockOwnable {
 		setSoundType(SoundType.STONE);
 	}
 	
-    public boolean isNormalCube(IBlockState state){
+    @Override
+	public boolean isNormalCube(IBlockState state){
         return false;
     }
     
@@ -31,6 +32,7 @@ public class BlockFrame extends BlockOwnable {
     	return EnumBlockRenderType.MODEL;
     }
     
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
@@ -41,7 +43,8 @@ public class BlockFrame extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
     
-    public IBlockState getStateFromMeta(int meta){
+    @Override
+	public IBlockState getStateFromMeta(int meta){
         EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if(enumfacing.getAxis() == EnumFacing.Axis.Y){
@@ -51,11 +54,13 @@ public class BlockFrame extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
     
-    public int getMetaFromState(IBlockState state){
+    @Override
+	public int getMetaFromState(IBlockState state){
     	return state.getValue(FACING).getIndex();
     }
     
-    protected BlockStateContainer createBlockState(){
+    @Override
+	protected BlockStateContainer createBlockState(){
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
     

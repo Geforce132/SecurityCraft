@@ -119,18 +119,22 @@ public class EntitySecurityCamera extends Entity{
 		}
 	}
 
+	@Override
 	public double getMountedYOffset(){
 		return this.height * -7500D;
 	}
 
+	@Override
 	protected boolean shouldSetPosAfterLoading(){
 		return false;
 	}
 	
+	@Override
 	public boolean shouldDismountInWater(Entity rider){
         return false;
     }
 
+	@Override
 	public void onUpdate(){	
 		if(this.worldObj.isRemote && getRidingEntity() != null){	
 			if(this.screenshotCooldown > 0){
@@ -335,7 +339,8 @@ public class EntitySecurityCamera extends Entity{
 		mod_SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(this.rotationYaw, this.rotationPitch));
 	}
 	
-    public void setDead(){
+    @Override
+	public void setDead(){
         super.setDead();
         
         if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
@@ -345,8 +350,10 @@ public class EntitySecurityCamera extends Entity{
         }
     }
 	
+	@Override
 	protected void entityInit(){}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound tagCompound){
 		tagCompound.setInteger("CameraID", id);
 		
@@ -375,7 +382,8 @@ public class EntitySecurityCamera extends Entity{
 		}
 	}
 
-    public void readEntityFromNBT(NBTTagCompound tagCompound){
+    @Override
+	public void readEntityFromNBT(NBTTagCompound tagCompound){
     	this.id = tagCompound.getInteger("CameraID");
     	
     	if(tagCompound.hasKey("playerName")){

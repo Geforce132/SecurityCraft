@@ -26,6 +26,7 @@ public class PacketSetKeycardLevel implements IMessage{
 		this.exactCard  = exactCard;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -34,6 +35,7 @@ public class PacketSetKeycardLevel implements IMessage{
 		par1ByteBuf.writeBoolean(exactCard);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -44,6 +46,7 @@ public class PacketSetKeycardLevel implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetKeycardLevel, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSetKeycardLevel packet, MessageContext context) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		int level = packet.level;

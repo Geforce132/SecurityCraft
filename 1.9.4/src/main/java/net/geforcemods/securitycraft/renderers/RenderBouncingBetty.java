@@ -8,14 +8,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderBouncingBetty extends Render {
+public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 
     public RenderBouncingBetty(RenderManager p_i46134_1_)
     {
@@ -23,7 +22,8 @@ public class RenderBouncingBetty extends Render {
         this.shadowSize = 0.5F;
     }
 
-    public void doRender(EntityBouncingBetty entity, double x, double y, double z, float p_76986_8_, float partialTicks)
+    @Override
+	public void doRender(EntityBouncingBetty entity, double x, double y, double z, float p_76986_8_, float partialTicks)
     {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
@@ -68,18 +68,9 @@ public class RenderBouncingBetty extends Render {
         super.doRender(entity, x, y, z, p_76986_8_, partialTicks);
     }
 
-    protected ResourceLocation func_180563_a(EntityBouncingBetty p_180563_1_)
+    @Override
+	protected ResourceLocation getEntityTexture(EntityBouncingBetty entity)
     {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
-    }
-
-    protected ResourceLocation getEntityTexture(Entity entity)
-    {
-        return this.func_180563_a((EntityBouncingBetty)entity);
-    }
-
-    public void doRender(Entity entity, double x, double y, double z, float p_76986_8_, float partialTicks)
-    {
-        this.doRender((EntityBouncingBetty)entity, x, y, z, p_76986_8_, partialTicks);
     }
 }

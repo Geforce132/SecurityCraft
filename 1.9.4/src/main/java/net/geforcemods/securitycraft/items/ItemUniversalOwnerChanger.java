@@ -25,6 +25,7 @@ public class ItemUniversalOwnerChanger extends Item
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isFull3D()
 	{

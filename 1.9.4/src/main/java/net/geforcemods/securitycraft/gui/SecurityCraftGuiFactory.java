@@ -8,18 +8,22 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 
 public class SecurityCraftGuiFactory implements IModGuiFactory{
 
+	@Override
 	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement arg0) {
 		return null;
 	}
 
+	@Override
 	public void initialize(Minecraft arg0) {
 		
 	}
 
+	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {
 		return SecurityCraftConfigGUI.class;
 	}
 
+	@Override
 	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
 		return null;
 	}

@@ -21,12 +21,14 @@ public class PacketGivePotionEffect implements IMessage{
 		this.amplifier = amplifier;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.potionID = buf.readInt();
 		this.duration = buf.readInt();
 		this.amplifier = buf.readInt();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(this.potionID);
 		buf.writeInt(this.duration);
@@ -35,6 +37,7 @@ public class PacketGivePotionEffect implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
 		ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true));
 		return null;

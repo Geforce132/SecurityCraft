@@ -55,6 +55,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 			return true;
 	}
 
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
@@ -79,12 +80,14 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)
 	{
 		super.breakBlock(par1World, pos, par3IBlockState);
 		par1World.removeTileEntity(pos);
 	}
 
+	@Override
 	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
     {
         super.eventReceived(state, worldIn, pos, eventID, eventParam);

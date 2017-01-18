@@ -19,6 +19,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 	
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 
+	@Override
 	public void entityViewed(EntityLivingBase entity){
 		if(!worldObj.isRemote && !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockRetinalScanner.POWERED)){
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean()) return;
@@ -37,18 +38,22 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
     	}
 	}
 	
+	@Override
 	public int getViewCooldown() {
     	return 30;
     }
 	
+	@Override
 	public boolean activatedOnlyByPlayer() {
     	return !activatedByEntities.asBoolean();
     }
 
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ activatedByEntities };
 	}

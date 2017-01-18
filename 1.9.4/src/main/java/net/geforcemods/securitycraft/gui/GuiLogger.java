@@ -19,11 +19,13 @@ public class GuiLogger extends GuiContainer{
         this.tileEntity = par2TileEntityFurnace;
 	}
 	
+	@Override
 	public void initGui(){
 		super.initGui();
 	}
 	
-    public void drawScreen(int par1, int par2, float par3){
+    @Override
+	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 
 	}
@@ -31,7 +33,8 @@ public class GuiLogger extends GuiContainer{
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.logger.logged"), this.xSize / 2 - this.fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
         
@@ -43,6 +46,7 @@ public class GuiLogger extends GuiContainer{
     
     }
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(field_110410_t);

@@ -20,11 +20,13 @@ public class PacketSSetCameraRotation implements IMessage {
 		this.rotationPitch = pitch;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.rotationYaw = buf.readFloat();
 		this.rotationPitch = buf.readFloat();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeFloat(rotationYaw);
 		buf.writeFloat(rotationPitch);
@@ -32,6 +34,7 @@ public class PacketSSetCameraRotation implements IMessage {
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetCameraRotation, IMessage>{
 
+	@Override
 	public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
 		EntityPlayer player = ctx.getServerHandler().playerEntity;
 		

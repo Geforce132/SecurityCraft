@@ -33,6 +33,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
 	}
 	
+	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
 		if(data.getBlock() instanceof ICustomWailaDisplay) {			
             return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
@@ -41,10 +42,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 		return null;
 	}
 
+	@Override
 	public List<String> getWailaHead(ItemStack itemStack, List<String> tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
 		return tipList;
 	}
 
+	@Override
 	public List<String> getWailaBody(ItemStack itemStack, List<String> tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
 		if(iDataAccessor.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) iDataAccessor.getBlock()).shouldShowSCInfo(iDataAccessor.getWorld(), iDataAccessor.getBlockState(), iDataAccessor.getPosition())) return tipList;
 		
@@ -77,10 +80,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 		return tipList;
 	}
 	
+	@Override
 	public List<String> getWailaTail(ItemStack itemstack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
 		return tail;
 	}
 	
+	@Override
 	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tagCompound, World world, BlockPos pos) {
 		return tagCompound;
 	}

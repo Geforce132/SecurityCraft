@@ -32,6 +32,7 @@ public class GuiBriefcase extends GuiContainer {
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 	}
 	
+	@Override
 	public void initGui() {
 		super.initGui();
 
@@ -59,7 +60,8 @@ public class GuiBriefcase extends GuiContainer {
 		}
 	}
 	
-    public void drawScreen(int par1, int par2, float par3) {
+    @Override
+	public void drawScreen(int par1, int par2, float par3) {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		
@@ -68,10 +70,12 @@ public class GuiBriefcase extends GuiContainer {
 		}	
     }
     
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
     }
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -80,6 +84,7 @@ public class GuiBriefcase extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		int[] keys = new int[]{Integer.parseInt(keycodeTextboxes[0].getText()), Integer.parseInt(keycodeTextboxes[1].getText()), Integer.parseInt(keycodeTextboxes[2].getText()), Integer.parseInt(keycodeTextboxes[3].getText())};
 		

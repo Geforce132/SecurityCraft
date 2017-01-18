@@ -28,10 +28,12 @@ public class BriefcaseInventory implements IInventory {
 		readFromNBT(briefcase.getTagCompound());
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return SIZE;
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int index) {
 		return briefcaseInventory[index];
 	}
@@ -66,6 +68,7 @@ public class BriefcaseInventory implements IInventory {
 		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
 	}
 
+	@Override
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 		
@@ -82,12 +85,14 @@ public class BriefcaseInventory implements IInventory {
 		return stack;
 	}
 
-	public ItemStack getStackInSlotOnClosing(int index) {
+	@Override
+	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
 		setInventorySlotContents(index, null);
 		return stack;
 	}
 
+	@Override
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		briefcaseInventory[index] = itemstack;
 
@@ -98,18 +103,22 @@ public class BriefcaseInventory implements IInventory {
 		markDirty();
 	}
 
+	@Override
 	public String getName() {
 		return "Briefcase";
 	}
 
+	@Override
 	public boolean hasCustomName() {
 		return true;
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 
+	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
 			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
@@ -120,41 +129,44 @@ public class BriefcaseInventory implements IInventory {
 		writeToNBT(briefcase.getTagCompound());
 	}
 
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {}
 
+	@Override
 	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
 		return true;
 	}
 	
+	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
 	}
 
+	@Override
 	public int getField(int id) {
 		return 0;
 	}
 
+	@Override
 	public void setField(int id, int value) {}
 
+	@Override
 	public int getFieldCount() {
 		return 0;
 	}
 
+	@Override
 	public void clear() {
 		for(int i = 0; i < SIZE; i++) {
 			briefcaseInventory[i] = null;
 		}
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return null;
 	}
 }

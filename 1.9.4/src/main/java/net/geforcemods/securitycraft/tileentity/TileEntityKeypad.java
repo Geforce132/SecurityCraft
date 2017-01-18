@@ -22,6 +22,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	private String passcode;
 	
 	private OptionBoolean isAlwaysActive = new OptionBoolean("isAlwaysActive", false) {
+		@Override
 		public void toggle() {
 			super.toggle();
 			
@@ -36,13 +37,15 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		}
 	};
 	
+	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
 		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
     	}
 	}
 	
-    public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {		
+    @Override
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
 		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
 		}
@@ -52,7 +55,8 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
      * Writes a tile entity to NBT.
      * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
@@ -66,7 +70,8 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 
@@ -80,12 +85,14 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
         }
     }
 	
+	@Override
 	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad){
 			BlockKeypad.activate(worldObj, pos);
     	}
 	}
 	
+	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null) {
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
@@ -95,6 +102,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		}
 	}
 	
+	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
 			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypad.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
@@ -109,18 +117,22 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		return false;
 	}
 	
+	@Override
 	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
 
+	@Override
 	public void setPassword(String password) {
 		passcode = password;
 	}
 	
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST, EnumCustomModules.DISGUISE};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ isAlwaysActive };
 	}	

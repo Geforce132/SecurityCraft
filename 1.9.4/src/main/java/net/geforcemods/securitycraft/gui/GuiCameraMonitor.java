@@ -50,6 +50,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		this.page = page;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
@@ -116,6 +117,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	}
 
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -132,6 +134,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		}
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {	
 		if(guibutton.id == -1) {
 			this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
@@ -155,10 +158,12 @@ public class GuiCameraMonitor extends GuiContainer {
 		}
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString(I18n.translateToLocal("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -167,6 +172,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);  
 	}
 
+	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
 	}

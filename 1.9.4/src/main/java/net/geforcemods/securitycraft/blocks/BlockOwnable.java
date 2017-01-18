@@ -18,6 +18,7 @@ public class BlockOwnable extends BlockContainer {
 			setSoundType(SoundType.STONE);
 	}
 	
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

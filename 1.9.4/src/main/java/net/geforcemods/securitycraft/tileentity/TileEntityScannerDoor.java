@@ -15,12 +15,13 @@ import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
+	@Override
 	public void entityViewed(EntityLivingBase entity)
 	{
 		IBlockState upperState = worldObj.getBlockState(pos);
 		IBlockState lowerState = worldObj.getBlockState(pos.down());
 
-		if(!worldObj.isRemote && upperState.getValue(BlockScannerDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
+		if(!worldObj.isRemote && upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;
@@ -32,10 +33,10 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 					return;
 				}
 
-				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
+				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockDoor.OPEN);
 
-				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !upperState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
-				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !lowerState.getValue(BlockScannerDoor.OPEN).booleanValue()), 3);
+				worldObj.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN).booleanValue()), 3);
+				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN).booleanValue()), 3);
 				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
 				worldObj.playEvent((EntityPlayer)null, 1006, pos, 0);
 
@@ -45,16 +46,19 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 		}
 	}
 
+	@Override
 	public int getViewCooldown()
 	{
 		return 30;
 	}
 
+	@Override
 	public EnumCustomModules[] acceptedModules()
 	{
 		return new EnumCustomModules[]{};
 	}
 
+	@Override
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{};

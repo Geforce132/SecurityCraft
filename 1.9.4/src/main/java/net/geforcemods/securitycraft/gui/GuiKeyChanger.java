@@ -39,6 +39,7 @@ public class GuiKeyChanger extends GuiContainer {
 		this.tileEntity = tile_entity;
 	}
 
+	@Override
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
@@ -61,11 +62,13 @@ public class GuiKeyChanger extends GuiContainer {
 
 	}
 	
+	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
 	
+	@Override
 	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -73,12 +76,14 @@ public class GuiKeyChanger extends GuiContainer {
 		textboxConfirmPasscode.drawTextBox();
     }
 	
-    protected void drawGuiContainerForegroundLayer(int par1, int par2){	
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2){	
         this.fontRendererObj.drawString(I18n.translateToLocal("item.universalKeyChanger.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.universalKeyChanger.name")) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.universalKeyChanger.enterNewPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.universalKeyChanger.confirmNewPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
     }
 	
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -87,6 +92,7 @@ public class GuiKeyChanger extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
 	
+	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
 		if(textboxNewPasscode.isFocused()) {
 			textboxNewPasscode.textboxKeyTyped(par1, par2);
@@ -111,12 +117,14 @@ public class GuiKeyChanger extends GuiContainer {
 		confirmButton.enabled = true;
 	}
 
+	@Override
 	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		super.mouseClicked(par1, par2, par3);
 		textboxNewPasscode.mouseClicked(par1, par2, par3);
 		textboxConfirmPasscode.mouseClicked(par1, par2, par3);
 	}
 	
+	@Override
 	protected void actionPerformed(GuiButton guibutton){
     	switch(guibutton.id){
     	case 0:		

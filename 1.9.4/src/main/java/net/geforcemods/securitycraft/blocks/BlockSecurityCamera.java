@@ -42,14 +42,17 @@ public class BlockSecurityCamera extends BlockContainer{
         return null;
     }
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 	
+	@Override
 	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 
+	@Override
 	public boolean isFullCube(IBlockState state){
 		return false;
 	}
@@ -69,6 +72,7 @@ public class BlockSecurityCamera extends BlockContainer{
         	return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
 	
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
         IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
 
@@ -139,11 +143,13 @@ public class BlockSecurityCamera extends BlockContainer{
 		}
     }
     
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+    @Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
         return (side != EnumFacing.UP && side != EnumFacing.DOWN) ? super.canPlaceBlockOnSide(worldIn, pos, side) : false;
     }
     
-    public boolean canPlaceBlockAt(World world, BlockPos pos){
+    @Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos){
         return !world.getBlockState(pos).getBlock().isReplaceable(world, pos) ^ //exclusive or
         	   (world.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
                world.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
@@ -151,7 +157,8 @@ public class BlockSecurityCamera extends BlockContainer{
                world.isSideSolid(pos.south(), EnumFacing.NORTH, true));
     }
     
-    public boolean canProvidePower(IBlockState state){
+    @Override
+	public boolean canProvidePower(IBlockState state){
         return true;
     }
     
@@ -180,7 +187,8 @@ public class BlockSecurityCamera extends BlockContainer{
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         if(meta <= 5){
         	return this.getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP || EnumFacing.values()[meta] == EnumFacing.DOWN) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
@@ -189,7 +197,8 @@ public class BlockSecurityCamera extends BlockContainer{
         }
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	if(state.getValue(POWERED).booleanValue()){
     		return (state.getValue(FACING).getIndex() + 6);
@@ -198,12 +207,14 @@ public class BlockSecurityCamera extends BlockContainer{
     	}
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createNewTileEntity(World world, int par2){
+    @Override
+	public TileEntity createNewTileEntity(World world, int par2){
     	return new TileEntitySecurityCamera().nameable();
     }
 

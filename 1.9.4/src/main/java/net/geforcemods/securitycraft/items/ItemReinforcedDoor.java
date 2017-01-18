@@ -76,7 +76,7 @@ public class ItemReinforcedDoor extends Item
         }
 
         BlockPos blockpos3 = pos.up();
-        IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+        IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
         worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
         worldIn.notifyNeighborsOfStateChange(pos, door);

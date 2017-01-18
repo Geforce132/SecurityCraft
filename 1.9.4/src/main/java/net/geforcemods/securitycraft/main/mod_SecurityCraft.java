@@ -194,26 +194,26 @@ public class mod_SecurityCraft {
     	log("Loading config file....");
     	log(mod_SecurityCraft.VERSION + " of SecurityCraft is for a post MC-1.6.4 version! Configuration files are useless for setting anything besides options.");
 		mod_SecurityCraft.configFile = new Configuration(event.getSuggestedConfigurationFile());
-    	this.configHandler.setupConfiguration();
+    	mod_SecurityCraft.configHandler.setupConfiguration();
 		log("Config file loaded.");
 		log("Setting up handlers!");
-		this.configHandler.setupHandlers(event);
+		mod_SecurityCraft.configHandler.setupHandlers(event);
 		log("Handlers registered.");
 		log("Setting up network....");
 		mod_SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(mod_SecurityCraft.MODID);
-		this.configHandler.setupPackets(mod_SecurityCraft.network);
+		mod_SecurityCraft.configHandler.setupPackets(mod_SecurityCraft.network);
 		log("Network setup.");
 		
 		log("Loading mod additions....");
-		this.configHandler.setupAdditions();
+		mod_SecurityCraft.configHandler.setupAdditions();
 		
-		if(this.debuggingMode){
-			this.configHandler.setupDebugAdditions();
+		if(mod_SecurityCraft.debuggingMode){
+			mod_SecurityCraft.configHandler.setupDebugAdditions();
 		}
 				
 		log("Finished loading mod additions.");
 		log("Doing registering stuff... (PT 1/2)");
-		this.configHandler.setupGameRegistry();
+		mod_SecurityCraft.configHandler.setupGameRegistry();
 		
 		serverProxy.registerTextureFiles();
 
@@ -241,14 +241,14 @@ public class mod_SecurityCraft {
 			}
 		}
 		
-		this.serverProxy.setupTextureRegistry();
+		mod_SecurityCraft.serverProxy.setupTextureRegistry();
 			
 		log("Doing registering stuff... (PT 2/2)");
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);
 
-		this.configHandler.setupEntityRegistry();
-		this.configHandler.setupOtherRegistries();
+		mod_SecurityCraft.configHandler.setupEntityRegistry();
+		mod_SecurityCraft.configHandler.setupOtherRegistries();
 		serverProxy.registerRenderThings();
 	}
 	

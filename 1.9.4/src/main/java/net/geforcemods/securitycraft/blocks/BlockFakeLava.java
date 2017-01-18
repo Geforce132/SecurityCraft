@@ -59,7 +59,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         }
     }
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    @Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         int i = state.getValue(LEVEL).intValue();
         byte b0 = 1;
@@ -298,7 +299,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (block.getMaterial(worldIn.getBlockState(pos)) == Material.PORTAL ? true : block.getMaterial(worldIn.getBlockState(pos)).blocksMovement()) : true;
     }
 
-    protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
+    @Override
+	protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
     {
         int j = this.getDepth(worldIn.getBlockState(pos));
 
@@ -328,7 +330,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         return material != this.blockMaterial && material != Material.LAVA && !this.isBlocked(worldIn, pos, state);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    @Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         if (!this.checkForMixing(worldIn, pos, state))
         {
@@ -336,7 +339,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         }
     }
     
-    public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+    @Override
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer){
 				((EntityPlayer) entity).heal(4);
@@ -354,7 +358,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         return null;
     }
     
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    @Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 }

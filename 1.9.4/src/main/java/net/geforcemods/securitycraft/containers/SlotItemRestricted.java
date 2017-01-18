@@ -16,6 +16,7 @@ public class SlotItemRestricted extends Slot {
 		this.prohibitedItems = prohibitedItems;
 	}
 	
+	@Override
 	public boolean isItemValid(ItemStack stack) {
 		if(stack.getItem() == null) return false;
 		
@@ -29,7 +30,8 @@ public class SlotItemRestricted extends Slot {
         return true;
     }
     
-    public void putStack(ItemStack stack) {
+    @Override
+	public void putStack(ItemStack stack) {
         this.inventory.setInventorySlotContents(getSlotIndex(), stack);
         onSlotChanged();
     }

@@ -19,12 +19,14 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 		setSoundType(SoundType.GLASS);
 	}
 	
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
 	}
 
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    @Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 

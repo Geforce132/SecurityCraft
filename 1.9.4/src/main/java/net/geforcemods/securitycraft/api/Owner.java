@@ -111,6 +111,7 @@ public class Owner {
 		return playerUUID;
 	}
 	
+	@Override
 	public String toString() {
 		return "Name: " + playerName + "  UUID: " + playerUUID;
 	}

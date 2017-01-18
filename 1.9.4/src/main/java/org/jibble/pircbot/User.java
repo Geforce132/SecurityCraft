@@ -97,7 +97,8 @@ public class User {
      * 
      * @return The user's prefix and nick.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return this.getPrefix() + this.getNick();
     }
     
@@ -120,7 +121,8 @@ public class User {
      * 
      * @return true if o is a User object with a matching lowercase nick.
      */
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         if (o instanceof User) {
             User other = (User) o;
             return other._lowerNick.equals(_lowerNick);
@@ -134,7 +136,8 @@ public class User {
      * 
      * @return the hash code of the User object.
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return _lowerNick.hashCode();
     }
     

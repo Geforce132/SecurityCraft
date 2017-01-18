@@ -23,7 +23,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	private String lastPlayerName = "";
 	
 	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
-    public boolean attackEntity(Entity entity) {
+    @Override
+	public boolean attackEntity(Entity entity) {
     	if (entity instanceof EntityPlayer) {
     		BlockPortableRadar.searchForPlayers(worldObj, pos, worldObj.getBlockState(pos));
     		return false;
@@ -32,7 +33,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     	}
     }
     
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
     	
@@ -41,7 +43,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
         return par1NBTTagCompound;
     }
 
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 
@@ -69,26 +72,32 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     	shouldSendNewMessage = false;
     }
     
-    public boolean canAttack() {
+    @Override
+	public boolean canAttack() {
     	return true;
     }
     
-    public boolean shouldSyncToClient() {
+    @Override
+	public boolean shouldSyncToClient() {
     	return false;
     }
     
-    public double getAttackRange() {
+    @Override
+	public double getAttackRange() {
     	return searchRadiusOption.asDouble();
     }
     
-    public int getTicksBetweenAttacks() {
+    @Override
+	public int getTicksBetweenAttacks() {
     	return searchDelayOption.asInteger() * 20;
     }
     
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
 	}

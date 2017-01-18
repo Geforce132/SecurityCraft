@@ -39,7 +39,8 @@ public class GuiCheckPassword extends GuiContainer {
 		this.blockName = I18n.translateToLocal(block.getUnlocalizedName() + ".name");
     }
     
-    public void initGui(){
+    @Override
+	public void initGui(){
     	super.initGui();	
     	Keyboard.enableRepeatEvents(true);
     	
@@ -63,12 +64,14 @@ public class GuiCheckPassword extends GuiContainer {
 		this.keycodeTextbox.setMaxStringLength(11);
     }
     
-    public void onGuiClosed(){
+    @Override
+	public void onGuiClosed(){
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
     
-    public void drawScreen(int par1, int par2, float par3){
+    @Override
+	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.keycodeTextbox.drawTextBox();
@@ -77,14 +80,16 @@ public class GuiCheckPassword extends GuiContainer {
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2){
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2){
         this.fontRendererObj.drawString(blockName, this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
     }
 
     /**
      * Draw the background layer for the GuiContainer (everything behind the items)
      */
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
+    @Override
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
@@ -92,7 +97,8 @@ public class GuiCheckPassword extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }	
      
-    protected void keyTyped(char par1, int par2) throws IOException {
+    @Override
+	protected void keyTyped(char par1, int par2) throws IOException {
 		if(this.isValidChar(par1) && par1 != ''){
 			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.currentString += par1;
@@ -120,6 +126,7 @@ public class GuiCheckPassword extends GuiContainer {
 		return false;
 	}
     
+	@Override
 	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 		case 0:

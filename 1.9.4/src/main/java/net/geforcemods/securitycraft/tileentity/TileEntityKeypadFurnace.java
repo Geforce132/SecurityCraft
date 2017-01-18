@@ -50,17 +50,20 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     private String furnaceCustomName;
     private String passcode;
     
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return this.furnaceItemStacks.length;
     }
 
-    public ItemStack getStackInSlot(int index)
+    @Override
+	public ItemStack getStackInSlot(int index)
     {
         return this.furnaceItemStacks[index];
     }
 
-    public ItemStack decrStackSize(int index, int count)
+    @Override
+	public ItemStack decrStackSize(int index, int count)
     {
         if (this.furnaceItemStacks[index] != null)
         {
@@ -90,7 +93,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public ItemStack getStackInSlotOnClosing(int index)
+    @Override
+	public ItemStack removeStackFromSlot(int index)
     {
         if (this.furnaceItemStacks[index] != null)
         {
@@ -104,7 +108,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public void setInventorySlotContents(int index, ItemStack stack)
+    @Override
+	public void setInventorySlotContents(int index, ItemStack stack)
     {
         boolean flag = stack != null && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
         this.furnaceItemStacks[index] = stack;
@@ -122,12 +127,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public String getName()
+    @Override
+	public String getName()
     {
         return this.hasCustomName() ? this.furnaceCustomName : "container.furnace";
     }
 
-    public boolean hasCustomName()
+    @Override
+	public boolean hasCustomName()
     {
         return this.furnaceCustomName != null && this.furnaceCustomName.length() > 0;
     }
@@ -137,7 +144,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         this.furnaceCustomName = p_145951_1_;
     }
 
-    public void readFromNBT(NBTTagCompound compound)
+    @Override
+	public void readFromNBT(NBTTagCompound compound)
     {
         super.readFromNBT(compound);
         NBTTagList nbttaglist = compound.getTagList("Items", 10);
@@ -166,7 +174,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         super.writeToNBT(compound);
         compound.setShort("BurnTime", (short)this.furnaceBurnTime);
@@ -199,7 +208,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         return compound;
     }
 
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -240,7 +250,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         return p_174903_0_.getField(0) > 0;
     }
 
-    public void update()
+    @Override
+	public void update()
     {
         boolean flag = this.isBurning();
         boolean flag1 = false;
@@ -415,31 +426,38 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         return getItemBurnTime(p_145954_0_) > 0;
     }
 
-    public boolean isUseableByPlayer(EntityPlayer player)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer player)
     {
         return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
-    public void openInventory(EntityPlayer player) {}
+    @Override
+	public void openInventory(EntityPlayer player) {}
 
-    public void closeInventory(EntityPlayer player) {}
+    @Override
+	public void closeInventory(EntityPlayer player) {}
 
-    public boolean isItemValidForSlot(int index, ItemStack stack)
+    @Override
+	public boolean isItemValidForSlot(int index, ItemStack stack)
     {
         return index == 2 ? false : (index != 1 ? true : isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack));
     }
 
-    public int[] getSlotsForFace(EnumFacing side)
+    @Override
+	public int[] getSlotsForFace(EnumFacing side)
     {
         return side == EnumFacing.DOWN ? slotsBottom : (side == EnumFacing.UP ? slotsTop : slotsSides);
     }
 
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    @Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
     {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    @Override
+	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
     {
         if (direction == EnumFacing.DOWN && index == 1)
         {
@@ -464,7 +482,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         return new ContainerFurnace(playerInventory, this);
     }
 
-    public int getField(int id)
+    @Override
+	public int getField(int id)
     {
         switch (id)
         {
@@ -481,7 +500,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public void setField(int id, int value)
+    @Override
+	public void setField(int id, int value)
     {
         switch (id)
         {
@@ -499,12 +519,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
-    public int getFieldCount()
+    @Override
+	public int getFieldCount()
     {
         return 4;
     }
 
-    public void clear()
+    @Override
+	public void clear()
     {
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
         {
@@ -512,16 +534,19 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
     }
 
+	@Override
 	public ITextComponent getDisplayName() {
 		return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
 	}
 	
+	@Override
 	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace){
     		BlockKeypadFurnace.activate(worldObj, pos, player);
     	}
 	}
 	
+	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() != null) {
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
@@ -531,6 +556,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		}		
 	}
 	
+	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
 			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypadFurnace.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
@@ -543,18 +569,13 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return false;
 	}
 
+	@Override
 	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
 	
+	@Override
 	public void setPassword(String password) {
 		passcode = password;
 	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return null;
-	}	
-
 }

@@ -167,14 +167,17 @@ public static class OptionBoolean extends Option<Boolean>{
 		super(optionName, value);
 	}
 	
+	@Override
 	public void toggle() {
 		setValue(!getValue());
 	}
 	
+	@Override
 	public Boolean getValue() {
 		return (boolean) value;
 	}
 	
+	@Override
 	public String toString() {
 		return (value) + "";
 	}
@@ -193,6 +196,7 @@ public static class OptionInt extends Option<Integer>{
 		super(optionName, value, min, max, increment);
 	}
 	
+	@Override
 	public void toggle() {		
 		if(getValue() >= getMax()) {
 			setValue(getMin());
@@ -207,10 +211,12 @@ public static class OptionInt extends Option<Integer>{
 		setValue(getValue() + getIncrement());
 	}
 	
+	@Override
 	public Integer getValue() {
 		return (int) value;
 	}
 	
+	@Override
 	public String toString() {
 		return (value) + "";
 	}
@@ -229,6 +235,7 @@ public static class OptionDouble extends Option<Double>{
 		super(optionName, value, min, max, increment);
 	}
 	
+	@Override
 	public void toggle() {
 		if(getValue() >= getMax()) {
 			setValue(getMin());
@@ -243,10 +250,12 @@ public static class OptionDouble extends Option<Double>{
 		setValue(getValue() + getIncrement());
 	}
 	
+	@Override
 	public Double getValue() {
 		return (double) value;
 	}
 	
+	@Override
 	public String toString() {
 		return Double.toString(value).length() > 5 ? Double.toString(value).substring(0, 5) : Double.toString(value);
 	}
@@ -266,6 +275,7 @@ public static class OptionFloat extends Option<Float>{
 		super(optionName, value, min, max, increment);
 	}
 	
+	@Override
 	public void toggle() {
 		if(getValue() >= getMax()) {
 			setValue(getMin());
@@ -280,10 +290,12 @@ public static class OptionFloat extends Option<Float>{
 		setValue(getValue() + getIncrement());
 	}
 	
+	@Override
 	public Float getValue() {
 		return value;
 	}
 	
+	@Override
 	public String toString() {
 		return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
 	}

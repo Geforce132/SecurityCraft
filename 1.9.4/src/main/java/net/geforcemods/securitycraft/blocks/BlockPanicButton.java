@@ -27,7 +27,8 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state)
+    @Override
+	public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
@@ -53,7 +54,8 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
     }
     
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+    @Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
     }
@@ -91,7 +93,8 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
         return super.getBoundingBox(state, source, pos);
     }
 
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    @Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 	

@@ -68,7 +68,7 @@ public class ItemScannerDoor extends Item
 			flag2 = true;
 
 		BlockPos blockpos3 = pos.up();
-		IBlockState iblockstate = mod_SecurityCraft.scannerDoor.getDefaultState().withProperty(BlockScannerDoor.FACING, facing).withProperty(BlockScannerDoor.HINGE, flag2 ? BlockScannerDoor.EnumHingePosition.RIGHT : BlockScannerDoor.EnumHingePosition.LEFT);
+		IBlockState iblockstate = mod_SecurityCraft.scannerDoor.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, flag2 ? BlockScannerDoor.EnumHingePosition.RIGHT : BlockScannerDoor.EnumHingePosition.LEFT);
 
 		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.LOWER), 2);
 		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.UPPER), 2);

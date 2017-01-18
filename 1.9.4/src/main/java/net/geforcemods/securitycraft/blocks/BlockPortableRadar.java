@@ -42,18 +42,21 @@ public class BlockPortableRadar extends BlockContainer {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(IBlockState state){
+    @Override
+	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
     
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state){
+    @Override
+	public boolean isNormalCube(IBlockState state){
         return false;
     }
     
-    public EnumBlockRenderType getRenderType(IBlockState state){
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
     	return EnumBlockRenderType.MODEL;
     }
     
@@ -114,7 +117,8 @@ public class BlockPortableRadar extends BlockContainer {
 		}
 	}
 	
-    public boolean canProvidePower(IBlockState state)
+    @Override
+	public boolean canProvidePower(IBlockState state)
     {
         return true;
     }
@@ -128,21 +132,25 @@ public class BlockPortableRadar extends BlockContainer {
     	}
     }
     
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {   
         return meta == 1 ? this.getDefaultState().withProperty(POWERED, true) : this.getDefaultState().withProperty(POWERED, false);    
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
         return state.getValue(POWERED).booleanValue() ? 1 : 0;
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {POWERED});
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay).nameable();
 	}

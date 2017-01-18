@@ -11,6 +11,7 @@ public class ContainerGeneric extends Container {
 		
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		return true;
 	}

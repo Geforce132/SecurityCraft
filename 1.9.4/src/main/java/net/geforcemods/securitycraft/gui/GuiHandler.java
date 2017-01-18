@@ -48,6 +48,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
 
+	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
 
@@ -110,6 +111,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 	}
 
+	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
 

@@ -39,6 +39,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		setSoundType(SoundType.STONE);
 	}
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -46,7 +47,8 @@ public class BlockInventoryScanner extends BlockContainer {
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+    @Override
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(par1World, pos, state);
         this.setDefaultFacing(par1World, pos, state);
@@ -101,7 +103,8 @@ public class BlockInventoryScanner extends BlockContainer {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){    	    	
+    @Override
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){    	    	
     	Block block = par1World.getBlockState(pos.north()).getBlock();
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
         Block block2 = par1World.getBlockState(pos.west()).getBlock();
@@ -166,7 +169,8 @@ public class BlockInventoryScanner extends BlockContainer {
 		}
     }
     
-    public void breakBlock(World par1World, BlockPos pos, IBlockState state){	    	
+    @Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){	    	
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().length; i++){
     		if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i] != null){
     			EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
@@ -202,7 +206,8 @@ public class BlockInventoryScanner extends BlockContainer {
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean canProvidePower(IBlockState state)
+    @Override
+	public boolean canProvidePower(IBlockState state)
     {
         return true;
     }
@@ -237,7 +242,8 @@ public class BlockInventoryScanner extends BlockContainer {
     	return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getType().matches("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
     }
     
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
@@ -249,21 +255,25 @@ public class BlockInventoryScanner extends BlockContainer {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);  
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {   	
     	return state.getValue(FACING).getIndex(); 	
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World world, int par2) {
 		return new TileEntityInventoryScanner();
 	}

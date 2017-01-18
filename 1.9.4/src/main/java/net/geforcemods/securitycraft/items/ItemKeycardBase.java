@@ -40,7 +40,8 @@ public class ItemKeycardBase extends Item{
 		}
 	}
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
 		if(level == 3){		
 			if(par1ItemStack.getTagCompound() == null){

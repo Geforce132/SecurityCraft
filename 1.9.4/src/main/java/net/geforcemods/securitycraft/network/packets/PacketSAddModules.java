@@ -30,6 +30,7 @@ public class PacketSAddModules implements IMessage{
 		this.arrayLength = modules.length;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -40,6 +41,7 @@ public class PacketSAddModules implements IMessage{
 		}
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -56,6 +58,7 @@ public class PacketSAddModules implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSAddModules, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSAddModules packet, MessageContext context) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		ItemStack[] modules = packet.modules;

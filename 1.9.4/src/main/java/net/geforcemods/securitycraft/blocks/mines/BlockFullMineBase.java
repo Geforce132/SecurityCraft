@@ -34,6 +34,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 			 setSoundType(SoundType.STONE);
 	}
 
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -43,6 +44,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		return null;
 	}
 
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
 		if(entity instanceof EntityItem){
 			return;
@@ -54,6 +56,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
+	@Override
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion){
 		if (!par1World.isRemote)
 		{
@@ -61,6 +64,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		}
 	}
 
+	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
 		{
@@ -68,10 +72,13 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		}
 	}	
 	
+	@Override
 	public void activateMine(World world, BlockPos pos) {}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {}
 
+	@Override
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
@@ -85,30 +92,37 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
+	@Override
 	public boolean canDropFromExplosion(Explosion par1Explosion){
 		return false;
 	}
 	
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
 	
+	@Override
 	public boolean explodesWhenInteractedWith() {
 		return false;
 	}
 
+	@Override
 	public boolean isDefusable() {
 		return false;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 
+	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(blockDisguisedAs);
 	}
 
+	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}

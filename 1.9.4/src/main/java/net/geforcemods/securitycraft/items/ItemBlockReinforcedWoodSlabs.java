@@ -31,10 +31,12 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 		this.setHasSubtypes(true);
 	}
 	
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
 	
+	@Override
 	public String getUnlocalizedName(ItemStack stack){
 		if(stack.getItemDamage() == 0){
 			return this.getUnlocalizedName() + "_oak";
@@ -53,6 +55,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 		}
 	}
 	
+	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
         if(stack.stackSize == 0){
             return EnumActionResult.FAIL;
@@ -101,7 +104,8 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
         BlockPos blockpos1 = pos;
         IProperty iproperty = this.singleSlab.getVariantProperty();

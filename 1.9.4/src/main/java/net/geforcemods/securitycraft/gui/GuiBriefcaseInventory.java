@@ -18,10 +18,12 @@ public class GuiBriefcaseInventory extends GuiContainer {
 		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString(I18n.translateToLocal("item.briefcase.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.briefcase.name")) / 2, 6, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(field_110410_t);

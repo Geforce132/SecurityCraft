@@ -107,7 +107,8 @@ public class DccFileTransfer {
      */
     void doReceive(final File file, final boolean resume) {
         new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 
                 BufferedOutputStream foutput = null;
                 Exception exception = null;
@@ -173,7 +174,8 @@ public class DccFileTransfer {
      */
     void doSend(final boolean allowResume) {
         new Thread() {
-            public void run() {
+            @Override
+			public void run() {
                 
                 BufferedInputStream finput = null;
                 Exception exception = null;

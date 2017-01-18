@@ -64,6 +64,7 @@ public class LinkedBlock {
 		return blockPos.getZ();
 	}
 	
+	@Override
 	public boolean equals(Object o) {
 		if(o instanceof LinkedBlock) {
 			LinkedBlock block = (LinkedBlock) o;
@@ -73,10 +74,12 @@ public class LinkedBlock {
 		return false;
 	}
 	
+	@Override
 	public int hashCode() {
 		return blockPos.getX() + blockPos.getY() + blockPos.getZ();
 	}
 	
+	@Override
 	public String toString() {
 		return (blockName + " | " + blockPos.getX() + " " + blockPos.getY() + " " + blockPos.getZ());
 	}

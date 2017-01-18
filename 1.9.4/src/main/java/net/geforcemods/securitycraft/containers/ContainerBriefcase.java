@@ -32,6 +32,7 @@ public class ContainerBriefcase extends Container {
 		}
 	}
 	
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
 		ItemStack itemstack = null;
 		Slot slot = this.inventorySlots.get(index);
@@ -81,6 +82,7 @@ public class ContainerBriefcase extends Container {
 		return super.slotClick(slot, dragType, clickTypeIn, player);
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}

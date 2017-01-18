@@ -46,6 +46,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return null;
     }
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
@@ -56,7 +57,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(IBlockState state)
+    @Override
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -64,22 +66,26 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state)
+    @Override
+	public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isFullCube(IBlockState state)
+    @Override
+	public boolean isFullCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    @Override
+	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return true;
     }  
     
-    public EnumBlockRenderType getRenderType(IBlockState state){
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
     	return EnumBlockRenderType.MODEL;
     }
     
@@ -100,6 +106,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     	}
     }
     
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
     	if(entity instanceof EntityPlayer){   	        	
         	if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
@@ -281,17 +288,20 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     	return super.getBoundingBox(state, source, pos);
     }
     
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {    
         return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);     
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
         return state.getValue(FACING).getIndex();
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
@@ -307,6 +317,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         return null;
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}

@@ -16,10 +16,12 @@ public class GuiDisguiseModule extends GuiContainer {
 		super(new ContainerDisguiseModule(player, inventory, new ModuleInventory(player.inventory.getCurrentItem())));
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString(I18n.translateToLocal("item.disguiseModule.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.disguiseModule.name")) / 2, 6, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize1.png"));

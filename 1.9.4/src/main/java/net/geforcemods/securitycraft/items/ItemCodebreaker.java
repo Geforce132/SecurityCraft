@@ -13,6 +13,7 @@ public class ItemCodebreaker extends Item {
 		this.maxStackSize = 1;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
  	public boolean hasEffect(ItemStack par1ItemStack){
         return true;
@@ -21,6 +22,7 @@ public class ItemCodebreaker extends Item {
     /**
      * Return an item rarity from EnumRarity
      */
+	@Override
 	@SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack){
         return EnumRarity.RARE;

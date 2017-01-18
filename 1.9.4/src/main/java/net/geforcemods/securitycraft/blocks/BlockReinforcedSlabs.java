@@ -47,11 +47,13 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
 	}
 	
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
     }
 	
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
         return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
     }
@@ -72,28 +74,34 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         }
     }*/
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
         return new ItemStack(slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
     }
     
-    public int damageDropped(IBlockState state){
+    @Override
+	public int damageDropped(IBlockState state){
         return ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
     }
     
-    public String getUnlocalizedName(int meta){
+    @Override
+	public String getUnlocalizedName(int meta){
         return super.getUnlocalizedName() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getUnlocalizedName();
     }
     
-    public IProperty<?> getVariantProperty(){
+    @Override
+	public IProperty<?> getVariantProperty(){
         return VARIANT;
     }
     
-    public Comparable<?> getTypeForItem(ItemStack stack) {
+    @Override
+	public Comparable<?> getTypeForItem(ItemStack stack) {
 		return BlockReinforcedSlabs.EnumType.byMetadata(stack.getMetadata() & 7);
 	}
     
-    public IBlockState getStateFromMeta(int meta){
+    @Override
+	public IBlockState getStateFromMeta(int meta){
         IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
         
         iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
@@ -101,7 +109,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return iblockstate;
     }
 
-    public int getMetaFromState(IBlockState state){
+    @Override
+	public int getMetaFromState(IBlockState state){
         byte b0 = 0;
         int i = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
 
@@ -112,14 +121,17 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return i;
     }
     
-    protected BlockStateContainer createBlockState(){
+    @Override
+	protected BlockStateContainer createBlockState(){
         return slabMaterial == Material.GROUND ? new BlockStateContainer(this, new IProperty[] {HALF}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
     }
     
-    public boolean isDouble(){
+    @Override
+	public boolean isDouble(){
 		return isDouble;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
@@ -150,7 +162,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
             return this.meta;
         }
 
-        public String toString(){
+        @Override
+		public String toString(){
             return this.name;
         }
 
@@ -162,7 +175,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
             return META_LOOKUP[meta];
         }
 
-        public String getName(){
+        @Override
+		public String getName(){
             return this.name;
         }
 

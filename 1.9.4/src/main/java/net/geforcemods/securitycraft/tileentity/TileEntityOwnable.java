@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
@@ -16,7 +15,8 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
      * Writes a tile entity to NBT.
      * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
@@ -31,7 +31,8 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 
@@ -46,25 +47,30 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
         }      
     }
     
-    public Packet getDescriptionPacket() {                
+    @Override
+	public SPacketUpdateTileEntity getUpdatePacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
     	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }        
     
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
+    @Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }  
     
-    public TileEntityOwnable intersectsEntities(){
+    @Override
+	public TileEntityOwnable intersectsEntities(){
         intersectsEntities = true;
         return this;
     }
     
-    public Owner getOwner(){
+    @Override
+	public Owner getOwner(){
     	return owner;
     }
 
+	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}

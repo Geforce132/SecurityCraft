@@ -36,6 +36,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 		textColor = color;
 	}
 	
+	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (this.visible) {
             FontRenderer fontrenderer = mc.fontRendererObj;
@@ -45,6 +46,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
         }
     }
 	
+	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
 		if(this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height) {
 			if (mc.gameSettings.chatLinksPrompt) {
@@ -57,6 +59,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
         return false;
     }
 
+	@Override
 	public void confirmClicked(boolean choseYes, int buttonID) {		
 		if(buttonID == 0) {
             if(choseYes) {
@@ -67,6 +70,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 		ClientUtils.closePlayerScreen();		
 	}
 	
-    public void func_146113_a(SoundHandler soundHandler) {}
+    @Override
+	public void playPressSound(SoundHandler soundHandler) {}
 
 }

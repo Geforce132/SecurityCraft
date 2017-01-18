@@ -54,7 +54,8 @@ public class BlockFakeWater extends BlockDynamicLiquid{
         }
     }
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    @Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         int i = state.getValue(LEVEL).intValue();
         byte b0 = 1;
@@ -293,7 +294,8 @@ public class BlockFakeWater extends BlockDynamicLiquid{
         return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER&& block != Blocks.REEDS ? (block.getMaterial(worldIn.getBlockState(pos)) == Material.PORTAL ? true : block.getMaterial(worldIn.getBlockState(pos)).blocksMovement()) : true;
     }
 
-    protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
+    @Override
+	protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
     {
         int j = this.getDepth(worldIn.getBlockState(pos));
 
@@ -323,7 +325,8 @@ public class BlockFakeWater extends BlockDynamicLiquid{
         return material != this.blockMaterial && material != Material.LAVA && !this.isBlocked(worldIn, pos, state);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    @Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         if (!this.checkForMixing(worldIn, pos, state))
         {

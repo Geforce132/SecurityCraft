@@ -35,10 +35,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		setSoundType(SoundType.METAL);
 	}
 	
+	@Override
 	public boolean isNormalCube(IBlockState state){
 		return true;
 	}
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -46,7 +48,8 @@ public class BlockLaserBlock extends BlockOwnable {
 	/**
      * Called whenever the block is added into the world. Args: world, pos
      */
-    public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+    @Override
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
     {
         super.onBlockAdded(par1World, pos, state);
     }
@@ -54,7 +57,8 @@ public class BlockLaserBlock extends BlockOwnable {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+    @Override
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
     	super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
     	
         if(!par1World.isRemote){
@@ -163,7 +167,8 @@ public class BlockLaserBlock extends BlockOwnable {
     /**
      * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
      */
-    public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state) {
+    @Override
+	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state) {
     	if(!par1World.isRemote){
     		destroyAdjacentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
     	}
@@ -249,7 +254,8 @@ public class BlockLaserBlock extends BlockOwnable {
 		}
     }
     
-    public boolean canProvidePower(IBlockState state){
+    @Override
+	public boolean canProvidePower(IBlockState state){
         return true;
     }
     
@@ -283,7 +289,8 @@ public class BlockLaserBlock extends BlockOwnable {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if (!par1World.isRemote && state.getValue(POWERED).booleanValue()){
         	BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
         }                      
@@ -309,21 +316,25 @@ public class BlockLaserBlock extends BlockOwnable {
         
     }
     
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(POWERED, meta == 1 ? true : false);
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
         return (state.getValue(POWERED).booleanValue() ? 1 : 0);
     }
     
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {POWERED});
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityLaserBlock().linkable();
 	}

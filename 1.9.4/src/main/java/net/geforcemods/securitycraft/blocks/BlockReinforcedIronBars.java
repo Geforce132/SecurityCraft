@@ -27,11 +27,13 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 33);
 	}
 	
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {	
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {	
     	BlockUtils.setBlock(par1World, pos, Blocks.IRON_BARS);
     }
      
-    public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+    @Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
     }
@@ -43,7 +45,8 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
         return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state){
         return new ItemStack(Item.getItemFromBlock(this));
     }
@@ -51,11 +54,13 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public Item getItemDropped(IBlockState state, Random par2Random, int par3){
         return Item.getItemFromBlock(this);
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World par1, int par2) {
 		return new TileEntityOwnable();
 	}

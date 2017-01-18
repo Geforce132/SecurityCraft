@@ -25,6 +25,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	private double entityZ = -1D;
 	private int cooldown = -1;
 	
+	@Override
 	public void update() {
 		if(getWorld().isRemote){
 			return;
@@ -84,7 +85,8 @@ public class TileEntityClaymore extends TileEntitySCTE{
      * Writes a tile entity to NBT.
 	 * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("cooldown", cooldown);
@@ -97,7 +99,8 @@ public class TileEntityClaymore extends TileEntitySCTE{
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 

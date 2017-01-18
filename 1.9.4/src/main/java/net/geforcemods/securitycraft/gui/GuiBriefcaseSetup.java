@@ -32,6 +32,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 	}
 	
+	@Override
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
@@ -47,23 +48,27 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		this.updateButtonText();
 	}
 	
+	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		this.flag = false;
 		Keyboard.enableRepeatEvents(false);
 	}
     
-    public void drawScreen(int par1, int par2, float par3) {
+    @Override
+	public void drawScreen(int par1, int par2, float par3) {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.keycodeTextbox.drawTextBox();
 		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
     }
     
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.setupTitle")) / 2, 6, 4210752);
     }
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -72,6 +77,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
 	}
 	
+	@Override
 	protected void keyTyped(char par1, int par2) throws IOException {
 		if(this.keycodeTextbox.isFocused() && isValidChar(par1)) {
 			this.keycodeTextbox.textboxKeyTyped(par1, par2);
@@ -92,7 +98,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		return false;
 	}
     
-    protected void mouseClicked(int par1, int par2, int par3) throws IOException {
+    @Override
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		super.mouseClicked(par1, par2, par3);
 		this.keycodeTextbox.mouseClicked(par1, par2, par3);
 	}
@@ -101,7 +108,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
     	this.saveAndContinueButton.displayString = !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode");
     }
 
-    protected void actionPerformed(GuiButton guibutton) {
+    @Override
+	protected void actionPerformed(GuiButton guibutton) {
     	switch(guibutton.id){
     	case 0:
     		if(this.keycodeTextbox.getText().length() < 4) {

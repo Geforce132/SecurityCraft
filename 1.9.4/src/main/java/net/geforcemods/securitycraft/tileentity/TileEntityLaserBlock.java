@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 public class TileEntityLaserBlock extends CustomizableSCTE {
 	
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
+		@Override
 		public void toggle() {
 			setValue(!getValue());
 			
@@ -33,6 +34,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		}
 	}
 	
+	@Override
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs) {
     	if(action == EnumLinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
@@ -60,10 +62,12 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
     	}
 	}
 
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ enabledOption };
 	}

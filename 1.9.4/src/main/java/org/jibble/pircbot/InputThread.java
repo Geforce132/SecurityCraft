@@ -81,7 +81,8 @@ public class InputThread extends Thread {
      * after such a problem, but the existance of any uncaught exceptions
      * in your code is something you should really fix.
      */
-    public void run() {
+    @Override
+	public void run() {
         try {
             boolean running = true;
             while (running) {

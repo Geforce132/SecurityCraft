@@ -27,6 +27,7 @@ public class PacketSetISType implements IMessage{
 		this.type = type;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -35,6 +36,7 @@ public class PacketSetISType implements IMessage{
 
 	}
 	
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -45,6 +47,7 @@ public class PacketSetISType implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetISType, IMessage> {
 	
+	@Override
 	public IMessage onMessage(PacketSetISType packet, MessageContext context) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		

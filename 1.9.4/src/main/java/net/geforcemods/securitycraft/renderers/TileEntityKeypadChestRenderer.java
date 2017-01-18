@@ -2,20 +2,19 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
+public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<TileEntityKeypadChest>
 {
     private static final ResourceLocation christmasDouble = new ResourceLocation("securitycraft:textures/entity/chest/christmas_double.png");
     private static final ResourceLocation normalDoubleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/doubleChestUnactive.png");
@@ -37,7 +36,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
         }
     }
     
-    public void func_180538_a(TileEntityChest p_180538_1_, double p_180538_2_, double p_180538_4_, double p_180538_6_, float p_180538_8_, int p_180538_9_)
+    @Override
+	public void renderTileEntityAt(TileEntityKeypadChest p_180538_1_, double p_180538_2_, double p_180538_4_, double p_180538_6_, float p_180538_8_, int p_180538_9_)
     {
         int j;
 
@@ -200,9 +200,4 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
             }
         }
     }
-
-    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par3, double par4, float par5, int par6){
-    	this.func_180538_a((TileEntityChest) par1TileEntity, par2, par3, par4, par5, par6);
-    }
-
 }

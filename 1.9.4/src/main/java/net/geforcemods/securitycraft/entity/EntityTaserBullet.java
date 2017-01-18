@@ -33,6 +33,7 @@ public class EntityTaserBullet extends EntityThrowable {
 		return 6F;
 	}
 
+	@Override
 	protected float getGravityVelocity(){
 		return 0.00F;
 	}
@@ -48,6 +49,7 @@ public class EntityTaserBullet extends EntityThrowable {
 			setDead();
 	}
 	
+	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult)
 	{
 		if(!this.worldObj.isRemote)

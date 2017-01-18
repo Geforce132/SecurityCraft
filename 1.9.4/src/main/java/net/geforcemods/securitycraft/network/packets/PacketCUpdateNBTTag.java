@@ -27,11 +27,13 @@ public class PacketCUpdateNBTTag implements IMessage{
 		}
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.stack = ByteBufUtils.readTag(buf);
 		this.itemName = ByteBufUtils.readUTF8String(buf);
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		ByteBufUtils.writeTag(buf, this.stack);
 		ByteBufUtils.writeUTF8String(buf, this.itemName);
@@ -39,6 +41,7 @@ public class PacketCUpdateNBTTag implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCUpdateNBTTag, IMessage> {
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCUpdateNBTTag packet, MessageContext ctx) {
 		if(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null && Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){

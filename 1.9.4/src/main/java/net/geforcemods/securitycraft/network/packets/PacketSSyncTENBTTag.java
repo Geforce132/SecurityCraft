@@ -26,6 +26,7 @@ public class PacketSSyncTENBTTag implements IMessage{
 		this.tag = par4NBTTagCompound;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readInt();
 		this.y = buf.readInt();
@@ -33,6 +34,7 @@ public class PacketSSyncTENBTTag implements IMessage{
 		this.tag = ByteBufUtils.readTag(buf);
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(this.x);
 		buf.writeInt(this.y);
@@ -42,6 +44,7 @@ public class PacketSSyncTENBTTag implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncTENBTTag, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSSyncTENBTTag packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		NBTTagCompound tag = packet.tag;

@@ -32,7 +32,8 @@ public class GuiItemButton extends GuiButton{
 	/**
      * Draws this button to the screen.
      */
-    public void drawButton(Minecraft par1, int par2, int par3)
+    @Override
+	public void drawButton(Minecraft par1, int par2, int par3)
     {
         if (this.visible)
         {

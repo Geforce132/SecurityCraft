@@ -29,19 +29,23 @@ public class CommandSC extends CommandBase implements ICommand{
 	/**
      * Return the required permission level for this command.
      */
-    public int getRequiredPermissionLevel()
+    @Override
+	public int getRequiredPermissionLevel()
     {
         return 0;
     }
     
+	@Override
 	public String getCommandName() {
 		return "sc";
 	}
 	
+	@Override
 	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
+	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
 		return I18n.translateToLocal("messages.command.sc.usage");
 	}
@@ -51,6 +55,7 @@ public class CommandSC extends CommandBase implements ICommand{
 		return true;
 	}
 
+	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 0){
 			throw new WrongUsageException(I18n.translateToLocal("messages.command.sc.usage"));

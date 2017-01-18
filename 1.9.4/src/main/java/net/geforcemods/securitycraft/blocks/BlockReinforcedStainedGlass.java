@@ -19,6 +19,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 		setSoundType(SoundType.GLASS);
 	}
 	
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
@@ -32,6 +33,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
         }
     }*/
     
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

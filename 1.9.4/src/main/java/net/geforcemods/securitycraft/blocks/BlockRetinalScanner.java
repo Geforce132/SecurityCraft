@@ -32,6 +32,7 @@ public class BlockRetinalScanner extends BlockContainer {
 		setSoundType(SoundType.METAL);
 	}
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -39,7 +40,8 @@ public class BlockRetinalScanner extends BlockContainer {
 	/**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+    @Override
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         Block block = par1World.getBlockState(pos.north()).getBlock();
         Block block1 = par1World.getBlockState(pos.south()).getBlock();
         Block block2 = par1World.getBlockState(pos.west()).getBlock();
@@ -70,7 +72,8 @@ public class BlockRetinalScanner extends BlockContainer {
     /**
      * Ticks the block if it's been scheduled
      */
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
         if (!par1World.isRemote && state.getValue(POWERED).booleanValue()){
         	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
         }                       
@@ -79,7 +82,8 @@ public class BlockRetinalScanner extends BlockContainer {
     /**
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
-    public boolean canProvidePower(IBlockState state)
+    @Override
+	public boolean canProvidePower(IBlockState state)
     {
         return true;
     }
@@ -99,7 +103,8 @@ public class BlockRetinalScanner extends BlockContainer {
     	}
     }
     
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
@@ -111,7 +116,8 @@ public class BlockRetinalScanner extends BlockContainer {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         if(meta <= 5){
         	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
@@ -120,7 +126,8 @@ public class BlockRetinalScanner extends BlockContainer {
         }
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	if(state.getValue(POWERED).booleanValue()){
     		return (state.getValue(FACING).getIndex() + 6);
@@ -129,12 +136,14 @@ public class BlockRetinalScanner extends BlockContainer {
     	}
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
     
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    @Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

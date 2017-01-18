@@ -27,6 +27,7 @@ public class PacketSSetOwner implements IMessage {
 		this.name = name;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readInt();
 		this.y = buf.readInt();
@@ -35,6 +36,7 @@ public class PacketSSetOwner implements IMessage {
 		this.name = ByteBufUtils.readUTF8String(buf);
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(x);
 		buf.writeInt(y);
@@ -45,6 +47,7 @@ public class PacketSSetOwner implements IMessage {
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetOwner, IMessage>{
 
+	@Override
 	public IMessage onMessage(PacketSSetOwner packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		EntityPlayer player = ctx.getServerHandler().playerEntity;

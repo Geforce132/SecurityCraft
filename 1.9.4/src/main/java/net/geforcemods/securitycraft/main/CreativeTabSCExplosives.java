@@ -13,11 +13,13 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 	}
 
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
 		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
 	
+	@Override
 	public String getTranslatedTabLabel(){
 		return "SecurityCraft: " + I18n.translateToLocal("creativeTabExplosives");
 		

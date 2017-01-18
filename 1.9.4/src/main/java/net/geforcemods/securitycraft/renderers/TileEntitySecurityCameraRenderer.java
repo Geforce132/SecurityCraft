@@ -12,11 +12,10 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
-public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
+public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
 	
 	private ModelSecurityCamera modelSecurityCamera;
 	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
@@ -25,7 +24,8 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		this.modelSecurityCamera = new ModelSecurityCamera();
 	}
 
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5, int par6) {
+	@Override
+	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
 		float rotation = 0F;
 		
 		if(par1TileEntity.hasWorldObj()){
@@ -64,7 +64,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 		
-		this.modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) par1TileEntity).cameraRotation;
+		this.modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 		
 		this.modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		

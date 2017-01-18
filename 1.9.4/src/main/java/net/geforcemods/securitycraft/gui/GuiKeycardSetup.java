@@ -27,6 +27,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	     this.keypadInventory = tile_entity;
 	}
 	
+	@Override
 	public void initGui(){
     	super.initGui();
 
@@ -40,7 +41,8 @@ public class GuiKeycardSetup extends GuiContainer{
 	 /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
     	this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
@@ -51,6 +53,7 @@ public class GuiKeycardSetup extends GuiContainer{
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
    }
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -70,7 +73,8 @@ public class GuiKeycardSetup extends GuiContainer{
 		 }
 	 }
 	 
-	 protected void actionPerformed(GuiButton guibutton){
+	 @Override
+	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 			case 0:
 				this.updateButtonText();

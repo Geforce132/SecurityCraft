@@ -57,6 +57,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
         }
     }
 	
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode){
@@ -76,6 +77,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 		return null;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}

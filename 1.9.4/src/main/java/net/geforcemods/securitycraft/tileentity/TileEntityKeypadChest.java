@@ -12,7 +12,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.text.TextFormatting;
@@ -32,7 +31,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
      * Writes a tile entity to NBT.
      * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         
@@ -51,7 +51,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 
@@ -75,31 +76,36 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
         }
     }
     
-    public Packet getDescriptionPacket() {                
+    @Override
+	public SPacketUpdateTileEntity getUpdatePacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
     	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }
     
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
+    @Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }  
     
     /**
      * Returns the name of the inventory
      */
-    public String getName()
+    @Override
+	public String getName()
     {
         return "Protected chest";
     }
     
-    public void activate(EntityPlayer player) {
+    @Override
+	public void activate(EntityPlayer player) {
 		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest){
     		BlockKeypadChest.activate(worldObj, pos, player);
     	}
 	}
     
-    public void openPasswordGUI(EntityPlayer player) {
+    @Override
+	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() != null) {
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 		}
@@ -108,6 +114,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		}		
 	}
 	
+	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
 			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypadChest.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
@@ -120,18 +127,22 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		return false;
 	}
 
-    public String getPassword() {
+    @Override
+	public String getPassword() {
 		return (this.passcode != null && !this.passcode.isEmpty()) ? this.passcode : null;
 	}
     
+	@Override
 	public void setPassword(String password) {
 		passcode = password;
 	}
 	
+	@Override
 	public Owner getOwner(){
     	return owner;
     }
 
+	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}	

@@ -38,6 +38,7 @@ public class EntityIMSBomb extends EntityFireball {
 		this.setSize(0.25F, 0.3F);
 	}
 
+	@Override
 	public void onUpdate(){	
 		if(!launching){
 			super.onUpdate();
@@ -79,6 +80,7 @@ public class EntityIMSBomb extends EntityFireball {
 		}
 	}
 
+	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult){
 		if(!this.worldObj.isRemote){
 			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(worldObj, par1RayTraceResult.getBlockPos()) != mod_SecurityCraft.ims){
@@ -88,19 +90,23 @@ public class EntityIMSBomb extends EntityFireball {
 		}
 	}
 	
+	@Override
 	protected float getMotionFactor(){
         return 1F;
     }
 
+	@Override
 	protected boolean canTriggerWalking(){
 		return false;
 	}
 	
+	@Override
 	public boolean canBeCollidedWith(){
         return false;
     }
 
-    public float getCollisionBorderSize(){
+    @Override
+	public float getCollisionBorderSize(){
         return 0.3F;
     }
 

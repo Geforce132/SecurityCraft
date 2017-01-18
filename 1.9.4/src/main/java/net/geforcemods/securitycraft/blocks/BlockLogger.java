@@ -28,6 +28,7 @@ public class BlockLogger extends BlockContainer {
 		setSoundType(SoundType.STONE);
 	}
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -56,7 +57,8 @@ public class BlockLogger extends BlockContainer {
         }
     }
 
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
@@ -68,21 +70,25 @@ public class BlockLogger extends BlockContainer {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {   	
     	return state.getValue(FACING).getIndex();
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World world, int par1) {
 		return new TileEntityLogger().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
 	}

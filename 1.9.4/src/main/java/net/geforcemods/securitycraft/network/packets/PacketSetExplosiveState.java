@@ -25,6 +25,7 @@ public class PacketSetExplosiveState implements IMessage{
 		this.state = state;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -32,6 +33,7 @@ public class PacketSetExplosiveState implements IMessage{
 		this.state = ByteBufUtils.readUTF8String(par1ByteBuf);
 	}
 	
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -41,6 +43,7 @@ public class PacketSetExplosiveState implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSetExplosiveState, IMessage> {
 	
+	@Override
 	public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
 		EntityPlayer player = context.getServerHandler().playerEntity;
 		

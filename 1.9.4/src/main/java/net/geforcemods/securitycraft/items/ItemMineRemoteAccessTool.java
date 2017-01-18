@@ -80,7 +80,8 @@ public class ItemMineRemoteAccessTool extends Item {
 	  	return EnumActionResult.SUCCESS;
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
     	if(par1ItemStack.getTagCompound() == null){
     		return;

@@ -45,7 +45,8 @@ public class GuiInventoryScanner extends GuiContainer {
         this.ySize = 196;
     }
     
-    public void initGui(){
+    @Override
+	public void initGui(){
     	super.initGui();
     	Keyboard.enableRepeatEvents(true); 		
     		
@@ -54,7 +55,8 @@ public class GuiInventoryScanner extends GuiContainer {
 		}
     }
     
-    public void drawScreen(int par1, int par2, float par3){
+    @Override
+	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -79,21 +81,25 @@ public class GuiInventoryScanner extends GuiContainer {
 	
     }
     
-    public void onGuiClosed(){
+    @Override
+	public void onGuiClosed(){
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
     
-    protected void keyTyped(char par1, int par2) throws IOException{
+    @Override
+	protected void keyTyped(char par1, int par2) throws IOException{
 		super.keyTyped(par1, par2);		
     }
     
-    protected void mouseClicked(int par1, int par2, int par3) throws IOException{
+    @Override
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException{
 		super.mouseClicked(par1, par2, par3);
 		
 	}
     
-    protected void actionPerformed(GuiButton guibutton){
+    @Override
+	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 			case 0:
 				if(guibutton.displayString.matches(I18n.translateToLocal("gui.invScan.checkInv"))){
@@ -118,7 +124,8 @@ public class GuiInventoryScanner extends GuiContainer {
 	/**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
         this.fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + I18n.translateToLocal("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + I18n.translateToLocal("gui.invScan.mode.view")), 112, 6, 4210752);
@@ -130,6 +137,7 @@ public class GuiInventoryScanner extends GuiContainer {
         this.fontRendererObj.drawString(I18n.translateToLocalFormatted("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
     }
 	
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule){

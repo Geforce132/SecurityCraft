@@ -66,6 +66,7 @@ public class ItemModule extends Item{
     	return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     }
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
 		if(nbtCanBeModified || canBeCustomized()) {

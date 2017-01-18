@@ -11,10 +11,12 @@ public class ItemBlockReinforcedStainedGlassPanes extends ItemBlock {
 		this.setHasSubtypes(true);
 	}
 	
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
 	
+	@Override
 	public String getUnlocalizedName(ItemStack stack){
 		if(stack.getItemDamage() == 0){
 			return this.getUnlocalizedName() + "_white";

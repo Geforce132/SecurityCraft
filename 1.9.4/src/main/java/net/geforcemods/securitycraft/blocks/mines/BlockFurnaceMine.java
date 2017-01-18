@@ -30,6 +30,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
+	@Override
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion)
 	{
 		if (!par1World.isRemote)
@@ -38,6 +39,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 		}
 	}
 
+	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
 		{
@@ -58,14 +60,18 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 		}
 	}	
 	
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 	
+	@Override
 	public void activateMine(World world, BlockPos pos) {}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {}
 	
+	@Override
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
@@ -80,6 +86,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
+	@Override
 	public boolean canDropFromExplosion(Explosion par1Explosion)
 	{
 		return false;
@@ -92,30 +99,37 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
+	@Override
 	public IBlockState getStateFromMeta(int meta){
         return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
     }
 
-    public int getMetaFromState(IBlockState state){
+    @Override
+	public int getMetaFromState(IBlockState state){
         return state.getValue(FACING).getIndex();
     }
 
-    protected BlockStateContainer createBlockState(){
+    @Override
+	protected BlockStateContainer createBlockState(){
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 	
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
 	
+	@Override
 	public boolean isDefusable() {
 		return false;
 	}
 
+	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Blocks.FURNACE);
 	}
 
+	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}

@@ -51,6 +51,7 @@ public class GuiSCManual extends GuiScreen {
 		super();
 	}
 	
+	@Override
 	public void initGui(){		
 		byte b0 = 2;
 		
@@ -66,6 +67,7 @@ public class GuiSCManual extends GuiScreen {
         this.buttonList.add(prevButton);
     }
 	
+	@Override
 	public void drawScreen(int par1, int par2, float par3){		
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
@@ -159,11 +161,13 @@ public class GuiSCManual extends GuiScreen {
 	    }
 	}
 	
+	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
 	
+	@Override
 	protected void keyTyped(char par1, int par2) throws IOException{
 		super.keyTyped(par1, par2);
 		
@@ -186,7 +190,8 @@ public class GuiSCManual extends GuiScreen {
 		}
 	}
 	
-    protected void actionPerformed(GuiButton par1GuiButton){
+    @Override
+	protected void actionPerformed(GuiButton par1GuiButton){
     	if(par1GuiButton.id == 1){
     		this.currentPage++;
     		
@@ -310,6 +315,7 @@ public class GuiSCManual extends GuiScreen {
 		/**
 		 * Draws this button to the screen.
 		 */
+		@Override
 		public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_){
 			if(this.visible){
 				boolean flag = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;

@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -53,6 +52,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	
 	private Class<? extends Entity> typeToAttack = Entity.class;
 	
+	@Override
 	public void update() {
 		if(intersectsEntities){
 			int i = this.pos.getX();
@@ -192,7 +192,8 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	/**
      * Writes a tile entity to NBT.
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
     	super.writeToNBT(par1NBTTagCompound);
     	
@@ -210,7 +211,8 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 
@@ -255,21 +257,25 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
         }
     }
     
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
+    @Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
     	return (oldState.getBlock() != newState.getBlock());
     }
     
-    public Packet getDescriptionPacket() {                
+    @Override
+	public SPacketUpdateTileEntity getUpdatePacket() {                
     	NBTTagCompound tag = new NBTTagCompound();                
     	this.writeToNBT(tag);                
     	return new SPacketUpdateTileEntity(pos, 1, tag);        
     }        
     
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
+    @Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {                
     	readFromNBT(packet.getNbtCompound());        
     }
     
-    public void invalidate() {
+    @Override
+	public void invalidate() {
     	super.invalidate();
     	
     	onTileEntityDestroyed();
@@ -290,7 +296,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
     		ClientUtils.syncTileEntity(this);
     	}
     	else {
-	    	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getDescriptionPacket());
+	    	FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
     	}
     }
     
@@ -427,19 +433,23 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
     	return this;
     }
 
+	@Override
 	public String getCustomName() {
 		return customName;
 	}
 
+	@Override
 	public void setCustomName(String customName) {
 		this.customName = customName;
 		sync();
 	}
 
+	@Override
 	public boolean hasCustomName() {
 		return (customName != null && !customName.matches("name"));
 	}
 	
+	@Override
 	public boolean canBeNamed() {
 		return canBeNamed;
 	}

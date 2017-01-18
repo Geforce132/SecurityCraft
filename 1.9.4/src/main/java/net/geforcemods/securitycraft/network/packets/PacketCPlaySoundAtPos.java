@@ -55,6 +55,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		this.volume = par5;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readInt();
 		this.y = buf.readInt();
@@ -63,6 +64,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		this.volume = buf.readDouble();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(this.x);
 		buf.writeInt(this.y);
@@ -73,6 +75,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCPlaySoundAtPos, IMessage> {
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
 		//TODO check the sound

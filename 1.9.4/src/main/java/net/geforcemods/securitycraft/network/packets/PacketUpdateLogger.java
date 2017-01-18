@@ -30,6 +30,7 @@ public class PacketUpdateLogger implements IMessage{
 		this.username = username;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par2ByteBuf) {
 		par2ByteBuf.writeInt(x);
 		par2ByteBuf.writeInt(y);
@@ -38,6 +39,7 @@ public class PacketUpdateLogger implements IMessage{
 		ByteBufUtils.writeUTF8String(par2ByteBuf, username);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par2ByteBuf) {
 		this.x = par2ByteBuf.readInt();
 		this.y = par2ByteBuf.readInt();
@@ -48,6 +50,7 @@ public class PacketUpdateLogger implements IMessage{
 
 public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateLogger, IMessage> { 
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketUpdateLogger packet, MessageContext context) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);

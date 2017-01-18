@@ -15,6 +15,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	
 	public String[] players = new String[100];
 	
+	@Override
 	public boolean attackEntity(Entity entity) {
 		if (!this.worldObj.isRemote) {		
         	addPlayerName(((EntityPlayer) entity).getName());
@@ -24,6 +25,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		return true;
 	}
 	
+	@Override
 	public boolean canAttack() {
 		return worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
 	}
@@ -67,7 +69,8 @@ public class TileEntityLogger extends TileEntityOwnable {
 		return false;
 	}
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){
@@ -79,7 +82,8 @@ public class TileEntityLogger extends TileEntityOwnable {
         return par1NBTTagCompound;
     }
 
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
         
         for(int i = 0; i < this.players.length; i++){

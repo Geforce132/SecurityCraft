@@ -31,6 +31,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     
 	public ItemStack[] itemStacks = new ItemStack[getNumberOfCustomizableOptions()];
 	
+	@Override
 	public void update() {
     	super.update();
     	
@@ -41,6 +42,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     	}
     }
 	
+	@Override
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
 		super.readFromNBT(par1NBTTagCompound);
@@ -81,6 +83,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         }
     }
 	
+	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
 		super.writeToNBT(par1NBTTagCompound);
@@ -158,14 +161,17 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     	}
     }
 	
+	@Override
 	public int getSizeInventory() {
 		return getNumberOfCustomizableOptions();
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int par1) {
 		return this.itemStacks[par1];
 	}
 
+	@Override
 	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.itemStacks[par1] != null)
@@ -240,7 +246,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         }
     }
 
-	public ItemStack getStackInSlotOnClosing(int par1)
+	@Override
+	public ItemStack removeStackFromSlot(int par1)
     {
         if (this.itemStacks[par1] != null)
         {
@@ -257,7 +264,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	/**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int par1, ItemStack par2)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2)
     {
         this.itemStacks[par1] = par2;
 
@@ -288,52 +296,65 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         }    
 	}
 
+	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentTranslation(getName());
 	}
 	
+	@Override
 	public String getName(){
 		return "Customize";
 	}
 
+	@Override
 	public boolean hasCustomName() {
 		return (getCustomName() != null && !getCustomName().matches("name"));
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 1;
 	}
 
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
 		return true;
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {}
 
+	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() instanceof ItemModule ? true : false;
 	}
 	
+	@Override
 	public int getField(int id) {
 		return 0;
 	}
 
+	@Override
 	public void setField(int id, int value) {
 		
 	}
 
+	@Override
 	public int getFieldCount() {
 		return 0;
 	}
 	
+	@Override
 	public void clear() {
 		for(int i = 0; i < itemStacks.length; i++){
 			itemStacks[i] = null;
 		}
 	}
 	
+	@Override
 	public void onTileEntityDestroyed() {            
         if(linkable) {
 	        for(LinkedBlock block : linkedBlocks) {        	
@@ -341,12 +362,6 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	        }  
         }
     }
-	
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return null;
-	}
 	
 	////////////////////////
 	   // MODULE STUFF //

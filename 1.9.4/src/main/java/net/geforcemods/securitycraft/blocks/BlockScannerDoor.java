@@ -78,6 +78,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		}
 	}
 
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 	{
 		super.breakBlock(worldIn, pos, state);
@@ -100,11 +101,13 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		return mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return new TileEntityScannerDoor().activatedByView();

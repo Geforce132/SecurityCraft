@@ -32,10 +32,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		this.setHasSubtypes(true);
 	}
 	
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
 	
+	@Override
 	public String getUnlocalizedName(ItemStack stack){
 		if(stack.getItemDamage() == 0){
 			return this.getUnlocalizedName() + "_stone";
@@ -112,6 +114,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
     public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
         BlockPos blockpos1 = pos;

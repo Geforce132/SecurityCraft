@@ -30,6 +30,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	
 	private boolean updateBombCount = false;
 	
+	@Override
 	public void update(){
 		super.update();
 		
@@ -91,7 +92,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        	EntityPlayer entity = (EntityPlayer) iterator1.next();
 				int launchHeight = this.getLaunchHeight();
 
-	        	if(entity instanceof EntityPlayer && getOwner().isOwner((entity))){ continue; }
+	        	if(entity != null && getOwner().isOwner((entity))){ continue; }
 				if(WorldUtils.isPathObstructed(worldObj, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getName())){ continue; }
 
@@ -177,7 +178,8 @@ public class TileEntityIMS extends CustomizableSCTE {
      * Writes a tile entity to NBT.
 	 * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
         super.writeToNBT(par1NBTTagCompound);
         
         par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
@@ -189,7 +191,8 @@ public class TileEntityIMS extends CustomizableSCTE {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
         super.readFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.hasKey("bombsRemaining"))
@@ -224,10 +227,12 @@ public class TileEntityIMS extends CustomizableSCTE {
 		this.targetingOption = targetingOption;
 	}
 
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 	
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}

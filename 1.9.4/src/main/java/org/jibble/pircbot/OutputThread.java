@@ -15,7 +15,6 @@ found at http://www.jibble.org/licenses/
 package org.jibble.pircbot;
 
 import java.io.*;
-import java.net.*;
 
 /**
  * A Thread which is responsible for sending messages to the IRC server.
@@ -78,7 +77,8 @@ public class OutputThread extends Thread {
      * This method starts the Thread consuming from the outgoing message
      * Queue and sending lines to the server.
      */
-    public void run() {
+    @Override
+	public void run() {
         try {
             boolean running = true;
             while (running) {

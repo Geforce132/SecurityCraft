@@ -17,6 +17,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	private boolean isProvidingPower;
 	private int cooldown;
 	
+	@Override
 	public void update(){ 						
     	if(cooldown > 0){
     		cooldown--;
@@ -28,7 +29,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	}
     }
     
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){ 	
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){ 	
     	super.readFromNBT(par1NBTTagCompound);
     	
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
@@ -56,7 +58,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){   
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){   
     	super.writeToNBT(par1NBTTagCompound);
     	
         NBTTagList nbttaglist = new NBTTagList();
@@ -78,10 +81,12 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         return par1NBTTagCompound;
     }
     
+	@Override
 	public int getSizeInventory() {
 		return 37;
 	}
 
+	@Override
 	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.inventoryContents[par1] != null)
@@ -132,6 +137,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         }
     }
 
+	@Override
 	public ItemStack getStackInSlot(int var1) {
 		return this.inventoryContents[var1];
 	}
@@ -144,6 +150,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		return this.inventoryContents[var1];
 	}
 
+	@Override
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.inventoryContents[par1] = par2ItemStack;
 
@@ -184,22 +191,28 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         this.markDirty();
 	}
 
-	public boolean hasCustomInventoryName() {
+	@Override
+	public boolean hasCustomName() {
 		return true;
 	}
     
+	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {
 		return true;
 	}
 
+	@Override
 	public void openInventory(EntityPlayer player) {}
 
+	@Override
 	public void closeInventory(EntityPlayer player) {}
 
+	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return true;
 	}
@@ -236,6 +249,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		this.inventoryContents = contents;
 	}
 	
+	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
 		if(!this.getWorld().isRemote){
 			if(this.getWorld().getTileEntity(pos.east(2)) != null && this.getWorld().getTileEntity(pos.east(2)) instanceof TileEntityInventoryScanner){
@@ -258,6 +272,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		}
 	}
 	
+	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
 		if(!this.getWorld().isRemote){
 			if(this.getWorld().getTileEntity(pos.east(2)) != null && this.getWorld().getTileEntity(pos.east(2)) instanceof TileEntityInventoryScanner){
@@ -280,10 +295,12 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		}
 	}
 
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}

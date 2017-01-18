@@ -35,6 +35,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 		super(materialIn);
 	}
 	
+	@Override
 	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
@@ -43,16 +44,19 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state)
+    @Override
+	public boolean isNormalCube(IBlockState state)
     {
         return false;
     } 
     
-    public EnumBlockRenderType getRenderType(IBlockState state){
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
     	return EnumBlockRenderType.MODEL;
     }
     
-    public boolean isFullCube(IBlockState state)
+    @Override
+	public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -63,12 +67,14 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         return null;
     }
     
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    @Override
+	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return true;
     }  
     
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    @Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
         return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn.getBlockState(pos.down()), worldIn, pos.down(), EnumFacing.UP);
     }
@@ -99,7 +105,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     	return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
     
-    public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+    @Override
+	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
     {
         if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
         {
@@ -108,23 +115,27 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         }
     }
 	
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DEACTIVATED, false);
     }
 	
+	@Override
 	public void activateMine(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 		}
 	}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 		}
 	}
 	
+	@Override
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.destroyBlock(world, pos, false);
@@ -152,7 +163,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
     	if(meta <= 5){
         	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(DEACTIVATED, true);
@@ -161,7 +173,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
         }
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	if(state.getValue(DEACTIVATED).booleanValue()){
     		return (state.getValue(FACING).getIndex() + 6);
@@ -170,19 +183,23 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     	}
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING, DEACTIVATED});
     }
     
-    public boolean isActive(World world, BlockPos pos) {
+    @Override
+	public boolean isActive(World world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
     
-    public boolean isDefusable() {
+    @Override
+	public boolean isDefusable() {
 		return true;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityClaymore();
 	}

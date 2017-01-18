@@ -33,24 +33,29 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 		}
 	}
 	
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
     }
 	
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
         return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
         return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs));
     }
 
-    public boolean isDouble(){
+    @Override
+	public boolean isDouble(){
 		return isDouble;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}

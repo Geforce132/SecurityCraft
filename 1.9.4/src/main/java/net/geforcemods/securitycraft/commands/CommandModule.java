@@ -26,19 +26,23 @@ public class CommandModule extends CommandBase implements ICommand {
 		this.nicknames.add("module");
 	}
 	
-    public int getRequiredPermissionLevel()
+    @Override
+	public int getRequiredPermissionLevel()
     {
         return 0;
     }
 
+	@Override
 	public String getCommandName() {
 		return "module";
 	}
 	
+	@Override
 	public List<String> getCommandAliases() {
 		return this.nicknames;
 	}
 
+	@Override
 	public String getCommandUsage(ICommandSender p_71518_1_) {
 		return I18n.translateToLocal("messages.command.module.usage");
 	}
@@ -48,6 +52,7 @@ public class CommandModule extends CommandBase implements ICommand {
 		return true;
 	}
 
+	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException{
 		if(args.length == 1){
 			if(args[0].matches("copy")){

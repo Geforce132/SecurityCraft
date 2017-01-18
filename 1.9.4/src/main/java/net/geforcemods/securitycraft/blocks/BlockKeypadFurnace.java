@@ -34,7 +34,8 @@ public class BlockKeypadFurnace extends BlockOwnable {
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(IBlockState state)
+    @Override
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -42,7 +43,8 @@ public class BlockKeypadFurnace extends BlockOwnable {
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state)
+    @Override
+	public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
@@ -65,6 +67,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 		player.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
@@ -77,7 +80,8 @@ public class BlockKeypadFurnace extends BlockOwnable {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         if(meta <= 5){
         	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(OPEN, false);
@@ -86,7 +90,8 @@ public class BlockKeypadFurnace extends BlockOwnable {
         }
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	if(state.getValue(OPEN).booleanValue()){
     		return (state.getValue(FACING).getIndex() + 6);
@@ -95,11 +100,13 @@ public class BlockKeypadFurnace extends BlockOwnable {
     	}
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING, OPEN});
     }
 	
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
 	}

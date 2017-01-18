@@ -27,6 +27,7 @@ public class PacketSCheckPassword implements IMessage{
 		this.password = code;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -34,6 +35,7 @@ public class PacketSCheckPassword implements IMessage{
 		ByteBufUtils.writeUTF8String(par1ByteBuf, password);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -43,6 +45,7 @@ public class PacketSCheckPassword implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSCheckPassword, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSCheckPassword packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		String password = packet.password;

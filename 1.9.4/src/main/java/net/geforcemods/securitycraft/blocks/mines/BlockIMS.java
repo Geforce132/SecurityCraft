@@ -36,15 +36,18 @@ public class BlockIMS extends BlockOwnable {
 		setSoundType(SoundType.METAL);
 	}
 	
+	@Override
 	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
     
-    public boolean isNormalCube(IBlockState state){
+    @Override
+	public boolean isNormalCube(IBlockState state){
         return false;
     } 
     
-    public EnumBlockRenderType getRenderType(IBlockState state){
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
     	return EnumBlockRenderType.MODEL;
     }
 
@@ -65,7 +68,8 @@ public class BlockIMS extends BlockOwnable {
 		return false;
 	}
 	
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
 		if(!par1World.isRemote){
 			BlockUtils.destroyBlock(par1World, pos, false);
 		}                      
@@ -94,7 +98,8 @@ public class BlockIMS extends BlockOwnable {
     	}
     }
     
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(MINES, 4);
     }
@@ -105,21 +110,25 @@ public class BlockIMS extends BlockOwnable {
         return this.getDefaultState().withProperty(MINES, 4);
     }
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(MINES, meta);
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	return (state.getValue(MINES).intValue());
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {MINES});
     }
 	
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityIMS();
 	}

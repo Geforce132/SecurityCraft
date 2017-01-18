@@ -26,24 +26,28 @@ public class GuiIMS extends GuiContainer{
         this.targetingOptionIndex = tileEntity.getTargetingOption().modeIndex;
 	}
 	
+	@Override
 	public void initGui(){
 		super.initGui();
 		
 		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? I18n.translateToLocal("gui.ims.hostileAndPlayers") : I18n.translateToLocal("tooltip.module.players")));
 	}
 	
-    public void drawScreen(int par1, int par2, float par3){
+    @Override
+	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
 	}
     
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2){
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2){
         this.fontRendererObj.drawString(I18n.translateToLocal("tile.ims.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.translateToLocal("gui.ims.target"), this.xSize / 2 - 78, 30, 4210752);
     }
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -52,6 +56,7 @@ public class GuiIMS extends GuiContainer{
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
 	}
 	
+	@Override
 	protected void actionPerformed(GuiButton guibutton){
     	switch(guibutton.id){
     	case 0:

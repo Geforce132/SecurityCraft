@@ -40,12 +40,14 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
         return false;
     }
     
-    public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+    @Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
         super.breakBlock(par1World, pos, state);
         par1World.removeTileEntity(pos);
     }
     
-    public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+    @Override
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN)){
 			return;
 		}
@@ -72,13 +74,15 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 
-    public boolean eventReceived(IBlockState state, World par1World, BlockPos pos, int par5, int par6){
+    @Override
+	public boolean eventReceived(IBlockState state, World par1World, BlockPos pos, int par5, int par6){
         super.eventReceived(state, par1World, pos, par5, par6);
         TileEntity tileentity = par1World.getTileEntity(pos);
         return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
     }
     
-    public TileEntity createNewTileEntity(World var1, int var2) {
+    @Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
     }
 

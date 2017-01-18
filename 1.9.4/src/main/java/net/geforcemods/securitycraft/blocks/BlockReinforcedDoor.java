@@ -110,7 +110,8 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
         }
     }
     
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    @Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);
@@ -199,10 +200,12 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		return mod_SecurityCraft.reinforcedDoorItem;
     }
 	
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.reinforcedDoorItem;
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

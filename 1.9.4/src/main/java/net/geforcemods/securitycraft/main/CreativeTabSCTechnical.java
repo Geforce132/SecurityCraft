@@ -13,11 +13,13 @@ public class CreativeTabSCTechnical extends CreativeTabs{
 	}
 
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
 		return Item.getItemFromBlock(mod_SecurityCraft.usernameLogger);
 	}
 	
+	@Override
 	public String getTranslatedTabLabel(){
 		return "SecurityCraft: " + I18n.translateToLocal("creativeTabTechnical");
 		

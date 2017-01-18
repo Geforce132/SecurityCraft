@@ -26,7 +26,8 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 		return false;
 	}
 
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    @Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         super.breakBlock(worldIn, pos, state);
         worldIn.removeTileEntity(pos);

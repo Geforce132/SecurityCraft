@@ -37,6 +37,7 @@ public class BlockMine extends BlockExplosive {
 	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
 	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
 	 */
+	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
@@ -45,11 +46,13 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
 	 */
+	@Override
 	public boolean isNormalCube(IBlockState state)
 	{
 		return false;
 	} 
 
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -70,6 +73,7 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
+	@Override
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
 		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.PLANTS){
 			return false;
@@ -117,18 +121,21 @@ public class BlockMine extends BlockExplosive {
 		}
 	}
 	
+	@Override
 	public void activateMine(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 		}
 	}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 		}
 	}
 
+	@Override
 	public void explode(World par1World, BlockPos pos) {
 		if(par1World.isRemote){ return; }
 
@@ -145,6 +152,7 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
 		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
@@ -152,33 +160,40 @@ public class BlockMine extends BlockExplosive {
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
+	@Override
 	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.mine));
 	}
 
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		return this.getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
 	}
 	
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
+	@Override
 	public boolean isDefusable() {
 		return true;
 	}      
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

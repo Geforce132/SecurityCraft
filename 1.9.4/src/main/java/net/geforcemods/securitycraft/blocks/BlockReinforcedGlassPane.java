@@ -26,7 +26,8 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 		setSoundType(SoundType.GLASS);
 	}
 
-    public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state){
+    @Override
+	public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state){
         super.breakBlock(p_149749_1_, pos, state);
         p_149749_1_.removeTileEntity(pos);
     }
@@ -39,6 +40,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
     }
     
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state){
         return new ItemStack(Item.getItemFromBlock(this));
@@ -47,11 +49,13 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
      */
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public Item getItemDropped(IBlockState state, Random par2Random, int par3){
         return Item.getItemFromBlock(this);
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

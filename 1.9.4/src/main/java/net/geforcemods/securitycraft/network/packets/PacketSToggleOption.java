@@ -22,6 +22,7 @@ public class PacketSToggleOption implements IMessage{
 		this.id = id;
 	}
 	
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -29,6 +30,7 @@ public class PacketSToggleOption implements IMessage{
 		par1ByteBuf.writeInt(id);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.x = par1ByteBuf.readInt();
 		this.y = par1ByteBuf.readInt();
@@ -38,6 +40,7 @@ public class PacketSToggleOption implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSToggleOption, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
 		int x = packet.x;
 		int y = packet.y;

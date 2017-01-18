@@ -744,7 +744,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @deprecated As of PircBot 1.2.0, use {@link #onIncomingFileTransfer(DccFileTransfer)}
      */
-    protected final void dccReceiveFile(File file, long address, int port, int size) {
+    @Deprecated
+	protected final void dccReceiveFile(File file, long address, int port, int size) {
         throw new RuntimeException("dccReceiveFile is deprecated, please use sendFile");
     }
     
@@ -833,7 +834,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @deprecated As of PircBot 1.2.0, use {@link #onIncomingChatRequest(DccChat)}
      */
-    protected final DccChat dccAcceptChatRequest(String sourceNick, long address, int port) {
+    @Deprecated
+	protected final DccChat dccAcceptChatRequest(String sourceNick, long address, int port) {
         throw new RuntimeException("dccAcceptChatRequest is deprecated, please use onIncomingChatRequest");
     }
 
@@ -1407,7 +1409,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @deprecated As of 1.2.0, replaced by {@link #onTopic(String,String,String,long,boolean)}
      */
-    protected void onTopic(String channel, String topic) {}
+    @Deprecated
+	protected void onTopic(String channel, String topic) {}
     
 
     /**
@@ -2102,7 +2105,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @deprecated As of PircBot 1.2.0, use {@link #onIncomingFileTransfer(DccFileTransfer)}
      */
-    protected void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size) {}
+    @Deprecated
+	protected void onDccSendRequest(String sourceNick, String sourceLogin, String sourceHostname, String filename, long address, int port, int size) {}
     
     
     /**
@@ -2112,7 +2116,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @deprecated As of PircBot 1.2.0, use {@link #onIncomingChatRequest(DccChat)}
      */
-    protected void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port) {}
+    @Deprecated
+	protected void onDccChatRequest(String sourceNick, String sourceLogin, String sourceHostname, long address, int port) {}
     
     
     /**
@@ -2722,7 +2727,7 @@ public abstract class PircBot implements ReplyConstants {
             return null;
         }
         // Clone the array to prevent external modification.
-        return (int[]) _dccPorts.clone();
+        return _dccPorts.clone();
     }
     
     
@@ -2746,7 +2751,7 @@ public abstract class PircBot implements ReplyConstants {
         }
         else {
             // Clone the array to prevent external modification.
-            _dccPorts = (int[]) ports.clone();
+            _dccPorts = ports.clone();
         }
     }    
     
@@ -2760,7 +2765,8 @@ public abstract class PircBot implements ReplyConstants {
      *
      * @return true if and only if Object o is a PircBot and equal to this.
      */
-    public boolean equals(Object o) {
+    @Override
+	public boolean equals(Object o) {
         // This probably has the same effect as Object.equals, but that may change...
         if (o instanceof PircBot) {
             PircBot other = (PircBot) o;
@@ -2779,7 +2785,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @return the hash code for this instance of PircBot.
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return super.hashCode();
     }
     
@@ -2803,7 +2810,8 @@ public abstract class PircBot implements ReplyConstants {
      * 
      * @return a String representation of this object.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return "Version{" + _version + "}" +
                 " Connected{" + isConnected() + "}" +
                 " Server{" + _server + "}" +

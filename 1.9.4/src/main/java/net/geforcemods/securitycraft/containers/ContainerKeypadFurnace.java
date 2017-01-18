@@ -11,6 +11,7 @@ public class ContainerKeypadFurnace extends ContainerFurnace{
 		super(player, par2TileEntity);
 	}
 	
+	@Override
 	public boolean canInteractWith(EntityPlayer p_75145_1_){
         return true;
     }

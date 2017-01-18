@@ -28,6 +28,7 @@ public class GuiMRATDeactivate extends GuiContainer{
         this.item = item;
 	}
 	
+	@Override
 	public void initGui(){
     	super.initGui();
     	for(int i = 1; i < 7; i++){    		
@@ -52,6 +53,7 @@ public class GuiMRATDeactivate extends GuiContainer{
     }
 
 	
+	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
 	}
@@ -59,14 +61,16 @@ public class GuiMRATDeactivate extends GuiContainer{
 	/**
      * Draw the foreground layer for the GuiContainer (everything in front of the items)
      */
-    protected void drawGuiContainerForegroundLayer(int par1, int par2){
+    @Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2){
         this.fontRendererObj.drawString(TextFormatting.UNDERLINE + I18n.translateToLocal("gui.mrat.deactivate"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.mrat.detonate")) / 2, 6, 4210752);
     }
     
 	/**
      * Draw the background layer for the GuiContainer (everything behind the items)
      */
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
+    @Override
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_110410_t);
         int k = (this.width - this.xSize) / 2;
@@ -74,7 +78,8 @@ public class GuiMRATDeactivate extends GuiContainer{
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
     
-    protected void actionPerformed(GuiButton guibutton){
+    @Override
+	protected void actionPerformed(GuiButton guibutton){
     	int[] coords = this.item.getTagCompound().getIntArray("mine" + (guibutton.id + 1));
 
     	if(BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive){

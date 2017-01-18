@@ -25,6 +25,7 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 		this.rotationPitch = par5;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		this.x = buf.readDouble();
 		this.y = buf.readDouble();
@@ -33,6 +34,7 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 		this.rotationPitch = buf.readFloat();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeDouble(this.x);
 		buf.writeDouble(this.y);
@@ -43,6 +45,7 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 	
 public static class Handler extends PacketHelper implements IMessageHandler<PacketCSetPlayerPositionAndRotation, IMessage> {
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCSetPlayerPositionAndRotation message, MessageContext ctx) {
 		Minecraft.getMinecraft().thePlayer.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);

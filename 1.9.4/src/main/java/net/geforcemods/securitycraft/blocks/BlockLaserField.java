@@ -45,6 +45,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
         return null;
     }
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
@@ -55,7 +56,8 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
-    public boolean isOpaqueCube(IBlockState state)
+    @Override
+	public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -63,26 +65,31 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     /**
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
-    public boolean isNormalCube(IBlockState state)
+    @Override
+	public boolean isNormalCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isFullCube(IBlockState state)
+    @Override
+	public boolean isFullCube(IBlockState state)
     {
         return false;
     }
     
-    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+    @Override
+	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
     {
         return true;
     }  
     
-    public EnumBlockRenderType getRenderType(IBlockState state){
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
     	return EnumBlockRenderType.MODEL;
     }
     
-    public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+    @Override
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
     	if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) entity, Potion.getPotionFromResourceLocation("invisibility"))){	
 			for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
 				Block id = BlockUtils.getBlock(world, pos.east(i));
@@ -197,6 +204,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	/**
      * Called right before the block is destroyed by a player.  Args: world, pos, state
      */
+	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state)
     {
     	if(!par1World.isRemote){
@@ -280,27 +288,32 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
     	return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
     }
 	
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(BOUNDTYPE, 1);
     }
     
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BOUNDTYPE, meta);
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
         return state.getValue(BOUNDTYPE).intValue();
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {BOUNDTYPE});
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
@@ -310,6 +323,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
         return null;
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}

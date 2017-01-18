@@ -20,6 +20,7 @@ public class ItemTaser extends Item {
 		this.setMaxDamage(151);
 	}
 	
+	@Override
 	public boolean isFull3D(){
 		return true;
 	}
@@ -40,7 +41,8 @@ public class ItemTaser extends Item {
 		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
 	
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+    @Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		if(!par2World.isRemote){
 			if(par1ItemStack.getItemDamage() >= 1){
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);

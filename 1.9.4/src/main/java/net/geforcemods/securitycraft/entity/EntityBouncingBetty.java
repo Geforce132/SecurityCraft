@@ -32,13 +32,15 @@ public class EntityBouncingBetty extends Entity {
         this.prevPosZ = par6;
     }
 
-    protected void entityInit() {}
+    @Override
+	protected void entityInit() {}
 
     /**
      * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
      * prevent them from trampling crops
      */
-    protected boolean canTriggerWalking()
+    @Override
+	protected boolean canTriggerWalking()
     {
         return false;
     }
@@ -46,7 +48,8 @@ public class EntityBouncingBetty extends Entity {
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return !this.isDead;
     }
@@ -54,7 +57,8 @@ public class EntityBouncingBetty extends Entity {
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -101,7 +105,8 @@ public class EntityBouncingBetty extends Entity {
     /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
     {
         par1NBTTagCompound.setByte("Fuse", (byte)this.fuse);
     }
@@ -109,7 +114,8 @@ public class EntityBouncingBetty extends Entity {
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         this.fuse = par1NBTTagCompound.getByte("Fuse");
     }

@@ -37,14 +37,17 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		super(par2Material);
 	}
 	
+	@Override
 	public boolean isOpaqueCube(IBlockState state){
         return false;
     }
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
@@ -60,6 +63,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		}
 	}
 	
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED)){
@@ -81,26 +85,31 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		}
 	}
 	
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(DEACTIVATED, false);
     }
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(DEACTIVATED, (meta == 1 ? true : false));
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	return state.getValue(DEACTIVATED).booleanValue() ? 1 : 0;
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
     }
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}

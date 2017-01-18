@@ -12,6 +12,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	
+	@Override
 	public void update(){
 		if(this.worldObj.isRemote){
 			return;
@@ -38,7 +39,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
      * Writes a tile entity to NBT.
 	 * @return 
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("cooldown", this.cooldown);
@@ -49,7 +51,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
 

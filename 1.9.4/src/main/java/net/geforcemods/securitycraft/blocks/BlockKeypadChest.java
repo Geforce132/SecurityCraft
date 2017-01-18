@@ -45,7 +45,8 @@ public class BlockKeypadChest extends BlockChest {
     /**
      * Called when the block is placed in the world.
      */
-    public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+    @Override
+	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
         super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
                 
         if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityKeypadChest){
@@ -74,7 +75,8 @@ public class BlockKeypadChest extends BlockChest {
 	/**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2)
+    @Override
+	public TileEntity createNewTileEntity(World par1World, int par2)
     {
         return new TileEntityKeypadChest();
     }

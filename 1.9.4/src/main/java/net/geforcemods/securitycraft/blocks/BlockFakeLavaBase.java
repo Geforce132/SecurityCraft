@@ -67,6 +67,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 		}
 	}
 
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			if(entity instanceof EntityPlayer){
@@ -81,6 +82,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 		return null;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}

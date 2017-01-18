@@ -26,6 +26,7 @@ public class ContainerDisguiseModule extends Container {
 		}
 	}
 	
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
 		ItemStack itemstack = null;
 		Slot slot = this.inventorySlots.get(index);
@@ -76,6 +77,7 @@ public class ContainerDisguiseModule extends Container {
 		return super.slotClick(slot, dragType, clickTypeIn, player);
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
@@ -90,7 +92,8 @@ public class ContainerDisguiseModule extends Container {
 			this.inventory = par1IInventory;
 		}
 		
-	    public boolean isItemValid(ItemStack par1ItemStack) {
+	    @Override
+		public boolean isItemValid(ItemStack par1ItemStack) {
 	    	int numberOfItems = 0;
 			int numberOfBlocks = 0;
 			boolean isStackBlock = par1ItemStack.getUnlocalizedName().startsWith("tile.");
@@ -116,7 +119,8 @@ public class ContainerDisguiseModule extends Container {
 			return false;
         }
         
-        public int getSlotStackLimit() {
+        @Override
+		public int getSlotStackLimit() {
             return 1;
         }        
 	}

@@ -59,8 +59,10 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 		return true;
 	}
 	
+	@Override
 	public abstract void explode(World world, BlockPos pos);
 	
+	@Override
 	public boolean isDefusable(){
 		return true;
 	}

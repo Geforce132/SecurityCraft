@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 
+	@Override
 	public void renderByItem(ItemStack item) {
 		Block block = Block.getBlockFromItem(item.getItem());
 		 

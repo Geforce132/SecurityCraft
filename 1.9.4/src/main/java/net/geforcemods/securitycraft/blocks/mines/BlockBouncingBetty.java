@@ -34,14 +34,17 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		super(par2Material);
 	}
 
+	@Override
 	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 
+	@Override
 	public boolean isNormalCube(IBlockState state){
 		return false;
 	} 
 
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -55,30 +58,36 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
+	@Override
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
 		return par1World.isSideSolid(pos.down(), EnumFacing.UP);
 	}
 	
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(entity instanceof EntityLivingBase){
 			this.explode(world, pos);
 		}
 	}
 
+	@Override
 	public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer){
 		if(par5EntityPlayer instanceof EntityLivingBase){
 			this.explode(par1World, pos);
 		}
 	}
 	
+	@Override
 	public void activateMine(World world, BlockPos pos) {
 		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 	}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {
 		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 	}
 	
+	@Override
 	public void explode(World par1World, BlockPos pos){
 		if(par1World.isRemote){ return; }
 
@@ -93,6 +102,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
 	{
 		return Item.getItemFromBlock(this);
@@ -101,33 +111,40 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
+	@Override
 	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(this));
 	}
 	
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		return this.getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
 	}
 	
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
 	
+	@Override
 	public boolean isDefusable() {
 		return true;
 	}
 	
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
 	}

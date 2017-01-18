@@ -23,6 +23,7 @@ public class PacketSOpenGui implements IMessage {
 		this.z = z;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(this.id);
 		par1ByteBuf.writeInt(this.x);
@@ -30,6 +31,7 @@ public class PacketSOpenGui implements IMessage {
 		par1ByteBuf.writeInt(this.z);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
 		this.id = par1ByteBuf.readInt();
 		this.x = par1ByteBuf.readInt();
@@ -39,6 +41,7 @@ public class PacketSOpenGui implements IMessage {
 
 public static class Handler extends PacketHelper implements IMessageHandler<PacketSOpenGui, IMessage> {
 
+	@Override
 	public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
 		int id = packet.id;
 		int x = packet.x;

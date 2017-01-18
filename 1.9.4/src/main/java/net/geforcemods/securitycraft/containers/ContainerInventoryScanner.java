@@ -45,7 +45,8 @@ public class ContainerInventoryScanner extends Container {
     /**
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    @Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
         ItemStack itemstack = null;
         Slot slot = this.inventorySlots.get(par2);
@@ -83,13 +84,15 @@ public class ContainerInventoryScanner extends Container {
     /**
      * Called when the container is closed.
      */
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    @Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
         
         Utils.setISinTEAppropriately(par1EntityPlayer.worldObj, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) par1EntityPlayer.worldObj.getTileEntity(inventoryScannerTE.getPos())).getType());
     }
     
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return true;
 	}

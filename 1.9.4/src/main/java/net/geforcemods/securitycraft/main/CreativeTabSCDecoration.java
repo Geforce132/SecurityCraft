@@ -13,11 +13,13 @@ public class CreativeTabSCDecoration extends CreativeTabs{
 	}
 	
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
 		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak);
 	}
 	
+	@Override
 	public String getTranslatedTabLabel(){
 		return "SecurityCraft: " + I18n.translateToLocal("creativeTabDecoration");	
 	}

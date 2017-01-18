@@ -20,16 +20,19 @@ public class SlotOwnerRestricted extends Slot {
 	/**
      * Return whether this slot's stack can be taken from this slot.
      */
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer){
+    @Override
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer){
     	return (tileEntity.getOwner().isOwner(par1EntityPlayer));
     }
     
-    public void putStack(ItemStack p_75215_1_){
+    @Override
+	public void putStack(ItemStack p_75215_1_){
         this.inventory.setInventorySlotContents(getSlotIndex(), p_75215_1_);
         this.onSlotChanged();
     }
 
-    public int getSlotStackLimit(){
+    @Override
+	public int getSlotStackLimit(){
         return 1;
     }
     

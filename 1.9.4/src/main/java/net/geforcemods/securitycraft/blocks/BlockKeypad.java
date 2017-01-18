@@ -44,10 +44,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		setSoundType(SoundType.STONE);
 	}
 	
+	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
@@ -63,6 +65,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         return true;
     }
 	
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
@@ -94,7 +97,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		par1World.scheduleUpdate(pos, mod_SecurityCraft.keypad, 60);
 	}
     
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+    @Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
 		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
     }
@@ -102,7 +106,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     /**
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
-    public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+    @Override
+	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
     {
         this.setDefaultFacing(par1World, pos, state);
     }   
@@ -134,7 +139,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);		
 	}
 
-    public boolean canProvidePower(IBlockState state){
+    @Override
+	public boolean canProvidePower(IBlockState state){
         return true;
     }
     
@@ -165,7 +171,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	}
     }
     
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }
@@ -177,7 +184,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
 
-    public IBlockState getStateFromMeta(int meta)
+    @Override
+	public IBlockState getStateFromMeta(int meta)
     {
 		if(meta == 15) return this.getDefaultState();
 
@@ -188,7 +196,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         }
     }
 
-    public int getMetaFromState(IBlockState state)
+    @Override
+	public int getMetaFromState(IBlockState state)
     {
     	if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue()){
     		return (state.getValue(FACING).getIndex() + 6);
@@ -199,7 +208,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	}
     }
     
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    @Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         IBlockState disguisedState = getDisguisedBlockState(world, pos);
     	
         return disguisedState != null ? disguisedState : state;
@@ -251,7 +261,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	return null;
     }
 
-    protected BlockStateContainer createBlockState()
+    @Override
+	protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
     }
@@ -259,16 +270,19 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntity createNewTileEntity(World par1World, int par2){
+    @Override
+	public TileEntity createNewTileEntity(World par1World, int par2){
         return new TileEntityKeypad();
     }
 
+	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		ItemStack stack = getDisguisedStack(world, pos);
 		
 		return stack != null ? stack : new ItemStack(this);	
 	}
 
+	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return !(getDisguisedStack(world, pos) != null);
 	}
