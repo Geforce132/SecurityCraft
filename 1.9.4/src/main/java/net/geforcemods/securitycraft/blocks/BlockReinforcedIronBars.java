@@ -24,7 +24,7 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	
 	public BlockReinforcedIronBars(Material par1Material, boolean par2) {
 		super(par1Material, par2);
-		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 33);
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 16);
 	}
 	
     @Override

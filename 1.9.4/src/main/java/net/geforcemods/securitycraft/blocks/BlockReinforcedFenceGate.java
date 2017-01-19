@@ -28,7 +28,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	public BlockReinforcedFenceGate(){
 		super(BlockPlanks.EnumType.OAK);
-		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 35);
+		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 18);
 		setSoundType(SoundType.METAL);
 	}
 

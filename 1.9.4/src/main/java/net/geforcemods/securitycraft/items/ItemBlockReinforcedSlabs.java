@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -84,7 +85,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                     Block doubleSlabBlock = iblockstate1.getBlock();
                     
                     if(worldIn.checkNoEntityCollision(doubleSlabBlock.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-                        worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, doubleSlabBlock.getSoundType().getPlaceSound(), (doubleSlabBlock.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlabBlock.getSoundType().getFrequency() * 0.8F);
+                        worldIn.playSound(playerIn, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
                         --stack.stackSize;
                         
                         if(owner != null){
@@ -96,7 +97,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 }
             }
 
-            return this.tryPlace(stack, worldIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+            return this.tryPlace(stack, worldIn, playerIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
         }
     }
 
@@ -135,7 +136,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         return iblockstate1.getBlock() == this.singleSlab && object == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos1, side, player, stack);
     }
 
-    private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack){
+    private boolean tryPlace(ItemStack stack, World worldIn, EntityPlayer player, BlockPos pos, Object variantInStack){
         IBlockState iblockstate = worldIn.getBlockState(pos);
         
         Owner owner = null;
@@ -148,10 +149,10 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             Comparable<?> comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
 
             if(comparable == variantInStack){
-                IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(this.singleSlab.getVariantProperty(), comparable);
+                IBlockState iblockstate1 = this.makeState(this.singleSlab.getVariantProperty(), comparable);
 
                 if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-                    worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, this.doubleSlab.getSoundType().getPlaceSound(), (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getFrequency() * 0.8F);
+                    worldIn.playSound(player, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
                     --stack.stackSize;
                     
                     if(owner != null){
@@ -164,6 +165,10 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         }
 
         return false;
+    }
+    
+    protected <T extends Comparable<T>> IBlockState makeState(IProperty<T> property, Comparable<?> comparable) {
+        return this.doubleSlab.getDefaultState().withProperty(property, (T)comparable);
     }
 
 }

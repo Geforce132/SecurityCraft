@@ -22,7 +22,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 
 	public BlockReinforcedGlassPane(Material par1Material, boolean par2) {
 		super(par1Material, par2);
-		ReflectionHelper.setPrivateValue(Block.class, this, true, 26);
+		ReflectionHelper.setPrivateValue(Block.class, this, true, 15);
 		setSoundType(SoundType.GLASS);
 	}
 
