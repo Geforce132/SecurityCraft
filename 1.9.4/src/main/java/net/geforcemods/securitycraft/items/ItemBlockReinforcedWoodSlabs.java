@@ -86,7 +86,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                 }
                 
                 if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
-                    IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(iproperty, comparable);
+                    IBlockState iblockstate1 = makeState(iproperty, comparable);
 
                     if(worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                         worldIn.playSound(playerIn, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);

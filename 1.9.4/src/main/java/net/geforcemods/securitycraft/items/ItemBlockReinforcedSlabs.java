@@ -103,13 +103,13 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
     private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
 		if(comparable == BlockReinforcedSlabs.EnumType.STONE){
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE){
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.SANDSTONE){
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.DIRT){
-			return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return makeState_Dirt(BlockReinforcedSlabs.VARIANT, comparable);
 		}else{
 			return null;
 		}
@@ -167,8 +167,15 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
         return false;
     }
     
-    protected <T extends Comparable<T>> IBlockState makeState(IProperty<T> property, Comparable<?> comparable) {
+    protected  <T extends Comparable<T>> IBlockState makeState(IProperty<T> property, Comparable<?> comparable) {
         return this.doubleSlab.getDefaultState().withProperty(property, (T)comparable);
     }
-
+    
+    protected <T extends Comparable<T>> IBlockState makeState_Stone(IProperty<T> property, Comparable<?> comparable) {
+        return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(property, (T)comparable);
+    }
+    
+    protected <T extends Comparable<T>> IBlockState makeState_Dirt(IProperty<T> property, Comparable<?> comparable) {
+        return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(property, (T)comparable);
+    }
 }
