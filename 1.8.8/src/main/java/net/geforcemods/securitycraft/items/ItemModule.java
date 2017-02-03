@@ -119,10 +119,6 @@ public class ItemModule extends Item{
 	}
 	
 	public boolean canNBTBeModified() {
-		return false;
-	}
-	
-	public boolean canBeModified(){
 		return this.nbtCanBeModified;
 	}
 	

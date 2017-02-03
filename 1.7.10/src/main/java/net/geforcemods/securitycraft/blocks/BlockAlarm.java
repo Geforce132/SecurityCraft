@@ -278,6 +278,8 @@ public class BlockAlarm extends BlockContainer {
 	}
 
 	private void playSoundAndUpdate(World par1World, int par2, int par3, int par4){
+		if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityAlarm)) return;
+
 		if(par1World.isBlockIndirectlyGettingPowered(par2, par3, par4)){
 			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).isPowered();
 
