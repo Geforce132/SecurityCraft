@@ -113,7 +113,7 @@ public class ForgeEventHandler {
 	{
 		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.getPlayer().getName());
 		
-		if(bot.getMessageMode())
+		if(bot != null && bot.getMessageMode())
 		{
 			event.setCanceled(true);
 			bot.sendMessage("> " + event.getMessage());
