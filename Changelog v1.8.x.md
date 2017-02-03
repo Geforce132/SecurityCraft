@@ -1,3 +1,9 @@
+--------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
+
+- Fix: Rare crash when entering a world having used the IRC feature beforehand
+- Fix: Alarm crashes the game
+- Fix: [1.8, 1.8.8] Unable to add players to modules
+
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
 - New: Added config option to disable SecurityCraft's built-in version checking feature
