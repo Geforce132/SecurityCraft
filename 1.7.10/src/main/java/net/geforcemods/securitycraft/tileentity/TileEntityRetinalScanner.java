@@ -19,7 +19,11 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 	
 	public void entityViewed(EntityLivingBase entity) {
 		if(!worldObj.isRemote && !BlockUtils.isMetadataBetween(worldObj, xCoord, yCoord, zCoord, 7, 10)){
-			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean()) return;
+			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
+				return;
+			
+			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
+				return;
 			
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity)) {
                 PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);

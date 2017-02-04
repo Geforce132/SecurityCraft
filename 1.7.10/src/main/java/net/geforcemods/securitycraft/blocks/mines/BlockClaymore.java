@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -121,13 +123,17 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	public void activateMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
+			Owner owner = ((IOwnable)world.getBlock(par2, par3, par4)).getOwner();
 			world.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreActive);
+			((IOwnable)world.getBlock(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 
 	public void defuseMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
+			Owner owner = ((IOwnable)world.getBlock(par2, par3, par4)).getOwner();
 			world.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreDefused);
+			((IOwnable)world.getBlock(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 	

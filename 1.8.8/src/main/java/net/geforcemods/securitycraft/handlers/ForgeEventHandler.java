@@ -77,10 +77,10 @@ public class ForgeEventHandler {
 		
 		IChatComponent chatcomponenttext;
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
-			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		}
 		else {
-			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
 		}
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){

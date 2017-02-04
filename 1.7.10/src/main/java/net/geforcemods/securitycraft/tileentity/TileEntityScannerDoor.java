@@ -22,9 +22,14 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			if(!(entity instanceof EntityPlayer))
 				return;
 
-			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity))
+			EntityPlayer player = (EntityPlayer)entity;
+			
+			if(PlayerUtils.isPlayerMountedOnCamera(player))
+				return;
+			
+			if(!getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
 				return;
 			}
 			
@@ -33,8 +38,8 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			else
 				((BlockScannerDoor)worldObj.getBlock(xCoord, yCoord, zCoord)).func_150014_a(worldObj, xCoord, yCoord, zCoord, false);
 			
-			if(entity instanceof EntityPlayer && !open)
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
+			if(!open)
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getCommandSenderName()), EnumChatFormatting.GREEN);
 			
 			open = !open;
 		}

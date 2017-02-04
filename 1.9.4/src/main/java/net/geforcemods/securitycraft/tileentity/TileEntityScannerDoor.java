@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -25,24 +24,27 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;
-			else
+			
+			EntityPlayer player = (EntityPlayer)entity;
+			
+			if(PlayerUtils.isPlayerMountedOnCamera(player))
+				return;
+			
+			if(!getOwner().isOwner(player))
 			{
-				if(!getOwner().isOwner((EntityPlayer) entity))
-				{
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
-					return;
-				}
-
-				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockDoor.OPEN);
-
-				worldObj.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN).booleanValue()), 3);
-				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN).booleanValue()), 3);
-				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-				worldObj.playEvent((EntityPlayer)null, 1006, pos, 0);
-
-				if(open) 
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+				return;
 			}
+
+			boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockDoor.OPEN);
+
+			worldObj.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN).booleanValue()), 3);
+			worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN).booleanValue()), 3);
+			worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
+			worldObj.playEvent(null, 1006, pos, 0);
+
+			if(open) 
+				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

@@ -16,10 +16,10 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public boolean attackEntity(Entity entity){			
 		if(entity instanceof EntityLivingBase) 
 		{
-			if((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())))) ||
+			if((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) ||
+					(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
-					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) return false;
-	    	
+					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))return false;
 	    	WorldUtils.spawnLightning(worldObj, entity.posX, entity.posY, entity.posZ);
 	    	
 	    	return true;

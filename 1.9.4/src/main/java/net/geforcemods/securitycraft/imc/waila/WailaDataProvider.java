@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -65,7 +66,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 			}
 		}
 		
-		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && ((IOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){			
+		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && !(iDataAccessor.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){			
 			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
 			
 			tipList.add(I18n.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : I18n.translateToLocal("waila.password.notSet")));

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -10,14 +11,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectable {
+public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectable, ICustomWailaDisplay {
 
 	public BlockFakeLavaBase(Material p_i45429_1_){
 		super(p_i45429_1_);
@@ -82,6 +85,18 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
+	{
+		return new ItemStack(Blocks.lava);
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
+	{
+		return false;
 	}
 
 }

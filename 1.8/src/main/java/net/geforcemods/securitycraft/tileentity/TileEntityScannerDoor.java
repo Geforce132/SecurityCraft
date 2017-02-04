@@ -24,24 +24,27 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;
-			else
+			
+			EntityPlayer player = (EntityPlayer)entity;
+			
+			if(PlayerUtils.isPlayerMountedOnCamera(player))
+				return;
+			
+			if(!getOwner().isOwner(player))
 			{
-				if(!getOwner().isOwner((EntityPlayer) entity))
-				{
-					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
-					return;
-				}
-				
-				boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				return;
+			}
+			
+			boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
 
-				worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !((Boolean)upperState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
-				worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
-				worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-                worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+			worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !((Boolean)upperState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
+			worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
+			worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
+            worldObj.playAuxSFXAtEntity(null, 1006, pos, 0);
 
-                if(open)
-                    PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), EnumChatFormatting.GREEN);         
-            }
+            if(open)
+                PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getName()), EnumChatFormatting.GREEN);         
 		}
 	}
 

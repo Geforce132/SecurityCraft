@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
@@ -13,10 +14,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFakeWaterBase extends BlockStaticLiquid {
+public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWailaDisplay {
 	
 	public BlockFakeWaterBase(Material par2Material){
 		super(par2Material);
@@ -103,6 +105,18 @@ public class BlockFakeWaterBase extends BlockStaticLiquid {
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
 		return null;
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World world, int x, int y, int z)
+	{
+		return new ItemStack(Blocks.flowing_water);
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, int x, int y, int z)
+	{
+		return false;
 	}
 	
 }

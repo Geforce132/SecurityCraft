@@ -77,10 +77,10 @@ public class ForgeEventHandler {
 		
 		ITextComponent TextComponentString;
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		}
 		else {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks") + " " + mod_SecurityCraft.getVersion() + "! " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey));
 		}
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
