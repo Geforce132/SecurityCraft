@@ -115,17 +115,17 @@ public class BlockMine extends BlockExplosive {
 	
 	public void activateMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
-			Owner owner = ((IOwnable)world.getBlock(par2, par3, par4)).getOwner();
+			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
 			world.setBlock(par2, par3, par4, mod_SecurityCraft.mine);
-			((IOwnable)world.getBlock(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
+			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 
 	public void defuseMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
-			Owner owner = ((IOwnable)world.getBlock(par2, par3, par4)).getOwner();
+			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
 			world.setBlock(par2, par3, par4, mod_SecurityCraft.mineCut);
-			((IOwnable)world.getBlock(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
+			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 
