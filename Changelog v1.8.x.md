@@ -2,13 +2,14 @@
 
 - Fix: Rare crash when entering a world having used the IRC feature beforehand
 - Fix: Alarm crashes the game
-- Fix: [1.8, 1.8.8] Unable to add players to modules
 - Fix: Retinal Scanners and Scanner Doors can be activated while looking through a camera
 - Fix: Wrong description of Smart/Storage Modules in Inventory Scanner
 - Fix: Version gets added incorrectly to the welcome message
-- Fix: [1.7.10] Defusing a mine removes owner
 - Fix: WAILA shows that a Keycard Reader can have a password
 - Fix: WAILA distinguishes between fake and real lava/water
+- Fix: [1.7.10] Defusing a mine removes owner
+- Fix: [1.7.10] Codebreaker does not work on Keypads
+- Fix: [1.8, 1.8.8] Unable to add players to modules
 
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
