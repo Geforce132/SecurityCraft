@@ -53,8 +53,8 @@ public class mod_SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
 	
-	//TODO ********************************* This is v1.8.2 for MC 1.7.10!
-	protected static final String VERSION = "v1.8.2";
+	//TODO ********************************* This is v1.8.2.1 for MC 1.7.10!
+	protected static final String VERSION = "v1.8.2.1";
 	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.3.1420,);after:LookingGlass@[0.1.1.00,);";
 	
 	

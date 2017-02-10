@@ -65,6 +65,9 @@ public class BlockFrame extends BlockOwnable {
 				return true;
 			}
 		}else{
+			if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityFrame))
+				return false;
+			
 			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
 				return false;

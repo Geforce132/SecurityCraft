@@ -7,6 +7,7 @@
 - Fix: Version gets added incorrectly to the welcome message
 - Fix: WAILA shows that a Keycard Reader can have a password
 - Fix: WAILA distinguishes between fake and real lava/water
+- Fix: Specific crashes reported by OpenEye
 - Fix: [1.7.10] Defusing a mine removes owner
 - Fix: [1.7.10] Codebreaker does not work on Keypads
 - Fix: [1.8, 1.8.8] Unable to add players to modules

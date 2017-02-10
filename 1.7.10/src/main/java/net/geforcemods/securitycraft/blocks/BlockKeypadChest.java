@@ -64,6 +64,8 @@ public class BlockKeypadChest extends BlockChest {
      * their own) Args: x, y, z, neighbor Block
      */
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
+    	if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest))
+    		return;
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5Block);
         TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)par1World.getTileEntity(par2, par3, par4);
 
