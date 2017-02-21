@@ -214,7 +214,7 @@ public class mod_SecurityCraft {
 		log("Finished loading mod additions.");
 		log("Doing registering stuff... (PT 1/2)");
 		mod_SecurityCraft.configHandler.setupGameRegistry();
-		
+		mod_SecurityCraft.serverProxy.setupTextureRegistry();
 		serverProxy.registerTextureFiles();
 
 		ModMetadata modMeta = event.getModMetadata();
@@ -241,8 +241,6 @@ public class mod_SecurityCraft {
 			}
 		}
 		
-		mod_SecurityCraft.serverProxy.setupTextureRegistry();
-			
 		log("Doing registering stuff... (PT 2/2)");
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, GuiHandler);
