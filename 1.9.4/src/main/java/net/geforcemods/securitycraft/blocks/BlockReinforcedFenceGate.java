@@ -72,7 +72,32 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F);
 	}
+    
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if(!worldIn.isRemote) {
+            boolean flag = isSCBlock(blockIn) && worldIn.isBlockPowered(pos);
 
+            if (flag || blockIn.getDefaultState().canProvidePower()) {
+                if (flag && !((Boolean)state.getValue(OPEN)).booleanValue() && !((Boolean)state.getValue(POWERED)).booleanValue()) {
+                    worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
+                    worldIn.playEvent((EntityPlayer)null, 1008, pos, 0);
+                }
+                else if (!flag && ((Boolean)state.getValue(OPEN)).booleanValue() && ((Boolean)state.getValue(POWERED)).booleanValue()) {
+                    worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
+                    worldIn.playEvent((EntityPlayer)null, 1014, pos, 0);
+                }
+                else if (flag != ((Boolean)state.getValue(POWERED)).booleanValue()) {
+                    worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+                }
+            }
+        }
+    }
+    
+    private boolean isSCBlock(Block block) {
+    	return (block instanceof BlockLaserBlock || block instanceof BlockRetinalScanner ||
+    			block instanceof BlockKeypad || block instanceof BlockKeycardReader || block instanceof BlockInventoryScanner);
+    }
 
     @Override
 	public boolean eventReceived(IBlockState state, World par1World, BlockPos pos, int par5, int par6){

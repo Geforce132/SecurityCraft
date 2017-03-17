@@ -73,6 +73,33 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
+	
+	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block neighborBlock) {
+        if (!par1World.isRemote)
+        {
+            int l = par1World.getBlockMetadata(x, y, z);
+            boolean flag = isSCBlock(neighborBlock) && par1World.isBlockIndirectlyGettingPowered(x, y, z);
+
+            if (flag || neighborBlock.canProvidePower())
+            {
+                if (flag && !isFenceGateOpen(l))
+                {
+                	par1World.setBlockMetadataWithNotify(x, y, z, l | 4, 2);
+                	par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
+                }
+                else if (!flag && isFenceGateOpen(l))
+                {
+                	par1World.setBlockMetadataWithNotify(x, y, z, l & -5, 2);
+                	par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
+                }
+            }
+        }
+    }
+	
+	private boolean isSCBlock(Block block) {
+    	return (block instanceof BlockLaserBlock || block instanceof BlockRetinalScanner ||
+    			block instanceof BlockKeypad || block instanceof BlockKeycardReader || block instanceof BlockInventoryScanner);
+    }
 
 	/**
 	 * Gets the block's texture. Args: side, meta
