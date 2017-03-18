@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -11,6 +12,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -57,13 +59,41 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        if(blockAccess.getBlockState(pos).getBlock() != Blocks.AIR && (blockAccess.getBlockState(pos).getBlock().isFullCube(blockAccess.getBlockState(pos)) || !blockAccess.getBlockState(pos).getBlock().isOpaqueCube(blockAccess.getBlockState(pos)))) {
-        	return false;
+    public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+		BlockPos keypadPos = pos.offset(side.getOpposite());
+        
+		if(worldIn.getTileEntity(keypadPos) == null) return true;
+        CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
+        
+        if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
+        {
+        	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
+        	Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound()).get(0);
+        	
+        	// If the keypad has a disguise module added with a transparent block inserted.
+        	if(!blockToDisguiseAs.isOpaqueCube(state) || !blockToDisguiseAs.isFullCube(state))
+        	{        		      			        
+        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
+        	}
         }
 
         return true;
     }
+	
+	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, Block neighborBlock, EnumFacing side) {
+		if(neighborBlock == Blocks.AIR) {
+    		return true;
+		}
+		
+		// Slightly cheating here, checking if the block is an instance of BlockBreakable
+		// and a vanilla block instead of checking for specific blocks, since all vanilla
+		// BlockBreakable blocks are transparent.
+		if(neighborBlock instanceof BlockBreakable && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:")) {
+			return false;
+		}
+		
+		return true;
+	}
 	
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
