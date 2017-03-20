@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,17 +28,17 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 				return false;
 			}
 			
-			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
+			if(PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.remoteAccessMine)) {
 				return false;
 			}
 			
-			if(isActive(worldIn, pos) && isDefusable() && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters) {
+			if(isActive(worldIn, pos) && isDefusable() && PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.wireCutters)) {
 				defuseMine(worldIn, pos);
 				playerIn.inventory.getCurrentItem().damageItem(1, playerIn);
 				return false;
 			}
 			
-			if(!isActive(worldIn, pos) && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL) {
+			if(!isActive(worldIn, pos) && PlayerUtils.isHoldingItem(playerIn, Items.FLINT_AND_STEEL)) {
 				activateMine(worldIn, pos);
 				return false;
 			}

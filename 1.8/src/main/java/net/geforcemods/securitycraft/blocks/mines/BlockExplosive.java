@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,17 +25,17 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 				return false;
 			}
 			
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.remoteAccessMine) {
+			if(PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.remoteAccessMine)) {
 				return false;
 			}
 			
-			if(isActive(par1World, pos) && isDefusable() && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters) {
+			if(isActive(par1World, pos) && isDefusable() && PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.wireCutters)) {
 				defuseMine(par1World, pos);
 				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
 				return false;
 			}
 			
-			if(!isActive(par1World, pos) && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel) {
+			if(!isActive(par1World, pos) && PlayerUtils.isHoldingItem(par5EntityPlayer, Items.flint_and_steel)) {
 				activateMine(par1World, pos);
 				return false;
 			}
