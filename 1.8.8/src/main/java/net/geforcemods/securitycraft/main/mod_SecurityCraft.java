@@ -47,7 +47,7 @@ public class mod_SecurityCraft {
 	
 	//TODO ********************************* This is v1.8.2.1 for MC 1.8.8!
 	protected static final String VERSION = "v1.8.2.1";
-	protected static final String DEPENDENCIES = "required-after:Forge@[11.15.0.1596,)";
+	protected static final String DEPENDENCIES = "required-after:Forge@[11.15.0.1655,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
