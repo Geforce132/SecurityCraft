@@ -1,5 +1,5 @@
 {
-    "parent": "block/fence_nsew",
+    "parent": "block/fence_side",
     "textures": {
         "texture": "securitycraft:blocks/reinforcedDoorLower"
     }
