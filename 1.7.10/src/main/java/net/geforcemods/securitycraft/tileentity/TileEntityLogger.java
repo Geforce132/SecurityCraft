@@ -12,15 +12,21 @@ public class TileEntityLogger extends TileEntityOwnable {
 	
 	public boolean attackEntity(Entity entity) {		
 		if (!this.worldObj.isRemote) {		
-        	addPlayerName(((EntityPlayer) entity).getCommandSenderName());
-        	sendChangeToClient();
+			if (entity instanceof EntityPlayer) {
+		        	addPlayerName(((EntityPlayer) entity).getCommandSenderName());
+		        	sendChangeToClient();
+			}
 		}
 		
 		return true;
 	}
 	
 	public boolean canAttack() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                if (worldObj != null) {
+		    return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+                } else {
+                    return false;
+                }
 	}
 	
 	private void addPlayerName(String username){
