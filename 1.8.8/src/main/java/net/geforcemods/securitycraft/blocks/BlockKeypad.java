@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -62,12 +63,17 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
         {
         	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
-        	Block blockToDisguiseAs = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound()).get(0);
-
-        	// If the keypad has a disguise module added with a transparent block inserted.
-        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
-        	{        		      			        
-        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
+        	List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
+        	
+        	if(blocks.size() != 0)
+        	{
+	        	Block blockToDisguiseAs = blocks.get(0);
+	
+	        	// If the keypad has a disguise module added with a transparent block inserted.
+	        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
+	        	{        		      			        
+	        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
+	        	}
         	}
         }
 

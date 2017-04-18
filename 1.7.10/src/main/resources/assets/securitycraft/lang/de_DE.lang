@@ -373,6 +373,7 @@ waila.customName.notSet=Nicht gesetzt
 
 tooltip.mine=Mine
 tooltip.camera=Kamera
+tooltip.cameraMonitor=Anzahl an Kameras: 
 tooltip.module.modifiable=Modul ist modifizierbar!
 tooltip.module.notModifiable=Modul ist nicht modifizierbar!
 tooltip.module.playerCustomization.usage=Nutze /module um Spieler hinzuzufügen.

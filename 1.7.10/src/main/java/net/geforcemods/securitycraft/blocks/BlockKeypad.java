@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -143,10 +144,15 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         boolean isDisguised = tileEntity.hasModule(EnumCustomModules.DISGUISE);
 
         if(isDisguised && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {
-            ItemStack stack = tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).get(0);
-            Block disguisedAs = Block.getBlockFromItem(stack.getItem());
+            List<ItemStack> stacks = tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE);
             
-        	return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
+            if(stacks.size() != 0)
+            {
+            	ItemStack stack = stacks.get(0);
+	            Block disguisedAs = Block.getBlockFromItem(stack.getItem());
+	            
+	        	return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
+            }
 		}
 
 		if(meta > 6 && meta < 11) {

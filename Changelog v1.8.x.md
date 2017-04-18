@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed!)--------------------------
+
+- Fix: Crash when adding an empty Disguise Module to a keypads
+- Fix: Missing German language strings
+
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 
 - Fix: Rare crash when entering a world having used the IRC feature beforehand
