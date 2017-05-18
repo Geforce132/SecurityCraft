@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "securitycraft:blocks/reinforcedPlanks_oak",
+        "top": "securitycraft:blocks/reinforcedPlanks_oak",
+        "side": "securitycraft:blocks/reinforcedPlanks_oak"
+    }
+}

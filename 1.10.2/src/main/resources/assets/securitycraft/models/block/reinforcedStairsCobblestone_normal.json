@@ -1,0 +1,8 @@
+{
+    "parent": "block/stairs",
+    "textures": {
+        "bottom": "securitycraft:blocks/reinforcedCobblestone",
+        "top": "securitycraft:blocks/reinforcedCobblestone",
+        "side": "securitycraft:blocks/reinforcedCobblestone"
+    }
+}
