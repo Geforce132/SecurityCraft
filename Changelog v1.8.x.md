@@ -1,7 +1,9 @@
 --------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed!)--------------------------
 
-- Fix: Crash when adding an empty Disguise Module to a keypads
+- Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
+- Fix: Some GUIs cannot be closed
+- Fix: The Universal Key Changer allows non digit characters
 
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 
