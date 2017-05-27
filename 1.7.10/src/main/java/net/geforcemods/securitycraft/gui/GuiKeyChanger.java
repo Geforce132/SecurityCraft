@@ -25,7 +25,7 @@ import net.minecraft.util.StatCollector;
 public class GuiKeyChanger extends GuiContainer {
 	
 	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 	private GuiTextField textboxNewPasscode;
 	private GuiTextField textboxConfirmPasscode;	
 	private GuiButton confirmButton;
@@ -86,6 +86,9 @@ public class GuiKeyChanger extends GuiContainer {
     }
 	
 	protected void keyTyped(char par1, int par2){
+		if(!isValidChar(par1))
+			return;
+		
 		if(textboxNewPasscode.isFocused()) {
 			textboxNewPasscode.textboxKeyTyped(par1, par2);
 		}
@@ -97,6 +100,18 @@ public class GuiKeyChanger extends GuiContainer {
 		}
 		
 		checkToEnableSaveButton();
+	}
+	
+    private boolean isValidChar(char par1) {
+		for(int x = 1; x <= this.allowedChars.length; x++){
+			if(par1 == this.allowedChars[x - 1]){
+				return true;
+			}else{
+				continue;
+			}
+		}
+		
+		return false;
 	}
 	
 	private void checkToEnableSaveButton() {
