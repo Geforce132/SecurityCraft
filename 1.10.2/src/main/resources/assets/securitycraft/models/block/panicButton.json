@@ -1,40 +1,22 @@
 {
-    "__createdwith": "opl's Model Creator",
-    "ambientocclusion": false,
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+"ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/panicButton",
-        "texture": "securitycraft:blocks/panicButton"
+        "particle": "blocks/panicButton",
+        "0": "blocks/panicButton"
     },
     "elements": [
         {
-            "from": [3,0,5],
-            "to": [13,2,11],
+            "name": "Element",
+            "from": [ 3.0, 0.0, 5.0 ], 
+            "to": [ 13.0, 2.0, 11.0 ], 
             "faces": {
-                "up": {
-                    "uv": [3,11,13,5],
-                    "texture": "#texture"
-                },
-                "down": {
-                    "uv": [5,5,11,9],
-                    "texture": "#texture",
-                    "cullface": down
-                },
-                "west": {
-                    "uv": [5,5,11,6],
-                    "texture": "#texture"
-                },
-                "east": {
-                    "uv": [5,5,11,6],
-                    "texture": "#texture"
-                },
-                "north": {
-                    "uv": [5,5,11,6],
-                    "texture": "#texture"
-                },
-                "south": {
-                    "uv": [5,5,11,6],
-                    "texture": "#texture"
-                }
+                "north": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
+                "east": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
+                "south": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
+                "west": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 6.0 ] },
+                "up": { "texture": "#0", "uv": [ 3.0, 11.0, 13.0, 5.0 ] },
+                "down": { "texture": "#0", "uv": [ 5.0, 5.0, 11.0, 9.0 ], "cullface": "down" }
             }
         }
     ]

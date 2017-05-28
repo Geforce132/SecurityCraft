@@ -2854,10 +2854,10 @@ public abstract class PircBot implements ReplyConstants {
         channel = channel.toLowerCase();
         User[] userArray = new User[0];
         synchronized (_channels) {
-            Hashtable users = (Hashtable) _channels.get(channel);
+            Hashtable<?, ?> users = (Hashtable<?, ?>) _channels.get(channel);
             if (users != null) {
                 userArray = new User[users.size()];
-                Enumeration enumeration = users.elements();
+                Enumeration<?> enumeration = users.elements();
                 for (int i = 0; i < userArray.length; i++) {
                     User user = (User) enumeration.nextElement();
                     userArray[i] = user;
@@ -2884,7 +2884,7 @@ public abstract class PircBot implements ReplyConstants {
         String[] channels = new String[0];
         synchronized (_channels) {
             channels = new String[_channels.size()];
-            Enumeration enumeration = _channels.keys();
+            Enumeration<String> enumeration = _channels.keys();
             for (int i = 0; i < channels.length; i++) {
                 channels[i] = (String) enumeration.nextElement();
             }
@@ -2926,9 +2926,9 @@ public abstract class PircBot implements ReplyConstants {
     private final void addUser(String channel, User user) {
         channel = channel.toLowerCase();
         synchronized (_channels) {
-            Hashtable users = (Hashtable) _channels.get(channel);
+            Hashtable<User, User> users = (Hashtable<User, User>) _channels.get(channel);
             if (users == null) {
-                users = new Hashtable();
+                users = new Hashtable<User, User>();
                 _channels.put(channel, users);
             }
             users.put(user, user);
@@ -2943,7 +2943,7 @@ public abstract class PircBot implements ReplyConstants {
         channel = channel.toLowerCase();
         User user = new User("", nick);
         synchronized (_channels) {
-            Hashtable users = (Hashtable) _channels.get(channel);
+            Hashtable<?, ?> users = (Hashtable<?, ?>) _channels.get(channel);
             if (users != null) {
                 return (User) users.remove(user);
             }
@@ -2957,7 +2957,7 @@ public abstract class PircBot implements ReplyConstants {
      */
     private final void removeUser(String nick) {
         synchronized (_channels) {
-            Enumeration enumeration = _channels.keys();
+            Enumeration<String> enumeration = _channels.keys();
             while (enumeration.hasMoreElements()) {
                 String channel = (String) enumeration.nextElement();
                 this.removeUser(channel, nick);
@@ -2971,7 +2971,7 @@ public abstract class PircBot implements ReplyConstants {
      */
     private final void renameUser(String oldNick, String newNick) {
         synchronized (_channels) {
-            Enumeration enumeration = _channels.keys();
+            Enumeration<String> enumeration = _channels.keys();
             while (enumeration.hasMoreElements()) {
                 String channel = (String) enumeration.nextElement();
                 User user = this.removeUser(channel, oldNick);
@@ -3000,7 +3000,7 @@ public abstract class PircBot implements ReplyConstants {
      */
     private final void removeAllChannels() {
         synchronized(_channels) {
-            _channels = new Hashtable();
+            _channels = new Hashtable<String, Hashtable<User, User>>();
         }
     }
 
@@ -3008,10 +3008,10 @@ public abstract class PircBot implements ReplyConstants {
     private final void updateUser(String channel, int userMode, String nick) {
         channel = channel.toLowerCase();
         synchronized (_channels) {
-            Hashtable users = (Hashtable) _channels.get(channel);
+            Hashtable<User, User> users = (Hashtable<User, User>) _channels.get(channel);
             User newUser = null;
             if (users != null) {
-                Enumeration enumeration = users.elements();
+                Enumeration<User> enumeration = users.elements();
                 while(enumeration.hasMoreElements()) {
                     User userObj = (User) enumeration.nextElement();
                     if (userObj.getNick().equalsIgnoreCase(nick)) {
@@ -3079,11 +3079,11 @@ public abstract class PircBot implements ReplyConstants {
     
     // A Hashtable of channels that points to a selfreferential Hashtable of
     // User objects (used to remember which users are in which channels).
-    private Hashtable _channels = new Hashtable();
+    private Hashtable<String, Hashtable<User, User>> _channels = new Hashtable<String, Hashtable<User, User>>();
     
     // A Hashtable to temporarily store channel topics when we join them
     // until we find out who set that topic.
-    private Hashtable _topics = new Hashtable();
+    private Hashtable<String, String> _topics = new Hashtable<String, String>();
     
     // DccManager to process and handle all DCC events.
     private DccManager _dccManager = new DccManager(this);

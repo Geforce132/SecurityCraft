@@ -48,13 +48,13 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	}	
 
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote){
+		if(par1World.isRemote) {
 			return true;
-		}else{
+		} else {
 			if(par5EntityPlayer.inventory.getCurrentItem() == null || par5EntityPlayer.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
 				this.explode(par1World, pos);
 				return true;
-			}else{
+			} else {
 				return false;	   		
 			}
 		}

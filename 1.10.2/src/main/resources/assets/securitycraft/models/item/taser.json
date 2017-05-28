@@ -191,22 +191,5 @@
                 }
             }
         }
-    ],
-    "display": {
-        "thirdperson": {
-            "rotation": [ 270, -5, 0 ],
-            "translation": [ -0.5, 1.75, -3.75 ],
-            "scale": [ 1.175, 1.175, 1.175 ]
-        },
-        "firstperson": {
-            "rotation": [ 180, -50, 180 ],
-            "translation": [ 0.5, 3.75, -2.75 ],
-            "scale": [ 2.775, 2.775, 2.775 ]
-        },
-        "gui": {
-            "rotation": [ 180, 90, 180 ],
-            "translation": [ 1, 2.50, -1.25 ],
-            "scale": [ 2.175, 2.175, 2.175 ]
-        }
-    }
+    ]
 }

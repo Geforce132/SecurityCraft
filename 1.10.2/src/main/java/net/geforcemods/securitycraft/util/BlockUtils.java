@@ -225,7 +225,7 @@ public class BlockUtils{
 		par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 	}
 
-	public static boolean hasBlockProperty(World par1World, BlockPos pos, IProperty property){
+	public static boolean hasBlockProperty(World par1World, BlockPos pos, IProperty<?> property){
 		try{
 			par1World.getBlockState(pos).getValue(property);
 			return true;
@@ -234,7 +234,7 @@ public class BlockUtils{
 		}
 	}
 
-	public static boolean hasBlockProperty(World par1World, int par2, int par3, int par4, IProperty property){
+	public static boolean hasBlockProperty(World par1World, int par2, int par3, int par4, IProperty<?> property){
 		return hasBlockProperty(par1World, toPos(par2, par3, par4), property);
 	}
 
@@ -254,19 +254,19 @@ public class BlockUtils{
 		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property).intValue();
 	}
 	
-	public static EnumFacing getBlockPropertyAsEnum(World par1World, BlockPos pos, PropertyEnum property){
+	public static EnumFacing getBlockPropertyAsEnum(World par1World, BlockPos pos, PropertyEnum<?> property){
 		return ((EnumFacing) par1World.getBlockState(pos).getValue(property));
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(World par1World, int par2, int par3, int par4, PropertyEnum property){
+	public static EnumFacing getBlockPropertyAsEnum(World par1World, int par2, int par3, int par4, PropertyEnum<?> property){
 		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
 	}
 	
-	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, BlockPos pos, PropertyEnum property){
+	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, BlockPos pos, PropertyEnum<?> property){
 		return ((BlockLever.EnumOrientation) par1World.getBlockState(pos).getValue(property));
 	}
 
-	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, int par2, int par3, int par4, PropertyEnum property){
+	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, int par2, int par3, int par4, PropertyEnum<?> property){
 		return ((BlockLever.EnumOrientation) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
 	}
 
