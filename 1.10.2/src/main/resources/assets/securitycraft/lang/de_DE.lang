@@ -104,7 +104,7 @@ tile.reinforcedStoneSlabs.name=Verstärkte Steinstufen
 tile.reinforcedStoneSlabs_stone.name=Verstärkte Steinstufen
 tile.reinforcedStoneSlabs_cobble.name=Verstärkte Pflastersteinstufen
 tile.reinforcedStoneSlabs_sandstone.name=Verstärkte Sandsteinstufen
-tile.reinforcedDirtSlab.name=Verstärkte Erdstufen
+tile.reinforcedDirtSlab_stone.name=Verstärkte Erdstufen
 tile.protecto.name=Protecto
 tile.scannerDoor.name=Scannertür
 
