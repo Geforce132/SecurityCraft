@@ -62,7 +62,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	{
 		// TODO: Check to make sure this works as intended, because if the 'source' object is a
 		//		 ChunkCache object instead of World, it may only be able to return properties
-	    // 		 if the X and Y coordinates are less than 256.
+		//		 if the X and Y coordinates are less than 256.
 		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
         
     	if(dir == EnumFacing.SOUTH)
