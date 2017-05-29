@@ -17,10 +17,11 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		this.useNeighborBrightness = true;
 		
-		if(baseBlock == mod_SecurityCraft.reinforcedStairsStone || baseBlock == mod_SecurityCraft.reinforcedStairsSandstone)
+		if(baseBlock == mod_SecurityCraft.reinforcedStairsStone || baseBlock == mod_SecurityCraft.reinforcedStairsSandstone) {
 			setSoundType(SoundType.STONE);
-		else
+		} else { 
 			setSoundType(SoundType.WOOD);
+		}
 	}
 	
 	@Override

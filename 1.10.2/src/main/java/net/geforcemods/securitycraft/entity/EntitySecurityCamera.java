@@ -29,6 +29,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.swing.event.Key;
 
 public class EntitySecurityCamera extends Entity{
 
@@ -118,7 +119,7 @@ public class EntitySecurityCamera extends Entity{
 			this.rotationYaw = 270F;
 		}
 	}
-
+	
 	@Override
 	public double getMountedYOffset(){
 		return this.height * -7500D;
@@ -131,7 +132,7 @@ public class EntitySecurityCamera extends Entity{
 	
 	@Override
 	public boolean shouldDismountInWater(Entity rider){
-        return false;
+        return true;
     }
 
 	@Override
@@ -185,6 +186,10 @@ public class EntitySecurityCamera extends Entity{
 
 	@SideOnly(Side.CLIENT)
 	private void checkKeysPressed() {
+		if (Minecraft.getMinecraft().gameSettings.keyBindSneak.isPressed()) {
+			this.dismountRidingEntity();
+		}
+		
 		if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown()){
 			this.moveViewUp();
 		}

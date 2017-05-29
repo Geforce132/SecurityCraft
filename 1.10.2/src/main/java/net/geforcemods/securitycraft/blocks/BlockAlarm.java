@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -67,9 +68,27 @@ public class BlockAlarm extends BlockOwnable {
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
         return side == EnumFacing.UP && worldIn.isSideSolid(pos.down(), EnumFacing.UP) ? true : worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
     }
+    
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlockOnSide(worldIn, pos, ((EnumFacing)state.getValue(FACING)).getOpposite())) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+    }
+    
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
+        if (this.canPlaceBlockAt(worldIn, pos)) {
+            return true;
+        } else {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+            return false;
+        }
+    }
 
     @Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos){
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
                worldIn.isSideSolid(pos.east(),	EnumFacing.WEST ) ||
                worldIn.isSideSolid(pos.north(),	EnumFacing.SOUTH) ||

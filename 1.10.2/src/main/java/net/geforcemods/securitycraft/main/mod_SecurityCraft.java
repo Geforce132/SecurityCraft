@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES, updateJSON = mod_SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.9.4]")
-@SuppressWarnings({"static-access"})
+@SuppressWarnings({})
 public class mod_SecurityCraft {
 	
 	public static boolean debuggingMode;
@@ -304,17 +304,17 @@ public class mod_SecurityCraft {
 	/**
 	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
 	 */
-	public static void log(String par1){
+	public static void log(String par1) {
 		log(par1, false);
 	}
 	
-	public static void log(String par1, boolean isSevereError){
+	public static void log(String par1, boolean isSevereError) {
 		if(mod_SecurityCraft.debuggingMode){
 			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + par1 : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + par1);
 		}
 	}
 	
-	public static String getVersion(){
+	public static String getVersion() {
 		return VERSION;
 	}
 	

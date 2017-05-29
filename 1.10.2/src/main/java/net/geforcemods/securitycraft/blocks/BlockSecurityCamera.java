@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -183,6 +184,24 @@ public class BlockSecurityCamera extends BlockContainer{
     	}
     }
   
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlockOnSide(worldIn, pos, ((EnumFacing)state.getValue(FACING)).getOpposite())) {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+        }
+    }
+    
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
+        if (this.canPlaceBlockAt(worldIn, pos)) {
+            return true;
+        } else {
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockToAir(pos);
+            return false;
+        }
+    }
+    
     /* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)

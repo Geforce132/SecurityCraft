@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -31,34 +32,33 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion)
-	{
-		if (!par1World.isRemote)
-		{
+	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion) {
+		if (!par1World.isRemote) {
 			this.explode(par1World, pos);
 		}
 	}
 
 	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote)
-		{
+		if (!par1World.isRemote) {
 			this.explode(par1World, pos);
 		}
 	}	
 
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote) {
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
+			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(worldIn.isRemote) {
 			return true;
 		} else {
-			if(par5EntityPlayer.inventory.getCurrentItem() == null || par5EntityPlayer.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
-				this.explode(par1World, pos);
+			if(playerIn.inventory.getCurrentItem() == null || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+				this.explode(worldIn, pos);
 				return true;
 			} else {
 				return false;	   		
 			}
 		}
-	}	
+	}
 	
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
@@ -77,7 +77,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
-		}else{
+		} else {
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
 		}
 
@@ -87,8 +87,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion par1Explosion)
-	{
+	public boolean canDropFromExplosion(Explosion par1Explosion) {
 		return false;
 	}
 	
