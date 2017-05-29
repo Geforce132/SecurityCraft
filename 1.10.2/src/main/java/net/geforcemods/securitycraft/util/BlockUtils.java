@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUtils{
@@ -259,6 +260,14 @@ public class BlockUtils{
 	}
 
 	public static EnumFacing getBlockPropertyAsEnum(World par1World, int par2, int par3, int par4, PropertyEnum<?> property){
+		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
+	}
+	
+	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess par1World, BlockPos pos, PropertyEnum<?> property){
+		return ((EnumFacing) par1World.getBlockState(pos).getValue(property));
+	}
+
+	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess par1World, int par2, int par3, int par4, PropertyEnum<?> property){
 		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
 	}
 	

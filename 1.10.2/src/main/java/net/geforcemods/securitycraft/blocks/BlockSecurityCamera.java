@@ -60,7 +60,10 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) source, pos, FACING);
+		// TODO: Check to make sure this works as intended, because if the 'source' object is a
+		//		 ChunkCache object instead of World, it may only be able to return properties
+	    // 		 if the X and Y coordinates are less than 256.
+		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
         
     	if(dir == EnumFacing.SOUTH)
     		return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
