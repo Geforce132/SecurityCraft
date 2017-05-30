@@ -2,7 +2,7 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
 "ambientocclusion": false,
     "textures": {
-        "particle": "blocks/securitycraft:blocks/panicButtonPowered",
+        "particle": "securitycraft:blocks/panicButtonPowered",
         "0": "securitycraft:blocks/panicButtonPowered"
     },
     "elements": [
