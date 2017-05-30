@@ -103,7 +103,6 @@ public class mod_SecurityCraft {
 	public static Block securityCamera;
 	public static Block usernameLogger;
 	public static Block keypadChest;
-	public static Block reinforcedGlassPane;
 	public static Block alarm;
 	public static Block alarmLit;
 	public static Block reinforcedStone;
@@ -126,7 +125,6 @@ public class mod_SecurityCraft {
     public static Block ims;
     public static Block reinforcedGlass;
     public static Block reinforcedStainedGlass;
-    public static Block reinforcedStainedGlassPanes;
     public static Block reinforcedDirt;
     public static Block reinforcedCobblestone;
     public static Block reinforcedSandstone;

@@ -56,8 +56,6 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getActualState(player.getEntityWorld().getBlockState(pos), player.getEntityWorld(), pos));
 			else if(block instanceof BlockGlass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlass.getDefaultState());
-			else if(block.getUnlocalizedName().equals(Blocks.GLASS_PANE.getUnlocalizedName())) //glass panes and iron bars share the same class
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlassPane.getDefaultState());
 			else if(block.getUnlocalizedName().equals(Blocks.COBBLESTONE.getUnlocalizedName())) //cobblestone doesn't have its own class
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedCobblestone.getDefaultState());
 			else if(block.getUnlocalizedName().equals(Blocks.IRON_BARS.getUnlocalizedName())) //glass panes and iron bars share the same class

@@ -85,14 +85,6 @@ public class ContainerBlockReinforcer extends Container
 				blockReinforcer.damageItem(stack.stackSize, player);
 				player.dropItem(newStack, false);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.GLASS_PANE).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlassPane);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
 			else if(name.equals(Item.getItemFromBlock(Blocks.COBBLESTONE).getUnlocalizedName()))
 			{
 				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
