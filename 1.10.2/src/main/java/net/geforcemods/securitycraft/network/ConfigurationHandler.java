@@ -576,12 +576,12 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
 		//TODO not sure if this is the correct way to do it
-		GameRegistry.register(new SoundEvent(SCSounds.ALARM.path), SCSounds.ALARM.path);
-		GameRegistry.register(new SoundEvent(SCSounds.CAMERAZOOMIN.path), SCSounds.CAMERAZOOMIN.path);
-		GameRegistry.register(new SoundEvent(SCSounds.CAMERASNAP.path), SCSounds.CAMERASNAP.path);
-		GameRegistry.register(new SoundEvent(SCSounds.TASERFIRED.path), SCSounds.TASERFIRED.path);
-		GameRegistry.register(new SoundEvent(SCSounds.ELECTRIFIED.path), SCSounds.ELECTRIFIED.path);
-		
+		for(int i = 0; i < SCSounds.values().length; i++)
+		{
+			int registrySize = SoundEvent.REGISTRY.getKeys().size();
+			SoundEvent.REGISTRY.register(registrySize + i, SCSounds.values()[i].location, SCSounds.values()[i].event);
+		}
+				
 		if(useOldKeypadRecipe){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
 				"III", "III", "III", 'I', Blocks.STONE_BUTTON

@@ -3,8 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileEntityAlarm extends TileEntityOwnable {
@@ -27,7 +28,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 						
 			if(isPowered && cooldown == 0){
 				TileEntityAlarm TEA = (TileEntityAlarm) this.worldObj.getTileEntity(pos);
-				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), SCSounds.ALARM.path, mod_SecurityCraft.configHandler.alarmSoundVolume));
+				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, 0.3F, 0.6F);
 				TEA.setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
 				this.worldObj.setBlockState(pos, this.worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, this.worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
 				this.worldObj.setTileEntity(pos, TEA);

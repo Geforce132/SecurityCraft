@@ -29,7 +29,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.swing.event.Key;
 
 public class EntitySecurityCamera extends Entity{
 
@@ -168,7 +167,7 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && this.screenshotCooldown == 0){	
 				this.screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 					
 			if(getRidingEntity() != null && this.shouldProvideNightVision){
@@ -308,7 +307,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 		}
 		
-		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.path), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
+		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
 	}
 	
 	public void setRedstonePower() {
