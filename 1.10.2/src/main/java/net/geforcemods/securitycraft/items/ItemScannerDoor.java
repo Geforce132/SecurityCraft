@@ -24,10 +24,9 @@ public class ItemScannerDoor extends Item
 	@Override
 	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(worldIn.isRemote)
+		if(worldIn.isRemote) {
 			return EnumActionResult.SUCCESS;
-		else
-		{
+		} else {
 			if(facing != EnumFacing.UP)
 				return EnumActionResult.FAIL;
 			else
@@ -47,15 +46,14 @@ public class ItemScannerDoor extends Item
 					placeDoor(worldIn, pos, EnumFacing.fromAngle(playerIn.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 					((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
 					((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
-					stack.stackSize--;
+					--stack.stackSize;
 					return EnumActionResult.SUCCESS;
 				}
 			}
 		}
 	}
 
-	public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door)
-	{
+	public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door) {
 		BlockPos blockpos1 = pos.offset(facing.rotateY());
 		BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
 		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
@@ -69,7 +67,6 @@ public class ItemScannerDoor extends Item
 
 		BlockPos blockpos3 = pos.up();
 		IBlockState iblockstate = mod_SecurityCraft.scannerDoor.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, flag2 ? BlockScannerDoor.EnumHingePosition.RIGHT : BlockScannerDoor.EnumHingePosition.LEFT);
-
 		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.LOWER), 2);
 		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.UPPER), 2);
 		worldIn.notifyNeighborsOfStateChange(pos, door);

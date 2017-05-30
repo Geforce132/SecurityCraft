@@ -55,7 +55,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-        return slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
     }
 	
 	/* TODO: no clue about this, also check registration, maybe it changed
@@ -77,7 +77,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
     @Override
 	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
-        return new ItemStack(slabMaterial == Material.GROUND ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
+        return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
     }
     
     @Override
@@ -140,8 +140,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	public static enum EnumType implements IStringSerializable{
         STONE(0, "stone"),
         COBBLESTONE(1, "cobblestone", "cobble"),
-        SANDSTONE(2, "sandstone", "sandstone"),
-        DIRT(3, "dirt", "dirt");
+        SANDSTONE(2, "sandstone", "sandstone");
     
         private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
         private final int meta;

@@ -132,8 +132,6 @@ public class mod_SecurityCraft {
     public static Block reinforcedDoubleWoodSlabs;
     public static Block reinforcedStoneSlabs;
     public static Block reinforcedDoubleStoneSlabs;
-    public static Block reinforcedDirtSlab;
-    public static Block reinforcedDoubleDirtSlab;
     public static Block protecto;
     public static Block scannerDoor;
     

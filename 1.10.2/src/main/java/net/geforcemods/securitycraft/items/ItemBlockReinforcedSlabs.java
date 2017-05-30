@@ -108,8 +108,6 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.SANDSTONE){
 			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
-		}else if(comparable == BlockReinforcedSlabs.EnumType.DIRT){
-			return makeState_Dirt(BlockReinforcedSlabs.VARIANT, comparable);
 		}else{
 			return null;
 		}
@@ -173,9 +171,5 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
     
     protected <T extends Comparable<T>> IBlockState makeState_Stone(IProperty<T> property, Comparable<?> comparable) {
         return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(property, (T)comparable);
-    }
-    
-    protected <T extends Comparable<T>> IBlockState makeState_Dirt(IProperty<T> property, Comparable<?> comparable) {
-        return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(property, (T)comparable);
     }
 }

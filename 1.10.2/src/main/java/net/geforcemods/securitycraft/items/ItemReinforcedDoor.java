@@ -22,65 +22,54 @@ public class ItemReinforcedDoor extends Item
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
 	@Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-    	if(worldIn.isRemote){
-    		return EnumActionResult.SUCCESS;
-    	}else{
-	        if (facing != EnumFacing.UP)
-	        {
-	            return EnumActionResult.FAIL;
-	        }
-	        else
-	        {
-	        	IBlockState iblockstate = worldIn.getBlockState(pos);
-	            Block block = iblockstate.getBlock();
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if(worldIn.isRemote) {
+			return EnumActionResult.SUCCESS;
+		} else {
+			if(facing != EnumFacing.UP)
+				return EnumActionResult.FAIL;
+			else
+			{
+				IBlockState iblockstate = worldIn.getBlockState(pos);
+				Block block = iblockstate.getBlock();
 
-	            if (!block.isReplaceable(worldIn, pos))
-	            {
-	                pos = pos.offset(facing);
-	            }
+				if(!block.isReplaceable(worldIn, pos))
+					pos = pos.offset(facing);
 
-	            if (!playerIn.canPlayerEdit(pos, facing, stack))
-	            {
-	                return EnumActionResult.FAIL;
-	            }
-	            else if (!mod_SecurityCraft.reinforcedDoor.canPlaceBlockAt(worldIn, pos))
-	            {
-	                return EnumActionResult.FAIL;
-	            }
-	            else
-	            {
-	                placeDoor(worldIn, pos, EnumFacing.fromAngle(playerIn.rotationYaw), mod_SecurityCraft.reinforcedDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-                    ((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
-	                ((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
-	                --stack.stackSize;
-	                return EnumActionResult.SUCCESS;
-	            }
-	        }
-    	}
-    }
+				if(!playerIn.canPlayerEdit(pos, facing, stack))
+					return EnumActionResult.FAIL;
+				else if(!mod_SecurityCraft.reinforcedDoor.canPlaceBlockAt(worldIn, pos))
+					return EnumActionResult.FAIL;
+				else
+				{
+					placeDoor(worldIn, pos, EnumFacing.fromAngle(playerIn.rotationYaw), mod_SecurityCraft.reinforcedDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
+					((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
+					--stack.stackSize;
+					return EnumActionResult.SUCCESS;
+				}
+			}
+		}
+	}
 
-    public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door){
-        BlockPos blockpos1 = pos.offset(facing.rotateY());
-        BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
-        int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
-        int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
-        boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
-        boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
-        boolean flag2 = false;
+	public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door) {
+		BlockPos blockpos1 = pos.offset(facing.rotateY());
+		BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
+		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
+		int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
+		boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
+		boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
+		boolean flag2 = false;
 
-        if (flag && !flag1 || j > i)
-        {
-            flag2 = true;
-        }
+		if(flag && !flag1 || j > i)
+			flag2 = true;
 
-        BlockPos blockpos3 = pos.up();
-        IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
-        worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
-        worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
-        worldIn.notifyNeighborsOfStateChange(pos, door);
-        worldIn.notifyNeighborsOfStateChange(blockpos3, door);
-    }
-	
+		BlockPos blockpos3 = pos.up();
+		IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
+		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
+		worldIn.notifyNeighborsOfStateChange(pos, door);
+		worldIn.notifyNeighborsOfStateChange(blockpos3, door);
+	}	
 }
