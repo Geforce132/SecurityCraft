@@ -4,8 +4,8 @@
 - Fix: Missing German language strings
 - Fix: Some GUIs cannot be closed
 - Fix: The Universal Key Changer allows non digit characters
-- Change : Removed Reinforced Class Pane
-- Change : Removed Reinforced Dirt Slab
+- [1.10.2] Removed: Reinforced Glass Pane     
+- [1.10.2] Removed: Reinforced Dirt Slab
 
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 
