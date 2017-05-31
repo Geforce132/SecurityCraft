@@ -484,6 +484,7 @@ option.retinalScanner.activatedByEntities=NPC-activated: #
 option.retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
 
 securitycraft.subtitle.alarm=Alarm sounding
+securitycraft.subtitle.electrified=Entity electrocuted
 securitycraft.subtitle.cameraZoomIn=Camera zooming
 securitycraft.subtitle.cameraSnap=Camera shutter
 securitycraft.subtitle.taserFire=Taser firing
