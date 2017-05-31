@@ -1,11 +1,12 @@
---------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed!)--------------------------
+--------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed/port is done!)--------------------------
 
+- Change: [1.10.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
 - Fix: Some GUIs cannot be closed
 - Fix: The Universal Key Changer allows non digit characters
-- [1.10.2] Removed: Reinforced Glass Pane     
-- [1.10.2] Removed: Reinforced Dirt Slab
+- Removed: [1.10.2] Reinforced Glass Pane     
+- Removed: [1.10.2] Reinforced Dirt Slab
 
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 
