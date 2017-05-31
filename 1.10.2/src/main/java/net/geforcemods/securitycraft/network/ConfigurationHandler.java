@@ -54,7 +54,6 @@ import net.geforcemods.securitycraft.items.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlass;
-import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;

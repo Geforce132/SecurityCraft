@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
@@ -14,13 +12,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICustomWailaDisplay {
+public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisplay {
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
@@ -31,6 +30,12 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return EnumBlockRenderType.MODEL;
+	}
+
+	
 	@Override
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion) {
 		if (!par1World.isRemote) {
