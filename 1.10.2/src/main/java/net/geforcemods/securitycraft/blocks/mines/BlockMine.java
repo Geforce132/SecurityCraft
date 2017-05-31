@@ -84,7 +84,7 @@ public class BlockMine extends BlockExplosive {
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-        if(!world.isRemote){
+        if(!player.capabilities.isCreativeMode && !world.isRemote){
         	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative){
             	return super.removedByPlayer(state, world, pos, player, willHarvest);
         	}else{

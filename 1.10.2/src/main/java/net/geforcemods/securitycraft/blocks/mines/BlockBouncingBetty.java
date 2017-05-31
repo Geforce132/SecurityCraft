@@ -25,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 
 public class BlockBouncingBetty extends BlockExplosive implements IIntersectable {
 
@@ -72,7 +73,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	@Override
 	public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer){
-		if(par5EntityPlayer instanceof EntityLivingBase){
+		if(!par5EntityPlayer.capabilities.isCreativeMode && par5EntityPlayer instanceof EntityLivingBase) {
 			this.explode(par1World, pos);
 		}
 	}
