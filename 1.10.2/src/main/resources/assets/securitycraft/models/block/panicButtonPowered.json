@@ -1,9 +1,17 @@
 {
+	"parent": "block/block",
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
-"ambientocclusion": false,
+	"ambientocclusion": false,
     "textures": {
         "particle": "securitycraft:blocks/panicButtonPowered",
         "0": "securitycraft:blocks/panicButtonPowered"
+    },
+    "display": {
+         "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0],
+            "scale":[ 0.5, 0.5, 0.5 ]
+        }
     },
     "elements": [
         {

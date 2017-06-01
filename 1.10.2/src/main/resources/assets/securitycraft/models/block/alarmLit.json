@@ -1,10 +1,18 @@
 {
+	"parent": "block/block",
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
         "particle": "securitycraft:blocks/alarmSidesActivated",
         "alarmTopActivated": "securitycraft:blocks/alarmTopActivated",
         "alarmSidesActivated": "securitycraft:blocks/alarmSidesActivated"
+    },
+    "display": {
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0],
+            "scale":[ 0.5, 0.5, 0.5 ]
+        }
     },
     "elements": [
         {
