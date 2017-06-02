@@ -95,15 +95,17 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
      */
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2){
-		return Block.getBlockById(getSlabBlock(par2)).getIcon(par1, par2);
+		int block = getSlabBlock(par2);
+		return Block.getBlockById(getSlabBlock(par2)).getIcon(par1, block == 24 && (par2 != 2 || par2 != 10) ? 0 : par2);
     }
 
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
 		int meta = access.getBlockMetadata(x, y, z);
-		System.out.println(meta);
-		return Block.getBlockById(getSlabBlock(meta)).getIcon(side, access.getBlockMetadata(x, y, z));
+		int block = getSlabBlock(meta);
+
+		return Block.getBlockById(block).getIcon(side, block == 24 && (meta != 2 || meta != 10) ? 0 : meta);
 	}
 	
 	/**
@@ -124,27 +126,6 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		return 0;
 	}
     
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(int par1, int par2){
-//        int k = par2 & 7;
-//
-//        if(k == 0){
-//        	return reinforcedStoneIcon;
-//        }else if(k == 1){
-//        	return reinforcedCobblestoneIcon;
-//        }else if(k == 2){
-//        	if(par1 == 1){
-//        		return reinforcedSandstoneTopIcon;
-//        	}else{
-//            	return reinforcedSandstoneIcon;
-//        	}
-//        }else if(k == 3){
-//        	return reinforcedDirtIcon;
-//        }else{
-//        	return blockIcon;
-//        }
-//    }
-
 	@Override
 	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
 	{
