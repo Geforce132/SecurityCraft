@@ -101,7 +101,6 @@ public class GuiCheckPassword extends GuiContainer {
     @Override
 	protected void keyTyped(char par1, int par2) throws IOException {
     	if(this.isValidChar(par1) && par1 == '\u001B'){
-			System.out.println("running");
 			ClientUtils.closePlayerScreen();
     	}else if(this.isValidChar(par1) && par1 != ''){
 			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
