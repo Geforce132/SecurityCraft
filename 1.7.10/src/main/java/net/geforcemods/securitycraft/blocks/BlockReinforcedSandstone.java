@@ -4,12 +4,14 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockReinforcedSandstone extends BlockOwnable {
 	
@@ -39,21 +41,36 @@ public class BlockReinforcedSandstone extends BlockOwnable {
         return par1;
     }
 
+    /**
+     * Gets the block's texture. Args: side, meta
+     */
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2){
-        if(par1 != 1 && (par1 != 0 || par2 != 1 && par2 != 2)){
-            if(par1 == 0){
-                return this.bottomIcon;
-            }else{
-                if(par2 < 0 || par2 >= this.sideIcons.length){
-                    par2 = 0;
-                }
+		return Block.getBlockById(24).getIcon(par1, par2);
+    }
 
-                return this.sideIcons[par2];
-            }
-        }else{
-            return this.topIcon;
-        }
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
+	{
+		return Block.getBlockById(24).getIcon(side, access.getBlockMetadata(x, y, z));
+	}
+	
+	@Override
+	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	{
+		return 0x999999;
+	}
+    
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int p_149741_1_)
+    {
+        return 0x999999;
+    }
+	
+    @SideOnly(Side.CLIENT)
+    public int getBlockColor()
+    {
+    	return 0x999999;
     }
 
     @SideOnly(Side.CLIENT)

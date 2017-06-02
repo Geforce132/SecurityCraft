@@ -111,5 +111,4 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
 		return false;
 	}
-
 }

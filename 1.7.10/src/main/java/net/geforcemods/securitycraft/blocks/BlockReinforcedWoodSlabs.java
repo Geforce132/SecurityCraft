@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityProvider {
@@ -47,6 +48,24 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
         return super.getUnlocalizedName() + "." + variants[par1];
     }
 
+	@Override
+	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	{
+		return 0x999999;
+	}
+    
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int p_149741_1_)
+    {
+        return 0x999999;
+    }
+	
+    @SideOnly(Side.CLIENT)
+    public int getBlockColor()
+    {
+    	return 0x999999;
+    }
+    
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */

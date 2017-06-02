@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider {
@@ -89,27 +90,79 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         return super.getUnlocalizedName() + "." + variants[par1];
     }
 	
+    /**
+     * Gets the block's texture. Args: side, meta
+     */
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2){
-        int k = par2 & 7;
-
-        if(k == 0){
-        	return reinforcedStoneIcon;
-        }else if(k == 1){
-        	return reinforcedCobblestoneIcon;
-        }else if(k == 2){
-        	if(par1 == 1){
-        		return reinforcedSandstoneTopIcon;
-        	}else{
-            	return reinforcedSandstoneIcon;
-        	}
-        }else if(k == 3){
-        	return reinforcedDirtIcon;
-        }else{
-        	return blockIcon;
-        }
+		return Block.getBlockById(getSlabBlock(par2)).getIcon(par1, par2);
     }
 
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
+	{
+		int meta = access.getBlockMetadata(x, y, z);
+		System.out.println(meta);
+		return Block.getBlockById(getSlabBlock(meta)).getIcon(side, access.getBlockMetadata(x, y, z));
+	}
+	
+	/**
+	 * Gets the type of slab by the metadata
+	 * @param meta The metadata of the slab
+	 * @return The type of this slab, 0 if invalid
+	 */
+	private int getSlabBlock(int meta)
+	{
+		switch(meta)
+		{
+			case 0: case 8: return 44;
+			case 1: case 9: return 4;
+			case 2: case 10: return 24;
+			case 3: case 11: return 3;
+		}
+		
+		return 0;
+	}
+    
+//    @SideOnly(Side.CLIENT)
+//    public IIcon getIcon(int par1, int par2){
+//        int k = par2 & 7;
+//
+//        if(k == 0){
+//        	return reinforcedStoneIcon;
+//        }else if(k == 1){
+//        	return reinforcedCobblestoneIcon;
+//        }else if(k == 2){
+//        	if(par1 == 1){
+//        		return reinforcedSandstoneTopIcon;
+//        	}else{
+//            	return reinforcedSandstoneIcon;
+//        	}
+//        }else if(k == 3){
+//        	return reinforcedDirtIcon;
+//        }else{
+//        	return blockIcon;
+//        }
+//    }
+
+	@Override
+	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	{
+		return 0x999999;
+	}
+    
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int p_149741_1_)
+    {
+        return 0x999999;
+    }
+	
+    @SideOnly(Side.CLIENT)
+    public int getBlockColor()
+    {
+    	return 0x999999;
+    }
+    
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1IIconRegister){
         this.blockIcon = par1IIconRegister.registerIcon("stone_slab_top");

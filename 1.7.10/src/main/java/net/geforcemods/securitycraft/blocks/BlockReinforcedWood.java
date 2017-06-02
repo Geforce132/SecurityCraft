@@ -4,12 +4,14 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 
 public class BlockReinforcedWood extends BlockOwnable {
 	
@@ -34,14 +36,33 @@ public class BlockReinforcedWood extends BlockOwnable {
      */
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2){
-        if (par2 < 0 || par2 >= this.icon.length)
-        {
-            par2 = 0;
-        }
-        
-        return this.icon[par2];
+		return Block.getBlockById(5).getIcon(par1, par2);
     }
 
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
+	{
+		return Block.getBlockById(5).getIcon(side, access.getBlockMetadata(x, y, z));
+	}
+	
+	@Override
+	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	{
+		return 0x999999;
+	}
+    
+    @SideOnly(Side.CLIENT)
+    public int getRenderColor(int p_149741_1_)
+    {
+        return 0x999999;
+    }
+	
+    @SideOnly(Side.CLIENT)
+    public int getBlockColor()
+    {
+    	return 0x999999;
+    }
+    
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
