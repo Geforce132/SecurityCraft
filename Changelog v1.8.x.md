@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed/port is done!)--------------------------
 
+- New: Reinforced textures now adapt to the resourcepack being used
 - Change: [1.10.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
