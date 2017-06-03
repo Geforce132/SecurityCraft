@@ -220,7 +220,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("alarm");
 		mod_SecurityCraft.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setUnlocalizedName("alarmLit");
 
-		mod_SecurityCraft.reinforcedStone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStone");
+		mod_SecurityCraft.reinforcedStone = new BlockOwnable(Material.rock, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStone");
 	
 		mod_SecurityCraft.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedFenceGate");
 		
@@ -248,9 +248,9 @@ public class ConfigurationHandler{
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlass");
 	    mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlassPanes");
 	
-	    mod_SecurityCraft.reinforcedDirt = new BlockOwnable(Material.ground).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedDirt");
+	    mod_SecurityCraft.reinforcedDirt = new BlockOwnable(Material.ground, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedDirt");
 		
-		mod_SecurityCraft.reinforcedCobblestone = new BlockOwnable(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedCobblestone");
+		mod_SecurityCraft.reinforcedCobblestone = new BlockOwnable(Material.rock, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedCobblestone");
 	    mod_SecurityCraft.reinforcedStairsCobblestone = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsCobblestone");
 
 	    mod_SecurityCraft.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedSandstone");
