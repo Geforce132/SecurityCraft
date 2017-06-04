@@ -1,10 +1,9 @@
 package net.geforcemods.securitycraft.items;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockReinforcedPlanks extends ItemBlock {
+public class ItemBlockReinforcedPlanks extends ItemBlockColored {
 
 	public ItemBlockReinforcedPlanks(Block block) {
 		super(block);
