@@ -17,8 +17,8 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends ServerProxy{
-	
+
 	/**
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.
 	 */
@@ -41,147 +41,167 @@ public class ClientProxy extends ServerProxy{
 	@SideOnly(Side.CLIENT)
 	public void registerTextureFiles() {
 		Item reinforcedWoodPlanks = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedPlanks");
-        ModelBakery.registerItemVariants(reinforcedWoodPlanks, new ResourceLocation("securitycraft:reinforcedPlanks_Oak"), new ResourceLocation("securitycraft:reinforcedPlanks_Spruce"), new ResourceLocation("securitycraft:reinforcedPlanks_Birch"), new ResourceLocation("securitycraft:reinforcedPlanks_Jungle"), new ResourceLocation("securitycraft:reinforcedPlanks_Acacia"), new ResourceLocation("securitycraft:reinforcedPlanks_DarkOak"));
-        
+		ModelBakery.registerItemVariants(reinforcedWoodPlanks, new ResourceLocation("securitycraft:reinforcedPlanks_Oak"), new ResourceLocation("securitycraft:reinforcedPlanks_Spruce"), new ResourceLocation("securitycraft:reinforcedPlanks_Birch"), new ResourceLocation("securitycraft:reinforcedPlanks_Jungle"), new ResourceLocation("securitycraft:reinforcedPlanks_Acacia"), new ResourceLocation("securitycraft:reinforcedPlanks_DarkOak"));
+
 		Item reinforcedStainedGlass = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass");
-        ModelBakery.registerItemVariants(reinforcedStainedGlass, new ResourceLocation("securitycraft:reinforcedStainedGlass_white"), new ResourceLocation("securitycraft:reinforcedStainedGlass_orange"), new ResourceLocation("securitycraft:reinforcedStainedGlass_magenta"), new ResourceLocation("securitycraft:reinforcedStainedGlass_light_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_yellow"),
-        	new ResourceLocation("securitycraft:reinforcedStainedGlass_lime"), new ResourceLocation("securitycraft:reinforcedStainedGlass_pink"), new ResourceLocation("securitycraft:reinforcedStainedGlass_gray"), new ResourceLocation("securitycraft:reinforcedStainedGlass_silver"), new ResourceLocation("securitycraft:reinforcedStainedGlass_cyan"),
-        	new ResourceLocation("securitycraft:reinforcedStainedGlass_purple"), new ResourceLocation("securitycraft:reinforcedStainedGlass_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_brown"), new ResourceLocation("securitycraft:reinforcedStainedGlass_green"), new ResourceLocation("securitycraft:reinforcedStainedGlass_red"), new ResourceLocation("securitycraft:reinforcedStainedGlass_black"));
-        
+		ModelBakery.registerItemVariants(reinforcedStainedGlass, new ResourceLocation("securitycraft:reinforcedStainedGlass_white"), new ResourceLocation("securitycraft:reinforcedStainedGlass_orange"), new ResourceLocation("securitycraft:reinforcedStainedGlass_magenta"), new ResourceLocation("securitycraft:reinforcedStainedGlass_light_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_yellow"),
+				new ResourceLocation("securitycraft:reinforcedStainedGlass_lime"), new ResourceLocation("securitycraft:reinforcedStainedGlass_pink"), new ResourceLocation("securitycraft:reinforcedStainedGlass_gray"), new ResourceLocation("securitycraft:reinforcedStainedGlass_silver"), new ResourceLocation("securitycraft:reinforcedStainedGlass_cyan"),
+				new ResourceLocation("securitycraft:reinforcedStainedGlass_purple"), new ResourceLocation("securitycraft:reinforcedStainedGlass_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_brown"), new ResourceLocation("securitycraft:reinforcedStainedGlass_green"), new ResourceLocation("securitycraft:reinforcedStainedGlass_red"), new ResourceLocation("securitycraft:reinforcedStainedGlass_black"));
+
 		Item reinforcedSandstone = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
 		ModelBakery.registerItemVariants(reinforcedSandstone, new ResourceLocation("securitycraft:reinforcedSandstone_normal"), new ResourceLocation("securitycraft:reinforcedSandstone_chiseled"), new ResourceLocation("securitycraft:reinforcedSandstone_smooth"));
-		
+
 		Item reinforcedWoodSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
 		ModelBakery.registerItemVariants(reinforcedWoodSlabs, new ResourceLocation("securitycraft:reinforcedWoodSlabs_oak"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_spruce"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_birch"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_jungle"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_acacia"),
-			new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
-		
+				new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
+
 		Item reinforcedStoneSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
 		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"), new ResourceLocation("securitycraft:reinforcedDirtSlab"));
-		
+
 		Item fakeWater = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
-        {
-            @Override
+		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
-            }
-        });
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+			}
+		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
-        {
-            @Override
+		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
-            }
-        });
-		
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+			}
+		});
+
 		Item fakeWaterFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
 		ModelBakery.registerItemVariants(fakeWaterFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
-        {
-            @Override
+		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
-            }
-        });
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+			}
+		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
-        {
-            @Override
+		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
-            }
-        });
-		
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+			}
+		});
+
 		Item fakeLava = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
-        {
-            @Override
+		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
-            }
-        });
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+			}
+		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
-        {
-            @Override
+		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
-            }
-        });
-		
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+			}
+		});
+
 		Item fakeLavaFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
 		ModelBakery.registerItemVariants(fakeLavaFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
-        {
-            @Override
+		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
-            }
-        });
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+			}
+		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
-        {
-            @Override
+		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
-            {
-                return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
-            }
-        });
+			{
+				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+			}
+		});
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void setupTextureRegistry() {
 		mod_SecurityCraft.configHandler.setupTextureRegistry();
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderThings(){
 		KeyBindings.init();
-		
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty(Minecraft.getMinecraft().getRenderManager()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
-		
-		//registering reinforced blocks color overlay
-		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
-		//being nice to Java 7 users
-//		IBlockColor blockColor = (state, worldIn, pos, tintIndex) -> { return 0x999999; };
-		IBlockColor blockColor = new IBlockColor() {
+
+		//registering reinforced blocks color overlay for world
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
 			@Override
 			public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
 			{
 				return 0x999999;
 			}
-		};
-		
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedCobblestone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDirt);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDoubleStoneSlabs);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDoubleWoodSlabs);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedSandstone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsAcacia);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsBirch);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsCobblestone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsDarkoak);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsJungle);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsOak);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsSandstone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsSpruce);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsStone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStone);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStoneSlabs);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedWoodPlanks);
-		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedWoodSlabs);
+		}, mod_SecurityCraft.reinforcedCobblestone,
+				mod_SecurityCraft.reinforcedDirt,
+				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
+				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
+				mod_SecurityCraft.reinforcedSandstone,
+				mod_SecurityCraft.reinforcedStairsAcacia,
+				mod_SecurityCraft.reinforcedStairsBirch,
+				mod_SecurityCraft.reinforcedStairsCobblestone,
+				mod_SecurityCraft.reinforcedStairsDarkoak,
+				mod_SecurityCraft.reinforcedStairsJungle,
+				mod_SecurityCraft.reinforcedStairsOak,
+				mod_SecurityCraft.reinforcedStairsSandstone,
+				mod_SecurityCraft.reinforcedStairsSpruce,
+				mod_SecurityCraft.reinforcedStairsStone,
+				mod_SecurityCraft.reinforcedStone,
+				mod_SecurityCraft.reinforcedStoneSlabs,
+				mod_SecurityCraft.reinforcedWoodPlanks,
+				mod_SecurityCraft.reinforcedWoodSlabs);
+		//same thing for inventory
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
+			@Override
+			public int getColorFromItemstack(ItemStack stack, int tintIndex)
+			{
+				return 0x999999;
+			}
+		}, mod_SecurityCraft.reinforcedCobblestone,
+				mod_SecurityCraft.reinforcedDirt,
+				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
+				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
+				mod_SecurityCraft.reinforcedSandstone,
+				mod_SecurityCraft.reinforcedStairsAcacia,
+				mod_SecurityCraft.reinforcedStairsBirch,
+				mod_SecurityCraft.reinforcedStairsCobblestone,
+				mod_SecurityCraft.reinforcedStairsDarkoak,
+				mod_SecurityCraft.reinforcedStairsJungle,
+				mod_SecurityCraft.reinforcedStairsOak,
+				mod_SecurityCraft.reinforcedStairsSandstone,
+				mod_SecurityCraft.reinforcedStairsSpruce,
+				mod_SecurityCraft.reinforcedStairsStone,
+				mod_SecurityCraft.reinforcedStone,
+				mod_SecurityCraft.reinforcedStoneSlabs,
+				mod_SecurityCraft.reinforcedWoodPlanks,
+				mod_SecurityCraft.reinforcedWoodSlabs);
 	}
 }
