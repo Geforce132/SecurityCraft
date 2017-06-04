@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
+    "parent": "securitycraft:block/reinforcedBlock_all",
     "textures": {
-        "all": "securitycraft:blocks/reinforcedCobblestone"
+        "all": "blocks/cobblestone"
     }
 }

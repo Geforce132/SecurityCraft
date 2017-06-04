@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
+    "parent": "securitycraft:block/reinforcedBlock_all",
     "textures": {
-        "all": "securitycraft:blocks/reinforcedPlanks_jungle"
+        "all": "blocks/planks_jungle"
     }
 }

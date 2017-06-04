@@ -17,10 +17,14 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -148,6 +152,36 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
+		
+		//registering reinforced blocks color overlay
+		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
+		//being nice to Java 7 users
+//		IBlockColor blockColor = (state, worldIn, pos, tintIndex) -> { return 0x999999; };
+		IBlockColor blockColor = new IBlockColor() {
+			@Override
+			public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+			{
+				return 0x999999;
+			}
+		};
+		
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedCobblestone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDirt);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDoubleStoneSlabs);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedDoubleWoodSlabs);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedSandstone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsAcacia);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsBirch);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsCobblestone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsDarkoak);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsJungle);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsOak);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsSandstone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsSpruce);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStairsStone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStone);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedStoneSlabs);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedWoodPlanks);
+		colors.registerBlockColorHandler(blockColor, mod_SecurityCraft.reinforcedWoodSlabs);
 	}
-
 }
