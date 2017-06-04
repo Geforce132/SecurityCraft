@@ -1,8 +1,12 @@
 {
-    "parent": "block/cube_bottom_top",
+    "parent": "securitycraft:block/reinforcedBlock",
     "textures": {
-        "bottom": "securitycraft:blocks/reinforcedSandstone_bottom",
-        "top": "securitycraft:blocks/reinforcedSandstone_top",
-        "side": "securitycraft:blocks/reinforcedSandstone_carved"
+    	"particle": "blocks/sandstone_carved",
+        "down": "blocks/sandstone_bottom",
+        "up": "blocks/sandstone_top",
+        "north": "blocks/sandstone_carved",
+        "south": "blocks/sandstone_carved",
+        "west": "blocks/sandstone_carved",
+        "east": "blocks/sandstone_carved"
     }
 }
