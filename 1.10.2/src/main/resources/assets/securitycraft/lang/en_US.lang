@@ -482,6 +482,8 @@ option.laserBlock.enabled=Enabled: #
 option.laserBlock.enabled.description=Should the laser be enabled?
 option.retinalScanner.activatedByEntities=NPC-activated: #
 option.retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
+option.cageTrap.captureMobs=Capture mobs: #
+option.cageTrap.captureMobs.description=Should this cage trap capture hostile mobs and players, or only players?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

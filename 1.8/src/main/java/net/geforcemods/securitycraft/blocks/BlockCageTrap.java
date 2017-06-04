@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.material.Material;
@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -59,8 +60,15 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
-			if(entity instanceof EntityPlayer && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED)){
-				if(((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
+			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
+			boolean isPlayer = entity instanceof EntityPlayer;
+			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
+			
+			if(isPlayer || (entity instanceof EntityMob && shouldCaptureMobs)){
+				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
+					return;
+				
+				if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
 					return;
 				
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
@@ -72,8 +80,10 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
 
-				world.playSoundAtEntity(entity, "random.anvil_use", 3.0F, 1.0F);
-				MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+				world.playSoundEffect((double) pos.getX(),(double) pos.getY(),(double) pos.getZ(), "random.anvil_use", 3.0F, 1.0F);
+				
+				if(isPlayer)
+					MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}
@@ -99,7 +109,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
     }
 
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityOwnable().intersectsEntities();
+		return new TileEntityCageTrap().intersectsEntities();
 	}
     
 }

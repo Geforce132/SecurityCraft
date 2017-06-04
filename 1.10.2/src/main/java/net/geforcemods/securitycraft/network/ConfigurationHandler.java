@@ -96,6 +96,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -559,6 +560,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
 		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
 		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
+		GameRegistry.registerTileEntity(TileEntityCageTrap.class, "cageTrap");
 		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
 		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
 		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
