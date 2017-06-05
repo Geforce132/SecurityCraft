@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -153,6 +154,24 @@ public class ClientProxy extends ServerProxy{
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
 
+		Block[] blocksToColor = {mod_SecurityCraft.reinforcedCobblestone,
+				mod_SecurityCraft.reinforcedDirt,
+				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
+				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
+				mod_SecurityCraft.reinforcedSandstone,
+				mod_SecurityCraft.reinforcedStairsAcacia,
+				mod_SecurityCraft.reinforcedStairsBirch,
+				mod_SecurityCraft.reinforcedStairsCobblestone,
+				mod_SecurityCraft.reinforcedStairsDarkoak,
+				mod_SecurityCraft.reinforcedStairsJungle,
+				mod_SecurityCraft.reinforcedStairsOak,
+				mod_SecurityCraft.reinforcedStairsSandstone,
+				mod_SecurityCraft.reinforcedStairsSpruce,
+				mod_SecurityCraft.reinforcedStairsStone,
+				mod_SecurityCraft.reinforcedStone,
+				mod_SecurityCraft.reinforcedStoneSlabs,
+				mod_SecurityCraft.reinforcedWoodPlanks,
+				mod_SecurityCraft.reinforcedWoodSlabs};
 		//registering reinforced blocks color overlay for world
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
 			@Override
@@ -160,24 +179,7 @@ public class ClientProxy extends ServerProxy{
 			{
 				return 0x999999;
 			}
-		}, mod_SecurityCraft.reinforcedCobblestone,
-				mod_SecurityCraft.reinforcedDirt,
-				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
-				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
-				mod_SecurityCraft.reinforcedSandstone,
-				mod_SecurityCraft.reinforcedStairsAcacia,
-				mod_SecurityCraft.reinforcedStairsBirch,
-				mod_SecurityCraft.reinforcedStairsCobblestone,
-				mod_SecurityCraft.reinforcedStairsDarkoak,
-				mod_SecurityCraft.reinforcedStairsJungle,
-				mod_SecurityCraft.reinforcedStairsOak,
-				mod_SecurityCraft.reinforcedStairsSandstone,
-				mod_SecurityCraft.reinforcedStairsSpruce,
-				mod_SecurityCraft.reinforcedStairsStone,
-				mod_SecurityCraft.reinforcedStone,
-				mod_SecurityCraft.reinforcedStoneSlabs,
-				mod_SecurityCraft.reinforcedWoodPlanks,
-				mod_SecurityCraft.reinforcedWoodSlabs);
+		}, blocksToColor);
 		//same thing for inventory
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
 			@Override
@@ -185,23 +187,6 @@ public class ClientProxy extends ServerProxy{
 			{
 				return 0x999999;
 			}
-		}, mod_SecurityCraft.reinforcedCobblestone,
-				mod_SecurityCraft.reinforcedDirt,
-				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
-				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
-				mod_SecurityCraft.reinforcedSandstone,
-				mod_SecurityCraft.reinforcedStairsAcacia,
-				mod_SecurityCraft.reinforcedStairsBirch,
-				mod_SecurityCraft.reinforcedStairsCobblestone,
-				mod_SecurityCraft.reinforcedStairsDarkoak,
-				mod_SecurityCraft.reinforcedStairsJungle,
-				mod_SecurityCraft.reinforcedStairsOak,
-				mod_SecurityCraft.reinforcedStairsSandstone,
-				mod_SecurityCraft.reinforcedStairsSpruce,
-				mod_SecurityCraft.reinforcedStairsStone,
-				mod_SecurityCraft.reinforcedStone,
-				mod_SecurityCraft.reinforcedStoneSlabs,
-				mod_SecurityCraft.reinforcedWoodPlanks,
-				mod_SecurityCraft.reinforcedWoodSlabs);
+		}, blocksToColor);
 	}
 }
