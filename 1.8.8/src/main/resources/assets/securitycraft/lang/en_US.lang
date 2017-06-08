@@ -285,6 +285,7 @@ gui.password.invalidCode=Invalid code!
 gui.password.setup=setup
 gui.camera.activateNightVision=Activate night vision
 gui.camera.toggleRedstone=Toggle redstone signal
+gui.camera.toggleRedstoneNote=(requires redstone module)
 gui.camera.zoom=Zoom in/out
 gui.monitor.selectCameras=Select the camera to view:
 gui.monitor.cameraName=Camera name: #
