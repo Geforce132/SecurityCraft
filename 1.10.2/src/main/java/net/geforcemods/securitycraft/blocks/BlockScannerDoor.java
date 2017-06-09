@@ -11,6 +11,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -96,9 +97,9 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World world, BlockPos pos)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
-		return mod_SecurityCraft.scannerDoorItem;
+		return new ItemStack(mod_SecurityCraft.scannerDoorItem);
 	}
 
 	@Override
