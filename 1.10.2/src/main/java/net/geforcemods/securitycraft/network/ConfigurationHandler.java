@@ -575,7 +575,7 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
-		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "reinforcedDoor");
+		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "doorIndestructibleIronItem");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
 		//TODO not sure if this is the correct way to do it
