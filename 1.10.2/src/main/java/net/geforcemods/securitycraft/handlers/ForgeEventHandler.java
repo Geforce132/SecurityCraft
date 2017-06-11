@@ -31,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -131,65 +132,68 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent 
 	public void onRightClickBlock(RightClickBlock event){
-		if(!event.getEntityPlayer().worldObj.isRemote){
-			World world = event.getEntityPlayer().worldObj;
-			TileEntity tileEntity = event.getEntityPlayer().worldObj.getTileEntity(event.getPos());
-			Block block = event.getEntityPlayer().worldObj.getBlockState(event.getPos()).getBlock();
-			
-			if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.codebreaker) && handleCodebreaking(event)) {
-				event.setCanceled(true);
-				return;
-			}
-			
-			if(tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.universalBlockModifier)){
-				event.setCanceled(true);
+		if(event.getHand() == EnumHand.MAIN_HAND)
+		{
+			if(!event.getEntityPlayer().worldObj.isRemote){
+				World world = event.getEntityPlayer().worldObj;
+				TileEntity tileEntity = event.getEntityPlayer().worldObj.getTileEntity(event.getPos());
+				Block block = event.getEntityPlayer().worldObj.getBlockState(event.getPos()).getBlock();
 				
-				if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockModifier.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.codebreaker) && handleCodebreaking(event)) {
+					event.setCanceled(true);
 					return;
 				}
 				
-				event.getEntityPlayer().openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());	
-				return;
-			}
-			
-			if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG) && event.getEntityPlayer().inventory.getCurrentItem().hasDisplayName()){
-				event.setCanceled(true);
-				
-				for(String character : new String[]{"(", ")"}) {
-					if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+				if(tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.universalBlockModifier)){
+					event.setCanceled(true);
+					
+					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockModifier.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
-				}		
+					
+					event.getEntityPlayer().openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());	
+					return;
+				}
 				
-				if(((INameable) tileEntity).getCustomName().matches(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG) && event.getEntityPlayer().inventory.getCurrentItem().hasDisplayName()){
+					event.setCanceled(true);
+					
+					for(String character : new String[]{"(", ")"}) {
+						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+							return;
+						}
+					}		
+					
+					if(((INameable) tileEntity).getCustomName().matches(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						return;
+					}
+	
+					event.getEntityPlayer().inventory.getCurrentItem().stackSize--;
+	
+					((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
 					return;
 				}
-
-				event.getEntityPlayer().inventory.getCurrentItem().stackSize--;
-
-				((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
-				return;
-			}
-			
-			if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.universalBlockRemover)){
-				event.setCanceled(true);
-
-				if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockRemover.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-					return;
-				}
-
-				if(block == mod_SecurityCraft.laserBlock){
-					world.destroyBlock(event.getPos(), true);
-					BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
-					event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
-				}else{
-					world.destroyBlock(event.getPos(), true);
-					world.removeTileEntity(event.getPos());
-					event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
+				
+				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), mod_SecurityCraft.universalBlockRemover)){
+					event.setCanceled(true);
+	
+					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockRemover.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						return;
+					}
+	
+					if(block == mod_SecurityCraft.laserBlock){
+						world.destroyBlock(event.getPos(), true);
+						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
+					}else{
+						world.destroyBlock(event.getPos(), true);
+						world.removeTileEntity(event.getPos());
+						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
+					}
 				}
 			}
 		}
