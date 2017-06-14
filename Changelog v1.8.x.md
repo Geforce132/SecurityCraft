@@ -1,7 +1,8 @@
---------------------------Changelog for v1.8.2.2 of SecurityCraft (Released once enough bugs are fixed/port is done!)--------------------------
+--------------------------Changelog for v1.8.2.2 of SecurityCraft (Full release happening once enough bugs are fixed/ports are done!)--------------------------
 
 - New: Reinforced textures now adapt to the resourcepack being used
 - New: The Cage Trap can now be set to capture hostile mobs via the Universal Block Modifier
+- New: Information about needing the Redstone Module for the Security Camera
 - Change: [1.10.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings

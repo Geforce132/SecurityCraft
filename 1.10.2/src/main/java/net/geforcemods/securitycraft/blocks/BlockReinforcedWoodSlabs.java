@@ -8,10 +8,12 @@ import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,4 +62,10 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 		return new TileEntityOwnable();
 	}
 
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+	{
+		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
+	}
+	
 }
