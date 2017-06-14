@@ -98,29 +98,6 @@ public class BlockSecurityCamera extends BlockContainer{
         }
     }
     
-	@Override
-    public void onNeighborChange(IBlockAccess w, BlockPos pos, BlockPos neighbor){
-		World world = (World)w;
-		
-		if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.NORTH){
-			if(!world.isSideSolid(pos.south(), EnumFacing.NORTH)){
-				BlockUtils.destroyBlock(world, pos, true);
-			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.SOUTH){
-			if(!world.isSideSolid(pos.north(), EnumFacing.SOUTH)){
-				BlockUtils.destroyBlock(world, pos, true);
-			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.EAST){
-			if(!world.isSideSolid(pos.west(), EnumFacing.EAST)){
-				BlockUtils.destroyBlock(world, pos, true);
-			}
-		}else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.WEST){
-			if(!world.isSideSolid(pos.east(), EnumFacing.WEST)){
-				BlockUtils.destroyBlock(world, pos, true);
-			}
-		}
-	}
-    
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
     	if(!world.isRemote && player.getRidingEntity() == null) {
     		PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.securityCamera.name"), I18n.translateToLocal("messages.securityCamera.mounted"), TextFormatting.GREEN);
@@ -149,16 +126,10 @@ public class BlockSecurityCamera extends BlockContainer{
     
     @Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-        return (side != EnumFacing.UP && side != EnumFacing.DOWN) ? super.canPlaceBlockOnSide(worldIn, pos, side) : false;
-    }
-    
-    @Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
-        return !world.getBlockState(pos).getBlock().isReplaceable(world, pos) ^ //exclusive or
-        	   (world.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
-               world.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
-               world.isSideSolid(pos.north(), EnumFacing.SOUTH, true) ||
-               world.isSideSolid(pos.south(), EnumFacing.NORTH, true));
+    	if(side == EnumFacing.UP || side == EnumFacing.DOWN)
+    		return false;
+    	else
+    		return super.canPlaceBlockOnSide(worldIn, pos, side);
     }
     
     @Override
@@ -186,19 +157,9 @@ public class BlockSecurityCamera extends BlockContainer{
   
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlockOnSide(worldIn, pos, ((EnumFacing)state.getValue(FACING)).getOpposite())) {
+        if (!this.canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
-        }
-    }
-    
-    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-        if (this.canPlaceBlockAt(worldIn, pos)) {
-            return true;
-        } else {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-            return false;
         }
     }
     
