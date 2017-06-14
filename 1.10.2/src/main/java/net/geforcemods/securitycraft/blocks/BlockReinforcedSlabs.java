@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -12,6 +13,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,111 +26,102 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider {
-	
-    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
-	
-    private final boolean isDouble;
-    private final Material slabMaterial;
+
+	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
+
+	private final boolean isDouble;
+	private final Material slabMaterial;
 
 	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial){
 		super(blockMaterial);
-		
+
 		this.isDouble = isDouble;
 		this.slabMaterial = blockMaterial;
-		
+
 		if(!this.isDouble()){
 			this.useNeighborBrightness = true;
 		}
 		
-		if(blockMaterial == Material.GROUND){
-			this.setSoundType(SoundType.GROUND);
-		}else{
-			this.setSoundType(SoundType.STONE);
-		}	
-		
+		this.setSoundType(SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
-	
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
-    }
-	
-	/* TODO: no clue about this, also check registration, maybe it changed
-	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List list){
-        if(slabMaterial != Material.GROUND){
-        	BlockReinforcedSlabs.EnumType[] aenumtype = BlockReinforcedSlabs.EnumType.values();
+		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+	}
 
-            for(int i = 0; i < aenumtype.length - 1; i++){
-            	BlockReinforcedSlabs.EnumType enumtype = aenumtype[i];
-
-                list.add(new ItemStack(itemIn, 1, enumtype.getMetadata()));              
+	@Override
+	public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+	{
+		if(!itemIn.equals(mod_SecurityCraft.reinforcedDoubleStoneSlabs))
+		{
+            for (EnumType et : EnumType.values())
+            {
+                list.add(new ItemStack(itemIn, 1, et.getMetadata()));
             }
-        }else{
-            list.add(new ItemStack(itemIn, 1, BlockReinforcedSlabs.EnumType.DIRT.getMetadata()));              
-        }
-    }*/
+		}
+	}
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
-        return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
-    }
-    
-    @Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
+	}
+
+	@Override
 	public int damageDropped(IBlockState state){
-        return ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
-    }
-    
-    @Override
+		return ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
+	}
+
+	@Override
 	public String getUnlocalizedName(int meta){
-        return super.getUnlocalizedName() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getUnlocalizedName();
-    }
-    
-    @Override
+		return super.getUnlocalizedName() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getUnlocalizedName();
+	}
+
+	@Override
 	public IProperty<?> getVariantProperty(){
-        return VARIANT;
-    }
-    
-    @Override
+		return VARIANT;
+	}
+
+	@Override
 	public Comparable<?> getTypeForItem(ItemStack stack) {
 		return BlockReinforcedSlabs.EnumType.byMetadata(stack.getMetadata() & 7);
 	}
-    
-    @Override
+
+	@Override
 	public IBlockState getStateFromMeta(int meta){
-        IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
-        
-        iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
 
-        return iblockstate;
-    }
+		iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
-    @Override
+		return iblockstate;
+	}
+
+	@Override
 	public int getMetaFromState(IBlockState state){
-        byte b0 = 0;
-        int i = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
+		byte b0 = 0;
+		int i = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
 
-        if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP){
-            i |= 8;
-        }
+		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP){
+			i |= 8;
+		}
 
-        return i;
-    }
-    
-    @Override
+		return i;
+	}
+
+	@Override
 	protected BlockStateContainer createBlockState(){
-        return slabMaterial == Material.GROUND ? new BlockStateContainer(this, new IProperty[] {HALF}) : new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
-    }
-    
-    @Override
+		return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+	}
+
+	@Override
 	public boolean isDouble(){
 		return isDouble;
 	}
@@ -143,61 +136,61 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	{
 		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, ((EnumType)state.getValue(VARIANT)).getMetadata());
 	}
-	
+
 	public static enum EnumType implements IStringSerializable{
-        STONE(0, "stone"),
-        COBBLESTONE(1, "cobblestone", "cobble"),
-        SANDSTONE(2, "sandstone", "sandstone");
-    
-        private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
-        private final int meta;
-        private final String name;
-        private final String unlocalizedName;
+		STONE(0, "stone"),
+		COBBLESTONE(1, "cobblestone", "cobble"),
+		SANDSTONE(2, "sandstone", "sandstone");
 
-        private EnumType(int meta, String name){
-            this(meta, name, name);
-        }
+		private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
+		private final int meta;
+		private final String name;
+		private final String unlocalizedName;
 
-        private EnumType(int meta, String name, String unlocalizedName){
-            this.meta = meta;
-            this.name = name;
-            this.unlocalizedName = unlocalizedName;
-        }
+		private EnumType(int meta, String name){
+			this(meta, name, name);
+		}
 
-        public int getMetadata(){
-            return this.meta;
-        }
+		private EnumType(int meta, String name, String unlocalizedName){
+			this.meta = meta;
+			this.name = name;
+			this.unlocalizedName = unlocalizedName;
+		}
 
-        @Override
+		public int getMetadata(){
+			return this.meta;
+		}
+
+		@Override
 		public String toString(){
-            return this.name;
-        }
+			return this.name;
+		}
 
-        public static BlockReinforcedSlabs.EnumType byMetadata(int meta){
-            if(meta < 0 || meta >= META_LOOKUP.length){
-                meta = 0;
-            }
+		public static BlockReinforcedSlabs.EnumType byMetadata(int meta){
+			if(meta < 0 || meta >= META_LOOKUP.length){
+				meta = 0;
+			}
 
-            return META_LOOKUP[meta];
-        }
+			return META_LOOKUP[meta];
+		}
 
-        @Override
+		@Override
 		public String getName(){
-            return this.name;
-        }
+			return this.name;
+		}
 
-        public String getUnlocalizedName(){
-            return this.unlocalizedName;
-        }
+		public String getUnlocalizedName(){
+			return this.unlocalizedName;
+		}
 
-        static {
-        	BlockReinforcedSlabs.EnumType[] var0 = values();
-            int var1 = var0.length;
+		static {
+			BlockReinforcedSlabs.EnumType[] var0 = values();
+			int var1 = var0.length;
 
-            for(int var2 = 0; var2 < var1; ++var2){
-            	BlockReinforcedSlabs.EnumType var3 = var0[var2];
-                META_LOOKUP[var3.getMetadata()] = var3;
-            }
-        }
-    }
+			for(int var2 = 0; var2 < var1; ++var2){
+				BlockReinforcedSlabs.EnumType var3 = var0[var2];
+				META_LOOKUP[var3.getMetadata()] = var3;
+			}
+		}
+	}
 }
