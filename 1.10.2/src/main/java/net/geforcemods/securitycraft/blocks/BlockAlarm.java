@@ -71,22 +71,12 @@ public class BlockAlarm extends BlockOwnable {
     
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        if (this.checkForDrop(worldIn, pos, state) && !canPlaceBlockOnSide(worldIn, pos, ((EnumFacing)state.getValue(FACING)).getOpposite())) {
+        if (!this.canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
         }
     }
     
-    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
-        if (this.canPlaceBlockAt(worldIn, pos)) {
-            return true;
-        } else {
-            this.dropBlockAsItem(worldIn, pos, state, 0);
-            worldIn.setBlockToAir(pos);
-            return false;
-        }
-    }
-
     @Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
