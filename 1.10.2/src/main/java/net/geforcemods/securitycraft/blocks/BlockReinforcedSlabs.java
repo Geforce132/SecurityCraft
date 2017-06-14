@@ -134,7 +134,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, ((EnumType)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
 	}
 
 	public static enum EnumType implements IStringSerializable{
