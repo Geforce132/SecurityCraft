@@ -29,7 +29,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,25 +40,25 @@ public class ClientProxy extends ServerProxy{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerTextureFiles() {
-		Item reinforcedWoodPlanks = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedPlanks");
+		Item reinforcedWoodPlanks = findItem(mod_SecurityCraft.MODID, "reinforcedPlanks");
 		ModelBakery.registerItemVariants(reinforcedWoodPlanks, new ResourceLocation("securitycraft:reinforcedPlanks_Oak"), new ResourceLocation("securitycraft:reinforcedPlanks_Spruce"), new ResourceLocation("securitycraft:reinforcedPlanks_Birch"), new ResourceLocation("securitycraft:reinforcedPlanks_Jungle"), new ResourceLocation("securitycraft:reinforcedPlanks_Acacia"), new ResourceLocation("securitycraft:reinforcedPlanks_DarkOak"));
 
-		Item reinforcedStainedGlass = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass");
+		Item reinforcedStainedGlass = findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass");
 		ModelBakery.registerItemVariants(reinforcedStainedGlass, new ResourceLocation("securitycraft:reinforcedStainedGlass_white"), new ResourceLocation("securitycraft:reinforcedStainedGlass_orange"), new ResourceLocation("securitycraft:reinforcedStainedGlass_magenta"), new ResourceLocation("securitycraft:reinforcedStainedGlass_light_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_yellow"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_lime"), new ResourceLocation("securitycraft:reinforcedStainedGlass_pink"), new ResourceLocation("securitycraft:reinforcedStainedGlass_gray"), new ResourceLocation("securitycraft:reinforcedStainedGlass_silver"), new ResourceLocation("securitycraft:reinforcedStainedGlass_cyan"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_purple"), new ResourceLocation("securitycraft:reinforcedStainedGlass_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_brown"), new ResourceLocation("securitycraft:reinforcedStainedGlass_green"), new ResourceLocation("securitycraft:reinforcedStainedGlass_red"), new ResourceLocation("securitycraft:reinforcedStainedGlass_black"));
 
-		Item reinforcedSandstone = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
+		Item reinforcedSandstone = findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
 		ModelBakery.registerItemVariants(reinforcedSandstone, new ResourceLocation("securitycraft:reinforcedSandstone_normal"), new ResourceLocation("securitycraft:reinforcedSandstone_chiseled"), new ResourceLocation("securitycraft:reinforcedSandstone_smooth"));
 
-		Item reinforcedWoodSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
+		Item reinforcedWoodSlabs = findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
 		ModelBakery.registerItemVariants(reinforcedWoodSlabs, new ResourceLocation("securitycraft:reinforcedWoodSlabs_oak"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_spruce"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_birch"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_jungle"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_acacia"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
 
-		Item reinforcedStoneSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
+		Item reinforcedStoneSlabs = findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
 		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"), new ResourceLocation("securitycraft:reinforcedDirtSlab"));
 
-		Item fakeWater = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWater");
+		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
 		{
@@ -78,7 +77,7 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeWaterFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
+		Item fakeWaterFlowing = findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
 		ModelBakery.registerItemVariants(fakeWaterFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
 		{
@@ -97,7 +96,7 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeLava = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLava");
+		Item fakeLava = findItem(mod_SecurityCraft.MODID, "bogusLava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
 		{
@@ -116,7 +115,7 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeLavaFlowing = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
+		Item fakeLavaFlowing = findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
 		ModelBakery.registerItemVariants(fakeLavaFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
 		{
@@ -136,6 +135,11 @@ public class ClientProxy extends ServerProxy{
 		});
 	}
 
+	private Item findItem(String modid, String resourceName)
+	{
+		return Item.REGISTRY.getObject(new ResourceLocation(modid + ":" + resourceName));
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void setupTextureRegistry() {

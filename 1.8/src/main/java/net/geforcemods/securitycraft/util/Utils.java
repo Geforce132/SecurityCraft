@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class Utils {
 
-//TODO North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
+//North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
 
 	/**
 	 * Removes the last character in the given String. <p>

@@ -4,6 +4,7 @@
 - New: The Cage Trap can now be set to capture hostile mobs via the Universal Block Modifier
 - New: Information about needing the Redstone Module for the Security Camera
 - Change: [1.10.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
+- Change: [1.7.10] If you use LookingGlass, you now need at least version 0.2.0.01 to play
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
 - Fix: Some GUIs cannot be closed

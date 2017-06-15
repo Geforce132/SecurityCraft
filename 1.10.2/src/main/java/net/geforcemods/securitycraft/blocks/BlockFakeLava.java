@@ -35,6 +35,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
         super(par1Material);
     }
 
+    
     /**
      * Updates the flow for the BlockFlowing object.
      */

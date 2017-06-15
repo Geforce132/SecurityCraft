@@ -242,9 +242,6 @@ public class ConfigurationHandler{
 	
 	    mod_SecurityCraft.reinforcedGlass = new BlockReinforcedGlass(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedGlassBlock");
 	    mod_SecurityCraft.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlass");
-	    //TODO
-	    //mod_SecurityCraft.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStainedGlassPanes");
-	    //mod_SecurityCraft.reinforcedGlassPane = new BlockReinforcedGlassPane(Material.IRON, true).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedGlass");
 	    
 	    mod_SecurityCraft.reinforcedDirt = new BlockOwnable(Material.GROUND, EnumBlockRenderType.MODEL).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedDirt");
 		
@@ -578,7 +575,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "doorIndestructibleIronItem");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
-		//TODO not sure if this is the correct way to do it
 		for(int i = 0; i < SCSounds.values().length; i++)
 		{
 			int registrySize = SoundEvent.REGISTRY.getKeys().size();
