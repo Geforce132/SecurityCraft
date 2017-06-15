@@ -3,8 +3,9 @@ package net.geforcemods.securitycraft.misc;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}.
@@ -58,7 +59,7 @@ public enum EnumCustomModules {
 	
 	public static void refresh() {
 		for(EnumCustomModules module : values()) {
-			module.module = (ItemModule) GameRegistry.findItem("securitycraft", module.getUnlocalizedName());
+			module.module = (ItemModule) Item.REGISTRY.getObject(new ResourceLocation("securitycraft" + ":" + module.getUnlocalizedName()));
 		}
 	}
 

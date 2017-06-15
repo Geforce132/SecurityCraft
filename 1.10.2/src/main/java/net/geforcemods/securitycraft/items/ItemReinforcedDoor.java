@@ -56,8 +56,8 @@ public class ItemReinforcedDoor extends Item
 	public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door) {
 		BlockPos blockpos1 = pos.offset(facing.rotateY());
 		BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
-		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
-		int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube(worldIn.getBlockState(pos)) ? 1 : 0);
+		int i = (worldIn.getBlockState(blockpos2).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).isNormalCube() ? 1 : 0);
+		int j = (worldIn.getBlockState(blockpos1).isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).isNormalCube() ? 1 : 0);
 		boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
 		boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
 		boolean flag2 = false;

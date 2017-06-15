@@ -53,7 +53,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			else if(block instanceof BlockStone)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getDefaultState());
 			else if(block instanceof BlockPlanks)
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getActualState(player.getEntityWorld().getBlockState(pos), player.getEntityWorld(), pos));
+				world.setBlockState(pos, player.getEntityWorld().getBlockState(pos).getActualState(player.getEntityWorld(), pos));
 			else if(block instanceof BlockGlass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlass.getDefaultState());
 			else if(block.getUnlocalizedName().equals(Blocks.COBBLESTONE.getUnlocalizedName())) //cobblestone doesn't have its own class
@@ -61,7 +61,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			else if(block.getUnlocalizedName().equals(Blocks.IRON_BARS.getUnlocalizedName())) //glass panes and iron bars share the same class
 				world.setBlockState(pos, mod_SecurityCraft.unbreakableIronBars.getDefaultState());
 			else if(block instanceof BlockSandStone)
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedSandstone.getActualState(player.getEntityWorld().getBlockState(pos), player.getEntityWorld(), pos));
+				world.setBlockState(pos, player.getEntityWorld().getBlockState(pos).getActualState(player.getEntityWorld(), pos));
 			else
 			{
 				world.destroyBlock(pos, true); //destroy the block without the ubr taking damage

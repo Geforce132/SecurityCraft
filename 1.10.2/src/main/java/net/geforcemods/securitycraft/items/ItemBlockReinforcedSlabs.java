@@ -84,7 +84,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                     IBlockState iblockstate1 = this.getDoubleSlabBlock(comparable);
                     Block doubleSlabBlock = iblockstate1.getBlock();
                     
-                    if(worldIn.checkNoEntityCollision(doubleSlabBlock.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
+                    if(worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                         worldIn.playSound(playerIn, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
                         --stack.stackSize;
                         
@@ -149,7 +149,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
             if(comparable == variantInStack){
                 IBlockState iblockstate1 = this.makeState(this.singleSlab.getVariantProperty(), comparable);
 
-                if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(iblockstate1, worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
+                if (worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox( worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                     worldIn.playSound(player, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
                     --stack.stackSize;
                     

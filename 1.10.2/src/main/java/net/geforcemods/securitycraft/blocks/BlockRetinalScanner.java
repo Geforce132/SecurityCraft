@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -42,25 +41,25 @@ public class BlockRetinalScanner extends BlockContainer {
      */
     @Override
 	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        Block block = par1World.getBlockState(pos.north()).getBlock();
-        Block block1 = par1World.getBlockState(pos.south()).getBlock();
-        Block block2 = par1World.getBlockState(pos.west()).getBlock();
-        Block block3 = par1World.getBlockState(pos.east()).getBlock();
+    	IBlockState block = par1World.getBlockState(pos.north());
+    	IBlockState block1 = par1World.getBlockState(pos.south());
+    	IBlockState block2 = par1World.getBlockState(pos.west());
+    	IBlockState block3 = par1World.getBlockState(pos.east());
         EnumFacing enumfacing = state.getValue(FACING);
 
-        if (enumfacing == EnumFacing.NORTH && block.isFullBlock(state) && !block1.isFullBlock(state))
+        if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
         {
             enumfacing = EnumFacing.SOUTH;
         }
-        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock(state) && !block.isFullBlock(state))
+        else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
         {
             enumfacing = EnumFacing.NORTH;
         }
-        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock(state) && !block3.isFullBlock(state))
+        else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
         {
             enumfacing = EnumFacing.EAST;
         }
-        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock(state) && !block2.isFullBlock(state))
+        else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
         {
             enumfacing = EnumFacing.WEST;
         }

@@ -161,7 +161,7 @@ public class BlockAlarm extends BlockOwnable {
                 return new AxisAlignedBB(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         }
         
-    	return super.getBoundingBox(state, source, pos);
+    	return state.getBoundingBox(source, pos);
     }
     
     private void playSoundAndUpdate(World par1World, BlockPos pos){

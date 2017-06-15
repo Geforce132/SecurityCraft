@@ -285,7 +285,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     		return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
         else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
         	return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
-    	return super.getBoundingBox(state, source, pos);
+    	return state.getBoundingBox(source, pos);
     }
     
     @Override
