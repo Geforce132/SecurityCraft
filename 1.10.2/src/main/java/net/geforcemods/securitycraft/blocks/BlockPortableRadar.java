@@ -18,6 +18,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +27,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -96,7 +96,7 @@ public class BlockPortableRadar extends BlockContainer {
                 if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName())){
                     if(!((TileEntityPortableRadar) par1World.getTileEntity(pos)).shouldSendMessage(entityplayer)) { continue; }
                 	
-                	PlayerUtils.sendMessageToPlayer(entityplayermp, I18n.translateToLocal("tile.portableRadar.name"), ((INameable)par1World.getTileEntity(pos)).hasCustomName() ? (I18n.translateToLocal("messages.portableRadar.withName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + ((INameable)par1World.getTileEntity(pos)).getCustomName() + TextFormatting.RESET)) : (I18n.translateToLocal("messages.portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);               
+                	PlayerUtils.sendMessageToPlayer(entityplayermp, I18n.format("tile.portableRadar.name"), ((INameable)par1World.getTileEntity(pos)).hasCustomName() ? (I18n.format("messages.portableRadar.withName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + ((INameable)par1World.getTileEntity(pos)).getCustomName() + TextFormatting.RESET)) : (I18n.format("messages.portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + entityplayer.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);               
                 	((TileEntityPortableRadar) par1World.getTileEntity(pos)).setSentMessage();
                 }   
                 

@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -33,7 +34,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -559,7 +559,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
-			PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.keypadFurnace.name"), I18n.translateToLocal("messages.codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, I18n.format("tile.keypadFurnace.name"), I18n.format("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {	
 			activate(player);

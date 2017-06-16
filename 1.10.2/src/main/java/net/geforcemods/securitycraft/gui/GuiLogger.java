@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 public class GuiLogger extends GuiContainer{
 	
@@ -36,7 +36,7 @@ public class GuiLogger extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(I18n.translateToLocal("gui.logger.logged"), this.xSize / 2 - this.fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("gui.logger.logged"), this.xSize / 2 - this.fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
         
         for(int i = 0; i < this.tileEntity.players.length; i++){
 			if(this.tileEntity.players[i] != ""){

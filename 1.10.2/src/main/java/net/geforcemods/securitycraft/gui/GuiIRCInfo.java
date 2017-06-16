@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.gui.components.GuiLinkedText;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,7 +29,7 @@ public class GuiIRCInfo extends GuiContainer
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(new GuiButton(0, width / 2 - 48, height / 2 + 50, 100, 20, "Ok."));
-		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, I18n.translateToLocal("gui.ircInfo.infoLink")));
+		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, I18n.format("gui.ircInfo.infoLink")));
 	}
 	
 	@Override
@@ -52,7 +52,7 @@ public class GuiIRCInfo extends GuiContainer
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	fontRendererObj.drawSplitString(I18n.translateToLocal("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
+    	fontRendererObj.drawSplitString(I18n.format("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
     }
 
     /**

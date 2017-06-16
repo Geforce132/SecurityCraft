@@ -23,7 +23,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -142,7 +141,7 @@ public class ItemModifiedBucket extends ItemBucket {
         }
         else
         {
-            Material material = worldIn.getBlockState(pos).getBlock().getMaterial(worldIn.getBlockState(pos));
+            Material material = worldIn.getBlockState(pos).getMaterial();
             boolean flag = !material.isSolid();
 
             if (!worldIn.isAirBlock(pos) && !flag)

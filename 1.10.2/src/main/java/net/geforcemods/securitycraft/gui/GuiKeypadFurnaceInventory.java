@@ -6,10 +6,10 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,9 +30,9 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
-        String s = this.tileFurnace.hasCustomName() ? this.tileFurnace.getName() : I18n.translateToLocalFormatted(I18n.translateToLocal("gui.protectedFurnace.name"), new Object[0]);
+        String s = this.tileFurnace.hasCustomName() ? this.tileFurnace.getName() : I18n.format(I18n.format("gui.protectedFurnace.name"), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.translateToLocal("gui.protectedFurnace.name"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(I18n.format("gui.protectedFurnace.name"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override

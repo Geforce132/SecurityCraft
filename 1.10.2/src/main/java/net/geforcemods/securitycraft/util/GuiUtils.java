@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -29,7 +30,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class GuiUtils{
@@ -41,10 +41,10 @@ public class GuiUtils{
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
 	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + I18n.translateToLocal("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(I18n.translateToLocal("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(I18n.translateToLocal("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + I18n.format("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + I18n.format("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
+	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + I18n.format("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + I18n.format("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
+	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + I18n.format("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + I18n.format("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(I18n.format("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(I18n.format("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
 	    mc.getTextureManager().bindTexture(cameraDashboard);
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

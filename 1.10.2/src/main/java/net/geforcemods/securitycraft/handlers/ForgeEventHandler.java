@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +37,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.MouseEvent;
@@ -78,10 +78,10 @@ public class ForgeEventHandler {
 		
 		ITextComponent TextComponentString;
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.format("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.format("messages.tip") + " " + I18n.format(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		}
 		else {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.translateToLocal("messages.tip") + " " + I18n.translateToLocal(tipKey));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.format("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.format("messages.tip") + " " + I18n.format(tipKey));
 		}
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -148,7 +148,7 @@ public class ForgeEventHandler {
 					event.setCanceled(true);
 					
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockModifier.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.format("item.universalBlockModifier.name"), I18n.format("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 					
@@ -161,13 +161,13 @@ public class ForgeEventHandler {
 					
 					for(String character : new String[]{"(", ")"}) {
 						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.format("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 					}		
 					
 					if(((INameable) tileEntity).getCustomName().matches(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.format("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 						return;
 					}
 	
@@ -181,7 +181,7 @@ public class ForgeEventHandler {
 					event.setCanceled(true);
 	
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.translateToLocal("item.universalBlockRemover.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.format("item.universalBlockRemover.name"), I18n.format("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 	

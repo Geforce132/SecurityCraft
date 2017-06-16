@@ -16,6 +16,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -100,7 +100,7 @@ public class BlockSecurityCamera extends BlockContainer{
     
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
     	if(!world.isRemote && player.getRidingEntity() == null) {
-    		PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("tile.securityCamera.name"), I18n.translateToLocal("messages.securityCamera.mounted"), TextFormatting.GREEN);
+    		PlayerUtils.sendMessageToPlayer(player, I18n.format("tile.securityCamera.name"), I18n.format("messages.securityCamera.mounted"), TextFormatting.GREEN);
     	}
     	
     	if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){

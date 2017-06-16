@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
@@ -32,7 +32,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			
 			if(!getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.scannerDoorItem.name"), I18n.format("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
@@ -44,7 +44,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			worldObj.playEvent(null, 1006, pos, 0);
 
 			if(open) 
-				PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.scannerDoorItem.name"), I18n.translateToLocal("messages.retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.scannerDoorItem.name"), I18n.format("messages.retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

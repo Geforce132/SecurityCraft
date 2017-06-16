@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 @SuppressWarnings({"unused", "unchecked"})
 public class GuiMRAT extends GuiContainer{
@@ -26,9 +26,9 @@ public class GuiMRAT extends GuiContainer{
 
     	int j = (this.height - this.height) / 2;
     	
-		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, I18n.translateToLocal("gui.mrat.activate")));
-		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, I18n.translateToLocal("gui.mrat.deactivate")));
-		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, I18n.translateToLocal("gui.mrat.detonate")));
+		this.buttonList.add(new GuiButton(0, this.width / 2 - 49, this.height / 2 - 7 - 50, 99, 20, I18n.format("gui.mrat.activate")));
+		this.buttonList.add(new GuiButton(1, this.width / 2 - 49, this.height / 2 - 7, 99, 20, I18n.format("gui.mrat.deactivate")));
+		this.buttonList.add(new GuiButton(2, this.width / 2 - 49, this.height / 2 - 7 + 50, 99, 20, I18n.format("gui.mrat.detonate")));
     }
 
 	/**
@@ -37,7 +37,7 @@ public class GuiMRAT extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(I18n.translateToLocal("gui.mrat.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.mrat.name")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("gui.mrat.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.mrat.name")) / 2, 6, 4210752);
     }
     
 	/**

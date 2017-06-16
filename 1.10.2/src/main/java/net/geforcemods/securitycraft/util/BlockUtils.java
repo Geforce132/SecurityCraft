@@ -288,7 +288,7 @@ public class BlockUtils{
 	}
 	
 	public static Material getBlockMaterial(World par1World, BlockPos pos){
-		return par1World.getBlockState(pos).getBlock().getMaterial(par1World.getBlockState(pos));
+		return par1World.getBlockState(pos).getMaterial();
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -92,7 +92,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		if(this.isFacingAnotherBlock(worldIn, pos)){
     			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
     		}else{
-    			PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("tile.inventoryScanner.name"), I18n.translateToLocal("messages.invScan.notConnected"), TextFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("tile.inventoryScanner.name"), I18n.format("messages.invScan.notConnected"), TextFormatting.RED);
     		}
     		
     		return true;

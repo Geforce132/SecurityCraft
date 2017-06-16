@@ -15,10 +15,10 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 public class GuiCameraMonitor extends GuiContainer {
@@ -124,11 +124,11 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = 0; i < hoverCheckers.length; i++){
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null) {
-					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, this.mc.fontRendererObj);
+					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.format("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, this.mc.fontRendererObj);
 				}
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName()) {
-					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRendererObj);
+					this.drawHoveringText(this.mc.fontRendererObj.listFormattedStringToWidth(I18n.format("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, this.mc.fontRendererObj);
 				}
 			}	
 		}
@@ -160,7 +160,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(I18n.translateToLocal("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
+		this.fontRendererObj.drawString(I18n.format("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	@Override

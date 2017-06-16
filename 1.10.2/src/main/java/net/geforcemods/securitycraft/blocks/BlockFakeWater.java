@@ -104,11 +104,11 @@ public class BlockFakeWater extends BlockDynamicLiquid{
             {
                 IBlockState iblockstate2 = worldIn.getBlockState(pos.down());
 
-                if (iblockstate2.getBlock().getMaterial(iblockstate2).isSolid())
+                if (iblockstate2.getMaterial().isSolid())
                 {
                     l = 0;
                 }
-                else if (iblockstate2.getBlock().getMaterial(iblockstate2) == this.blockMaterial && iblockstate2.getValue(LEVEL).intValue() == 0)
+                else if (iblockstate2.getMaterial() == this.blockMaterial && iblockstate2.getValue(LEVEL).intValue() == 0)
                 {
                     l = 0;
                 }

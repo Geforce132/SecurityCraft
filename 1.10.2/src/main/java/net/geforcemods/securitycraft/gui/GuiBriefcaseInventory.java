@@ -5,10 +5,10 @@ import org.lwjgl.opengl.GL11;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcaseInventory extends GuiContainer {
 
@@ -20,7 +20,7 @@ public class GuiBriefcaseInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(I18n.translateToLocal("item.briefcase.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("item.briefcase.name")) / 2, 6, 4210752);
+		this.fontRendererObj.drawString(I18n.format("item.briefcase.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("item.briefcase.name")) / 2, 6, 4210752);
 	}
 
 	@Override

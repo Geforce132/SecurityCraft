@@ -63,7 +63,7 @@ public class BlockMine extends BlockExplosive {
 	 */
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
-		if (world.getBlockState(pos.down()).getBlock().getMaterial(world.getBlockState(pos.down())) != Material.AIR){
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR){
 			return;  	   
 		}else{    	   
 			this.explode((World)world, pos);   

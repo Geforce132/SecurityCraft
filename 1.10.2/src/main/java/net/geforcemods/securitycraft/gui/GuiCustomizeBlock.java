@@ -12,11 +12,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.config.HoverChecker;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -80,9 +80,9 @@ public class GuiCustomizeBlock extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String s = this.tileEntity.hasCustomName() ? this.tileEntity.getName() : I18n.translateToLocalFormatted(this.tileEntity.getName(), new Object[0]);
+        String s = this.tileEntity.hasCustomName() ? this.tileEntity.getName() : I18n.format(this.tileEntity.getName(), new Object[0]);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.translateToLocalFormatted("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
@@ -109,17 +109,17 @@ public class GuiCustomizeBlock extends GuiContainer{
     private String getModuleDescription(int buttonID) {
     	String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getUnlocalizedName().substring(5) + ".description";
     	
-    	return I18n.translateToLocal(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + TextFormatting.RESET + "\n\n" + I18n.translateToLocal(moduleDescription);
+    	return I18n.format(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + TextFormatting.RESET + "\n\n" + I18n.format(moduleDescription);
     }
     
     private String getOptionDescription(int buttonID) {
     	String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
     	
-    	return I18n.translateToLocal(optionDescription);
+    	return I18n.format(optionDescription);
     }
     
     private String getOptionButtonTitle(Option<?> option) {
-    	return (I18n.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
+    	return (I18n.format("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
     }
     
 }

@@ -10,11 +10,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcase extends GuiContainer {
 	
@@ -72,7 +72,7 @@ public class GuiBriefcase extends GuiContainer {
     
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
     }
 
 	@Override

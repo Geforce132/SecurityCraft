@@ -46,8 +46,8 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//split up oneliner to be more readable
 		if(block != this && !(block instanceof BlockFenceGate) && block != mod_SecurityCraft.reinforcedFencegate)
 		{
-			if(block.getMaterial(block.getDefaultState()).isOpaque())
-				return block.getMaterial(block.getDefaultState()) != Material.GOURD;
+			if(block.getDefaultState().getMaterial().isOpaque())
+				return block.getDefaultState().getMaterial() != Material.GOURD;
 			else
 				return false;
 		}

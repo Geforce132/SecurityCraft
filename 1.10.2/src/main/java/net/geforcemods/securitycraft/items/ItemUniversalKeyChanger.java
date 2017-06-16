@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 public class ItemUniversalKeyChanger extends Item {
@@ -30,7 +30,7 @@ public class ItemUniversalKeyChanger extends Item {
     			    player.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
     			}
     			else {
-					PlayerUtils.sendMessageToPlayer(player, I18n.translateToLocal("item.universalKeyChanger.name"), I18n.translateToLocal("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalKeyChanger.name"), I18n.format("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
     			}
         		
     			return EnumActionResult.SUCCESS;

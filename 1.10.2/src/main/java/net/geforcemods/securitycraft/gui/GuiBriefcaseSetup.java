@@ -13,11 +13,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 
 public class GuiBriefcaseSetup extends GuiContainer {
 
@@ -36,7 +36,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode")));
+		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? I18n.format("gui.keycardSetup.save") : I18n.format("gui.password.invalidCode")));
 
 		this.keycodeTextbox = new GuiTextField(1, this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
 
@@ -65,7 +65,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
     
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(I18n.translateToLocal("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.translateToLocal("gui.briefcase.setupTitle")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.briefcase.setupTitle")) / 2, 6, 4210752);
     }
 
 	@Override
@@ -105,7 +105,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
     private void updateButtonText() {
-    	this.saveAndContinueButton.displayString = !this.flag ? I18n.translateToLocal("gui.keycardSetup.save") : I18n.translateToLocal("gui.password.invalidCode");
+    	this.saveAndContinueButton.displayString = !this.flag ? I18n.format("gui.keycardSetup.save") : I18n.format("gui.password.invalidCode");
     }
 
     @Override

@@ -13,11 +13,11 @@ import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,7 +51,7 @@ public class GuiInventoryScanner extends GuiContainer {
     	Keyboard.enableRepeatEvents(true); 		
     		
 		if(tileEntity.getOwner().isOwner(playerObj)){
-			this.buttonList.add(new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? I18n.translateToLocal("gui.invScan.checkInv") : I18n.translateToLocal("gui.invScan.emitRedstone")));
+			this.buttonList.add(new GuiButton(0, this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 63, 166, 20, this.tileEntity.getType().contains("check") ? I18n.format("gui.invScan.checkInv") : I18n.format("gui.invScan.emitRedstone")));
 		}
     }
     
@@ -61,20 +61,20 @@ public class GuiInventoryScanner extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 
 		if(!this.buttonList.isEmpty()){
-			this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.1"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
-			this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.2"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
+			this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.1"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
+			this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.2"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
 			
-			if(this.buttonList.get(0).displayString.matches(I18n.translateToLocal("gui.invScan.checkInv"))){
-				this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.checkInv.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.checkInv.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
+			if(this.buttonList.get(0).displayString.matches(I18n.format("gui.invScan.checkInv"))){
+				this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.checkInv.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.checkInv.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
 			}else{
-				this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.emitRedstone.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.explanation.emitRedstone.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);	
+				this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.emitRedstone.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRendererObj.drawString(I18n.format("gui.invScan.explanation.emitRedstone.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);	
 			}
 		}else{
 			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
-				this.fontRendererObj.drawString(I18n.translateToLocal("gui.invScan.setTo"), this.width / 2 - 83, this.height / 2 - 61, 4210752);
-				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? I18n.translateToLocal("gui.invScan.checkInv") : I18n.translateToLocal("gui.invScan.emitRedstone")), this.width / 2 - 83, this.height / 2 - 51, 4210752);
+				this.fontRendererObj.drawString(I18n.format("gui.invScan.setTo"), this.width / 2 - 83, this.height / 2 - 61, 4210752);
+				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? I18n.format("gui.invScan.checkInv") : I18n.format("gui.invScan.emitRedstone")), this.width / 2 - 83, this.height / 2 - 51, 4210752);
 				
 			}
 		}
@@ -102,13 +102,13 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 			case 0:
-				if(guibutton.displayString.matches(I18n.translateToLocal("gui.invScan.checkInv"))){
-					guibutton.displayString = I18n.translateToLocal("gui.invScan.emitRedstone");
-				}else if(guibutton.displayString.matches(I18n.translateToLocal("gui.invScan.emitRedstone"))){
-					guibutton.displayString = I18n.translateToLocal("gui.invScan.checkInv");
+				if(guibutton.displayString.matches(I18n.format("gui.invScan.checkInv"))){
+					guibutton.displayString = I18n.format("gui.invScan.emitRedstone");
+				}else if(guibutton.displayString.matches(I18n.format("gui.invScan.emitRedstone"))){
+					guibutton.displayString = I18n.format("gui.invScan.checkInv");
 				}
 				
-				this.saveType(guibutton.displayString.matches(I18n.translateToLocal("gui.invScan.checkInv")) ? "check" : "redstone");
+				this.saveType(guibutton.displayString.matches(I18n.format("gui.invScan.checkInv")) ? "check" : "redstone");
 				
 				break;
 		}
@@ -128,13 +128,13 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-        this.fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + I18n.translateToLocal("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + I18n.translateToLocal("gui.invScan.mode.view")), 112, 6, 4210752);
+        this.fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + I18n.format("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + I18n.format("gui.invScan.mode.view")), 112, 6, 4210752);
         
         if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj)){
         	this.fontRendererObj.drawString("Storage", 183, 6, 4210752);
         }
         
-        this.fontRendererObj.drawString(I18n.translateToLocalFormatted("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
     }
 	
 	@Override

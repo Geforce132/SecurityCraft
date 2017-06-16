@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,7 +73,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 
                 	if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
                 		if(!worldIn.isRemote){
-                			PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("messages.reinforcedSlab"), I18n.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+                			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("messages.reinforcedSlab"), I18n.format("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
                 		}
                 		
                 		return EnumActionResult.FAIL;

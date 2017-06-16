@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -23,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,7 +35,7 @@ public class ItemCameraMonitor extends Item {
 		if(!worldIn.isRemote){
 			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.securityCamera){
 				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-					PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.cannotView"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.cameraMonitor.name"), I18n.format("messages.cameraMonitor.cannotView"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
@@ -47,14 +47,14 @@ public class ItemCameraMonitor extends Item {
 				
 				if(isCameraAdded(playerIn.inventory.getCurrentItem().getTagCompound(), view)){
 					playerIn.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(playerIn.inventory.getCurrentItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.cameraMonitor.name"), I18n.format("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++){
 					if (!playerIn.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
 						playerIn.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.cameraMonitor.name"), I18n.format("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 				}
@@ -68,7 +68,7 @@ public class ItemCameraMonitor extends Item {
 				return EnumActionResult.SUCCESS; 
 			
 			if(stack.getTagCompound() == null || stack.getTagCompound().hasNoTags()) {
-				PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.cameraMonitor.name"), I18n.format("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -87,7 +87,7 @@ public class ItemCameraMonitor extends Item {
 			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);; 
 			
 			if(!itemStackIn.hasTagCompound() || !hasCameraAdded(itemStackIn.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(playerIn, I18n.translateToLocal("item.cameraMonitor.name"), I18n.translateToLocal("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.cameraMonitor.name"), I18n.format("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
 			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 			}
 
@@ -104,7 +104,7 @@ public class ItemCameraMonitor extends Item {
 			return;
 		}
 
-		par3List.add(I18n.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
+		par3List.add(I18n.format("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
 	}
 
 	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
