@@ -60,7 +60,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(worldIn, pos, DEACTIVATED)){
 			return null;
 		}else{
-			return blockState.getCollisionBoundingBox(worldIn, pos);
+			return super.getCollisionBoundingBox(blockState, worldIn, pos);
 		}
 	}
 	
