@@ -9,6 +9,7 @@
 - Fix: Missing German language strings
 - Fix: Some GUIs cannot be closed
 - Fix: The Universal Key Changer allows non digit characters
+- Fix: Wrong texture for Reinforced Stone Slabs
 - Removed: [1.10.2] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
