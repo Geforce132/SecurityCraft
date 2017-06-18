@@ -1,8 +1,0 @@
-{
-    "parent": "block/upper_slab",
-    "textures": {
-        "bottom": "securitycraft:blocks/reinforcedPlanks_spruce",
-        "top": "securitycraft:blocks/reinforcedPlanks_spruce",
-        "side": "securitycraft:blocks/reinforcedPlanks_spruce"
-    }
-}

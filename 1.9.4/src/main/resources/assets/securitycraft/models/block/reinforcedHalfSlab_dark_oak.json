@@ -1,8 +1,0 @@
-{
-    "parent": "block/half_slab",
-    "textures": {
-        "bottom": "securitycraft:blocks/reinforcedPlanks_bigoak",
-        "top": "securitycraft:blocks/reinforcedPlanks_bigoak",
-        "side": "securitycraft:blocks/reinforcedPlanks_bigoak"
-    }
-}

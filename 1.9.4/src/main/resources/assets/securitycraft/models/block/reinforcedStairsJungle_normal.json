@@ -1,8 +1,0 @@
-{
-    "parent": "block/stairs",
-    "textures": {
-        "bottom": "securitycraft:blocks/reinforcedPlanks_jungle",
-        "top": "securitycraft:blocks/reinforcedPlanks_jungle",
-        "side": "securitycraft:blocks/reinforcedPlanks_jungle"
-    }
-}

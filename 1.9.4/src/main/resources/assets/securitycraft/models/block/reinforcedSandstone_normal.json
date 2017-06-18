@@ -1,8 +1,0 @@
-{
-    "parent": "block/cube_bottom_top",
-    "textures": {
-        "bottom": "securitycraft:blocks/reinforcedSandstone_bottom",
-        "top": "securitycraft:blocks/reinforcedSandstone_top",
-        "side": "securitycraft:blocks/reinforcedSandstone_normal"
-    }
-}
