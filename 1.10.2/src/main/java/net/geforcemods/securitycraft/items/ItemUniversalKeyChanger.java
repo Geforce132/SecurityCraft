@@ -21,23 +21,21 @@ public class ItemUniversalKeyChanger extends Item {
 	public ItemUniversalKeyChanger() {
 		super();
 	}
-	
+
 	@Override
 	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		if(!world.isRemote) {
-        	if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {
-        		if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
-    			    player.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
-    			}
-    			else {
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalKeyChanger.name"), I18n.format("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
-    			}
-        		
-    			return EnumActionResult.SUCCESS;
-        	}
-        }
-        
-        return EnumActionResult.FAIL;
-    }
+		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {
+			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+				player.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			}
+			else {
+				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalKeyChanger.name"), I18n.format("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+			}
+
+			return EnumActionResult.SUCCESS;
+		}
+
+		return EnumActionResult.FAIL;
+	}
 
 }
