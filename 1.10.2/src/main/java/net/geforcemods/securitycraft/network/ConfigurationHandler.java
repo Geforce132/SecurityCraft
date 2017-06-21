@@ -109,7 +109,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -572,7 +571,6 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
-		GameRegistry.registerTileEntity(TileEntityReinforcedDoor.class, "doorIndestructibleIronItem");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
 		for(int i = 0; i < SCSounds.values().length; i++)
