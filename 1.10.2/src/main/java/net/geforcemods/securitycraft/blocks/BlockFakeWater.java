@@ -13,7 +13,7 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -338,7 +338,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
      * Gets an item for the block being called on. Args: world, x, y, z
      */
     @SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, BlockPos pos)
+    public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
     {
         return null;
     }

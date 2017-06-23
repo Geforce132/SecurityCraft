@@ -14,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -196,8 +197,8 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     }
 
 	@SideOnly(Side.CLIENT)
-    public Item getItem(World world, BlockPos pos){
-		return mod_SecurityCraft.reinforcedDoorItem;
+    public ItemStack getItem(World world, BlockPos pos, IBlockState state){
+		return new ItemStack(mod_SecurityCraft.reinforcedDoorItem);
     }
 	
 	@Override

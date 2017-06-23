@@ -17,7 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -354,7 +354,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
      * Gets an item for the block being called on. Args: world, x, y, z
      */
     @SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, BlockPos pos)
+    public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
     {
         return null;
     }

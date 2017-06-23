@@ -75,7 +75,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, BlockPos pos)
+	public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
 	{
 		return null;
 	}
