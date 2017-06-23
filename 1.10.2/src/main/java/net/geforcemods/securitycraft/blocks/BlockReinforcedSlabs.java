@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -25,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider {
+public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider, ICustomWailaDisplay {
 
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
 
@@ -192,5 +194,17 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 				META_LOOKUP[var3.getMetadata()] = var3;
 			}
 		}
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
+	{
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 1, BlockUtils.getBlockMeta(world, pos));
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
+	{
+		return true;
 	}
 }
