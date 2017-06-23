@@ -34,7 +34,7 @@ public class ContainerDisguiseModule extends Container {
 			itemstack = itemstack1.copy();
 
 			if(index < inventory.SIZE) {
-				if(!this.mergeItemStack(itemstack1, inventory.SIZE, 48, true)) {
+				if(!this.mergeItemStack(itemstack1, inventory.SIZE, 37, true)) {
 					return null;
 				}
 
