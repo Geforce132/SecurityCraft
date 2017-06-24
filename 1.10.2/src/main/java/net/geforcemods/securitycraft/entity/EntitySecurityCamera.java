@@ -135,8 +135,10 @@ public class EntitySecurityCamera extends Entity{
     }
 
 	@Override
-	public void onUpdate(){	
-		if(this.worldObj.isRemote && getRidingEntity() != null){	
+	public void onUpdate(){
+		if(this.worldObj.isRemote && isBeingRidden()){
+			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
+			
 			if(this.screenshotCooldown > 0){
 				this.screenshotCooldown -= 1;
 			}
@@ -153,13 +155,13 @@ public class EntitySecurityCamera extends Entity{
 				this.toggleLightCooldown -= 1;
 			}
 			
-			if(((EntityPlayer) getRidingEntity()).rotationYaw != this.rotationYaw){
-				((EntityPlayer) getRidingEntity()).setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, this.rotationYaw, this.rotationPitch);
-				((EntityPlayer) getRidingEntity()).rotationYaw = this.rotationYaw;
+			if(lowestEntity.rotationYaw != this.rotationYaw){
+				lowestEntity.setPositionAndRotation(lowestEntity.posX, lowestEntity.posY, lowestEntity.posZ, this.rotationYaw, this.rotationPitch);
+				lowestEntity.rotationYaw = this.rotationYaw;
 			}
 			
-			if(((EntityPlayer) getRidingEntity()).rotationPitch != this.rotationPitch){
-				((EntityPlayer) getRidingEntity()).setPositionAndRotation(getRidingEntity().posX, getRidingEntity().posY, getRidingEntity().posZ, this.rotationYaw, this.rotationPitch);
+			if(lowestEntity.rotationPitch != this.rotationPitch){
+				lowestEntity.setPositionAndRotation(lowestEntity.posX, lowestEntity.posY, lowestEntity.posZ, this.rotationYaw, this.rotationPitch);
 			}
 		
 			this.checkKeysPressed();
@@ -170,13 +172,13 @@ public class EntitySecurityCamera extends Entity{
 				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 					
-			if(getRidingEntity() != null && this.shouldProvideNightVision){
+			if(getPassengers().size() != 0 && this.shouldProvideNightVision){
 				mod_SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("night_vision")), 3, -1));
 			}
 		}
 		
 		if(!this.worldObj.isRemote){
-			if(getRidingEntity() == null | BlockUtils.getBlock(worldObj, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
+			if(getPassengers().size() == 0 | BlockUtils.getBlock(worldObj, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
 				this.setDead();
 				return;
 			}	
@@ -330,7 +332,7 @@ public class EntitySecurityCamera extends Entity{
 	public String getCameraInfo(){
 		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
 		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
-		String viewingFrom = (getRidingEntity() != null && mod_SecurityCraft.instance.hasUsePosition(getRidingEntity().getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[0]) + " Y: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[1]) + " Z: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getRidingEntity().getName())[2]) : "";
+		String viewingFrom = (getPassengers().size() != 0 && mod_SecurityCraft.instance.hasUsePosition(getPassengers().get(0).getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[0]) + " Y: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[1]) + " Z: " + (int) Math.floor((Double) mod_SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[2]) : "";
 		return nowViewing + pos + viewingFrom;
 	}
 	
