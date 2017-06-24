@@ -57,10 +57,14 @@ public class PacketSUpdateTEOwnable implements IMessage
 	public static class Handler implements IMessageHandler<PacketSUpdateTEOwnable, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSUpdateTEOwnable message, MessageContext ctx)
+		public IMessage onMessage(final PacketSUpdateTEOwnable message, MessageContext ctx)
 		{
-			Minecraft.getMinecraft().addScheduledTask(() -> {
-				((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.pos)).setOwner(message.uuid, message.name);
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run()
+				{
+					((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.pos)).setOwner(message.uuid, message.name);
+				}
 			});
 			return null;
 		}
