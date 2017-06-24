@@ -51,7 +51,6 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
 

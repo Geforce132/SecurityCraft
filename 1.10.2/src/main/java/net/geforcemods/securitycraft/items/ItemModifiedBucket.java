@@ -45,11 +45,11 @@ public class ItemModifiedBucket extends ItemBucket {
 
         if (raytraceresult == null)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
         {
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         }
         else
         {
@@ -57,13 +57,13 @@ public class ItemModifiedBucket extends ItemBucket {
 
             if (!worldIn.isBlockModifiable(playerIn, blockpos))
             {
-                return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             }
             else if (flag)
             {
                 if (!playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
                 else
                 {
@@ -75,18 +75,18 @@ public class ItemModifiedBucket extends ItemBucket {
                         worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
                         playerIn.addStat(StatList.getObjectUseStats(this));
                         playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-                        return new ActionResult(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket));
+                        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket));
                     }
                     else if (material == Material.LAVA && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
                     {
                         playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
                         worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
                         playerIn.addStat(StatList.getObjectUseStats(this));
-                        return new ActionResult(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket));
+                        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, this.fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket));
                     }
                     else
                     {
-                        return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                        return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                     }
                 }
             }
@@ -97,16 +97,16 @@ public class ItemModifiedBucket extends ItemBucket {
 
                 if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
                 else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1))
                 {
                     playerIn.addStat(StatList.getObjectUseStats(this));
-                    return !playerIn.capabilities.isCreativeMode ? new ActionResult(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+                    return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
                 }
                 else
                 {
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+                    return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
                 }
             }
         }

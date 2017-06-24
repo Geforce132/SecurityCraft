@@ -86,7 +86,7 @@ public class DccManager {
         }
         else if (type.equals("ACCEPT")) {
             int port = Integer.parseInt(tokenizer.nextToken());
-            long progress = Long.parseLong(tokenizer.nextToken());
+            Long.parseLong(tokenizer.nextToken());
             
             DccFileTransfer transfer = null;
             synchronized (_awaitingResume) {
@@ -147,6 +147,6 @@ public class DccManager {
     
     
     private PircBot _bot;
-    private Vector _awaitingResume = new Vector();
+    private Vector<DccFileTransfer> _awaitingResume = new Vector<DccFileTransfer>();
     
 }

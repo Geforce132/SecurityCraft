@@ -32,14 +32,10 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
 
 	private final boolean isDouble;
-	private final Material slabMaterial;
-
 	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial){
 		super(blockMaterial);
 
 		this.isDouble = isDouble;
-		this.slabMaterial = blockMaterial;
-
 		if(!this.isDouble()){
 			this.useNeighborBrightness = true;
 		}

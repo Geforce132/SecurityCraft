@@ -82,7 +82,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
                 
                 if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
                     IBlockState iblockstate1 = this.getDoubleSlabBlock(comparable);
-                    Block doubleSlabBlock = iblockstate1.getBlock();
+                    iblockstate1.getBlock();
                     
                     if(worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                         worldIn.playSound(playerIn, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
