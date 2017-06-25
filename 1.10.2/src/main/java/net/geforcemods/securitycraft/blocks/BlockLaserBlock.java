@@ -37,7 +37,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	
 	@Override
 	public boolean isNormalCube(IBlockState state){
-		return true;
+		return false;
 	}
 	
 	@Override
