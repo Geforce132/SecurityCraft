@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "variant=oak": { "model": "securitycraft:reinforced_planks_Oak" },
+        "variant=spruce": { "model": "securitycraft:reinforced_planks_Spruce" },
+        "variant=birch": { "model": "securitycraft:reinforced_planks_Birch", "y": 90 },
+        "variant=jungle": { "model": "securitycraft:reinforced_planks_Jungle", "y": 180 },
+        "variant=acacia": { "model": "securitycraft:reinforced_planks_Acacia", "y": 270 },
+        "variant=dark_oak": { "model": "securitycraft:reinforced_planks_DarkOak" }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "half=bottom,variant=stone": { "model": "securitycraft:reinforced_half_slab_stone" },
+        "half=bottom,variant=cobblestone": { "model": "securitycraft:reinforced_half_slab_cobblestone" },
+        "half=bottom,variant=sandstone": { "model": "securitycraft:reinforced_half_slab_sandstone" },
+        "half=top,variant=stone": { "model": "securitycraft:reinforced_top_slab_stone" },
+        "half=top,variant=cobblestone": { "model": "securitycraft:reinforced_top_slab_cobblestone" },
+        "half=top,variant=sandstone": { "model": "securitycraft:reinforced_top_slab_sandstone" }
+    }
+}

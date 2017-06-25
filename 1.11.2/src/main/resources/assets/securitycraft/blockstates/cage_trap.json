@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "deactivated=true": { "model": "securitycraft:cage_trap" },
+        "deactivated=false":  { "model": "securitycraft:cage_trap" }
+    }
+}

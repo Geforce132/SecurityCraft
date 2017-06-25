@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "half=bottom,variant=oak": { "model": "securitycraft:reinforced_planks_oak" },
+        "half=bottom,variant=spruce": { "model": "securitycraft:reinforced_planks_spruce" },
+        "half=bottom,variant=birch": { "model": "securitycraft:reinforced_planks_birch" },
+        "half=bottom,variant=jungle": { "model": "securitycraft:reinforced_planks_jungle" },
+        "half=bottom,variant=acacia": { "model": "securitycraft:reinforced_planks_acacia" },
+        "half=bottom,variant=dark_oak": { "model": "securitycraft:reinforced_planks_dark_oak" },
+        "half=top,variant=oak": { "model": "securitycraft:reinforced_planks_oak" },
+        "half=top,variant=spruce": { "model": "securitycraft:reinforced_planks_spruce" },
+        "half=top,variant=birch": { "model": "securitycraft:reinforced_planks_birch" },
+        "half=top,variant=jungle": { "model": "securitycraft:reinforced_planks_jungle" },
+        "half=top,variant=acacia": { "model": "securitycraft:reinforced_planks_acacia" },
+        "half=top,variant=dark_oak": { "model": "securitycraft:reinforced_planks_dark_oak" }
+    }
+}

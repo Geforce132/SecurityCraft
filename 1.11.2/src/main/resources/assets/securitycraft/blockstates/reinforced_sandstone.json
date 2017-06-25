@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=sandstone": { "model": "securitycraft:reinforced_sandstone_normal" },
+        "type=chiseled_sandstone": { "model": "securitycraft:reinforced_sandstone_chiseled" },
+        "type=smooth_sandstone": { "model": "securitycraft:reinforced_sandstone_smooth" }    
+    }
+}
