@@ -22,15 +22,12 @@ public class EntityTaserBullet extends EntityThrowable {
 	public EntityTaserBullet(World worldIn, EntityLivingBase shooter){
 		super(worldIn, shooter);
 		this.setSize(0.01F, 0.01F);
+		this.setHeadingFromThrower(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
 	}
 
 	public EntityTaserBullet(World worldIn, double x, double y, double z){
 		super(worldIn, x, y, z);
 		this.setSize(0.01F, 0.01F);
-	}
-
-	protected float func_70182_d(){
-		return 6F;
 	}
 
 	@Override
