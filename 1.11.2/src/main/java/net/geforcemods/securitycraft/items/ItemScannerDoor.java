@@ -24,8 +24,10 @@ public class ItemScannerDoor extends Item
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+		ItemStack stack = playerIn.getHeldItem(hand);
+		
         if (facing != EnumFacing.UP)
         {
             return EnumActionResult.FAIL;
@@ -51,7 +53,7 @@ public class ItemScannerDoor extends Item
                 worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                 ((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
 				((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());           
-                --stack.stackSize;
+				stack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
             else
@@ -87,7 +89,7 @@ public class ItemScannerDoor extends Item
         IBlockState iblockstate = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(flag2)).withProperty(BlockDoor.OPEN, Boolean.valueOf(flag2));
         worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
         worldIn.setBlockState(blockpos2, iblockstate.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
-        worldIn.notifyNeighborsOfStateChange(pos, door);
-        worldIn.notifyNeighborsOfStateChange(blockpos2, door);
+        worldIn.notifyNeighborsOfStateChange(pos, door, false);
+        worldIn.notifyNeighborsOfStateChange(blockpos2, door, false);
     }
 }

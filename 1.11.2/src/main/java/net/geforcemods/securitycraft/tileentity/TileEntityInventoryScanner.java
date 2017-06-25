@@ -43,7 +43,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
             if (j >= 0 && j < this.inventoryContents.length)
             {
-                this.inventoryContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.inventoryContents[j] = new ItemStack(nbttagcompound1);
             }
         }
         
@@ -93,7 +93,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         {
             ItemStack itemstack;
 
-            if (this.inventoryContents[par1].stackSize <= par2)
+            if (this.inventoryContents[par1].getCount() <= par2)
             {
                 itemstack = this.inventoryContents[par1];
                 this.inventoryContents[par1] = null;
@@ -104,7 +104,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
             {
                 itemstack = this.inventoryContents[par1].splitStack(par2);
 
-                if (this.inventoryContents[par1].stackSize == 0)
+                if (this.inventoryContents[par1].getCount() == 0)
                 {
                     this.inventoryContents[par1] = null;
                 }
@@ -154,9 +154,9 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.inventoryContents[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        if (par2ItemStack != null && par2ItemStack.getCount() > this.getInventoryStackLimit())
         {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+            par2ItemStack.setCount(this.getInventoryStackLimit());
         }
 
         this.markDirty();
@@ -168,11 +168,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 				this.inventoryContents[i] = par1ItemStack;
 				break;
 			}else if(this.inventoryContents[i] != null && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
-				if(this.inventoryContents[i].stackSize + par1ItemStack.stackSize <= this.getInventoryStackLimit()){
-					this.inventoryContents[i].stackSize += par1ItemStack.stackSize;
+				if(this.inventoryContents[i].getCount() + par1ItemStack.getCount() <= this.getInventoryStackLimit()){
+					this.inventoryContents[i].grow(par1ItemStack.getCount());
 					break;
 				}else{
-					this.inventoryContents[i].stackSize = this.getInventoryStackLimit();
+					this.inventoryContents[i].setCount(this.getInventoryStackLimit());
 				}
 			}
 		}
@@ -202,7 +202,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
+	public boolean isUsableByPlayer(EntityPlayer var1) {
 		return true;
 	}
 

@@ -26,7 +26,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     @Override
 	public boolean attackEntity(Entity entity) {
     	if (entity instanceof EntityPlayer) {
-    		BlockPortableRadar.searchForPlayers(worldObj, pos, worldObj.getBlockState(pos));
+    		BlockPortableRadar.searchForPlayers(world, pos, world.getBlockState(pos));
     		return false;
     	} else {
     		return false;

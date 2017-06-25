@@ -69,7 +69,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         {
             ItemStack itemstack;
 
-            if (this.furnaceItemStacks[index].stackSize <= count)
+            if (this.furnaceItemStacks[index].getCount() <= count)
             {
                 itemstack = this.furnaceItemStacks[index];
                 this.furnaceItemStacks[index] = null;
@@ -79,7 +79,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
             {
                 itemstack = this.furnaceItemStacks[index].splitStack(count);
 
-                if (this.furnaceItemStacks[index].stackSize == 0)
+                if (this.furnaceItemStacks[index].getCount() == 0)
                 {
                     this.furnaceItemStacks[index] = null;
                 }
@@ -114,9 +114,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         boolean flag = stack != null && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
         this.furnaceItemStacks[index] = stack;
 
-        if (stack != null && stack.stackSize > this.getInventoryStackLimit())
+        if (stack != null && stack.getCount() > this.getInventoryStackLimit())
         {
-            stack.stackSize = this.getInventoryStackLimit();
+            stack.setCount(this.getInventoryStackLimit());
         }
 
         if (index == 0 && !flag)
@@ -158,7 +158,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
             if (b0 >= 0 && b0 < this.furnaceItemStacks.length)
             {
-                this.furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.furnaceItemStacks[b0] = new ItemStack(nbttagcompound1);
             }
         }
 
@@ -267,13 +267,13 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
             --this.furnaceBurnTime;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.isBurning() && (this.furnaceItemStacks[1] == null || this.furnaceItemStacks[0] == null))
             {
                 if (!this.isBurning() && this.cookTime > 0)
                 {
-                    this.cookTime = MathHelper.clamp_int(this.cookTime - 2, 0, this.totalCookTime);
+                    this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.totalCookTime);
                 }
             }
             else
@@ -288,9 +288,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
                         if (this.furnaceItemStacks[1] != null)
                         {
-                            --this.furnaceItemStacks[1].stackSize;
+                            this.furnaceItemStacks[1].shrink(1);
 
-                            if (this.furnaceItemStacks[1].stackSize == 0)
+                            if (this.furnaceItemStacks[1].getCount() == 0)
                             {
                                 this.furnaceItemStacks[1] = furnaceItemStacks[1].getItem().getContainerItem(furnaceItemStacks[1]);
                             }
@@ -345,7 +345,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
             if (itemstack == null) return false;
             if (this.furnaceItemStacks[2] == null) return true;
             if (!this.furnaceItemStacks[2].isItemEqual(itemstack)) return false;
-            int result = furnaceItemStacks[2].stackSize + itemstack.stackSize;
+            int result = furnaceItemStacks[2].getCount() + itemstack.getCount();
             return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
         }
     }
@@ -362,7 +362,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
             }
             else if (this.furnaceItemStacks[2].getItem() == itemstack.getItem())
             {
-                this.furnaceItemStacks[2].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
+                this.furnaceItemStacks[2].grow(itemstack.getCount()); // Forge BugFix: Results may have multiple items
             }
 
             if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
@@ -370,9 +370,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
                 this.furnaceItemStacks[1] = new ItemStack(Items.WATER_BUCKET);
             }
 
-            --this.furnaceItemStacks[0].stackSize;
+            this.furnaceItemStacks[0].shrink(1);
 
-            if (this.furnaceItemStacks[0].stackSize <= 0)
+            if (this.furnaceItemStacks[0].getCount() <= 0)
             {
                 this.furnaceItemStacks[0] = null;
             }
@@ -427,9 +427,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     }
 
     @Override
-	public boolean isUseableByPlayer(EntityPlayer player)
+	public boolean isUsableByPlayer(EntityPlayer player)
     {
-        return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.pos) != this ? false : player.getDistanceSq(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -438,6 +438,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     @Override
 	public void closeInventory(EntityPlayer player) {}
 
+    @Override
+    public boolean isEmpty()
+    {
+    	return false; //TODO
+    }
+    
     @Override
 	public boolean isItemValidForSlot(int index, ItemStack stack)
     {
@@ -541,18 +547,18 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace){
-    		BlockKeypadFurnace.activate(worldObj, pos, player);
+		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace){
+    		BlockKeypadFurnace.activate(world, pos, player);
     	}
 	}
 	
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() != null) {
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		else {
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}		
 	}
 	

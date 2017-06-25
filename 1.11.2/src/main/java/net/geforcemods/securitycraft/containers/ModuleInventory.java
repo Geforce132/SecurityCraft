@@ -56,7 +56,7 @@ public class ModuleInventory implements IInventory {
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory()) {
-				moduleInventory[slot] = ItemStack.loadItemStackFromNBT(item);
+				moduleInventory[slot] = new ItemStack(item);
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class ModuleInventory implements IInventory {
 		ItemStack stack = getStackInSlot(index);
 		
 		if(stack != null) {
-			if(stack.stackSize > size) {
+			if(stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
@@ -106,8 +106,8 @@ public class ModuleInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		moduleInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
+		if(itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
+			itemstack.setCount(getInventoryStackLimit());
 		}
 
 		markDirty();
@@ -136,7 +136,7 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
+			if(getStackInSlot(i) != null && getStackInSlot(i).getCount() == 0) {
 				moduleInventory[i] = null;
 			}
 		}
@@ -145,7 +145,7 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
@@ -175,4 +175,10 @@ public class ModuleInventory implements IInventory {
 
 	@Override
 	public void clear() {}
+	
+	@Override
+	public boolean isEmpty()
+	{
+		return false; //TODO: Adapt
+	}
 }

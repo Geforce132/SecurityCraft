@@ -51,63 +51,28 @@ public class ContainerBlockReinforcer extends Container
 		if(stack != null)
 		{
 			String name = stack.getItem().getUnlocalizedName();
-
+			ItemStack newStack = ItemStack.EMPTY;
+			
 			if(name.equals(Item.getItemFromBlock(Blocks.DIRT).getUnlocalizedName()) || name.equals(Item.getItemFromBlock(Blocks.GRASS).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
 			else if(name.equals(Item.getItemFromBlock(Blocks.STONE).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
 			else if(name.equals(Item.getItemFromBlock(Blocks.PLANKS).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
-
-				newStack.stackSize = stack.stackSize;
-				newStack.setItemDamage(stack.getItemDamage());
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
 			else if(name.equals(Item.getItemFromBlock(Blocks.GLASS).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
 			else if(name.equals(Item.getItemFromBlock(Blocks.COBBLESTONE).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
 			else if(name.equals(Item.getItemFromBlock(Blocks.IRON_BARS).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropItem(newStack, false);
-			}
+				newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
 			else if(name.equals(Item.getItemFromBlock(Blocks.SANDSTONE).getUnlocalizedName()))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
+			
+			if(!stack.isEmpty())
 			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
-
-				newStack.stackSize = stack.stackSize;
+				newStack.setCount(stack.getCount());
 				newStack.setItemDamage(stack.getItemDamage());
-				blockReinforcer.damageItem(stack.stackSize, player);
+				blockReinforcer.damageItem(stack.getCount(), player);
 				player.dropItem(newStack, false);
 			}
 		}
@@ -140,14 +105,14 @@ public class ContainerBlockReinforcer extends Container
 				}
 			}
 
-			if(stack1.stackSize == 0)
+			if(stack1.getCount() == 0)
 				slot.putStack((ItemStack) null);
 			else
 				slot.onSlotChanged();
 
-			if(stack1.stackSize == stack.stackSize)
+			if(stack1.getCount() == stack.getCount())
 				return null;
-			slot.onPickupFromSlot(player, stack1);
+			slot.onTake(player, stack1);
 		}
 
 		return stack;
@@ -168,26 +133,26 @@ public class ContainerBlockReinforcer extends Container
 
         if(stack.isStackable())
         {
-            while(stack.stackSize > 0 && (!useEndIndex && k < endIndex || useEndIndex && k >= startIndex))
+            while(stack.getCount() > 0 && (!useEndIndex && k < endIndex || useEndIndex && k >= startIndex))
             {
                 slot = inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
                 if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
                 {
-                    int l = itemstack1.stackSize + stack.stackSize;
+                    int l = itemstack1.getCount() + stack.getCount();
 
                     if(l <= stack.getMaxStackSize())
                     {
-                        stack.stackSize = 0;
-                        itemstack1.stackSize = l;
+                        stack.setCount(0);
+                        itemstack1.setCount(l);
                         slot.onSlotChanged();
                         flag1 = true;
                     }
-                    else if(itemstack1.stackSize < stack.getMaxStackSize())
+                    else if(itemstack1.getCount() < stack.getMaxStackSize())
                     {
-                        stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
-                        itemstack1.stackSize = stack.getMaxStackSize();
+                        stack.shrink(stack.getMaxStackSize() - itemstack1.getCount());
+                        itemstack1.setCount(stack.getMaxStackSize());
                         slot.onSlotChanged();
                         flag1 = true;
                     }
@@ -200,7 +165,7 @@ public class ContainerBlockReinforcer extends Container
             }
         }
 
-        if(stack.stackSize > 0)
+        if(stack.getCount() > 0)
         {
             if(useEndIndex)
                 k = endIndex - 1;
@@ -216,7 +181,7 @@ public class ContainerBlockReinforcer extends Container
                 {
                     slot.putStack(stack.copy());
                     slot.onSlotChanged();
-                    stack.stackSize = 0;
+                    stack.setCount(0);
                     flag1 = true;
                     break;
                 }
@@ -253,7 +218,7 @@ public class ContainerBlockReinforcer extends Container
 					name.equals(Item.getItemFromBlock(Blocks.IRON_BARS).getUnlocalizedName()) ||
 					name.equals(Item.getItemFromBlock(Blocks.SANDSTONE).getUnlocalizedName())) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
+						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

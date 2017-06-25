@@ -44,7 +44,7 @@ public class GuiMRATActivate extends GuiContainer{
     			}
     			
     			this.buttons[i - 1].displayString = ClientUtils.localize("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
-    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isDefusable() && !((IExplosive) BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2])).isActive(mc.theWorld, BlockUtils.toPos(coords[0], coords[1], coords[2]))) ? true : false;
+    			this.buttons[i - 1].enabled = (BlockUtils.getBlock(mc.world, coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) BlockUtils.getBlock(mc.world, coords[0], coords[1], coords[2])).isDefusable() && !((IExplosive) BlockUtils.getBlock(mc.world, coords[0], coords[1], coords[2])).isActive(mc.world, BlockUtils.toPos(coords[0], coords[1], coords[2]))) ? true : false;
     			this.buttons[i - 1].id = i - 1;
     		}
     		
@@ -82,7 +82,7 @@ public class GuiMRATActivate extends GuiContainer{
 	protected void actionPerformed(GuiButton guibutton){
     	int[] coords = this.item.getTagCompound().getIntArray("mine" + (guibutton.id + 1));
     	
-    	if(BlockUtils.getBlock(mc.theWorld, coords[0], coords[1], coords[2]) instanceof IExplosive){
+    	if(BlockUtils.getBlock(mc.world, coords[0], coords[1], coords[2]) instanceof IExplosive){
     		mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
     	}
     	

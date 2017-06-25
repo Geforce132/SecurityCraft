@@ -46,7 +46,7 @@ public class BriefcaseInventory implements IInventory {
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory()) {
-				briefcaseInventory[slot] = ItemStack.loadItemStackFromNBT(item);
+				briefcaseInventory[slot] = new ItemStack(item);
 			}
 		}
 	}
@@ -73,7 +73,7 @@ public class BriefcaseInventory implements IInventory {
 		ItemStack stack = getStackInSlot(index);
 		
 		if(stack != null) {
-			if(stack.stackSize > size) {
+			if(stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
@@ -96,8 +96,8 @@ public class BriefcaseInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		briefcaseInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
+		if(itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
+			itemstack.setCount(getInventoryStackLimit());
 		}
 
 		markDirty();
@@ -121,7 +121,7 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
+			if(getStackInSlot(i) != null && getStackInSlot(i).getCount() == 0) {
 				briefcaseInventory[i] = null;
 			}
 		}
@@ -130,7 +130,7 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
@@ -168,5 +168,11 @@ public class BriefcaseInventory implements IInventory {
 		for(int i = 0; i < SIZE; i++) {
 			briefcaseInventory[i] = null;
 		}
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return false; //TODO: Adapt
 	}
 }

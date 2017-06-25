@@ -23,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -39,7 +40,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos){
         return null;
     }
 	
@@ -77,10 +78,11 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 	
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
         IBlockState iblockstate = this.getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
 
-        if(worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing)){
+        if(world.isSideSolid(pos.offset(facing.getOpposite()), facing)){
             return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
         }else{
             Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
@@ -92,11 +94,11 @@ public class BlockSecurityCamera extends BlockContainer{
                 }
 
                 enumfacing1 = (EnumFacing)iterator.next();
-            }while (!worldIn.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
+            }while (!world.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
 
             return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
         }
-    }
+	}
     
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
     	if(!world.isRemote && player.getRidingEntity() == null) {
@@ -105,13 +107,13 @@ public class BlockSecurityCamera extends BlockContainer{
     	
     	if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.getRidingEntity());
-			world.spawnEntityInWorld(dummyEntity);
+			world.spawnEntity(dummyEntity);
 			player.startRiding(dummyEntity);
 			return;
 		}
 
     	EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
-    	world.spawnEntityInWorld(dummyEntity);
+    	world.spawnEntity(dummyEntity);
     	player.startRiding(dummyEntity);
 		
 		for(Object e : world.loadedEntityList)
@@ -156,7 +158,7 @@ public class BlockSecurityCamera extends BlockContainer{
     }
   
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!this.canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);

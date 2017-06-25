@@ -26,10 +26,12 @@ public class ItemTaser extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand){
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		
 		if(!worldIn.isRemote){
 			if(!itemStackIn.isItemDamaged()){
-				worldIn.spawnEntityInWorld(new EntityTaserBullet(worldIn, playerIn));
+				worldIn.spawnEntity(new EntityTaserBullet(worldIn, playerIn));
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F));
 				
 				if(!playerIn.capabilities.isCreativeMode){

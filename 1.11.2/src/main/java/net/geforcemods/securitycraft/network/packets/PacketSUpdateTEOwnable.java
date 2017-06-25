@@ -63,7 +63,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 				@Override
 				public void run()
 				{
-					((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.pos)).setOwner(message.uuid, message.name);
+					((TileEntityOwnable)Minecraft.getMinecraft().world.getTileEntity(message.pos)).setOwner(message.uuid, message.name);
 				}
 			});
 			return null;

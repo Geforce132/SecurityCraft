@@ -33,17 +33,17 @@ public class CommandModule extends CommandBase implements ICommand {
     }
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "module";
 	}
 	
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		return this.nicknames;
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender p_71518_1_) {
+	public String getUsage(ICommandSender p_71518_1_) {
 		return ClientUtils.localize("messages.command.module.usage");
 	}
 	

@@ -107,7 +107,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	}
     
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
     	if(worldIn.isRemote){
     		return true;
     	}
@@ -129,14 +129,14 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     
     public static void activate(World par1World, BlockPos pos){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad, false);
 		par1World.scheduleUpdate(pos, mod_SecurityCraft.keypad, 60);
 	}
     
     @Override
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad, false);
     }
     
     /**
@@ -208,7 +208,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     }
     
     @Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }

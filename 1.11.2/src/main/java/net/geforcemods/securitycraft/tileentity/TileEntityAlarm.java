@@ -15,7 +15,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	
 	@Override
 	public void update(){
-		if(this.worldObj.isRemote){
+		if(this.world.isRemote){
 			return;
 		}else{		
 			if(cooldown > 0){
@@ -27,11 +27,11 @@ public class TileEntityAlarm extends TileEntityOwnable {
 			}
 						
 			if(isPowered && cooldown == 0){
-				TileEntityAlarm TEA = (TileEntityAlarm) this.worldObj.getTileEntity(pos);
+				TileEntityAlarm TEA = (TileEntityAlarm) this.world.getTileEntity(pos);
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, 0.3F, 0.6F);
 				TEA.setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
-				this.worldObj.setBlockState(pos, this.worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, this.worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
-				this.worldObj.setTileEntity(pos, TEA);
+				this.world.setBlockState(pos, this.world.getBlockState(pos).withProperty(BlockAlarm.FACING, this.world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
+				this.world.setTileEntity(pos, TEA);
 			}
 		}
 	}

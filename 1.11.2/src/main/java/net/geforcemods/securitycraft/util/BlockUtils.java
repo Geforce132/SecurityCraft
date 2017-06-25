@@ -70,12 +70,12 @@ public class BlockUtils{
 		if(par7){
 			par1World.scheduleUpdate(pos, par5, par6);
 		}
-		par1World.notifyBlockOfStateChange(pos.east(), par1World.getBlockState(pos).getBlock());
-		par1World.notifyBlockOfStateChange(pos.west(), par1World.getBlockState(pos).getBlock());
-		par1World.notifyBlockOfStateChange(pos.south(), par1World.getBlockState(pos).getBlock());
-		par1World.notifyBlockOfStateChange(pos.north(), par1World.getBlockState(pos).getBlock());
-		par1World.notifyBlockOfStateChange(pos.up(), par1World.getBlockState(pos).getBlock());
-		par1World.notifyBlockOfStateChange(pos.down(), par1World.getBlockState(pos).getBlock());
+		par1World.neighborChanged(pos.east(), par1World.getBlockState(pos).getBlock(), pos);
+		par1World.neighborChanged(pos.west(), par1World.getBlockState(pos).getBlock(), pos);
+		par1World.neighborChanged(pos.south(), par1World.getBlockState(pos).getBlock(), pos);
+		par1World.neighborChanged(pos.north(), par1World.getBlockState(pos).getBlock(), pos);
+		par1World.neighborChanged(pos.up(), par1World.getBlockState(pos).getBlock(), pos);
+		par1World.neighborChanged(pos.down(), par1World.getBlockState(pos).getBlock(), pos);
 	}
 	
 	public static void destroyBlock(World par1World, BlockPos pos, boolean par5){
@@ -112,6 +112,10 @@ public class BlockUtils{
 
 	public static Block getBlock(World par1World, BlockPos pos){
 		return par1World.getBlockState(pos).getBlock();
+	}
+	
+	public static Block getBlock(IBlockAccess access, BlockPos pos){
+		return access.getBlockState(pos).getBlock();
 	}
 
 	public static Block getBlock(World par1World, int par2, int par3, int par4){
@@ -241,6 +245,10 @@ public class BlockUtils{
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, BlockPos pos, PropertyBool property){
 		return par1World.getBlockState(pos).getValue(property).booleanValue();
+	}
+	
+	public static boolean getBlockPropertyAsBoolean(IBlockAccess access, BlockPos pos, PropertyBool property){
+		return access.getBlockState(pos).getValue(property).booleanValue();
 	}
 
 	public static boolean getBlockPropertyAsBoolean(World par1World, int par2, int par3, int par4, PropertyBool property){

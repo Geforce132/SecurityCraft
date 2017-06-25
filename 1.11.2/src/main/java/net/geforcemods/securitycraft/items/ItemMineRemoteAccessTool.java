@@ -35,7 +35,9 @@ public class ItemMineRemoteAccessTool extends Item {
 	}
 	
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){  	    
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand){
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		
     	if(worldIn.isRemote){
     		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
     	}else{
@@ -45,7 +47,9 @@ public class ItemMineRemoteAccessTool extends Item {
     }
     
 	@Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		ItemStack stack = playerIn.getHeldItem(hand);
+		
     	if(!worldIn.isRemote){
   	  		if(BlockUtils.getBlock(worldIn, pos) instanceof IExplosive){
   	  			if(!isMineAdded(stack, worldIn, pos)){

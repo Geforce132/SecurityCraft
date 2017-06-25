@@ -6,7 +6,6 @@ import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -34,7 +33,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     }
     
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
         if(state.getValue(POWERED).booleanValue()){
         	BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
             worldIn.markBlockRangeForRenderUpdate(pos, pos);
@@ -50,8 +49,8 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
     
     private void notifyNeighbors(World worldIn, BlockPos pos, EnumFacing facing)
     {
-        worldIn.notifyNeighborsOfStateChange(pos, this);
-        worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
+        worldIn.notifyNeighborsOfStateChange(pos, this, false);
+        worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
     }
     
     @Override

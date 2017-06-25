@@ -136,7 +136,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
                     state = state.withProperty(LEVEL, Integer.valueOf(l));
                     worldIn.setBlockState(pos, state, 2);
                     worldIn.scheduleUpdate(pos, this, j);
-                    worldIn.notifyNeighborsOfStateChange(pos, this);
+                    worldIn.notifyNeighborsOfStateChange(pos, this, false);
                 }
             }
         }

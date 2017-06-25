@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
@@ -21,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -56,7 +56,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+	public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		if(!itemIn.equals(mod_SecurityCraft.reinforcedDoubleStoneSlabs))
 		{

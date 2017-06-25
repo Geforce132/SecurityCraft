@@ -57,8 +57,10 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 	}
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-        if(stack.stackSize == 0){
+	public EnumActionResult onItemUse( EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		ItemStack stack = playerIn.getHeldItem(hand);
+		
+		if(stack.getCount() == 0){
             return EnumActionResult.FAIL;
         }else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)){
             return EnumActionResult.FAIL;
@@ -90,7 +92,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 
                     if(worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                         worldIn.playSound(playerIn, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
-                        --stack.stackSize;
+                        stack.shrink(1);
                         
                         if(owner != null){
                         	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
@@ -101,7 +103,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                 }
             }
 
-            return this.tryPlace(stack, worldIn, playerIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+            return this.tryPlace(stack, worldIn, playerIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
         }
     }
 
@@ -143,7 +145,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 
                 if (worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
                     worldIn.playSound(player, pos, this.doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (this.doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, this.doubleSlab.getSoundType().getPitch() * 0.8F);
-                    --stack.stackSize;
+                    stack.shrink(1);
                     
                     if(owner != null){
                     	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());

@@ -85,7 +85,8 @@ public class BlockInventoryScanner extends BlockContainer {
     }
     
     @Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){    	
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    {
     	if(worldIn.isRemote){
     		return true;
     	}else{
@@ -98,7 +99,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		return true;
     	}
     }
-
+    
     /**
      * Called when the block is placed in the world.
      */
@@ -173,7 +174,7 @@ public class BlockInventoryScanner extends BlockContainer {
     	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().length; i++){
     		if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i] != null){
     			EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
-    			par1World.spawnEntityInWorld(item);
+    			par1World.spawnEntity(item);
     		}
     	}
     	
@@ -242,7 +243,7 @@ public class BlockInventoryScanner extends BlockContainer {
     }
     
     @Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }

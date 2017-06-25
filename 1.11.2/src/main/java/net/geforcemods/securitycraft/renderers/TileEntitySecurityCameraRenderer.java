@@ -28,7 +28,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
 		float rotation = 0F;
 		
-		if(par1TileEntity.hasWorldObj()){
+		if(par1TileEntity.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
 			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
 			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
@@ -46,7 +46,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		
 		GL11.glPushMatrix();
 		
-		if(par1TileEntity.hasWorldObj() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == mod_SecurityCraft.securityCamera){
+		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == mod_SecurityCraft.securityCamera){
 			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
 			
 			if(side == EnumFacing.EAST){

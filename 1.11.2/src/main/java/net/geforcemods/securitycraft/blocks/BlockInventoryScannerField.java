@@ -41,7 +41,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return null;
     }
@@ -112,9 +112,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){    
 	        	if(ModuleUtils.checkForModule(world, pos.west(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.size(); j++){
         				if(((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        					if(!((EntityPlayer) entity).inventory.mainInventory.get(j).isEmpty()){
         						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
         					}       					
         				}
@@ -123,9 +123,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
 	        	if(ModuleUtils.checkForModule(world, pos.east(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.size(); j++){
         				if(((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        					if(!((EntityPlayer) entity).inventory.mainInventory.get(j).isEmpty()){
         						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
         					}       					
         				}
@@ -134,9 +134,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
 	        	if(ModuleUtils.checkForModule(world, pos.north(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.size(); j++){
         				if(((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        					if(!((EntityPlayer) entity).inventory.mainInventory.get(j).isEmpty()){
         						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
         					}       					
         				}
@@ -145,9 +145,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
 	        	if(ModuleUtils.checkForModule(world, pos.south(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST)){ return; }
         		for(int i = 0; i < 10; i++){
-        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++){
+        			for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.size(); j++){
         				if(((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i) != null){       				
-        					if(((EntityPlayer) entity).inventory.mainInventory[j] != null){
+        					if(!((EntityPlayer) entity).inventory.mainInventory.get(j).isEmpty()){
         						checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
         					}       					
         				}
@@ -218,9 +218,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 //            item = (Item)Item.itemRegistry.getObject(par3);
 //        }
 		if(par2TileEntity.getType().matches("redstone")){
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
-					if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
+			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.size(); i++){
+				if(!par1EntityPlayer.inventory.mainInventory.get(i - 1).isEmpty()){
+					if(par1EntityPlayer.inventory.mainInventory.get(i - 1).getItem() == par3.getItem()){
 						if(!par2TileEntity.shouldProvidePower()){
 							par2TileEntity.setShouldProvidePower(true);
 						}
@@ -234,15 +234,15 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				}
 			}
 		}else if(par2TileEntity.getType().matches("check")){
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++){
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
-					if(((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && ItemStack.areItemStacksEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3) && ItemStack.areItemStackTagsEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3)){
-						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.size(); i++){
+				if(!par1EntityPlayer.inventory.mainInventory.get(i - 1).isEmpty()){
+					if(((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && ItemStack.areItemStacksEqual(par1EntityPlayer.inventory.mainInventory.get(i - 1), par3) && ItemStack.areItemStackTagsEqual(par1EntityPlayer.inventory.mainInventory.get(i - 1), par3)){
+						par1EntityPlayer.inventory.mainInventory.get(i - 1).setCount(0);
 						continue;
 					}
 					
-					if(!((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
-						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+					if(!((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && par1EntityPlayer.inventory.mainInventory.get(i - 1).getItem() == par3.getItem()){
+						par1EntityPlayer.inventory.mainInventory.get(i - 1).setCount(0);
 					}
 				}
 			}

@@ -27,12 +27,12 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			super.toggle();
 			
 			if(getValue()) {
-		    	BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, true);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		    	BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, true);
+				world.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad, false);
 			}
 			else {
-		    	BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, false);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		    	BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, false);
+				world.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad, false);
 			}		
 		}
 	};
@@ -40,14 +40,14 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
-		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
+		    world.markBlockRangeForRenderUpdate(pos, pos);
     	}
 	}
 	
     @Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {		
     	if(module == EnumCustomModules.DISGUISE) {
-		    worldObj.markBlockRangeForRenderUpdate(pos, pos);
+		    world.markBlockRangeForRenderUpdate(pos, pos);
 		}
 	}
     
@@ -87,18 +87,18 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad){
-			BlockKeypad.activate(worldObj, pos);
+		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad){
+			BlockKeypad.activate(world, pos);
     	}
 	}
 	
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null) {
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		else {
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.keypad.name"), ClientUtils.localize("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {
-			if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockKeypad.POWERED)) {
+			if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockKeypad.POWERED)) {
 				activate(player);
 				return true;
 			}

@@ -33,11 +33,11 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 		if(!world.isRemote)
 			player.openGui(mod_SecurityCraft.MODID, GuiHandler.BLOCK_REINFORCER, world, (int)player.posX, (int)player.posY, (int)player.posZ);
-		return super.onItemRightClick(stack, world, player, hand);
+		return super.onItemRightClick( world, player, hand);
 	}
 	
 	@Override

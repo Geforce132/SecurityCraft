@@ -51,8 +51,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	}	
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
-			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote) {
 			return true;
 		} else {
@@ -66,9 +65,10 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	}
 	
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
+	}
 	
 	@Override
 	public void activateMine(World world, BlockPos pos) {}

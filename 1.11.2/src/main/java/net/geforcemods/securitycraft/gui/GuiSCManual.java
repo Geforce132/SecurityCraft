@@ -111,7 +111,7 @@ public class GuiSCManual extends GuiScreen {
 
 	    	this.mc.getTextureManager().bindTexture(infoBookIcons);
 
-	    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+	    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
 	    	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 	    	
 	    	if(itemBlock != null){    		
@@ -178,7 +178,7 @@ public class GuiSCManual extends GuiScreen {
     		if(currentPage < -1)
     			currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
     		
-			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
 		}else if(par2 == Keyboard.KEY_RIGHT){
 			this.currentPage++;
@@ -186,7 +186,7 @@ public class GuiSCManual extends GuiScreen {
     		if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
     			currentPage = -1;
     		
-			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.updateRecipeAndIcons();
 		}
 	}
@@ -268,7 +268,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
-    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+    	TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
     	Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
     	if(te != null){

@@ -20,12 +20,12 @@ public class ItemSCManual extends Item {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		if(worldIn.isRemote){
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 		}
 		
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(hand));
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class BlockKeypadChest extends BlockChest {
      * Called upon block activation (right click on the block.)
      */
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
     	if(!worldIn.isRemote) {
             if(worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityKeypadChest) {
             	((TileEntityKeypadChest) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);

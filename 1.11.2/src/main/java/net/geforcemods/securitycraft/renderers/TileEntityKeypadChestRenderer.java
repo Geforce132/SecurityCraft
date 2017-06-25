@@ -41,7 +41,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
     {
         int j;
 
-        if (!p_180538_1_.hasWorldObj())
+        if (!p_180538_1_.hasWorld())
         {
             j = 0;
         }

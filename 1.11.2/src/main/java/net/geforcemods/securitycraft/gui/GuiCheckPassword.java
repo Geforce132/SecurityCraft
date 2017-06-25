@@ -102,12 +102,12 @@ public class GuiCheckPassword extends GuiContainer {
     	if(this.isValidChar(par1) && par1 == '\u001B'){
 			ClientUtils.closePlayerScreen();
     	}else if(this.isValidChar(par1) && par1 != ''){
-			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.currentString += par1;
 			this.setTextboxCensoredText(this.keycodeTextbox, currentString);
 			this.checkCode(this.currentString);			
 		}else if(this.isValidChar(par1) && par1 == ''){
-			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			this.currentString = Utils.removeLastChar(currentString);
 			this.setTextboxCensoredText(this.keycodeTextbox, currentString);
 			this.checkCode(this.currentString);

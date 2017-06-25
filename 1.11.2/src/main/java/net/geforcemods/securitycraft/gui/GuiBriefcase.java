@@ -114,12 +114,12 @@ public class GuiBriefcase extends GuiContainer {
 				if(keys[3] == 0) { keys[3] = 9; } else { keys[3]--; }
 				break;
 			case 8:
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, mod_SecurityCraft.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound();
+				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, mod_SecurityCraft.briefcase)) {
+					NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 	
 					if(nbt.getString("passcode").matches(code)) {
-						mod_SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ));
+						mod_SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
 					}
 				}
 				

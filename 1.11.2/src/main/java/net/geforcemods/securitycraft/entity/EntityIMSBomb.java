@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.math.RayTraceResult;
@@ -48,7 +49,7 @@ public class EntityIMSBomb extends EntityFireball {
 		if(ticksFlying < launchHeight && launching){
 			this.motionY = 0.35F;
 			this.ticksFlying++;
-			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
 		}else if(ticksFlying >= launchHeight && launching){
 			this.setTarget();
 		}
@@ -62,18 +63,18 @@ public class EntityIMSBomb extends EntityFireball {
             double d6 = target.getEntityBoundingBox().minY + target.height / 2.0F - (posY + 1.25D);
             double d7 = target.posZ - posZ;
 			
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7, 0);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, posX, posY, posZ, d5, d6, d7, 0);
             entitylargefireball.launching = false;
-            worldObj.spawnEntityInWorld(entitylargefireball);
+            world.spawnEntity(entitylargefireball);
             this.setDead();
 		}else if(targetMob != null && !targetMob.isDead){	
 			double d5 = targetMob.posX - posX;
             double d6 = targetMob.getEntityBoundingBox().minY + targetMob.height / 2.0F - (posY + 1.25D);
             double d7 = targetMob.posZ - posZ;
 			
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7, 0);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, targetMob, posX, posY, posZ, d5, d6, d7, 0);
             entitylargefireball.launching = false;
-            worldObj.spawnEntityInWorld(entitylargefireball);
+            world.spawnEntity(entitylargefireball);
             this.setDead();
 		}else{
 			this.setDead();
@@ -82,9 +83,9 @@ public class EntityIMSBomb extends EntityFireball {
 
 	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult){
-		if(!this.worldObj.isRemote){
-			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(worldObj, par1RayTraceResult.getBlockPos()) != mod_SecurityCraft.ims){
-				this.worldObj.createExplosion(this, par1RayTraceResult.getBlockPos().getX(), par1RayTraceResult.getBlockPos().getY() + 1D, par1RayTraceResult.getBlockPos().getZ(), 7F, true);
+		if(!this.world.isRemote){
+			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, par1RayTraceResult.getBlockPos()) != mod_SecurityCraft.ims){
+				this.world.createExplosion(this, par1RayTraceResult.getBlockPos().getX(), par1RayTraceResult.getBlockPos().getY() + 1D, par1RayTraceResult.getBlockPos().getZ(), 7F, true);
 				this.setDead();
 			}
 		}

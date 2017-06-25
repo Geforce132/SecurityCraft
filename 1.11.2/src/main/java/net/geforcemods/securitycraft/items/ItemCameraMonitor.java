@@ -31,7 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemCameraMonitor extends Item {
 	
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		ItemStack stack = playerIn.getHeldItem(hand);
+		
 		if(!worldIn.isRemote){
 			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.securityCamera){
 				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
@@ -81,10 +83,12 @@ public class ItemCameraMonitor extends Item {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		
 		if (worldIn.isRemote) {
 			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera) 
-			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);; 
+			    return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 			
 			if(!itemStackIn.hasTagCompound() || !hasCameraAdded(itemStackIn.getTagCompound())) {
 				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);

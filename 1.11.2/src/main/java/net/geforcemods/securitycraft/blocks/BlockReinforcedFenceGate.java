@@ -16,7 +16,6 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -36,7 +35,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
      * Called upon block activation (right click on the block.)
      */
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
         return false;
     }
     
@@ -74,20 +73,20 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
     
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if(!worldIn.isRemote) {
             boolean flag = isSCBlock(blockIn) && worldIn.isBlockPowered(pos);
 
             if (flag || blockIn.getDefaultState().canProvidePower()) {
-                if (flag && !((Boolean)state.getValue(OPEN)).booleanValue() && !((Boolean)state.getValue(POWERED)).booleanValue()) {
+                if (flag && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
                     worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
                     worldIn.playEvent((EntityPlayer)null, 1008, pos, 0);
                 }
-                else if (!flag && ((Boolean)state.getValue(OPEN)).booleanValue() && ((Boolean)state.getValue(POWERED)).booleanValue()) {
+                else if (!flag && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
                     worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
                     worldIn.playEvent((EntityPlayer)null, 1014, pos, 0);
                 }
-                else if (flag != ((Boolean)state.getValue(POWERED)).booleanValue()) {
+                else if (flag != state.getValue(POWERED).booleanValue()) {
                     worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
                 }
             }

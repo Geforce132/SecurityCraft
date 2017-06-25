@@ -77,7 +77,7 @@ public class EntitySecurityCamera extends Entity{
 		
 		this.rotationPitch = 30F;
 			
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
 		if(facing == EnumFacing.NORTH){
 			this.rotationYaw = 180F;
@@ -106,7 +106,7 @@ public class EntitySecurityCamera extends Entity{
 
 		this.rotationPitch = 30.0F;
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 		
 		if(facing == EnumFacing.NORTH){
 			this.rotationYaw = 180F;
@@ -136,7 +136,7 @@ public class EntitySecurityCamera extends Entity{
 
 	@Override
 	public void onUpdate(){
-		if(this.worldObj.isRemote && isBeingRidden()){
+		if(this.world.isRemote && isBeingRidden()){
 			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
 			
 			if(this.screenshotCooldown > 0){
@@ -169,7 +169,7 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && this.screenshotCooldown == 0){	
 				this.screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 					
 			if(getPassengers().size() != 0 && this.shouldProvideNightVision){
@@ -177,8 +177,8 @@ public class EntitySecurityCamera extends Entity{
 			}
 		}
 		
-		if(!this.worldObj.isRemote){
-			if(getPassengers().size() == 0 | BlockUtils.getBlock(worldObj, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
+		if(!this.world.isRemote){
+			if(getPassengers().size() == 0 | BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
 				this.setDead();
 				return;
 			}	
@@ -242,8 +242,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewLeft() {
-		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 	
 			if(facing == EnumFacing.EAST){
 				if((this.rotationYaw - CAMERA_SPEED) > -180F){
@@ -269,8 +269,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 	
 	public void moveViewRight(){
-		if(BlockUtils.hasBlockProperty(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(worldObj, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 	
 			if(facing == EnumFacing.EAST){
 				if((this.rotationYaw + CAMERA_SPEED) < 0F){
@@ -309,17 +309,17 @@ public class EntitySecurityCamera extends Entity{
 			}
 		}
 		
-		Minecraft.getMinecraft().theWorld.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
+		Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);	
 	}
 	
 	public void setRedstonePower() {
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
 
-		if(((CustomizableSCTE) worldObj.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
-			if(BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
-				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) - 6));
-			}else if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockSecurityCamera.POWERED)){
-				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(worldObj, pos) + 6));
+		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
+			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED)){
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(world, pos) - 6));
+			}else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED)){
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(world, pos) + 6));
 			}
 		}
 	}

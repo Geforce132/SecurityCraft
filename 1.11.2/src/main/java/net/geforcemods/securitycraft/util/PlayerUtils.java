@@ -24,7 +24,7 @@ public class PlayerUtils{
 	 */
 	public static EntityPlayer getPlayerFromName(String par1){
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List<?> players = Minecraft.getMinecraft().theWorld.playerEntities;
+			List<?> players = Minecraft.getMinecraft().world.playerEntities;
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -36,7 +36,7 @@ public class PlayerUtils{
 	    	
 	    	return null;
 		}else{
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -52,7 +52,7 @@ public class PlayerUtils{
 	
 	public static EntityPlayer getPlayerByUUID(String uuid){
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List<?> players = Minecraft.getMinecraft().theWorld.playerEntities;
+			List<?> players = Minecraft.getMinecraft().world.playerEntities;
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -64,7 +64,7 @@ public class PlayerUtils{
 	    	
 	    	return null;
 		}else{
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
 	    	Iterator<?> iterator = players.iterator();
 	    	
 	    	while(iterator.hasNext()){
@@ -85,8 +85,8 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerOnline(String par1) {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
-	    		EntityPlayer player = Minecraft.getMinecraft().theWorld.playerEntities.get(i);
+			for(int i = 0; i < Minecraft.getMinecraft().world.playerEntities.size(); i++){
+	    		EntityPlayer player = Minecraft.getMinecraft().world.playerEntities.get(i);
 	    		
 	    		if(player != null && player.getName().matches(par1)){
 	    			return true;
@@ -100,11 +100,11 @@ public class PlayerUtils{
     }
 	
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
-		player.addChatComponentMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+		player.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 	
 	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, TextFormatting color){
-		sender.addChatMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class PlayerUtils{
 	 * Args: sender, prefix, text, link, color.
 	 */
 	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, TextFormatting color){
-		sender.addChatMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**

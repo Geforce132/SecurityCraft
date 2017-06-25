@@ -36,17 +36,17 @@ public class CommandSC extends CommandBase implements ICommand{
     }
     
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "sc";
 	}
 	
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		return this.nicknames;
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
+	public String getUsage(ICommandSender icommandsender) {
 		return ClientUtils.localize("messages.command.sc.usage");
 	}
 
@@ -70,7 +70,7 @@ public class CommandSC extends CommandBase implements ICommand{
 			if(args[0].matches("connect")){
 				EntityPlayer p = PlayerUtils.getPlayerFromName(sender.getName());
 				
-				p.openGui(mod_SecurityCraft.instance, GuiHandler.IRC_INFORMATION, p.worldObj, p.chunkCoordX, p.chunkCoordY, p.chunkCoordZ);
+				p.openGui(mod_SecurityCraft.instance, GuiHandler.IRC_INFORMATION, p.world, p.chunkCoordX, p.chunkCoordY, p.chunkCoordZ);
 				
 				try{
 					mod_SecurityCraft.instance.getIrcBot(sender.getName()).connectToChannel();

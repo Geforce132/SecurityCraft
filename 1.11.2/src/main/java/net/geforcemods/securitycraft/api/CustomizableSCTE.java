@@ -35,7 +35,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void update() {
     	super.update();
     	
-    	if(hasWorldObj() && nbtTagStorage != null) {
+    	if(hasWorld() && nbtTagStorage != null) {
     		readLinkedBlocks(nbtTagStorage);
     		sync();
     		nbtTagStorage = null;
@@ -57,7 +57,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
             if (b0 >= 0 && b0 < this.itemStacks.length)
             {
-                this.itemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.itemStacks[b0] = new ItemStack(nbttagcompound1);
             }
         }
         
@@ -74,7 +74,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         
         if (linkable && par1NBTTagCompound.hasKey("linkedBlocks"))
         {
-        	if(!hasWorldObj()) {
+        	if(!hasWorld()) {
         		nbtTagStorage = par1NBTTagCompound.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
         		return;
         	}
@@ -110,7 +110,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         
         par1NBTTagCompound.setBoolean("linkable", linkable);
         
-        if(linkable && hasWorldObj() && linkedBlocks.size() > 0) {
+        if(linkable && hasWorld() && linkedBlocks.size() > 0) {
 	        NBTTagList tagList = new NBTTagList();
 	        
 	        Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
@@ -120,7 +120,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	    		NBTTagCompound tag = new NBTTagCompound();
 	    		
 	        	if(block != null) {       		
-	        		if(!block.validate(worldObj)) {
+	        		if(!block.validate(world)) {
 	        			linkedBlocks.remove(block);
 	        			continue;
 	        		}
@@ -150,13 +150,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     		int z = list.getCompoundTagAt(i).getInteger("blockZ");
     		
     		LinkedBlock block = new LinkedBlock(name, x, y, z);
-    		if(hasWorldObj() && !block.validate(worldObj)) {
+    		if(hasWorld() && !block.validate(world)) {
     			list.removeTag(i);
     			continue;
     		}
     		
     		if(!linkedBlocks.contains(block)){
-    			link(this, block.asTileEntity(worldObj));
+    			link(this, block.asTileEntity(world));
     		}
     	}
     }
@@ -178,7 +178,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         {
             ItemStack itemstack;
             
-            if (this.itemStacks[par1].stackSize <= par2)
+            if (this.itemStacks[par1].getCount() <= par2)
             {
                 itemstack = this.itemStacks[par1];
                 this.itemStacks[par1] = null;
@@ -190,7 +190,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
             {
                 itemstack = this.itemStacks[par1].splitStack(par2);
 
-                if (this.itemStacks[par1].stackSize == 0)
+                if (this.itemStacks[par1].getCount() == 0)
                 {
                     this.itemStacks[par1] = null;
                 }
@@ -217,7 +217,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         {
             ItemStack itemstack;
             
-            if (this.itemStacks[par1].stackSize <= par2)
+            if (this.itemStacks[par1].getCount() <= par2)
             {
                 itemstack = this.itemStacks[par1];
                 this.itemStacks[par1] = null;
@@ -229,7 +229,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
             {
                 itemstack = this.itemStacks[par1].splitStack(par2);
 
-                if (this.itemStacks[par1].stackSize == 0)
+                if (this.itemStacks[par1].getCount() == 0)
                 {
                     this.itemStacks[par1] = null;
                 }
@@ -269,9 +269,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     {
         this.itemStacks[par1] = par2;
 
-        if (par2 != null && par2.stackSize > this.getInventoryStackLimit())
+        if (par2 != null && par2.getCount() > this.getInventoryStackLimit())
         {
-        	par2.stackSize = this.getInventoryStackLimit();
+        	par2 = new ItemStack(par2.getItem(), getInventoryStackLimit(), par2.getMetadata());
         }
         
         if(par2 != null){
@@ -285,9 +285,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     public void safeSetInventorySlotContents(int par1, ItemStack par2) {
     	this.itemStacks[par1] = par2;
 
-        if (par2 != null && par2.stackSize > this.getInventoryStackLimit())
+        if (par2 != null && par2.getCount() > this.getInventoryStackLimit())
         {
-        	par2.stackSize = this.getInventoryStackLimit();
+        	par2 = new ItemStack(par2.getItem(), getInventoryStackLimit(), par2.getMetadata());
         }
         
         if(par2 != null && par2.getItem() != null && par2.getItem() instanceof ItemModule){
@@ -317,10 +317,11 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+	public boolean isUsableByPlayer(EntityPlayer player)
+	{
 		return true;
 	}
-
+	
 	@Override
 	public void openInventory(EntityPlayer player) {}
 
@@ -330,6 +331,18 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
 		return par2ItemStack.getItem() instanceof ItemModule ? true : false;
+	}
+	
+	@Override
+	public boolean isEmpty()
+	{
+		for(ItemStack stack : itemStacks)
+		{
+			if(!stack.isEmpty())
+				return false;
+		}
+		
+		return true;
 	}
 	
 	@Override
@@ -358,7 +371,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void onTileEntityDestroyed() {            
         if(linkable) {
 	        for(LinkedBlock block : linkedBlocks) {        	
-	        	CustomizableSCTE.unlink(block.asTileEntity(worldObj), this);
+	        	CustomizableSCTE.unlink(block.asTileEntity(world), this);
 	        }  
         }
     }
@@ -627,12 +640,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
         if(!linkable) return;
         		
 		for(LinkedBlock block : linkedBlocks) {
-			if(excludedTEs.contains(block.asTileEntity(worldObj))) {
+			if(excludedTEs.contains(block.asTileEntity(world))) {
 				continue;
 			}			
 			else {
-				block.asTileEntity(worldObj).onLinkedBlockAction(action, parameters, excludedTEs);
-				block.asTileEntity(worldObj).sync();
+				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
+				block.asTileEntity(world).sync();
 			}
 		}
 	}

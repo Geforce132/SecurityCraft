@@ -44,8 +44,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCUpdateNBTTag packet, MessageContext ctx) {
-		if(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem() != null && Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
-			Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().setTagCompound(packet.stack);;	
+		if(Minecraft.getMinecraft().player.inventory.getCurrentItem() != null && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+			Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(packet.stack);;	
 		}
 		
 		return null;

@@ -49,7 +49,7 @@ public class EntityTaserBullet extends EntityThrowable {
 	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult)
 	{
-		if(!this.worldObj.isRemote)
+		if(!this.world.isRemote)
 		{
 			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
 			{
@@ -61,7 +61,7 @@ public class EntityTaserBullet extends EntityThrowable {
 
 				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
 				{
-					((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.generic, 1F);
+					((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F);
 					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 500, 2));
 					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), 500, 2));
 					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 500, 2));

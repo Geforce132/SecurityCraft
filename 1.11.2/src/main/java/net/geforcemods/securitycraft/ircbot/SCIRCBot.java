@@ -115,7 +115,7 @@ public class SCIRCBot extends PircBot{
 	}
 
 	public void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
-		par2EntityPlayer.addChatComponentMessage(ForgeHooks.newChatWithLinks(par1String));
+		par2EntityPlayer.sendMessage(ForgeHooks.newChatWithLinks(par1String));
 	}
 	
 	private EntityPlayer getPlayer() {

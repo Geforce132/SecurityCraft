@@ -177,7 +177,7 @@ public class ModuleUtils{
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.module.whitelisted"), TextFormatting.GREEN);
-				par1World.notifyNeighborsOfStateChange(pos, par1World.getBlockState(pos).getBlock());
+				par1World.notifyNeighborsOfStateChange(pos, par1World.getBlockState(pos).getBlock(), false);
 				return true;
 			}
 			

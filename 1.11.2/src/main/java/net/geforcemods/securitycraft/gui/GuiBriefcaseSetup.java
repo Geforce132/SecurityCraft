@@ -117,14 +117,14 @@ public class GuiBriefcaseSetup extends GuiContainer {
     			return;
     		}	
     		
-    		if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, mod_SecurityCraft.briefcase)) {
-    			if(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound() == null) {
-    				Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+    		if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, mod_SecurityCraft.briefcase)) {
+    			if(Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound() == null) {
+    				Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
     			}
     			
-    			Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
-	    		ClientUtils.syncItemNBT(Minecraft.getMinecraft().thePlayer.inventory.getCurrentItem());
-	    		Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+    			Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
+	    		ClientUtils.syncItemNBT(Minecraft.getMinecraft().player.inventory.getCurrentItem());
+	    		Minecraft.getMinecraft().player.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
     		}
     	}
     }	

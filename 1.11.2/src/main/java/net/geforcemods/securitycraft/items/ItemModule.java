@@ -50,7 +50,9 @@ public class ItemModule extends Item{
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		
     	if(!worldIn.isRemote) {
 	    	if(!itemStackIn.hasTagCompound()) {
 	    		itemStackIn.setTagCompound(new NBTTagCompound());
@@ -150,8 +152,10 @@ public class ItemModule extends Item{
 			int slot = item.getInteger("Slot");
 
 			if(slot < numberOfItemAddons) {
-				if(ItemStack.loadItemStackFromNBT(item).getUnlocalizedName().startsWith("item.")) {
-				    list.add(ItemStack.loadItemStackFromNBT(item).getItem());
+				ItemStack stack;
+				
+				if((stack = new ItemStack(item)).getUnlocalizedName().startsWith("item.")) {
+				    list.add(stack.getItem());
 				}
 			}
 		}
@@ -171,8 +175,10 @@ public class ItemModule extends Item{
 			int slot = item.getInteger("Slot");
 
 			if(slot < numberOfBlockAddons) {
-				if(ItemStack.loadItemStackFromNBT(item).getUnlocalizedName().startsWith("tile.")) {
-				    list.add(Block.getBlockFromItem(ItemStack.loadItemStackFromNBT(item).getItem()));
+				ItemStack stack;
+				
+				if((stack = new ItemStack(item)).getUnlocalizedName().startsWith("tile.")) {
+				    list.add(Block.getBlockFromItem(stack.getItem()));
 				}
 			}
 		}
@@ -192,7 +198,7 @@ public class ItemModule extends Item{
 			int slot = item.getInteger("Slot");
 
 			if(slot < numberOfBlockAddons) {
-		        list.add(ItemStack.loadItemStackFromNBT(item));				
+		        list.add(new ItemStack(item));				
 			}
 		}
 		

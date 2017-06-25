@@ -96,7 +96,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 				par5ItemStack.getTagCompound().setInteger("Uses", par5ItemStack.getTagCompound().getInteger("Uses") - 1);
 				
 				if(par5ItemStack.getTagCompound().getInteger("Uses") <= 0){
-					par5ItemStack.stackSize--;
+					par5ItemStack.shrink(1);
 				}
 			}
 			
@@ -112,7 +112,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 	
 	@Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
     	if(worldIn.isRemote){
     		return true;
     	}
@@ -132,7 +132,7 @@ public class BlockKeycardReader extends BlockOwnable  {
     
     public static void activate(World par1World, BlockPos pos){
     	BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
+		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader, false);
 		par1World.scheduleUpdate(pos, mod_SecurityCraft.keycardReader, 60);
 	}
     
@@ -140,7 +140,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
     	if(!par1World.isRemote){
     		BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-			par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
+			par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader, false);
     	}
     }
     
@@ -191,7 +191,7 @@ public class BlockKeycardReader extends BlockOwnable  {
     }
     
     @Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
     }

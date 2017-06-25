@@ -36,8 +36,9 @@ public class ItemModifiedBucket extends ItemBucket {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
         boolean flag = this.containedBlock == Blocks.AIR;
         RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, flag);
         ActionResult<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, raytraceresult);
@@ -118,7 +119,10 @@ public class ItemModifiedBucket extends ItemBucket {
         {
             return emptyBuckets;
         }
-        else if (--emptyBuckets.stackSize <= 0)
+        
+        emptyBuckets.shrink(1);
+        
+        if (emptyBuckets.getCount() <= 0)
         {
             return new ItemStack(fullBucket);
         }

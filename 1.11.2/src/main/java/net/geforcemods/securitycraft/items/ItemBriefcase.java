@@ -24,8 +24,10 @@ public class ItemBriefcase extends Item {
 	}
 	
 	@Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    	if(worldIn.isRemote) {
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    	ItemStack stack = playerIn.getHeldItem(hand);
+		
+		if(worldIn.isRemote) {
 	    	if(!stack.hasTagCompound()) {
 	    		stack.setTagCompound(new NBTTagCompound());
 	    		ClientUtils.syncItemNBT(stack);
@@ -43,7 +45,9 @@ public class ItemBriefcase extends Item {
     }
     
 	@Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {  	
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+		
     	if(worldIn.isRemote) {
 	    	if(!itemStackIn.hasTagCompound()) {
 	    		itemStackIn.setTagCompound(new NBTTagCompound());

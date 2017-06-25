@@ -21,11 +21,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -56,7 +58,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
     }
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos){
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos){
 		if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(worldIn, pos, DEACTIVATED)){
 			return null;
 		}else{
@@ -90,17 +92,17 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 				
 				if(isPlayer)
-					world.getMinecraftServer().addChatMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					world.getMinecraftServer().sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}
 	
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
         return this.getDefaultState().withProperty(DEACTIVATED, false);
-    }
-
+	}
+	
     @Override
 	public IBlockState getStateFromMeta(int meta)
     {

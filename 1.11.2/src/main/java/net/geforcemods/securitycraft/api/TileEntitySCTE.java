@@ -59,7 +59,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
 	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1));
-	        List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, axisalignedbb);
+	        List<?> list = this.world.getEntitiesWithinAABB(Entity.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        Entity entity;
 	
@@ -85,7 +85,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
 	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, (i), (j), (k)).expand(5, 5, 5));
-	        List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+	        List<?> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;
 	
@@ -120,10 +120,10 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		        int j = pos.getY();
 		        int k = pos.getZ();
 		        AxisAlignedBB axisalignedbb = new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
-		        List<?> list = this.worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
+		        List<?> list = this.world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 		        Iterator<?> iterator = list.iterator();
 		        
-		        if(!worldObj.isRemote){
+		        if(!world.isRemote){
 			        boolean attacked = false;
 		
 			        while (iterator.hasNext()) {
@@ -151,9 +151,9 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 	
 	public void entityIntersecting(Entity entity) {
-		if(!(worldObj.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
+		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
 		
-		((IIntersectable) this.worldObj.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
+		((IIntersectable) this.world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
 	}
 	
 	/**
@@ -290,9 +290,9 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
      * respectively.
      */
     public void sync() {
-    	if(worldObj == null) return;
+    	if(world == null) return;
     	
-    	if(worldObj.isRemote) {
+    	if(world.isRemote) {
     		ClientUtils.syncTileEntity(this);
     	}
     	else {
