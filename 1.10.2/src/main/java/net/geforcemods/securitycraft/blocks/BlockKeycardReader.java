@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -18,7 +19,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -103,9 +103,9 @@ public class BlockKeycardReader extends BlockOwnable  {
 			BlockKeycardReader.activate(par1World, pos);
 		}else{
 			if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0){
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, I18n.format("tile.keycardReader.name"), I18n.format("messages.keycardReader.required").replace("#r", ((IPasswordProtected) par1World.getTileEntity(pos)).getPassword()).replace("#c", "" + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.keycardReader.required").replace("#r", ((IPasswordProtected) par1World.getTileEntity(pos)).getPassword()).replace("#c", "" + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)), TextFormatting.RED);
 			}else{
-				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, I18n.format("tile.keycardReader.name"), I18n.format("messages.keycardReader.notSet"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.keycardReader.notSet"), TextFormatting.RED);
 			}
 		}
 		

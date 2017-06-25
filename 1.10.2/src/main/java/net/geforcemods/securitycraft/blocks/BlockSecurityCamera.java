@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -16,7 +17,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -100,7 +100,7 @@ public class BlockSecurityCamera extends BlockContainer{
     
     public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
     	if(!world.isRemote && player.getRidingEntity() == null) {
-    		PlayerUtils.sendMessageToPlayer(player, I18n.format("tile.securityCamera.name"), I18n.format("messages.securityCamera.mounted"), TextFormatting.GREEN);
+    		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securityCamera.name"), ClientUtils.localize("messages.securityCamera.mounted"), TextFormatting.GREEN);
     	}
     	
     	if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){

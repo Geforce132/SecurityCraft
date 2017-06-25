@@ -21,11 +21,11 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,10 +78,10 @@ public class ForgeEventHandler {
 		
 		ITextComponent TextComponentString;
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.format("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.format("messages.tip") + " " + I18n.format(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		}
 		else {
-			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + I18n.format("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + I18n.format("messages.tip") + " " + I18n.format(tipKey));
+			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey));
 		}
     	
 		if(mod_SecurityCraft.configHandler.sayThanksMessage){
@@ -148,7 +148,7 @@ public class ForgeEventHandler {
 					event.setCanceled(true);
 					
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.format("item.universalBlockModifier.name"), I18n.format("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.universalBlockModifier.name"), ClientUtils.localize("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 					
@@ -161,13 +161,13 @@ public class ForgeEventHandler {
 					
 					for(String character : new String[]{"(", ")"}) {
 						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.format("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 					}		
 					
 					if(((INameable) tileEntity).getCustomName().matches(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", I18n.format("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 						return;
 					}
 	
@@ -181,7 +181,7 @@ public class ForgeEventHandler {
 					event.setCanceled(true);
 	
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), I18n.format("item.universalBlockRemover.name"), I18n.format("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.universalBlockRemover.name"), ClientUtils.localize("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 	

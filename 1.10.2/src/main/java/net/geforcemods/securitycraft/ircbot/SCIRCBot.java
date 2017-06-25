@@ -9,9 +9,9 @@ import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
@@ -53,7 +53,7 @@ public class SCIRCBot extends PircBot{
 		}
 		
 		if(messageFrequency.get(message) > 2) {
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.format("messages.irc.spam"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", ClientUtils.localize("messages.irc.spam"), TextFormatting.RED);
 			return;
 		}
 		
@@ -83,7 +83,7 @@ public class SCIRCBot extends PircBot{
 	protected void onServerResponse(int code, String response)
 	{
 		if(code == 474 && response.contains("Cannot join channel (+b) - you are banned"))
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.format("messages.irc.banned"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", ClientUtils.localize("messages.irc.banned"), TextFormatting.RED);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class SCIRCBot extends PircBot{
 				mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
 			}
 
-			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", I18n.format("messages.irc.disconnected").replace("#", reason), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", ClientUtils.localize("messages.irc.disconnected").replace("#", reason), TextFormatting.RED);
 		}
 	}
 
@@ -127,9 +127,9 @@ public class SCIRCBot extends PircBot{
 		message = enable;
 		
 		if(enable)
-			PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.contacted"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.contacted"), TextFormatting.GREEN);
 		else
-			PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.resumed"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.resumed"), TextFormatting.GREEN);
 	}
 	
 	/**

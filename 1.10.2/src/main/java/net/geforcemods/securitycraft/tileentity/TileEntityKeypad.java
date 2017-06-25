@@ -9,9 +9,9 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -105,7 +105,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled) {
-			PlayerUtils.sendMessageToPlayer(player, I18n.format("tile.keypad.name"), I18n.format("messages.codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.keypad.name"), ClientUtils.localize("messages.codebreakerDisabled"), TextFormatting.RED);
 		}
 		else {
 			if(!BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockKeypad.POWERED)) {

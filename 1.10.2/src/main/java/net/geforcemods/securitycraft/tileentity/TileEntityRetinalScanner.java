@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +29,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 				return;
 			
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity)) {
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.format("tile.retinalScanner.name"), I18n.format("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 			
@@ -37,7 +37,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
     		worldObj.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
     		
             if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, I18n.format("tile.retinalScanner.name"), I18n.format("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
             }             
     	}
 	}

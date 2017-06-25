@@ -6,10 +6,10 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -32,8 +32,8 @@ public class GuiKeycardSetup extends GuiContainer{
     	super.initGui();
 
 		this.buttonList.add(this.lvlOfSecurityButton = new GuiButton(0, this.width / 2 - (48 * 2 - 23), this.height / 2 + 20, 150, 20, ""));
-		this.buttonList.add(this.requiresExactCardButton = new GuiButton(1, this.width / 2 - (48 * 2 - 11), this.height / 2 - 28, 125, 20, this.requiresExactCard ? I18n.format("gui.keycardSetup.equal") : I18n.format("gui.keycardSetup.equalOrHigher")));
-		this.buttonList.add(new GuiButton(2, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, I18n.format("gui.keycardSetup.save")));
+		this.buttonList.add(this.requiresExactCardButton = new GuiButton(1, this.width / 2 - (48 * 2 - 11), this.height / 2 - 28, 125, 20, this.requiresExactCard ? ClientUtils.localize("gui.keycardSetup.equal") : ClientUtils.localize("gui.keycardSetup.equalOrHigher")));
+		this.buttonList.add(new GuiButton(2, this.width / 2 - 48, this.height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.keycardSetup.save")));
 		
 		this.updateButtonText();
     }
@@ -44,13 +44,13 @@ public class GuiKeycardSetup extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
+    	this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
    }
 
 	@Override
@@ -65,10 +65,10 @@ public class GuiKeycardSetup extends GuiContainer{
 	 private void updateButtonText(){
 		 this.lvlOfSecurity++;
 		 if(this.lvlOfSecurity <= 5){
-			 this.lvlOfSecurityButton.displayString = I18n.format("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
+			 this.lvlOfSecurityButton.displayString = ClientUtils.localize("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
 		 }else{
 			 this.lvlOfSecurity = 1;
-			 this.lvlOfSecurityButton.displayString = I18n.format("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
+			 this.lvlOfSecurityButton.displayString = ClientUtils.localize("gui.keycardSetup.lvlNeeded") + " " + this.lvlOfSecurity;
 
 		 }
 	 }
@@ -82,7 +82,7 @@ public class GuiKeycardSetup extends GuiContainer{
 			
 			case 1:
 				this.requiresExactCard = !this.requiresExactCard;
-				this.requiresExactCardButton.displayString = this.requiresExactCard ? I18n.format("gui.keycardSetup.equal") : I18n.format("gui.keycardSetup.equalOrHigher");
+				this.requiresExactCardButton.displayString = this.requiresExactCard ? ClientUtils.localize("gui.keycardSetup.equal") : ClientUtils.localize("gui.keycardSetup.equalOrHigher");
 				break;
 				
 			case 2:

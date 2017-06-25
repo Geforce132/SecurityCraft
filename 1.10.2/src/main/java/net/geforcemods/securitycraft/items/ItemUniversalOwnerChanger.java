@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,19 +42,19 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			if(!stack.hasDisplayName())
 			{
-				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalOwnerChanger.name"), I18n.format("messages.universalOwnerChanger.noName"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.noName"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalOwnerChanger.name"), I18n.format("messages.universalOwnerChanger.cantChange"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.cantChange"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
 			if(!((IOwnable)te).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalOwnerChanger.name"), I18n.format("messages.universalOwnerChanger.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
@@ -70,7 +70,7 @@ public class ItemUniversalOwnerChanger extends Item
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
-			PlayerUtils.sendMessageToPlayer(player, I18n.format("item.universalOwnerChanger.name"), I18n.format("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return EnumActionResult.SUCCESS;
 		}
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -47,7 +47,7 @@ public class CommandSC extends CommandBase implements ICommand{
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return I18n.format("messages.command.sc.usage");
+		return ClientUtils.localize("messages.command.sc.usage");
 	}
 
 	@Override
@@ -58,11 +58,11 @@ public class CommandSC extends CommandBase implements ICommand{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 0){
-			throw new WrongUsageException(I18n.format("messages.command.sc.usage"));
+			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
 		}
 		
 		if((args[0].matches("connect") || args[0].matches("disconnect") || args[0].matches("contact") || args[0].matches("bug")) && !mod_SecurityCraft.configHandler.isIrcBotEnabled){
-			PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.botDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.botDisabled"), TextFormatting.RED);
 			return;
 		}
 
@@ -76,29 +76,29 @@ public class CommandSC extends CommandBase implements ICommand{
 					mod_SecurityCraft.instance.getIrcBot(sender.getName()).connectToChannel();
 				}catch(Exception e){
 					e.printStackTrace();
-					PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.error"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.error"), TextFormatting.RED);
 					return;
 				}
 				
-				PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.connected"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.connected"), TextFormatting.GREEN);
 			}else if(args[0].matches("disconnect")){
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(sender.getName()).disconnect();
 				}
 					
-				PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.disconnected"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.disconnected"), TextFormatting.RED);
 			}else if(args[0].matches("help")){
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
 			}
 			else if(args[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", I18n.format("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else if(args[0].equals("resume"))
 				mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(false, sender);
 			else if(args[0].matches("contact")){
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(true, sender);
 				}else{
-					PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.notConnected"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.notConnected"), TextFormatting.RED);
 				}
 			}
 		}else if(args.length >= 2){
@@ -106,15 +106,15 @@ public class CommandSC extends CommandBase implements ICommand{
 				if(mod_SecurityCraft.instance.getIrcBot(sender.getName()) != null){
 					mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(true, sender);
 				}else{
-					PlayerUtils.sendMessageToPlayer(sender, "IRC", I18n.format("messages.irc.notConnected"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(sender, "IRC", ClientUtils.localize("messages.irc.notConnected"), TextFormatting.RED);
 				}
 			}
 			else if(args[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", I18n.format("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else if(args[0].equals("resume"))
 				mod_SecurityCraft.instance.getIrcBot(sender.getName()).setMessageMode(false, sender);
 		}else{
-			throw new WrongUsageException(I18n.format("messages.command.sc.usage"));
+			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
 		}
 	}
 

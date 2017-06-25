@@ -133,4 +133,14 @@ public class ClientUtils{
         catch (Throwable throwable) {}
 	}
 	
+	/**
+	 * Localizes a String with the given format
+	 * @param key The string to localize (aka the identifier in the .lang file)
+	 * @param params The parameters to insert into the String ala String.format
+	 * @return The localized String
+	 */
+	public static String localize(String key, Object... params)
+	{
+		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? net.minecraft.client.resources.I18n.format(key, params) : String.format(net.minecraft.util.text.translation.I18n.translateToLocal(key), params);
+	}
 }

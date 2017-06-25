@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.main;
 
-import net.minecraft.client.resources.I18n;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,7 +21,7 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 	
 	@Override
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: " + I18n.format("creativeTabExplosives");
+		return "SecurityCraft: " + ClientUtils.localize("creativeTabExplosives");
 		
 	}
 

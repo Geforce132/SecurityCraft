@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -44,7 +44,7 @@ public class CommandModule extends CommandBase implements ICommand {
 
 	@Override
 	public String getCommandUsage(ICommandSender p_71518_1_) {
-		return I18n.format("messages.command.module.usage");
+		return ClientUtils.localize("messages.command.module.usage");
 	}
 	
 	@Override
@@ -60,9 +60,9 @@ public class CommandModule extends CommandBase implements ICommand {
 
 				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
 					mod_SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.saved"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.notHoldingForData"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.notHoldingForData"), TextFormatting.RED);
 				}
 				
 				return;
@@ -70,14 +70,14 @@ public class CommandModule extends CommandBase implements ICommand {
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(mod_SecurityCraft.instance.getSavedModule() == null){
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.nothingSaved"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.nothingSaved"), TextFormatting.RED);
 					return;
 				}
 				
 				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
 					player.inventory.getCurrentItem().setTagCompound(mod_SecurityCraft.instance.getSavedModule());
 					mod_SecurityCraft.instance.setSavedModule(null);
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.saved"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
 				}
 				
 				return;
@@ -93,16 +93,16 @@ public class CommandModule extends CommandBase implements ICommand {
 					
 					for(int i = 1; i <= 10; i++){
 						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(args[1])){
-							PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.alreadyContained").replace("#", args[1]), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.alreadyContained").replace("#", args[1]), TextFormatting.RED);
 							return;
 						}
 					}
                     
 					player.inventory.getCurrentItem().getTagCompound().setString("Player" + getNextSlot(player.inventory.getCurrentItem().getTagCompound()), args[1]);
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.added").replace("#", args[1]), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.added").replace("#", args[1]), TextFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.notHoldingForModify"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.notHoldingForModify"), TextFormatting.RED);
 					return;
 				}
 			}else if(args[0].matches("remove")){
@@ -119,16 +119,16 @@ public class CommandModule extends CommandBase implements ICommand {
 						}
 					}
 					
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.removed").replace("#", args[1]), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.removed").replace("#", args[1]), TextFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, I18n.format("messages.module.manager"), I18n.format("messages.module.notHoldingForModify"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.notHoldingForModify"), TextFormatting.RED);
 					return;
 				}
 			}
 		}
 		
-		throw new WrongUsageException(I18n.format("messages.command.module.usage"));
+		throw new WrongUsageException(ClientUtils.localize("messages.command.module.usage"));
 	}
 
 	private int getNextSlot(NBTTagCompound stackTagCompound) {

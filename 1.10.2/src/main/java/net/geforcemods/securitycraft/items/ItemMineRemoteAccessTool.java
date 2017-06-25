@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -52,12 +52,12 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		int availSlot = this.getNextAvaliableSlot(stack);
 		  	  		
 		  	  		if(availSlot == 0){
-		  	  			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.remoteAccessMine.name"), I18n.format("messages.mrat.noSlots"), TextFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.remoteAccessMine.name"), ClientUtils.localize("messages.mrat.noSlots"), TextFormatting.RED);
 		  	  			return EnumActionResult.FAIL;
 		  	  		}
 		  	  		
 		  	  		if(worldIn.getTileEntity(pos) instanceof IOwnable && !((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-		  	  			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.remoteAccessMine.name"), I18n.format("messages.mrat.cantBind"), TextFormatting.RED);
+		  	  			PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.remoteAccessMine.name"), ClientUtils.localize("messages.mrat.cantBind"), TextFormatting.RED);
 		  	  			return EnumActionResult.FAIL;
 		  	  		}
 		  	  		
@@ -67,10 +67,10 @@ public class ItemMineRemoteAccessTool extends Item {
 		  	  		
 		  	  		stack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
 		  	  		mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) playerIn);
-		  	  		PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.remoteAccessMine.name"), I18n.format("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+		  	  		PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.remoteAccessMine.name"), ClientUtils.localize("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
   	  			}else{
   	  				this.removeTagFromItemAndUpdate(stack, pos, playerIn);
-  	  				PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("item.remoteAccessMine.name"), I18n.format("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+  	  				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.remoteAccessMine.name"), ClientUtils.localize("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
   	  			}
   	  		}else{
     			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
@@ -95,7 +95,7 @@ public class ItemMineRemoteAccessTool extends Item {
     				par3List.add("---");
     				continue;
     			}else{
-    				par3List.add(I18n.format("tooltip.mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
+    				par3List.add(ClientUtils.localize("tooltip.mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
     			}
     		}else{
 				par3List.add("---");

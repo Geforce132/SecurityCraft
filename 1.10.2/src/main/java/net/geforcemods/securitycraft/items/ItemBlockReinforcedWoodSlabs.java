@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -78,7 +78,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
                 	
                 	if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
                 		if(!worldIn.isRemote){
-                			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("messages.reinforcedSlab"), I18n.format("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+                			PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("messages.reinforcedSlab"), ClientUtils.localize("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
                 		}
                 		
                 		return EnumActionResult.FAIL;

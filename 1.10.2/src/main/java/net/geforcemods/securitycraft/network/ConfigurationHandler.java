@@ -114,12 +114,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -894,13 +894,13 @@ public class ConfigurationHandler{
 	private void registerBlock(Block block){
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), I18n.format("help." + block.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass){
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), I18n.format("help." + block.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	/**
@@ -911,7 +911,7 @@ public class ConfigurationHandler{
 	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){ 
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), I18n.format("help." + block.getUnlocalizedName().substring(5) + ".info"), customRecipe));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info"), customRecipe));
 	}
 	
 	/**
@@ -927,7 +927,7 @@ public class ConfigurationHandler{
 	private void registerItem(Item item, String customName){
 		GameRegistry.registerItem(item, customName);
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, I18n.format("help." + item.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	public void setupOtherRegistries(){

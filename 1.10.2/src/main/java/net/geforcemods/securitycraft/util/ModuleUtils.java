@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.minecraft.block.Block;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -167,23 +166,23 @@ public class ModuleUtils{
 		
 		if(te instanceof TileEntityKeypad){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, I18n.format("tile.keypad.name"), I18n.format("messages.module.whitelisted"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, ClientUtils.localize("tile.keypad.name"), ClientUtils.localize("messages.module.whitelisted"), TextFormatting.GREEN);
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, I18n.format("tile.keypad.name"), I18n.format("messages.module.blacklisted"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, ClientUtils.localize("tile.keypad.name"), ClientUtils.localize("messages.module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, I18n.format("tile.keycardReader.name"), I18n.format("messages.module.whitelisted"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.module.whitelisted"), TextFormatting.GREEN);
 				par1World.notifyNeighborsOfStateChange(pos, par1World.getBlockState(pos).getBlock());
 				return true;
 			}
 			
 			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.BLACKLIST).contains(par5EntityPlayer.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, I18n.format("tile.keycardReader.name"), I18n.format("messages.module.blacklisted"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){

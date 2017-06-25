@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockContainer;
@@ -13,7 +14,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -92,7 +92,7 @@ public class BlockInventoryScanner extends BlockContainer {
     		if(this.isFacingAnotherBlock(worldIn, pos)){
     			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
     		}else{
-    			PlayerUtils.sendMessageToPlayer(playerIn, I18n.format("tile.inventoryScanner.name"), I18n.format("messages.invScan.notConnected"), TextFormatting.RED);
+    			PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("tile.inventoryScanner.name"), ClientUtils.localize("messages.invScan.notConnected"), TextFormatting.RED);
     		}
     		
     		return true;

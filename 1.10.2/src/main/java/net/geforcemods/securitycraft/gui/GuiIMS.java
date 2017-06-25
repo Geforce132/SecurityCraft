@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMo
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -30,7 +29,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 		
-		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? I18n.format("gui.ims.hostileAndPlayers") : I18n.format("tooltip.module.players")));
+		this.buttonList.add(this.targetButton = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.ims.hostileAndPlayers") : ClientUtils.localize("tooltip.module.players")));
 	}
 	
     @Override
@@ -43,8 +42,8 @@ public class GuiIMS extends GuiContainer{
      */
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(I18n.format("tile.ims.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(I18n.format("tile.ims.name")) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("gui.ims.target"), this.xSize / 2 - 78, 30, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("tile.ims.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("tile.ims.name")) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(ClientUtils.localize("gui.ims.target"), this.xSize / 2 - 78, 30, 4210752);
     }
 
 	@Override
@@ -76,9 +75,9 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS){
-			targetButton.displayString = I18n.format("tooltip.module.players");
+			targetButton.displayString = ClientUtils.localize("tooltip.module.players");
 		}else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS){
-			targetButton.displayString = I18n.format("gui.ims.hostileAndPlayers");
+			targetButton.displayString = ClientUtils.localize("gui.ims.hostileAndPlayers");
 		}
 	}	
 

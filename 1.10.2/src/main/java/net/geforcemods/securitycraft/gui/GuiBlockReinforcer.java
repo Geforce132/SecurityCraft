@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.gui;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
@@ -20,8 +20,8 @@ public class GuiBlockReinforcer extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
 	{
-		fontRendererObj.drawString(I18n.format("gui.blockReinforcer.title"), 8, 5, 4210752);
-		fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		fontRendererObj.drawString(ClientUtils.localize("gui.blockReinforcer.title"), 8, 5, 4210752);
+		fontRendererObj.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 	
 	@Override
