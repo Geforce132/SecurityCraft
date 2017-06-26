@@ -131,7 +131,7 @@ public class BlockSecurityCamera extends BlockContainer{
     	if(side == EnumFacing.UP || side == EnumFacing.DOWN)
     		return false;
     	else
-    		return super.canPlaceBlockOnSide(worldIn, pos, side);
+    		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
     }
     
     @Override
