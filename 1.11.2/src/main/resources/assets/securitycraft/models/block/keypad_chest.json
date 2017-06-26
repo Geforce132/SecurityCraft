@@ -1,6 +1,6 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "particle": "securitycraft:blocks/iron_block"
+        "particle": "blocks/iron_block"
     }
 }
