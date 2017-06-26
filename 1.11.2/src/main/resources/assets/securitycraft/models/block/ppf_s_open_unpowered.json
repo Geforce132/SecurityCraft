@@ -3,7 +3,7 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "keypadUnpowered": "securitycraft:blocks/keypadUnactive",
+        "keypadUnpowered": "securitycraft:blocks/keypad_unactive",
         "particle": "blocks/iron_block",
         "furnaceSides": "blocks/furnace_side",
         "ironBlock": "blocks/iron_block",

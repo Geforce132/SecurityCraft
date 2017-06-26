@@ -3,7 +3,7 @@
 - New: Reinforced textures now adapt to the resourcepack being used
 - New: The Cage Trap can now be set to capture hostile mobs via the Universal Block Modifier
 - New: Information about needing the Redstone Module for the Security Camera
-- Change: [1.10.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
+- Change: [1.10.2, 1.11.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Change: [1.7.10] If you use LookingGlass, you now need at least version 0.2.0.01 of it to play
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
@@ -12,8 +12,8 @@
 - Fix: Wrong texture for Reinforced Stone Slabs
 - Fix: Crash when shift-clicking an item out of the Disguise Module's slot
 - Fix: Security Camera can be broken without a Universal Block Remover
-- Removed: [1.10.2] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
-- Removed: [1.10.2] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
+- Removed: [1.10.2, 1.11.2] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
+- Removed: [1.10.2, 1.11.2] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 

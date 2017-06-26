@@ -3,9 +3,9 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/alarmSidesDeactivated",
-        "alarmTopDeactivated": "securitycraft:blocks/alarmTopDeactivated",
-        "alarmSidesDeactivated": "securitycraft:blocks/alarmSidesDeactivated"
+        "particle": "securitycraft:blocks/alarm_sides_deactivated",
+        "alarmTopDeactivated": "securitycraft:blocks/alarm_top_deactivated",
+        "alarmSidesDeactivated": "securitycraft:blocks/alarm_sides_deactivated"
     },
     "display": {
         "ground": {

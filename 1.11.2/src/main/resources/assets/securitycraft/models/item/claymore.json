@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/claymoreActive",
+    "parent": "securitycraft:block/claymore_active",
     "display": {
         "thirdperson_righthand": {
             "rotation": [ 0, 0, 180 ],
