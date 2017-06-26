@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -141,6 +142,6 @@ public class ClientUtils{
 	 */
 	public static String localize(String key, Object... params)
 	{
-		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? net.minecraft.client.resources.I18n.format(key, params) : String.format(net.minecraft.util.text.translation.I18n.translateToLocal(key), params);
+		return String.format(I18n.translateToLocal(key), params);
 	}
 }
