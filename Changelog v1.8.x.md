@@ -12,6 +12,7 @@
 - Fix: Wrong texture for Reinforced Stone Slabs
 - Fix: Crash when shift-clicking an item out of the Disguise Module's slot
 - Fix: Security Camera can be broken without a Universal Block Remover
+- Fix: [1.8.8] Keypad crash
 - Removed: [1.10.2, 1.11.2] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2, 1.11.2] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 

@@ -55,11 +55,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	
 	@SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        BlockPos keypadPos = pos.offset(side.getOpposite());
+		BlockPos keypadPos = pos.offset(side.getOpposite());
         
 		if(worldIn.getTileEntity(keypadPos) == null) return true;
         CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
-
+        
         if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
         {
         	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
@@ -68,7 +68,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         	if(blocks.size() != 0)
         	{
 	        	Block blockToDisguiseAs = blocks.get(0);
-	
+	        	
 	        	// If the keypad has a disguise module added with a transparent block inserted.
 	        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
 	        	{        		      			        

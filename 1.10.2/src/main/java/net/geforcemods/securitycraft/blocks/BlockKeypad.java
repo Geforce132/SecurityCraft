@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -59,33 +61,29 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	@SideOnly(Side.CLIENT)
 	@Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		
-		System.out.println(pos);
-		return true;
-//		
-//		BlockPos keypadPos = pos.offset(side.getOpposite());
-//        
-//		if(worldIn.getTileEntity(keypadPos) == null) return true;
-//        CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
-//        
-//        if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
-//        {
-//        	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
-//        	List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
-//        	
-//        	if(blocks.size() != 0)
-//        	{
-//	        	IBlockState blockToDisguiseAs = blocks.get(0).getDefaultState();
-//	        	
-//	        	// If the keypad has a disguise module added with a transparent block inserted.
-//	        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
-//	        	{        		      			        
-//	        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
-//	        	}
-//        	}
-//        }
-//
-//        return true;
+		BlockPos keypadPos = pos.offset(side.getOpposite());
+        
+		if(worldIn.getTileEntity(keypadPos) == null) return true;
+        CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
+        
+        if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
+        {
+        	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
+        	List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
+        	
+        	if(blocks.size() != 0)
+        	{
+	        	IBlockState blockToDisguiseAs = blocks.get(0).getDefaultState();
+	        	
+	        	// If the keypad has a disguise module added with a transparent block inserted.
+	        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
+	        	{        		      			        
+	        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
+	        	}
+        	}
+        }
+
+        return true;
     }
 	
 	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, Block neighborBlock, EnumFacing side) {
