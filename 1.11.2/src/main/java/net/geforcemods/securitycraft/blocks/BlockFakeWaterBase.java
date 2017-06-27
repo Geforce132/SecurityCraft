@@ -76,7 +76,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
 	{
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

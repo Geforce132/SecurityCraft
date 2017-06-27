@@ -117,7 +117,7 @@ public class BlockKeycardReader extends BlockOwnable  {
     		return true;
     	}
     	
-    	if(playerIn.inventory.getCurrentItem() == null || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.adminTool)){
+    	if(playerIn.inventory.getCurrentItem().isEmpty() || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.adminTool)){
     		((TileEntityKeycardReader) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
     	}
     	else if(playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.adminTool) {

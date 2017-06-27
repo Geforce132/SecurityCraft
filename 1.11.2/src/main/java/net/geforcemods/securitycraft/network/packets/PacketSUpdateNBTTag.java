@@ -18,7 +18,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 	}
 	
 	public PacketSUpdateNBTTag(ItemStack par1ItemStack){
-		if(par1ItemStack != null && par1ItemStack.hasTagCompound()){
+		if(!par1ItemStack.isEmpty() && par1ItemStack.hasTagCompound()){
 			this.stack = par1ItemStack.getTagCompound();
 			this.itemName = par1ItemStack.getUnlocalizedName();
 		}
@@ -40,7 +40,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@Override
 	public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
-		if(context.getServerHandler().playerEntity.inventory.getCurrentItem() != null && context.getServerHandler().playerEntity.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+		if(!context.getServerHandler().playerEntity.inventory.getCurrentItem().isEmpty() && context.getServerHandler().playerEntity.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
 			context.getServerHandler().playerEntity.inventory.getCurrentItem().setTagCompound(packet.stack);	
 		}
 		

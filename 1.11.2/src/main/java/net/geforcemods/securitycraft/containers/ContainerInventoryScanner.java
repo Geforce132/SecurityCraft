@@ -48,7 +48,7 @@ public class ContainerInventoryScanner extends Container {
     @Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
@@ -70,7 +70,7 @@ public class ContainerInventoryScanner extends Container {
 
             if (itemstack1.getCount() == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {

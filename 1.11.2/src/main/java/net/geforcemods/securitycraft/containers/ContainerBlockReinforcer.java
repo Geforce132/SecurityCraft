@@ -48,7 +48,7 @@ public class ContainerBlockReinforcer extends Container
 	{
 		ItemStack stack = itemInventory.getStackInSlot(0);
 
-		if(stack != null)
+		if(!stack.isEmpty())
 		{
 			String name = stack.getItem().getUnlocalizedName();
 			ItemStack newStack = ItemStack.EMPTY;
@@ -81,7 +81,7 @@ public class ContainerBlockReinforcer extends Container
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int id)
 	{
-		ItemStack stack = null;
+		ItemStack stack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(id);
 
 		if(slot != null && slot.getHasStack())
@@ -138,7 +138,7 @@ public class ContainerBlockReinforcer extends Container
                 slot = inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
-                if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+                if(!itemstack1.isEmpty() && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
                 {
                     int l = itemstack1.getCount() + stack.getCount();
 
@@ -177,7 +177,7 @@ public class ContainerBlockReinforcer extends Container
                 slot = inventorySlots.get(k);
                 itemstack1 = slot.getStack();
 
-                if(itemstack1 == null && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
+                if(itemstack1.isEmpty() && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
                 {
                     slot.putStack(stack.copy());
                     slot.onSlotChanged();

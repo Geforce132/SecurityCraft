@@ -254,9 +254,9 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
         	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
             
-        	ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+        	ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
             
-        	if(module != null && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty()) {
+        	if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty()) {
                 ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTagCompound()).get(0);
                 Block block = Block.getBlockFromItem(disguisedStack.getItem());
                 boolean hasMeta = disguisedStack.getHasSubtypes();
@@ -276,9 +276,9 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     	if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
         	TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
             
-        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : null;
+        	ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
             
-        	if(stack != null && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
+        	if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
                 ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTagCompound()).get(0);
                 
                 if(Block.getBlockFromItem(disguisedStack.getItem()) != this) {
@@ -293,7 +293,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     @SideOnly(Side.CLIENT)
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-    	return null;
+    	return ItemStack.EMPTY;
     }
 
     @Override
@@ -314,7 +314,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		ItemStack stack = getDisguisedStack(world, pos);
 		
-		return stack != null ? stack : new ItemStack(this);	
+		return !stack.isEmpty() ? stack : new ItemStack(this);	
 	}
 
 	@Override

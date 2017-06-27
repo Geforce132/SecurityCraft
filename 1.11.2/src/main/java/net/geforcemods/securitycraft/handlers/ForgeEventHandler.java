@@ -220,7 +220,7 @@ public class ForgeEventHandler {
 				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
 
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++){
-					if(te.itemStacks[i] != null){
+					if(!te.itemStacks[i].isEmpty()){
 						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						event.getWorld().spawnEntity(item);

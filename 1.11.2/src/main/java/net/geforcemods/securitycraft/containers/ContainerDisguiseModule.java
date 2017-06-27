@@ -28,7 +28,7 @@ public class ContainerDisguiseModule extends Container {
 	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
@@ -51,7 +51,7 @@ public class ContainerDisguiseModule extends Container {
 			}
 			
 			if(itemstack1.getCount() == 0) {
-				slot.putStack((ItemStack) null);
+				slot.putStack(ItemStack.EMPTY);
 			}
 			else {
 				slot.onSlotChanged();
@@ -70,7 +70,7 @@ public class ContainerDisguiseModule extends Container {
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player)
 	{
-		if(slot >= 0 && getSlot(slot) != null && ((player.getHeldItemMainhand() != null && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (player.getHeldItemOffhand() != null && getSlot(slot).getStack() == player.getHeldItemOffhand()))) {
+		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand()))) {
 			return null;
 		}
 		
@@ -99,7 +99,7 @@ public class ContainerDisguiseModule extends Container {
 			boolean isStackBlock = par1ItemStack.getUnlocalizedName().startsWith("tile.");
 			
 			for(ItemStack stack : inventory.moduleInventory) {
-				if(stack != null && stack.getItem() != null) {
+				if(!stack.isEmpty() && stack.getItem() != null) {
 					if(stack.getItem().getUnlocalizedName().startsWith("tile.")) {
 						numberOfBlocks++;
 					}

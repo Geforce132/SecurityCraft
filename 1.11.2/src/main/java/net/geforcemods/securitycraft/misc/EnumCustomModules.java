@@ -46,7 +46,7 @@ public enum EnumCustomModules {
 	}
 	
 	public static EnumCustomModules getModuleFromStack(ItemStack item) {
-		if(item == null || item.getItem() == null) return null;
+		if(item.isEmpty() || item.getItem() == null) return null;
 		
 		for(EnumCustomModules module : values()) {
 			if(module.getItem() == item.getItem()) {

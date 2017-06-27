@@ -321,7 +321,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
      */
     public ItemStack getItem(World par1World, BlockPos pos, IBlockState state)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
 	@Override

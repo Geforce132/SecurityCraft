@@ -21,7 +21,7 @@ public class PacketCUpdateNBTTag implements IMessage{
 	}
 	
 	public PacketCUpdateNBTTag(ItemStack par1ItemStack){
-		if(par1ItemStack != null && par1ItemStack.hasTagCompound()){
+		if(!par1ItemStack.isEmpty() && par1ItemStack.hasTagCompound()){
 			this.stack = par1ItemStack.getTagCompound();
 			this.itemName = par1ItemStack.getUnlocalizedName();
 		}
@@ -44,7 +44,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IMessage onMessage(PacketCUpdateNBTTag packet, MessageContext ctx) {
-		if(Minecraft.getMinecraft().player.inventory.getCurrentItem() != null && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+		if(!Minecraft.getMinecraft().player.inventory.getCurrentItem().isEmpty() && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
 			Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(packet.stack);;	
 		}
 		

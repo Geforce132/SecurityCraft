@@ -340,6 +340,6 @@ public class BlockFakeWater extends BlockDynamicLiquid{
     @SideOnly(Side.CLIENT)
     public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 }

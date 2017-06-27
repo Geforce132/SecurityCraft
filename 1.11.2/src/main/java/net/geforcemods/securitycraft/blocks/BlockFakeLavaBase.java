@@ -81,7 +81,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class ContainerCustomizeBlock extends Container{
     @Override
 	public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
     {
-    	ItemStack itemstack = null;
+    	ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(par2);
 
         if (slot != null && slot.getHasStack())
@@ -67,7 +67,7 @@ public class ContainerCustomizeBlock extends Container{
 
             if (itemstack1.getCount() == 0)
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
@@ -103,7 +103,7 @@ public class ContainerCustomizeBlock extends Container{
         @Override
 		public boolean isItemValid(ItemStack par1ItemStack)
         {
-            if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule())){
+            if(!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule())){
             	return true;
             }else{
             	return false;

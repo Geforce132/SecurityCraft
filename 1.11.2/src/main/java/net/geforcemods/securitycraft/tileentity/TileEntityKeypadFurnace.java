@@ -65,14 +65,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     @Override
 	public ItemStack decrStackSize(int index, int count)
     {
-        if (this.furnaceItemStacks[index] != null)
+        if (!this.furnaceItemStacks[index].isEmpty())
         {
             ItemStack itemstack;
 
             if (this.furnaceItemStacks[index].getCount() <= count)
             {
                 itemstack = this.furnaceItemStacks[index];
-                this.furnaceItemStacks[index] = null;
+                this.furnaceItemStacks[index] = ItemStack.EMPTY;
                 return itemstack;
             }
             else
@@ -81,7 +81,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
                 if (this.furnaceItemStacks[index].getCount() == 0)
                 {
-                    this.furnaceItemStacks[index] = null;
+                    this.furnaceItemStacks[index] = ItemStack.EMPTY;
                 }
 
                 return itemstack;
@@ -89,32 +89,32 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
 	public ItemStack removeStackFromSlot(int index)
     {
-        if (this.furnaceItemStacks[index] != null)
+        if (!this.furnaceItemStacks[index].isEmpty())
         {
             ItemStack itemstack = this.furnaceItemStacks[index];
-            this.furnaceItemStacks[index] = null;
+            this.furnaceItemStacks[index] = ItemStack.EMPTY;
             return itemstack;
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
 	public void setInventorySlotContents(int index, ItemStack stack)
     {
-        boolean flag = stack != null && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
+        boolean flag = !stack.isEmpty() && stack.isItemEqual(this.furnaceItemStacks[index]) && ItemStack.areItemStackTagsEqual(stack, this.furnaceItemStacks[index]);
         this.furnaceItemStacks[index] = stack;
 
-        if (stack != null && stack.getCount() > this.getInventoryStackLimit())
+        if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
         {
             stack.setCount(this.getInventoryStackLimit());
         }
@@ -185,7 +185,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
         {
-            if (this.furnaceItemStacks[i] != null)
+            if (!this.furnaceItemStacks[i].isEmpty())
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
@@ -286,7 +286,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
                     {
                         flag1 = true;
 
-                        if (this.furnaceItemStacks[1] != null)
+                        if (!this.furnaceItemStacks[1].isEmpty())
                         {
                             this.furnaceItemStacks[1].shrink(1);
 
@@ -335,15 +335,15 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
     private boolean canSmelt()
     {
-        if (this.furnaceItemStacks[0] == null)
+        if (this.furnaceItemStacks[0].isEmpty())
         {
             return false;
         }
         else
         {
             ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
-            if (itemstack == null) return false;
-            if (this.furnaceItemStacks[2] == null) return true;
+            if (itemstack.isEmpty()) return false;
+            if (this.furnaceItemStacks[2].isEmpty()) return true;
             if (!this.furnaceItemStacks[2].isItemEqual(itemstack)) return false;
             int result = furnaceItemStacks[2].getCount() + itemstack.getCount();
             return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
@@ -356,7 +356,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
         {
             ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.furnaceItemStacks[0]);
 
-            if (this.furnaceItemStacks[2] == null)
+            if (this.furnaceItemStacks[2].isEmpty())
             {
                 this.furnaceItemStacks[2] = itemstack.copy();
             }
@@ -365,7 +365,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
                 this.furnaceItemStacks[2].grow(itemstack.getCount()); // Forge BugFix: Results may have multiple items
             }
 
-            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && this.furnaceItemStacks[1] != null && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
+            if (this.furnaceItemStacks[0].getItem() == Item.getItemFromBlock(Blocks.SPONGE) && this.furnaceItemStacks[0].getMetadata() == 1 && !this.furnaceItemStacks[1].isEmpty() && this.furnaceItemStacks[1].getItem() == Items.BUCKET)
             {
                 this.furnaceItemStacks[1] = new ItemStack(Items.WATER_BUCKET);
             }
@@ -374,14 +374,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
             if (this.furnaceItemStacks[0].getCount() <= 0)
             {
-                this.furnaceItemStacks[0] = null;
+                this.furnaceItemStacks[0] = ItemStack.EMPTY;
             }
         }
     }
 
     public static int getItemBurnTime(ItemStack p_145952_0_)
     {
-        if (p_145952_0_ == null)
+        if (p_145952_0_.isEmpty())
         {
             return 0;
         }
@@ -536,7 +536,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
     {
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
         {
-            this.furnaceItemStacks[i] = null;
+            this.furnaceItemStacks[i] = ItemStack.EMPTY;
         }
     }
 

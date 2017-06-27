@@ -328,7 +328,7 @@ public class BlockUtils{
 	
 	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){
 		for(int i = 0; i < inventory.getSizeInventory(); i++){
-			if(inventory.getStackInSlot(i) != null){
+			if(!inventory.getStackInSlot(i).isEmpty()){
 				if(inventory.getStackInSlot(i) == item){
 					return inventory.getStackInSlot(i);
 				}

@@ -72,7 +72,7 @@ public class BriefcaseInventory implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 		
-		if(stack != null) {
+		if(!stack.isEmpty()) {
 			if(stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
@@ -96,7 +96,7 @@ public class BriefcaseInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		briefcaseInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
+		if(!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.setCount(getInventoryStackLimit());
 		}
 
@@ -121,8 +121,8 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).getCount() == 0) {
-				briefcaseInventory[i] = null;
+			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0) {
+				briefcaseInventory[i] = ItemStack.EMPTY;
 			}
 		}
 		
@@ -166,7 +166,7 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public void clear() {
 		for(int i = 0; i < SIZE; i++) {
-			briefcaseInventory[i] = null;
+			briefcaseInventory[i] = ItemStack.EMPTY;
 		}
 	}
 

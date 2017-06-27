@@ -142,7 +142,7 @@ public class GuiSCManual extends GuiScreen {
 		    	for(int i = 0; i < 3; i++){
 		    		for(int j = 0; j < 3; j++){
 		    			if(((i * 3) + j) >= recipe.length){ break; }
-		    			if(this.recipe[(i * 3) + j] == null){ continue; }
+		    			if(this.recipe[(i * 3) + j].isEmpty()){ continue; }
 		    			
 		    			if(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock){
 			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
@@ -254,7 +254,7 @@ public class GuiSCManual extends GuiScreen {
 					if((i * 3) + j == recipe.length)
 						break outer;
 					
-					if(recipe[(i * 3) + j] != null)
+					if(!recipe[(i * 3) + j].isEmpty())
 						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe[(i * 3) + j].getDisplayName()));	
 				}
 			}

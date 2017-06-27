@@ -65,7 +65,7 @@ public class ModuleInventory implements IInventory {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null) {
+			if(!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
@@ -82,7 +82,7 @@ public class ModuleInventory implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 		
-		if(stack != null) {
+		if(!stack.isEmpty()) {
 			if(stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
@@ -106,7 +106,7 @@ public class ModuleInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		moduleInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
+		if(!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.setCount(getInventoryStackLimit());
 		}
 
@@ -136,8 +136,8 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).getCount() == 0) {
-				moduleInventory[i] = null;
+			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0) {
+				moduleInventory[i] = ItemStack.EMPTY;
 			}
 		}
 		

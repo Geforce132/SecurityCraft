@@ -487,7 +487,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
 		registerBlock(mod_SecurityCraft.unbreakableIronBars);
-		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ null, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), null, null, ItemUtils.toItemStack(Items.REDSTONE), null, null, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.CHEST)), null});
+		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.REDSTONE), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.CHEST)), ItemStack.EMPTY});
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerBlock(mod_SecurityCraft.alarm);
 		registerBlock(mod_SecurityCraft.alarmLit);

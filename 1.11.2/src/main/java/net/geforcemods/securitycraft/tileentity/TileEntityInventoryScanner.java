@@ -66,7 +66,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
         for (int i = 0; i < this.inventoryContents.length; ++i)
         {
-            if (this.inventoryContents[i] != null)
+            if (!this.inventoryContents[i].isEmpty())
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
@@ -89,14 +89,14 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.inventoryContents[par1] != null)
+        if (!this.inventoryContents[par1].isEmpty())
         {
             ItemStack itemstack;
 
             if (this.inventoryContents[par1].getCount() <= par2)
             {
                 itemstack = this.inventoryContents[par1];
-                this.inventoryContents[par1] = null;
+                this.inventoryContents[par1] = ItemStack.EMPTY;
                 this.markDirty();
                 return itemstack;
             }
@@ -106,7 +106,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
                 if (this.inventoryContents[par1].getCount() == 0)
                 {
-                    this.inventoryContents[par1] = null;
+                    this.inventoryContents[par1] = ItemStack.EMPTY;
                 }
 
                 this.markDirty();
@@ -115,7 +115,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -125,15 +125,15 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
      */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.inventoryContents[par1] != null)
+        if (!this.inventoryContents[par1].isEmpty())
         {
             ItemStack itemstack = this.inventoryContents[par1];
-            this.inventoryContents[par1] = null;
+            this.inventoryContents[par1] = ItemStack.EMPTY;
             return itemstack;
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -154,7 +154,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
 		this.inventoryContents[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.getCount() > this.getInventoryStackLimit())
+        if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
         {
             par2ItemStack.setCount(this.getInventoryStackLimit());
         }
@@ -164,10 +164,10 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	
 	public void addItemToStorage(ItemStack par1ItemStack) {
 		for(int i = 10; i < this.inventoryContents.length; i++){
-			if(this.inventoryContents[i] == null){
+			if(this.inventoryContents[i].isEmpty()){
 				this.inventoryContents[i] = par1ItemStack;
 				break;
-			}else if(this.inventoryContents[i] != null && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
+			}else if(!this.inventoryContents[i].isEmpty() && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
 				if(this.inventoryContents[i].getCount() + par1ItemStack.getCount() <= this.getInventoryStackLimit()){
 					this.inventoryContents[i].grow(par1ItemStack.getCount());
 					break;
@@ -182,8 +182,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	
 	public void clearStorage() {
 		for(int i = 10; i < this.inventoryContents.length; i++){
-			if(this.inventoryContents[i] != null){
-				this.inventoryContents[i] = null;
+			if(!this.inventoryContents[i].isEmpty()){
+				this.inventoryContents[i] = ItemStack.EMPTY;
 				break;
 			}
 		}
