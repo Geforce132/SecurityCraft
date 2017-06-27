@@ -139,11 +139,9 @@ public class BlockAlarm extends BlockOwnable {
     			this.setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
                 break;
             case 5: //up
-                f = 0.25F;
     			this.setBlockBounds(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
     			break;
             case 6: //down
-                f = 0.25F;
     			this.setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
                 break;
         }

@@ -154,10 +154,8 @@ public class BlockAlarm extends BlockOwnable {
             case 4: //south
             	return new AxisAlignedBB(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
             case 5: //up
-                f = 0.25F;
                 return new AxisAlignedBB(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
             case 6: //down
-                f = 0.25F;
                 return new AxisAlignedBB(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         }
         

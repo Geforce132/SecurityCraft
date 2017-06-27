@@ -254,7 +254,6 @@ public class BlockAlarm extends BlockContainer {
 		switch(l)
 		{
 			case 0: //down
-				f = 0.25F;
 				this.setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
 				break;
 			case 1: //east
@@ -271,7 +270,6 @@ public class BlockAlarm extends BlockContainer {
 				break;
 			case 5: //up
 			{
-				f = 0.25F;
 				this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
 			}
 		}
