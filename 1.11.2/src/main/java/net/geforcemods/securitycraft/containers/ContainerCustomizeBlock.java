@@ -112,7 +112,7 @@ public class ContainerCustomizeBlock extends Container{
         
         @Override
 		public ItemStack getStack(){
-        	return this.tileEntity.itemStacks[this.getSlotIndex()];
+        	return this.tileEntity.itemStacks.get(this.getSlotIndex());
         }
         
         @Override

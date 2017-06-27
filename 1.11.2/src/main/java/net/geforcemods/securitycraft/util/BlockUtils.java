@@ -20,6 +20,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -136,7 +137,9 @@ public class BlockUtils{
 			int cooldown = -1;
 
 			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
-				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
+				NonNullList<ItemStack> stacks = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
+				
+				modules = stacks.toArray(new ItemStack[stacks.size()]);
 			}
 
 			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -172,7 +175,14 @@ public class BlockUtils{
 			par1World.setTileEntity(pos, tileEntity);
 
 			if(modules != null){
-				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = modules;
+				NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
+				
+				for(ItemStack stack : modules)
+				{
+					stacks.add(stack);
+				}
+				
+				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = stacks;
 			}
 
 			if(inventory != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -210,7 +220,9 @@ public class BlockUtils{
 	public static void setBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property, boolean value) {
 		ItemStack[] modules = null;
 		if(par1World.getTileEntity(new BlockPos(par2, par3, par4)) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
+			NonNullList<ItemStack> stacks = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
+			
+			modules = stacks.toArray(new ItemStack[stacks.size()]);
 		}
 
 		TileEntity tileEntity = par1World.getTileEntity(toPos(par2, par3, par4));
@@ -218,7 +230,14 @@ public class BlockUtils{
 		par1World.setTileEntity(new BlockPos(par2, par3, par4), tileEntity);
 
 		if(modules != null){
-			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = modules;
+			NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
+			
+			for(ItemStack stack : modules)
+			{
+				stacks.add(stack);
+			}
+			
+			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = stacks;
 		}
 	}
 	

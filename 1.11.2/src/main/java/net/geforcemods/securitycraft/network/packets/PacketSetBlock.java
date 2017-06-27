@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -71,7 +72,9 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		Owner owner = null;
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks;
+			NonNullList<ItemStack> stacks = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks;
+			
+			modules = stacks.toArray(new ItemStack[stacks.size()]);
 		}
 		
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -94,7 +97,14 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
 		
 		if(modules != null){
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks = modules;
+			NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
+			
+			for(ItemStack stack : modules)
+			{
+				stacks.add(stack);
+			}
+			
+			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks = stacks;
 		}
 		
 		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
