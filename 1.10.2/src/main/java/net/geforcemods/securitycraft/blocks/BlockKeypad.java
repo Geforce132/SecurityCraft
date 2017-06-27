@@ -61,11 +61,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	@SideOnly(Side.CLIENT)
 	@Override
     public boolean shouldSideBeRendered(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		BlockPos keypadPos = pos.offset(side.getOpposite());
-        
-		if(worldIn.getTileEntity(keypadPos) == null) return true;
-        CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
-        
+		if(worldIn.getTileEntity(pos) == null)
+			return true;
+		
+        CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(pos);
+
         if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
         {
         	ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
@@ -73,12 +73,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
         	
         	if(blocks.size() != 0)
         	{
-	        	IBlockState blockToDisguiseAs = blocks.get(0).getDefaultState();
-	        	
+	        	Block blockToDisguiseAs = blocks.get(0);
+	
 	        	// If the keypad has a disguise module added with a transparent block inserted.
-	        	if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
+	        	if(!blockToDisguiseAs.isOpaqueCube(blockToDisguiseAs.getDefaultState()) || !blockToDisguiseAs.isFullCube(blockToDisguiseAs.getDefaultState()))
 	        	{        		      			        
-	        		return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);  
+	        		return checkForSideTransparency(worldIn, pos, worldIn.getBlockState(pos.offset(side)).getBlock(), side);  
 	        	}
         	}
         }
