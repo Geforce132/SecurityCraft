@@ -65,9 +65,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
 	 */
 	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		if(par5EntityPlayer instanceof EntityLivingBase){
-			this.explode(par1World, par2, par3, par4);
-		}
+		this.explode(par1World, par2, par3, par4);
 	}
 	
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest){

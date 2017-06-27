@@ -63,9 +63,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 
 	public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer){
-		if(par5EntityPlayer instanceof EntityLivingBase){
-			this.explode(par1World, pos);
-		}
+		this.explode(par1World, pos);
 	}
 	
 	public void activateMine(World world, BlockPos pos) {
@@ -78,7 +76,9 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	
 	public void explode(World par1World, BlockPos pos){
 		if(par1World.isRemote){ return; }
-
+		if(BlockUtils.getBlockPropertyAsBoolean(par1World, pos, DEACTIVATED))
+			return;
+		
 		par1World.setBlockToAir(pos);
 		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(par1World, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
