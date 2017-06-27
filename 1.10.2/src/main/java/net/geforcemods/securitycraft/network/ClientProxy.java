@@ -56,7 +56,7 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
 
 		Item reinforcedStoneSlabs = findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
-		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"), new ResourceLocation("securitycraft:reinforcedDirtSlab"));
+		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"));
 
 		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);

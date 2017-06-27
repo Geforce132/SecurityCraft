@@ -40,32 +40,32 @@ public class ClientProxy extends ServerProxy{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerTextureFiles() {
-		Item reinforcedWoodPlanks = findItem(mod_SecurityCraft.MODID, "reinforcedPlanks");
-		ModelBakery.registerItemVariants(reinforcedWoodPlanks, new ResourceLocation("securitycraft:reinforcedPlanks_Oak"), new ResourceLocation("securitycraft:reinforcedPlanks_Spruce"), new ResourceLocation("securitycraft:reinforcedPlanks_Birch"), new ResourceLocation("securitycraft:reinforcedPlanks_Jungle"), new ResourceLocation("securitycraft:reinforcedPlanks_Acacia"), new ResourceLocation("securitycraft:reinforcedPlanks_DarkOak"));
+		Item reinforcedWoodPlanks = findItem(mod_SecurityCraft.MODID, "reinforced_planks");
+		ModelBakery.registerItemVariants(reinforcedWoodPlanks, new ResourceLocation("securitycraft:reinforced_planks__oak"), new ResourceLocation("securitycraft:reinforced_planks_spruce"), new ResourceLocation("securitycraft:reinforced_planks_birch"), new ResourceLocation("securitycraft:reinforced_planks_lungle"), new ResourceLocation("securitycraft:reinforced_planks_acacia"), new ResourceLocation("securitycraft:reinforced_planks_dark_oak"));
 
-		Item reinforcedStainedGlass = findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass");
-		ModelBakery.registerItemVariants(reinforcedStainedGlass, new ResourceLocation("securitycraft:reinforcedStainedGlass_white"), new ResourceLocation("securitycraft:reinforcedStainedGlass_orange"), new ResourceLocation("securitycraft:reinforcedStainedGlass_magenta"), new ResourceLocation("securitycraft:reinforcedStainedGlass_light_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_yellow"),
-				new ResourceLocation("securitycraft:reinforcedStainedGlass_lime"), new ResourceLocation("securitycraft:reinforcedStainedGlass_pink"), new ResourceLocation("securitycraft:reinforcedStainedGlass_gray"), new ResourceLocation("securitycraft:reinforcedStainedGlass_silver"), new ResourceLocation("securitycraft:reinforcedStainedGlass_cyan"),
-				new ResourceLocation("securitycraft:reinforcedStainedGlass_purple"), new ResourceLocation("securitycraft:reinforcedStainedGlass_blue"), new ResourceLocation("securitycraft:reinforcedStainedGlass_brown"), new ResourceLocation("securitycraft:reinforcedStainedGlass_green"), new ResourceLocation("securitycraft:reinforcedStainedGlass_red"), new ResourceLocation("securitycraft:reinforcedStainedGlass_black"));
+		Item reinforcedStainedGlass = findItem(mod_SecurityCraft.MODID, "reinforced_stained_glass");
+		ModelBakery.registerItemVariants(reinforcedStainedGlass, new ResourceLocation("securitycraft:reinforced_stained_glass_white"), new ResourceLocation("securitycraft:reinforced_stained_glass_orange"), new ResourceLocation("securitycraft:reinforced_stained_glass_magenta"), new ResourceLocation("securitycraft:reinforced_stained_glass_light_blue"), new ResourceLocation("securitycraft:reinforced_stained_glass_yellow"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_lime"), new ResourceLocation("securitycraft:reinforced_stained_glass_pink"), new ResourceLocation("securitycraft:reinforced_stained_glass_gray"), new ResourceLocation("securitycraft:reinforced_stained_glass_silver"), new ResourceLocation("securitycraft:reinforced_stained_glass_cyan"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_purple"), new ResourceLocation("securitycraft:reinforced_stained_glass_blue"), new ResourceLocation("securitycraft:reinforced_stained_glass_brown"), new ResourceLocation("securitycraft:reinforced_stained_glass_green"), new ResourceLocation("securitycraft:reinforced_stained_glass_red"), new ResourceLocation("securitycraft:reinforced_stained_hlass_black"));
 
-		Item reinforcedSandstone = findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
-		ModelBakery.registerItemVariants(reinforcedSandstone, new ResourceLocation("securitycraft:reinforcedSandstone_normal"), new ResourceLocation("securitycraft:reinforcedSandstone_chiseled"), new ResourceLocation("securitycraft:reinforcedSandstone_smooth"));
+		Item reinforcedSandstone = findItem(mod_SecurityCraft.MODID, "reinforced_sandstone");
+		ModelBakery.registerItemVariants(reinforcedSandstone, new ResourceLocation("securitycraft:reinforced_Sandstone_normal"), new ResourceLocation("securitycraft:reinforced_sandstone_chiseled"), new ResourceLocation("securitycraft:reinforced_sandstone_smooth"));
 
-		Item reinforcedWoodSlabs = findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
-		ModelBakery.registerItemVariants(reinforcedWoodSlabs, new ResourceLocation("securitycraft:reinforcedWoodSlabs_oak"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_spruce"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_birch"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_jungle"), new ResourceLocation("securitycraft:reinforcedWoodSlabs_acacia"),
-				new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
+		Item reinforcedWoodSlabs = findItem(mod_SecurityCraft.MODID, "reinforced_wood_slabs");
+		ModelBakery.registerItemVariants(reinforcedWoodSlabs, new ResourceLocation("securitycraft:reinforced_wood_slabs_oak"), new ResourceLocation("securitycraft:reinforced_wood_slabs_spruce"), new ResourceLocation("securitycraft:reinforced_wood_slabs_birch"), new ResourceLocation("securitycraft:reinforced_wood_slabs_jungle"), new ResourceLocation("securitycraft:reinforced_wood_slabs_acacia"),
+				new ResourceLocation("securitycraft:reinforced_wood_slabs_darkoak"));
 
-		Item reinforcedStoneSlabs = findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
-		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"), new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"), new ResourceLocation("securitycraft:reinforcedDirtSlab"));
+		Item reinforcedStoneSlabs = findItem(mod_SecurityCraft.MODID, "reinforced_stone_slabs");
+		ModelBakery.registerItemVariants(reinforcedStoneSlabs, new ResourceLocation("securitycraft:reinforced_stone_slabs_stone"), new ResourceLocation("securitycraft:reinforced_stone_slabs_cobblestone"), new ResourceLocation("securitycraft:reinforced_stone_slabs_sandstone"));
 
-		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogusWater");
+		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
 		{
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "water");
 			}
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
@@ -73,18 +73,18 @@ public class ClientProxy extends ServerProxy{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "water");
 			}
 		});
 
-		Item fakeWaterFlowing = findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
+		Item fakeWaterFlowing = findItem(mod_SecurityCraft.MODID, "bogus_water_flowing");
 		ModelBakery.registerItemVariants(fakeWaterFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
 		{
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing");
 			}
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
@@ -92,18 +92,18 @@ public class ClientProxy extends ServerProxy{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing");
 			}
 		});
 
-		Item fakeLava = findItem(mod_SecurityCraft.MODID, "bogusLava");
+		Item fakeLava = findItem(mod_SecurityCraft.MODID, "bogus_Lava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
 		{
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "lava");
 			}
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
@@ -111,18 +111,18 @@ public class ClientProxy extends ServerProxy{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "lava");
 			}
 		});
 
-		Item fakeLavaFlowing = findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
+		Item fakeLavaFlowing = findItem(mod_SecurityCraft.MODID, "bogus_lava_flowing");
 		ModelBakery.registerItemVariants(fakeLavaFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
 		{
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing");
 			}
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
@@ -130,7 +130,7 @@ public class ClientProxy extends ServerProxy{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
-				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
+				return new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing");
 			}
 		});
 	}
