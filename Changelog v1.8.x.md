@@ -3,6 +3,7 @@
 - New: Reinforced textures now adapt to the resourcepack being used
 - New: The Cage Trap can now be set to capture hostile mobs via the Universal Block Modifier
 - New: Information about needing the Redstone Module for the Security Camera
+- New: Discord tip
 - Change: [1.10.2, 1.11.2] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Change: [1.7.10] If you use LookingGlass, you now need at least version 0.2.0.01 of it to play
 - Fix: Crash when adding an empty Disguise Module to a Keypad
