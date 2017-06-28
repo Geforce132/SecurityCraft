@@ -81,10 +81,10 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
     @Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!worldIn.isRemote){
-			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
+			if(!playerIn.inventory.getCurrentItem().isEmpty() && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
 				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
-			}else if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
+			}else if(!playerIn.inventory.getCurrentItem().isEmpty() && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
 				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}

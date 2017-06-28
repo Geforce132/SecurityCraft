@@ -300,7 +300,7 @@ public class ForgeEventHandler {
 			world.setBlockToAir(pos);
 			return new ItemStack(mod_SecurityCraft.fLavaBucket, 1);
 		}else{
-			return null;
+			return ItemStack.EMPTY;
 		}
 	}
 	

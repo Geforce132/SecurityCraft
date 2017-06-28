@@ -317,9 +317,9 @@ public class EntitySecurityCamera extends Entity{
 
 		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
 			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED)){
-				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(world, pos) - 6));
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
 			}else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED)){
-				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:securityCamera", BlockUtils.getBlockMeta(world, pos) + 6));
+				mod_SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
 			}
 		}
 	}

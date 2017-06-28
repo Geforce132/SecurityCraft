@@ -60,12 +60,12 @@ public class ContainerInventoryScanner extends Container {
             {
                 if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (itemstack1.getCount() == 0)

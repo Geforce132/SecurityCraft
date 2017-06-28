@@ -227,14 +227,14 @@ public class GuiSCManual extends GuiScreen {
 				if(object instanceof ShapedRecipes){
 					ShapedRecipes recipe = (ShapedRecipes) object;
 					
-					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
 						this.recipe = recipe.recipeItems;
 						break;
 					}
 				}else if(object instanceof ShapelessRecipes){
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 	
-					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
 						this.recipe = this.toItemStackArray(recipe.recipeItems);
 						break;
 					}

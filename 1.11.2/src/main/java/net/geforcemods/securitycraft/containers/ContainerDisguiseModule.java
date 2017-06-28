@@ -37,7 +37,7 @@ public class ContainerDisguiseModule extends Container {
 
 			if(index < inventory.SIZE) {
 				if(!this.mergeItemStack(itemstack1, inventory.SIZE, 37, true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
@@ -45,7 +45,7 @@ public class ContainerDisguiseModule extends Container {
 			else {
 				if(index >= inventory.SIZE) {
 					if(!this.mergeItemStack(itemstack1, 0, inventory.SIZE, false)) {
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 			}
@@ -58,7 +58,7 @@ public class ContainerDisguiseModule extends Container {
 			}
 
 			if(itemstack1.getCount() == itemstack.getCount()) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			slot.onTake(par1EntityPlayer, itemstack1);
@@ -71,7 +71,7 @@ public class ContainerDisguiseModule extends Container {
 	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand()))) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 		
 		return super.slotClick(slot, dragType, clickTypeIn, player);

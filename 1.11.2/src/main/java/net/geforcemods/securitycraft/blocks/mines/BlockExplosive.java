@@ -22,7 +22,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(!worldIn.isRemote){
-			if(playerIn.inventory.getCurrentItem() == null && explodesWhenInteractedWith() && isActive(worldIn, pos)) {
+			if(playerIn.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(worldIn, pos)) {
 				this.explode(worldIn, pos);
 				return false;
 			}

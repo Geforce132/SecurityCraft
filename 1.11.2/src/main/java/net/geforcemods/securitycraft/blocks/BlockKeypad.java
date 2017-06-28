@@ -75,7 +75,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	        	Block blockToDisguiseAs = blocks.get(0);
 	
 	        	// If the keypad has a disguise module added with a transparent block inserted.
-	        	if(!blockToDisguiseAs.isOpaqueCube(blockToDisguiseAs.getDefaultState()) || !blockToDisguiseAs.isFullCube(blockToDisguiseAs.getDefaultState()))
+	        	if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
 	        	{        		      			        
 	        		return checkForSideTransparency(worldIn, pos, worldIn.getBlockState(pos.offset(side)).getBlock(), side);  
 	        	}
@@ -287,7 +287,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
             }      	
         }
         
-        return null;
+        return ItemStack.EMPTY;
     }
     
     @SideOnly(Side.CLIENT)
@@ -319,7 +319,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return !(getDisguisedStack(world, pos) != null);
+		return getDisguisedStack(world, pos).isEmpty();
 	}
 
 }

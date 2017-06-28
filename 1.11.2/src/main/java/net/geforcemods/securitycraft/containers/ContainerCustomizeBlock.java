@@ -54,7 +54,7 @@ public class ContainerCustomizeBlock extends Container{
             {
                 if (!this.mergeItemStack(itemstack1, 0, 35, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }else{
                 	this.tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
                 	this.tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack1, EnumCustomModules.getModuleFromStack(itemstack1) }, tileEntity);
@@ -62,7 +62,7 @@ public class ContainerCustomizeBlock extends Container{
             }
             else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && this.tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !this.mergeItemStack(itemstack1, 0, this.tileEntity.getSizeInventory(), false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
             if (itemstack1.getCount() == 0)
@@ -75,7 +75,7 @@ public class ContainerCustomizeBlock extends Container{
             }
             
             if(itemstack1.getCount() == itemstack.getCount()){
-            	return null;
+            	return ItemStack.EMPTY;
             }
             
             slot.onTake(par1, itemstack1);

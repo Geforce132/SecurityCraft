@@ -55,7 +55,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 		if(worldIn.isRemote) {
 			return true;
 		} else {
-			if(playerIn.inventory.getCurrentItem() == null || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+			if(playerIn.inventory.getCurrentItem().isEmpty() || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
 				this.explode(worldIn, pos);
 				return true;
 			} else {

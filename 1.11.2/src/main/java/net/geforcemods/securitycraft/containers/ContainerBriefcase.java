@@ -43,7 +43,7 @@ public class ContainerBriefcase extends Container {
 
 			if(index < BriefcaseInventory.SIZE) {
 				if(!this.mergeItemStack(itemstack1, BriefcaseInventory.SIZE, 48, true)) {
-					return null;
+					return ItemStack.EMPTY;
 				}
 
 				slot.onSlotChange(itemstack1, itemstack);
@@ -51,20 +51,20 @@ public class ContainerBriefcase extends Container {
 			else {
 				if(index >= BriefcaseInventory.SIZE) {
 					if(!this.mergeItemStack(itemstack1, 0, BriefcaseInventory.SIZE, false)) {
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 			}
 			
 			if(itemstack1.getCount() == 0) {
-				slot.putStack((ItemStack) null);
+				slot.putStack(ItemStack.EMPTY);
 			}
 			else {
 				slot.onSlotChanged();
 			}
 
 			if(itemstack1.getCount() == itemstack.getCount()) {
-				return null;
+				return ItemStack.EMPTY;
 			}
 
 			slot.onTake(par1EntityPlayer, itemstack1);
@@ -76,7 +76,7 @@ public class ContainerBriefcase extends Container {
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player) {
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand()))) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 		
 		return super.slotClick(slot, dragType, clickTypeIn, player);

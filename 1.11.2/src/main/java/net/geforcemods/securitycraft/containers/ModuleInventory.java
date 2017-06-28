@@ -8,6 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
@@ -17,7 +18,7 @@ public class ModuleInventory implements IInventory {
 	public int SIZE = 0;
 	private final ItemStack module;
 	
-	public ItemStack[] moduleInventory;
+	public NonNullList<ItemStack> moduleInventory;
 	public int maxNumberOfItems;
 	public int maxNumberOfBlocks;
 
@@ -29,7 +30,7 @@ public class ModuleInventory implements IInventory {
 		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
 		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();
 		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
-		moduleInventory = new ItemStack[SIZE];
+		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 				
 		if (!module.hasTagCompound()) {
 			module.setTagCompound(new NBTTagCompound());
@@ -45,7 +46,7 @@ public class ModuleInventory implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return moduleInventory[index];
+		return moduleInventory.get(index);
 	}
 	
 	public void readFromNBT(NBTTagCompound compound) {
@@ -56,7 +57,7 @@ public class ModuleInventory implements IInventory {
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory()) {
-				moduleInventory[slot] = new ItemStack(item);
+				moduleInventory.set(slot, new ItemStack(item));
 			}
 		}
 	}
@@ -88,7 +89,7 @@ public class ModuleInventory implements IInventory {
 				markDirty();
 			}
 			else {
-				setInventorySlotContents(index, null);
+				setInventorySlotContents(index, ItemStack.EMPTY);
 			}
 		}
 		
@@ -98,13 +99,13 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
-		setInventorySlotContents(index, null);
+		setInventorySlotContents(index, ItemStack.EMPTY);
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		moduleInventory[index] = itemstack;
+		moduleInventory.set(index, itemstack);
 
 		if(!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.setCount(getInventoryStackLimit());
@@ -137,7 +138,7 @@ public class ModuleInventory implements IInventory {
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
 			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0) {
-				moduleInventory[i] = ItemStack.EMPTY;
+				moduleInventory.set(i, ItemStack.EMPTY);
 			}
 		}
 		
@@ -179,6 +180,12 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public boolean isEmpty()
 	{
-		return false; //TODO: Adapt
+		for(ItemStack stack : moduleInventory)
+		{
+			if(!stack.isEmpty())
+				return false;
+		}
+		
+		return true;
 	}
 }

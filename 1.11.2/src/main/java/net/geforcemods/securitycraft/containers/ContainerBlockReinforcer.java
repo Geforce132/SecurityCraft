@@ -68,7 +68,7 @@ public class ContainerBlockReinforcer extends Container
 			else if(name.equals(Item.getItemFromBlock(Blocks.SANDSTONE).getUnlocalizedName()))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
 			
-			if(!stack.isEmpty())
+			if(!newStack.isEmpty())
 			{
 				newStack.setCount(stack.getCount());
 				newStack.setItemDamage(stack.getItemDamage());
@@ -93,7 +93,7 @@ public class ContainerBlockReinforcer extends Container
 			if(id < 1)
 			{
 				if(!mergeItemStack(stack1, 1, 37, true))
-					return null;
+					return ItemStack.EMPTY;
 				slot.onSlotChange(stack1, stack);
 			}
 			else
@@ -101,7 +101,7 @@ public class ContainerBlockReinforcer extends Container
 				if(id >= 1)
 				{
 					if(!mergeItemStack(stack1, 0, 1, false))
-						return null;
+						return ItemStack.EMPTY;
 				}
 			}
 
@@ -111,7 +111,7 @@ public class ContainerBlockReinforcer extends Container
 				slot.onSlotChanged();
 
 			if(stack1.getCount() == stack.getCount())
-				return null;
+				return ItemStack.EMPTY;
 			slot.onTake(player, stack1);
 		}
 

@@ -40,7 +40,7 @@ public class WailaDataProvider implements IWailaDataProvider {
             return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 		}
 		
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

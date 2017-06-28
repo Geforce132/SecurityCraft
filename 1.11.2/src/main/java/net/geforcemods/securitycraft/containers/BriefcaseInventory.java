@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
@@ -16,7 +17,7 @@ public class BriefcaseInventory implements IInventory {
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
 	
-	private ItemStack[] briefcaseInventory = new ItemStack[SIZE];
+	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseInventory(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
@@ -35,7 +36,7 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return briefcaseInventory[index];
+		return briefcaseInventory.get(index);
 	}
 	
 	public void readFromNBT(NBTTagCompound compound) {
@@ -46,7 +47,7 @@ public class BriefcaseInventory implements IInventory {
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory()) {
-				briefcaseInventory[slot] = new ItemStack(item);
+				briefcaseInventory.set(slot, new ItemStack(item));
 			}
 		}
 	}
@@ -78,7 +79,7 @@ public class BriefcaseInventory implements IInventory {
 				markDirty();
 			}
 			else {
-				setInventorySlotContents(index, null);
+				setInventorySlotContents(index, ItemStack.EMPTY);
 			}
 		}
 		
@@ -88,13 +89,13 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
-		setInventorySlotContents(index, null);
+		setInventorySlotContents(index, ItemStack.EMPTY);
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		briefcaseInventory[index] = itemstack;
+		briefcaseInventory.set(index, itemstack);
 
 		if(!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.setCount(getInventoryStackLimit());
@@ -122,7 +123,7 @@ public class BriefcaseInventory implements IInventory {
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++) {
 			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0) {
-				briefcaseInventory[i] = ItemStack.EMPTY;
+				briefcaseInventory.set(i, ItemStack.EMPTY);
 			}
 		}
 		
@@ -166,13 +167,19 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public void clear() {
 		for(int i = 0; i < SIZE; i++) {
-			briefcaseInventory[i] = ItemStack.EMPTY;
+			briefcaseInventory.set(i, ItemStack.EMPTY);
 		}
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return false; //TODO: Adapt
+		for(ItemStack stack : briefcaseInventory)
+		{
+			if(!stack.isEmpty())
+				return false;
+		}
+		
+		return true;
 	}
 }

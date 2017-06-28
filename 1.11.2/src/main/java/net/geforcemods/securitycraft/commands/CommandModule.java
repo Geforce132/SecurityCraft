@@ -58,7 +58,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			if(args[0].matches("copy")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
-				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
+				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
 					mod_SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
 				}else{
@@ -74,7 +74,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					return;
 				}
 				
-				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
+				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){		
 					player.inventory.getCurrentItem().setTagCompound(mod_SecurityCraft.instance.getSavedModule());
 					mod_SecurityCraft.instance.setSavedModule(null);
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
@@ -86,7 +86,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			if(args[0].matches("add")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 				
-				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
+				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
 					if(player.inventory.getCurrentItem().getTagCompound() == null){
 						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());				
 					}
@@ -108,7 +108,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			}else if(args[0].matches("remove")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 				
-				if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
+				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){			
 					if(player.inventory.getCurrentItem().getTagCompound() == null){
 						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());				
 					}
