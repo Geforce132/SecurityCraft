@@ -68,6 +68,7 @@ public class ForgeEventHandler {
 	{
 		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
+		tipsWithLink.put("discord", "https://discord.gg/RYsKYx5");
 	}
 	
 	@SubscribeEvent
@@ -328,7 +329,8 @@ public class ForgeEventHandler {
 				"messages.tip.scHelp",
 				"messages.tip.scConnect",
 				"messages.tip.trello",
-				"messages.tip.patreon"
+				"messages.tip.patreon",
+				"messages.tip.discord"
 		};
 
 		return tips[new Random().nextInt(tips.length)];
