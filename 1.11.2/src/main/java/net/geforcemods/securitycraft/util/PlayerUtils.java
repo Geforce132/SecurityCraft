@@ -122,11 +122,11 @@ public class PlayerUtils{
 	 * Args: player, item.
 	 */
 	public static boolean isHoldingItem(EntityPlayer player, Item item){
-		if(item == null && player.inventory.getCurrentItem() == null){
+		if(item == null && player.inventory.getCurrentItem().isEmpty()){
 			return true;
 		}
 		
-		return (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == item);
+		return (!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == item);
 	}
 	
 	/**

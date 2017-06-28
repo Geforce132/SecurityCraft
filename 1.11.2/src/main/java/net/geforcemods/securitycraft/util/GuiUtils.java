@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 
 public class GuiUtils{
 	
-	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/cameraDashboard.png");
+	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 
 	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();

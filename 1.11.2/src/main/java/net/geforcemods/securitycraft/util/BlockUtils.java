@@ -129,17 +129,15 @@ public class BlockUtils{
 	
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
-			ItemStack[] modules = null;
-			ItemStack[] inventory = null;
+			NonNullList<ItemStack> modules = null;
+			NonNullList<ItemStack> inventory = null;
 			int[] times = new int[4];
 			String password = "";
 			Owner owner = null;
 			int cooldown = -1;
 
 			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
-				NonNullList<ItemStack> stacks = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
-				
-				modules = stacks.toArray(new ItemStack[stacks.size()]);
+				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
 			}
 
 			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -175,14 +173,7 @@ public class BlockUtils{
 			par1World.setTileEntity(pos, tileEntity);
 
 			if(modules != null){
-				NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
-				
-				for(ItemStack stack : modules)
-				{
-					stacks.add(stack);
-				}
-				
-				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = stacks;
+				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = modules;
 			}
 
 			if(inventory != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -218,11 +209,9 @@ public class BlockUtils{
 	}
 
 	public static void setBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property, boolean value) {
-		ItemStack[] modules = null;
+		NonNullList<ItemStack> modules = null;
 		if(par1World.getTileEntity(new BlockPos(par2, par3, par4)) instanceof CustomizableSCTE){
-			NonNullList<ItemStack> stacks = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
-			
-			modules = stacks.toArray(new ItemStack[stacks.size()]);
+			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
 		}
 
 		TileEntity tileEntity = par1World.getTileEntity(toPos(par2, par3, par4));
@@ -230,14 +219,7 @@ public class BlockUtils{
 		par1World.setTileEntity(new BlockPos(par2, par3, par4), tileEntity);
 
 		if(modules != null){
-			NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
-			
-			for(ItemStack stack : modules)
-			{
-				stacks.add(stack);
-			}
-			
-			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = stacks;
+			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = modules;
 		}
 	}
 	
@@ -354,7 +336,7 @@ public class BlockUtils{
 			}
 		}
 		
-		return null;
+		return ItemStack.EMPTY;
 	}
 	
 	public static BlockPos toPos(int x, int y, int z){

@@ -171,9 +171,9 @@ public class BlockInventoryScanner extends BlockContainer {
     
     @Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){	    	
-    	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().length; i++){
-    		if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i] != null){
-    			EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
+    	for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().size(); i++){
+    		if(!((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().get(i).isEmpty()){
+    			EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().get(i));
     			par1World.spawnEntity(item);
     		}
     	}

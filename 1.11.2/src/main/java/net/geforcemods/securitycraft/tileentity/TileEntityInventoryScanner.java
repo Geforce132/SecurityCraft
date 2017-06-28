@@ -9,10 +9,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 	
-	private ItemStack[] inventoryContents = new ItemStack[37]; 
+	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY); 
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -34,16 +35,16 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	super.readFromNBT(par1NBTTagCompound);
     	
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
-        this.inventoryContents = new ItemStack[this.getSizeInventory()];
+        this.inventoryContents = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.inventoryContents.length)
+            if (j >= 0 && j < this.inventoryContents.size())
             {
-                this.inventoryContents[j] = new ItemStack(nbttagcompound1);
+                this.inventoryContents.set(j, new ItemStack(nbttagcompound1));
             }
         }
         
@@ -64,13 +65,13 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
     	
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.inventoryContents.length; ++i)
+        for (int i = 0; i < this.inventoryContents.size(); ++i)
         {
-            if (!this.inventoryContents[i].isEmpty())
+            if (!this.inventoryContents.get(i).isEmpty())
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
-                this.inventoryContents[i].writeToNBT(nbttagcompound1);
+                this.inventoryContents.get(i).writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -89,24 +90,24 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public ItemStack decrStackSize(int par1, int par2)
     {
-        if (!this.inventoryContents[par1].isEmpty())
+        if (!this.inventoryContents.get(par1).isEmpty())
         {
             ItemStack itemstack;
 
-            if (this.inventoryContents[par1].getCount() <= par2)
+            if (this.inventoryContents.get(par1).getCount() <= par2)
             {
-                itemstack = this.inventoryContents[par1];
-                this.inventoryContents[par1] = ItemStack.EMPTY;
+                itemstack = this.inventoryContents.get(par1);
+                this.inventoryContents.set(par1, ItemStack.EMPTY);
                 this.markDirty();
                 return itemstack;
             }
             else
             {
-                itemstack = this.inventoryContents[par1].splitStack(par2);
+                itemstack = this.inventoryContents.get(par1).splitStack(par2);
 
-                if (this.inventoryContents[par1].getCount() == 0)
+                if (this.inventoryContents.get(par1).getCount() == 0)
                 {
-                    this.inventoryContents[par1] = ItemStack.EMPTY;
+                    this.inventoryContents.set(par1, ItemStack.EMPTY);
                 }
 
                 this.markDirty();
@@ -125,10 +126,10 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
      */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (!this.inventoryContents[par1].isEmpty())
+        if (!this.inventoryContents.get(par1).isEmpty())
         {
-            ItemStack itemstack = this.inventoryContents[par1];
-            this.inventoryContents[par1] = ItemStack.EMPTY;
+            ItemStack itemstack = this.inventoryContents.get(par1);
+            this.inventoryContents.set(par1, ItemStack.EMPTY);
             return itemstack;
         }
         else
@@ -139,7 +140,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
 	@Override
 	public ItemStack getStackInSlot(int var1) {
-		return this.inventoryContents[var1];
+		return this.inventoryContents.get(var1);
 	}
 	
 	/**
@@ -147,12 +148,12 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	 */
 	
 	public ItemStack getStackInSlotCopy(int var1) {
-		return this.inventoryContents[var1];
+		return this.inventoryContents.get(var1);
 	}
 
 	@Override
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-		this.inventoryContents[par1] = par2ItemStack;
+		this.inventoryContents.set(par1, par2ItemStack);
 
         if (!par2ItemStack.isEmpty() && par2ItemStack.getCount() > this.getInventoryStackLimit())
         {
@@ -163,16 +164,16 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 	
 	public void addItemToStorage(ItemStack par1ItemStack) {
-		for(int i = 10; i < this.inventoryContents.length; i++){
-			if(this.inventoryContents[i].isEmpty()){
-				this.inventoryContents[i] = par1ItemStack;
+		for(int i = 10; i < this.inventoryContents.size(); i++){
+			if(this.inventoryContents.get(i).isEmpty()){
+				this.inventoryContents.set(i, par1ItemStack);
 				break;
-			}else if(!this.inventoryContents[i].isEmpty() && this.inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents[i].getItem() == par1ItemStack.getItem()){
-				if(this.inventoryContents[i].getCount() + par1ItemStack.getCount() <= this.getInventoryStackLimit()){
-					this.inventoryContents[i].grow(par1ItemStack.getCount());
+			}else if(!this.inventoryContents.get(i).isEmpty() && this.inventoryContents.get(i).getItem() != null && par1ItemStack.getItem() != null && this.inventoryContents.get(i).getItem() == par1ItemStack.getItem()){
+				if(this.inventoryContents.get(i).getCount() + par1ItemStack.getCount() <= this.getInventoryStackLimit()){
+					this.inventoryContents.get(i).grow(par1ItemStack.getCount());
 					break;
 				}else{
-					this.inventoryContents[i].setCount(this.getInventoryStackLimit());
+					this.inventoryContents.get(i).setCount(this.getInventoryStackLimit());
 				}
 			}
 		}
@@ -181,9 +182,9 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 	
 	public void clearStorage() {
-		for(int i = 10; i < this.inventoryContents.length; i++){
-			if(!this.inventoryContents[i].isEmpty()){
-				this.inventoryContents[i] = ItemStack.EMPTY;
+		for(int i = 10; i < this.inventoryContents.size(); i++){
+			if(!this.inventoryContents.get(i).isEmpty()){
+				this.inventoryContents.set(i, ItemStack.EMPTY);
 				break;
 			}
 		}
@@ -241,11 +242,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		this.cooldown = cooldown;
 	}
 	
-	public ItemStack[] getContents(){
+	public NonNullList<ItemStack> getContents(){
 		return inventoryContents;
 	}
 	
-	public void setContents(ItemStack[] contents){
+	public void setContents(NonNullList<ItemStack> contents){
 		this.inventoryContents = contents;
 	}
 	
@@ -304,5 +305,5 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public Option<?>[] customOptions() {
 		return null;
 	}
-    
+	
 }

@@ -66,7 +66,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 	
 		ItemStack[] modules = null;
-		ItemStack[] inventory = null;
+		NonNullList<ItemStack> inventory = null;
 		int[] times = new int[4];
 		String password = "";
 		Owner owner = null;

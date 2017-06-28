@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -25,7 +26,7 @@ public class Utils {
 		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
 	}
 	
-	public static void setISinTEAppropriately(World par1World, BlockPos pos, ItemStack[] contents, String type) {
+	public static void setISinTEAppropriately(World par1World, BlockPos pos, NonNullList<ItemStack> contents, String type) {
 		if(par1World.getBlockState(pos).getValue(BlockInventoryScanner.FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.west(2)).getValue(BlockInventoryScanner.FACING) == EnumFacing.EAST){
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setType(type);

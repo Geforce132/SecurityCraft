@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcaseInventory extends GuiContainer {
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/briefcaseInventory.png");
+	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 
 	public GuiBriefcaseInventory(EntityPlayer player, InventoryPlayer inventory) {
 		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
