@@ -22,7 +22,7 @@ public class GuiItemButton extends GuiButton{
 		super(id, xPos, yPos, width, height, displayString);
 		this.itemRenderer = par7;
 		
-		if(itemToRender != null && itemToRender.getItem().getUnlocalizedName().startsWith("tile.")){
+		if(!itemToRender.isEmpty() && itemToRender.getItem().getUnlocalizedName().startsWith("tile.")){
 			this.blockToRender = Block.getBlockFromItem(itemToRender.getItem());
 		}else{
 			this.itemToRender = itemToRender.getItem();
