@@ -463,10 +463,10 @@ public class ConfigurationHandler{
 	
 	public void setupGameRegistry(){
 		registerBlock(mod_SecurityCraft.laserBlock);
-		registerBlock(mod_SecurityCraft.laser, false);
+		GameRegistry.register(mod_SecurityCraft.laser);
 		registerBlock(mod_SecurityCraft.keypad);
 		registerBlock(mod_SecurityCraft.mine);
-		registerBlock(mod_SecurityCraft.mineCut, false);
+		GameRegistry.register(mod_SecurityCraft.mineCut);
 		registerBlock(mod_SecurityCraft.dirtMine);
 		registerBlock(mod_SecurityCraft.stoneMine, false);
 		registerBlock(mod_SecurityCraft.cobblestoneMine, false);
@@ -474,16 +474,16 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.sandMine, false);
 		registerBlock(mod_SecurityCraft.furnaceMine);
 		registerBlock(mod_SecurityCraft.retinalScanner);
-		registerBlock(mod_SecurityCraft.reinforcedDoor, false);
-		registerBlock(mod_SecurityCraft.bogusLava, false);
-		registerBlock(mod_SecurityCraft.bogusLavaFlowing, false);
-		registerBlock(mod_SecurityCraft.bogusWater, false);
-		registerBlock(mod_SecurityCraft.bogusWaterFlowing, false);
+		GameRegistry.register(mod_SecurityCraft.reinforcedDoor);
+		registerBlock(mod_SecurityCraft.bogusLava);
+		registerBlock(mod_SecurityCraft.bogusLavaFlowing);
+		registerBlock(mod_SecurityCraft.bogusWater);
+		registerBlock(mod_SecurityCraft.bogusWaterFlowing);
 		registerBlock(mod_SecurityCraft.keycardReader);
 		registerBlock(mod_SecurityCraft.ironTrapdoor);
 		registerBlock(mod_SecurityCraft.bouncingBetty);
 		registerBlock(mod_SecurityCraft.inventoryScanner);
-		registerBlock(mod_SecurityCraft.inventoryScannerField, false);
+		GameRegistry.register(mod_SecurityCraft.inventoryScannerField);
 		registerBlock(mod_SecurityCraft.trackMine);
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
@@ -491,7 +491,7 @@ public class ConfigurationHandler{
 		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.REDSTONE), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.CHEST)), ItemStack.EMPTY});
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerBlock(mod_SecurityCraft.alarm);
-		registerBlock(mod_SecurityCraft.alarmLit, false);
+		GameRegistry.register(mod_SecurityCraft.alarmLit);
 		registerBlock(mod_SecurityCraft.reinforcedStone);
 		registerBlock(mod_SecurityCraft.reinforcedSandstone, new ItemBlockReinforcedSandstone(mod_SecurityCraft.reinforcedSandstone), true);
 		registerBlock(mod_SecurityCraft.reinforcedDirt);
@@ -517,11 +517,11 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, new ItemBlockReinforcedStainedGlass(mod_SecurityCraft.reinforcedStainedGlass), true);
 		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(mod_SecurityCraft.reinforcedWoodSlabs), true);
-		registerBlock(mod_SecurityCraft.reinforcedDoubleWoodSlabs, false);
+		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleWoodSlabs);
 		registerBlock(mod_SecurityCraft.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(mod_SecurityCraft.reinforcedStoneSlabs), true);
-		registerBlock(mod_SecurityCraft.reinforcedDoubleStoneSlabs, false);
+		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleStoneSlabs);
 		registerBlock(mod_SecurityCraft.protecto);
-		registerBlock(mod_SecurityCraft.scannerDoor, false);
+		GameRegistry.register(mod_SecurityCraft.scannerDoor);
 
 		registerItem(mod_SecurityCraft.codebreaker);
 	    registerItem(mod_SecurityCraft.reinforcedDoorItem);
