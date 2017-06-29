@@ -16,6 +16,7 @@
 - Fix: [1.8.8] Keypad crash
 - Fix: [1.8, 1.8.8] Bouncing Betty can explode when defused
 - Fix: Alarm bounding box is too large for top/bottom alarm
+- Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecuritCraft Manual
 - Removed: [1.10.2, 1.11.2] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2, 1.11.2] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 

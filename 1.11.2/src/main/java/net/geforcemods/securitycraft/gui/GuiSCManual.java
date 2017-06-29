@@ -29,6 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,7 +45,7 @@ public class GuiSCManual extends GuiScreen {
 	
     private List<CustomHoverChecker> hoverCheckers = new ArrayList<CustomHoverChecker>();
     private int currentPage = -1;
-    private ItemStack[] recipe;
+    private NonNullList<ItemStack> recipe;
     int k = -1;
     boolean update = false;
     
@@ -141,13 +142,13 @@ public class GuiSCManual extends GuiScreen {
 	    	if(recipe != null){
 		    	for(int i = 0; i < 3; i++){
 		    		for(int j = 0; j < 3; j++){
-		    			if(((i * 3) + j) >= recipe.length){ break; }
-		    			if(this.recipe[(i * 3) + j].isEmpty()){ continue; }
+		    			if(((i * 3) + j) >= recipe.size()){ break; }
+		    			if(this.recipe.get((i * 3) + j).isEmpty()){ continue; }
 		    			
-		    			if(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock){
-			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+		    			if(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock){
+			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe.get((i * 3) + j).getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock));
 		    			}else{
-			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe[(i * 3) + j].getItem(), this.recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe.get((i * 3) + j).getItem(), this.recipe.get((i * 3) + j).getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock));
 		    			}		    			   
 		    		}
 		    	}
@@ -228,14 +229,28 @@ public class GuiSCManual extends GuiScreen {
 					ShapedRecipes recipe = (ShapedRecipes) object;
 					
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						this.recipe = recipe.recipeItems;
+						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.length, ItemStack.EMPTY);
+						
+						for(int i = 0; i < recipeItems.size(); i++)
+						{
+							recipeItems.set(i, recipe.recipeItems[i]);
+						}
+						
+						this.recipe = recipeItems;
 						break;
 					}
 				}else if(object instanceof ShapelessRecipes){
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 	
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						this.recipe = this.toItemStackArray(recipe.recipeItems);
+						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.size(), ItemStack.EMPTY);
+						
+						for(int i = 0; i < recipeItems.size(); i++)
+						{
+							recipeItems.set(i, recipe.recipeItems.get(i));
+						}
+						
+						this.recipe = recipeItems;
 						break;
 					}
 				}
@@ -251,11 +266,11 @@ public class GuiSCManual extends GuiScreen {
 			{
 				for(int j = 0; j < 3; j++)
 				{
-					if((i * 3) + j == recipe.length)
+					if((i * 3) + j == recipe.size())
 						break outer;
 					
-					if(!recipe[(i * 3) + j].isEmpty())
-						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe[(i * 3) + j].getDisplayName()));	
+					if(!recipe.get((i * 3) + j).isEmpty())
+						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe.get((i * 3) + j).getDisplayName()));	
 				}
 			}
 		}
@@ -292,16 +307,6 @@ public class GuiSCManual extends GuiScreen {
 	    		this.hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, ClientUtils.localize("gui.scManual.customizableBlock"))); 
 	    	}
     	}
-    }
-    
-    private ItemStack[] toItemStackArray(List<?> items){
-    	ItemStack[] array = new ItemStack[9];
-    	
-    	for(int i = 0; i < items.size(); i++){
-    		array[i] = (ItemStack) items.get(i);
-    	}
-    	
-    	return array;
     }
     
 	@SideOnly(Side.CLIENT)

@@ -707,9 +707,24 @@ public class ConfigurationHandler{
 			"GGG", "GNG", "GRG", 'G', Blocks.GLASS, 'R', Items.REDSTONE, 'N', Blocks.NOTEBLOCK
 		});
 		
-//		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
-//			" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.fence_gate
-//		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.ACACIA_FENCE_GATE
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.BIRCH_FENCE_GATE
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.DARK_OAK_FENCE_GATE
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.JUNGLE_FENCE_GATE
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.OAK_FENCE_GATE
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.IRON_INGOT, 'F', Blocks.SPRUCE_FENCE_GATE
+		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.wireCutters, 1), new Object[]{
 			"SI ", "I I", " I ", 'I', Items.IRON_INGOT, 'S', Items.SHEARS

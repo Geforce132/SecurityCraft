@@ -2,12 +2,13 @@ package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class SCManualPage {
 	
 	private Item item;
 	private String helpInfo;
-	private ItemStack[] customRecipe;
+	private NonNullList<ItemStack> customRecipe;
 
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
@@ -15,7 +16,7 @@ public class SCManualPage {
 		this.customRecipe = null;
 	}
 	
-	public SCManualPage(Item item, String helpInfo, ItemStack[] customRecipe){
+	public SCManualPage(Item item, String helpInfo, NonNullList<ItemStack> customRecipe){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.customRecipe = customRecipe;
@@ -33,7 +34,7 @@ public class SCManualPage {
 		return helpInfo;
 	}
 	
-	public ItemStack[] getRecipe() {
+	public NonNullList<ItemStack> getRecipe() {
 		return customRecipe;
 	}
 	
