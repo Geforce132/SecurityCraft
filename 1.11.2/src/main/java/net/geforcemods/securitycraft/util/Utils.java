@@ -28,18 +28,38 @@ public class Utils {
 	
 	public static void setISinTEAppropriately(World par1World, BlockPos pos, NonNullList<ItemStack> contents, String type) {
 		if(par1World.getBlockState(pos).getValue(BlockInventoryScanner.FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.west(2)).getValue(BlockInventoryScanner.FACING) == EnumFacing.EAST){
+			if(contents == null) {
+				((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setContents(NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY));
+				return;
+			}
+			
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setType(type);
 		}
 		else if(par1World.getBlockState(pos).getValue(BlockInventoryScanner.FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.east(2)).getValue(BlockInventoryScanner.FACING) == EnumFacing.WEST){
+			if(contents == null) {
+				((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setContents(NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY));
+				return;
+			}
+
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setType(type);
 		}
 		else if(par1World.getBlockState(pos).getValue(BlockInventoryScanner.FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.north(2)).getValue(BlockInventoryScanner.FACING) == EnumFacing.SOUTH){
+			if(contents == null) {
+				((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setContents(NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY));
+				return;
+			}
+
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setType(type);
 		}
 		else if(par1World.getBlockState(pos).getValue(BlockInventoryScanner.FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == mod_SecurityCraft.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockState(pos.south(2)).getValue(BlockInventoryScanner.FACING) == EnumFacing.NORTH){
+			if(contents == null) {
+				((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setContents(NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY));
+				return;
+			}
+
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setType(type);
 		}

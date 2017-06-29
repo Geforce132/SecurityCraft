@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -167,6 +168,14 @@ public class BlockInventoryScanner extends BlockContainer {
 		}else{
 			return false;
 		}
+    }
+    
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+    	// Removes the contents of the connected inventory scanner.
+    	Utils.setISinTEAppropriately(world, pos, null, ((TileEntityInventoryScanner) world.getTileEntity(pos)).getType());
+
+    	return super.removedByPlayer(state, world, pos, player, willHarvest);
     }
     
     @Override
