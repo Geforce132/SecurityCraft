@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
 	
 	private ModelSecurityCamera modelSecurityCamera;
-	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
+	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
 
 	public TileEntitySecurityCameraRenderer() {
 		this.modelSecurityCamera = new ModelSecurityCamera();
