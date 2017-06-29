@@ -32,6 +32,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -323,4 +324,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		return !(getDisguisedStack(world, pos) != null);
 	}
 
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+	{
+		ItemStack stack = getDisguisedStack(world, pos);
+		
+		return stack == null ? new ItemStack(this) : stack;
+	}
 }

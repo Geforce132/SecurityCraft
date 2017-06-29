@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -300,4 +301,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		return !(getDisguisedStack(world, pos) != null);
 	}
 
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+	{
+		ItemStack stack = getDisguisedStack(world, pos);
+		
+		return stack == null ? new ItemStack(this) : stack;
+	}
 }

@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -218,12 +219,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 
     public int getMetaFromState(IBlockState state)
     {
-    	if(state.getProperties().containsKey(POWERED) && ((Boolean) state.getValue(POWERED)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+    	if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue()){
+    		return (state.getValue(FACING).getIndex() + 6);
     	}else{
     		if(!state.getProperties().containsKey(FACING)) return 15;
     		
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
+    		return state.getValue(FACING).getIndex();
     	}
     }
     
@@ -300,4 +301,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		return !(getDisguisedStack(world, pos) != null);
 	}
 
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+	{
+		ItemStack stack = getDisguisedStack(world, pos);
+		
+		return stack == null ? new ItemStack(this) : stack;
+	}
 }

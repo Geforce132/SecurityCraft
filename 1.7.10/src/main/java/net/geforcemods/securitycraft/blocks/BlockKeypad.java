@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -195,4 +196,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		return !tileEntity.hasModule(EnumCustomModules.DISGUISE);
 	}
 
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
+	{
+		ItemStack stack = getDisplayStack(world, x, y, z);
+		
+		return stack == null ? new ItemStack(this) : stack;
+	}
 }
