@@ -238,7 +238,7 @@ public class ConfigurationHandler{
 	
 		mod_SecurityCraft.frame = new BlockFrame(Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setRegistryName("keypad_frame").setUnlocalizedName("keypadFrame");
 	
-		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setRegistryName("keypad_gurnace").setUnlocalizedName("keypadFurnace");
+		mod_SecurityCraft.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setRegistryName("keypad_furnace").setUnlocalizedName("keypadFurnace");
 	
 	    mod_SecurityCraft.securityCamera = new BlockSecurityCamera(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setRegistryName("security_camera").setUnlocalizedName("securityCamera");
 	
