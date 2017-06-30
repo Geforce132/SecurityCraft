@@ -228,7 +228,7 @@ public class mod_SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 		
-		FMLInterModComms.sendMessage("Waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
+		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");	
 						
 		if(configHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
