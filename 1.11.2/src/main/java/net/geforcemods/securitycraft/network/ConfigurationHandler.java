@@ -122,9 +122,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -140,8 +142,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ConfigurationHandler{
-	private int[]  harmingPotions = {8268, 8236, 16460, 16428};
-	private int[]  healingPotions = {8261, 8229, 16453, 16421};
+	private ItemStack[] harmingPotions = {PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING), 
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_HARMING), 
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HARMING),
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HARMING)};
+	
+	private ItemStack[] healingPotions = {PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING), 
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_HEALING), 
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HEALING),
+			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
 	
 	//******************configuration options
 	public boolean allowCodebreakerItem;
@@ -475,10 +484,10 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.furnaceMine);
 		registerBlock(mod_SecurityCraft.retinalScanner);
 		GameRegistry.register(mod_SecurityCraft.reinforcedDoor);
-		registerBlock(mod_SecurityCraft.bogusLava);
-		registerBlock(mod_SecurityCraft.bogusLavaFlowing);
-		registerBlock(mod_SecurityCraft.bogusWater);
-		registerBlock(mod_SecurityCraft.bogusWaterFlowing);
+		registerBlock(mod_SecurityCraft.bogusLava, false);
+		registerBlock(mod_SecurityCraft.bogusLavaFlowing, false);
+		registerBlock(mod_SecurityCraft.bogusWater, false);
+		registerBlock(mod_SecurityCraft.bogusWaterFlowing, false);
 		registerBlock(mod_SecurityCraft.keycardReader);
 		registerBlock(mod_SecurityCraft.ironTrapdoor);
 		registerBlock(mod_SecurityCraft.bouncingBetty);
@@ -534,8 +543,8 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.keycardLV5);
 		registerItem(mod_SecurityCraft.limitedUseKeycard);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
-		registerItem(mod_SecurityCraft.fWaterBucket);
-		registerItem(mod_SecurityCraft.fLavaBucket);
+		registerItemWithCustomRecipe(mod_SecurityCraft.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.fWaterBucket), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
+		registerItemWithCustomRecipe(mod_SecurityCraft.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.fLavaBucket), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItem(mod_SecurityCraft.universalBlockModifier);
 		registerItem(mod_SecurityCraft.redstoneModule);
 		registerItem(mod_SecurityCraft.whitelistModule);
@@ -683,13 +692,13 @@ public class ConfigurationHandler{
 		
 		for(int i = 0; i < 4; i++){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.fWaterBucket, 1), new Object[]{
-				"P", "B", 'P', new ItemStack(Items.POTIONITEM, 1, harmingPotions[i]), 'B', Items.WATER_BUCKET
+				"P", "B", 'P', harmingPotions[i], 'B', Items.WATER_BUCKET
 			});
 		}
 		
 		for(int i = 0; i < 4; i++){
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.fLavaBucket, 1), new Object[]{
-				"P", "B", 'P', new ItemStack(Items.POTIONITEM, 1, healingPotions[i]), 'B', Items.LAVA_BUCKET
+				"P", "B", 'P', healingPotions[i], 'B', Items.LAVA_BUCKET
 			});
 		}
 		
@@ -963,6 +972,23 @@ public class ConfigurationHandler{
 	private void registerItem(Item item){
 		GameRegistry.register(item);
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info")));
+	}
+	
+	/**
+	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe. 
+	 */
+	private void registerItemWithCustomRecipe(Item item, ItemStack... customRecipe){ 
+		GameRegistry.register(item);
+
+		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
+		
+		for(int i = 0; i < recipeItems.size(); i++)
+		{
+			recipeItems.set(i, customRecipe[i]);
+		}
+		
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info"), recipeItems));
 	}
 	
 	public void setupOtherRegistries(){
