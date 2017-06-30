@@ -15,13 +15,13 @@ import net.minecraft.util.ResourceLocation;
  */
 public enum EnumCustomModules {
 		
-	REDSTONE(mod_SecurityCraft.redstoneModule, "redstoneModule", "Redstone module"),
-	WHITELIST(mod_SecurityCraft.whitelistModule, "whitelistModule", "Whitelist module"),
-	BLACKLIST(mod_SecurityCraft.blacklistModule, "blacklistModule", "Blacklist module"),
-	HARMING(mod_SecurityCraft.harmingModule, "harmingModule", "Harming module"),
-	SMART(mod_SecurityCraft.smartModule, "smartModule", "Smart module"),
-	STORAGE(mod_SecurityCraft.storageModule, "storageModule", "Storage module"),
-	DISGUISE(mod_SecurityCraft.disguiseModule, "disguiseModule", "Disguise module");
+	REDSTONE(mod_SecurityCraft.redstoneModule, "redstone_module", "Redstone module"),
+	WHITELIST(mod_SecurityCraft.whitelistModule, "whitelist_module", "Whitelist module"),
+	BLACKLIST(mod_SecurityCraft.blacklistModule, "blacklist_module", "Blacklist module"),
+	HARMING(mod_SecurityCraft.harmingModule, "harming_module", "Harming module"),
+	SMART(mod_SecurityCraft.smartModule, "smart_module", "Smart module"),
+	STORAGE(mod_SecurityCraft.storageModule, "storage_module", "Storage module"),
+	DISGUISE(mod_SecurityCraft.disguiseModule, "disguise_module", "Disguise module");
 
 	private ItemModule module;
 	private String moduleUnlocalizedName;
