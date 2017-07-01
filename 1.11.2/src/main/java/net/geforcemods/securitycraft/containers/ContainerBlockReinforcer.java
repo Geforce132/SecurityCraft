@@ -106,7 +106,7 @@ public class ContainerBlockReinforcer extends Container
 			}
 
 			if(stack1.getCount() == 0)
-				slot.putStack((ItemStack) null);
+				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
