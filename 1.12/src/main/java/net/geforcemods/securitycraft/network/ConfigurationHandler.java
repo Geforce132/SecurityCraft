@@ -1018,23 +1018,6 @@ public class ConfigurationHandler{
         GameRegistry.addShapedRecipe(output.getItem().getRegistryName(), new ResourceLocation(mod_SecurityCraft.MODID), output, ingredients);
 	}
 	
-	private void addShapelessRecipe(ItemStack output, Object... ingredients)
-	{
-		ItemStack[] stacks = new ItemStack[ingredients.length];
-		
-		for(int i = 0; i < ingredients.length; i++)
-		{
-			if(ingredients[i] instanceof Block)
-				stacks[i] = new ItemStack((Block)ingredients[i]);
-			else if(ingredients[i] instanceof Item)
-				stacks[i] = new ItemStack((Item)ingredients[i]);
-			else
-				stacks[i] = ItemStack.EMPTY;
-		}
-		
-		GameRegistry.addShapelessRecipe(output.getItem().getRegistryName(), new ResourceLocation(mod_SecurityCraft.MODID), output, Ingredient.fromStacks(stacks));
-	}
-	
 	public void setupOtherRegistries(){
 		EnumCustomModules.refresh();
 	}
