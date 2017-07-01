@@ -9,11 +9,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class PacketHelper {
 	
 	public World getWorld(EntityPlayer par1EntityPlayer){
-		return par1EntityPlayer.getEntityWorld().getMinecraftServer().worldServerForDimension(par1EntityPlayer.dimension);
+		return par1EntityPlayer.getEntityWorld().getMinecraftServer().getWorld(par1EntityPlayer.dimension);
 	}
 	
 	public World getWorld(EntityPlayer par1EntityPlayer, Side side){
-		return par1EntityPlayer.getEntityWorld().getMinecraftServer().worldServerForDimension(par1EntityPlayer.dimension);
+		return par1EntityPlayer.getEntityWorld().getMinecraftServer().getWorld(par1EntityPlayer.dimension);
 	}
 	
 	@SideOnly(Side.CLIENT)

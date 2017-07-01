@@ -50,7 +50,7 @@ public class PacketSMountCamera implements IMessage {
 			int y = packet.y;
 			int z = packet.z;
 			int id = packet.id;
-			EntityPlayerMP player = context.getServerHandler().playerEntity;
+			EntityPlayerMP player = context.getServerHandler().player;
 
 			if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera)){
 				((BlockSecurityCamera) BlockUtils.getBlock(getWorld(player), x, y, z)).mountCamera(getWorld(player), x, y, z, id, player);

@@ -61,20 +61,20 @@ public class GuiInventoryScanner extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 
 		if(!this.buttonList.isEmpty()){
-			this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.1"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
-			this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.2"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
+			this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.1"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 38, 4210752);
+			this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.2"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 28, 4210752);
 			
 			if(this.buttonList.get(0).displayString.matches(ClientUtils.localize("gui.invScan.checkInv"))){
-				this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
+				this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);
 			}else{
-				this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
-				this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);	
+				this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.3"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 18, 4210752);
+				this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.4"), this.width / 2 - 83 - (hasStorageModule ? 28 : 0), this.height / 2 - 8, 4210752);	
 			}
 		}else{
 			if(this.tileEntity.getType() != null && this.tileEntity.getType() != ""){
-				this.fontRendererObj.drawString(ClientUtils.localize("gui.invScan.setTo"), this.width / 2 - 83, this.height / 2 - 61, 4210752);
-				this.fontRendererObj.drawString((this.tileEntity.getType().matches("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")), this.width / 2 - 83, this.height / 2 - 51, 4210752);
+				this.fontRenderer.drawString(ClientUtils.localize("gui.invScan.setTo"), this.width / 2 - 83, this.height / 2 - 61, 4210752);
+				this.fontRenderer.drawString((this.tileEntity.getType().matches("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")), this.width / 2 - 83, this.height / 2 - 51, 4210752);
 				
 			}
 		}
@@ -127,14 +127,14 @@ public class GuiInventoryScanner extends GuiContainer {
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-        this.fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.view")), 112, 6, 4210752);
+        this.fontRenderer.drawString("Prohibited Items", 8, 6, 4210752);
+        this.fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.view")), 112, 6, 4210752);
         
         if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj)){
-        	this.fontRendererObj.drawString("Storage", 183, 6, 4210752);
+        	this.fontRenderer.drawString("Storage", 183, 6, 4210752);
         }
         
-        this.fontRendererObj.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, this.ySize - 93, 4210752);
     }
 	
 	@Override

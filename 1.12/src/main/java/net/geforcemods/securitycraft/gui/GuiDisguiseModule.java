@@ -18,7 +18,7 @@ public class GuiDisguiseModule extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		this.fontRendererObj.drawString(ClientUtils.localize("item.disguiseModule.name"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("item.disguiseModule.name")) / 2, 6, 4210752);
+		this.fontRenderer.drawString(ClientUtils.localize("item.disguiseModule.name"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("item.disguiseModule.name")) / 2, 6, 4210752);
 	}
 
 	@Override

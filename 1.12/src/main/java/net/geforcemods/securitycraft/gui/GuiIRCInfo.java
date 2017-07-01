@@ -51,7 +51,7 @@ public class GuiIRCInfo extends GuiContainer
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	fontRendererObj.drawSplitString(ClientUtils.localize("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
+    	fontRenderer.drawSplitString(ClientUtils.localize("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
     }
 
     /**

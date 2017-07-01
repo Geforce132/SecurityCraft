@@ -45,7 +45,7 @@ public class GuiSetPassword extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode")));
 
-		this.keycodeTextbox = new GuiTextField(1, this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
+		this.keycodeTextbox = new GuiTextField(1, this.fontRenderer, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
 
 		this.keycodeTextbox.setTextColor(-1);
 		this.keycodeTextbox.setDisabledTextColour(-1);
@@ -67,7 +67,7 @@ public class GuiSetPassword extends GuiContainer {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.keycodeTextbox.drawTextBox();
-		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
+		this.drawString(this.fontRenderer, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
     }
 
     /**
@@ -77,11 +77,11 @@ public class GuiSetPassword extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
     	
     	//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line. TODO: change to drawSplitString
-    	if(this.fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) >= 170){
-            this.fontRendererObj.drawString(blockName, this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
-            this.fontRendererObj.drawString(ClientUtils.localize("gui.password.setup"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.password.setup")) / 2, 16, 4210752);
+    	if(this.fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) >= 170){
+            this.fontRenderer.drawString(blockName, this.xSize / 2 - this.fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+            this.fontRenderer.drawString(ClientUtils.localize("gui.password.setup"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.password.setup")) / 2, 16, 4210752);
     	}else{
-            this.fontRendererObj.drawString(blockName + " " + ClientUtils.localize("gui.password.setup"), this.xSize / 2 - this.fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, 4210752);
+            this.fontRenderer.drawString(blockName + " " + ClientUtils.localize("gui.password.setup"), this.xSize / 2 - this.fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, 4210752);
     	}
     }
 

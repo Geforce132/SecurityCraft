@@ -70,7 +70,7 @@ public class BlockPortableRadar extends BlockContainer {
         if(!par1World.isRemote){
             double d0 = (mod_SecurityCraft.configHandler.portableRadarSearchRadius);
         	
-            AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
+            AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).contract(-0.0D, -par1World.getHeight(), -0.0D);
             List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
             Iterator<?> iterator = list.iterator();
             EntityPlayer entityplayer;                 

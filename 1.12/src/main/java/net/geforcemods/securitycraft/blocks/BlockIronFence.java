@@ -38,7 +38,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	}
 
 	@Override
-	public boolean canConnectTo(IBlockAccess par1IBlockAccess, BlockPos pos)
+	public boolean canConnectTo(IBlockAccess par1IBlockAccess, BlockPos pos, EnumFacing facing)
 	{
 		Block block = par1IBlockAccess.getBlockState(pos).getBlock();
 

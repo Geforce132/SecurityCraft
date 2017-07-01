@@ -44,13 +44,13 @@ public class GuiKeycardSetup extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
+    	this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.1"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.1")) / 2, 6, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.2"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.3"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.4"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.5"), this.xSize / 2 + 45, 66 - 5, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.6"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.keycardSetup.explanation.7"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
    }
 
 	@Override

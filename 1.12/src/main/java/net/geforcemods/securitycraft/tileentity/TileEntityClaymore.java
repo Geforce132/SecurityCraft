@@ -48,13 +48,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 			
 			if(dir == EnumFacing.NORTH){
-				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
+				axisalignedbb = axisalignedbb.contract(-0, -0, mod_SecurityCraft.configHandler.claymoreRange);
 			}else if(dir == EnumFacing.SOUTH){
-				axisalignedbb = axisalignedbb.addCoord(0, 0, mod_SecurityCraft.configHandler.claymoreRange);
+				axisalignedbb = axisalignedbb.contract(-0, -0, -mod_SecurityCraft.configHandler.claymoreRange);
 			}if(dir == EnumFacing.EAST){
-				axisalignedbb = axisalignedbb.addCoord(mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+				axisalignedbb = axisalignedbb.contract(-mod_SecurityCraft.configHandler.claymoreRange, -0, -0);
 			}else if(dir == EnumFacing.WEST){
-				axisalignedbb = axisalignedbb.addCoord(-mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+				axisalignedbb = axisalignedbb.contract(mod_SecurityCraft.configHandler.claymoreRange, -0, -0);
 			}
 			
 			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);

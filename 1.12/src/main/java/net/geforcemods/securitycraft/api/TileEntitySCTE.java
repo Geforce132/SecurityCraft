@@ -95,7 +95,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	        	double eyeHeight = entity.getEyeHeight();
 	        	boolean isPlayer = (entity instanceof EntityPlayer);
 
-	        	Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
+	        	Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().x * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().y * 5)), (entity.posZ + (entity.getLookVec().z * 5)));
 	        	
 	        	RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
 	        	if(mop != null && mop.typeOfHit == Type.BLOCK){

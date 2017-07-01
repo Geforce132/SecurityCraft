@@ -25,7 +25,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
+	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
 		float rotation = 0F;
 		
 		if(par1TileEntity.hasWorld()){

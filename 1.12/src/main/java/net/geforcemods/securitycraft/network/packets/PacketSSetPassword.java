@@ -49,7 +49,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		String password = packet.password;
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
+		EntityPlayer player = ctx.getServerHandler().player;
 
 		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
 			((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);

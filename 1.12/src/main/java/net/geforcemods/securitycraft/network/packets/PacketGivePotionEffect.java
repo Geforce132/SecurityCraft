@@ -39,7 +39,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@Override
 	public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-		ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true));
+		ctx.getServerHandler().player.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true));
 		return null;
 	}
 	

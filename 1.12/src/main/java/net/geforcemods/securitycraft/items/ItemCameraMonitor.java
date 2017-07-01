@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -103,12 +104,12 @@ public class ItemCameraMonitor extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		if(par1ItemStack.getTagCompound() == null){
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if(stack.getTagCompound() == null){
 			return;
 		}
 
-		par3List.add(ClientUtils.localize("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
+		tooltip.add(ClientUtils.localize("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
 	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {

@@ -36,7 +36,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@Override
 	public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
+		EntityPlayer player = ctx.getServerHandler().player;
 		
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			player.getRidingEntity().rotationYaw = packet.rotationYaw;

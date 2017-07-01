@@ -4,10 +4,11 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -42,7 +43,7 @@ public class ItemKeycardBase extends Item{
     
     @Override
 	@SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {		
+    public void addInformation(ItemStack par1ItemStack, World world, List par3List, ITooltipFlag flagIn) {		
 		if(level == 3){		
 			if(par1ItemStack.getTagCompound() == null){
 				par1ItemStack.setTagCompound(new NBTTagCompound());

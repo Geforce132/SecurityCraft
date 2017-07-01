@@ -50,7 +50,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	@Override
 	public IMessage onMessage(PacketSSetOwner packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
+		EntityPlayer player = ctx.getServerHandler().player;
 		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IOwnable){
 			((IOwnable) getWorld(player).getTileEntity(pos)).getOwner().set(packet.uuid, packet.name);
 		}

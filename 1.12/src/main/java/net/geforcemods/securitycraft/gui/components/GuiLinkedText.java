@@ -21,34 +21,34 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	private int textColor = 16777120;
 	
 	public GuiLinkedText(int id, int xPos, int yPos, String link) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(link), 14, link);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(link), 14, link);
 		url = link;
 	}
 	
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 	}
 	
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString, int color) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 		textColor = color;
 	}
 	
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+	public void drawButton(Minecraft mc, int mouseX, int mouseY, float f) {
         if (this.visible) {
-            FontRenderer fontrenderer = mc.fontRendererObj;
+            FontRenderer fontrenderer = mc.fontRenderer;
             this.mouseDragged(mc, mouseX, mouseY);
 
-            this.drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, textColor);
+            this.drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, textColor);
         }
     }
 	
 	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-		if(this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height) {
+		if(this.enabled && this.visible && mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height) {
 			if (mc.gameSettings.chatLinksPrompt) {
 				mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
             }

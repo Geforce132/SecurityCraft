@@ -140,6 +140,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.GameData;
 
 public class ConfigurationHandler{
 	private ItemStack[] harmingPotions = {PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING), 
@@ -472,10 +473,10 @@ public class ConfigurationHandler{
 	
 	public void setupGameRegistry(){
 		registerBlock(mod_SecurityCraft.laserBlock);
-		GameRegistry.register(mod_SecurityCraft.laser);
+		GameData.register_impl(mod_SecurityCraft.laser);
 		registerBlock(mod_SecurityCraft.keypad);
 		registerBlock(mod_SecurityCraft.mine);
-		GameRegistry.register(mod_SecurityCraft.mineCut);
+		GameData.register_impl(mod_SecurityCraft.mineCut);
 		registerBlock(mod_SecurityCraft.dirtMine);
 		registerBlock(mod_SecurityCraft.stoneMine, false);
 		registerBlock(mod_SecurityCraft.cobblestoneMine, false);
@@ -483,7 +484,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.sandMine, false);
 		registerBlock(mod_SecurityCraft.furnaceMine);
 		registerBlock(mod_SecurityCraft.retinalScanner);
-		GameRegistry.register(mod_SecurityCraft.reinforcedDoor);
+		GameData.register_impl(mod_SecurityCraft.reinforcedDoor);
 		registerBlock(mod_SecurityCraft.bogusLava, false);
 		registerBlock(mod_SecurityCraft.bogusLavaFlowing, false);
 		registerBlock(mod_SecurityCraft.bogusWater, false);
@@ -492,7 +493,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.ironTrapdoor);
 		registerBlock(mod_SecurityCraft.bouncingBetty);
 		registerBlock(mod_SecurityCraft.inventoryScanner);
-		GameRegistry.register(mod_SecurityCraft.inventoryScannerField);
+		GameData.register_impl(mod_SecurityCraft.inventoryScannerField);
 		registerBlock(mod_SecurityCraft.trackMine);
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
@@ -500,7 +501,7 @@ public class ConfigurationHandler{
 		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.REDSTONE), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.CHEST)), ItemStack.EMPTY});
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerBlock(mod_SecurityCraft.alarm);
-		GameRegistry.register(mod_SecurityCraft.alarmLit);
+		GameData.register_impl(mod_SecurityCraft.alarmLit);
 		registerBlock(mod_SecurityCraft.reinforcedStone);
 		registerBlock(mod_SecurityCraft.reinforcedSandstone, new ItemBlockReinforcedSandstone(mod_SecurityCraft.reinforcedSandstone), true);
 		registerBlock(mod_SecurityCraft.reinforcedDirt);
@@ -526,11 +527,11 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
 		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, new ItemBlockReinforcedStainedGlass(mod_SecurityCraft.reinforcedStainedGlass), true);
 		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(mod_SecurityCraft.reinforcedWoodSlabs), true);
-		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleWoodSlabs);
+		GameData.register_impl(mod_SecurityCraft.reinforcedDoubleWoodSlabs);
 		registerBlock(mod_SecurityCraft.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(mod_SecurityCraft.reinforcedStoneSlabs), true);
-		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleStoneSlabs);
+		GameData.register_impl(mod_SecurityCraft.reinforcedDoubleStoneSlabs);
 		registerBlock(mod_SecurityCraft.protecto);
-		GameRegistry.register(mod_SecurityCraft.scannerDoor);
+		GameData.register_impl(mod_SecurityCraft.scannerDoor);
 
 		registerItem(mod_SecurityCraft.codebreaker);
 	    registerItem(mod_SecurityCraft.reinforcedDoorItem);
@@ -940,21 +941,21 @@ public class ConfigurationHandler{
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 */
 	private void registerBlock(Block block, ItemBlock itemBlock, boolean initPage){
-		GameRegistry.register(block);
-		GameRegistry.register(itemBlock.setRegistryName(block.getRegistryName().toString()));
+		GameData.register_impl(block);
+		GameData.register_impl(itemBlock.setRegistryName(block.getRegistryName().toString()));
 		
 		if(initPage)
 			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	/**
-	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
+	 * Registers the given block with GameData.register_implBlock(), and adds the help info for the block to the SecurityCraft manual item.
 	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
 	 * 
 	 */
 	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){ 
-		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName().toString()));
+		GameData.register_impl(block);
+		GameData.register_impl(new ItemBlock(block).setRegistryName(block.getRegistryName().toString()));
 
 		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
 		
@@ -967,19 +968,19 @@ public class ConfigurationHandler{
 	}
 	
 	/**
-	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
 	 */
 	private void registerItem(Item item){
-		GameRegistry.register(item);
+		GameData.register_impl(item);
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info")));
 	}
 	
 	/**
-	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
 	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe. 
 	 */
 	private void registerItemWithCustomRecipe(Item item, ItemStack... customRecipe){ 
-		GameRegistry.register(item);
+		GameData.register_impl(item);
 
 		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
 		

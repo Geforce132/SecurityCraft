@@ -48,7 +48,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	public IMessage onMessage(PacketSSyncTENBTTag packet, MessageContext ctx) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		NBTTagCompound tag = packet.tag;
-		EntityPlayer player = ctx.getServerHandler().playerEntity;
+		EntityPlayer player = ctx.getServerHandler().player;
 		
 		if(getWorld(player).getTileEntity(pos) != null){
 			getWorld(player).getTileEntity(pos).readFromNBT(tag);

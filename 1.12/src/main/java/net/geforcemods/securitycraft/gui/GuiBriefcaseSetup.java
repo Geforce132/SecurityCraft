@@ -37,7 +37,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		this.buttonList.add(this.saveAndContinueButton = new GuiButton(0, this.width / 2 - 48, this.height / 2 + 30 + 10, 100, 20, !this.flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode")));
 
-		this.keycodeTextbox = new GuiTextField(1, this.fontRendererObj, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
+		this.keycodeTextbox = new GuiTextField(1, this.fontRenderer, this.width / 2 - 37, this.height / 2 - 47, 77, 12);
 
 		this.keycodeTextbox.setTextColor(-1);
 		this.keycodeTextbox.setDisabledTextColour(-1);
@@ -59,12 +59,12 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		this.keycodeTextbox.drawTextBox();
-		this.drawString(this.fontRendererObj, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
+		this.drawString(this.fontRenderer, "CODE:", this.width / 2 - 67, this.height / 2 - 47 + 2, 4210752);		
     }
     
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.briefcase.setupTitle")) / 2, 6, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.briefcase.setupTitle"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.briefcase.setupTitle")) / 2, 6, 4210752);
     }
 
 	@Override

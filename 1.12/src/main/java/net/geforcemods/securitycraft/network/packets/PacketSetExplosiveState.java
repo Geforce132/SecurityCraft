@@ -45,7 +45,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	
 	@Override
 	public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
-		EntityPlayer player = context.getServerHandler().playerEntity;
+		EntityPlayer player = context.getServerHandler().player;
 		
 		if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive){
 			if(packet.state.equalsIgnoreCase("activate")){

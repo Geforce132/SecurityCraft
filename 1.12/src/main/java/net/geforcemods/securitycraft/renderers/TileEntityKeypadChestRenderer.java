@@ -37,39 +37,39 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
     }
     
     @Override
-	public void renderTileEntityAt(TileEntityKeypadChest p_180538_1_, double p_180538_2_, double p_180538_4_, double p_180538_6_, float p_180538_8_, int p_180538_9_)
+	public void render(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         int j;
 
-        if (!p_180538_1_.hasWorld())
+        if (!te.hasWorld())
         {
             j = 0;
         }
         else
         {
-            Block block = p_180538_1_.getBlockType();
-            j = p_180538_1_.getBlockMetadata();
+            Block block = te.getBlockType();
+            j = te.getBlockMetadata();
 
             if (block instanceof BlockChest && j == 0)
             {
-                ((BlockChest)block).checkForSurroundingChests(p_180538_1_.getWorld(), p_180538_1_.getPos(), p_180538_1_.getWorld().getBlockState(p_180538_1_.getPos()));
-                j = p_180538_1_.getBlockMetadata();
+                ((BlockChest)block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+                j = te.getBlockMetadata();
             }
 
-            p_180538_1_.checkForAdjacentChests();
+            te.checkForAdjacentChests();
         }
 
-        if (p_180538_1_.adjacentChestZNeg == null && p_180538_1_.adjacentChestXNeg == null)
+        if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null)
         {
             ModelChest modelchest;
 
-            if (p_180538_1_.adjacentChestXPos == null && p_180538_1_.adjacentChestZPos == null)
+            if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
             {
                 modelchest = this.field_147510_h;
 
-                if (p_180538_9_ >= 0)
+                if (destroyStage >= 0)
                 {
-                    this.bindTexture(DESTROY_STAGES[p_180538_9_]);
+                    this.bindTexture(DESTROY_STAGES[destroyStage]);
                     GlStateManager.matrixMode(5890);
                     GlStateManager.pushMatrix();
                     GlStateManager.scale(4.0F, 4.0F, 1.0F);
@@ -82,7 +82,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
                 }
                 else
                 {
-                	if(p_180538_1_.lidAngle >= 0.9){
+                	if(te.lidAngle >= 0.9){
                 		this.bindTexture(normalSingleActive);
                 	}else{
                 		this.bindTexture(normalSingleUnactive);
@@ -93,9 +93,9 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
             {
                 modelchest = this.field_147511_i;
 
-                if (p_180538_9_ >= 0)
+                if (destroyStage >= 0)
                 {
-                    this.bindTexture(DESTROY_STAGES[p_180538_9_]);
+                    this.bindTexture(DESTROY_STAGES[destroyStage]);
                     GlStateManager.matrixMode(5890);
                     GlStateManager.pushMatrix();
                     GlStateManager.scale(8.0F, 4.0F, 1.0F);
@@ -108,7 +108,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
                 }
                 else
                 {
-                	if(p_180538_1_.lidAngle >= 0.9){
+                	if(te.lidAngle >= 0.9){
                 		this.bindTexture(normalDoubleActive);
                 	}else{
                 		this.bindTexture(normalDoubleUnactive);
@@ -119,12 +119,12 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
             GlStateManager.pushMatrix();
             GlStateManager.enableRescaleNormal();
 
-            if (p_180538_9_ < 0)
+            if (destroyStage < 0)
             {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             }
 
-            GlStateManager.translate((float)p_180538_2_, (float)p_180538_4_ + 1.0F, (float)p_180538_6_ + 1.0F);
+            GlStateManager.translate((float)x, (float)y + 1.0F, (float)z + 1.0F);
             GlStateManager.scale(1.0F, -1.0F, -1.0F);
             GlStateManager.translate(0.5F, 0.5F, 0.5F);
             short short1 = 0;
@@ -149,24 +149,24 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
                 short1 = -90;
             }
 
-            if (j == 2 && p_180538_1_.adjacentChestXPos != null)
+            if (j == 2 && te.adjacentChestXPos != null)
             {
                 GlStateManager.translate(1.0F, 0.0F, 0.0F);
             }
 
-            if (j == 5 && p_180538_1_.adjacentChestZPos != null)
+            if (j == 5 && te.adjacentChestZPos != null)
             {
                 GlStateManager.translate(0.0F, 0.0F, -1.0F);
             }
 
             GlStateManager.rotate(short1, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-            float f1 = p_180538_1_.prevLidAngle + (p_180538_1_.lidAngle - p_180538_1_.prevLidAngle) * p_180538_8_;
+            float f1 = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
             float f2;
 
-            if (p_180538_1_.adjacentChestZNeg != null)
+            if (te.adjacentChestZNeg != null)
             {
-                f2 = p_180538_1_.adjacentChestZNeg.prevLidAngle + (p_180538_1_.adjacentChestZNeg.lidAngle - p_180538_1_.adjacentChestZNeg.prevLidAngle) * p_180538_8_;
+                f2 = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
 
                 if (f2 > f1)
                 {
@@ -174,9 +174,9 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
                 }
             }
 
-            if (p_180538_1_.adjacentChestXNeg != null)
+            if (te.adjacentChestXNeg != null)
             {
-                f2 = p_180538_1_.adjacentChestXNeg.prevLidAngle + (p_180538_1_.adjacentChestXNeg.lidAngle - p_180538_1_.adjacentChestXNeg.prevLidAngle) * p_180538_8_;
+                f2 = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
 
                 if (f2 > f1)
                 {
@@ -192,7 +192,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
             GlStateManager.popMatrix();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-            if (p_180538_9_ >= 0)
+            if (destroyStage >= 0)
             {
                 GlStateManager.matrixMode(5890);
                 GlStateManager.popMatrix();

@@ -15,7 +15,7 @@ public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 		 
 		if (block == mod_SecurityCraft.keypadChest)
         {
-            TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
+            TileEntityRendererDispatcher.instance.render(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
         }
         else
         {

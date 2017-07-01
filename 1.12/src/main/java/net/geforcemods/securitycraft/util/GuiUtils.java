@@ -15,12 +15,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -39,11 +39,11 @@ public class GuiUtils{
 	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.localize("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.localize("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+	    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
+	    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
+	    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
+	    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+	    Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.localize("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.localize("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
 	    mc.getTextureManager().bindTexture(cameraDashboard);
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -183,7 +183,7 @@ public class GuiUtils{
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexBuffer = tessellator.getBuffer();//TODO: i am not sure about the vertexBuffer methods, need to check wether they work how they are now
+		BufferBuilder vertexBuffer = tessellator.getBuffer();//TODO: i am not sure about the vertexBuffer methods, need to check wether they work how they are now
 		vertexBuffer.putColorRGBA(0, (int)f1, (int)f2, (int)f3, (int)f);
 		vertexBuffer.putPosition(p_73733_3_, p_73733_2_, zLevel);
 		vertexBuffer.putPosition(p_73733_1_, p_73733_2_, zLevel);

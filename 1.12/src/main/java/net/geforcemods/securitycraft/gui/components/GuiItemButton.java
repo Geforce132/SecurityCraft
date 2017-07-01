@@ -33,29 +33,29 @@ public class GuiItemButton extends GuiButton{
      * Draws this button to the screen.
      */
     @Override
-	public void drawButton(Minecraft par1, int par2, int par3)
+	public void drawButton(Minecraft par1, int par2, int par3, float f)
     {
         if (this.visible)
         {
-            FontRenderer var4 = par1.fontRendererObj;
+            FontRenderer var4 = par1.fontRenderer;
             par1.getTextureManager().bindTexture(BUTTON_TEXTURES);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
             int var5 = this.getHoverState(this.hovered);
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + var5 * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + var5 * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.x, this.y, 0, 46 + var5 * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + var5 * 20, this.width / 2, this.height);
                        
             if(this.blockToRender != null){
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
-	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 3);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.blockToRender), this.xPosition + 2, this.yPosition + 3, "");
+	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.blockToRender), this.x + 2, this.y + 3);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(this.blockToRender), this.x + 2, this.y + 3, "");
             }else{
 	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2);
-	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(this.itemToRender), this.xPosition + 2, this.yPosition + 2, "");
+	            itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(this.itemToRender), this.x + 2, this.y + 2);
+	            itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(this.itemToRender), this.x + 2, this.y + 2, "");
 	            GL11.glDisable(GL11.GL_LIGHTING);
             }
 
@@ -73,7 +73,7 @@ public class GuiItemButton extends GuiButton{
                 var6 = 16777120;
             }
             
-            this.drawCenteredString(var4, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, var6);
+            this.drawCenteredString(var4, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, var6);
         
         }
     }

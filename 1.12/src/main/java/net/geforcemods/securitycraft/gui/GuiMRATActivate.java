@@ -63,7 +63,7 @@ public class GuiMRATActivate extends GuiContainer{
      */
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-        this.fontRendererObj.drawString(TextFormatting.UNDERLINE + ClientUtils.localize("gui.mrat.activate"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.mrat.detonate")) / 2, 6, 4210752);
+        this.fontRenderer.drawString(TextFormatting.UNDERLINE + ClientUtils.localize("gui.mrat.activate"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.mrat.detonate")) / 2, 6, 4210752);
     }
     
 	/**

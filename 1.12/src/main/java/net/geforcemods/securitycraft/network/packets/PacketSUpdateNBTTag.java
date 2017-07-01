@@ -40,8 +40,8 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 
 	@Override
 	public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
-		if(!context.getServerHandler().playerEntity.inventory.getCurrentItem().isEmpty() && context.getServerHandler().playerEntity.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
-			context.getServerHandler().playerEntity.inventory.getCurrentItem().setTagCompound(packet.stack);	
+		if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName)){
+			context.getServerHandler().player.inventory.getCurrentItem().setTagCompound(packet.stack);	
 		}
 		
 		return null;

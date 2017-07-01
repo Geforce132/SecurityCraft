@@ -51,12 +51,12 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 	public IMessage onMessage(PacketSetISType packet, MessageContext context) {
 		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 		
-		((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).setType(packet.type);
+		((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setType(packet.type);
 		
 		mod_SecurityCraft.log("Setting type to " + packet.type);
-		getWorld(context.getServerHandler().playerEntity).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().playerEntity), pos), 1);
+		getWorld(context.getServerHandler().player).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().player), pos), 1);
 		
-		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getType());			
+		Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getType());			
 		
 		return null;
 	}

@@ -47,7 +47,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int x = packet.x;
 		int y = packet.y;
 		int z = packet.z;
-		EntityPlayerMP player = context.getServerHandler().playerEntity;
+		EntityPlayerMP player = context.getServerHandler().player;
 
 		player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
 		return null;

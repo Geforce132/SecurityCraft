@@ -159,7 +159,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
         			if(!((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i).isEmpty()){       				
-        				if(!((EntityItem) entity).getEntityItem().isEmpty()){
+        				if(!((EntityItem) entity).getItem().isEmpty()){
         					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
         				}       					
         			}
@@ -167,7 +167,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
         			if(!((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i).isEmpty()){       				
-        				if(!((EntityItem) entity).getEntityItem().isEmpty()){
+        				if(!((EntityItem) entity).getItem().isEmpty()){
         					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
         				}       					
         			}
@@ -175,7 +175,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
         			if(!((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i).isEmpty()){       				
-        				if(!((EntityItem) entity).getEntityItem().isEmpty()){
+        				if(!((EntityItem) entity).getItem().isEmpty()){
         					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
         				}       					
         			}
@@ -183,7 +183,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
         	}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
         		for(int i = 0; i < 10; i++){
         			if(!((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i).isEmpty()){       				
-        				if(!((EntityItem) entity).getEntityItem().isEmpty()){
+        				if(!((EntityItem) entity).getItem().isEmpty()){
         					checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
         				}       					
         			}
@@ -250,7 +250,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
     }
     
     public static void checkEntity(EntityItem par1EntityItem, ItemStack par2){
-		if(par1EntityItem.getEntityItem().getItem() == par2.getItem()){
+		if(par1EntityItem.getItem().getItem() == par2.getItem()){
 			par1EntityItem.setDead();
 		}
 		

@@ -50,7 +50,7 @@ public class GuiBriefcase extends GuiContainer {
 		this.buttonList.add(continueButton);
 		
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
-			keycodeTextboxes[i] = new GuiTextField(9 + i, this.fontRendererObj, (this.width / 2 - 37) + (i * 20), this.height / 2 - 22, 14, 12);
+			keycodeTextboxes[i] = new GuiTextField(9 + i, this.fontRenderer, (this.width / 2 - 37) + (i * 20), this.height / 2 - 22, 14, 12);
 
 			keycodeTextboxes[i].setTextColor(-1);
 			keycodeTextboxes[i].setDisabledTextColour(-1);
@@ -72,7 +72,7 @@ public class GuiBriefcase extends GuiContainer {
     
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString(ClientUtils.localize("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRendererObj.getStringWidth(ClientUtils.localize("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
+        this.fontRenderer.drawString(ClientUtils.localize("gui.briefcase.enterPasscode"), this.xSize / 2 - this.fontRenderer.getStringWidth(ClientUtils.localize("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
     }
 
 	@Override

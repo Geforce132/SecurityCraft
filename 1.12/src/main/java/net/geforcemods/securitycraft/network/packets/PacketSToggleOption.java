@@ -47,7 +47,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int z = packet.z;
 		BlockPos pos = BlockUtils.toPos(x, y, z);
 		int id = packet.id;
-		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+		EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 	
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
 			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();

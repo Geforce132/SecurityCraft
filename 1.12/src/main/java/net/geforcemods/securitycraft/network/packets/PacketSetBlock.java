@@ -63,7 +63,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		BlockPos pos = BlockUtils.toPos(x, y, z);
 		String blockID = packet.blockID;
 		int meta = packet.meta;
-		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+		EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 	
 		ItemStack[] modules = null;
 		NonNullList<ItemStack> inventory = null;
