@@ -149,7 +149,7 @@ public class GuiSCManual extends GuiScreen {
 		    			if(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock){
 			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
 		    			}else{
-			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
+			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), 0, (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
 		    			}		    			   
 		    		}
 		    	}
