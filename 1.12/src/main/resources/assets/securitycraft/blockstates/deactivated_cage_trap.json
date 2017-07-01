@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "securitycraft:deactivated_cage_trap" }
+        ]
+    }
+}

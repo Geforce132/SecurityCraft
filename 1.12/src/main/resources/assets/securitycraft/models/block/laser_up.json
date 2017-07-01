@@ -1,0 +1,29 @@
+{
+	"parent": "block/block",
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "securitycraft:blocks/ani_laser",
+        "laser": "securitycraft:blocks/ani_laser"
+    },
+    "elements": [
+        {
+            "from": [4,0,4],
+            "to": [12,16,12],
+            "faces": {
+                "west": {
+                    "texture": "#laser"
+                },
+                "east": {
+                    "texture": "#laser"
+                },
+                "north": {
+                    "texture": "#laser"
+                },
+                "south": {
+                    "texture": "#laser"
+                }
+            }
+        }
+    ]
+}

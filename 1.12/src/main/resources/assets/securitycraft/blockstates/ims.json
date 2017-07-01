@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "mines=4": { "model": "securitycraft:ims_4" },
+        "mines=3": { "model": "securitycraft:ims_3" },
+        "mines=2": { "model": "securitycraft:ims_2" },
+        "mines=1": { "model": "securitycraft:ims_1" },
+        "mines=0": { "model": "securitycraft:ims_0" }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "blocks/iron_block",
+        "front": "securitycraft:blocks/keypad_unactive",
+        "side": "blocks/iron_block"
+    }
+}
