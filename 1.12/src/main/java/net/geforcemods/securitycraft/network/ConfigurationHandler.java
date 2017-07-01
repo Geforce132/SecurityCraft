@@ -904,15 +904,36 @@ public class ConfigurationHandler{
 				" RL", " IR", "I  ", 'R', Items.REDSTONE, 'L', mod_SecurityCraft.laserBlock, 'I', Items.IRON_INGOT
 		});
 		
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.dirtMine, 1), new Object[] {Blocks.DIRT, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.stoneMine, 1), new Object[] {Blocks.STONE, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.cobblestoneMine, 1), new Object[] {Blocks.COBBLESTONE, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.diamondOreMine, 1), new Object[] {Blocks.DIAMOND_ORE, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.sandMine, 1), new Object[] {Blocks.SAND, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.furnaceMine, 1), new Object[] {Blocks.FURNACE, mod_SecurityCraft.mine});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalOwnerChanger, 1), new Object[] {mod_SecurityCraft.universalBlockModifier, Items.NAME_TAG});
-        addShapelessRecipe(new ItemStack(mod_SecurityCraft.scannerDoorItem), new Object[]{mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.retinalScanner});
-		addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalKeyChanger), new Object[]{mod_SecurityCraft.universalKeyChanger, mod_SecurityCraft.briefcase});
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.dirtMine, 1), new Object[] {
+        		"DM", 'D', Blocks.DIRT, 'M', mod_SecurityCraft.mine
+        });
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.stoneMine, 1), new Object[] {
+        		"SM", 'S', Blocks.STONE, 'M', mod_SecurityCraft.mine
+        });
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.cobblestoneMine, 1), new Object[] {
+        		"CM", 'C', Blocks.COBBLESTONE, 'M', mod_SecurityCraft.mine
+        });
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.diamondOreMine, 1), new Object[] {
+        		"DM", 'D', Blocks.DIAMOND_ORE, 'M', mod_SecurityCraft.mine
+        });
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.sandMine, 1), new Object[] {
+        		"SM", 'S', Blocks.SAND, 'M', mod_SecurityCraft.mine
+        });
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.furnaceMine, 1), new Object[] {
+        		"FM", 'F', Blocks.FURNACE, 'M', mod_SecurityCraft.mine
+        });
+        
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.universalOwnerChanger, 1), new Object[] {
+        		"UN", 'U', mod_SecurityCraft.universalBlockModifier, 'N', Items.NAME_TAG
+        });
+        
+        addShapedRecipe(new ItemStack(mod_SecurityCraft.scannerDoorItem), new Object[]{
+        		"DS", 'D', mod_SecurityCraft.reinforcedDoorItem, 'S', mod_SecurityCraft.retinalScanner
+        });
+        
+		addShapedRecipe(new ItemStack(mod_SecurityCraft.universalKeyChanger), new Object[]{
+				"UB", 'U', mod_SecurityCraft.universalKeyChanger, 'B', mod_SecurityCraft.briefcase
+		});
 	}
 
 	/**
