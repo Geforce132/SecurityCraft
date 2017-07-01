@@ -39,7 +39,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		if(!this.isDouble()){
 			this.useNeighborBrightness = true;
 		}
-		
+
 		this.setSoundType(SoundType.STONE);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
 	}
@@ -56,14 +56,14 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		if(!itemIn.equals(mod_SecurityCraft.reinforcedDoubleStoneSlabs))
+		if(isDouble)
+			return;
+		
+		for (EnumType et : EnumType.values())
 		{
-            for (EnumType et : EnumType.values())
-            {
-                list.add(new ItemStack(itemIn, 1, et.getMetadata()));
-            }
+			list.add(new ItemStack(this, 1, et.getMetadata()));
 		}
 	}
 

@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
-@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES, updateJSON = mod_SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.11.2]")
+@Mod(modid = mod_SecurityCraft.MODID, name = "SecurityCraft", version = mod_SecurityCraft.VERSION, guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory", dependencies = mod_SecurityCraft.DEPENDENCIES, updateJSON = mod_SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12]")
 @SuppressWarnings({})
 public class mod_SecurityCraft {
 	
@@ -45,9 +45,9 @@ public class mod_SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
 	
-	//TODO ********************************* This is v1.8.2.2 for MC 1.11.2!
+	//TODO ********************************* This is v1.8.2.2 for MC 1.12!
 	protected static final String VERSION = "v1.8.2.2-beta4";
-	protected static final String DEPENDENCIES = "required-after:forge@[13.20.0.2228,)";
+	protected static final String DEPENDENCIES = "required-after:forge@[14.21.1.2387,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")

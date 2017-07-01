@@ -229,7 +229,7 @@ public class GuiSCManual extends GuiScreen {
 					ShapedRecipes recipe = (ShapedRecipes) object;
 					
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.length, ItemStack.EMPTY);
+						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.size(), ItemStack.EMPTY);
 						
 						for(int i = 0; i < recipeItems.size(); i++)
 						{
