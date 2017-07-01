@@ -1,14 +1,14 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 
 public class SCManualPage {
 	
 	private Item item;
 	private String helpInfo;
-	private NonNullList<ItemStack> customRecipe;
+	private NonNullList<Ingredient> customRecipe;
 
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
@@ -16,7 +16,7 @@ public class SCManualPage {
 		this.customRecipe = null;
 	}
 	
-	public SCManualPage(Item item, String helpInfo, NonNullList<ItemStack> customRecipe){
+	public SCManualPage(Item item, String helpInfo, NonNullList<Ingredient> customRecipe){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.customRecipe = customRecipe;
@@ -34,7 +34,7 @@ public class SCManualPage {
 		return helpInfo;
 	}
 	
-	public NonNullList<ItemStack> getRecipe() {
+	public NonNullList<Ingredient> getRecipe() {
 		return customRecipe;
 	}
 	

@@ -24,8 +24,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
@@ -45,7 +46,7 @@ public class GuiSCManual extends GuiScreen {
 	
     private List<CustomHoverChecker> hoverCheckers = new ArrayList<CustomHoverChecker>();
     private int currentPage = -1;
-    private NonNullList<ItemStack> recipe;
+    private NonNullList<Ingredient> recipe;
     int k = -1;
     boolean update = false;
     
@@ -143,12 +144,12 @@ public class GuiSCManual extends GuiScreen {
 		    	for(int i = 0; i < 3; i++){
 		    		for(int j = 0; j < 3; j++){
 		    			if(((i * 3) + j) >= recipe.size()){ break; }
-		    			if(this.recipe.get((i * 3) + j).isEmpty()){ continue; }
+		    			if(recipe.get((i * 3) + j).getMatchingStacks().length == 0 || this.recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty()){ continue; }
 		    			
-		    			if(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock){
-			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe.get((i * 3) + j).getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock));
+		    			if(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock){
+			    	    	GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
 		    			}else{
-			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe.get((i * 3) + j).getItem(), this.recipe.get((i * 3) + j).getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getItem() instanceof ItemBlock));
+			    	    	GuiUtils.drawItemStackToGui(mc, this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(this.recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
 		    			}		    			   
 		    		}
 		    	}
@@ -224,16 +225,19 @@ public class GuiSCManual extends GuiScreen {
 			this.recipe = mod_SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		}
 		else {
-	    	for(Object object : CraftingManager.getInstance().getRecipeList()){
-				if(object instanceof ShapedRecipes){
+	    	for(int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++)
+	    	{
+	    		IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
+
+	    		if(object instanceof ShapedRecipes){
 					ShapedRecipes recipe = (ShapedRecipes) object;
 					
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.size(), ItemStack.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 						
 						for(int i = 0; i < recipeItems.size(); i++)
 						{
-							recipeItems.set(i, recipe.recipeItems[i]);
+							recipeItems.set(i, recipe.recipeItems.get(i));
 						}
 						
 						this.recipe = recipeItems;
@@ -243,7 +247,7 @@ public class GuiSCManual extends GuiScreen {
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 	
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(recipe.recipeItems.size(), ItemStack.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 						
 						for(int i = 0; i < recipeItems.size(); i++)
 						{
@@ -269,8 +273,8 @@ public class GuiSCManual extends GuiScreen {
 					if((i * 3) + j == recipe.size())
 						break outer;
 					
-					if(!recipe.get((i * 3) + j).isEmpty())
-						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe.get((i * 3) + j).getDisplayName()));	
+					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
+						hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe.get((i * 3) + j).getMatchingStacks()[0].getDisplayName()));	
 				}
 			}
 		}

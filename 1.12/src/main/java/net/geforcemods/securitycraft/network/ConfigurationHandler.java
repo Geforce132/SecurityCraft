@@ -957,11 +957,11 @@ public class ConfigurationHandler{
 		GameData.register_impl(block);
 		GameData.register_impl(new ItemBlock(block).setRegistryName(block.getRegistryName().toString()));
 
-		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
+		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(customRecipe.length, Ingredient.EMPTY);
 		
 		for(int i = 0; i < recipeItems.size(); i++)
 		{
-			recipeItems.set(i, customRecipe[i]);
+			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 		}
 		
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info"), recipeItems));
@@ -982,11 +982,11 @@ public class ConfigurationHandler{
 	private void registerItemWithCustomRecipe(Item item, ItemStack... customRecipe){ 
 		GameData.register_impl(item);
 
-		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
+		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(customRecipe.length, Ingredient.EMPTY);
 		
 		for(int i = 0; i < recipeItems.size(); i++)
 		{
-			recipeItems.set(i, customRecipe[i]);
+			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 		}
 		
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info"), recipeItems));
