@@ -28,4 +28,14 @@ public class SecurityCraftGuiFactory implements IModGuiFactory{
 		return null;
 	}
 
+	public boolean hasConfigGui()
+	{
+		return true;
+	}
+
+	public GuiScreen createConfigGui(GuiScreen parentScreen)
+	{
+		return new SecurityCraftConfigGUI(parentScreen);
+	}
+
 }
