@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "K",
+    "F",
+    "P"
+  ],
+  "key": {
+    "K": {
+      "item": "securitycraft:frame"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "P": {
+      "item": "securitycraft:key_panel"
+    }
+  },
+  "result": {
+    "item": "securitycraft:keypad_furnace",
+    "count": 1
+  }
+}

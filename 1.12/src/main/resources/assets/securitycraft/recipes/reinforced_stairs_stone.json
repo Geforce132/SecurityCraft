@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_stone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stairs_stone",
+    "count": 4
+  }
+}

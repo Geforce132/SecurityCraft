@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_planks",
+      "data": 5
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stairs_darkoak",
+    "count": 4
+  }
+}
