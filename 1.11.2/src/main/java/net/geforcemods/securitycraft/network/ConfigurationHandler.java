@@ -907,7 +907,6 @@ public class ConfigurationHandler{
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.furnaceMine, 1), new Object[] {Blocks.FURNACE, mod_SecurityCraft.mine});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalOwnerChanger, 1), new Object[] {mod_SecurityCraft.universalBlockModifier, Items.NAME_TAG});
         GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.scannerDoorItem), new Object[]{mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.retinalScanner});
-		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.universalKeyChanger), new Object[]{mod_SecurityCraft.universalKeyChanger, mod_SecurityCraft.briefcase});
 	}
 
 	/**

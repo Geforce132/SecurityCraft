@@ -926,10 +926,6 @@ public class ConfigurationHandler{
         addShapedRecipe(new ItemStack(mod_SecurityCraft.scannerDoorItem), new Object[]{
         		"DS", 'D', mod_SecurityCraft.reinforcedDoorItem, 'S', mod_SecurityCraft.retinalScanner
         });
-        
-		addShapedRecipe(new ItemStack(mod_SecurityCraft.universalKeyChanger), new Object[]{
-				"UB", 'U', mod_SecurityCraft.universalKeyChanger, 'B', mod_SecurityCraft.briefcase
-		});
 	}
 
 	/**
