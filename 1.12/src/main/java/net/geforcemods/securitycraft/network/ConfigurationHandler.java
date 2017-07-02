@@ -854,10 +854,6 @@ public class ConfigurationHandler{
         	addShapedRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, 15 - i), new Object[]{
         		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.DYE, 1, i)
         	});
-        	
-        	addShapedRecipe(new ItemStack(mod_SecurityCraft.reinforcedGlass, 16, i - 1), new Object[]{
-        		"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
-        	});
         }
 	
         addShapedRecipe(new ItemStack(mod_SecurityCraft.universalBlockReinforcerLvL1, 1), new Object[]{
