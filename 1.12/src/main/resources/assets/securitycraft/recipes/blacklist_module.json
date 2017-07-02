@@ -10,7 +10,8 @@
       "item": "minecraft:iron_ingot"
     },
     "D": {
-      "item": "minecraft:dye"
+      "item": "minecraft:dye",
+      "data": 0
     }
   },
   "result": {
