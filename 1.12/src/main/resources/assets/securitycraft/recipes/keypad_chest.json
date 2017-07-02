@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "P",
+    "R",
+    "C"
+  ],
+  "key": {
+    "P": {
+      "item": "securitycraft:keypad_item"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "securitycraft:keypad_chest",
+    "count": 1
+  }
+}
