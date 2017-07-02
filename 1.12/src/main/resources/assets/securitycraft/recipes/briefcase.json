@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "I": {
+      "item": "minecraft:iron_ingor"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "securitycraft:briefcase",
+    "count": 1
+  }
+}

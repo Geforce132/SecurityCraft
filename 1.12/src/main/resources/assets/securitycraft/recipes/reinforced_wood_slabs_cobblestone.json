@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_cobblestone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stone_slabs",
+    "data": 1,
+    "count": 6
+  }
+}

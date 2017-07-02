@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " DG",
+    "RLD",
+    "SR "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "L": {
+      "item": "securitycraft:laser_block"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_reinforcer_lvl1",
+    "count": 1
+  }
+}
