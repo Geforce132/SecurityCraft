@@ -104,6 +104,9 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onBucketUsed(FillBucketEvent event){
+		if(event.getTarget() == null)
+			return;
+		
 		ItemStack result = fillBucket(event.getWorld(), event.getTarget().getBlockPos());
 		if(result == null){ return; }
 		event.setFilledBucket(result);
