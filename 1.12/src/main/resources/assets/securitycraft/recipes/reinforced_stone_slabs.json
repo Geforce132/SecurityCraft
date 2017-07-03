@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": [
+    	{
+        "item": "securitycraft:reinforced_sandstone",
+        "data": 0
+        },
+        {
+        "item": "securitycraft:reinforced_sandstone",
+        "data": 1
+        },
+        {
+        "item": "securitycraft:reinforced_sandstone",
+        "data": 2
+        }
+    ]
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stone_slabs",
+    "data": 2,
+    "count": 6
+  }
+}

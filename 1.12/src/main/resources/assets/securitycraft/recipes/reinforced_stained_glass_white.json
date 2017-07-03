@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GDG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_glass_block"
+    },
+    "D": {
+      "item": "minecraft:dye",
+	  "data": 15
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stained_glass",
+    "data": 0,
+    "count": 8
+  }
+}
