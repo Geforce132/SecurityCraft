@@ -29,12 +29,12 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		setSoundType(SoundType.METAL);
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor Block
-	 */
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+    {
+    }
+    
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
 		IBlockState state = worldIn.getBlockState(pos);

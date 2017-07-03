@@ -31,12 +31,19 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		setSoundType(SoundType.METAL);
 	}
 
-	/**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor Block
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    {
+    	onNeighborChanged(worldIn, pos, fromPos);
+    }
+
+    /**
+     * Old method, renamed because I am lazy. Called by neighborChanged
+     * @param world The world the change occured in
+     * @param pos The position of this block
+     * @param neighbor The position of the changed block
      */
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+    public void onNeighborChanged(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
 		IBlockState state = worldIn.getBlockState(pos);
@@ -53,7 +60,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
             }
             else if (neighborBlock != this)
             {
-                this.onNeighborChange(world, blockpos1, neighbor);
+                this.onNeighborChanged(world, blockpos1, neighbor);
             }
         }
         else
@@ -104,7 +111,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
                     {
                         worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                        worldIn.playEvent((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
+                        worldIn.playEvent((EntityPlayer)null, flag ? 1005 : 1011, pos, 0);
                     }
                 }
             }
