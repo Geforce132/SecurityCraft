@@ -10,7 +10,7 @@
       "item": "minecraft:iron_ingot"
     },
     "G": {
-      "item": "securitycraft:reinforced_glass"
+      "item": "securitycraft:reinforced_glass_block"
     },
     "R": {
       "item": "minecraft:redstone_block"
