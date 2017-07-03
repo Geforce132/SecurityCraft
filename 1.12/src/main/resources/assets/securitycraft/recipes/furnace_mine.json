@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": {
+  "ingredients": [
     {
       "item": "minecraft:furnace"
     },
     {
       "item": "securitycraft:mine"
     }
-  },
+  ],
   "result": {
     "item": "securitycraft:furnace_mine",
     "count": 1

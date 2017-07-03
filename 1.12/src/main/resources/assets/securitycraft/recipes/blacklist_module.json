@@ -9,6 +9,9 @@
     "I": {
       "item": "minecraft:iron_ingot"
     },
+    "P": {
+      "item": "minecraft:paper"
+    },
     "D": {
       "item": "minecraft:dye",
       "data": 0

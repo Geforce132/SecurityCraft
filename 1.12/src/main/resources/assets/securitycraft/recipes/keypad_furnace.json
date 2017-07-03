@@ -7,13 +7,13 @@
   ],
   "key": {
     "K": {
-      "item": "securitycraft:frame"
+      "item": "securitycraft:keypad_frame"
     },
     "F": {
       "item": "minecraft:furnace"
     },
     "P": {
-      "item": "securitycraft:key_panel"
+      "item": "securitycraft:keypad_item"
     }
   },
   "result": {

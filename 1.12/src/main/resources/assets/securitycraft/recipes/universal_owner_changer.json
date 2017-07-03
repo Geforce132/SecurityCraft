@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": {
-    {
+  "ingredients": [
+  	{
       "item": "securitycraft:universal_block_modifier"
     },
     {
       "item": "minecraft:name_tag"
     }
-  },
+   ],
   "result": {
     "item": "securitycraft:universal_owner_changer",
     "count": 1

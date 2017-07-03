@@ -1,13 +1,14 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": {
+  "ingredients": [
     {
-      "item": "minecraft:sand"
+      "item": "minecraft:sand",
+      "data": 0
     },
     {
       "item": "securitycraft:mine"
     }
-  },
+  ],
   "result": {
     "item": "securitycraft:sand_mine",
     "count": 1

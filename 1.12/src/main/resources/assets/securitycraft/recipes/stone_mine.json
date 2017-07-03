@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "ingredients": {
+  "ingredients": [
     {
       "item": "minecraft:stone"
     },
     {
       "item": "securitycraft:mine"
     }
-  },
+  ],
   "result": {
     "item": "securitycraft:stone_mine",
     "count": 1
