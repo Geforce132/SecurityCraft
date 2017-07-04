@@ -12,12 +12,12 @@
     },
     "D": {
       "item": "minecraft:dye",
-	  "data": 15
+	  "data": 8
     }
   },
   "result": {
     "item": "securitycraft:reinforced_stained_glass",
-    "data": 0,
+    "data": 7,
     "count": 8
   }
 }

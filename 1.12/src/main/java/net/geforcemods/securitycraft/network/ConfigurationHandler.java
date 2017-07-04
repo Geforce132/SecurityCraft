@@ -850,13 +850,7 @@ public class ConfigurationHandler{
         addShapedRecipe(new ItemStack(mod_SecurityCraft.securityCamera, 1), new Object[]{
         	"III", "GRI", "IIS", 'I', Items.IRON_INGOT, 'G', mod_SecurityCraft.reinforcedGlass, 'R', Blocks.REDSTONE_BLOCK, 'S', Items.STICK
         });
-
-        for(int i = 0; i < 16; i++){
-        	addShapedRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, 15 - i), new Object[]{
-        		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.DYE, 1, i)
-        	});
-        }
-	
+        
         addShapedRecipe(new ItemStack(mod_SecurityCraft.universalBlockReinforcerLvL1, 1), new Object[]{
         		" DG", "RLD", "SR ", 'G', Blocks.GLASS, 'D', Items.DIAMOND, 'L', mod_SecurityCraft.laserBlock, 'R', Items.REDSTONE, 'S', Items.STICK
         });
