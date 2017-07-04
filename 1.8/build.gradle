@@ -27,7 +27,7 @@ minecraft {
 }
 
 dependencies {
-    compile files('lib/Waila-1.6.0_B1_1.8.1.jar')
+    compile files('lib/Waila-1.6.0-B2_1.8.jar')
 }
 
 task deobfJar(type: Jar) {

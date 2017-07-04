@@ -27,7 +27,7 @@ minecraft {
 }
 
 dependencies {
-    compile files('lib/LookingGlass-1.7.10-0.2.0.00.jar', 'lib/Waila-1.5.10_1.7.10.jar')
+    compile files('lib/LookingGlass-1.7.10-0.2.0.01.jar', 'lib/Waila-1.5.10_1.7.10.jar')
 }
 
 task deobfJar(type: Jar) {

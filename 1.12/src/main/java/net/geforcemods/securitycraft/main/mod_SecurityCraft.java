@@ -46,7 +46,7 @@ public class mod_SecurityCraft {
 	private static final String MOTU = "Finally! Cameras!";
 	
 	//TODO ********************************* This is v1.8.2.2 for MC 1.12!
-	protected static final String VERSION = "v1.8.2.2-beta4";
+	protected static final String VERSION = "v1.8.2.2";
 	protected static final String DEPENDENCIES = "required-after:forge@[14.21.1.2387,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	
