@@ -104,7 +104,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
                     {
                         worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                        worldIn.playEvent((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
+                        worldIn.playEvent((EntityPlayer)null, flag ? 1005 : 1011, pos, 0);
                     }
                 }
             }
