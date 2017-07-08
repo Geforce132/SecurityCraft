@@ -84,7 +84,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			int i = this.pos.getX();
 	        int j = this.pos.getY();
 	        int k = this.pos.getZ();
-	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, (i), (j), (k)).expand(5, 5, 5));
+	        AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, (i), (j), (k)).grow(5, 5, 5));
 	        List<?> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 	        Iterator<?> iterator = list.iterator();
 	        EntityLivingBase entity;

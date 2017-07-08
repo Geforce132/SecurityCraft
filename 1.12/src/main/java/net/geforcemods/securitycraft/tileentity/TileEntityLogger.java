@@ -33,7 +33,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public void logPlayers(){
 		double d0 = mod_SecurityCraft.configHandler.usernameLoggerSearchRadius;
 		
-		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
+		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(d0, d0, d0);
         List<?> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
         Iterator<?> iterator = list.iterator();
         
