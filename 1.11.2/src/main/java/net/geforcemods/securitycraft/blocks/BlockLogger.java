@@ -33,12 +33,13 @@ public class BlockLogger extends BlockContainer {
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
-	
-    public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-    	if(par1World.isRemote){
+
+	@Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+    	if(worldIn.isRemote){
     		return true;
     	}else{
-    		par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+    		playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
     		return true;
     	}
     }

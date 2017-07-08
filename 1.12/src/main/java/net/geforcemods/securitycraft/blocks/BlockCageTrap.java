@@ -88,6 +88,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() - 1, mod_SecurityCraft.unbreakableIronBars);	
 
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
+				setTileEntities(world, pos.getX(), pos.getY(), pos.getZ(), ((IOwnable)world.getTileEntity(pos)).getOwner().getUUID(), ((IOwnable)world.getTileEntity(pos)).getOwner().getName());
 
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 				
@@ -125,5 +126,50 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityCageTrap().intersectsEntities();
 	}
-    
+
+	public void setTileEntities(World par1World, int par2, int par3, int par4, String uuid, String name)
+	{
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3, par4))).getOwner().set(uuid, name);
+
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4))).getOwner().set(uuid, name);	
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4))).getOwner().set(uuid, name);	
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4 + 1))).getOwner().set(uuid, name);	
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
+		
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
+
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4))).getOwner().set(uuid, name);
+
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
+		
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4 + 1))).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
+	}
 }

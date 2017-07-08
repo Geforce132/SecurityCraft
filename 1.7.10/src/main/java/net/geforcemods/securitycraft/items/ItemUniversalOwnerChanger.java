@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -63,18 +65,31 @@ public class ItemUniversalOwnerChanger extends Item
 				return false;
 			}
 
-			if(world.getBlock(x, y, z) instanceof BlockReinforcedDoor)
+			boolean door = false;
+			boolean updateTop = true;
+			
+			if(world.getBlock(x, y, z) instanceof BlockReinforcedDoor || world.getBlock(x, y, z) instanceof BlockScannerDoor)
 			{
-				if(world.getBlock(x, y + 1, z) instanceof BlockReinforcedDoor)
+				door = true;
+				((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+				
+				if(world.getBlock(x, y + 1, z) instanceof BlockReinforcedDoor || world.getBlock(x, y + 1, z) instanceof BlockScannerDoor)
 					((IOwnable)world.getTileEntity(x, y + 1, z)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				else
+				else if(world.getBlock(x, y - 1, z) instanceof BlockReinforcedDoor || world.getBlock(x, y - 1, z) instanceof BlockScannerDoor)
+				{
 					((IOwnable)world.getTileEntity(x, y - 1, z)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+					updateTop = false;
+				}
 			}
-
+			
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
+			
+			if(door)
+				MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(x, updateTop ? y + 1 : y - 1, z)).getDescriptionPacket());
+			
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), EnumChatFormatting.GREEN);
 			return true;
 		}

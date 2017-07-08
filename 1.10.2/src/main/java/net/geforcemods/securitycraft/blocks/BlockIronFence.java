@@ -64,7 +64,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity));
+			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)

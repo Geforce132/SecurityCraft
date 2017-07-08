@@ -55,9 +55,7 @@ public class BlockCageTrap extends BlockOwnable {
 	}
 
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(par1World.isRemote){
-			return;
-		}else{
+		if(!par1World.isRemote){
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) par1World.getTileEntity(par2, par3, par4);
 			boolean isPlayer = par5Entity instanceof EntityPlayer;
 			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
@@ -82,7 +80,7 @@ public class BlockCageTrap extends BlockOwnable {
 				BlockUtils.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
 				setTileEntities(par1World, par2, par3, par4, originalTrap.getOwner().getUUID(), originalTrap.getOwner().getName());
 
-				par1World.playSoundEffect((double) par2,(double) par3,(double) par4, "random.anvil_use", 3.0F, 1.0F);
+				par1World.playSoundEffect(par2,par3,par4, "random.anvil_use", 3.0F, 1.0F);
 				
 				if(isPlayer)
 					MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) par5Entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(par2, par3, par4))));
@@ -141,6 +139,11 @@ public class BlockCageTrap extends BlockOwnable {
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 1, par4 - 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 2, par4 - 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 3, par4 - 1)).getOwner().set(uuid, name);
+		
+		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4 + 1)).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4 - 1)).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4 + 1)).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4 - 1)).getOwner().set(uuid, name);
 	}
 	
 	public TileEntity createNewTileEntity(World var1, int var2) {

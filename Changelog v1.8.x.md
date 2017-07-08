@@ -1,3 +1,13 @@
+--------------------------Changelog for v1.8.2.3 of SecurityCraft--------------------------
+
+- Fix: Recipe for Reinforced Glass does not show up in the SecurityCraft Manual
+- Fix: WAILA does not update the new owner of a door when changed with a Universal Owner Changer
+- Fix: Both halfs of a Scanner Door can have different owners
+- Fix: Cage Trap can be escaped
+- Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
+- Fix: [1.8+] Reinforced Iron Fence does not damage players
+- Fix: [1.10.2+] Username Logger cannot be opened
+
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
 
 - Ported to 1.10.2, 1.11.2, and 1.12
@@ -5,8 +15,8 @@
 - New: The Cage Trap can now be set to capture hostile mobs via the Universal Block Modifier
 - New: Information about needing the Redstone Module for the Security Camera
 - New: Discord tip
-- New: [1.10.2, 1.11.2, 1.12] Stained Reinforced Glass now colors beacon beams
-- Change: [1.10.2, 1.11.2, 1.12] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
+- New: [1.10.2+] Stained Reinforced Glass now colors beacon beams
+- Change: [1.10.2+] Recipes with Reinforced Glass Panes now use normal Reinforced Glass
 - Change: [1.7.10] If you use LookingGlass, you now need at least version 0.2.0.01 of it to play
 - Fix: Crash when adding an empty Disguise Module to a Keypad
 - Fix: Missing German language strings
@@ -20,8 +30,8 @@
 - Fix: Alarm bounding box is too large for top/bottom alarm
 - Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecuritCraft Manual
 - Fix: Pick block does not work on Keypads
-- Removed: [1.10.2, 1.11.2, 1.12] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
-- Removed: [1.10.2, 1.11.2, 1.12] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
+- Removed: [1.10.2+] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
+- Removed: [1.10.2+] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
 --------------------------Changelog for v1.8.2.1 of SecurityCraft--------------------------
 

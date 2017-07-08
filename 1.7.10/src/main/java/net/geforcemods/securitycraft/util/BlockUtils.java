@@ -43,6 +43,11 @@ public class BlockUtils{
 		par1World.setBlock(par2 - 1, par3 + 1, par4 - 1, par5);
 		par1World.setBlock(par2 - 1, par3 + 2, par4 - 1, par5);
 		par1World.setBlock(par2 - 1, par3 + 3, par4 - 1, par5);
+		
+		par1World.setBlock(par2 + 1, par3 + 4, par4 + 1, par5);
+		par1World.setBlock(par2 + 1, par3 + 4, par4 - 1, par5);
+		par1World.setBlock(par2 - 1, par3 + 4, par4 + 1, par5);
+		par1World.setBlock(par2 - 1, par3 + 4, par4 - 1, par5);
 	}
 
 	/**

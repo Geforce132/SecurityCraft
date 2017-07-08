@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -58,18 +60,31 @@ public class ItemUniversalOwnerChanger extends Item
 				return EnumActionResult.FAIL;
 			}
 
-			if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor)
+			boolean door = false;
+			boolean updateTop = true;
+			
+			if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos) instanceof BlockScannerDoor)
 			{
-				if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor)
+				door = true;
+				((IOwnable)world.getTileEntity(pos)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+				
+				if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.up()) instanceof BlockScannerDoor)
 					((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				else
-					((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+				else if(BlockUtils.getBlock(world, pos.down()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.down()) instanceof BlockScannerDoor)
+				{
+					((IOwnable)world.getTileEntity(pos.down())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+					updateTop = false;
+				}
 			}
 
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			
+			if(door)
+				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
+			
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return EnumActionResult.SUCCESS;
 		}

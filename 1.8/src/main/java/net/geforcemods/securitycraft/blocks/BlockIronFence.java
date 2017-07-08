@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -57,7 +58,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		//owner check
 		else if(entity instanceof EntityPlayer)
 		{
-			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity));
+			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
 				return;
 		}
 		else if(entity instanceof EntityCreeper)
