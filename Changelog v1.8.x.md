@@ -2,7 +2,7 @@
 
 - Fix: Recipe for Reinforced Glass does not show up in the SecurityCraft Manual
 - Fix: WAILA does not update the new owner of a door when changed with a Universal Owner Changer
-- Fix: Both halfs of a Scanner Door can have different owners
+- Fix: Both halves of a Scanner Door can have different owners
 - Fix: Cage Trap can be escaped
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
