@@ -31,11 +31,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		setSoundType(SoundType.METAL);
 	}
 
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
-    {
-    }
-    
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
