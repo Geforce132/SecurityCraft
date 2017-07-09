@@ -73,7 +73,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
 	}
 
 	@Override

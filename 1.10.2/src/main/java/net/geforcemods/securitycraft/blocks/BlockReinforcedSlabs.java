@@ -195,7 +195,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
 	}
 
 	@Override
