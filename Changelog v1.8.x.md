@@ -4,6 +4,7 @@
 - Fix: WAILA does not update the new owner of a door when changed with a Universal Owner Changer
 - Fix: Both halves of a Scanner Door can have different owners
 - Fix: Cage Trap can be escaped
+- Fix: Taser can tase the player who shot
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
 - Fix: [1.10.2+] Username Logger cannot be opened
