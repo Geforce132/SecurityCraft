@@ -56,7 +56,7 @@ public class EntityTaserBullet extends EntityThrowable {
 			{
 				if(par1MovingObjectPosition.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1MovingObjectPosition.entityHit).capabilities.isCreativeMode)
+					if(((EntityPlayer)par1MovingObjectPosition.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1MovingObjectPosition.entityHit == getThrower())
 						return;
 				}
 

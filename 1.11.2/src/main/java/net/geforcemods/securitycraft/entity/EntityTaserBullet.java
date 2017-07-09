@@ -55,7 +55,7 @@ public class EntityTaserBullet extends EntityThrowable {
 			{
 				if(par1RayTraceResult.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode)
+					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1RayTraceResult.entityHit == getThrower())
 						return;
 				}
 
