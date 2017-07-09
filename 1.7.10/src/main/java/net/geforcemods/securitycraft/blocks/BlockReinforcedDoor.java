@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -162,10 +163,99 @@ public class BlockReinforcedDoor extends BlockContainer{
             }else{
                 boolean flag1 = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4);
 
-                if ((flag1 || par5Block.canProvidePower()) && par5Block != this){
-                	if(hasActiveKeypadNextTo(par1World, par2, par3, par4) || hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveReaderNextTo(par1World, par2, par3, par4) || hasActiveReaderNextTo(par1World, par2, par3 + 1, par4) || hasActiveScannerNextTo(par1World, par2, par3, par4) || hasActiveScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveLaserNextTo(par1World, par2, par3, par4) || hasActiveLaserNextTo(par1World, par2, par3 + 1, par4)){
-                		this.func_150014_a(par1World, par2, par3, par4, flag1);         
-                	}else if(!flag1){
+                if ((flag1 || par5Block.canProvidePower()) && par5Block != this)
+                {
+                	int position = -1;
+                	
+                	if(hasActiveKeypadNextTo(par1World, par2, par3, par4))
+                		position = getActiveKeypadNextTo(par1World, par2, par3, par4);
+
+                	if(hasActiveInventoryScannerNextTo(par1World, par2, par3, par4))
+                		position = getActiveInventoryScannerNextTo(par1World, par2, par3, par4);
+
+                	if(hasActiveReaderNextTo(par1World, par2, par3, par4))
+                		position = getActiveReaderNextTo(par1World, par2, par3, par4);
+
+                	if(hasActiveScannerNextTo(par1World, par2, par3, par4))
+                		position = getActiveScannerNextTo(par1World, par2, par3, par4);
+                	
+                	if(hasActiveLaserNextTo(par1World, par2, par3, par4))
+                		position = getActiveLaserNextTo(par1World, par2, par3, par4);
+                	
+                	if(position != -1)
+                	{
+                		int x = par2;
+                		int y = par3;
+                		int z = par4;
+                		
+                		switch(position)
+                		{
+                			case 0:
+                				x++;
+                				break;
+                			case 1:
+                				x--;
+                				break;
+                			case 2:
+                				z++;
+                				break;
+                			case 3:
+                				z--;
+                		}
+                		
+                		if(!((IOwnable)par1World.getTileEntity(x, y, z)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4)))
+                			return;
+                		
+                		this.func_150014_a(par1World, par2, par3, par4, flag1);
+                		return;
+                	}
+                	
+                	
+                	if(hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4))
+                		position = getActiveKeypadNextTo(par1World, par2, par3 + 1, par4);
+
+                	if(hasActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4))
+                		position = getActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4);
+
+                	if(hasActiveReaderNextTo(par1World, par2, par3 + 1, par4))
+                		position = getActiveReaderNextTo(par1World, par2, par3 + 1, par4);
+
+                	if(hasActiveScannerNextTo(par1World, par2, par3 + 1, par4))
+                		position = getActiveScannerNextTo(par1World, par2, par3 + 1, par4);
+                	
+                	if(hasActiveLaserNextTo(par1World, par2, par3 + 1, par4))
+                		position = getActiveLaserNextTo(par1World, par2, par3 + 1, par4);
+                	
+                	if(position != -1)
+                	{
+                		int x = par2;
+                		int y = par3 + 1;
+                		int z = par4;
+                		
+                		switch(position)
+                		{
+                			case 0:
+                				x++;
+                				break;
+                			case 1:
+                				x--;
+                				break;
+                			case 2:
+                				z++;
+                				break;
+                			case 3:
+                				z--;
+                		}
+                		
+                		if(!((IOwnable)par1World.getTileEntity(x, y, z)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3 + 1, par4)))
+                			return;
+                		
+                		this.func_150014_a(par1World, par2, par3, par4, flag1);
+                		return;
+                	}
+                	
+                	if(!flag1)
+                	{
                 		this.func_150014_a(par1World, par2, par3, par4, flag1);         
                 	}
                 }
@@ -195,6 +285,20 @@ public class BlockReinforcedDoor extends BlockContainer{
     	}
 	}
     
+    private int getActiveLaserNextTo(World par1World, int par2, int par3, int par4) {
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 + 1, par3, par4) == 2){
+    		return 0;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 - 1, par3, par4) == 2){
+    		return 1;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
+    		return 2;
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 - 1) == 2){
+    		return 3;
+    	}else{
+    		return -1;
+    	}
+	}
+    
     private boolean hasActiveScannerNextTo(World par1World, int par2, int par3, int par4) {
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
     		return true;
@@ -209,6 +313,20 @@ public class BlockReinforcedDoor extends BlockContainer{
     	}
 	}
 
+    private int getActiveScannerNextTo(World par1World, int par2, int par3, int par4) {
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
+    		return 0;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
+    		return 1;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
+    		return 2;
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
+    		return 3;
+    	}else{
+    		return -1;
+    	}
+	}
+    
 	private boolean hasActiveKeypadNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
     		return true;
@@ -223,6 +341,20 @@ public class BlockReinforcedDoor extends BlockContainer{
     	}
     }
     
+	private int getActiveKeypadNextTo(World par1World, int par2, int par3, int par4){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
+    		return 0;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
+    		return 1;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
+    		return 2;
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
+    		return 3;
+    	}else{
+    		return -1;
+    	}
+    }
+	
     private boolean hasActiveReaderNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
     		return true;
@@ -237,6 +369,20 @@ public class BlockReinforcedDoor extends BlockContainer{
     	}
     }
     
+    private int getActiveReaderNextTo(World par1World, int par2, int par3, int par4){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
+    		return 0;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
+    		return 1;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
+    		return 2;
+    	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
+    		return 3;
+    	}else{
+    		return -1;
+    	}
+    }
+    
     private boolean hasActiveInventoryScannerNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).shouldProvidePower()){
     		return true;
@@ -248,6 +394,20 @@ public class BlockReinforcedDoor extends BlockContainer{
     		return true;
     	}else{
     		return false;
+    	}
+    }
+    
+    private int getActiveInventoryScannerNextTo(World par1World, int par2, int par3, int par4){
+    	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).shouldProvidePower()){
+    		return 0;
+    	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).shouldProvidePower()){
+    		return 1;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).shouldProvidePower()){
+    		return 2;
+    	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).shouldProvidePower()){
+    		return 3;
+    	}else{
+    		return -1;
     	}
     }
     
