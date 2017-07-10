@@ -10,6 +10,7 @@
 - Fix: [1.10.2+] Username Logger cannot be opened
 - Fix: [1.10.2+] Reinforced Stairs are turned incorrectly when placed upside down
 - Fix: [1.10.2+] Upside down Reinforced Slabs show up incorrectly in WAILA
+- Fix: [1.10.2+] Wrong Fake Liquids recipes showing up in the SecuritCraft Manual
 - Fix: [1.12] Blocks scanning for players/mobs do not work correctly
 
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------

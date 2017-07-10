@@ -545,8 +545,8 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.keycardLV5);
 		registerItem(mod_SecurityCraft.limitedUseKeycard);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
-		registerItemWithCustomRecipe(mod_SecurityCraft.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.fWaterBucket), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
-		registerItemWithCustomRecipe(mod_SecurityCraft.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.fLavaBucket), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
+		registerItemWithCustomRecipe(mod_SecurityCraft.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.WATER_BUCKET), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
+		registerItemWithCustomRecipe(mod_SecurityCraft.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.LAVA_BUCKET), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItem(mod_SecurityCraft.universalBlockModifier);
 		registerItem(mod_SecurityCraft.redstoneModule);
 		registerItem(mod_SecurityCraft.whitelistModule);

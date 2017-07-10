@@ -542,8 +542,8 @@ public class ConfigurationHandler{
 		registerItem(mod_SecurityCraft.keycardLV5);
 		registerItem(mod_SecurityCraft.limitedUseKeycard);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
-		registerItemWithCustomRecipe(mod_SecurityCraft.fWaterBucket, new ItemStack[]{ null, harmingPotions[0], null, null, ItemUtils.toItemStack(mod_SecurityCraft.fWaterBucket), null, null, null, null});
-		registerItemWithCustomRecipe(mod_SecurityCraft.fLavaBucket, new ItemStack[]{ null, healingPotions[0], null, null, ItemUtils.toItemStack(mod_SecurityCraft.fLavaBucket), null, null, null, null});
+		registerItemWithCustomRecipe(mod_SecurityCraft.fWaterBucket, new ItemStack[]{ null, harmingPotions[0], null, null, ItemUtils.toItemStack(Items.WATER_BUCKET), null, null, null, null});
+		registerItemWithCustomRecipe(mod_SecurityCraft.fLavaBucket, new ItemStack[]{ null, healingPotions[0], null, null, ItemUtils.toItemStack(Items.LAVA_BUCKET), null, null, null, null});
 		registerItem(mod_SecurityCraft.universalBlockModifier);
 		registerItem(mod_SecurityCraft.redstoneModule);
 		registerItem(mod_SecurityCraft.whitelistModule);
