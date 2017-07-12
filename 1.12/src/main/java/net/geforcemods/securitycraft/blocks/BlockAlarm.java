@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAlarm extends BlockOwnable {
-	
+
 	public final boolean isLit;
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 

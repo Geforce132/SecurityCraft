@@ -50,69 +50,41 @@ public class ContainerBlockReinforcer extends Container
 
 		if(stack != null)
 		{
-			String name = stack.getItem().getUnlocalizedName();
-
-			if(name.equals(Item.getItemFromBlock(Blocks.dirt).getUnlocalizedName()) || name.equals(Item.getItemFromBlock(Blocks.grass).getUnlocalizedName()))
+			Item item = stack.getItem();
+			ItemStack newStack = null;
+			
+			if(item.equals(Item.getItemFromBlock(Blocks.dirt)) || item.equals(Item.getItemFromBlock(Blocks.grass)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
+			else if(item.equals(Item.getItemFromBlock(Blocks.stone)))
 			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				stack.setItemDamage(0);
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.stone).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
+			else if(item.equals(Item.getItemFromBlock(Blocks.planks)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
+			else if(item.equals(Item.getItemFromBlock(Blocks.glass)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
+			else if(item.equals(Item.getItemFromBlock(Blocks.glass_pane)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlassPane);
+			else if(item.equals(Item.getItemFromBlock(Blocks.cobblestone)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
+			else if(item.equals(Item.getItemFromBlock(Blocks.iron_bars)))
+				newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
+			else if(item.equals(Item.getItemFromBlock(Blocks.sandstone)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
+			else if(item.equals(Item.getItemFromBlock(Blocks.stonebrick)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedStoneBrick);
+			else if(item.equals(Item.getItemFromBlock(Blocks.mossy_cobblestone)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedMossyCobblestone);
+			else if(item.equals(Item.getItemFromBlock(Blocks.brick_block)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedBrick);
+			else if(item.equals(Item.getItemFromBlock(Blocks.nether_brick)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedNetherBrick);
+			else if(item.equals(Item.getItemFromBlock(Blocks.hardened_clay)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedHardenedClay);
 
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.planks).getUnlocalizedName()))
+			if(newStack != null)
 			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
-
-				newStack.stackSize = stack.stackSize;
-				newStack.setItemDamage(stack.getItemDamage());
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass_pane).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedGlassPane);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.cobblestone).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.iron_bars).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
-
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
-			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.sandstone).getUnlocalizedName()))
-			{
-				ItemStack newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
-
 				newStack.stackSize = stack.stackSize;
 				newStack.setItemDamage(stack.getItemDamage());
 				blockReinforcer.damageItem(stack.stackSize, player);
@@ -249,17 +221,22 @@ public class ContainerBlockReinforcer extends Container
 		@Override
 		public boolean isItemValid(ItemStack stack)
 		{
-			String name = stack.getItem().getUnlocalizedName();
+			Item item = stack.getItem();
 
-			return (name.equals(Item.getItemFromBlock(Blocks.dirt).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.grass).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.stone).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.planks).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.glass).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.glass_pane).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.cobblestone).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.iron_bars).getUnlocalizedName()) ||
-					name.equals(Item.getItemFromBlock(Blocks.sandstone).getUnlocalizedName())) &&
+			return (item.equals(Item.getItemFromBlock(Blocks.dirt)) ||
+					item.equals(Item.getItemFromBlock(Blocks.grass)) ||
+					item.equals(Item.getItemFromBlock(Blocks.stone)) ||
+					item.equals(Item.getItemFromBlock(Blocks.planks)) ||
+					item.equals(Item.getItemFromBlock(Blocks.glass)) ||
+					item.equals(Item.getItemFromBlock(Blocks.glass_pane)) ||
+					item.equals(Item.getItemFromBlock(Blocks.cobblestone)) ||
+					item.equals(Item.getItemFromBlock(Blocks.iron_bars)) ||
+					item.equals(Item.getItemFromBlock(Blocks.sandstone)) ||
+					item.equals(Item.getItemFromBlock(Blocks.stonebrick)) ||
+					item.equals(Item.getItemFromBlock(Blocks.mossy_cobblestone)) ||
+					item.equals(Item.getItemFromBlock(Blocks.brick_block)) ||
+					item.equals(Item.getItemFromBlock(Blocks.nether_brick)) ||
+					item.equals(Item.getItemFromBlock(Blocks.hardened_clay))) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
 		}

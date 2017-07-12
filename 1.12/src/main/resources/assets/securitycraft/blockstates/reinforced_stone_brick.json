@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "variant=stonebrick": { "model": "securitycraft:reinforced_stone_brick_default" },
+        "variant=mossy_stonebrick": { "model": "securitycraft:reinforced_stone_brick_mossy" },
+        "variant=cracked_stonebrick": { "model": "securitycraft:reinforced_stone_brick_cracked" },
+        "variant=chiseled_stonebrick": { "model": "securitycraft:reinforced_stone_brick_chiseled" } 
+    }
+}

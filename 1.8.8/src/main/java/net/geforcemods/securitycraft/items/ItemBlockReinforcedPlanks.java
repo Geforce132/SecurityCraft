@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockReinforcedPlanks extends ItemBlockColored {
+public class ItemBlockReinforcedPlanks extends ItemBlockTinted {
 
 	public ItemBlockReinforcedPlanks(Block block) {
 		super(block);

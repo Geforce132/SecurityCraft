@@ -46,6 +46,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 			return this.getUnlocalizedName() + "_cobble";
 		}else if(stack.getItemDamage() == 2){
 			return this.getUnlocalizedName() + "_sandstone";
+		}else if(stack.getItemDamage() == 3){
+			return this.getUnlocalizedName() + "_stonebrick";
+		}else if(stack.getItemDamage() == 4){
+			return this.getUnlocalizedName() + "_brick";
+		}else if(stack.getItemDamage() == 5){
+			return this.getUnlocalizedName() + "_netherbrick";
 		}else{
 			return this.getUnlocalizedName();
 		}
@@ -107,6 +113,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		}else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE){
 			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.SANDSTONE){
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.STONEBRICK){
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.BRICK){
+			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.NETHERBRICK){
 			return makeState_Stone(BlockReinforcedSlabs.VARIANT, comparable);
 		}else{
 			return null;

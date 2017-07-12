@@ -40,7 +40,9 @@ import net.geforcemods.securitycraft.blocks.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedStainedGlass;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedStainedGlassPanes;
+import net.geforcemods.securitycraft.blocks.BlockReinforcedStainedHardenedClay;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedStairs;
+import net.geforcemods.securitycraft.blocks.BlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWood;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
@@ -59,11 +61,11 @@ import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemAdminTool;
+import net.geforcemods.securitycraft.items.ItemBlockReinforcedColoredBlock;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSlabs;
-import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlass;
-import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlassPanes;
+import net.geforcemods.securitycraft.items.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCodebreaker;
@@ -273,6 +275,20 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("protecto").setBlockTextureName("securitycraft:protectoParticleTexture");
 		
 		mod_SecurityCraft.scannerDoor = new BlockScannerDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setBlockName("scannerDoor");
+		
+		mod_SecurityCraft.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStoneBrick").setBlockTextureName("securitycraft:reinforcedStoneBrick");
+		mod_SecurityCraft.reinforcedStairsStoneBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsStoneBrick");
+		
+		mod_SecurityCraft.reinforcedMossyCobblestone = new BlockOwnable(Blocks.mossy_cobblestone, Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedMossyCobblestone").setBlockTextureName("securitycraft:reinforcedMossyCobblestone");
+		
+		mod_SecurityCraft.reinforcedBrick = new BlockOwnable(Blocks.brick_block, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedBrick").setBlockTextureName("securitycraft:reinforcedBrick");
+		mod_SecurityCraft.reinforcedStairsBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsBrick");
+		
+		mod_SecurityCraft.reinforcedNetherBrick = new BlockOwnable(Blocks.nether_brick, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedNetherBrick").setBlockTextureName("securitycraft:reinforcedNetherBrick");
+		mod_SecurityCraft.reinforcedStairsNetherBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsNetherBrick");
+		
+		mod_SecurityCraft.reinforcedHardenedClay = new BlockOwnable(Blocks.hardened_clay, Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedHardenedClay").setBlockTextureName("securitycraft:reinforcedHardenedClay");
+		mod_SecurityCraft.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedHardenedClay").setBlockTextureName("securitycraft:reinforcedStainedHardenedClay");
 	}
 
 	public void setupMines(){
@@ -539,8 +555,8 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.ironFence);
 		registerBlock(mod_SecurityCraft.ims);
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
-		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
-		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, ItemBlockReinforcedColoredBlock.class);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlassPanes, ItemBlockReinforcedColoredBlock.class);
 		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, ItemBlockReinforcedSlabs.class, mod_SecurityCraft.reinforcedWoodSlabs, false, ItemBlockReinforcedSlabs.ReinforcedSlabType.WOOD);
 		registerBlock(mod_SecurityCraft.reinforcedStoneSlabs, ItemBlockReinforcedSlabs.class, mod_SecurityCraft.reinforcedStoneSlabs, false, ItemBlockReinforcedSlabs.ReinforcedSlabType.OTHER);
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedDirtSlab, ItemBlockReinforcedSlabs.class, mod_SecurityCraft.reinforcedDirtSlab.getUnlocalizedName().substring(5), mod_SecurityCraft.reinforcedDirtSlab, false, ItemBlockReinforcedSlabs.ReinforcedSlabType.OTHER);
@@ -549,6 +565,15 @@ public class ConfigurationHandler{
 		GameRegistry.registerBlock(mod_SecurityCraft.reinforcedDoubleDirtSlab, mod_SecurityCraft.reinforcedDoubleDirtSlab.getUnlocalizedName().substring(5));
 		registerBlock(mod_SecurityCraft.protecto);
 		GameRegistry.registerBlock(mod_SecurityCraft.scannerDoor, mod_SecurityCraft.scannerDoor.getUnlocalizedName().substring(5));
+		registerBlock(mod_SecurityCraft.reinforcedStoneBrick, ItemBlockReinforcedStoneBrick.class);
+		registerBlock(mod_SecurityCraft.reinforcedStairsStoneBrick);
+		registerBlock(mod_SecurityCraft.reinforcedMossyCobblestone);
+		registerBlock(mod_SecurityCraft.reinforcedBrick);
+		registerBlock(mod_SecurityCraft.reinforcedStairsBrick);
+		registerBlock(mod_SecurityCraft.reinforcedNetherBrick);
+		registerBlock(mod_SecurityCraft.reinforcedStairsNetherBrick);
+		registerBlock(mod_SecurityCraft.reinforcedHardenedClay);
+		registerBlock(mod_SecurityCraft.reinforcedStainedHardenedClay, ItemBlockReinforcedColoredBlock.class);
 
 		registerItem(mod_SecurityCraft.codebreaker);
 		registerItem(mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -826,6 +851,18 @@ public class ConfigurationHandler{
 				"W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 5)
 		});
 
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStoneBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStoneBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsNetherBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedNetherBrick
+		});
+		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ims, 1), new Object[]{
 				"BPB", " I ", "B B", 'B', mod_SecurityCraft.bouncingBetty, 'P', mod_SecurityCraft.portableRadar, 'I', Blocks.iron_block
 		});
@@ -849,6 +886,10 @@ public class ConfigurationHandler{
 
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i), new Object[]{
 					"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
+			});
+			
+			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay, 8, BlockColored.func_150031_c(i)), new Object[]{
+					"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedHardenedClay), 'X', new ItemStack(Items.dye, 1, i)
 			});
 		}
 
@@ -885,6 +926,18 @@ public class ConfigurationHandler{
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedDirtSlab, 6, 3), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedDirt
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 4), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedStoneBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 5), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedBrick
+		});
+
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 6), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedNetherBrick
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.protecto, 1), new Object[]{

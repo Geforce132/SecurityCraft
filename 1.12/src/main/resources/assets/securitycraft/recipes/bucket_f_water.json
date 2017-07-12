@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "fake_liquids",
   "pattern": [
     "P",
     "B"

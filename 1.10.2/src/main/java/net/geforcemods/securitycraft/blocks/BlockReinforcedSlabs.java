@@ -138,7 +138,10 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	public static enum EnumType implements IStringSerializable{
 		STONE(0, "stone"),
 		COBBLESTONE(1, "cobblestone", "cobble"),
-		SANDSTONE(2, "sandstone", "sandstone");
+		SANDSTONE(2, "sandstone", "sandstone"),
+		STONEBRICK(3, "stonebrick", "stonebrick"),
+		BRICK(4, "brick", "brick"),
+		NETHERBRICK(5, "netherbrick", "netherbrick");
 
 		private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
 		private final int meta;

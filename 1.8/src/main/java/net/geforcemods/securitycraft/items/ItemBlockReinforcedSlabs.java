@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBlockReinforcedSlabs extends ItemBlockColored {
+public class ItemBlockReinforcedSlabs extends ItemBlockTinted {
 
 	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedStoneSlabs;
 	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleStoneSlabs;
@@ -40,6 +40,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlockColored {
 			return this.getUnlocalizedName() + "_cobble";
 		}else if(stack.getItemDamage() == 2){
 			return this.getUnlocalizedName() + "_sandstone";
+		}else if(stack.getItemDamage() == 4){
+			return this.getUnlocalizedName() + "_stonebrick";
+		}else if(stack.getItemDamage() == 5){
+			return this.getUnlocalizedName() + "_brick";
+		}else if(stack.getItemDamage() == 6){
+			return this.getUnlocalizedName() + "_netherbrick";
 		}else{
 			return this.getUnlocalizedName();
 		}
@@ -103,6 +109,12 @@ public class ItemBlockReinforcedSlabs extends ItemBlockColored {
 			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.DIRT){
 			return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.STONEBRICK){
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.BRICK){
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+		}else if(comparable == BlockReinforcedSlabs.EnumType.NETHERBRICK){
+			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else{
 			return null;
 		}

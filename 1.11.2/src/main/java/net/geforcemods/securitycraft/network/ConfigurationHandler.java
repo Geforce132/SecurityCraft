@@ -31,7 +31,9 @@ import net.geforcemods.securitycraft.blocks.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedStainedGlass;
+import net.geforcemods.securitycraft.blocks.BlockReinforcedStainedHardenedClay;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedStairs;
+import net.geforcemods.securitycraft.blocks.BlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWood;
 import net.geforcemods.securitycraft.blocks.BlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
@@ -53,7 +55,8 @@ import net.geforcemods.securitycraft.items.ItemAdminTool;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedSlabs;
-import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedGlass;
+import net.geforcemods.securitycraft.items.ItemBlockReinforcedStainedBlock;
+import net.geforcemods.securitycraft.items.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.items.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -273,6 +276,20 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.protecto = new BlockProtecto(Material.IRON).setBlockUnbreakable().setResistance(1000F).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setRegistryName("protecto").setUnlocalizedName("protecto");
 	
 		mod_SecurityCraft.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(1000F).setRegistryName("scanner_door").setUnlocalizedName("scannerDoor");
+
+		mod_SecurityCraft.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_brick").setUnlocalizedName("reinforcedStoneBrick");
+	    mod_SecurityCraft.reinforcedStairsStoneBrick= new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone_brick").setUnlocalizedName("reinforcedStairsStoneBrick");
+	
+	    mod_SecurityCraft.reinforcedMossyCobblestone = new BlockOwnable(Material.ROCK, EnumBlockRenderType.MODEL).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mossy_cobblestone").setUnlocalizedName("reinforcedMossyCobblestone");
+	    
+	    mod_SecurityCraft.reinforcedBrick = new BlockOwnable(Material.ROCK, EnumBlockRenderType.MODEL).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_brick").setUnlocalizedName("reinforcedBrick");
+	    mod_SecurityCraft.reinforcedStairsBrick= new BlockReinforcedStairs(mod_SecurityCraft.reinforcedBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_brick").setUnlocalizedName("reinforcedStairsBrick");
+	    
+	    mod_SecurityCraft.reinforcedNetherBrick = new BlockOwnable(Material.ROCK, EnumBlockRenderType.MODEL).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_nether_brick").setUnlocalizedName("reinforcedNetherBrick");
+	    mod_SecurityCraft.reinforcedStairsNetherBrick= new BlockReinforcedStairs(mod_SecurityCraft.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_nether_brick").setUnlocalizedName("reinforcedStairsNetherBrick");
+	
+	    mod_SecurityCraft.reinforcedHardenedClay = new BlockOwnable(Material.ROCK, EnumBlockRenderType.MODEL).setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hardened_clay").setUnlocalizedName("reinforcedHardenedClay");
+		mod_SecurityCraft.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(1000F).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_hardened_clay").setUnlocalizedName("reinforcedStainedHardenedClay");
 	}
 	
 	public void setupMines(){
@@ -525,14 +542,23 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.ironFence);
 		registerBlock(mod_SecurityCraft.ims);
 		registerBlock(mod_SecurityCraft.reinforcedGlass);
-		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, new ItemBlockReinforcedStainedGlass(mod_SecurityCraft.reinforcedStainedGlass), true);
+		registerBlock(mod_SecurityCraft.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(mod_SecurityCraft.reinforcedStainedGlass), true);
 		registerBlock(mod_SecurityCraft.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(mod_SecurityCraft.reinforcedWoodSlabs), true);
 		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleWoodSlabs);
 		registerBlock(mod_SecurityCraft.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(mod_SecurityCraft.reinforcedStoneSlabs), true);
 		GameRegistry.register(mod_SecurityCraft.reinforcedDoubleStoneSlabs);
 		registerBlock(mod_SecurityCraft.protecto);
 		GameRegistry.register(mod_SecurityCraft.scannerDoor);
-
+		registerBlock(mod_SecurityCraft.reinforcedStoneBrick, new ItemBlockReinforcedStoneBrick(mod_SecurityCraft.reinforcedStoneBrick), true);
+		registerBlock(mod_SecurityCraft.reinforcedStairsStoneBrick);
+		registerBlock(mod_SecurityCraft.reinforcedMossyCobblestone);
+		registerBlock(mod_SecurityCraft.reinforcedBrick);
+		registerBlock(mod_SecurityCraft.reinforcedStairsBrick);
+		registerBlock(mod_SecurityCraft.reinforcedNetherBrick);
+		registerBlock(mod_SecurityCraft.reinforcedStairsNetherBrick);
+		registerBlock(mod_SecurityCraft.reinforcedHardenedClay);
+		registerBlock(mod_SecurityCraft.reinforcedStainedHardenedClay, new ItemBlockReinforcedStainedBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), true);
+		
 		registerItem(mod_SecurityCraft.codebreaker);
 	    registerItem(mod_SecurityCraft.reinforcedDoorItem);
 	    registerItem(mod_SecurityCraft.scannerDoorItem);
@@ -834,6 +860,18 @@ public class ConfigurationHandler{
 			"W  ", "WW ", "WWW", 'W', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, 5)
 	    });
 		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStoneBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStoneBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsNetherBrick, 4), new Object[]{
+				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedNetherBrick
+		});
+		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ims, 1), new Object[]{
 		    "BPB", " I ", "B B", 'B', mod_SecurityCraft.bouncingBetty, 'P', mod_SecurityCraft.portableRadar, 'I', Blocks.IRON_BLOCK
 		});
@@ -854,6 +892,10 @@ public class ConfigurationHandler{
         	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 8, 15 - i), new Object[]{
         		"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedGlass), 'X', new ItemStack(Items.DYE, 1, i)
         	});
+        	
+        	GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay, 8, ~i & 15), new Object[]{
+					"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedHardenedClay), 'X', new ItemStack(Items.DYE, 1, i)
+			});
         }
 	
         GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalBlockReinforcerLvL1, 1), new Object[]{
@@ -885,6 +927,18 @@ public class ConfigurationHandler{
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 2), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedSandstone
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 3), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedStoneBrick
+		});
+		
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 4), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedBrick
+		});
+
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 5), new Object[]{
+				"MMM", 'M', mod_SecurityCraft.reinforcedNetherBrick
 		});
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.protecto, 1), new Object[]{
@@ -1101,9 +1155,39 @@ public class ConfigurationHandler{
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 0, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_stone", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 1, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_cobblestone", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 2, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_sandstone", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 3, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_stonebrick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 4, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 5, new ModelResourceLocation("securitycraft:reinforced_stone_slabs_netherbrick", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.protecto), 0, new ModelResourceLocation("securitycraft:protecto", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.scannerDoor), 0, new ModelResourceLocation("securitycraft:scanner_door", "inventory"));
-		
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneBrick), 0, new ModelResourceLocation("securitycraft:reinforced_stone_brick_default", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneBrick), 1, new ModelResourceLocation("securitycraft:reinforced_stone_brick_mossy", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneBrick), 2, new ModelResourceLocation("securitycraft:reinforced_stone_brick_cracked", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneBrick), 3, new ModelResourceLocation("securitycraft:reinforced_stone_brick_chiseled", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsStoneBrick), 0, new ModelResourceLocation("securitycraft:reinforced_stairs_stone_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedMossyCobblestone), 0, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedBrick), 0, new ModelResourceLocation("securitycraft:reinforced_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsBrick), 0, new ModelResourceLocation("securitycraft:reinforced_stairs_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedNetherBrick), 0, new ModelResourceLocation("securitycraft:reinforced_nether_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsNetherBrick), 0, new ModelResourceLocation("securitycraft:reinforced_stairs_nether_brick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedHardenedClay), 0, new ModelResourceLocation("securitycraft:reinforced_hardened_clay", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 0, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_white", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 1, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_orange", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 2, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_magenta", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 3, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_light_blue", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 4, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_yellow", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 5, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_lime", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 6, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_pink", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 7, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_gray", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 8, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_silver", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 9, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_cyan", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 10, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_purple", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 11, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_blue", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 12, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_brown", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 13, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_green", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 14, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_red", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStainedHardenedClay), 15, new ModelResourceLocation("securitycraft:reinforced_stained_hardened_clay_black", "inventory"));
+        
 		//Items
 		ModelLoader.setCustomModelResourceLocation(mod_SecurityCraft.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(mod_SecurityCraft.remoteAccessMine, 0, new ModelResourceLocation("securitycraft:remote_access_mine", "inventory"));

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBlockReinforcedWoodSlabs extends ItemBlockColored {
+public class ItemBlockReinforcedWoodSlabs extends ItemBlockTinted {
 	
 	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedWoodSlabs;
 	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleWoodSlabs;

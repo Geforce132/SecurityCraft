@@ -146,5 +146,4 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}	
-    
 }

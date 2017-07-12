@@ -4,10 +4,10 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -46,13 +46,13 @@ public class BlockReinforcedSandstone extends BlockOwnable {
      */
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int par1, int par2){
-		return Block.getBlockById(24).getIcon(par1, par2);
+		return Blocks.sandstone.getIcon(par1, par2);
     }
 
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
-		return Block.getBlockById(24).getIcon(side, access.getBlockMetadata(x, y, z));
+		return Blocks.sandstone.getIcon(side, access.getBlockMetadata(x, y, z));
 	}
 	
 	@Override

@@ -11,9 +11,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockHardenedClay;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
+import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -46,14 +49,15 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 		if(!player.capabilities.isCreativeMode)
 		{
 			World world = player.getEntityWorld();
-			Block block = world.getBlockState(pos).getBlock();
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
 
 			if(block instanceof BlockDirt || block instanceof BlockGrass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedDirt.getDefaultState());
 			else if(block instanceof BlockStone)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getDefaultState());
 			else if(block instanceof BlockPlanks)
-				world.setBlockState(pos, player.getEntityWorld().getBlockState(pos).getActualState(player.getEntityWorld(), pos));
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
 			else if(block instanceof BlockGlass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedGlass.getDefaultState());
 			else if(block.getUnlocalizedName().equals(Blocks.COBBLESTONE.getUnlocalizedName())) //cobblestone doesn't have its own class
@@ -61,7 +65,17 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			else if(block.getUnlocalizedName().equals(Blocks.IRON_BARS.getUnlocalizedName())) //glass panes and iron bars share the same class
 				world.setBlockState(pos, mod_SecurityCraft.unbreakableIronBars.getDefaultState());
 			else if(block instanceof BlockSandStone)
-				world.setBlockState(pos, player.getEntityWorld().getBlockState(pos).getActualState(player.getEntityWorld(), pos));
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedSandstone.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockStoneBrick)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedStoneBrick.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block.getUnlocalizedName().equals(Blocks.MOSSY_COBBLESTONE.getUnlocalizedName())) //mossy cobblestone doesn't have its own class
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedMossyCobblestone.getDefaultState());
+			else if(block.getUnlocalizedName().equals(Blocks.BRICK_BLOCK.getUnlocalizedName())) //brick doesn't have its own class
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedBrick.getDefaultState());
+			else if(block.getUnlocalizedName().equals(Blocks.NETHER_BRICK.getUnlocalizedName())) //nether brick doesn't have its own class
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedNetherBrick.getDefaultState());
+			else if(block instanceof BlockHardenedClay)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedHardenedClay.getDefaultState());
 			else
 			{
 				world.destroyBlock(pos, true); //destroy the block without the ubr taking damage
@@ -85,10 +99,14 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				Blocks.STONE,
 				Blocks.PLANKS,
 				Blocks.GLASS,
-				Blocks.GLASS_PANE,
 				Blocks.COBBLESTONE,
 				Blocks.IRON_BARS,
-				Blocks.SANDSTONE
+				Blocks.SANDSTONE,
+				Blocks.STONEBRICK,
+				Blocks.MOSSY_COBBLESTONE,
+				Blocks.BRICK_BLOCK,
+				Blocks.NETHER_BRICK,
+				Blocks.HARDENED_CLAY
 		});
 	}
 }

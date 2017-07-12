@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockOwnable extends BlockContainer {
 
-	//if the color should be darkened, only used for reinforced stone/cobblestone/dirt
+	//if the color should be darkened, only used for reinforced stone/cobblestone/stone bricks/mossy cobblestone/bricks/nether bricks and dirt
 	private boolean flag;
 	
 	public BlockOwnable(Material par1) {

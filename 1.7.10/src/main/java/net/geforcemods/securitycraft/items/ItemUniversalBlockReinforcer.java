@@ -11,8 +11,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockHardenedClay;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
+import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -61,6 +63,18 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlock(x, y, z, mod_SecurityCraft.unbreakableIronBars);
 			else if(block instanceof BlockSandStone)
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedSandstone, block.getDamageValue(world, x, y, z), 2);
+			else if(block instanceof BlockStoneBrick)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStoneBrick, block.getDamageValue(world, x, y, z), 2);
+			else if(block.getUnlocalizedName().equals(Blocks.mossy_cobblestone.getUnlocalizedName())) //mossy cobblestone doesn't have its own class
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMossyCobblestone);
+			else if(block.getUnlocalizedName().equals(Blocks.brick_block.getUnlocalizedName())) //brick doesn't have its own class
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedBrick);
+			else if(block.getUnlocalizedName().equals(Blocks.nether_brick.getUnlocalizedName())) //nether brick doesn't have its own class
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
+			else if(block.getUnlocalizedName().equals(Blocks.nether_brick.getUnlocalizedName())) //hardened clay doesn't have its own class
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
+			else if(block instanceof BlockHardenedClay)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedHardenedClay);
 			else
 			{
 				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
@@ -87,7 +101,12 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				Blocks.glass_pane,
 				Blocks.cobblestone,
 				Blocks.iron_bars,
-				Blocks.sandstone
+				Blocks.sandstone,
+				Blocks.stonebrick,
+				Blocks.mossy_cobblestone,
+				Blocks.brick_block,
+				Blocks.nether_brick,
+				Blocks.hardened_clay
 		});
 	}
 }

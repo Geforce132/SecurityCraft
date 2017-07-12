@@ -63,9 +63,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         if(slabMaterial != Material.ground){
         	BlockReinforcedSlabs.EnumType[] aenumtype = BlockReinforcedSlabs.EnumType.values();
 
-            for(int i = 0; i < aenumtype.length - 1; i++){
+            for(int i = 0; i < aenumtype.length; i++){
             	BlockReinforcedSlabs.EnumType enumtype = aenumtype[i];
-
+            	
+            	if(enumtype.getMetadata() == 3) //skip dirt slab
+            		continue;
+            	
                 list.add(new ItemStack(itemIn, 1, enumtype.getMetadata()));              
             }
         }else{
@@ -130,7 +133,10 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
         STONE(0, "stone"),
         COBBLESTONE(1, "cobblestone", "cobble"),
         SANDSTONE(2, "sandstone", "sandstone"),
-        DIRT(3, "dirt", "dirt");
+        DIRT(3, "dirt", "dirt"),
+		STONEBRICK(4, "stonebrick", "stonebrick"),
+		BRICK(5, "brick", "brick"),
+		NETHERBRICK(6, "netherbrick", "netherbrick");
     
         private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
         private final int meta;

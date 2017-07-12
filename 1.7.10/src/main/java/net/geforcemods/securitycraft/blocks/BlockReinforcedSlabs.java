@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider {
 
-	public static final String[] variants = new String[] {"stone", "cobble", "sand", "dirt"};
+	public static final String[] variants = new String[] {"stone", "cobble", "sand", "dirt", "stonebrick", "brick", "netherbrick"};
     
 	@SideOnly(Side.CLIENT)
     private IIcon reinforcedStoneIcon;
@@ -56,7 +56,10 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
 		if(slabMaterial != Material.ground){
-			for(int i = 0; i < variants.length - 1; i++){
+			for(int i = 0; i < variants.length; i++){
+				if(i == 3) //leave out space for dirt slab
+					continue;
+				
 				par3List.add(new ItemStack(par1Item, 1, i));           
 			}
 		}else{
@@ -121,6 +124,9 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			case 1: case 9: return 4;
 			case 2: case 10: return 24;
 			case 3: case 11: return 3;
+			case 4: case 12: return 98;
+			case 5: case 13: return 45;
+			case 6: case 14: return 112;
 		}
 		
 		return 0;
@@ -157,5 +163,4 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	public TileEntity createNewTileEntity(World par1World, int par2) {
 		return new TileEntityOwnable();
 	}
-
 }

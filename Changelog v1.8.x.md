@@ -1,5 +1,12 @@
 --------------------------Changelog for v1.8.2.3 of SecurityCraft--------------------------
 
+- New: Reinforced Blocks
+    - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
+    - Mossy Cobblestone
+    - Bricks incl. stairs and slabs
+    - Nether Bricks incl. stairs and slabs
+    - Hardened Clay
+    - Stained Hardened Clay (1.12: Terracotta)
 - Fix: Recipe for Reinforced Glass does not show up in the SecurityCraft Manual
 - Fix: WAILA does not update the new owner of a door when changed with a Universal Owner Changer
 - Fix: Both halves of a Scanner Door can have different owners
@@ -7,11 +14,15 @@
 - Fix: Taser can tase the player who shot
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
+- Fix: [1.8+] Reinforcing Andesite/Granite/Diorite gives back a glitched block
 - Fix: [1.10.2+] Username Logger cannot be opened
 - Fix: [1.10.2+] Reinforced Stairs are turned incorrectly when placed upside down
 - Fix: [1.10.2+] Upside down Reinforced Slabs show up incorrectly in WAILA
 - Fix: [1.10.2+] Wrong Fake Liquids recipes showing up in the SecuritCraft Manual
+- Fix: [1.10.2+] Glass Panes can be put into Universal Block Reinforcers
+- Fix: [1.10.2+] Crash when breaking planks/sandstone with a Universal Block Reinforcer
 - Fix: [1.12] Blocks scanning for players/mobs do not work correctly
+- Fix: [1.12] Recipes are not grouped in Recipe Book
 
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
 
