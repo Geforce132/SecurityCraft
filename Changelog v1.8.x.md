@@ -7,6 +7,7 @@
     - Nether Bricks incl. stairs and slabs
     - Hardened Clay
     - Stained Hardened Clay (1.12: Terracotta)
+- Change: Heavily nerfed Codebreaker. It now has 5 uses and a 1 in 3 chance of failing
 - Fix: Recipe for Reinforced Glass does not show up in the SecurityCraft Manual
 - Fix: WAILA does not update the new owner of a door when changed with a Universal Owner Changer
 - Fix: Both halves of a Scanner Door can have different owners

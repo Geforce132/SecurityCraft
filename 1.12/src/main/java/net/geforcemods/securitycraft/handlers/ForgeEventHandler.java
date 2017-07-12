@@ -319,8 +319,11 @@ public class ForgeEventHandler {
 	private boolean handleCodebreaking(PlayerInteractEvent event) {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
+
+		if(mod_SecurityCraft.configHandler.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == mod_SecurityCraft.codebreaker) //safety so when codebreakers are disabled they can't take damage
+			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 		
-		if(tileEntity != null && tileEntity instanceof IPasswordProtected) {
+		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1) {
 			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !mod_SecurityCraft.configHandler.allowCodebreakerItem);
 		}
 		
