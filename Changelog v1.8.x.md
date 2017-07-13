@@ -24,6 +24,7 @@
 - Fix: [1.10.2+] Crash when breaking planks/sandstone with a Universal Block Reinforcer
 - Fix: [1.12] Blocks scanning for players/mobs do not work correctly
 - Fix: [1.12] Recipes are not grouped in Recipe Book
+- Removed: [1.12] Config option to enable the old Keypad recipe
 
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
 
