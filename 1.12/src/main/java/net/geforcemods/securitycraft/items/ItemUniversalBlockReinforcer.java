@@ -30,7 +30,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		super(2.0F, -5.0F, ToolMaterial.GOLD, getBreakableBlocks());
+		super(2.0F, 5.0F, ToolMaterial.GOLD, getBreakableBlocks());
 
 		setMaxDamage(damage);
 	}
