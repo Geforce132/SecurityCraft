@@ -406,6 +406,7 @@ messages.tip.scConnect=Nutze /sc connect um persönlichen Support von den Mod De
 messages.tip.trello=Schau mal beim Trello board von SecurityCraft vorbei und reporte Bugs oder gib uns Vorschläge!
 messages.tip.patreon=Möchtest du SecurityCraft unterstützen?
 messages.tip.discord=Tritt unserem Discord Server bei, um mit uns zu chatten und wichtige Updates und Informationen über SecurityCraft zu bekommen!
+messages.tip.scserver=Der offizielle SecurityCraft Server ist zurück! Tritt bei mit folgender IP: 64.38.249.237
 messages.universalKeyChanger.notKeypad=Rechtsklicke ein Nummernschloss mit dem Universellen Passwort Wechsler um das Passwort zu ändern.
 messages.universalKeyChanger.passcodeChanged=Das Passwort wurde verändert.
 

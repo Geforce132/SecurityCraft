@@ -409,6 +409,7 @@ messages.tip.scConnect=Use /sc connect to get personal support from the mod devs
 messages.tip.trello=Check out the Trello board for SecurityCraft, and report bugs or give us suggestions!
 messages.tip.patreon=Do you want to support SecurityCraft?
 messages.tip.discord=Join our Discord server to chat and to receive important updates and announcements regarding SecurityCraft!
+messages.tip.scserver=The official SecurityCraft server is back! Join using this IP: 64.38.249.237
 messages.universalKeyChanger.notKeypad=Right-click a keypad with the universal key changer to change its passcode.
 messages.universalKeyChanger.passcodeChanged=The passcode has been changed.
 

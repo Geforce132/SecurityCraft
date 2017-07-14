@@ -331,7 +331,8 @@ public class ForgeEventHandler {
 				"messages.tip.scConnect",
 				"messages.tip.trello",
 				"messages.tip.patreon",
-				"messages.tip.discord"
+				"messages.tip.discord",
+				"messages.tip.scserver"
 		};
 
 		return tips[new Random().nextInt(tips.length)];
