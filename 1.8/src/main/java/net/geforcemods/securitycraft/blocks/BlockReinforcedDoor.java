@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -78,44 +77,16 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
             }
             else
             {
-            	BlockPos position = null;
-            	boolean flag = false;
-            	
-            	if(hasActiveKeypadNextTo(worldIn, pos))
-            	{
-            		flag = true;
-            		position = getActiveKeypadNextTo(worldIn, pos);
-            	}
-            	
-            	if(hasActiveInventoryScannerNextTo(worldIn, pos))
-            	{
-            		flag = true;
-            		position = getActiveInventoryScannerNextTo(worldIn, pos);
-            	}
-
-            	if(hasActiveReaderNextTo(worldIn, pos))
-            	{
-            		flag = true;
-            		position = getActiveReaderNextTo(worldIn, pos);
-            	}
-            	
-            	if(hasActiveScannerNextTo(worldIn, pos))
-            	{
-            		flag = true;
-            		position = getActiveScannerNextTo(worldIn, pos);
-            	}
-            	
-            	if(hasActiveLaserNextTo(worldIn, pos))
-            	{
-            		flag = true;
-            		position = getActiveLaserNextTo(worldIn, pos);
-            	}
-
-            	if (((flag || neighborBlock.canProvidePower())) && neighborBlock != this && flag != ((Boolean)iblockstate2.getValue(POWERED)).booleanValue())
+                boolean flag = hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up());
+                
+//                if(flag && !(hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up()) && neighborBlock != this)){
+//                	System.out.println("Powered by vanilla block");
+//                }else if(hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up()) && neighborBlock != this){
+//                	System.out.println("Powered by SC block");
+//                }
+                
+                if (((flag || neighborBlock.canProvidePower())) && neighborBlock != this && flag != ((Boolean)iblockstate2.getValue(POWERED)).booleanValue())
                 {
-            		if(position != null && !((IOwnable)worldIn.getTileEntity(pos)).getOwner().owns((IOwnable)worldIn.getTileEntity(position)))
-            			return;
-            		
                     worldIn.setBlockState(blockpos2, iblockstate2.withProperty(POWERED, Boolean.valueOf(flag)), 2);
 
                     if (flag != ((Boolean)state.getValue(OPEN)).booleanValue())
@@ -124,55 +95,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
                         worldIn.playAuxSFXAtEntity((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
                     }
-                    
-                    return;
-                }
-            	
-            	if(hasActiveKeypadNextTo(worldIn, pos.up()))
-            	{
-            		flag = true;
-            		position = getActiveKeypadNextTo(worldIn, pos.up());
-            	}
-            	
-            	if(hasActiveInventoryScannerNextTo(worldIn, pos.up()))
-            	{
-            		flag = true;
-            		position = getActiveInventoryScannerNextTo(worldIn, pos.up());
-            	}
-
-            	if(hasActiveReaderNextTo(worldIn, pos.up()))
-            	{
-            		flag = true;
-            		position = getActiveReaderNextTo(worldIn, pos.up());
-            	}
-            	
-            	if(hasActiveScannerNextTo(worldIn, pos.up()))
-            	{
-            		flag = true;
-            		position = getActiveScannerNextTo(worldIn, pos.up());
-            	}
-            	
-            	if(hasActiveLaserNextTo(worldIn, pos.up()))
-            	{
-            		flag = true;
-            		position = getActiveLaserNextTo(worldIn, pos.up());
-            	}
-
-            	if (((flag || neighborBlock.canProvidePower())) && neighborBlock != this && flag != ((Boolean)iblockstate2.getValue(POWERED)).booleanValue())
-                {
-            		if(position != null && !((IOwnable)worldIn.getTileEntity(pos)).getOwner().owns((IOwnable)worldIn.getTileEntity(position)))
-            			return;
-            		
-                    worldIn.setBlockState(blockpos2, iblockstate2.withProperty(POWERED, Boolean.valueOf(flag)), 2);
-
-                    if (flag != ((Boolean)state.getValue(OPEN)).booleanValue())
-                    {
-                        worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
-                        worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                        worldIn.playAuxSFXAtEntity((EntityPlayer)null, flag ? 1003 : 1006, pos, 0);
-                    }
-                    
-                    return;
                 }
             }
         }
@@ -205,20 +127,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     	}
 	}
     
-    private BlockPos getActiveLaserNextTo(World par1World, BlockPos pos) {
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockLaserBlock.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.east();
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.west(), BlockLaserBlock.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.west())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.west();
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockLaserBlock.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.south();
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockLaserBlock.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.north();
-    	}else{
-    		return null;
-    	}
-	}
-    
     private boolean hasActiveScannerNextTo(World par1World, BlockPos pos) {
     	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockRetinalScanner.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
     		return true;
@@ -230,20 +138,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     		return true;
     	}else{
     		return false;
-    	}
-	}
-    
-    private BlockPos getActiveScannerNextTo(World par1World, BlockPos pos) {
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockRetinalScanner.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.east();
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.west(), BlockRetinalScanner.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.west())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.west();
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockRetinalScanner.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.south();
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockRetinalScanner.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.north();
-    	}else{
-    		return null;
     	}
 	}
 
@@ -261,20 +155,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     	}
     }
     
-	private BlockPos getActiveKeypadNextTo(World par1World, BlockPos pos){
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockKeypad.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.east();
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.west(), BlockKeypad.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.west())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.west();
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockKeypad.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.south();
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue() && ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.north();
-    	}else{
-    		return null;
-    	}
-    }
-	
     private boolean hasActiveReaderNextTo(World par1World, BlockPos pos){
     	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockKeycardReader.POWERED) && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
     		return true;
@@ -289,20 +169,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     	}
     }
     
-    private BlockPos getActiveReaderNextTo(World par1World, BlockPos pos){
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.east(), BlockKeycardReader.POWERED) && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.east();
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.west(), BlockKeycardReader.POWERED) && ((IOwnable) par1World.getTileEntity(pos.west())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.west();
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockKeycardReader.POWERED) && ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.south();
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockKeycardReader.POWERED) && ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.north();
-    	}else{
-    		return null;
-    	}
-    }
-    
     private boolean hasActiveInventoryScannerNextTo(World par1World, BlockPos pos){
     	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.east())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.east())).shouldProvidePower() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
     		return true;
@@ -314,20 +180,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     		return true;
     	}else{
     		return false;
-    	}
-    }
-    
-    private BlockPos getActiveInventoryScannerNextTo(World par1World, BlockPos pos){
-    	if(BlockUtils.getBlock(par1World, pos.east()) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.east())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.east())).shouldProvidePower() && ((IOwnable) par1World.getTileEntity(pos.east())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.east();
-    	}else if(BlockUtils.getBlock(par1World, pos.west()) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.west())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.west())).shouldProvidePower() && ((IOwnable) par1World.getTileEntity(pos.west())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.west();
-    	}else if(BlockUtils.getBlock(par1World, pos.south()) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.south())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.south())).shouldProvidePower() && ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.south();
-    	}else if(BlockUtils.getBlock(par1World, pos.north()) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.north())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.north())).shouldProvidePower() && ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos))){
-    		return pos.north();
-    	}else{
-    		return null;
     	}
     }
 
