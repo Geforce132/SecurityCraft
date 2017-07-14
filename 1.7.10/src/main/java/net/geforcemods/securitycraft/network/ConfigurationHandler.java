@@ -139,7 +139,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.Property;
 
 public class ConfigurationHandler{
@@ -968,19 +967,19 @@ public class ConfigurationHandler{
 	private void registerBlock(Block block){
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 
 	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass){
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 
 	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... constructorParams){ 
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5), constructorParams);
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 	
 	/**
@@ -991,7 +990,7 @@ public class ConfigurationHandler{
 	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){ 
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), StatCollector.translateToLocal("help." + block.getUnlocalizedName().substring(5) + ".info"), customRecipe));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", customRecipe));
 	}
 
 	/**
@@ -1007,7 +1006,7 @@ public class ConfigurationHandler{
 	private void registerItem(Item item, String customName){
 		GameRegistry.registerItem(item, customName);
 
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, StatCollector.translateToLocal("help." + item.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
 	}
 
 	public void registerDebuggingAdditions(){		

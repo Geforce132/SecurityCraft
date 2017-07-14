@@ -118,7 +118,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
@@ -646,7 +645,7 @@ public class ConfigurationHandler{
 		GameData.register_impl(itemBlock.setRegistryName(block.getRegistryName().toString()));
 		
 		if(initPage)
-			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info")));
+			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 	
 	/**
@@ -665,7 +664,7 @@ public class ConfigurationHandler{
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 		}
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info"), recipeItems));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", recipeItems));
 	}
 	
 	/**
@@ -673,7 +672,7 @@ public class ConfigurationHandler{
 	 */
 	private void registerItem(Item item){
 		GameData.register_impl(item);
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
 	}
 	
 	/**
@@ -690,7 +689,7 @@ public class ConfigurationHandler{
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 		}
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info"), recipeItems));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", recipeItems));
 	}
 	
 	public void setupOtherRegistries(){

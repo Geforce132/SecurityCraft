@@ -994,7 +994,7 @@ public class ConfigurationHandler{
 		GameRegistry.register(itemBlock.setRegistryName(block.getRegistryName().toString()));
 		
 		if(initPage)
-			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info")));
+			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 	
 	/**
@@ -1013,7 +1013,7 @@ public class ConfigurationHandler{
 			recipeItems.set(i, customRecipe[i]);
 		}
 		
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), ClientUtils.localize("help." + block.getUnlocalizedName().substring(5) + ".info"), recipeItems));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", recipeItems));
 	}
 	
 	/**
@@ -1021,7 +1021,7 @@ public class ConfigurationHandler{
 	 */
 	private void registerItem(Item item){
 		GameRegistry.register(item);
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, ClientUtils.localize("help." + item.getUnlocalizedName().substring(5) + ".info")));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
 	}
 	
 	/**

@@ -15,6 +15,7 @@
 - Fix: Cage Trap can be escaped
 - Fix: Taser can tase the player who shot
 - Fix: Reinforced Doors can be opened by any SC block, not only the ones with the same owner as the door
+- Fix: Descriptions do not translate to different languages in the SecuritCraft Manual
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
 - Fix: [1.8+] Reinforcing Andesite/Granite/Diorite gives back a glitched block

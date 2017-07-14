@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class SCManualPage {
 	
@@ -30,7 +31,7 @@ public class SCManualPage {
 	}
 
 	public String getHelpInfo() {
-		return helpInfo;
+		return StatCollector.translateToLocal(helpInfo);
 	}
 	
 	public ItemStack[] getRecipe() {

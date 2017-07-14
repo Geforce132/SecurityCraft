@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -30,7 +31,7 @@ public class SCManualPage {
 	}
 
 	public String getHelpInfo() {
-		return helpInfo;
+		return ClientUtils.localize(helpInfo);
 	}
 	
 	public ItemStack[] getRecipe() {
