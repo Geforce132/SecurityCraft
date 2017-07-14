@@ -17,20 +17,28 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	
 	@Override
 	public boolean attackEntity(Entity entity){	
-		if (entity instanceof EntityLivingBase) {
+		System.out.println(1);
+		if (entity instanceof EntityLivingBase) {	
+			System.out.println(2);
 	    	if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
 	    			entity instanceof EntityPigZombie ||
-	    			(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) {
+	    			(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) {	
+	    		System.out.println(3);
 	    		return false;
 	    	}
 	    	
-	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, true);
-	    	world.addWeatherEffect(lightning);
+			System.out.println(4);
+	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, true);	
+			System.out.println(5);
+	    	world.addWeatherEffect(lightning);	
+			System.out.println(6);
 	    	
-	    	BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
+	    	BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);	
+			System.out.println(7);
 	    	return true;
 		}
 		
+		System.out.println(8);
 		return false;
 	}
 	

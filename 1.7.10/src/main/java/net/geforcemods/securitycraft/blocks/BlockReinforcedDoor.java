@@ -4,6 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -183,13 +184,13 @@ public class BlockReinforcedDoor extends BlockContainer{
     
     private boolean hasActiveLaserNextTo(World par1World, int par2, int par3, int par4) {
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 + 1, par3, par4) == 2){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2 - 1, par3, par4) == 2){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.laserBlock && par1World.getBlockMetadata(par2, par3, par4 - 1) == 2){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else{
     		return false;
     	}
@@ -197,13 +198,13 @@ public class BlockReinforcedDoor extends BlockContainer{
     
     private boolean hasActiveScannerNextTo(World par1World, int par2, int par3, int par4) {
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else{
     		return false;
     	}
@@ -211,13 +212,13 @@ public class BlockReinforcedDoor extends BlockContainer{
 
 	private boolean hasActiveKeypadNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.keypad && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else{
     		return false;
     	}
@@ -225,13 +226,13 @@ public class BlockReinforcedDoor extends BlockContainer{
     
     private boolean hasActiveReaderNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.keycardReader && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else{
     		return false;
     	}
@@ -239,13 +240,13 @@ public class BlockReinforcedDoor extends BlockContainer{
     
     private boolean hasActiveInventoryScannerNextTo(World par1World, int par2, int par3, int par4){
     	if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).shouldProvidePower()){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).shouldProvidePower()){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).shouldProvidePower()){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).shouldProvidePower()){
-    		return true;
+    		return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
     	}else{
     		return false;
     	}
