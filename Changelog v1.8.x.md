@@ -19,6 +19,7 @@
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
 - Fix: [1.8+] Reinforcing Andesite/Granite/Diorite gives back a glitched block
+- Fix: [1.8+] Players get kicked sometimes when using the Passwort-protected Furnace
 - Fix: [1.10.2+] Username Logger cannot be opened
 - Fix: [1.10.2+] Reinforced Stairs are turned incorrectly when placed upside down
 - Fix: [1.10.2+] Upside down Reinforced Slabs show up incorrectly in WAILA
