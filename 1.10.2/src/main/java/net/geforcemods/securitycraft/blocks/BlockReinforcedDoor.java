@@ -32,6 +32,39 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		setSoundType(SoundType.METAL);
 	}
 
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block neighborBlock)
+    {
+		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
+		{
+			BlockPos neighborPos = getNeighboringActiveSCBlock(worldIn, pos.down(), neighborBlock);
+			
+			if(neighborPos != null)
+				onNeighborChange(worldIn, pos.down(), neighborPos);
+			else
+			{
+				neighborPos = getNeighboringActiveSCBlock(worldIn, pos, neighborBlock);
+				
+				if(neighborPos != null)
+					onNeighborChange(worldIn, pos, neighborPos);
+			}
+		}
+		else
+		{
+			BlockPos neighborPos = getNeighboringActiveSCBlock(worldIn, pos, neighborBlock);
+	
+			if(neighborPos != null)
+				onNeighborChange(worldIn, pos, neighborPos);
+			else
+			{
+				neighborPos = getNeighboringActiveSCBlock(worldIn, pos.up(), neighborBlock);
+				
+				if(neighborPos != null)
+					onNeighborChange(worldIn, pos.up(), neighborPos);
+			}
+		}
+    }
+    
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
@@ -192,6 +225,72 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     	}
     }
 
+	private BlockPos getNeighboringActiveSCBlock(World world, BlockPos pos, Block neighbor)
+	{
+		if(neighbor instanceof BlockLaserBlock && hasActiveLaserNextTo(world, pos))
+		{
+			if(BlockUtils.getBlock(world, pos.east()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.east();
+			}else if(BlockUtils.getBlock(world, pos.west()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.west();
+			}else if(BlockUtils.getBlock(world, pos.south()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.south();
+			}else if(BlockUtils.getBlock(world, pos.north()) == mod_SecurityCraft.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.north();
+			}
+		}
+		else if(neighbor instanceof BlockRetinalScanner && hasActiveScannerNextTo(world, pos))
+		{
+			if(BlockUtils.getBlock(world, pos.east()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.east();
+			}else if(BlockUtils.getBlock(world, pos.west()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.west();
+			}else if(BlockUtils.getBlock(world, pos.south()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.south();
+			}else if(BlockUtils.getBlock(world, pos.north()) == mod_SecurityCraft.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.north();
+			}
+		}
+		else if(neighbor instanceof BlockKeypad && hasActiveKeypadNextTo(world, pos))
+		{
+			if(BlockUtils.getBlock(world, pos.east()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.east();
+			}else if(BlockUtils.getBlock(world, pos.west()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.west();
+			}else if(BlockUtils.getBlock(world, pos.south()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.south();
+			}else if(BlockUtils.getBlock(world, pos.north()) == mod_SecurityCraft.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.north();
+			}
+		}
+		else if(neighbor instanceof BlockKeycardReader && hasActiveReaderNextTo(world, pos))
+		{
+			if(BlockUtils.getBlock(world, pos.east()) == mod_SecurityCraft.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.east();
+			}else if(BlockUtils.getBlock(world, pos.west()) == mod_SecurityCraft.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.west();
+			}else if(BlockUtils.getBlock(world, pos.south()) == mod_SecurityCraft.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.south();
+			}else if(BlockUtils.getBlock(world, pos.north()) == mod_SecurityCraft.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.north();
+			}
+		}
+		else if(neighbor instanceof BlockInventoryScanner && hasActiveInventoryScannerNextTo(world, pos))
+		{
+			if(BlockUtils.getBlock(world, pos.east()) == mod_SecurityCraft.inventoryScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.east();
+			}else if(BlockUtils.getBlock(world, pos.west()) == mod_SecurityCraft.inventoryScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.west();
+			}else if(BlockUtils.getBlock(world, pos.south()) == mod_SecurityCraft.inventoryScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.south();
+			}else if(BlockUtils.getBlock(world, pos.north()) == mod_SecurityCraft.inventoryScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue()){
+				return pos.north();
+			}
+		}
+
+		return null;
+	}
+    
 	@SideOnly(Side.CLIENT)
     public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(mod_SecurityCraft.reinforcedDoorItem);
