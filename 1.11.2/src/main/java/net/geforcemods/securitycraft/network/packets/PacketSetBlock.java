@@ -65,16 +65,14 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		int meta = packet.meta;
 		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 	
-		ItemStack[] modules = null;
+		NonNullList<ItemStack> modules = null;
 		NonNullList<ItemStack> inventory = null;
 		int[] times = new int[4];
 		String password = "";
 		Owner owner = null;
 
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
-			NonNullList<ItemStack> stacks = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks;
-			
-			modules = stacks.toArray(new ItemStack[stacks.size()]);
+			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules;
 		}
 		
 		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -97,14 +95,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 		
 		if(modules != null){
-			NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);
-			
-			for(ItemStack stack : modules)
-			{
-				stacks.add(stack);
-			}
-			
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks = stacks;
+			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules = NonNullList.<ItemStack>withSize(modules.size(), ItemStack.EMPTY);
 		}
 		
 		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){

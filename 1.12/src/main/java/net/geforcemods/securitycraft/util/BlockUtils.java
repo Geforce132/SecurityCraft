@@ -142,7 +142,7 @@ public class BlockUtils{
 			int cooldown = -1;
 
 			if(par1World.getTileEntity(pos) instanceof CustomizableSCTE){
-				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks;
+				modules = ((CustomizableSCTE) par1World.getTileEntity(pos)).modules;
 			}
 
 			if(par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -178,7 +178,7 @@ public class BlockUtils{
 			par1World.setTileEntity(pos, tileEntity);
 
 			if(modules != null){
-				((CustomizableSCTE) par1World.getTileEntity(pos)).itemStacks = modules;
+				((CustomizableSCTE) par1World.getTileEntity(pos)).modules = modules;
 			}
 
 			if(inventory != null && par1World.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
@@ -216,7 +216,7 @@ public class BlockUtils{
 	public static void setBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property, boolean value) {
 		NonNullList<ItemStack> modules = null;
 		if(par1World.getTileEntity(new BlockPos(par2, par3, par4)) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks;
+			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).modules;
 		}
 
 		TileEntity tileEntity = par1World.getTileEntity(toPos(par2, par3, par4));
@@ -224,7 +224,7 @@ public class BlockUtils{
 		par1World.setTileEntity(new BlockPos(par2, par3, par4), tileEntity);
 
 		if(modules != null){
-			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).itemStacks = modules;
+			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).modules = modules;
 		}
 	}
 	

@@ -30,7 +30,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();
     private NBTTagList nbtTagStorage = null;
     
-    public NonNullList<ItemStack> itemStacks = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
 	
 	@Override
@@ -50,16 +50,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		super.readFromNBT(par1NBTTagCompound);
 		
 		NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Modules", 10);
-        this.itemStacks = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
+        this.modules = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
             NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("ModuleSlot");
 
-            if (b0 >= 0 && b0 < this.itemStacks.size())
+            if (b0 >= 0 && b0 < this.modules.size())
             {
-                this.itemStacks.set(b0, new ItemStack(nbttagcompound1));
+                this.modules.set(b0, new ItemStack(nbttagcompound1));
             }
         }
         
@@ -92,12 +92,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		
 		NBTTagList nbttaglist = new NBTTagList();
 
-        for(int i = 0; i < this.itemStacks.size(); i++){
-            if (!this.itemStacks.get(i).isEmpty())
+        for(int i = 0; i < this.modules.size(); i++){
+            if (!this.modules.get(i).isEmpty())
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("ModuleSlot", (byte)i);
-                this.itemStacks.get(i).writeToNBT(nbttagcompound1);
+                this.modules.get(i).writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -170,31 +170,31 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	@Override
 	public ItemStack getStackInSlot(int par1) {
-		return this.itemStacks.get(par1);
+		return this.modules.get(par1);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int par1, int par2)
     {
-        if (!this.itemStacks.get(par1).isEmpty())
+        if (!this.modules.get(par1).isEmpty())
         {
             ItemStack itemstack;
             
-            if (this.itemStacks.get(par1).getCount() <= par2)
+            if (this.modules.get(par1).getCount() <= par2)
             {
-                itemstack = this.itemStacks.get(par1);
-                this.itemStacks.set(par1, ItemStack.EMPTY);
+                itemstack = this.modules.get(par1);
+                this.modules.set(par1, ItemStack.EMPTY);
                 this.onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
                 createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
                 return itemstack;
             }
             else
             {
-                itemstack = this.itemStacks.get(par1).splitStack(par2);
+                itemstack = this.modules.get(par1).splitStack(par2);
 
-                if (this.itemStacks.get(par1).getCount() == 0)
+                if (this.modules.get(par1).getCount() == 0)
                 {
-                    this.itemStacks.set(par1, ItemStack.EMPTY);
+                    this.modules.set(par1, ItemStack.EMPTY);
                 }
 
                 this.onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
@@ -215,25 +215,25 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	
 	public ItemStack safeDecrStackSize(int par1, int par2)
     {
-        if (!this.itemStacks.get(par1).isEmpty())
+        if (!this.modules.get(par1).isEmpty())
         {
             ItemStack itemstack;
             
-            if (this.itemStacks.get(par1).getCount() <= par2)
+            if (this.modules.get(par1).getCount() <= par2)
             {
-                itemstack = this.itemStacks.get(par1);
-                this.itemStacks.set(par1, ItemStack.EMPTY);
+                itemstack = this.modules.get(par1);
+                this.modules.set(par1, ItemStack.EMPTY);
                 this.onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
                 createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
                 return itemstack;
             }
             else
             {
-                itemstack = this.itemStacks.get(par1).splitStack(par2);
+                itemstack = this.modules.get(par1).splitStack(par2);
 
-                if (this.itemStacks.get(par1).getCount() == 0)
+                if (this.modules.get(par1).getCount() == 0)
                 {
-                    this.itemStacks.set(par1, ItemStack.EMPTY);
+                    this.modules.set(par1, ItemStack.EMPTY);
                 }
 
                 this.onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
@@ -251,10 +251,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	@Override
 	public ItemStack removeStackFromSlot(int par1)
     {
-        if (!this.itemStacks.get(par1).isEmpty())
+        if (!this.modules.get(par1).isEmpty())
         {
-            ItemStack itemstack = this.itemStacks.get(par1);
-            this.itemStacks.set(par1, ItemStack.EMPTY);
+            ItemStack itemstack = this.modules.get(par1);
+            this.modules.set(par1, ItemStack.EMPTY);
             return itemstack;
         }
         else
@@ -269,7 +269,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
     @Override
 	public void setInventorySlotContents(int par1, ItemStack par2)
     {
-        this.itemStacks.set(par1, par2);
+        this.modules.set(par1, par2);
 
         if (!par2.isEmpty() && par2.getCount() > this.getInventoryStackLimit())
         {
@@ -285,7 +285,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
      * Copy of setInventorySlotContents which can't be overrided by subclasses.
      */
     public void safeSetInventorySlotContents(int par1, ItemStack par2) {
-    	this.itemStacks.set(par1, par2);
+    	this.modules.set(par1, par2);
 
         if (!par2.isEmpty() && par2.getCount() > this.getInventoryStackLimit())
         {
@@ -338,7 +338,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	@Override
 	public boolean isEmpty()
 	{
-		for(ItemStack stack : itemStacks)
+		for(ItemStack stack : modules)
 		{
 			if(!stack.isEmpty())
 				return false;
@@ -364,8 +364,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	
 	@Override
 	public void clear() {
-		for(int i = 0; i < itemStacks.size(); i++){
-			itemStacks.set(i, ItemStack.EMPTY);
+		for(int i = 0; i < modules.size(); i++){
+			modules.set(i, ItemStack.EMPTY);
 		}
 	}
 	
@@ -404,7 +404,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public ArrayList<EnumCustomModules> getModules(){
 		ArrayList<EnumCustomModules> modules = new ArrayList<EnumCustomModules>();
 		
-		for(ItemStack stack : this.itemStacks){
+		for(ItemStack stack : this.modules){
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemModule){
 				modules.add(((ItemModule) stack.getItem()).getModule());
 			}
@@ -418,9 +418,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * If there is no ItemStack for that type, returns null.
      */
 	public ItemStack getModule(EnumCustomModules module){
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(!this.itemStacks.get(i).isEmpty() && this.itemStacks.get(i).getItem() instanceof ItemModule && ((ItemModule) this.itemStacks.get(i).getItem()).getModule() == module){
-				return this.itemStacks.get(i);
+		for(int i = 0; i < this.modules.size(); i++){
+			if(!this.modules.get(i).isEmpty() && this.modules.get(i).getItem() instanceof ItemModule && ((ItemModule) this.modules.get(i).getItem()).getModule() == module){
+				return this.modules.get(i);
 			}
 		}
 		
@@ -431,20 +431,20 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * Inserts a generic copy of the given module type into the Customization inventory.
 	 */
 	public void insertModule(EnumCustomModules module){
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(!this.itemStacks.get(i).isEmpty()) {
-				if(this.itemStacks.get(i).getItem() == module.getItem()) {
+		for(int i = 0; i < this.modules.size(); i++){
+			if(!this.modules.get(i).isEmpty()) {
+				if(this.modules.get(i).getItem() == module.getItem()) {
 					return;
 				}
 			}
 		}
 		
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(!this.itemStacks.get(i).isEmpty() && module != null){
-				this.itemStacks.set(i, new ItemStack(module.getItem())); 
+		for(int i = 0; i < this.modules.size(); i++){
+			if(!this.modules.get(i).isEmpty() && module != null){
+				this.modules.set(i, new ItemStack(module.getItem())); 
 				break;
-			}else if(!this.itemStacks.get(i).isEmpty() && module == null){
-				this.itemStacks.set(i, ItemStack.EMPTY);
+			}else if(!this.modules.get(i).isEmpty() && module == null){
+				this.modules.set(i, ItemStack.EMPTY);
 			}else{
 				continue;
 			}
@@ -457,17 +457,17 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void insertModule(ItemStack module){
         if(module.isEmpty() || !(module.getItem() instanceof ItemModule)){ return; }
 		
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(!this.itemStacks.get(i).isEmpty()) {
-				if(this.itemStacks.get(i).getItem() == module.getItem()) {
+		for(int i = 0; i < this.modules.size(); i++){
+			if(!this.modules.get(i).isEmpty()) {
+				if(this.modules.get(i).getItem() == module.getItem()) {
 					return;
 				}
 			}
 		}
 		
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(this.itemStacks.get(i).isEmpty()){
-				this.itemStacks.set(i, module.copy());
+		for(int i = 0; i < this.modules.size(); i++){
+			if(this.modules.get(i).isEmpty()){
+				this.modules.set(i, module.copy());
 				break;
 			}else{
 				continue;
@@ -479,9 +479,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * Removes the first item with the given module type from the inventory.
 	 */
 	public void removeModule(EnumCustomModules module){
-		for(int i = 0; i < this.itemStacks.size(); i++){
-			if(!this.itemStacks.get(i).isEmpty() && this.itemStacks.get(i).getItem() instanceof ItemModule && ((ItemModule) this.itemStacks.get(i).getItem()).getModule() == module){
-				this.itemStacks.set(i, ItemStack.EMPTY);
+		for(int i = 0; i < this.modules.size(); i++){
+			if(!this.modules.get(i).isEmpty() && this.modules.get(i).getItem() instanceof ItemModule && ((ItemModule) this.modules.get(i).getItem()).getModule() == module){
+				this.modules.set(i, ItemStack.EMPTY);
 			}
 		}
 	}
@@ -491,14 +491,14 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 */
 	public boolean hasModule(EnumCustomModules module){
 		if(module == null){
-			for(int i = 0; i < this.itemStacks.size(); i++){
-				if(this.itemStacks.get(i).isEmpty()){
+			for(int i = 0; i < this.modules.size(); i++){
+				if(this.modules.get(i).isEmpty()){
 					return true;
 				}
 			}
 		}else{
-			for(int i = 0; i < this.itemStacks.size(); i++){
-				if(!this.itemStacks.get(i).isEmpty() && this.itemStacks.get(i).getItem() instanceof ItemModule && ((ItemModule) this.itemStacks.get(i).getItem()).getModule() == module){
+			for(int i = 0; i < this.modules.size(); i++){
+				if(!this.modules.get(i).isEmpty() && this.modules.get(i).getItem() instanceof ItemModule && ((ItemModule) this.modules.get(i).getItem()).getModule() == module){
 					return true;
 				}
 			}

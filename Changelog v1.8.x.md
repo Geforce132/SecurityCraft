@@ -27,6 +27,7 @@
 - Fix: [1.10.2+] Glass Panes can be put into Universal Block Reinforcers
 - Fix: [1.10.2+] Crash when breaking planks/sandstone with a Universal Block Reinforcer
 - Fix: [1.10.2+] Universal Block Reinforcer does not show up when being held
+- Fix: [1.11.2+] Server error when using a Redstone Module
 - Fix: [1.12] Blocks scanning for players/mobs do not work correctly
 - Fix: [1.12] Recipes are not grouped in Recipe Book
 - Removed: [1.12] Config option to enable the old Keypad recipe
