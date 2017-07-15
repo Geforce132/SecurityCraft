@@ -94,7 +94,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		}
 
 		Block block = Block.REGISTRY.getObject(new ResourceLocation(blockID));
-		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
+		getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 		
 		if(modules != null){
 			NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(modules.length, ItemStack.EMPTY);

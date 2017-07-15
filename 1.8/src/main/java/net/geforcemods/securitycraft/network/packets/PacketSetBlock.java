@@ -87,7 +87,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		}
 		
 		Block block = (Block)Block.blockRegistry.getObject(blockID);
-		getWorld(par1EntityPlayer).setBlockState(pos, block.getStateFromMeta(meta));
+		getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 		
 		if(modules != null){
 			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).itemStacks = modules;
