@@ -7,36 +7,45 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateCameraRotation;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
-	
+
 	private final float CAMERA_SPEED = 0.0180F;
-	
+
 	public float cameraRotation = 0.0F;
 	public boolean addToRotation = true;
 
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
-	
+
 	@Override
 	public void update(){
 		super.update();
-		
+
 		if(addToRotation && cameraRotation <= 1.55F){
 			cameraRotation += rotationSpeedOption.asFloat();
 		}else{
 			addToRotation = false;
 		}
-		
+
 		if(!addToRotation && cameraRotation >= -1.55F){
 			cameraRotation -= rotationSpeedOption.asFloat();
 		}else{
 			addToRotation = true;
 		}
-		
+
 		if(!world.isRemote)
-			mod_SecurityCraft.network.sendToAllAround(new PacketSUpdateCameraRotation(this), new TargetPoint(world.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 64));
+		{ 
+			IMessage message = new PacketSUpdateCameraRotation(this);
+
+			if(message instanceof FMLProxyPacket && ((FMLProxyPacket)message).getDispatcher() == null)
+				return;
+
+			mod_SecurityCraft.network.sendToAllAround(message, new TargetPoint(world.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 64));
+		}
 	}
-   
+
 	@Override
 	public EnumCustomModules[] acceptedModules(){
 		return new EnumCustomModules[] { EnumCustomModules.REDSTONE };
