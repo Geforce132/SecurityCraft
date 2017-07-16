@@ -37,6 +37,14 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     {
 		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
+			boolean isNotPowered = hasNoActiveSCBlocksNear(worldIn, pos) && hasNoActiveSCBlocksNear(worldIn, pos.down());
+
+			if(isNotPowered)
+			{
+				closeDoor(worldIn, pos.down());
+				return;
+			}
+			
 			BlockPos neighborPos = getNeighboringActiveSCBlock(worldIn, pos.down(), neighborBlock);
 			
 			if(neighborPos != null)
@@ -51,8 +59,16 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		}
 		else
 		{
+			boolean isNotPowered = hasNoActiveSCBlocksNear(worldIn, pos) && hasNoActiveSCBlocksNear(worldIn, pos.up());
+
+			if(isNotPowered)
+			{
+				closeDoor(worldIn, pos);
+				return;
+			}
+			
 			BlockPos neighborPos = getNeighboringActiveSCBlock(worldIn, pos, neighborBlock);
-	
+			
 			if(neighborPos != null)
 				onNeighborChange(worldIn, pos, neighborPos);
 			else
@@ -65,12 +81,27 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		}
     }
     
+    private void closeDoor(World world, BlockPos pos)
+    {
+    	IBlockState state = world.getBlockState(pos);
+    	
+    	if(!state.getValue(OPEN))
+    		return;
+    	
+		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
+			pos = pos.down();
+
+		world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+        world.playEvent((EntityPlayer)null, 1011, pos, 0);
+    }
+    
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
 		IBlockState state = worldIn.getBlockState(pos);
 		Block neighborBlock = worldIn.getBlockState(neighbor).getBlock();
-		
+
 		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
         {
             BlockPos blockpos1 = pos.down();
@@ -118,7 +149,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
             else
             {
                 boolean flag = hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up());
-                
+
 //                if(flag && !(hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up()) && neighborBlock != this)){
 //                	System.out.println("Powered by vanilla block");
 //                }else if(hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up()) && neighborBlock != this){
@@ -127,11 +158,9 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
                 
                 if (((flag || neighborBlock.canProvidePower(iblockstate2))) && neighborBlock != this && flag != iblockstate2.getValue(POWERED).booleanValue())
                 {
-                    worldIn.setBlockState(blockpos2, iblockstate2.withProperty(POWERED, Boolean.valueOf(flag)), 2);
-
                     if (flag != state.getValue(OPEN).booleanValue())
                     {
-                        worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
+                        worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)).withProperty(POWERED, Boolean.valueOf(flag)), 2);
                         worldIn.markBlockRangeForRenderUpdate(pos, pos);
                         worldIn.playEvent((EntityPlayer)null, flag ? 1005 : 1011, pos, 0);
                     }
@@ -289,6 +318,12 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		}
 
 		return null;
+	}
+	
+	private boolean hasNoActiveSCBlocksNear(World world, BlockPos pos)
+	{
+		return !hasActiveLaserNextTo(world, pos) && !hasActiveScannerNextTo(world, pos) && !hasActiveKeypadNextTo(world, pos) &&
+				   !hasActiveReaderNextTo(world, pos) && !hasActiveInventoryScannerNextTo(world, pos);
 	}
     
 	@SideOnly(Side.CLIENT)
