@@ -36,8 +36,9 @@
 
 **Hotfixes:**
 - Fix: Codebreaker can be enchanted with books at the anvil
-- Fix: [1.11.2+] New top slabs are displayed incorrectly
+- Fix: [1.10.2+] Issue with the recent Security Camera animation fix
 - Fix: [1.10.2+] Reinforced stairs placed a certain way are still being displayed incorrectly
+- Fix: [1.11.2+] New top slabs are displayed incorrectly
 
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
 

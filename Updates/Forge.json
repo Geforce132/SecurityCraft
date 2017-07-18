@@ -1,35 +1,35 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/securitycraft-mod/files",
   "promos": {
-    "1.7.10-latest": "v1.8.2.3",
-    "1.7.10-recommended": "v1.8.2.3",
-    "1.8-latest": "v1.8.2.3,
-    "1.8-recommended": "v1.8.2.3",
-    "1.8.8-latest": "v1.8.2.3",
-    "1.8.8-recommended": "v1.8.2.3",
-    "1.10.2-latest": "v1.8.2.3",
-    "1.10.2-recommended": "v1.8.2.3",
-    "1.11.2-latest": "v1.8.2.3",
-    "1.11.2-recommended": "v1.8.2.3",
-    "1.11.2-latest": "v1.8.2.3",
-    "1.11.2-recommended": "v1.8.2.3",
+    "1.7.10-latest": "v1.8.2.3-hotfix",
+    "1.7.10-recommended": "v1.8.2.3-hotfix",
+    "1.8-latest": "v1.8.2.3-hotfix,
+    "1.8-recommended": "v1.8.2.3-hotfix",
+    "1.8.8-latest": "v1.8.2.3-hotfix",
+    "1.8.8-recommended": "v1.8.2.3-hotfix",
+    "1.10.2-latest": "v1.8.2.3-hotfix",
+    "1.10.2-recommended": "v1.8.2.3-hotfix",
+    "1.11.2-latest": "v1.8.2.3-hotfix",
+    "1.11.2-recommended": "v1.8.2.3-hotfix",
+    "1.11.2-latest": "v1.8.2.3-hotfix",
+    "1.11.2-recommended": "v1.8.2.3-hotfix",
   },
   "1.7.10": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   },
   "1.8": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   },
   "1.8.8": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   },
   "1.10.2": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   },
   "1.11.2": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   },
   "1.12": {
-    "v1.8.2.3": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
+    "v1.8.2.3-hotfix": "The sixth revision of the Security Camera update! New reinforced blocks and tons of bugfixes!"
   }    
 }
