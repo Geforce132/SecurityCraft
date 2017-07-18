@@ -3,6 +3,6 @@ SecurityCraft verbindet sich mit so einem Chatraum sobald du '/sc connect' eingi
 Jeder, der in dem Raum ist, kann dich anschreiben, indem er deinen Namen als Präfix vor die Nachricht setzt.
 
 Bitte beachte, dass folgende Dinge nicht möglich sind:
-- Zu deiner Welt verbinden um mit die zu spielen
+- Zu deiner Welt verbinden um mit dir zu spielen
 - Dein Minecraft in irgendeiner Weise kontrollieren
 - Sehen, was du gerade machst
