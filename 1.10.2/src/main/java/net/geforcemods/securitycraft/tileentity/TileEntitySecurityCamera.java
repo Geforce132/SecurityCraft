@@ -3,12 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionFloat;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateCameraRotation;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 	
@@ -33,16 +28,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 			cameraRotation -= rotationSpeedOption.asFloat();
 		}else{
 			addToRotation = true;
-		}
-		
-		if(!worldObj.isRemote)
-		{
-			IMessage message = new PacketSUpdateCameraRotation(this);
-			
-			if(message instanceof FMLProxyPacket && ((FMLProxyPacket)message).getDispatcher() == null)
-				return;
-			
-			mod_SecurityCraft.network.sendToAllAround(message, new TargetPoint(worldObj.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 64));
 		}
 	}
    

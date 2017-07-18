@@ -93,7 +93,6 @@ import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateTEOwnable;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
@@ -729,7 +728,6 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 19, Side.SERVER);
 		network.registerMessage(PacketCRequestTEOwnableUpdate.Handler.class, PacketCRequestTEOwnableUpdate.class, 20, Side.SERVER);
 		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Side.CLIENT);
-		network.registerMessage(PacketSUpdateCameraRotation.Handler.class, PacketSUpdateCameraRotation.class, 22, Side.CLIENT);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -27,4 +27,9 @@ public class ItemCodebreaker extends Item {
         return EnumRarity.RARE;
     }
 
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
+	{
+		return false;
+	}
 }

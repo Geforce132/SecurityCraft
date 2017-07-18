@@ -24,10 +24,10 @@
         "facing=west,half=top,shape=straight":  { "model": "securitycraft:reinforced_stairs_darkoak_normal", "x": 180, "y": 180, "uvlock": true },
         "facing=south,half=top,shape=straight": { "model": "securitycraft:reinforced_stairs_darkoak_normal", "x": 180, "y": 90, "uvlock": true },
         "facing=north,half=top,shape=straight": { "model": "securitycraft:reinforced_stairs_darkoak_normal", "x": 180, "y": 270, "uvlock": true },
-        "facing=east,half=top,shape=outer_right":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "uvlock": true },
-        "facing=west,half=top,shape=outer_right":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 180, "uvlock": true },
-        "facing=south,half=top,shape=outer_right": { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 90, "uvlock": true },
-        "facing=north,half=top,shape=outer_right": { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 270, "uvlock": true },
+        "facing=east,half=top,shape=outer_right":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 90, "uvlock": true },
+        "facing=west,half=top,shape=outer_right":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 270, "uvlock": true },
+        "facing=south,half=top,shape=outer_right": { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 180, "uvlock": true },
+        "facing=north,half=top,shape=outer_right": { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "uvlock": true },
         "facing=east,half=top,shape=outer_left":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "uvlock": true },
         "facing=west,half=top,shape=outer_left":  { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 180, "uvlock": true },
         "facing=south,half=top,shape=outer_left": { "model": "securitycraft:reinforced_stairs_darkoak_outer", "x": 180, "y": 90, "uvlock": true },
@@ -36,9 +36,9 @@
         "facing=west,half=top,shape=inner_right":  { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 270, "uvlock": true },
         "facing=south,half=top,shape=inner_right": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 180, "uvlock": true },
         "facing=north,half=top,shape=inner_right": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "uvlock": true },
-        "facing=east,half=top,shape=inner_left":  { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 90, "uvlock": true },
-        "facing=west,half=top,shape=inner_left":  { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 270, "uvlock": true },
-        "facing=south,half=top,shape=inner_left": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 180, "uvlock": true },
-        "facing=north,half=top,shape=inner_left": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "uvlock": true }
+        "facing=east,half=top,shape=inner_left":  { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "uvlock": true },
+        "facing=west,half=top,shape=inner_left":  { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 180, "uvlock": true },
+        "facing=south,half=top,shape=inner_left": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 90, "uvlock": true },
+        "facing=north,half=top,shape=inner_left": { "model": "securitycraft:reinforced_stairs_darkoak_inner", "x": 180, "y": 270, "uvlock": true }
     }
 }

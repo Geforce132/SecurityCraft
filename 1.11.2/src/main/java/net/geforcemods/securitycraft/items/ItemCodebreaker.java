@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,5 +29,23 @@ public class ItemCodebreaker extends Item {
     public EnumRarity getRarity(ItemStack par1ItemStack){
         return EnumRarity.RARE;
     }
+	
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment)
+	{
+		return false;
+	}
 
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean isEnchantable(ItemStack stack)
+	{
+		return false;
+	}
+	
 }

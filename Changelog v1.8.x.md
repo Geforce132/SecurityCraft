@@ -34,6 +34,11 @@
 - Fix: [1.12] Recipes are not grouped in Recipe Book
 - Removed: [1.12] Config option to enable the old Keypad recipe
 
+**Hotfixes:**
+- Fix: Codebreaker can be enchanted with books at the anvil
+- Fix: [1.11.2+] New top slabs are displayed incorrectly
+- Fix: [1.10.2+] Reinforced stairs placed a certain way are still being displayed incorrectly
+
 --------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
 
 - Ported to 1.10.2, 1.11.2, and 1.12
