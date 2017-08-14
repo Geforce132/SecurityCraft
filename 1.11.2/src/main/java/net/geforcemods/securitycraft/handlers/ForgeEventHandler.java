@@ -68,7 +68,7 @@ public class ForgeEventHandler {
 	{
 		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
-		tipsWithLink.put("discord", "https://discord.gg/RYsKYx5");
+		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
 	}
 	
 	@SubscribeEvent

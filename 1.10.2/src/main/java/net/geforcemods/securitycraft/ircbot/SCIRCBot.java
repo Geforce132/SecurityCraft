@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Loader;
 public class SCIRCBot extends PircBot{
 
 	private static final char prefix = '!';
-	private static boolean message = false;
+	private boolean message = false;
 	private HashMap<String, Integer> messageFrequency = new HashMap<String, Integer>(); 
 	
 	public SCIRCBot(String par1String){

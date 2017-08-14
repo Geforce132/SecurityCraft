@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.2.4 of SecurityCraft (released once a good amount of fixes are included)--------------------------
+
+- Fix: Unintended behavior when using '/sc contact' on a multiplayer server
+- Fix: Invalid Discord invite link
+
 --------------------------Changelog for v1.8.2.3 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks
