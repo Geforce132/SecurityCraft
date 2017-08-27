@@ -2,6 +2,7 @@
 
 - Fix: Unintended behavior when using '/sc contact' on a multiplayer server
 - Fix: Invalid Discord invite link
+- Fix: IRC security issue
 
 --------------------------Changelog for v1.8.2.3 of SecurityCraft--------------------------
 
