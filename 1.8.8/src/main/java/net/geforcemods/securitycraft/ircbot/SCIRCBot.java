@@ -32,7 +32,7 @@ public class SCIRCBot extends PircBot{
 	public void connectToChannel() throws IOException, IrcException, NickAlreadyInUseException{
 		this.connect("irc.esper.net");
 		this.joinChannel("#GeforceMods");
-		this.setVerbose(true);
+		this.setVerbose(false);
 
 		if(Minecraft.getMinecraft().getSession().getToken() == null)
 			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)");
