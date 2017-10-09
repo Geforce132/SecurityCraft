@@ -22,7 +22,7 @@ public class EntityTaserBullet extends EntityThrowable {
 	public EntityTaserBullet(World worldIn, EntityLivingBase shooter){
 		super(worldIn, shooter);
 		this.setSize(0.01F, 0.01F);
-		this.setHeadingFromThrower(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
+		this.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
 	}
 
 	public EntityTaserBullet(World worldIn, double x, double y, double z){

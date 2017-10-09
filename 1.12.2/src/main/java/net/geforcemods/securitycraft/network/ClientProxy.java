@@ -258,7 +258,7 @@ public class ClientProxy extends ServerProxy{
 		//same thing for inventory
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex)
+			public int colorMultiplier(ItemStack stack, int tintIndex)
 			{
 				return 0x999999;
 			}

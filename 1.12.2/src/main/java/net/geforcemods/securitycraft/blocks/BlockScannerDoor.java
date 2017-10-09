@@ -25,7 +25,6 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	public BlockScannerDoor(Material materialIn)
 	{
 		super(materialIn);
-		this.isBlockContainer = true;
 		setSoundType(SoundType.METAL);
 	}
 

@@ -28,7 +28,6 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
     
     public BlockReinforcedDoor(Material materialIn) {
 		super(materialIn);
-		this.isBlockContainer = true;
 		setSoundType(SoundType.METAL);
 	}
 
