@@ -98,6 +98,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
@@ -1035,6 +1036,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 17, Side.CLIENT);
 		network.registerMessage(PacketSOpenGui.Handler.class, PacketSOpenGui.class, 18, Side.SERVER);
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 19, Side.SERVER);
+		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 20, Side.SERVER);
 	}
 
 	@SideOnly(Side.CLIENT)

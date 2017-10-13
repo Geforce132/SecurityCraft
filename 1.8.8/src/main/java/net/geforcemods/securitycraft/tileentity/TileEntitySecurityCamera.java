@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionFloat;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 
@@ -13,21 +15,29 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	private boolean addToRotation = true;
 
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
-
+	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
+	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
+	
 	public void update(){
 		super.update();
 		
+		if(!shouldRotateOption.asBoolean())
+		{
+			cameraRotation = (float)customRotationOption.asDouble();
+			return;
+		}
+		
 		if(addToRotation && cameraRotation <= 1.55F){
 			cameraRotation += rotationSpeedOption.asFloat();
-		}else{
-			addToRotation = false;
-		}
+		}else{ 
+            addToRotation = false; 
+        } 
 		
 		if(!addToRotation && cameraRotation >= -1.55F){
 			cameraRotation -= rotationSpeedOption.asFloat();
-		}else{
-			addToRotation = true;
-		}
+		}else{ 
+            addToRotation = true; 
+        } 
 	}
    
 	public EnumCustomModules[] acceptedModules(){
@@ -35,7 +45,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	}
 
 	public Option<?>[] customOptions() {
-		return new Option[]{ rotationSpeedOption };
+		return new Option[]{ rotationSpeedOption, shouldRotateOption, customRotationOption };
 	}
 
 }

@@ -105,6 +105,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlockAndMetadata;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlockMetadata;
@@ -1054,6 +1055,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketCSpawnLightning.Handler.class, PacketCSpawnLightning.class, 23, Side.CLIENT);
 		network.registerMessage(PacketSOpenGui.Handler.class, PacketSOpenGui.class, 24, Side.SERVER);
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 25, Side.SERVER);
+		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 26, Side.SERVER);
 	}
 	
 }

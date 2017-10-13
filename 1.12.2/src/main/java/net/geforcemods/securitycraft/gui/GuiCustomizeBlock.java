@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiItemButton;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -50,8 +51,19 @@ public class GuiCustomizeBlock extends GuiContainer{
     	
     	if(tileEntity.customOptions() != null) {
 	    	for(int i = 0; i < tileEntity.customOptions().length; i++){
-	    		optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(tileEntity.customOptions()[i]));
-	    		optionButtons[i].packedFGColour = tileEntity.customOptions()[i].toString().matches(tileEntity.customOptions()[i].getDefaultValue().toString()) ? 16777120 : 14737632; 
+                Option option = tileEntity.customOptions()[i]; 
+                
+                if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
+                {
+                    optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (double)option.getMin(), (double)option.getMax(), (double)option.getValue(), true, true, (OptionDouble)option); 
+                    optionButtons[i].packedFGColour = 14737632; 
+                }
+                else
+                {
+                    optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option)); 
+                    optionButtons[i].packedFGColour = option.toString().matches(option.getDefaultValue().toString()) ? 16777120 : 14737632;  
+                }
+	    		
 	    		this.buttonList.add(optionButtons[i]);
 	    		this.hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
 	    	}

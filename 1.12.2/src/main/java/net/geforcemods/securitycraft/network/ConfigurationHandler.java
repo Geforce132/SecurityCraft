@@ -94,6 +94,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateTEOwnable;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
@@ -728,6 +729,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 19, Side.SERVER);
 		network.registerMessage(PacketCRequestTEOwnableUpdate.Handler.class, PacketCRequestTEOwnableUpdate.class, 20, Side.SERVER);
 		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Side.CLIENT);
+		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
 	}
 
 	@SideOnly(Side.CLIENT)

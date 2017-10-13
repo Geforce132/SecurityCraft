@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.geforcemods.securitycraft.gui.GuiSlider;
+import net.geforcemods.securitycraft.gui.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 /**
  * A class that allows blocks that have
@@ -219,17 +224,30 @@ public static class OptionInt extends Option<Integer>{
 /**
  * A subclass of {@link Option}, already setup to handle doubles.
  */
-public static class OptionDouble extends Option<Double>{
-
+public static class OptionDouble extends Option<Double> implements ISlider{
+	private boolean slider;
+	private CustomizableSCTE tileEntity;
+	
 	public OptionDouble(String optionName, Double value) {
 		super(optionName, value);
+		slider = false;
 	}
 	
 	public OptionDouble(String optionName, Double value, Double min, Double max, Double increment) {
 		super(optionName, value, min, max, increment);
-	}
+		slider = false; 
+    } 
+     
+    public OptionDouble(CustomizableSCTE te, String optionName, Double value, Double min, Double max, Double increment, boolean s) { 
+        super(optionName, value, min, max, increment); 
+        slider = s; 
+        tileEntity = te; 
+    } 
 	
 	public void toggle() {
+        if(isSlider()) 
+            return;
+		
 		if(getValue() >= getMax()) {
 			setValue(getMin());
 			return;
@@ -250,7 +268,22 @@ public static class OptionDouble extends Option<Double>{
 	public String toString() {
 		return Double.toString(value).length() > 5 ? Double.toString(value).substring(0, 5) : Double.toString(value);
 	}
-	
+
+    public boolean isSlider() 
+    { 
+        return slider; 
+    } 
+     
+    @Override 
+    public void onChangeSliderValue(GuiSlider slider, String blockName, int id) 
+    { 
+        if(!isSlider()) 
+            return; 
+         
+        setValue(slider.getValue()); 
+        slider.displayString = (StatCollector.translateToLocal("option." + blockName + "." + getName()) + " ").replace("#", toString()); 
+        mod_SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue())); 
+    } 
 }
 
 /**
