@@ -8,6 +8,7 @@
 - Fix: Incorrect German language strings
 - Fix: Retinal Scanner doesn't respect the whitelist module
 - Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
+- Fix: [1.7.10] Reinforced Door can be held open with a redstone input (thanks LeKoopa!)
 - Fix: [1.12] Keycard recipes cannot be disabled via config
 - Fix: [1.12] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
 

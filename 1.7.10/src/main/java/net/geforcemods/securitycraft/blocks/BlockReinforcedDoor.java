@@ -161,13 +161,11 @@ public class BlockReinforcedDoor extends BlockContainer{
                     this.dropBlockAsItem(par1World, par2, par3, par4, l, 0);
                 }
             }else{
-                boolean flag1 = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4);
-
-                if ((flag1 || par5Block.canProvidePower()) && par5Block != this){
+                if (par5Block.canProvidePower() && par5Block != this){
                 	if(hasActiveKeypadNextTo(par1World, par2, par3, par4) || hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveReaderNextTo(par1World, par2, par3, par4) || hasActiveReaderNextTo(par1World, par2, par3 + 1, par4) || hasActiveScannerNextTo(par1World, par2, par3, par4) || hasActiveScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveLaserNextTo(par1World, par2, par3, par4) || hasActiveLaserNextTo(par1World, par2, par3 + 1, par4)){
-                		this.func_150014_a(par1World, par2, par3, par4, flag1);         
-                	}else if(!flag1){
-                		this.func_150014_a(par1World, par2, par3, par4, flag1);         
+                		this.func_150014_a(par1World, par2, par3, par4, true);         
+                	}else{
+                		this.func_150014_a(par1World, par2, par3, par4, false);         
                 	}
                 }
             }
