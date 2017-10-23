@@ -25,7 +25,7 @@ minecraft {
 }
 
 dependencies {
-//    compile files('libs/Waila-1.7.1_1.11.2-dev.jar')
+    compile files('libs/Hwyla-1.8.20-B35_1.12-sources.jar')
 }
 
 processResources
