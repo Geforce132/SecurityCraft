@@ -95,7 +95,7 @@ public static class Handler extends PacketHelper implements IMessageHandler<Pack
 		getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 		
 		if(modules != null){
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules = NonNullList.<ItemStack>withSize(modules.size(), ItemStack.EMPTY);
+			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules = modules;
 		}
 		
 		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){

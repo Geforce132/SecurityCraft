@@ -12,6 +12,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 	
@@ -63,5 +64,17 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
+	}
+	
+	@Override
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	{
+		world.notifyNeighborsOfStateChange(pos, blockType, false);
+	}
+   
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	{
+		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
 }

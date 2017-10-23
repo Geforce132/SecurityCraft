@@ -101,7 +101,7 @@ public class BlockPortableRadar extends BlockContainer {
 	}  
    
     public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-    	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1){
+    	if(((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1){
     		return 15;
     	}else{
     		return 0;

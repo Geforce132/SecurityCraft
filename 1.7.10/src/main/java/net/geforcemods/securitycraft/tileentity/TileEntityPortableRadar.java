@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
@@ -92,4 +93,15 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
 	}
 	
+	@Override
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	{
+		worldObj.notifyBlockChange(xCoord, yCoord, zCoord, blockType);
+	}
+	
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	{
+		worldObj.notifyBlockChange(xCoord, yCoord, zCoord, blockType);
+	}
 }

@@ -9,8 +9,10 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -146,11 +148,11 @@ public class BlockSecurityCamera extends BlockContainer {
 	}
 
 	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		return BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 7, 10) ? 15 : 0;
+		return ((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 5, 8) ? 15 : 0;
 	}
 	
 	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		return BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 7, 10) ? 15 : 0;
+		return ((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 5, 8) ? 15 : 0;
 	}
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){

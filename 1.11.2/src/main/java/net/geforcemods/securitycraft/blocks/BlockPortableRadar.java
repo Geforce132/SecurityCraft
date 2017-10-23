@@ -125,7 +125,7 @@ public class BlockPortableRadar extends BlockContainer {
     
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-    	if(blockState.getValue(POWERED).booleanValue()){
+    	if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)){
     		return 15;
     	}else{
     		return 0;
