@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.handlers;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -21,6 +23,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.ircbot.SCIRCBot;
+import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -28,25 +31,33 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
@@ -302,6 +313,62 @@ public class ForgeEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
+	{
+		if(event.type == ElementType.HOTBAR)
+		{
+			Minecraft mc = Minecraft.getMinecraft();
+			EntityClientPlayerMP player = mc.thePlayer;
+			World world = player.getEntityWorld();
+			int held = player.inventory.currentItem;
+			ItemStack monitor = player.inventory.mainInventory[held];
+
+			if(monitor != null && monitor.getItem() == mod_SecurityCraft.cameraMonitor)
+			{
+				String textureToUse = "cameraNotBound";
+	        	double eyeHeight = player.getEyeHeight();
+	        	Vec3 lookVec = Vec3.createVectorHelper((player.posX + (player.getLookVec().xCoord * 5)), ((eyeHeight + player.posY) + (player.getLookVec().yCoord * 5)), (player.posZ + (player.getLookVec().zCoord * 5)));
+	        	MovingObjectPosition mop = world.rayTraceBlocks(Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+	        	
+	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK && world.getTileEntity(mop.blockX, mop.blockY, mop.blockZ) instanceof TileEntitySecurityCamera)
+	        	{
+	        		NBTTagCompound cameras = monitor.getTagCompound();
+	        		
+	        		for(int i = 1; i < ((ItemCameraMonitor)monitor.getItem()).getNumberOfCamerasBound(cameras) + 1; i++)
+	        		{
+	        			String[] coords = cameras.getString("Camera" + i).split(" ");
+
+	        			if(Integer.parseInt(coords[0]) == mop.blockX && Integer.parseInt(coords[1]) == mop.blockY && Integer.parseInt(coords[2]) == mop.blockZ)
+	        			{
+	        				textureToUse = "cameraBound";
+	        				break;
+	        			}
+	        		}
+	        		
+					GL11.glEnable(GL11.GL_BLEND);
+					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(mod_SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					drawNonStandardTexturedRect(event.resolution.getScaledWidth() / 2 - 90 + held * 20 + 2, event.resolution.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					GL11.glDisable(GL11.GL_BLEND);
+	        	}
+			}
+		}
+	}
+	
+	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
+	{
+		double z = 200;
+		double f = 1F / (double) textureWidth;
+		double f1 = 1F / (double) textureHeight;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(x, y + height, z, u * f, (v + height) * f1);
+		tessellator.addVertexWithUV(x + width, y + height, z, (u + width) * f, (v + height) * f1);
+		tessellator.addVertexWithUV(x + width, y, z, (u + width) * f, v * f1);
+		tessellator.addVertexWithUV(x, y, z, u * f, v * f1);
+		tessellator.draw();
+	}
+	
 	private String getRandomTip(){
 		String[] tips = {
 				"messages.tip.scHelp",

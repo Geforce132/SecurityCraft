@@ -14,26 +14,38 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.ircbot.SCIRCBot;
+import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -41,6 +53,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
@@ -293,6 +306,63 @@ public class ForgeEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
+	{
+		if(event.getType() == ElementType.HOTBAR)
+		{
+			Minecraft mc = Minecraft.getMinecraft();
+			EntityPlayerSP player = mc.player;
+			World world = player.getEntityWorld();
+			int held = player.inventory.currentItem;
+			ItemStack monitor = player.inventory.mainInventory.get(held);
+
+			if(!monitor.isEmpty() && monitor.getItem() == mod_SecurityCraft.cameraMonitor)
+			{
+				String textureToUse = "camera_not_bound";
+	        	double eyeHeight = player.getEyeHeight();
+	        	Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+	        	RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+	        	
+	        	if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+	        	{
+	        		NBTTagCompound cameras = monitor.getTagCompound();
+	        		
+	        		for(int i = 1; i < ((ItemCameraMonitor)monitor.getItem()).getNumberOfCamerasBound(cameras) + 1; i++)
+	        		{
+	        			String[] coords = cameras.getString("Camera" + i).split(" ");
+
+	        			if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
+	        			{
+	        				textureToUse = "camera_bound";
+	        				break;
+	        			}
+	        		}
+	        		
+	        		GlStateManager.enableBlend();
+					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(mod_SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					GlStateManager.disableBlend();
+	        	}
+			}
+		}
+	}
+	
+	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
+	{
+		double z = 200;
+		double f = 1F / (double) textureWidth;
+		double f1 = 1F / (double) textureHeight;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		buffer.pos(x, y + height, z).tex(u * f, (v + height) * f1).endVertex();
+		buffer.pos(x + width, y + height, z).tex((u + width) * f, (v + height) * f1).endVertex();
+		buffer.pos(x + width, y, z).tex((u + width) * f, v * f1).endVertex();
+		buffer.pos(x, y, z).tex(u * f, v * f1).endVertex();
+		tessellator.draw();
+	}
+	
 	private ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 		

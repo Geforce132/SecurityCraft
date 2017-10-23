@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (released once a good amount of fixes are included)--------------------------
 
 - New: Camera can be set to a fixed angle using the Universal Block Modifier
+- New: When looking at a camera while holding a monitor, an overlay will be shown based on if the camera is added to the monitor or not
 - New: [1.8+] Disabled recipes now show an empty grid in the SecurityCraft Manual
 - Fix: Unintended behavior when using '/sc contact' on a multiplayer server
 - Fix: Invalid Discord invite link
