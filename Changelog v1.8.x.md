@@ -11,6 +11,7 @@
 - Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
 - Fix: [1.7.10] Reinforced Door can be held open with a redstone input (thanks LeKoopa!)
 - Fix: [1.7.10] Security Camera cannot emit redstone signal
+- Fix: [1.7.10-1.8.8] Unable to exit out of password GUIs
 - Fix: [1.11.2+] Installed modules disappear in certain situations
 - Fix: [1.12] Keycard recipes cannot be disabled via config
 - Fix: [1.12] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
@@ -74,11 +75,11 @@
 - Fix: Wrong texture for Reinforced Stone Slabs
 - Fix: Crash when shift-clicking an item out of the Disguise Module's slot
 - Fix: Security Camera can be broken without a Universal Block Remover
-- Fix: [1.8.8] Keypad crash
-- Fix: [1.8, 1.8.8] Bouncing Betty can explode while it is defused
 - Fix: Alarm bounding box is too large for top/bottom alarm
 - Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecuritCraft Manual
 - Fix: Pick block does not work on Keypads
+- Fix: [1.8.8] Keypad crash
+- Fix: [1.8, 1.8.8] Bouncing Betty can explode while it is defused
 - Removed: [1.10.2+] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2+] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
@@ -147,12 +148,12 @@
 - New: Added descriptions to all SecurityCraft config options
 - New: 1.7.10 updated to Forge v10.13.3.1420, 1.8 updated to Forge v11.14.3.1556
 - New: 1.8.8 port using Forge v11.15.0.1596
-- New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
 - New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted
 - New: Custom options for keypads, portable radars, and security cameras
 - New: Spam detection while using /sc contact will not allow users to send the same message more than two times consecutively
+- New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
 - API: Added TileEntitySCTE.attacks(), which you can use to have an attack() method automatically called
 - API: Added Owner class which allows for easy access to player's names and UUIDs, with a few helpful methods as well
 - API: Added IPasswordProtected.onCodebreakerUsed() and IPasswordProtected.openPasswordGUI()
