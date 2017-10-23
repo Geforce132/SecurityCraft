@@ -9,11 +9,18 @@ public class SCManualPage {
 	private Item item;
 	private String helpInfo;
 	private ItemStack[] customRecipe;
+	private boolean configValue = true;
 
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.customRecipe = null;
+	}
+	
+	public SCManualPage(Item item, String helpInfo, boolean configValue){
+		this.item = item;
+		this.helpInfo = helpInfo;
+		this.configValue = configValue;
 	}
 	
 	public SCManualPage(Item item, String helpInfo, ItemStack[] customRecipe){
@@ -41,5 +48,9 @@ public class SCManualPage {
 	public boolean hasCustomRecipe() {
 		return (customRecipe != null);
 	}
-
+	
+	public boolean isRecipeDisabled()
+	{
+		return !configValue;
+	}
 }

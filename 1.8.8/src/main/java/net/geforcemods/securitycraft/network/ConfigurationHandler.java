@@ -567,12 +567,12 @@ public class ConfigurationHandler{
 	    registerItem(mod_SecurityCraft.reinforcedDoorItem, mod_SecurityCraft.reinforcedDoorItem.getUnlocalizedName().substring(5));
 	    registerItem(mod_SecurityCraft.scannerDoorItem, mod_SecurityCraft.scannerDoorItem.getUnlocalizedName().substring(5));
 		registerItem(mod_SecurityCraft.universalBlockRemover);
-		registerItem(mod_SecurityCraft.keycardLV1);
-		registerItem(mod_SecurityCraft.keycardLV2);
-		registerItem(mod_SecurityCraft.keycardLV3);
-		registerItem(mod_SecurityCraft.keycardLV4);
-		registerItem(mod_SecurityCraft.keycardLV5);
-		registerItem(mod_SecurityCraft.limitedUseKeycard);
+		registerItem(mod_SecurityCraft.keycardLV1, ableToCraftKeycard1);
+		registerItem(mod_SecurityCraft.keycardLV2, ableToCraftKeycard2);
+		registerItem(mod_SecurityCraft.keycardLV3, ableToCraftKeycard3);
+		registerItem(mod_SecurityCraft.keycardLV4, ableToCraftKeycard4);
+		registerItem(mod_SecurityCraft.keycardLV5, ableToCraftKeycard5);
+		registerItem(mod_SecurityCraft.limitedUseKeycard, ableToCraftLUKeycard);
 		registerItem(mod_SecurityCraft.remoteAccessMine);
 		registerItem(mod_SecurityCraft.fWaterBucket);
 		registerItem(mod_SecurityCraft.fLavaBucket);
@@ -986,6 +986,15 @@ public class ConfigurationHandler{
 	 */
 	private void registerItem(Item item){
 		registerItem(item, item.getUnlocalizedName().substring(5));
+	}
+	
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 */
+	private void registerItem(Item item, boolean configValue){
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", configValue));
 	}
 	
 	/**

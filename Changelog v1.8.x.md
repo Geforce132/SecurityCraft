@@ -1,10 +1,12 @@
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (released once a good amount of fixes are included)--------------------------
 
 - New: Camera can be set to a fixed angle using the Universal Block Modifier
+- New: [1.8+] Disabled recipes now show an empty grid in the SecurityCraft Manual
 - Fix: Unintended behavior when using '/sc contact' on a multiplayer server
 - Fix: Invalid Discord invite link
 - Fix: IRC security issue
 - Fix: Incorrect German language strings
+- Fix: [1.12] Keycard recipes cannot be disabled via config
 
 --------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below)--------------------------
 

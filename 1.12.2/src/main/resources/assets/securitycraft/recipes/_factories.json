@@ -1,0 +1,10 @@
+{
+	"conditions": {
+		"securitycraft_toggle_keycard_1": "net.geforcemods.securitycraft.factories.KeycardConditionFactory",
+		"securitycraft_toggle_keycard_2": "net.geforcemods.securitycraft.factories.KeycardConditionFactory",
+		"securitycraft_toggle_keycard_3": "net.geforcemods.securitycraft.factories.KeycardConditionFactory",
+		"securitycraft_toggle_keycard_4": "net.geforcemods.securitycraft.factories.KeycardConditionFactory",
+		"securitycraft_toggle_keycard_5": "net.geforcemods.securitycraft.factories.KeycardConditionFactory",
+		"securitycraft_toggle_lu_keycard": "net.geforcemods.securitycraft.factories.KeycardConditionFactory"
+	}
+}

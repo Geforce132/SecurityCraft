@@ -77,7 +77,7 @@ public class GuiSCManual extends GuiScreen {
 		if(this.currentPage == -1){
 	    	this.mc.getTextureManager().bindTexture(infoBookTitlePage);
 		}else{
-			if(this.recipe != null)
+			if(this.recipe != null || mod_SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
 				this.mc.getTextureManager().bindTexture(infoBookTexture);
 			else
 				this.mc.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -254,10 +254,15 @@ public class GuiSCManual extends GuiScreen {
 		}
 		else
 		{
-			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
+			if(mod_SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+				hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.disabled")));
+			else
+			{
+				String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
 			
-			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+				name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
+				hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+			}
 		}
 		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
