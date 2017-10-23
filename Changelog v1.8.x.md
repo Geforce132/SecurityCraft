@@ -6,6 +6,7 @@
 - Fix: Invalid Discord invite link
 - Fix: IRC security issue
 - Fix: Incorrect German language strings
+- Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
 - Fix: [1.12] Keycard recipes cannot be disabled via config
 
 --------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below)--------------------------

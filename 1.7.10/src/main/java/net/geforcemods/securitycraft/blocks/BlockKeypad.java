@@ -81,7 +81,6 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
     		}
 
 			if(ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
-				activate(par1World, par2, par3, par4);
 				return true;
 			}
 
