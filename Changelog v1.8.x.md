@@ -6,6 +6,7 @@
 - Fix: Invalid Discord invite link
 - Fix: IRC security issue
 - Fix: Incorrect German language strings
+- Fix: Retinal Scanner doesn't respect the whitelist module
 - Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
 - Fix: [1.12] Keycard recipes cannot be disabled via config
 
