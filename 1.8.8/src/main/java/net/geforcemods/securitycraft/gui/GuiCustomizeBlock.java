@@ -55,7 +55,7 @@ public class GuiCustomizeBlock extends GuiContainer{
                 
                 if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
                 {
-                    optionButtons[i] = new GuiSlider((StatCollector.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (double)option.getMin(), (double)option.getMax(), (double)option.getValue(), true, true, (OptionDouble)option); 
+                    optionButtons[i] = new GuiSlider((StatCollector.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (Double)option.getMin(), (Double)option.getMax(), (Double)option.getValue(), true, true, (OptionDouble)option); 
                     optionButtons[i].packedFGColour = 14737632; 
                 }
                 else

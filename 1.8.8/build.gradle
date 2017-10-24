@@ -25,7 +25,7 @@ group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-
 archivesBaseName = "modid"
 
 minecraft {
-    version = "1.8.8-11.15.0.1596-1.8.8"
+    version = "1.8.8-11.15.0.1655"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.

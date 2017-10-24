@@ -100,7 +100,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlockTinted {
         }
     }
 
-    private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
+    private IBlockState getDoubleSlabBlock(Comparable comparable) {
 		if(comparable == BlockReinforcedSlabs.EnumType.STONE){
 			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		}else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE){
