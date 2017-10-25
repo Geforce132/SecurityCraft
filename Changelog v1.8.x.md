@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.2.4 of SecurityCraft (released once a good amount of fixes are included)--------------------------
+--------------------------Changelog for v1.8.2.4 of SecurityCraft--------------------------
 
 - New: Camera can be set to a fixed angle using the Universal Block Modifier
 - New: When looking at a camera while holding a monitor, an overlay will be shown based on if the camera is added to the monitor or not
