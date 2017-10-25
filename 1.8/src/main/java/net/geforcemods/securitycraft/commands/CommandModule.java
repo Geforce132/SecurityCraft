@@ -30,7 +30,7 @@ public class CommandModule extends CommandBase implements ICommand {
         return 0;
     }
 
-	public String getName() {
+	public String getCommandName() {
 		return "module";
 	}
 	
@@ -46,10 +46,10 @@ public class CommandModule extends CommandBase implements ICommand {
 		return true;
 	}
 
-	public void execute(ICommandSender par1ICommandSender, String[] par2String) throws CommandException{
+	public void processCommand(ICommandSender par1ICommandSender, String[] par2String) throws CommandException{
 		if(par2String.length == 1){
 			if(par2String[0].matches("copy")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){		
 					mod_SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().getTagCompound());
@@ -60,7 +60,7 @@ public class CommandModule extends CommandBase implements ICommand {
 				
 				return;
 			}else if(par2String[0].matches("paste")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 
 				if(mod_SecurityCraft.instance.getSavedModule() == null){
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.nothingSaved"), EnumChatFormatting.RED);
@@ -77,7 +77,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			}
 		}else if(par2String.length == 2){
 			if(par2String[0].matches("add")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 				
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){			
 					if(player.getCurrentEquippedItem().getTagCompound() == null){
@@ -99,7 +99,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					return;
 				}
 			}else if(par2String[0].matches("remove")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 				
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){			
 					if(player.getCurrentEquippedItem().getTagCompound() == null){
@@ -139,6 +139,4 @@ public class CommandModule extends CommandBase implements ICommand {
 	public int compareTo(Object par1Obj) {
         return this.compareTo((ICommand)par1Obj);
 	}
-
-
 }

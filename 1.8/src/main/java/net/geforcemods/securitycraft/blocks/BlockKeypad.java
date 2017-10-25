@@ -300,9 +300,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return !(getDisguisedStack(world, pos) != null);
 	}
-
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
 	{
 		ItemStack stack = getDisguisedStack(world, pos);
 		

@@ -98,7 +98,7 @@ public class BriefcaseInventory implements IInventory {
 		markDirty();
 	}
 
-	public String getName() {
+	public String getCommandSenderName() {
 		return "Briefcase";
 	}
 
@@ -133,7 +133,7 @@ public class BriefcaseInventory implements IInventory {
 	}
 	
 	public IChatComponent getDisplayName() {
-		return new ChatComponentText(getName());
+		return new ChatComponentText(getCommandSenderName());
 	}
 
 	public int getField(int id) {

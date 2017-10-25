@@ -108,12 +108,12 @@ public class ModuleInventory implements IInventory {
 		markDirty();
 	}
 
-	public String getName() {
+	public String getCommandSenderName() {
 		return "ModuleCustomization";
 	}
 	
 	public IChatComponent getDisplayName() {
-		return new ChatComponentText(getName());
+		return new ChatComponentText(getCommandSenderName());
 	}
 
 	public boolean hasCustomName() {

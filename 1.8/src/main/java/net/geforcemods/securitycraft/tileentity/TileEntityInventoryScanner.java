@@ -289,5 +289,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public Option<?>[] customOptions() {
 		return null;
 	}
+
+	@Override
+	public String getCommandSenderName()
+	{
+		return "InventoryScanner";
+	}
     
 }

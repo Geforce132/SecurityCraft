@@ -84,7 +84,7 @@ public class ForgeEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
+		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
 
         String tipKey = getRandomTip();
 		
@@ -124,21 +124,21 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onServerChatEvent(ServerChatEvent event)
 	{
-		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getName());
+		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName());
 		
 		if(bot != null && bot.getMessageMode())
 		{
 			event.setCanceled(true);
 			bot.sendMessage("> " + event.message);
-			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getName() + " --> IRC> " + event.message, event.player);
+			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getCommandSenderName() + " --> IRC> " + event.message, event.player);
 		}
 	}
 	
 	@SubscribeEvent 
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getName()) != null){
-			mod_SecurityCraft.instance.getIrcBot(event.player.getName()).disconnect();
-			mod_SecurityCraft.instance.removeIrcBot(event.player.getName());
+		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
+			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
+			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
 		}		
 	}
 	
@@ -373,7 +373,7 @@ public class ForgeEventHandler {
 	
 	private void handleOwnableTEs(PlaceEvent event) {
 		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
-			String name = event.player.getName();
+			String name = event.player.getCommandSenderName();
 			String uuid = event.player.getGameProfile().getId().toString();
 
 			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);

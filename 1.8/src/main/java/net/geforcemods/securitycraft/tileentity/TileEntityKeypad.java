@@ -120,5 +120,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	public Option<?>[] customOptions() {
 		return new Option[]{ isAlwaysActive };
+	}
+
+	@Override
+	public String getCommandSenderName()
+	{
+		return "Keypad";
 	}	
 }

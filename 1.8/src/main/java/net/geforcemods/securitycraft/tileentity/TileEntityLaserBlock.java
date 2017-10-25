@@ -68,4 +68,10 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		return new Option[]{ enabledOption };
 	}
 
+	@Override
+	public String getCommandSenderName()
+	{
+		return "LaserBlock";
+	}
+
 }

@@ -24,6 +24,7 @@ archivesBaseName = "securitycraft"
 minecraft {
     version = "1.8-11.14.1.1338"
     assetDir = "eclipse/assets"
+    mappings = "stable_18"
 }
 
 dependencies {

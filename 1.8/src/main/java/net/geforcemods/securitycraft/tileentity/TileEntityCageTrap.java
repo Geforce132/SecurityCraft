@@ -22,4 +22,9 @@ public class TileEntityCageTrap extends CustomizableSCTE {
 		return new Option[] { shouldCaptureMobsOption };
 	}
 
+	@Override
+	public String getCommandSenderName()
+	{
+		return "CageTrap";
+	}
 }

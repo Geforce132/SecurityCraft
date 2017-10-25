@@ -61,4 +61,10 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 		return new Option[]{ rotationSpeedOption, shouldRotateOption, customRotationOption };
 	}
 
+	@Override
+	public String getCommandSenderName()
+	{
+		return "SecurityCamera";
+	}
+
 }

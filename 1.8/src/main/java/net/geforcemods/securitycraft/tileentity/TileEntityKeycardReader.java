@@ -84,4 +84,10 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 		return null;
 	}
 
+	@Override
+	public String getCommandSenderName()
+	{
+		return "KeycardReader";
+	}
+
 }

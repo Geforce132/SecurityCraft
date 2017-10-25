@@ -57,12 +57,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
     }
     
     public boolean shouldSendMessage(EntityPlayer player) {
-    	if(!player.getName().matches(lastPlayerName)) {
+    	if(!player.getCommandSenderName().matches(lastPlayerName)) {
     		shouldSendNewMessage = true;
-    		lastPlayerName = player.getName();
+    		lastPlayerName = player.getCommandSenderName();
     	}
     	
-    	return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().equals(getOwner().getName());
+    	return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getCommandSenderName().equals(getOwner().getName());
     }
     
     public void setSentMessage() {
@@ -103,5 +103,11 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
 		worldObj.notifyNeighborsOfStateChange(pos, blockType);
+	}
+
+	@Override
+	public String getCommandSenderName()
+	{
+		return "PortableRadar";
 	}
 }

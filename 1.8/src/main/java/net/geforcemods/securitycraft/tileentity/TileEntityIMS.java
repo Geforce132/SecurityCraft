@@ -63,7 +63,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				int launchHeight = this.getLaunchHeight();
 
 				if(WorldUtils.isPathObstructed(worldObj, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase())){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName().toLowerCase())){ continue; }
 
 		        double d5 = entity.posX - (pos.getX() + 0.5D);
 		        double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
@@ -93,7 +93,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	        	if(entity instanceof EntityPlayer && getOwner().isOwner((entity))){ continue; }
 				if(WorldUtils.isPathObstructed(worldObj, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getName())){ continue; }
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName())){ continue; }
 
 		        double d5 = entity.posX - (pos.getX() + 0.5D);
 		        double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
@@ -230,6 +230,12 @@ public class TileEntityIMS extends CustomizableSCTE {
 		return null;
 	}
 
+	@Override
+	public String getCommandSenderName()
+	{
+		return "IMS";
+	}
+
 public static enum EnumIMSTargetingMode {
 	
 	PLAYERS(0),
@@ -243,5 +249,4 @@ public static enum EnumIMSTargetingMode {
 	
 	
 }
-
 }

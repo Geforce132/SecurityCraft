@@ -26,7 +26,7 @@ public class EntityIMSBomb extends EntityFireball {
 	
 	public EntityIMSBomb(World worldIn, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
 		super(worldIn, x, y, z, targetX, targetY, targetZ);
-		this.playerName = targetEntity.getName();
+		this.playerName = targetEntity.getCommandSenderName();
 		this.launchHeight = height;
 		this.setSize(0.25F, 0.3F);
 	}

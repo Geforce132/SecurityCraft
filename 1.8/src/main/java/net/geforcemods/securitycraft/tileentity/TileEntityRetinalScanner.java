@@ -37,7 +37,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
     		worldObj.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
     		
             if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getName()), EnumChatFormatting.GREEN);
+                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
             }             
     	}
 	}
@@ -56,6 +56,12 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 
 	public Option<?>[] customOptions() {
 		return new Option[]{ activatedByEntities };
+	}
+
+	@Override
+	public String getCommandSenderName()
+	{
+		return "RetinalScanner";
 	}
 
 }
