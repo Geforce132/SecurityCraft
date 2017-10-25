@@ -21,6 +21,11 @@ version = "1.0"
 group= "com.yourname.modid" 
 archivesBaseName = "securitycraft"
 
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
 minecraft {
     version = "1.7.10-10.13.3.1420-1.7.10"
     assetDir = "eclipse/assets"
