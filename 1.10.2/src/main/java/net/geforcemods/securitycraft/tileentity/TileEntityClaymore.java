@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,6 +64,9 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			
 			while(iterator.hasNext()){
 				entityliving = (EntityLivingBase) iterator.next();
+				
+				if(PlayerUtils.isPlayerMountedOnCamera(entityliving))
+                    continue;
 				
 				entityX = entityliving.posX;
 				entityY = entityliving.posY;

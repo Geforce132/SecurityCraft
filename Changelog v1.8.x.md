@@ -1,4 +1,8 @@
---------------------------Changelog for v1.8.2.4 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
+
+- Fix: Mines can be activated when viewing a camera (thanks LeKoopa!)
+
+--------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 
 - New: Camera can be set to a fixed angle using the Universal Block Modifier
 - New: When looking at a camera while holding a monitor, an overlay will be shown based on if the camera is added to the monitor or not
@@ -14,10 +18,10 @@
 - Fix: [1.7.10] Security Camera cannot emit redstone signal
 - Fix: [1.7.10-1.8.8] Unable to exit out of password GUIs
 - Fix: [1.11.2+] Installed modules disappear in certain situations
-- Fix: [1.12] Keycard recipes cannot be disabled via config
-- Fix: [1.12] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
+- Fix: [1.12.2] Keycard recipes cannot be disabled via config
+- Fix: [1.12.2] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
 
---------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below)--------------------------
+--------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4)--------------------------
 
 - New: Reinforced Blocks
     - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
@@ -34,7 +38,7 @@
 - Fix: Cage Trap can be escaped
 - Fix: Taser can tase the player who shot
 - Fix: Reinforced Doors can be opened by any SC block, not only the ones with the same owner as the door
-- Fix: Descriptions do not translate to different languages in the SecuritCraft Manual
+- Fix: Descriptions do not translate to different languages in the SecurityCraft Manual
 - Fix: [1.8+] Reinforced Iron Bars placed by Cage Traps have no owner
 - Fix: [1.8+] Reinforced Iron Fence does not damage players
 - Fix: [1.8+] Reinforcing Andesite/Granite/Diorite gives back a glitched block
@@ -43,7 +47,7 @@
 - Fix: [1.10.2+] Username Logger cannot be opened
 - Fix: [1.10.2+] Reinforced Stairs are turned incorrectly when placed upside down
 - Fix: [1.10.2+] Upside down Reinforced Slabs show up incorrectly in WAILA
-- Fix: [1.10.2+] Wrong Fake Liquids recipes showing up in the SecuritCraft Manual
+- Fix: [1.10.2+] Wrong Fake Liquids recipes showing up in the SecurityCraft Manual
 - Fix: [1.10.2+] Glass Panes can be put into Universal Block Reinforcers
 - Fix: [1.10.2+] Crash when breaking planks/sandstone with a Universal Block Reinforcer
 - Fix: [1.10.2+] Universal Block Reinforcer does not show up when being held
@@ -59,7 +63,7 @@
 - Fix: [1.10.2+] Reinforced stairs placed a certain way are still being displayed incorrectly
 - Fix: [1.11.2+] New top slabs are displayed incorrectly
 
---------------------------Changelog for v1.8.2.2 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.2.2 of SecurityCraft (this should have been v1.8.3)--------------------------
 
 - Ported to 1.10.2, 1.11.2, and 1.12
 - New: Reinforced textures now adapt to the resourcepack being used
@@ -77,7 +81,7 @@
 - Fix: Crash when shift-clicking an item out of the Disguise Module's slot
 - Fix: Security Camera can be broken without a Universal Block Remover
 - Fix: Alarm bounding box is too large for top/bottom alarm
-- Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecuritCraft Manual
+- Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecurityCraft Manual
 - Fix: Pick block does not work on Keypads
 - Fix: [1.8.8] Keypad crash
 - Fix: [1.8, 1.8.8] Bouncing Betty can explode while it is defused
@@ -107,12 +111,12 @@
 - New: Laser blocks can now be enabled/disabled
 - New: Links sent through IRC are now clickable
 - New: Recipe tooltips in the SecurityCraft Manual
-- New: Blocks without a recipe now have an explanation on how to create them on their SecuritCraft Manual page
+- New: Blocks without a recipe now have an explanation on how to create them on their SecurityCraft Manual page
 - New: Scanner Door (Acts like a Retinal Scanner and Reinforced Door in one)
 - New: Alongside the already existing process of creating reinforced blocks, you can now rightclick the Universal Block Reinforcer, insert an item into the slot and close the GUI to quickly reinforce stacks of blocks
 - New: Option to disable the Portable Radar using the Universal Block Modifier
 - New: Keypads can now be disguised as other blocks by inserting a Disguise Module into it
-- New: Buttons at the beginning and end of the SecuritCraft Manual for easier navigation
+- New: Buttons at the beginning and end of the SecurityCraft Manual for easier navigation
 - API: Added CustomizableSCTE.linkable() which allows you to "link" two blocks together, and run code between them
 - API: Added CameraView, a wrapper class to handle different camera views
 - Change: Bouncing betties can now be defused

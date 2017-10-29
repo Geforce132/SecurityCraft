@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -57,7 +58,8 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 */
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
 		if(par5Entity instanceof EntityLivingBase){
-			explode(par1World, par2, par3, par4);
+			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)par5Entity))
+					explode(par1World, par2, par3, par4);
 		}
 	}
 
