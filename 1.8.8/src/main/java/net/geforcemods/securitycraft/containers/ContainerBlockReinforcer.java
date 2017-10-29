@@ -50,38 +50,40 @@ public class ContainerBlockReinforcer extends Container
 
 		if(stack != null)
 		{
-			Item name = stack.getItem();
+			Item item = stack.getItem();
 			ItemStack newStack = null;
 			
-			if(name.equals(Item.getItemFromBlock(Blocks.dirt)) || name.equals(Item.getItemFromBlock(Blocks.grass)))
+			if(item.equals(Item.getItemFromBlock(Blocks.dirt)) || item.equals(Item.getItemFromBlock(Blocks.grass)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
-			else if(name.equals(Item.getItemFromBlock(Blocks.stone)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.stone)))
 			{
 				stack.setItemDamage(0);
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
 			}
-			else if(name.equals(Item.getItemFromBlock(Blocks.planks)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.planks)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.glass)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
-			else if(name.equals(Item.getItemFromBlock(Blocks.glass_pane)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.glass_pane)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlassPane);
-			else if(name.equals(Item.getItemFromBlock(Blocks.cobblestone)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.cobblestone)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
-			else if(name.equals(Item.getItemFromBlock(Blocks.iron_bars)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.iron_bars)))
 				newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
-			else if(name.equals(Item.getItemFromBlock(Blocks.sandstone)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.sandstone)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
-			else if(name.equals(Item.getItemFromBlock(Blocks.stonebrick)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.stonebrick)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedStoneBrick);
-			else if(name.equals(Item.getItemFromBlock(Blocks.mossy_cobblestone)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.mossy_cobblestone)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedMossyCobblestone);
-			else if(name.equals(Item.getItemFromBlock(Blocks.brick_block)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.brick_block)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedBrick);
-			else if(name.equals(Item.getItemFromBlock(Blocks.nether_brick)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.nether_brick)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedNetherBrick);
-			else if(name.equals(Item.getItemFromBlock(Blocks.hardened_clay)))
+			else if(item.equals(Item.getItemFromBlock(Blocks.hardened_clay)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedHardenedClay);
+			else if(item.equals(Item.getItemFromBlock(Blocks.stained_hardened_clay)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay);
 
 			if(newStack != null)
 			{
@@ -236,7 +238,8 @@ public class ContainerBlockReinforcer extends Container
 					item.equals(Item.getItemFromBlock(Blocks.mossy_cobblestone)) ||
 					item.equals(Item.getItemFromBlock(Blocks.brick_block)) ||
 					item.equals(Item.getItemFromBlock(Blocks.nether_brick)) ||
-					item.equals(Item.getItemFromBlock(Blocks.hardened_clay))) &&
+					item.equals(Item.getItemFromBlock(Blocks.hardened_clay)) ||
+					item.equals(Item.getItemFromBlock(Blocks.stained_hardened_clay))) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
 		}

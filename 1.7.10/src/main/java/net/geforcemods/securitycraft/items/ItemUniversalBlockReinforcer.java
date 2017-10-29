@@ -75,6 +75,8 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
 			else if(block instanceof BlockHardenedClay)
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedHardenedClay);
+			else if(block.getUnlocalizedName().startsWith(Blocks.stained_hardened_clay.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStainedHardenedClay, block.getDamageValue(world, x, y, z), 2);
 			else
 			{
 				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
@@ -106,7 +108,8 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				Blocks.mossy_cobblestone,
 				Blocks.brick_block,
 				Blocks.nether_brick,
-				Blocks.hardened_clay
+				Blocks.hardened_clay,
+				Blocks.stained_hardened_clay,
 		});
 	}
 }

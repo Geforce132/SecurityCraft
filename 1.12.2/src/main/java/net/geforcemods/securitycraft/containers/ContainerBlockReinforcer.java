@@ -80,6 +80,8 @@ public class ContainerBlockReinforcer extends Container
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedNetherBrick);
 			else if(item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedHardenedClay);
+			else if(item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay);
 			
 			if(!newStack.isEmpty())
 			{
@@ -233,7 +235,8 @@ public class ContainerBlockReinforcer extends Container
 					item.equals(Item.getItemFromBlock(Blocks.MOSSY_COBBLESTONE)) ||
 					item.equals(Item.getItemFromBlock(Blocks.BRICK_BLOCK)) ||
 					item.equals(Item.getItemFromBlock(Blocks.NETHER_BRICK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY))) &&
+					item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY)) ||
+					item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY))) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}

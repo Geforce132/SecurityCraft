@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
 
+- Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Mines can be activated when viewing a camera (thanks LeKoopa!)
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
