@@ -885,7 +885,7 @@ public class ConfigurationHandler{
 	    });
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStone, 4), new Object[]{
-			"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStone
+			"S  ", "SS ", "SSS", 'S', new ItemStack(mod_SecurityCraft.reinforcedStone, 1, 0)
 	    });
 		
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsCobblestone, 4), new Object[]{
@@ -990,7 +990,7 @@ public class ConfigurationHandler{
 		}
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 0), new Object[]{
-				"MMM", 'M', mod_SecurityCraft.reinforcedStone
+				"MMM", 'M', new ItemStack(mod_SecurityCraft.reinforcedStone, 1, 0)
 		});
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 1), new Object[]{
