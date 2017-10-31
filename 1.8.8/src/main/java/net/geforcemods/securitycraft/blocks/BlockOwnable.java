@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockOwnable extends BlockContainer {
 
+	//if the color should be darkened, only used for reinforced blocks
 	private boolean flag;
 	
 	public BlockOwnable(Material par1) {

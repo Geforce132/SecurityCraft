@@ -78,7 +78,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	        while(iterator1.hasNext()){
 	        	EntityPlayer entity = (EntityPlayer) iterator1.next();
 				int launchHeight = this.getLaunchHeight();
-	        	if((entity instanceof EntityPlayer && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity)){ continue; }
+	        	if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity)){ continue; }
 				if(WorldUtils.isPathObstructed(worldObj, xCoord + 0.5D, yCoord + (((launchHeight - 1) / 3) + 0.5D), zCoord + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)){ continue; }
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName())){ continue; }
 

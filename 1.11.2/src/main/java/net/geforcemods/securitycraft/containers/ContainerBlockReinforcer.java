@@ -52,6 +52,7 @@ public class ContainerBlockReinforcer extends Container
 		{
 			Item item = stack.getItem();
 			ItemStack newStack = ItemStack.EMPTY;
+			int customMeta = -1;
 			
 			if(item.equals(Item.getItemFromBlock(Blocks.DIRT)) || item.equals(Item.getItemFromBlock(Blocks.GRASS)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
@@ -82,11 +83,71 @@ public class ContainerBlockReinforcer extends Container
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedHardenedClay);
 			else if(item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay);
+			else if(item.equals(Item.getItemFromBlock(Blocks.LOG)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedOldLogs);
+			else if(item.equals(Item.getItemFromBlock(Blocks.LOG2)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedNewLogs);
+			else if(item.equals(Item.getItemFromBlock(Blocks.LAPIS_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedCompressedBlocks);
+				customMeta = 0;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.COAL_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedCompressedBlocks);
+				customMeta = 1;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.GOLD_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
+				customMeta = 0;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.IRON_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
+				customMeta = 1;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
+				customMeta = 2;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.EMERALD_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
+				customMeta = 3;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.WOOL)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedWool);
+			else if(item.equals(Item.getItemFromBlock(Blocks.QUARTZ_BLOCK)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedQuartz);
+			else if(item.equals(Item.getItemFromBlock(Blocks.PRISMARINE)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedPrismarine);
+			else if(item.equals(Item.getItemFromBlock(Blocks.RED_SANDSTONE)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedRedSandstone);
+			else if(item.equals(Item.getItemFromBlock(Blocks.END_BRICKS)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedEndStoneBricks);
+			else if(item.equals(Item.getItemFromBlock(Blocks.RED_NETHER_BRICK)))
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedRedNetherBrick);
+			else if(item.equals(Item.getItemFromBlock(Blocks.PURPUR_BLOCK)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedPurpur);
+				customMeta = 0;
+			}
+			else if(item.equals(Item.getItemFromBlock(Blocks.PURPUR_PILLAR)))
+			{
+				newStack = new ItemStack(mod_SecurityCraft.reinforcedPurpur);
+				customMeta = 1;
+			}
 			
 			if(!newStack.isEmpty())
 			{
+				if(customMeta != -1)
+					newStack.setItemDamage(customMeta);
+				else
+					newStack.setItemDamage(stack.getItemDamage());
+				
 				newStack.setCount(stack.getCount());
-				newStack.setItemDamage(stack.getItemDamage());
 				blockReinforcer.damageItem(stack.getCount(), player);
 				player.dropItem(newStack, false);
 			}
@@ -236,7 +297,23 @@ public class ContainerBlockReinforcer extends Container
 					item.equals(Item.getItemFromBlock(Blocks.BRICK_BLOCK)) ||
 					item.equals(Item.getItemFromBlock(Blocks.NETHER_BRICK)) ||
 					item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY)) ||
-					item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY))) &&
+					item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY)) ||
+					item.equals(Item.getItemFromBlock(Blocks.LOG)) ||
+					item.equals(Item.getItemFromBlock(Blocks.LOG2)) ||
+					item.equals(Item.getItemFromBlock(Blocks.LAPIS_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.COAL_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.GOLD_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.IRON_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.EMERALD_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.WOOL)) ||
+					item.equals(Item.getItemFromBlock(Blocks.QUARTZ_BLOCK)) ||
+					item.equals(Item.getItemFromBlock(Blocks.PRISMARINE)) ||
+					item.equals(Item.getItemFromBlock(Blocks.RED_SANDSTONE)) ||
+					item.equals(Item.getItemFromBlock(Blocks.END_BRICKS)) ||
+					item.equals(Item.getItemFromBlock(Blocks.RED_NETHER_BRICK))||
+					item.equals(Item.getItemFromBlock(Blocks.PURPUR_BLOCK))||
+					item.equals(Item.getItemFromBlock(Blocks.PURPUR_PILLAR))) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}

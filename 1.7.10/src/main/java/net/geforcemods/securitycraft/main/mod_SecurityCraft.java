@@ -114,6 +114,7 @@ public class mod_SecurityCraft {
 	public static Block protecto;
 	public static Block reinforcedBrick;
 	public static Block reinforcedCobblestone;
+	public static Block reinforcedCompressedBlocks;
 	public static Block reinforcedDirt;
 	public static Block reinforcedDirtSlab;
 	public static Block reinforcedDoor;
@@ -124,8 +125,12 @@ public class mod_SecurityCraft {
 	public static Block reinforcedGlass;
 	public static Block reinforcedGlassPane;
 	public static Block reinforcedHardenedClay;
+	public static Block reinforcedMetals;
 	public static Block reinforcedMossyCobblestone;
 	public static Block reinforcedNetherBrick;
+	public static Block reinforcedNewLogs;
+	public static Block reinforcedOldLogs;
+	public static Block reinforcedQuartz;
 	public static Block reinforcedSandstone;
 	public static Block reinforcedStainedGlass;
 	public static Block reinforcedStainedGlassPanes;
@@ -138,6 +143,7 @@ public class mod_SecurityCraft {
 	public static Block reinforcedStairsJungle;
 	public static Block reinforcedStairsNetherBrick;
 	public static Block reinforcedStairsOak;
+	public static Block reinforcedStairsQuartz;
 	public static Block reinforcedStairsSandstone;
 	public static Block reinforcedStairsSpruce;
 	public static Block reinforcedStairsStone;
@@ -147,6 +153,7 @@ public class mod_SecurityCraft {
 	public static Block reinforcedStoneSlabs;
 	public static Block reinforcedWoodPlanks;
 	public static Block reinforcedWoodSlabs;
+	public static Block reinforcedWool;
 	public static Block retinalScanner;
 	public static Block sandMine;
 	public static Block scannerDoor;

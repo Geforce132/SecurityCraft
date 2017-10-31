@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "half=bottom,variant=red_sandstone": { "model": "securitycraft:reinforced_half_slab_red_sandstone" },
+        "half=bottom,variant=purpur": { "model": "securitycraft:reinforced_half_slab_purpur" },
+        "half=top,variant=red_sandstone": { "model": "securitycraft:reinforced_top_slab_red_sandstone" },
+        "half=top,variant=purpur": { "model": "securitycraft:reinforced_top_slab_purpur" }
+    }
+}

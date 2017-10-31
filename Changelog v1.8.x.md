@@ -1,8 +1,27 @@
 --------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
 
+- New: Reinforced Blocks
+    - Logs
+    - Lapis Lazuli Block
+    - Block of Coal
+    - Block of Gold
+    - Block of Iron
+    - Block of Diamond
+    - Block of Emerald
+    - Wool
+    - Quartz incl. slabs and stairs
+    - [1.8+] Prismarine/Prismarine Bricks/Dark Prismarine
+    - [1.8+] Red Sandstone incl. slabs and stairs
+    - [1.10.2+] End Stone Bricks
+    - [1.10.2+] Red Nether Brick
+    - [1.10.2+] Purpur incl. slabs and stairs
+    - [1.12.2] Concrete
+- New: Keypad Gurnace
+- Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Several incorrect language strings
 - Fix: Mines can be activated when viewing a camera (thanks LeKoopa!)
+- Fix: Incorrect string in Password-protected Furnace GUI
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 

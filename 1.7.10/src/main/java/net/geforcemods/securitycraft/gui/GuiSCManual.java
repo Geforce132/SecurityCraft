@@ -85,8 +85,12 @@ public class GuiSCManual extends GuiScreen {
 	    this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 	    
 	    if(this.currentPage > -1){
-	    	this.fontRendererObj.drawString(StatCollector.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);	
-	    	this.fontRendererObj.drawSplitString(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo(), k + 18, 45, 225, 0);	
+			if(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
+		    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.reinforced"), k + 39, 27, 0, false);
+	    	else
+	    		this.fontRendererObj.drawString(StatCollector.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);	
+	    	
+	    	this.fontRendererObj.drawSplitString(StatCollector.translateToLocal(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);	
 	    }else{
 	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.1"), k + 39, 27, 0, false);	
 	    	this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.2"), k + 60, 159, 0, false);	
@@ -253,10 +257,15 @@ public class GuiSCManual extends GuiScreen {
 		}
 		else
 		{
-			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
+			if(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
+				hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe.reinforced")));
+			else
+			{
+				String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
 			
-			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+				name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
+				hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+			}
 		}
 		
     	Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();

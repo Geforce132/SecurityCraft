@@ -36,7 +36,7 @@ public class BlockAlarm extends BlockOwnable {
 		
 		this.isLit = isLit;
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		
+
 		if(isLit){
 			this.setLightLevel(1.0F);
 		}

@@ -35,17 +35,14 @@ public class ClientProxy extends ServerProxy{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerTextureFiles() {
-		Item reinforcedWoodPlanks = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedPlanks");
-		ModelBakery.addVariantName(reinforcedWoodPlanks,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedPlanks"),
 				"securitycraft:reinforcedPlanks_Oak",
 				"securitycraft:reinforcedPlanks_Spruce",
 				"securitycraft:reinforcedPlanks_Birch",
 				"securitycraft:reinforcedPlanks_Jungle",
 				"securitycraft:reinforcedPlanks_Acacia",
 				"securitycraft:reinforcedPlanks_DarkOak");
-
-		Item reinforcedStainedGlass = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass");
-		ModelBakery.addVariantName(reinforcedStainedGlass,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass"),
 				"securitycraft:reinforcedStainedGlass_white",
 				"securitycraft:reinforcedStainedGlass_orange",
 				"securitycraft:reinforcedStainedGlass_magenta",
@@ -62,9 +59,7 @@ public class ClientProxy extends ServerProxy{
 				"securitycraft:reinforcedStainedGlass_green",
 				"securitycraft:reinforcedStainedGlass_red",
 				"securitycraft:reinforcedStainedGlass_black");
-
-		Item reinforcedStainedGlassPanes = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlassPanes");
-		ModelBakery.addVariantName(reinforcedStainedGlassPanes,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlassPanes"),
 				"securitycraft:reinforcedStainedGlassPanes_white",
 				"securitycraft:reinforcedStainedGlassPanes_orange",
 				"securitycraft:reinforcedStainedGlassPanes_magenta",
@@ -81,41 +76,34 @@ public class ClientProxy extends ServerProxy{
 				"securitycraft:reinforcedStainedGlassPanes_green",
 				"securitycraft:reinforcedStainedGlassPanes_red",
 				"securitycraft:reinforcedStainedGlassPanes_black");
-
-		Item reinforcedSandstone = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedSandstone");
-		ModelBakery.addVariantName(reinforcedSandstone,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedSandstone"),
 				"securitycraft:reinforcedSandstone_normal",
 				"securitycraft:reinforcedSandstone_chiseled",
 				"securitycraft:reinforcedSandstone_smooth");
-
-		Item reinforcedWoodSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs");
-		ModelBakery.addVariantName(reinforcedWoodSlabs,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs"),
 				"securitycraft:reinforcedWoodSlabs_oak",
 				"securitycraft:reinforcedWoodSlabs_spruce",
 				"securitycraft:reinforcedWoodSlabs_birch",
 				"securitycraft:reinforcedWoodSlabs_jungle",
 				"securitycraft:reinforcedWoodSlabs_acacia",
 				"securitycraft:reinforcedWoodSlabs_darkoak");
-
-		Item reinforcedStoneSlabs = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs");
-		ModelBakery.addVariantName(reinforcedStoneSlabs,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs"),
 				"securitycraft:reinforcedStoneSlabs_stone",
 				"securitycraft:reinforcedStoneSlabs_cobblestone",
 				"securitycraft:reinforcedStoneSlabs_sandstone",
 				"securitycraft:reinforcedDirtSlab",
 				"securitycraft:reinforcedStoneSlabs_stonebrick",
 				"securitycraft:reinforcedStoneSlabs_brick",
-				"securitycraft:reinforcedStoneSlabs_netherbrick");
-
-		Item reinforcedStoneBrick = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneBrick");
-		ModelBakery.addVariantName(reinforcedStoneBrick,
+				"securitycraft:reinforcedStoneSlabs_netherbrick",
+				"securitycraft:reinforcedStoneSlabs_quartz");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs2"),
+				"securitycraft:reinforcedStoneSlabs2_red_sandstone");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStoneBrick"),
 				"securitycraft:reinforcedStoneBrick_default",
 				"securitycraft:reinforcedStoneBrick_mossy",
 				"securitycraft:reinforcedStoneBrick_cracked",
 				"securitycraft:reinforcedStoneBrick_chiseled");
-		
-		Item reinforcedStainedHardenedClay = GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedHardenedClay");
-		ModelBakery.addVariantName(reinforcedStainedHardenedClay,
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedStainedHardenedClay"),
 				"securitycraft:reinforcedStainedHardenedClay_white",
 				"securitycraft:reinforcedStainedHardenedClay_orange",
 				"securitycraft:reinforcedStainedHardenedClay_magenta",
@@ -132,7 +120,52 @@ public class ClientProxy extends ServerProxy{
 				"securitycraft:reinforcedStainedHardenedClay_green",
 				"securitycraft:reinforcedStainedHardenedClay_red",
 				"securitycraft:reinforcedStainedHardenedClay_black");
-
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedLogs"),
+				"securitycraft:reinforcedLogs_oak",
+				"securitycraft:reinforcedLogs_spruce",
+				"securitycraft:reinforcedLogs_birch",
+				"securitycraft:reinforcedLogs_jungle");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedLogs2"),
+				"securitycraft:reinforcedLogs2_acacia",
+				"securitycraft:reinforcedLogs2_big_oak");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedMetals"),
+				"securitycraft:reinforcedMetals_gold",
+				"securitycraft:reinforcedMetals_iron",
+				"securitycraft:reinforcedMetals_diamond",
+				"securitycraft:reinforcedMetals_emerald");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedCompressedBlocks"),
+				"securitycraft:reinforcedCompressedBlocks_lapis",
+				"securitycraft:reinforcedCompressedBlocks_coal");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedWool"),
+				"securitycraft:reinforcedWool_white",
+				"securitycraft:reinforcedWool_orange",
+				"securitycraft:reinforcedWool_magenta",
+				"securitycraft:reinforcedWool_light_blue",
+				"securitycraft:reinforcedWool_yellow",
+				"securitycraft:reinforcedWool_lime",
+				"securitycraft:reinforcedWool_pink",
+				"securitycraft:reinforcedWool_gray",
+				"securitycraft:reinforcedWool_silver",
+				"securitycraft:reinforcedWool_cyan",
+				"securitycraft:reinforcedWool_purple",
+				"securitycraft:reinforcedWool_blue",
+				"securitycraft:reinforcedWool_brown",
+				"securitycraft:reinforcedWool_green",
+				"securitycraft:reinforcedWool_red",
+				"securitycraft:reinforcedWool_black");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedQuartz"),
+				"securitycraft:reinforcedQuartz_default",
+				"securitycraft:reinforcedQuartz_chiseled",
+				"securitycraft:reinforcedQuartz_pillar");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedPrismarine"),
+				"securitycraft:reinforcedPrismarine_default",
+				"securitycraft:reinforcedPrismarine_bricks",
+				"securitycraft:reinforcedPrismarine_dark");
+		ModelBakery.addVariantName(GameRegistry.findItem(mod_SecurityCraft.MODID, "reinforcedRedSandstone"),
+				"securitycraft:reinforcedRedSandstone_default",
+				"securitycraft:reinforcedRedSandstone_chiseled",
+				"securitycraft:reinforcedRedSandstone_smooth");
+		
 		Item fakeWater = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWater");
 		ModelBakery.addVariantName(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()

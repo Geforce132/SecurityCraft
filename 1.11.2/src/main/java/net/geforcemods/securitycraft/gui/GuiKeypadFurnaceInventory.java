@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
@@ -18,10 +20,14 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	
     private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
     private TileEntityKeypadFurnace tileFurnace;
+    private boolean gurnace = false;
 
     public GuiKeypadFurnaceInventory(InventoryPlayer p_i1091_1_, TileEntityKeypadFurnace p_i1091_2_){
         super(new ContainerFurnace(p_i1091_1_, p_i1091_2_));
         this.tileFurnace = p_i1091_2_;
+        
+        if(new Random().nextInt(100) < 5)
+        	gurnace = true;
     }
 
     /**
@@ -30,7 +36,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
     @Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
-        String s = this.tileFurnace.hasCustomName() ? this.tileFurnace.getName() : ClientUtils.localize(ClientUtils.localize("gui.protectedFurnace.name"), new Object[0]);
+        String s = gurnace ? "Keypad Gurnace" : (this.tileFurnace.hasCustomName() ? this.tileFurnace.getName() : ClientUtils.localize(ClientUtils.localize("gui.protectedFurnace.name"), new Object[0]));
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(ClientUtils.localize("gui.protectedFurnace.name"), 8, this.ySize - 96 + 2, 4210752);
     }

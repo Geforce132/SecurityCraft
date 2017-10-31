@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class BlockOwnable extends BlockContainer {
 	
-	private EnumBlockRenderType renderType = EnumBlockRenderType.INVISIBLE;
+	private EnumBlockRenderType renderType = EnumBlockRenderType.MODEL;
 
 	public BlockOwnable(Material par1) {
 		super(par1);

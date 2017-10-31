@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "variant=default":  { "model": "securitycraft:reinforced_quartz_default" },
+        "variant=chiseled": { "model": "securitycraft:reinforced_quartz_chiseled" },
+        "variant=lines_x":  { "model": "securitycraft:reinforced_quartz_pillar", "x": 90, "y": 90 },
+        "variant=lines_y":   { "model": "securitycraft:reinforced_quartz_pillar"  },
+        "variant=lines_z":   { "model": "securitycraft:reinforced_quartz_pillar", "x": 90 }
+    }
+}

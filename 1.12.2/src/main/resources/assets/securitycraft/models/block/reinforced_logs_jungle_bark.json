@@ -1,0 +1,6 @@
+{
+    "parent": "securitycraft:block/reinforced_block_all",
+    "textures": {
+        "all": "blocks/log_jungle"
+    }
+}

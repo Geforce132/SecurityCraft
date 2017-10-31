@@ -13,22 +13,22 @@ import net.minecraft.world.World;
 
 public class BlockOwnable extends BlockContainer {
 
-	//only used for reinforced stone/cobblestone/stone bricks/mossy cobblestone/bricks/nether bricks and dirt
+	//only used for reinforced blocks
 	private Block type;
-	//only false if it's not reinforced stone/cobblestone/stone bricks/mossy cobblestone/bricks/nether bricks and dirt
-	private boolean flag = true;
+	//only true if it's a reinforced block
+	private boolean flag = false;
 	
 	public BlockOwnable(Material par1) {
 		super(par1);
-		flag = false;
 	}
 	
-	//only used for reinforced stone/cobblestone/stone bricks/mossy cobblestone/bricks/nether bricks and dirt
+	//only used for reinforced blocks
 	public BlockOwnable(Block t, Material mat)
 	{
 		super(mat);
-		
+
 		type = t;
+		flag = true;
 	}
 
     /**

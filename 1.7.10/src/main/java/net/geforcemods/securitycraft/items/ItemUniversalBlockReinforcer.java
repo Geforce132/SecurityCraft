@@ -12,6 +12,9 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockHardenedClay;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockStoneBrick;
@@ -71,12 +74,30 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedBrick);
 			else if(block.getUnlocalizedName().equals(Blocks.nether_brick.getUnlocalizedName())) //nether brick doesn't have its own class
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
-			else if(block.getUnlocalizedName().equals(Blocks.nether_brick.getUnlocalizedName())) //hardened clay doesn't have its own class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
 			else if(block instanceof BlockHardenedClay)
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedHardenedClay);
 			else if(block.getUnlocalizedName().startsWith(Blocks.stained_hardened_clay.getUnlocalizedName()))
 				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStainedHardenedClay, block.getDamageValue(world, x, y, z), 2);
+			else if(block instanceof BlockOldLog)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedOldLogs, block.getDamageValue(world, x, y, z), 2);
+			else if(block instanceof BlockNewLog)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNewLogs, block.getDamageValue(world, x, y, z), 2);
+			else if(block.getUnlocalizedName().equals(Blocks.lapis_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCompressedBlocks, 0, 2);
+			else if(block.getUnlocalizedName().equals(Blocks.coal_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCompressedBlocks, 1, 2);
+			else if(block.getUnlocalizedName().equals(Blocks.gold_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 0, 2);
+			else if(block.getUnlocalizedName().equals(Blocks.iron_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 1, 2);
+			else if(block.getUnlocalizedName().equals(Blocks.diamond_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 2, 2);
+			else if(block.getUnlocalizedName().equals(Blocks.emerald_block.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 3, 2);
+			else if(block.getUnlocalizedName().startsWith(Blocks.wool.getUnlocalizedName()))
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedWool, block.getDamageValue(world, x, y, z), 2);
+			else if(block instanceof BlockQuartz)
+				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedQuartz, block.getDamageValue(world, x, y, z), 2);
 			else
 			{
 				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
@@ -110,6 +131,16 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				Blocks.nether_brick,
 				Blocks.hardened_clay,
 				Blocks.stained_hardened_clay,
+				Blocks.log,
+				Blocks.log2,
+				Blocks.lapis_block,
+				Blocks.coal_block,
+				Blocks.gold_block,
+				Blocks.iron_block,
+				Blocks.diamond_block,
+				Blocks.emerald_block,
+				Blocks.wool,
+				Blocks.quartz_block
 		});
 	}
 }

@@ -12,7 +12,12 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockHardenedClay;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockPrismarine;
+import net.minecraft.block.BlockQuartz;
+import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockStoneBrick;
@@ -78,6 +83,38 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedHardenedClay.getDefaultState());
 			else if(block.getUnlocalizedName().startsWith(Blocks.STAINED_HARDENED_CLAY.getUnlocalizedName()))
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedStainedHardenedClay.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockOldLog)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedOldLogs.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockNewLog)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedNewLogs.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block.getUnlocalizedName().equals(Blocks.LAPIS_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedCompressedBlocks.getStateFromMeta(0));
+			else if(block.getUnlocalizedName().equals(Blocks.COAL_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedCompressedBlocks.getStateFromMeta(1));
+			else if(block.getUnlocalizedName().equals(Blocks.GOLD_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedMetals.getStateFromMeta(0));
+			else if(block.getUnlocalizedName().equals(Blocks.IRON_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedMetals.getStateFromMeta(1));
+			else if(block.getUnlocalizedName().equals(Blocks.DIAMOND_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedMetals.getStateFromMeta(2));
+			else if(block.getUnlocalizedName().equals(Blocks.EMERALD_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedMetals.getStateFromMeta(3));
+			else if(block.getUnlocalizedName().startsWith(Blocks.WOOL.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedWool.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockQuartz)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedQuartz.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockPrismarine)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedPrismarine.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block instanceof BlockRedSandstone)
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedRedSandstone.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+			else if(block.getUnlocalizedName().equals(Blocks.END_BRICKS.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedEndStoneBricks.getDefaultState());
+			else if(block.getUnlocalizedName().equals(Blocks.RED_NETHER_BRICK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedRedNetherBrick.getDefaultState());
+			else if(block.getUnlocalizedName().equals(Blocks.PURPUR_BLOCK.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedPurpur.getDefaultState());
+			else if(block.getUnlocalizedName().equals(Blocks.PURPUR_PILLAR.getUnlocalizedName()))
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedPurpur.getStateFromMeta(1));
 			else
 			{
 				world.destroyBlock(pos, true); //destroy the block without the ubr taking damage
@@ -109,7 +146,23 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				Blocks.BRICK_BLOCK,
 				Blocks.NETHER_BRICK,
 				Blocks.HARDENED_CLAY,
-				Blocks.STAINED_HARDENED_CLAY
+				Blocks.STAINED_HARDENED_CLAY,
+				Blocks.LOG,
+				Blocks.LOG2,
+				Blocks.LAPIS_BLOCK,
+				Blocks.COAL_BLOCK,
+				Blocks.GOLD_BLOCK,
+				Blocks.IRON_BLOCK,
+				Blocks.DIAMOND_BLOCK,
+				Blocks.EMERALD_BLOCK,
+				Blocks.WOOL,
+				Blocks.QUARTZ_BLOCK,
+				Blocks.PRISMARINE,
+				Blocks.RED_SANDSTONE,
+				Blocks.END_BRICKS,
+				Blocks.RED_NETHER_BRICK,
+				Blocks.PURPUR_BLOCK,
+				Blocks.PURPUR_PILLAR
 		});
 	}
 }
