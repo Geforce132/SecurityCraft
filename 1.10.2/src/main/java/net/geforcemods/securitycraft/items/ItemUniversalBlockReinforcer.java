@@ -60,7 +60,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			if(block instanceof BlockDirt || block instanceof BlockGrass)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedDirt.getDefaultState());
 			else if(block instanceof BlockStone)
-				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getDefaultState());
+				world.setBlockState(pos, mod_SecurityCraft.reinforcedStone.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
 			else if(block instanceof BlockPlanks)
 				world.setBlockState(pos, mod_SecurityCraft.reinforcedWoodPlanks.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
 			else if(block instanceof BlockGlass)

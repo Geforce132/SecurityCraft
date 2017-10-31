@@ -12,6 +12,7 @@
     - Quartz incl. slabs and stairs
     - [1.8+] Prismarine/Prismarine Bricks/Dark Prismarine
     - [1.8+] Red Sandstone incl. slabs and stairs
+    - [1.8+] (Smooth) Granite/Andesite/Diorite
     - [1.10.2+] End Stone Bricks
     - [1.10.2+] Red Nether Brick
     - [1.10.2+] Purpur incl. slabs and stairs

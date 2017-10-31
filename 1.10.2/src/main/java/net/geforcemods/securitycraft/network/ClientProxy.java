@@ -156,6 +156,15 @@ public class ClientProxy extends ServerProxy{
 		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedPurpur"),
 				new ResourceLocation("securitycraft:reinforcedPurpur_default"),
 				new ResourceLocation("securitycraft:reinforcedPurpur_pillar"));
+		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStone"),
+				new ResourceLocation("securitycraft:reinforcedStone_default"),
+				new ResourceLocation("securitycraft:reinforcedStone_granite"),
+				new ResourceLocation("securitycraft:reinforcedStone_smooth_granite"),
+				new ResourceLocation("securitycraft:reinforcedStone_diorite"),
+				new ResourceLocation("securitycraft:reinforcedStone_smooth_diorite"),
+				new ResourceLocation("securitycraft:reinforcedStone_andesite"),
+				new ResourceLocation("securitycraft:reinforcedStone_smooth_andesite"));
+		
 		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
