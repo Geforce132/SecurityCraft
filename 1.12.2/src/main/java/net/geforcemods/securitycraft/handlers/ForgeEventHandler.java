@@ -315,6 +315,10 @@ public class ForgeEventHandler {
 			EntityPlayerSP player = mc.player;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
+			
+			if(held < 0 || held >= player.inventory.mainInventory.size())
+				return;
+			
 			ItemStack monitor = player.inventory.mainInventory.get(held);
 
 			if(!monitor.isEmpty() && monitor.getItem() == mod_SecurityCraft.cameraMonitor)

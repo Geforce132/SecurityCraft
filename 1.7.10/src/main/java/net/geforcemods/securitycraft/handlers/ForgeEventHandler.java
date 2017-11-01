@@ -322,6 +322,10 @@ public class ForgeEventHandler {
 			EntityClientPlayerMP player = mc.thePlayer;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
+			
+			if(held < 0 || held >= player.inventory.mainInventory.length)
+				return;
+			
 			ItemStack monitor = player.inventory.mainInventory[held];
 
 			if(monitor != null && monitor.getItem() == mod_SecurityCraft.cameraMonitor)

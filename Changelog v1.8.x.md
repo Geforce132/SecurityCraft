@@ -23,6 +23,7 @@
 - Fix: Several incorrect language strings
 - Fix: Mines can be activated when viewing a camera (thanks LeKoopa!)
 - Fix: Incorrect string in Password-protected Furnace GUI
+- Fix: Crash involving the new Camera Monitor indicator
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 
