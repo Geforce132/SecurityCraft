@@ -270,40 +270,7 @@ public class ForgeEventHandler {
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.resolution, Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ)));
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.entity)){
-			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onMouseClicked(MouseEvent event) {
-		if(Minecraft.getMinecraft().theWorld != null)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
-			{
-				event.setCanceled(true);
-			}
-		}
-	}
-	
-	@SubscribeEvent
-	public void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
-	{
-		if(event.type == ElementType.HOTBAR)
+		else if(event.type == ElementType.HOTBAR)
 		{
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayerSP player = mc.thePlayer;
@@ -342,6 +309,34 @@ public class ForgeEventHandler {
 					drawNonStandardTexturedRect(event.resolution.getScaledWidth() / 2 - 90 + held * 20 + 2, event.resolution.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableBlend();
 	        	}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void fovUpdateEvent(FOVUpdateEvent event){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.entity)){
+			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void renderHandEvent(RenderHandEvent event){
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
+			event.setCanceled(true);
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onMouseClicked(MouseEvent event) {
+		if(Minecraft.getMinecraft().theWorld != null)
+		{
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
+			{
+				event.setCanceled(true);
 			}
 		}
 	}

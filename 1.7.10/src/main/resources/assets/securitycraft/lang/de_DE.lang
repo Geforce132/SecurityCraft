@@ -339,6 +339,7 @@ gui.mrat.detonated=Gesprengt
 gui.password.invalidCode=Ungültiger Code!
 gui.password.setup=setup
 gui.camera.activateNightVision=Nachtsicht aktivieren
+gui.camera.exit=Kamera verlassen
 gui.camera.toggleRedstone=Redstonesignal umschalten
 gui.camera.toggleRedstoneNote=(benötigt ein Redstone Modul)
 gui.camera.zoom=Rein-/Rauszoomen

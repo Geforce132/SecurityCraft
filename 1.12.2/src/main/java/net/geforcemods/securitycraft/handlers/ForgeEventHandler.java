@@ -276,40 +276,7 @@ public class ForgeEventHandler {
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)(Minecraft.getMinecraft().player.getRidingEntity().posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ)));
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity())){
-			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
-			event.setCanceled(true);
-		}
-	}
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onMouseClicked(MouseEvent event) {
-		if(Minecraft.getMinecraft().world != null)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
-			{
-				event.setCanceled(true);
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onRenderGameOverlayPost(RenderGameOverlayEvent.Post event)
-	{
-		if(event.getType() == ElementType.HOTBAR)
+		else if(event.getType() == ElementType.HOTBAR)
 		{
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayerSP player = mc.player;
@@ -352,6 +319,34 @@ public class ForgeEventHandler {
 		}
 	}
 	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void fovUpdateEvent(FOVUpdateEvent event){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity())){
+			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void renderHandEvent(RenderHandEvent event){
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
+			event.setCanceled(true);
+		}
+	}
+	
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void onMouseClicked(MouseEvent event) {
+		if(Minecraft.getMinecraft().world != null)
+		{
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
+			{
+				event.setCanceled(true);
+			}
+		}
+	}
+
 	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
 	{
 		double z = 200;

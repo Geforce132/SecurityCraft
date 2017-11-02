@@ -18,6 +18,7 @@
     - [1.10.2+] Purpur incl. slabs and stairs
     - [1.12.2] Concrete
 - New: Keypad Gurnace
+- New: Information about how to exit the Security Camera
 - Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Several incorrect language strings
