@@ -178,7 +178,7 @@ public class ConfigurationHandler{
 	public boolean useOldKeypadRecipe;
 	public boolean checkForUpdates;
 	public double portableRadarSearchRadius;
-	public int usernameLoggerSearchRadius;	
+	public int usernameLoggerSearchRadius;
 	public int laserBlockRange;
 	public int alarmTickDelay;
 	public double alarmSoundVolume;
@@ -187,18 +187,18 @@ public class ConfigurationHandler{
 	public int imsRange;
 	public float cameraSpeed;
 	//***************************************
-	
+
 	public void setupAdditions(){
-		this.setupTechnicalBlocks();
-		this.setupMines();
-		this.setupItems();
+		setupTechnicalBlocks();
+		setupMines();
+		setupItems();
 	}
 
 	public void setupDebugAdditions() {
-		this.setupDebuggingBlocks();
-		this.setupDebuggingItems();
+		setupDebuggingBlocks();
+		setupDebuggingItems();
 
-		this.registerDebuggingAdditions();
+		registerDebuggingAdditions();
 	}
 
 
@@ -282,33 +282,33 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setBlockName("reinforcedDoubleStoneSlabs");
 		mod_SecurityCraft.reinforcedDirtSlab = new BlockReinforcedSlabs(false, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedDirtSlab");
 		mod_SecurityCraft.reinforcedDoubleDirtSlab = new BlockReinforcedSlabs(true, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setBlockName("reinforcedDoubleDirtSlab");
-	
+
 		mod_SecurityCraft.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setBlockName("protecto").setBlockTextureName("securitycraft:protectoParticleTexture");
-		
+
 		mod_SecurityCraft.scannerDoor = new BlockScannerDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setBlockName("scannerDoor");
-		
+
 		mod_SecurityCraft.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStoneBrick").setBlockTextureName("securitycraft:reinforcedStoneBrick");
 		mod_SecurityCraft.reinforcedStairsStoneBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsStoneBrick");
-		
+
 		mod_SecurityCraft.reinforcedMossyCobblestone = new BlockOwnable(Blocks.mossy_cobblestone, Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedMossyCobblestone").setBlockTextureName("securitycraft:reinforcedMossyCobblestone");
-		
+
 		mod_SecurityCraft.reinforcedBrick = new BlockOwnable(Blocks.brick_block, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedBrick").setBlockTextureName("securitycraft:reinforcedBrick");
 		mod_SecurityCraft.reinforcedStairsBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsBrick");
-		
+
 		mod_SecurityCraft.reinforcedNetherBrick = new BlockOwnable(Blocks.nether_brick, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedNetherBrick").setBlockTextureName("securitycraft:reinforcedNetherBrick");
 		mod_SecurityCraft.reinforcedStairsNetherBrick = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsNetherBrick");
-		
+
 		mod_SecurityCraft.reinforcedHardenedClay = new BlockOwnable(Blocks.hardened_clay, Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedHardenedClay").setBlockTextureName("securitycraft:reinforcedHardenedClay");
 		mod_SecurityCraft.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStainedHardenedClay").setBlockTextureName("securitycraft:reinforcedStainedHardenedClay");
-		
+
 		mod_SecurityCraft.reinforcedOldLogs = new BlockReinforcedOldLog().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedLogs").setBlockTextureName("securitycraft:reinforcedLogs");
 		mod_SecurityCraft.reinforcedNewLogs = new BlockReinforcedNewLog().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedLogs2").setBlockTextureName("securitycraft:reinforcedLogs2");
-	
+
 		mod_SecurityCraft.reinforcedMetals = new BlockReinforcedMetals().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedMetals").setBlockTextureName("securitycraft:reinforcedMetals");
 		mod_SecurityCraft.reinforcedCompressedBlocks = new BlockReinforcedCompressedBlocks().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedCompressedBlocks").setBlockTextureName("securitycraft:reinforcedCompressedBlocks");
-	
+
 		mod_SecurityCraft.reinforcedWool = new BlockReinforcedWool().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeCloth).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedWool").setBlockTextureName("securitycraft:reinforcedWool");
-	
+
 		mod_SecurityCraft.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston/*?!?!?!?*/).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedQuartz").setBlockTextureName("securitycraft:reinforcedQuartz");
 		mod_SecurityCraft.reinforcedStairsQuartz = new BlockReinforcedStairs(mod_SecurityCraft.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypePiston).setCreativeTab(mod_SecurityCraft.tabSCDecoration).setBlockName("reinforcedStairsQuartz");
 	}
@@ -375,12 +375,12 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL1").setTextureName("securitycraft:universalBlockReinforcerLvL1");
 		mod_SecurityCraft.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL2").setTextureName("securitycraft:universalBlockReinforcerLvL2");
 		mod_SecurityCraft.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockReinforcerLvL3").setTextureName("securitycraft:universalBlockReinforcerLvL3");
-	
-	    mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
-	
-	    mod_SecurityCraft.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger").setTextureName("securitycraft:universalKeyChanger");
-	
-	    mod_SecurityCraft.scannerDoorItem = new ItemScannerDoor().setUnlocalizedName("scannerDoorItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:scannerDoor");
+
+		mod_SecurityCraft.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("briefcase");
+
+		mod_SecurityCraft.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(mod_SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger").setTextureName("securitycraft:universalKeyChanger");
+
+		mod_SecurityCraft.scannerDoorItem = new ItemScannerDoor().setUnlocalizedName("scannerDoorItem").setCreativeTab(mod_SecurityCraft.tabSCDecoration).setTextureName("securitycraft:scannerDoor");
 	}
 
 	public void setupDebuggingBlocks() {}
@@ -392,132 +392,131 @@ public class ConfigurationHandler{
 
 	public void setupConfiguration() {
 		mod_SecurityCraft.configFile.load();
-		
+
 		Property dummyProp;
 
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true);
 		dummyProp.setLanguageKey("config.isCodebreakerAllowed");
 		allowCodebreakerItem = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Is admin tool allowed?", false);
 		dummyProp.setLanguageKey("config.allowAdminTool");
 		allowAdminTool = dummyProp.getBoolean(false);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true);
 		dummyProp.setLanguageKey("config.shouldSpawnFire");
 		shouldSpawnFire = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Are mines unbreakable?", true);
 		dummyProp.setLanguageKey("config.ableToBreakMines");
 		ableToBreakMines = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 1 keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftKeycard1");
 		ableToCraftKeycard1 = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 2 keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftKeycard2");
 		ableToCraftKeycard2 = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 3 keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftKeycard3");
 		ableToCraftKeycard3 = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 4 keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftKeycard4");
 		ableToCraftKeycard4 = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftKeycard5");
 		ableToCraftKeycard5 = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true);
 		dummyProp.setLanguageKey("config.ableToCraftLUKeycard");
 		ableToCraftLUKeycard = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false);
 		dummyProp.setLanguageKey("config.smallerMineExplosion");
 		smallerMineExplosion = dummyProp.getBoolean(false);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true);
 		dummyProp.setLanguageKey("config.mineExplodesWhenInCreative");
 		mineExplodesWhenInCreative = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true);
 		dummyProp.setLanguageKey("config.fiveMinAutoShutoff");
 		fiveMinAutoShutoff = dummyProp.getBoolean(true);
-		
-		if(!Loader.isModLoaded("LookingGlass")){
+
+		if(!Loader.isModLoaded("LookingGlass"))
 			useLookingGlass = false;
-		}else{
+		else{
 			dummyProp = mod_SecurityCraft.configFile.get("options", "Use LookingGlass for viewing cameras?", true);
 			dummyProp.setLanguageKey("config.useLookingGlass");
-			useLookingGlass = dummyProp.getBoolean(true);		
+			useLookingGlass = dummyProp.getBoolean(true);
 		}
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar search radius:", 25);
 		dummyProp.setLanguageKey("config.portableRadarSearchRadius");
 		portableRadarSearchRadius = dummyProp.getDouble(25);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Username logger search radius:", 3);
 		dummyProp.setLanguageKey("config.usernameLoggerSearchRadius");
 		usernameLoggerSearchRadius = dummyProp.getInt(3);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Laser range:", 5);
 		dummyProp.setLanguageKey("config.laserBlockRange");
 		laserBlockRange = dummyProp.getInt(5);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2);
 		dummyProp.setLanguageKey("config.alarmTickDelay");
 		alarmTickDelay = dummyProp.getInt(2);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D);
 		dummyProp.setLanguageKey("config.alarmSoundVolume");
 		alarmSoundVolume = dummyProp.getDouble(0.8D);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4);
 		dummyProp.setLanguageKey("config.portableRadarDelay");
 		portableRadarDelay = dummyProp.getInt(4);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Claymore range:", 5);
 		dummyProp.setLanguageKey("config.claymoreRange");
 		claymoreRange = dummyProp.getInt(5);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "IMS range:", 12);
 		dummyProp.setLanguageKey("config.imsRange");
 		imsRange = dummyProp.getInt(12);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true);
 		dummyProp.setLanguageKey("config.sayThanksMessage");
 		sayThanksMessage = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false);
 		dummyProp.setLanguageKey("config.debuggingMode");
 		mod_SecurityCraft.debuggingMode = dummyProp.getBoolean(false);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true);
 		dummyProp.setLanguageKey("config.isIrcBotEnabled");
 		isIrcBotEnabled = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true);
 		dummyProp.setLanguageKey("config.disconnectOnWorldClose");
 		disconnectOnWorldClose = dummyProp.getBoolean(true);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false);
 		dummyProp.setLanguageKey("config.useOldKeypadRecipe");
 		useOldKeypadRecipe = dummyProp.getBoolean(false);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
 		dummyProp.setLanguageKey("config.cameraSpeed");
 		cameraSpeed = dummyProp.getInt(2);
-		
+
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Should check for updates on Github?", true);
 		dummyProp.setLanguageKey("config.checkForUpdates");
 		checkForUpdates = dummyProp.getBoolean(true);
-				
-		if(mod_SecurityCraft.configFile.hasChanged()){
+
+		if(mod_SecurityCraft.configFile.hasChanged())
 			mod_SecurityCraft.configFile.save();
-		}
 	}
 
 	public void setupGameRegistry(){
@@ -654,11 +653,11 @@ public class ConfigurationHandler{
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 
-		if(useOldKeypadRecipe){
+		if(useOldKeypadRecipe)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypad, 1), new Object[]{
 					"III", "III", "III", 'I', Blocks.stone_button
 			});
-		}else{
+		else{
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keyPanel, 1), new Object[]{
 					"III", "IBI", "III", 'I', Blocks.stone_button, 'B', Blocks.heavy_weighted_pressure_plate
 			});
@@ -700,41 +699,35 @@ public class ConfigurationHandler{
 				"DTD", "GSG", "RER", 'D', Items.diamond, 'T', Blocks.redstone_torch, 'G', Items.gold_ingot, 'S', Items.nether_star, 'R', Items.redstone, 'E', Items.emerald
 		});
 
-		if(ableToCraftKeycard1){
+		if(ableToCraftKeycard1)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 0), new Object[]{
-					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot 
+					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot
 			});
-		}
 
-		if(ableToCraftKeycard2){
+		if(ableToCraftKeycard2)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 1), new Object[]{
 					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.brick
 			});
-		}
 
-		if(ableToCraftKeycard3){ 
+		if(ableToCraftKeycard3)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 2), new Object[]{
 					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.netherbrick
 			});
-		}
 
-		if(ableToCraftKeycard4){
+		if(ableToCraftKeycard4)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 4), new Object[]{
 					"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13)
 			});
-		}
 
-		if(ableToCraftKeycard5){
+		if(ableToCraftKeycard5)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 5), new Object[]{
 					"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5)
 			});
-		}
 
-		if(ableToCraftLUKeycard){
+		if(ableToCraftLUKeycard)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keycards, 1, 3), new Object[]{
 					"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, 4)
 			});
-		}
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.trackMine, 4), new Object[]{
 				"X X", "X#X", "XGX", 'X', Items.iron_ingot, '#', Items.stick, 'G', Items.gunpowder
@@ -752,17 +745,15 @@ public class ConfigurationHandler{
 				" R ", " DG", "S  ", 'R', Blocks.redstone_torch, 'D', Items.diamond, 'G', Items.gold_ingot, 'S', Items.stick
 		});
 
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.fWaterBucket, 1), new Object[]{
 					"P", "B", 'P', new ItemStack(Items.potionitem, 1, harmingPotions[i]), 'B', Items.water_bucket
 			});
-		}
 
-		for(int i = 0; i < 4; i++){
+		for(int i = 0; i < 4; i++)
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.fLavaBucket, 1), new Object[]{
 					"P", "B", 'P', new ItemStack(Items.potionitem, 1, healingPotions[i]), 'B', Items.lava_bucket
 			});
-		}
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.retinalScanner, 1), new Object[]{
 				"SSS", "SES", "SSS", 'S', Blocks.stone, 'E', Items.ender_eye
@@ -815,7 +806,7 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.storageModule, 1), new Object[]{
 				"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', mod_SecurityCraft.keypadChest
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.disguiseModule, 1), new Object[]{
 				"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.painting
 		});
@@ -883,19 +874,19 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsStoneBrick, 4), new Object[]{
 				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedStoneBrick
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsBrick, 4), new Object[]{
 				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedBrick
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsNetherBrick, 4), new Object[]{
 				"S  ", "SS ", "SSS", 'S', mod_SecurityCraft.reinforcedNetherBrick
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStairsQuartz, 4), new Object[]{
 				"S  ", "SS ", "SSS", 'S', new ItemStack(mod_SecurityCraft.reinforcedQuartz, 1, 0)
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.ims, 1), new Object[]{
 				"BPB", " I ", "B B", 'B', mod_SecurityCraft.bouncingBetty, 'P', mod_SecurityCraft.portableRadar, 'I', Blocks.iron_block
 		});
@@ -920,7 +911,7 @@ public class ConfigurationHandler{
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedGlassPanes, 16, i), new Object[]{
 					"###", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedStainedGlass, 1, i)
 			});
-			
+
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay, 8, BlockColored.func_150031_c(i)), new Object[]{
 					"###", "#X#", "###", '#', new ItemStack(mod_SecurityCraft.reinforcedHardenedClay), 'X', new ItemStack(Items.dye, 1, i)
 			});
@@ -939,11 +930,9 @@ public class ConfigurationHandler{
 		});
 
 		for(int i = 0; i < 6; i++)
-		{
 			GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedWoodSlabs, 6, i), new Object[]{
 					"MMM", 'M', new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks, 1, i)
 			});
-		}
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 0), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedStone
@@ -952,19 +941,19 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 1), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedCobblestone
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 2), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedSandstone
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedDirtSlab, 6, 3), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedDirt
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 4), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedStoneBrick
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 5), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedBrick
 		});
@@ -972,23 +961,23 @@ public class ConfigurationHandler{
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 6, 6), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedNetherBrick
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 7, 6), new Object[]{
 				"MMM", 'M', mod_SecurityCraft.reinforcedQuartz
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.protecto, 1), new Object[]{
 				"ODO", "OEO", "OOO", 'O', Blocks.obsidian, 'D', Blocks.daylight_detector, 'E', Items.ender_eye
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.briefcase, 1), new Object[]{
 				"SSS", "ICI", "III", 'S', Items.stick, 'I', Items.iron_ingot, 'C', Blocks.chest
 		});
-		
+
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.universalKeyChanger, 1), new Object[]{
 				" RL", " IR", "I  ", 'R', Items.redstone, 'L', mod_SecurityCraft.laserBlock, 'I', Items.iron_ingot
 		});
-		
+
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.dirtMine, 1), new Object[] {Blocks.dirt, mod_SecurityCraft.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.stoneMine, 1), new Object[] {Blocks.stone, mod_SecurityCraft.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(mod_SecurityCraft.cobblestoneMine, 1), new Object[] {Blocks.cobblestone, mod_SecurityCraft.mine});
@@ -1009,7 +998,7 @@ public class ConfigurationHandler{
 	}
 
 	boolean hasReinforcedPage = false;
-	
+
 	private void registerReinforcedBlock(Block block){
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 
@@ -1019,7 +1008,7 @@ public class ConfigurationHandler{
 			hasReinforcedPage = true;
 		}
 	}
-	
+
 	private void registerReinforcedBlock(Block block, Class<? extends ItemBlock> itemClass){
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
 
@@ -1029,25 +1018,25 @@ public class ConfigurationHandler{
 			hasReinforcedPage = true;
 		}
 	}
-	
+
 	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass){
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
 
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 
-	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... constructorParams){ 
+	private void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... constructorParams){
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5), constructorParams);
 
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
-	
+
 	/**
 	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
 	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
-	 * 
+	 *
 	 */
-	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){ 
+	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
 
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", customRecipe));
@@ -1069,7 +1058,7 @@ public class ConfigurationHandler{
 		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
 	}
 
-	public void registerDebuggingAdditions(){		
+	public void registerDebuggingAdditions(){
 		//GameRegistry.registerItem(mod_SecurityCraft.testItem, mod_SecurityCraft.testItem.getUnlocalizedName().substring(5));
 	}
 
@@ -1086,7 +1075,7 @@ public class ConfigurationHandler{
 
 	public void setupHandlers(FMLPreInitializationEvent event) {
 		FMLCommonHandler.instance().bus().register(mod_SecurityCraft.eventHandler);
-	} 
+	}
 
 	public void setupPackets(SimpleNetworkWrapper network) {
 		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 1, Side.SERVER);
@@ -1117,5 +1106,5 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 26, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 27, Side.SERVER);
 	}
-	
+
 }

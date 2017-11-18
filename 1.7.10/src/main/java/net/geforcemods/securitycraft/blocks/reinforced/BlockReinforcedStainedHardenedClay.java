@@ -24,50 +24,55 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable
 	{
 		super(Material.rock);
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	public static int func_149997_b(int par1){
 		return ~par1 & 15;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
-		for (int i = 0; i < iicons.length; ++i){
+		for (int i = 0; i < iicons.length; ++i)
 			par3List.add(new ItemStack(par1Item, 1, i));
-		}
 	}
 
+	@Override
 	public int damageDropped(int par1){
 		return par1;
 	}
 
+	@Override
 	public int quantityDropped(Random par1Random){
 		return 1;
 	}
 
+	@Override
 	protected boolean canSilkHarvest(){
 		return true;
 	}
 
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2){
+	/**
+	 * Gets the block's texture. Args: side, meta
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(int par1, int par2){
 		return Blocks.stained_hardened_clay.getIcon(par1, par2);
-    }
+	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
 		return Blocks.stained_hardened_clay.getIcon(side, access.getBlockMetadata(x, y, z));
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IIconRegister){
-		for(int i = 0; i < iicons.length; ++i){
-			iicons[i] = par1IIconRegister.registerIcon(this.getTextureName() + "_" + ItemDye.field_150921_b[func_149997_b(i)]);
-		}
+		for(int i = 0; i < iicons.length; ++i)
+			iicons[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.field_150921_b[func_149997_b(i)]);
 	}
 
 	@Override
@@ -76,12 +81,14 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{

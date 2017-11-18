@@ -7,12 +7,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 
 public class CustomModeledBlockRenderer implements IItemRenderer {
-	
+
 	protected ModelBase model;
 	private TileEntity tileEntity;
 	private double x = 0D, y = 0D, z = 0D;
 	private float angle = 0F;
-	
+
 	public CustomModeledBlockRenderer(TileEntity tileEntity) {
 		this.tileEntity = tileEntity;
 	}
@@ -26,14 +26,17 @@ public class CustomModeledBlockRenderer implements IItemRenderer {
 		this.angle = angle;
 	}
 
+	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return true;
 	}
 
+	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
 		return true;
 	}
 
+	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		TileEntityRendererDispatcher.instance.renderTileEntityAt(tileEntity, x, y, z, angle);
 	}

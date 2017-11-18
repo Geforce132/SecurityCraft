@@ -19,34 +19,32 @@ public class ItemScannerDoor extends Item
 	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10)
 	{
 		if(world.isRemote)
 			return true;
+		else if(side != EnumFacing.UP)
+			return false;
 		else
 		{
-			if(side != EnumFacing.UP)
+			IBlockState iblockstate = world.getBlockState(pos);
+			Block block = iblockstate.getBlock();
+
+			if(!block.isReplaceable(world, pos))
+				pos = pos.offset(side);
+
+			if(!player.canPlayerEdit(pos, side, stack))
+				return false;
+			else if(!mod_SecurityCraft.scannerDoor.canPlaceBlockAt(world, pos))
 				return false;
 			else
 			{
-				IBlockState iblockstate = world.getBlockState(pos);
-				Block block = iblockstate.getBlock();
-
-				if(!block.isReplaceable(world, pos))
-					pos = pos.offset(side);
-
-				if(!player.canPlayerEdit(pos, side, stack))
-					return false;
-				else if(!mod_SecurityCraft.scannerDoor.canPlaceBlockAt(world, pos))
-					return false;
-				else
-				{
-					placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
-					((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
-					stack.stackSize--;
-					return true;
-				}
+				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+				((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+				stack.stackSize--;
+				return true;
 			}
 		}
 	}
@@ -71,5 +69,5 @@ public class ItemScannerDoor extends Item
 		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.UPPER), 2);
 		worldIn.notifyNeighborsOfStateChange(pos, door);
 		worldIn.notifyNeighborsOfStateChange(blockpos3, door);
-	}	
+	}
 }

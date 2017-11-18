@@ -33,23 +33,25 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	/**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World p_149727_1_, BlockPos pos, IBlockState state, EntityPlayer p_149727_5_, EnumFacing facing, float p_149727_7_, float p_149727_8_, float p_149727_9_){
-        return false;
-    }
-    
-    public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
-    
-    public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN)){
+	 * Called upon block activation (right click on the block.)
+	 */
+	@Override
+	public boolean onBlockActivated(World p_149727_1_, BlockPos pos, IBlockState state, EntityPlayer p_149727_5_, EnumFacing facing, float p_149727_7_, float p_149727_8_, float p_149727_9_){
+		return false;
+	}
+
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
+	@Override
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN))
 			return;
-		}
-    	
-    	if(entity instanceof EntityItem)
+
+		if(entity instanceof EntityItem)
 			return;
 		else if(entity instanceof EntityPlayer)
 		{
@@ -70,39 +72,40 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F);
 	}
 
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-        if(!worldIn.isRemote) {
-            boolean flag = isSCBlock(neighborBlock) && worldIn.isBlockPowered(pos);
+	@Override
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
+		if(!worldIn.isRemote) {
+			boolean flag = isSCBlock(neighborBlock) && worldIn.isBlockPowered(pos);
 
-            if (flag || neighborBlock.canProvidePower()) {
-                if (flag && !((Boolean)state.getValue(OPEN)).booleanValue() && !((Boolean)state.getValue(POWERED)).booleanValue()) {
-                    worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
-                    worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1003, pos, 0);
-                }
-                else if (!flag && ((Boolean)state.getValue(OPEN)).booleanValue() && ((Boolean)state.getValue(POWERED)).booleanValue()) {
-                    worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
-                    worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-                }
-                else if (flag != ((Boolean)state.getValue(POWERED)).booleanValue()) {
-                    worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
-                }
-            }
-        }
-    }
-    
-    private boolean isSCBlock(Block block) {
-    	return (block instanceof BlockLaserBlock || block instanceof BlockRetinalScanner ||
-    			block instanceof BlockKeypad || block instanceof BlockKeycardReader || block instanceof BlockInventoryScanner);
-    }
+			if (flag || neighborBlock.canProvidePower())
+				if (flag && !((Boolean)state.getValue(OPEN)).booleanValue() && !((Boolean)state.getValue(POWERED)).booleanValue()) {
+					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
+					worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1003, pos, 0);
+				}
+				else if (!flag && ((Boolean)state.getValue(OPEN)).booleanValue() && ((Boolean)state.getValue(POWERED)).booleanValue()) {
+					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
+					worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+				}
+				else if (flag != ((Boolean)state.getValue(POWERED)).booleanValue())
+					worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+		}
+	}
 
-    public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
-        super.onBlockEventReceived(par1World, pos, state, par5, par6);
-        TileEntity tileentity = par1World.getTileEntity(pos);
-        return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
-    }
-    
-    public TileEntity createNewTileEntity(World var1, int var2) {
+	private boolean isSCBlock(Block block) {
+		return (block instanceof BlockLaserBlock || block instanceof BlockRetinalScanner ||
+				block instanceof BlockKeypad || block instanceof BlockKeycardReader || block instanceof BlockInventoryScanner);
+	}
+
+	@Override
+	public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
+		super.onBlockEventReceived(par1World, pos, state, par5, par6);
+		TileEntity tileentity = par1World.getTileEntity(pos);
+		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
-    }
+	}
 
 }

@@ -16,36 +16,38 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 
 	public BlockReinforcedStairs(Block baseBlock, int meta) {
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
-		this.useNeighborBrightness = true;
+		useNeighborBrightness = true;
 	}
-	
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
 
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(IBlockState state)
-    {
-        return 0x999999;
-    }
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-    	return 0x999999;
-    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderColor(IBlockState state)
+	{
+		return 0x999999;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getBlockColor()
+	{
+		return 0x999999;
+	}
 }

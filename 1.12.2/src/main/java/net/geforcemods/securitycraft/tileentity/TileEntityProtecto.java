@@ -15,46 +15,41 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityProtecto extends CustomizableSCTE {
-	
+
 	@Override
-	public boolean attackEntity(Entity entity){	
+	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase) {
-	    	if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
-	    			entity instanceof EntityPigZombie ||
-	    			(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) {
-	    		return false;
-	    	}
-	    	
-	    	EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, true);
-	    	world.addWeatherEffect(lightning);
-	    	
-	    	BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
-	    	return true;
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
+					entity instanceof EntityPigZombie ||
+					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))
+				return false;
+
+			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, true);
+			world.addWeatherEffect(lightning);
+
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
+			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
-	public boolean canAttack() {	
+	public boolean canAttack() {
 		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
 
-        if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
-        {
-        	BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
-        }
-        else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
-        {
-        	BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
-        }
-        
-        return canAttack;
+		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
+		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
+
+		return canAttack;
 	}
-	
+
 	@Override
 	public boolean shouldRefreshAttackCooldown() {
-    	return false;
-    }
+		return false;
+	}
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {
@@ -65,13 +60,13 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public Option<?>[] customOptions() {
 		return null;
 	}
-	
+
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
-   
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{

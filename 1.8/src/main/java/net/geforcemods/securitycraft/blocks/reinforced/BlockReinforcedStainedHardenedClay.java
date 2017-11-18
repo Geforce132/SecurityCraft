@@ -21,43 +21,45 @@ public class BlockReinforcedStainedHardenedClay extends BlockColored implements 
 	{
 		super(Material.rock);
 	}
-	
+
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(IBlockState state)
-    {
-        return 0x999999;
-    }
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-    	return 0x999999;
-    }
-    
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderColor(IBlockState state)
+	{
+		return 0x999999;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getBlockColor()
+	{
+		return 0x999999;
+	}
+
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{

@@ -35,9 +35,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 		Calendar calendar = Calendar.getInstance();
 
 		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
-		{
-			this.field_147509_j = true;
-		}
+			field_147509_j = true;
 	}
 
 	public void renderTileEntityAt(TileEntityChest p_147502_1_, double p_147502_2_, double p_147502_4_, double p_147502_6_, float p_147502_8_)
@@ -45,9 +43,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 		int i;
 
 		if (!p_147502_1_.hasWorldObj())
-		{
 			i = 0;
-		}
 		else
 		{
 			Block block = p_147502_1_.getBlockType();
@@ -75,37 +71,25 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 
 			if (p_147502_1_.adjacentChestXPos == null && p_147502_1_.adjacentChestZPos == null)
 			{
-				modelchest = this.field_147510_h;
+				modelchest = field_147510_h;
 
-				if (this.field_147509_j)
-				{
-					this.bindTexture(christmasNormal);
-				}
+				if (field_147509_j)
+					bindTexture(christmasNormal);
+				else if(p_147502_1_.lidAngle >= 0.9)
+					bindTexture(normalSingleActive);
 				else
-				{
-					if(p_147502_1_.lidAngle >= 0.9){
-						this.bindTexture(normalSingleActive);
-					}else{
-						this.bindTexture(normalSingleUnactive);
-					}
-				}
+					bindTexture(normalSingleUnactive);
 			}
 			else
 			{
-				modelchest = this.field_147511_i;
+				modelchest = field_147511_i;
 
-				if (this.field_147509_j)
-				{
-					this.bindTexture(christmasDouble);
-				}
+				if (field_147509_j)
+					bindTexture(christmasDouble);
+				else if(p_147502_1_.lidAngle >= 0.9)
+					bindTexture(normalDoubleActive);
 				else
-				{
-					if(p_147502_1_.lidAngle >= 0.9){
-						this.bindTexture(normalDoubleActive);
-					}else{
-						this.bindTexture(normalDoubleUnactive);
-					}
-				}
+					bindTexture(normalDoubleUnactive);
 			}
 
 			GL11.glPushMatrix();
@@ -117,34 +101,22 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			short short1 = 0;
 
 			if (i == 2)
-			{
 				short1 = 180;
-			}
 
 			if (i == 3)
-			{
 				short1 = 0;
-			}
 
 			if (i == 4)
-			{
 				short1 = 90;
-			}
 
 			if (i == 5)
-			{
 				short1 = -90;
-			}
 
 			if (i == 2 && p_147502_1_.adjacentChestXPos != null)
-			{
 				GL11.glTranslatef(1.0F, 0.0F, 0.0F);
-			}
 
 			if (i == 5 && p_147502_1_.adjacentChestZPos != null)
-			{
 				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
-			}
 
 			GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
@@ -156,9 +128,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 				f2 = p_147502_1_.adjacentChestZNeg.prevLidAngle + (p_147502_1_.adjacentChestZNeg.lidAngle - p_147502_1_.adjacentChestZNeg.prevLidAngle) * p_147502_8_;
 
 				if (f2 > f1)
-				{
 					f1 = f2;
-				}
 			}
 
 			if (p_147502_1_.adjacentChestXNeg != null)
@@ -166,9 +136,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 				f2 = p_147502_1_.adjacentChestXNeg.prevLidAngle + (p_147502_1_.adjacentChestXNeg.lidAngle - p_147502_1_.adjacentChestXNeg.prevLidAngle) * p_147502_8_;
 
 				if (f2 > f1)
-				{
 					f1 = f2;
-				}
 			}
 
 			f1 = 1.0F - f1;
@@ -181,6 +149,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 		}
 	}
 
+	@Override
 	public void renderTileEntityAt(TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
 	{
 		this.renderTileEntityAt((TileEntityChest)p_147500_1_, p_147500_2_, p_147500_4_, p_147500_6_, p_147500_8_);

@@ -8,21 +8,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabSCDecoration extends CreativeTabs{
-		
+
 	public CreativeTabSCDecoration(){
 		super(getNextID(), "tabSecurityCraft");
 	}
-	
-	
+
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getTabIconItem(){
 		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStairsOak));
 	}
-	
+
 	@Override
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: " + ClientUtils.localize("creativeTabDecoration");	
+		return "SecurityCraft: " + ClientUtils.localize("creativeTabDecoration");
 	}
 
 }

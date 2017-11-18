@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICustomWailaDisplay {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockFurnaceMine(Material par1Material) {
 		super(par1Material);
@@ -32,91 +32,100 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
+	@Override
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion)
 	{
 		if (!par1World.isRemote)
-		{
-			this.explode(par1World, pos);
-		}
+			explode(par1World, pos);
 	}
 
+	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
-		{
-			this.explode(par1World, pos);
-		}
-	}	
+			explode(par1World, pos);
+	}
 
+	@Override
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote){
+		if(par1World.isRemote)
 			return true;
-		}else{
-			if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
-				this.explode(par1World, pos);
-				return true;
-			}else{
-				return false;	   		
-			}
+		else if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+			explode(par1World, pos);
+			return true;
 		}
-	}	
-	
+		else
+			return false;
+	}
+
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-	
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+	@Override
 	public void activateMine(World world, BlockPos pos) {}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {}
-	
+
+	@Override
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
-		}else{
+		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
-		}
 
 	}
 
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
+	@Override
 	public boolean canDropFromExplosion(Explosion par1Explosion)
 	{
 		return false;
 	}
-	
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+	public IBlockState getStateForEntityRender(IBlockState state)
+	{
+		return getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+	}
 
+	@Override
 	public IBlockState getStateFromMeta(int meta){
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
-    }
+		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
+	}
 
-    public int getMetaFromState(IBlockState state){
-        return ((EnumFacing)state.getValue(FACING)).getIndex();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state){
+		return ((EnumFacing)state.getValue(FACING)).getIndex();
+	}
 
-    protected BlockState createBlockState(){
-        return new BlockState(this, new IProperty[] {FACING});
-    }
-	
+	@Override
+	protected BlockState createBlockState(){
+		return new BlockState(this, new IProperty[] {FACING});
+	}
+
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
-	
+
+	@Override
 	public boolean isDefusable() {
 		return false;
 	}
 
+	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
 		return new ItemStack(Blocks.furnace);
 	}
 
+	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return false;
 	}

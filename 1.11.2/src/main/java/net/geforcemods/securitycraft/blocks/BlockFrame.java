@@ -14,57 +14,56 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockFrame extends BlockOwnable {
-	
+
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	
+
 	public BlockFrame(Material par1Material){
 		super(par1Material);
 		setSoundType(SoundType.STONE);
 	}
-	
-    @Override
+
+	@Override
 	public boolean isNormalCube(IBlockState state){
-        return false;
-    }
-    
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-    	return EnumBlockRenderType.MODEL;
-    }
-    
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-    
-	
+		return false;
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state)
+	{
+		return EnumBlockRenderType.MODEL;
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
+
 	/* TODO: no clue about this
     @SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state){
         return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
     }*/
-    
-    @Override
-	public IBlockState getStateFromMeta(int meta){
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
 
-        if(enumfacing.getAxis() == EnumFacing.Axis.Y){
-            enumfacing = EnumFacing.NORTH;
-        }
-        
-        return this.getDefaultState().withProperty(FACING, enumfacing);
-    }
-    
-    @Override
+	@Override
+	public IBlockState getStateFromMeta(int meta){
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+		if(enumfacing.getAxis() == EnumFacing.Axis.Y)
+			enumfacing = EnumFacing.NORTH;
+
+		return getDefaultState().withProperty(FACING, enumfacing);
+	}
+
+	@Override
 	public int getMetaFromState(IBlockState state){
-    	return state.getValue(FACING).getIndex();
-    }
-    
-    @Override
+		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
 	protected BlockStateContainer createBlockState(){
-        return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
-    
+		return new BlockStateContainer(this, new IProperty[] {FACING});
+	}
+
 }

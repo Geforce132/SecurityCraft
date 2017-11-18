@@ -41,7 +41,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	private IIcon keypadIconFrontActive;
 	@SideOnly(Side.CLIENT)
 	private IIcon keypadIconDisguised;
-	
+
+	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
@@ -49,149 +50,148 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	/**
 	 * Called when the block is placed in the world.
 	 */
+	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
 		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if (l == 0){
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);         
-		}
+		if (l == 0)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 
-		if (l == 1){
+		if (l == 1)
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-		}
 
-		if (l == 2){
+		if (l == 2)
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-		}
 
-		if (l == 3){
+		if (l == 3)
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-		}else{
+		else
 			return;
-		}
 	}
 
+	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote){
-    		return true;
-    	}
-    	else {
-    		if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 7, 10)){
+		if(par1World.isRemote)
+			return true;
+		else {
+			if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 7, 10))
 				return false;
-    		}
 
-			if(ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
+			if(ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, par2, par3, par4, par5EntityPlayer, EnumCustomModules.BLACKLIST))
 				return true;
-			}
 
 			((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
 
-			return true;       		 	    	     	
+			return true;
 		}
 	}
-	
+
 	public static void activate(World par1World, int par2, int par3, int par4){
 		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
 		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, mod_SecurityCraft.keypad);
 		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.keypad, 60);
 	}
 
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if(!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) > 6 && par1World.getBlockMetadata(par2, par3, par4) < 11){
+		if(!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) > 6 && par1World.getBlockMetadata(par2, par3, par4) < 11)
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) - 5, 3);
-		}                      
 	}
 
+	@Override
 	public boolean canProvidePower(){
 		return true;
 	}
 
+	@Override
 	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10){
+		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10)
 			return 15;
-		}else{
+		else
 			return 0;
-		}
 	}
 
+	@Override
 	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10){
+		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10)
 			return 15;
-		}else{
+		else
 			return 0;
-		}
 	}
-	
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, int x, int y, int z) {
-    	return null;
-    }
-	
+	public Item getItem(World worldIn, int x, int y, int z) {
+		return null;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2){
-		if(par1 == 3 && par2 == 0){
-			return this.keypadIconFront;
-		}
+		if(par1 == 3 && par2 == 0)
+			return keypadIconFront;
 
-		return this.blockIcon;
+		return blockIcon;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){		
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){
 		int meta = access.getBlockMetadata(x, y, z);
-        TileEntityKeypad tileEntity = ((TileEntityKeypad) access.getTileEntity(x, y, z));
-		
-        boolean isDisguised = tileEntity.hasModule(EnumCustomModules.DISGUISE);
+		TileEntityKeypad tileEntity = ((TileEntityKeypad) access.getTileEntity(x, y, z));
 
-        if(isDisguised && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {
-            List<ItemStack> stacks = tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE);
-            
-            if(stacks.size() != 0)
-            {
-            	ItemStack stack = stacks.get(0);
-	            Block disguisedAs = Block.getBlockFromItem(stack.getItem());
-	            
-	        	return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
-            }
+		boolean isDisguised = tileEntity.hasModule(EnumCustomModules.DISGUISE);
+
+		if(isDisguised && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {
+			List<ItemStack> stacks = tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE);
+
+			if(stacks.size() != 0)
+			{
+				ItemStack stack = stacks.get(0);
+				Block disguisedAs = Block.getBlockFromItem(stack.getItem());
+
+				return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
+			}
 		}
 
-		if(meta > 6 && meta < 11) {
-			return side == 1 ? this.keypadIconTop : (side == 0 ? this.keypadIconTop : (side != (meta - 5) ? this.blockIcon : this.keypadIconFrontActive));
-		}
-		else{
-			return side == 1 ? this.keypadIconTop : (side == 0 ? this.keypadIconTop : (side != meta ? this.blockIcon : this.keypadIconFront));
-		}
+		if(meta > 6 && meta < 11)
+			return side == 1 ? keypadIconTop : (side == 0 ? keypadIconTop : (side != (meta - 5) ? blockIcon : keypadIconFrontActive));
+		else
+			return side == 1 ? keypadIconTop : (side == 0 ? keypadIconTop : (side != meta ? blockIcon : keypadIconFront));
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister par1IconRegister){
-		this.blockIcon = par1IconRegister.registerIcon("securitycraft:iron_block");
-		this.keypadIconFront = par1IconRegister.registerIcon("securitycraft:keypadUnactive");
-		this.keypadIconTop = par1IconRegister.registerIcon("securitycraft:iron_block");
-		this.keypadIconFrontActive = par1IconRegister.registerIcon("securitycraft:keypadActive");
-		this.keypadIconDisguised = par1IconRegister.registerIcon("bookshelf");
+		blockIcon = par1IconRegister.registerIcon("securitycraft:iron_block");
+		keypadIconFront = par1IconRegister.registerIcon("securitycraft:keypadUnactive");
+		keypadIconTop = par1IconRegister.registerIcon("securitycraft:iron_block");
+		keypadIconFrontActive = par1IconRegister.registerIcon("securitycraft:keypadActive");
+		keypadIconDisguised = par1IconRegister.registerIcon("bookshelf");
 	}
 
 	/**
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
+	@Override
 	public TileEntity createNewTileEntity(World par1World, int par2){
 		return new TileEntityKeypad();
 	}
-	
+
+	@Override
 	public ItemStack getDisplayStack(World world, int x, int y, int z) {
 		TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
-		
-		if(tileEntity.hasModule(EnumCustomModules.DISGUISE) && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty()) {           
-            return tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).get(0);
-		}
-		
+
+		if(tileEntity.hasModule(EnumCustomModules.DISGUISE) && !tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).isEmpty())
+			return tileEntity.getAddonsFromModule(EnumCustomModules.DISGUISE).get(0);
+
 		return null;
 	}
-	
+
+	@Override
 	public boolean shouldShowSCInfo(World world, int x, int y, int z) {
-        TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
-		
+		TileEntityKeypad tileEntity = (TileEntityKeypad) world.getTileEntity(x, y, z);
+
 		return !tileEntity.hasModule(EnumCustomModules.DISGUISE);
 	}
 
@@ -199,7 +199,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
 	{
 		ItemStack stack = getDisplayStack(world, x, y, z);
-		
+
 		return stack == null ? new ItemStack(this) : stack;
 	}
 }

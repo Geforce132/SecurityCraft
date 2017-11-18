@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 public class GuiBlockReinforcer extends GuiContainer
 {
 	private static final ResourceLocation texture = new ResourceLocation(mod_SecurityCraft.MODID + ":textures/gui/container/customize1.png");
-	
+
 	public GuiBlockReinforcer(Container container)
 	{
 		super(container);
@@ -23,7 +23,7 @@ public class GuiBlockReinforcer extends GuiContainer
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.blockReinforcer.title"), 8, 5, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
 	{

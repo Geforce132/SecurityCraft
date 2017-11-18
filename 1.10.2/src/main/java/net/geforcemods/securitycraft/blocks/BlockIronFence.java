@@ -89,11 +89,11 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 
 	@Override
 	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
-    {
-        super.eventReceived(state, worldIn, pos, eventID, eventParam);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
-    }
+	{
+		super.eventReceived(state, worldIn, pos, eventID, eventParam);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)

@@ -16,16 +16,18 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	public BlockReinforcedGlass(Material par1Material) {
 		super(par1Material, false);
 	}
-	
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
 
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
-	
+
 	@Override
 	public int quantityDropped(Random random)
 	{

@@ -12,10 +12,12 @@ public class ItemBlockReinforcedStoneBrick extends ItemBlock
 		setHasSubtypes(true);
 	}
 
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		if(stack.getItemDamage() == 0)

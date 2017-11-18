@@ -15,45 +15,49 @@ import net.minecraft.util.StatCollector;
 
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {
-	
+
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
-	
+
+	@Override
 	public void entityViewed(EntityLivingBase entity) {
 		if(!worldObj.isRemote && !BlockUtils.isMetadataBetween(worldObj, xCoord, yCoord, zCoord, 7, 10)){
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
 				return;
-			
+
 			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
 				return;
-			
+
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(worldObj, xCoord, yCoord, zCoord, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
 				return;
 			}
-			
-    		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
-    		worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.retinalScanner, 60);
-    		
-            if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
-            }
-    	}
-	}
-	
-	public int getViewCooldown() {
-    	return 30;
-    }
-	
-    public boolean activatedOnlyByPlayer() {
-    	return !activatedByEntities.asBoolean();
-    }
 
+			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
+			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.retinalScanner, 60);
+
+			if(entity instanceof EntityPlayer)
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
+		}
+	}
+
+	@Override
+	public int getViewCooldown() {
+		return 30;
+	}
+
+	@Override
+	public boolean activatedOnlyByPlayer() {
+		return !activatedByEntities.asBoolean();
+	}
+
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ activatedByEntities };
 	}
-	
+
 }

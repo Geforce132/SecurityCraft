@@ -23,52 +23,54 @@ public class BlockReinforcedWool extends BlockOwnable implements ICustomWailaDis
 	{
 		super(Material.cloth);
 	}
-	
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
-    {
-        for (int i = 0; i < 16; ++i)
-        {
-            p_149666_3_.add(new ItemStack(p_149666_1_, 1, i));
-        }
-    }
-    
-    @Override
-    public IIcon getIcon(int side, int meta)
-    {
-    	return Blocks.wool.getIcon(side, meta);
-    }
-    
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
+	{
+		for (int i = 0; i < 16; ++i)
+			p_149666_3_.add(new ItemStack(p_149666_1_, 1, i));
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		return Blocks.wool.getIcon(side, meta);
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
 		return getIcon(side, access.getBlockMetadata(x, y, z));
 	}
-    
+
 	@Override
 	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
 		return 0x999999;
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
 	{
-        return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
+		return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
 	}
-	
+
 	@Override
 	public ItemStack getDisplayStack(World world, int x, int y, int z)
 	{

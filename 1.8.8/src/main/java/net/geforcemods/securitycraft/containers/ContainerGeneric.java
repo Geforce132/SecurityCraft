@@ -6,11 +6,12 @@ import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 
 public class ContainerGeneric extends Container {
-	
+
 	public ContainerGeneric(InventoryPlayer inventory, TileEntity te){
-		
+
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		return true;
 	}

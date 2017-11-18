@@ -24,92 +24,102 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockIMS extends BlockOwnable {
-	
+
 	public static final PropertyInteger MINES = PropertyInteger.create("mines", 0, 4);
 
 	public BlockIMS(Material par1) {
 		super(par1);
-		this.setBlockBounds(0F, 0F, 0F, 1F, 0.45F, 1F);
+		setBlockBounds(0F, 0F, 0F, 1F, 0.45F, 1F);
 	}
-	
-	public boolean isOpaqueCube(){
-        return false;
-    }
-    
-    public boolean isNormalCube(){
-        return false;
-    } 
-    
-    public int getRenderType(){
-    	return 3;
-    }
 
+	@Override
+	public boolean isOpaqueCube(){
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube(){
+		return false;
+	}
+
+	@Override
+	public int getRenderType(){
+		return 3;
+	}
+
+	@Override
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote){
+		if(!par1World.isRemote)
 			if(((IOwnable) par1World.getTileEntity(pos)).getOwner().isOwner(par5EntityPlayer)){
 				par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
-		}
-		
+
 		return false;
 	}
-	
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if(!par1World.isRemote){
+
+	@Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+		if(!par1World.isRemote)
 			BlockUtils.destroyBlock(par1World, pos, false);
-		}                      
 	}
-	
+
 	/**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){      
-    	if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) par1World.getTileEntity(pos)).getBombsRemaining() == 0){
-    		double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-    		double d1 = pos.getY() + 0.4F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-    		double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-    		double d3 = 0.2199999988079071D;
-    		double d4 = 0.27000001072883606D;
+	 * A randomly called display update to be able to add particles or other items for display
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
+		if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) par1World.getTileEntity(pos)).getBombsRemaining() == 0){
+			double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d1 = pos.getY() + 0.4F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+			double d3 = 0.2199999988079071D;
+			double d4 = 0.27000001072883606D;
 
-    		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-    		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-    		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-    		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-    		par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
-    		
-    		par1World.spawnParticle(EnumParticleTypes.FLAME, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-    		par1World.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D); 
-    	}
-    }
-    
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getDefaultState().withProperty(MINES, 4);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(MINES, 4);
-    }
+			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(MINES, meta);
-    }
+			par1World.spawnParticle(EnumParticleTypes.FLAME, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			par1World.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+		}
+	}
 
-    public int getMetaFromState(IBlockState state)
-    {
-    	return (((Integer) state.getValue(MINES)).intValue());
-    }
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	{
+		return getDefaultState().withProperty(MINES, 4);
+	}
 
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {MINES});
-    }
-	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IBlockState getStateForEntityRender(IBlockState state)
+	{
+		return getDefaultState().withProperty(MINES, 4);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return getDefaultState().withProperty(MINES, meta);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return (((Integer) state.getValue(MINES)).intValue());
+	}
+
+	@Override
+	protected BlockState createBlockState()
+	{
+		return new BlockState(this, new IProperty[] {MINES});
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityIMS();
 	}

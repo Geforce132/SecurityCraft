@@ -14,18 +14,13 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -167,14 +162,7 @@ public class ClientProxy extends ServerProxy{
 
 		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
-		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
-		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
-			{
-				return new ModelResourceLocation("securitycraft:fake_liquids", "water");
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(fakeWater, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water"));
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
 		{
 			@Override
@@ -186,14 +174,7 @@ public class ClientProxy extends ServerProxy{
 
 		Item fakeWaterFlowing = findItem(mod_SecurityCraft.MODID, "bogus_water_flowing");
 		ModelBakery.registerItemVariants(fakeWaterFlowing);
-		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
-		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
-			{
-				return new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing");
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water_flowing"));
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
 		{
 			@Override
@@ -205,14 +186,7 @@ public class ClientProxy extends ServerProxy{
 
 		Item fakeLava = findItem(mod_SecurityCraft.MODID, "bogus_Lava");
 		ModelBakery.registerItemVariants(fakeLava);
-		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
-		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
-			{
-				return new ModelResourceLocation("securitycraft:fake_liquids", "lava");
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(fakeLava, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava"));
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
 		{
 			@Override
@@ -224,14 +198,7 @@ public class ClientProxy extends ServerProxy{
 
 		Item fakeLavaFlowing = findItem(mod_SecurityCraft.MODID, "bogus_lava_flowing");
 		ModelBakery.registerItemVariants(fakeLavaFlowing);
-		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
-		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
-			{
-				return new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing");
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing"));
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
 		{
 			@Override
@@ -311,20 +278,8 @@ public class ClientProxy extends ServerProxy{
 				mod_SecurityCraft.reinforcedWool
 		};
 		//registering reinforced blocks color overlay for world
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
-			@Override
-			public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-			{
-				return 0x999999;
-			}
-		}, blocksToTint);
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x999999, blocksToTint);
 		//same thing for inventory
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() { //everyone who uses Java 7: fuck you and update to Java 8, this could be written so much nicer
-			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex)
-			{
-				return 0x999999;
-			}
-		}, blocksToTint);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> 0x999999, blocksToTint);
 	}
 }

@@ -16,18 +16,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
-	
+
 	private ModelSecurityCamera modelSecurityCamera;
 	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
 
 	public TileEntitySecurityCameraRenderer() {
-		this.modelSecurityCamera = new ModelSecurityCamera();
+		modelSecurityCamera = new ModelSecurityCamera();
 	}
 
 	@Override
 	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
 		float rotation = 0F;
-		
+
 		if(par1TileEntity.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
 			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
@@ -38,39 +38,38 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
+
 		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
-		
+
 		GL11.glPushMatrix();
-		
+
 		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == mod_SecurityCraft.securityCamera){
 			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
-			
-			if(side == EnumFacing.EAST){
+
+			if(side == EnumFacing.EAST)
 				rotation = -1F;
-			}else if(side == EnumFacing.SOUTH){
-				rotation = -10000F; 
-			}else if(side == EnumFacing.WEST){
-				rotation = 1F; 
-			}else if(side == EnumFacing.NORTH){
+			else if(side == EnumFacing.SOUTH)
+				rotation = -10000F;
+			else if(side == EnumFacing.WEST)
+				rotation = 1F;
+			else if(side == EnumFacing.NORTH)
 				rotation = 0F;
-			}
-		}else{
-			rotation = -10000F;
 		}
-		
+		else
+			rotation = -10000F;
+
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
-		
-		this.modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
-		
-		this.modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		
+
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
+
+		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-	
+
 
 }

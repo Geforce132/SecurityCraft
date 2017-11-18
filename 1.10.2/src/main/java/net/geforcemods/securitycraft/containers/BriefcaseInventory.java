@@ -12,19 +12,18 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 public class BriefcaseInventory implements IInventory {
-	
+
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-	
+
 	private ItemStack[] briefcaseInventory = new ItemStack[SIZE];
 
 	public BriefcaseInventory(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
-		
-		if (!briefcase.hasTagCompound()) {
+
+		if (!briefcase.hasTagCompound())
 			briefcase.setTagCompound(new NBTTagCompound());
-		}
-		
+
 		readFromNBT(briefcase.getTagCompound());
 	}
 
@@ -37,7 +36,7 @@ public class BriefcaseInventory implements IInventory {
 	public ItemStack getStackInSlot(int index) {
 		return briefcaseInventory[index];
 	}
-	
+
 	public void readFromNBT(NBTTagCompound compound) {
 		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
@@ -45,24 +44,22 @@ public class BriefcaseInventory implements IInventory {
 			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getInteger("Slot");
 
-			if(slot < getSizeInventory()) {
+			if(slot < getSizeInventory())
 				briefcaseInventory[slot] = ItemStack.loadItemStackFromNBT(item);
-			}
 		}
 	}
 
 	public void writeToNBT(NBTTagCompound tagcompound) {
 		NBTTagList items = new NBTTagList();
 
-		for(int i = 0; i < getSizeInventory(); i++) {
+		for(int i = 0; i < getSizeInventory(); i++)
 			if(getStackInSlot(i) != null) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
-				
+
 				items.appendTag(item);
 			}
-		}
 
 		tagcompound.setTag("ItemInventory", items);
 		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
@@ -71,17 +68,15 @@ public class BriefcaseInventory implements IInventory {
 	@Override
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
-		
-		if(stack != null) {
+
+		if(stack != null)
 			if(stack.stackSize > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
-			else {
+			else
 				setInventorySlotContents(index, null);
-			}
-		}
-		
+
 		return stack;
 	}
 
@@ -96,9 +91,8 @@ public class BriefcaseInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		briefcaseInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
 			itemstack.stackSize = getInventoryStackLimit();
-		}
 
 		markDirty();
 	}
@@ -120,12 +114,10 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public void markDirty() {
-		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
+		for(int i = 0; i < getSizeInventory(); i++)
+			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0)
 				briefcaseInventory[i] = null;
-			}
-		}
-		
+
 		writeToNBT(briefcase.getTagCompound());
 	}
 
@@ -144,7 +136,7 @@ public class BriefcaseInventory implements IInventory {
 	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
 		return true;
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
@@ -165,8 +157,7 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public void clear() {
-		for(int i = 0; i < SIZE; i++) {
+		for(int i = 0; i < SIZE; i++)
 			briefcaseInventory[i] = null;
-		}
 	}
 }

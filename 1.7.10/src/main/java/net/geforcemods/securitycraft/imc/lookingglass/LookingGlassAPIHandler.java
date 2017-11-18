@@ -8,9 +8,8 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 public class LookingGlassAPIHandler {
 
 	public static void handleAPICast(Object api) {
-		if(api instanceof WorldViewAPI2){ 
+		if(api instanceof WorldViewAPI2)
 			mod_SecurityCraft.instance.lgPanelRenderer = new LookingGlassPanelRenderer((WorldViewAPI2) api);
-		}
 	}
 
 }

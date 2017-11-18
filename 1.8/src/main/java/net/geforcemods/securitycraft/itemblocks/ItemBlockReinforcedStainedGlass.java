@@ -8,49 +8,50 @@ public class ItemBlockReinforcedStainedGlass extends ItemBlock {
 
 	public ItemBlockReinforcedStainedGlass(Block block) {
 		super(block);
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
-	
+
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack){
-		if(stack.getItemDamage() == 0){
+		if(stack.getItemDamage() == 0)
 			return this.getUnlocalizedName() + "_white";
-		}else if(stack.getItemDamage() == 1){
+		else if(stack.getItemDamage() == 1)
 			return this.getUnlocalizedName() + "_orange";
-		}else if(stack.getItemDamage() == 2){
+		else if(stack.getItemDamage() == 2)
 			return this.getUnlocalizedName() + "_magenta";
-		}else if(stack.getItemDamage() == 3){
+		else if(stack.getItemDamage() == 3)
 			return this.getUnlocalizedName() + "_light_blue";
-		}else if(stack.getItemDamage() == 4){
+		else if(stack.getItemDamage() == 4)
 			return this.getUnlocalizedName() + "_yellow";
-		}else if(stack.getItemDamage() == 5){
+		else if(stack.getItemDamage() == 5)
 			return this.getUnlocalizedName() + "_lime";
-		}else if(stack.getItemDamage() == 6){
+		else if(stack.getItemDamage() == 6)
 			return this.getUnlocalizedName() + "_pink";
-		}else if(stack.getItemDamage() == 7){
+		else if(stack.getItemDamage() == 7)
 			return this.getUnlocalizedName() + "_gray";
-		}else if(stack.getItemDamage() == 8){
+		else if(stack.getItemDamage() == 8)
 			return this.getUnlocalizedName() + "_silver";
-		}else if(stack.getItemDamage() == 9){
+		else if(stack.getItemDamage() == 9)
 			return this.getUnlocalizedName() + "_cyan";
-		}else if(stack.getItemDamage() == 10){
+		else if(stack.getItemDamage() == 10)
 			return this.getUnlocalizedName() + "_purple";
-		}else if(stack.getItemDamage() == 11){
+		else if(stack.getItemDamage() == 11)
 			return this.getUnlocalizedName() + "_blue";
-		}else if(stack.getItemDamage() == 12){
+		else if(stack.getItemDamage() == 12)
 			return this.getUnlocalizedName() + "_brown";
-		}else if(stack.getItemDamage() == 13){
+		else if(stack.getItemDamage() == 13)
 			return this.getUnlocalizedName() + "_green";
-		}else if(stack.getItemDamage() == 14){
+		else if(stack.getItemDamage() == 14)
 			return this.getUnlocalizedName() + "_red";
-		}else if(stack.getItemDamage() == 15){
+		else if(stack.getItemDamage() == 15)
 			return this.getUnlocalizedName() + "_black";
-		}else{
+		else
 			return this.getUnlocalizedName();
-		}
 	}
 
 }

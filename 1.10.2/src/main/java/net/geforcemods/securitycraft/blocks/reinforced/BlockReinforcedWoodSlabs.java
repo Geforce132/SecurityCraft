@@ -23,38 +23,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, ICustomWailaDisplay {
 
 	private final boolean isDouble;
-	
-	public BlockReinforcedWoodSlabs(boolean isDouble){		
+
+	public BlockReinforcedWoodSlabs(boolean isDouble){
 		this.isDouble = isDouble;
 		setSoundType(SoundType.WOOD);
-		
-		if(this.isDouble()){
-			this.setCreativeTab(null);
-		}
-		
-		if(!this.isDouble()){
-			this.useNeighborBrightness = true;
-		}
+
+		if(isDouble())
+			setCreativeTab(null);
+
+		if(!isDouble())
+			useNeighborBrightness = true;
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
-	
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
-    }
+		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+	}
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
-        return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs));
-    }
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs));
+	}
 
-    @Override
+	@Override
 	public boolean isDouble(){
 		return isDouble;
 	}
@@ -69,7 +67,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	{
 		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
 	}
-	
+
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{

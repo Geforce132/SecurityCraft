@@ -1,44 +1,47 @@
 package net.geforcemods.securitycraft.network.packets;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.potion.PotionEffect;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.potion.PotionEffect;
 
 public class PacketGivePotionEffect implements IMessage{
-	
+
 	private int potionID, duration, amplifier;
-	
+
 	public PacketGivePotionEffect(){
-		
+
 	}
-	
+
 	public PacketGivePotionEffect(int potionID, int duration, int amplifier){
 		this.potionID = potionID;
 		this.duration = duration;
 		this.amplifier = amplifier;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.potionID = buf.readInt();
-		this.duration = buf.readInt();
-		this.amplifier = buf.readInt();
+		potionID = buf.readInt();
+		duration = buf.readInt();
+		amplifier = buf.readInt();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(this.potionID);
-		buf.writeInt(this.duration);
-		buf.writeInt(this.amplifier);
+		buf.writeInt(potionID);
+		buf.writeInt(duration);
+		buf.writeInt(amplifier);
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
 
-	public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-		ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(packet.potionID, packet.duration, packet.amplifier, false));
-		return null;
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
+
+		@Override
+		public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
+			ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(packet.potionID, packet.duration, packet.amplifier, false));
+			return null;
+		}
+
 	}
-	
-}
 
 }

@@ -19,40 +19,46 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider {
-	
+
 	public BlockReinforcedIronBars(Material par1Material, boolean par2) {
 		super(par1Material, par2);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Block.soundTypeMetal, 33);
 	}
-	
-    public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {	
-    	BlockUtils.setBlock(par1World, pos, Blocks.iron_bars);
-    }
 
-    public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
+	@Override
+	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
+		BlockUtils.setBlock(par1World, pos, Blocks.iron_bars);
+	}
 
-    public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
-        super.onBlockEventReceived(par1World, pos, state, par5, par6);
-        TileEntity tileentity = par1World.getTileEntity(pos);
-        return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
-    }
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, BlockPos pos){
-        return Item.getItemFromBlock(this);
-    }
+	@Override
+	public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
+		super.onBlockEventReceived(par1World, pos, state, par5, par6);
+		TileEntity tileentity = par1World.getTileEntity(pos);
+		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+	}
 
-    /**
-     * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-     */
-    @SideOnly(Side.CLIENT)
-    public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-        return Item.getItemFromBlock(this);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getItem(World p_149694_1_, BlockPos pos){
+		return Item.getItemFromBlock(this);
+	}
 
+	/**
+	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+		return Item.getItemFromBlock(this);
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World par1, int par2) {
 		return new TileEntityOwnable();
 	}

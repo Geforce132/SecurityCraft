@@ -14,12 +14,13 @@ import net.minecraft.util.ResourceLocation;
 public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 
 	private ModelAlarm alarmModel;
-    private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
+	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
 
 	public TileEntityAlarmRenderer(){
-		this.alarmModel = new ModelAlarm();
+		alarmModel = new ModelAlarm();
 	}
-	
+
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
 		float rotationX = 0F;
@@ -35,14 +36,14 @@ public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
+
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		
+
 		GL11.glPushMatrix();
-		
+
 		if(meta == 0){
 			rotationX = -1F;
 			rotationY = -10000F;
@@ -67,14 +68,13 @@ public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 			rotationY = 1F;
 			rotationZ = 1F;
 			GL11.glTranslatef(0F, -1F, -1F);
-		}else if(meta == 5){
+		}else if(meta == 5)
 			rotationX = 0F;
-		}
-		
+
 		GL11.glRotatef(180F, rotationX, rotationY, rotationZ);
-		
-		this.alarmModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		
+
+		alarmModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 

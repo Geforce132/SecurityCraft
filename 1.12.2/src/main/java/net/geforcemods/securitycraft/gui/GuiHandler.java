@@ -93,9 +93,9 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
-						return null;
-					return new ContainerGeneric(player.inventory, tile_entity);
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
+					return null;
+				return new ContainerGeneric(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
 			case IRC_INFORMATION:
@@ -116,7 +116,7 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
 
 		switch(ID)
-		{	
+		{
 			case SETUP_KEYCARD_READER_ID:
 				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
 			case MRAT_MENU_ID:
@@ -156,7 +156,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiBriefcaseInventory(player, player.inventory);
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
 					return null;
 				return new GuiKeyChanger(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:

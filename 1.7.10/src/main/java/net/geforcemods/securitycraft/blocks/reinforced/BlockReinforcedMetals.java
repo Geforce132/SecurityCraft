@@ -24,6 +24,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 		super(Material.iron);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
 	{
@@ -32,7 +33,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 2));
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
 	}
-	
+
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
@@ -45,35 +46,38 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 			default: return null; //won't happen
 		}
 	}
-	
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
 		return getIcon(side, access.getBlockMetadata(x, y, z));
 	}
-	
+
 	@Override
 	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
 		return 0x999999;
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
 	{
-        return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
+		return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
 	}
 
 	@Override

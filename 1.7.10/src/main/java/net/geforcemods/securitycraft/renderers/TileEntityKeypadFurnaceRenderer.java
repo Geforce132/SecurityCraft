@@ -13,25 +13,25 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
-	
+
 	private ResourceLocation activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
 	private ResourceLocation deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
 
 	public TileEntityKeypadFurnaceRenderer(){
-		this.activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
-		this.deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
+		activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
+		deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
 	}
 
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		
+
 		boolean isActive = false;
 		ModelKeypadFurnaceDeactivated modelDeactivated = new ModelKeypadFurnaceDeactivated();
 		ModelKeypadFurnaceActive modelActive = new ModelKeypadFurnaceActive();
 
-		if(par1TileEntity.hasWorldObj() && par1TileEntity.getBlockMetadata() >= 5){
+		if(par1TileEntity.hasWorldObj() && par1TileEntity.getBlockMetadata() >= 5)
 			isActive = true;
-		}
-		
+
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
 		float rotation = 0F;
 
@@ -44,42 +44,39 @@ public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
-		if(isActive){
+
+		if(isActive)
 			Minecraft.getMinecraft().renderEngine.bindTexture(activeFurnaceTexture);
-		}else{
+		else
 			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedFurnaceTexture);
-		}
-		
+
 		GL11.glPushMatrix();
 
 		if(par1TileEntity.hasWorldObj()){
-			if(meta == 1 || meta == 6){
+			if(meta == 1 || meta == 6)
 				rotation = 0F;
-			}else if(meta == 2 || meta == 7){
+			else if(meta == 2 || meta == 7)
 				rotation = 1F;
-			}else if(meta == 3 || meta == 8){
-				rotation = -10000F; 
-			}else if(meta == 4 || meta == 9){
+			else if(meta == 3 || meta == 8)
+				rotation = -10000F;
+			else if(meta == 4 || meta == 9)
 				rotation = -1F;
-			}
-		}else{
+		}
+		else
 			rotation = -1F;
-		}
-		
+
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
-		
-		if(isActive){
+
+		if(isActive)
 			modelActive.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		}else{
+		else
 			modelDeactivated.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		}
-		
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-	
+
 }

@@ -19,134 +19,132 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockReinforcedWoodSlabs extends ItemBlockTinted {
-	
+
 	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedWoodSlabs;
 	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleWoodSlabs;
 
 	public ItemBlockReinforcedWoodSlabs(Block block) {
 		super(block);
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
-	
+
+	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack){
-		if(stack.getItemDamage() == 0){
+		if(stack.getItemDamage() == 0)
 			return this.getUnlocalizedName() + "_oak";
-		}else if(stack.getItemDamage() == 1){
+		else if(stack.getItemDamage() == 1)
 			return this.getUnlocalizedName() + "_spruce";
-		}else if(stack.getItemDamage() == 2){
+		else if(stack.getItemDamage() == 2)
 			return this.getUnlocalizedName() + "_birch";
-		}else if(stack.getItemDamage() == 3){
+		else if(stack.getItemDamage() == 3)
 			return this.getUnlocalizedName() + "_jungle";
-		}else if(stack.getItemDamage() == 4){
+		else if(stack.getItemDamage() == 4)
 			return this.getUnlocalizedName() + "_acacia";
-		}else if(stack.getItemDamage() == 5){
+		else if(stack.getItemDamage() == 5)
 			return this.getUnlocalizedName() + "_darkoak";
-		}else{
+		else
 			return this.getUnlocalizedName();
+	}
+
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(stack.stackSize == 0)
+			return false;
+		else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
+			return false;
+		else{
+			Object object = singleSlab.getVariant(stack);
+			IBlockState iblockstate = worldIn.getBlockState(pos);
+
+			if(iblockstate.getBlock() == singleSlab){
+				IProperty iproperty = singleSlab.getVariantProperty();
+				Comparable comparable = iblockstate.getValue(iproperty);
+				BlockSlab.EnumBlockHalf enumblockhalf = iblockstate.getValue(BlockSlab.HALF);
+
+				Owner owner = null;
+
+				if(worldIn.getTileEntity(pos) instanceof IOwnable){
+					owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
+
+					if(!owner.owns((IOwnable) worldIn.getTileEntity(pos))){
+						if(!worldIn.isRemote)
+							PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
+
+						return false;
+					}
+				}
+
+				if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
+					IBlockState iblockstate1 = doubleSlab.getDefaultState().withProperty(iproperty, comparable);
+
+					if(worldIn.checkNoEntityCollision(doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)){
+						worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, doubleSlab.stepSound.getPlaceSound(), (doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, doubleSlab.stepSound.getFrequency() * 0.8F);
+						--stack.stackSize;
+
+						if(owner != null)
+							((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
+					}
+
+					return true;
+				}
+			}
+
+			return tryPlace(stack, worldIn, pos.offset(side), object) ? true : super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
 		}
 	}
-	
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ){
-        if(stack.stackSize == 0){
-            return false;
-        }else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack)){
-            return false;
-        }else{
-            Object object = this.singleSlab.getVariant(stack);
-            IBlockState iblockstate = worldIn.getBlockState(pos);
 
-            if(iblockstate.getBlock() == this.singleSlab){
-                IProperty iproperty = this.singleSlab.getVariantProperty();
-                Comparable comparable = iblockstate.getValue(iproperty);
-                BlockSlab.EnumBlockHalf enumblockhalf = (BlockSlab.EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
-                
-                Owner owner = null;
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
+		BlockPos blockpos1 = pos;
+		IProperty iproperty = singleSlab.getVariantProperty();
+		Object object = singleSlab.getVariant(stack);
+		IBlockState iblockstate = worldIn.getBlockState(pos);
 
-                if(worldIn.getTileEntity(pos) instanceof IOwnable){
-                	owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
-                	
-                	if(!owner.owns((IOwnable) worldIn.getTileEntity(pos))){
-                		if(!worldIn.isRemote){
-                			PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
-                		}
-                		
-                		return false;
-                	}             
-                }
-                
-                if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
-                    IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty(iproperty, comparable);
+		if(iblockstate.getBlock() == singleSlab){
+			boolean flag = iblockstate.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-                    if(worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-                        worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-                        --stack.stackSize;
-                        
-                        if(owner != null){
-                        	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
-                        }
-                    }
+			if((side == EnumFacing.UP && !flag || side == EnumFacing.DOWN && flag) && object == iblockstate.getValue(iproperty))
+				return true;
+		}
 
-                    return true;
-                }
-            }
+		pos = pos.offset(side);
+		IBlockState iblockstate1 = worldIn.getBlockState(pos);
+		return iblockstate1.getBlock() == singleSlab && object == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos1, side, player, stack);
+	}
 
-            return this.tryPlace(stack, worldIn, pos.offset(side), object) ? true : super.onItemUse(stack, playerIn, worldIn, pos, side, hitX, hitY, hitZ);
-        }
-    }
+	private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack){
+		IBlockState iblockstate = worldIn.getBlockState(pos);
 
-    @SideOnly(Side.CLIENT)
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
-        BlockPos blockpos1 = pos;
-        IProperty iproperty = this.singleSlab.getVariantProperty();
-        Object object = this.singleSlab.getVariant(stack);
-        IBlockState iblockstate = worldIn.getBlockState(pos);
+		Owner owner = null;
 
-        if(iblockstate.getBlock() == this.singleSlab){
-            boolean flag = iblockstate.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
+		if(worldIn.getTileEntity(pos) instanceof IOwnable)
+			owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
 
-            if((side == EnumFacing.UP && !flag || side == EnumFacing.DOWN && flag) && object == iblockstate.getValue(iproperty)){
-                return true;
-            }
-        }
+		if(iblockstate.getBlock() == singleSlab){
+			Comparable comparable = iblockstate.getValue(singleSlab.getVariantProperty());
 
-        pos = pos.offset(side);
-        IBlockState iblockstate1 = worldIn.getBlockState(pos);
-        return iblockstate1.getBlock() == this.singleSlab && object == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos1, side, player, stack);
-    }
+			if(comparable == variantInStack){
+				IBlockState iblockstate1 = doubleSlab.getDefaultState().withProperty((IProperty) singleSlab.getVariantProperty(), comparable);
 
-    private boolean tryPlace(ItemStack stack, World worldIn, BlockPos pos, Object variantInStack){
-        IBlockState iblockstate = worldIn.getBlockState(pos);
-        
-        Owner owner = null;
+				if (worldIn.checkNoEntityCollision(doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)){
+					worldIn.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, doubleSlab.stepSound.getPlaceSound(), (doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, doubleSlab.stepSound.getFrequency() * 0.8F);
+					--stack.stackSize;
 
-        if(worldIn.getTileEntity(pos) instanceof IOwnable){
-        	owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
-        }
+					if(owner != null)
+						((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
+				}
 
-        if(iblockstate.getBlock() == this.singleSlab){
-            Comparable comparable = iblockstate.getValue(this.singleSlab.getVariantProperty());
+				return true;
+			}
+		}
 
-            if(comparable == variantInStack){
-                IBlockState iblockstate1 = this.doubleSlab.getDefaultState().withProperty((IProperty) this.singleSlab.getVariantProperty(), comparable);
-
-                if (worldIn.checkNoEntityCollision(this.doubleSlab.getCollisionBoundingBox(worldIn, pos, iblockstate1)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-                    worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.doubleSlab.stepSound.getPlaceSound(), (this.doubleSlab.stepSound.getVolume() + 1.0F) / 2.0F, this.doubleSlab.stepSound.getFrequency() * 0.8F);
-                    --stack.stackSize;
-                    
-                    if(owner != null){
-                    	((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner);
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        return false;
-    }
+		return false;
+	}
 
 }

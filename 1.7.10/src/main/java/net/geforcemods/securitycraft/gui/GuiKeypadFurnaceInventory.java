@@ -18,49 +18,52 @@ import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiKeypadFurnaceInventory extends GuiContainer{
-	
-    private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
-    private TileEntityFurnace tileFurnace;
-    private boolean gurnace = false;
-    
-    public GuiKeypadFurnaceInventory(InventoryPlayer p_i1091_1_, TileEntityFurnace p_i1091_2_){
-        super(new ContainerFurnace(p_i1091_1_, p_i1091_2_));
-        this.tileFurnace = p_i1091_2_;
-        
-        if(new Random().nextInt(100) < 5)
-        	gurnace = true;
-    }
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
-    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
-    {
-        String s = gurnace ? "Keypad Gurnace" : (this.tileFurnace.hasCustomInventoryName() ? this.tileFurnace.getInventoryName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]));
-        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-    }
+	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
+	private TileEntityFurnace tileFurnace;
+	private boolean gurnace = false;
 
-    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
-    {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+	public GuiKeypadFurnaceInventory(InventoryPlayer p_i1091_1_, TileEntityFurnace p_i1091_2_){
+		super(new ContainerFurnace(p_i1091_1_, p_i1091_2_));
+		tileFurnace = p_i1091_2_;
 
-        if (this.tileFurnace.isBurning())
-        {
-            int i1 = this.tileFurnace.getBurnTimeRemainingScaled(13);
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
-            i1 = this.tileFurnace.getCookProgressScaled(24);
-            this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
-        }
-    }
-    
-    public void onGuiClosed(){
-    	super.onGuiClosed();
-		mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata(this.tileFurnace.xCoord, this.tileFurnace.yCoord, this.tileFurnace.zCoord, this.mc.theWorld.getBlockMetadata(this.tileFurnace.xCoord, this.tileFurnace.yCoord, this.tileFurnace.zCoord) - 5, false, 1, "", ""));
-    }
-    
+		if(new Random().nextInt(100) < 5)
+			gurnace = true;
+	}
+
+	/**
+	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
+	 */
+	@Override
+	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
+	{
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomInventoryName() ? tileFurnace.getInventoryName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]));
+		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
+	{
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.getTextureManager().bindTexture(furnaceGuiTextures);
+		int k = (width - xSize) / 2;
+		int l = (height - ySize) / 2;
+		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+
+		if (tileFurnace.isBurning())
+		{
+			int i1 = tileFurnace.getBurnTimeRemainingScaled(13);
+			drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
+			i1 = tileFurnace.getCookProgressScaled(24);
+			drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+		}
+	}
+
+	@Override
+	public void onGuiClosed(){
+		super.onGuiClosed();
+		mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord, mc.theWorld.getBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord) - 5, false, 1, "", ""));
+	}
+
 }

@@ -16,70 +16,73 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
-	
+
 	/**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("passLV", this.passLV);
-        par1NBTTagCompound.setBoolean("requiresExactKeycard", this.requiresExactKeycard);
-    }
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+		super.writeToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setInteger("passLV", passLV);
+		par1NBTTagCompound.setBoolean("requiresExactKeycard", requiresExactKeycard);
+	}
 
-    /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-        super.readFromNBT(par1NBTTagCompound);
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+		super.readFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.hasKey("passLV"))
-        {
-            this.passLV = par1NBTTagCompound.getInteger("passLV");
-        }
-        
-        if (par1NBTTagCompound.hasKey("requiresExactKeycard"))
-        {
-            this.requiresExactKeycard = par1NBTTagCompound.getBoolean("requiresExactKeycard");
-        }    
-        
-    }
-   
-    public void setRequiresExactKeycard(boolean par1) {
-    	requiresExactKeycard = par1;
+		if (par1NBTTagCompound.hasKey("passLV"))
+			passLV = par1NBTTagCompound.getInteger("passLV");
+
+		if (par1NBTTagCompound.hasKey("requiresExactKeycard"))
+			requiresExactKeycard = par1NBTTagCompound.getBoolean("requiresExactKeycard");
+
 	}
-    
-    public boolean doesRequireExactKeycard() {
-    	return requiresExactKeycard;
+
+	public void setRequiresExactKeycard(boolean par1) {
+		requiresExactKeycard = par1;
 	}
-    
-    public void activate(EntityPlayer player) {
-    	if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader){
-    		BlockKeycardReader.activate(worldObj, getPos());
-    	}
+
+	public boolean doesRequireExactKeycard() {
+		return requiresExactKeycard;
 	}
-    
-    public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() == null) {    	
-	    	player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
-		}
+
+	@Override
+	public void activate(EntityPlayer player) {
+		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader)
+			BlockKeycardReader.activate(worldObj, getPos());
 	}
-    
-    public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+
+	@Override
+	public void openPasswordGUI(EntityPlayer player) {
+		if(getPassword() == null)
+			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	@Override
+	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		return false;
 	}
-     
-    public String getPassword() {
+
+	@Override
+	public String getPassword() {
 		return passLV == 0 ? null : String.valueOf(passLV);
 	}
-    
-    public void setPassword(String password) {
+
+	@Override
+	public void setPassword(String password) {
 		passLV = Integer.parseInt(password);
 	}
 
-    public EnumCustomModules[] acceptedModules() {
+	@Override
+	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}

@@ -10,7 +10,7 @@ public class SecurityCraftGuiFactory implements IModGuiFactory{
 
 	@Override
 	public void initialize(Minecraft arg0) {
-		
+
 	}
 
 	@Override

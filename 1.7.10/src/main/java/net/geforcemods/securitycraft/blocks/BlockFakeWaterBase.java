@@ -19,21 +19,22 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWailaDisplay {
-	
+
 	public BlockFakeWaterBase(Material par2Material){
 		super(par2Material);
-		this.setTickRandomly(true);
-		this.disableStats();
+		setTickRandomly(true);
+		disableStats();
 	}
 
+	@Override
 	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
-		return this.blockMaterial != Material.lava;
+		return blockMaterial != Material.lava;
 	}
 
+	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5){
-		if (par1World.getBlock(par2, par3, par4) == this){
-			this.setNotStationary(par1World, par2, par3, par4);
-		}
+		if (par1World.getBlock(par2, par3, par4) == this)
+			setNotStationary(par1World, par2, par3, par4);
 	}
 
 	/**
@@ -42,11 +43,12 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWail
 	private void setNotStationary(World par1World, int par2, int par3, int par4){
 		int l = par1World.getBlockMetadata(par2, par3, par4);
 		par1World.setBlock(par2, par3, par4, mod_SecurityCraft.bogusWaterFlowing, l, 2);
-		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.bogusWaterFlowing, this.tickRate(par1World));
+		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.bogusWaterFlowing, tickRate(par1World));
 	}
 
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if (this.blockMaterial == Material.lava){
+		if (blockMaterial == Material.lava){
 			int l = par5Random.nextInt(3);
 			int i1;
 
@@ -61,9 +63,8 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWail
 						par1World.setBlock(par2, par3, par4, Blocks.fire);
 						return;
 					}
-				}else if (block.getMaterial().blocksMovement()){
+				}else if (block.getMaterial().blocksMovement())
 					return;
-				}
 			}
 
 			if (l == 0){
@@ -74,22 +75,20 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWail
 					par2 = i1 + par5Random.nextInt(3) - 1;
 					par4 = k1 + par5Random.nextInt(3) - 1;
 
-					if (par1World.isAirBlock(par2, par3 + 1, par4) && this.isFlammable(par1World, par2, par3, par4)){
+					if (par1World.isAirBlock(par2, par3 + 1, par4) && this.isFlammable(par1World, par2, par3, par4))
 						par1World.setBlock(par2, par3 + 1, par4, Blocks.fire);
-					}
 				}
 			}
 		}
 	}
 
+	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(!par1World.isRemote){
-			if(par5Entity instanceof EntityPlayer && !((EntityPlayer) par5Entity).capabilities.isCreativeMode){
+		if(!par1World.isRemote)
+			if(par5Entity instanceof EntityPlayer && !((EntityPlayer) par5Entity).capabilities.isCreativeMode)
 				((EntityPlayer) par5Entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
-			}
 			else
 				par5Entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
-		}
 	}
 
 	/**
@@ -102,6 +101,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWail
 	/**
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
 		return null;
@@ -118,5 +118,5 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ICustomWail
 	{
 		return false;
 	}
-	
+
 }

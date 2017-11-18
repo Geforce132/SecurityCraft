@@ -48,20 +48,19 @@ public class GuiUtils{
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
 		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
-		if(player.getActivePotionEffect(Potion.nightVision) == null){
+		if(player.getActivePotionEffect(Potion.nightVision) == null)
 			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
-		}else{
+		else{
 			mc.getTextureManager().bindTexture(potionIcons);
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 		}
-		
-		if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && !((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE)){
-		      gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		}else if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE)){
-		      gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
-		}else{
-		      drawItemStackToGui(mc, Items.redstone, 10, 0, false);
-		}
+
+		if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && !((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE))
+			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
+		else if(world.getBlock(x, y, z).isProvidingWeakPower(world, x, y, z, 0) == 0 && ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE))
+			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+		else
+			drawItemStackToGui(mc, Items.redstone, 10, 0, false);
 	}
 
 	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRenderer){
@@ -77,26 +76,22 @@ public class GuiUtils{
 				String s = (String)iterator.next();
 				int l = fontRenderer.getStringWidth(s);
 
-				if(l > k){
+				if(l > k)
 					k = l;
-				}
 			}
 
 			int j2 = x + 12;
 			int k2 = y - 12;
 			int i1 = 8;
 
-			if(list.size() > 1){
+			if(list.size() > 1)
 				i1 += 2 + (list.size() - 1) * 10;
-			}
 
-			if(j2 + k > Minecraft.getMinecraft().displayWidth){ //w
+			if(j2 + k > Minecraft.getMinecraft().displayWidth)
 				j2 -= 28 + k;
-			}
 
-			if(k2 + i1 + 6 > Minecraft.getMinecraft().displayHeight){ //h
+			if(k2 + i1 + 6 > Minecraft.getMinecraft().displayHeight)
 				k2 = Minecraft.getMinecraft().displayHeight - i1 - 6; //h
-			}
 
 			itemRender.zLevel = 300.0F;
 			int j1 = -267386864;
@@ -118,9 +113,7 @@ public class GuiUtils{
 				fontRenderer.drawStringWithShadow(s1, j2, k2, -1);
 
 				if (i2 == 0)
-				{
 					k2 += 2;
-				}
 
 				k2 += 10;
 			}
@@ -134,9 +127,8 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Item item, int itemDamage, int x, int y, boolean fixLighting){
-		if(fixLighting){
+		if(fixLighting)
 			GL11.glEnable(GL11.GL_LIGHTING);
-		}
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(item, 1, itemDamage), x, y);
@@ -147,9 +139,8 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		if(fixLighting){
+		if(fixLighting)
 			GL11.glEnable(GL11.GL_LIGHTING);
-		}
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);

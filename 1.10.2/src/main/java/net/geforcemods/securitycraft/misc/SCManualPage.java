@@ -4,7 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class SCManualPage {
-	
+
 	private Item item;
 	private String helpInfo;
 	private ItemStack[] customRecipe;
@@ -13,15 +13,15 @@ public class SCManualPage {
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
-		this.customRecipe = null;
+		customRecipe = null;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, boolean configValue){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.configValue = configValue;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, ItemStack[] customRecipe){
 		this.item = item;
 		this.helpInfo = helpInfo;
@@ -39,11 +39,11 @@ public class SCManualPage {
 	public String getHelpInfo() {
 		return helpInfo;
 	}
-	
+
 	public ItemStack[] getRecipe() {
 		return customRecipe;
 	}
-	
+
 	public boolean hasCustomRecipe() {
 		return (customRecipe != null);
 	}

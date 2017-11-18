@@ -8,25 +8,24 @@ public class ItemBlockReinforcedSandstone extends ItemBlock {
 
 	public ItemBlockReinforcedSandstone(Block block) {
 		super(block);
-		this.setHasSubtypes(true);
+		setHasSubtypes(true);
 	}
-	
+
 	@Override
 	public int getMetadata(int meta){
 		return meta;
 	}
-	
+
 	@Override
 	public String getUnlocalizedName(ItemStack stack){
-		if(stack.getItemDamage() == 0){
+		if(stack.getItemDamage() == 0)
 			return this.getUnlocalizedName() + "_normal";
-		}else if(stack.getItemDamage() == 1){
+		else if(stack.getItemDamage() == 1)
 			return this.getUnlocalizedName() + "_chiseled";
-		}else if(stack.getItemDamage() == 2){
+		else if(stack.getItemDamage() == 2)
 			return this.getUnlocalizedName() + "_smooth";
-		}else{
+		else
 			return this.getUnlocalizedName();
-		}
 	}
 
 }

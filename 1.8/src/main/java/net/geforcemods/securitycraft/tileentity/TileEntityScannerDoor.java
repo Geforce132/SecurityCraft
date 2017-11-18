@@ -15,49 +15,53 @@ import net.minecraft.util.StatCollector;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
+	@Override
 	public void entityViewed(EntityLivingBase entity)
 	{
 		IBlockState upperState = worldObj.getBlockState(pos);
 		IBlockState lowerState = worldObj.getBlockState(pos.down());
-		
+
 		if(!worldObj.isRemote && upperState.getValue(BlockScannerDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;
-			
+
 			EntityPlayer player = (EntityPlayer)entity;
-			
+
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
-			
+
 			if(!getOwner().isOwner(player))
 			{
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
 				return;
 			}
-			
+
 			boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockScannerDoor.OPEN);
 
 			worldObj.setBlockState(pos, upperState.withProperty(BlockScannerDoor.OPEN, !((Boolean)upperState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
 			worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockScannerDoor.OPEN, !((Boolean)lowerState.getValue(BlockScannerDoor.OPEN)).booleanValue()), 3);
 			worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-            worldObj.playAuxSFXAtEntity(null, 1006, pos, 0);
+			worldObj.playAuxSFXAtEntity(null, 1006, pos, 0);
 
-            if(open)
-                PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getCommandSenderName()), EnumChatFormatting.GREEN);         
+			if(open)
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getCommandSenderName()), EnumChatFormatting.GREEN);
 		}
 	}
 
+	@Override
 	public int getViewCooldown()
 	{
 		return 30;
 	}
 
+	@Override
 	public EnumCustomModules[] acceptedModules()
 	{
 		return new EnumCustomModules[]{};
 	}
 
+	@Override
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{};

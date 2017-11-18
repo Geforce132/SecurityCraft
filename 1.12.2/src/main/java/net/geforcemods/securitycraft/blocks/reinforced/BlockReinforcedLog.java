@@ -19,33 +19,33 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisplay
 {
-    public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
+	public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
 
-    protected BlockReinforcedLog()
-    {
-        super(Material.WOOD);
+	protected BlockReinforcedLog()
+	{
+		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
-    }
+	}
 
-    public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
-    {
-        IBlockState state = world.getBlockState(pos);
-        for (IProperty prop : state.getProperties().keySet())
-        {
-            if (prop.getName().equals("axis"))
-            {
-                world.setBlockState(pos, state.cycleProperty(prop));
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getStateFromMeta(meta).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
-    }
-    
+	@Override
+	public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
+	{
+		IBlockState state = world.getBlockState(pos);
+		for (IProperty prop : state.getProperties().keySet())
+			if (prop.getName().equals("axis"))
+			{
+				world.setBlockState(pos, state.cycleProperty(prop));
+				return true;
+			}
+		return false;
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	{
+		return getStateFromMeta(meta).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
+	}
+
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{

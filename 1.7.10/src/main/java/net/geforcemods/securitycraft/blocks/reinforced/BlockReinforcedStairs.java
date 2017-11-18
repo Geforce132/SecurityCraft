@@ -11,20 +11,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedStairs extends BlockStairs implements ITileEntityProvider {
-    
+
 	public BlockReinforcedStairs(Block par1, int par2) {
 		super(par1, par2);
-		this.useNeighborBrightness = true;
+		useNeighborBrightness = true;
 	}
-	
+
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-        super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-        
-        if(par1World.getTileEntity(par2, par3, par4) != null){
-        	par1World.removeTileEntity(par2, par3, par4);
-        }
-    }
-	
+		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
+
+		if(par1World.getTileEntity(par2, par3, par4) != null)
+			par1World.removeTileEntity(par2, par3, par4);
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
 		return new TileEntityOwnable();
 	}
@@ -34,17 +35,19 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 	{
 		return 0x999999;
 	}
-    
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(int p_149741_1_)
-    {
-        return 0x999999;
-    }
-	
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-    	return 0x999999;
-    }
-	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderColor(int p_149741_1_)
+	{
+		return 0x999999;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getBlockColor()
+	{
+		return 0x999999;
+	}
+
 }

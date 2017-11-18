@@ -9,12 +9,12 @@ import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketSUpdateSliderValue implements IMessage{
-	
+
 	private int x, y, z, id;
 	private double value;
-	
+
 	public PacketSUpdateSliderValue(){ }
-	
+
 	public PacketSUpdateSliderValue(int x, int y, int z, int id, double v){
 		this.x = x;
 		this.y = y;
@@ -22,7 +22,8 @@ public class PacketSUpdateSliderValue implements IMessage{
 		this.id = id;
 		value = v;
 	}
-	
+
+	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
 		par1ByteBuf.writeInt(y);
@@ -31,32 +32,34 @@ public class PacketSUpdateSliderValue implements IMessage{
 		par1ByteBuf.writeDouble(value);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
-		this.id = par1ByteBuf.readInt();
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
+		id = par1ByteBuf.readInt();
 		value = par1ByteBuf.readDouble();
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateSliderValue, IMessage> {
 
-	public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
-		int id = packet.id;
-		double value = packet.value;
-		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
-	
-		if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null && getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof CustomizableSCTE) {
-			((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).customOptions()[id]).setValue(value);
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).customOptions()[id]);
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).sync();
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateSliderValue, IMessage> {
+
+		@Override
+		public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
+			int x = packet.x;
+			int y = packet.y;
+			int z = packet.z;
+			int id = packet.id;
+			double value = packet.value;
+			EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+
+			if(getWorld(par1EntityPlayer).getTileEntity(x, y, z) != null && getWorld(par1EntityPlayer).getTileEntity(x, y, z) instanceof CustomizableSCTE) {
+				((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).customOptions()[id]).setValue(value);
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).customOptions()[id]);
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(x, y, z)).sync();
+			}
+
+			return null;
 		}
-		
-		return null;
 	}
-}
-	
+
 }

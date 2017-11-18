@@ -52,7 +52,7 @@ public class BlockMine extends BlockExplosive {
 	public boolean isNormalCube(IBlockState state)
 	{
 		return false;
-	} 
+	}
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
@@ -65,11 +65,10 @@ public class BlockMine extends BlockExplosive {
 	 */
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR){
-			return;  	   
-		}else{    	   
-			this.explode((World)world, pos);   
-		}
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			explode((World)world, pos);
 	}
 
 	/**
@@ -77,78 +76,70 @@ public class BlockMine extends BlockExplosive {
 	 */
 	@Override
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.PLANTS){
+		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.PLANTS)
 			return false;
-		}else{
+		else
 			return true;
-		}
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-        if(!player.capabilities.isCreativeMode && !world.isRemote){
-        	if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative){
-            	return super.removedByPlayer(state, world, pos, player, willHarvest);
-        	}else{
-        		this.explode(world, pos);
-            	return super.removedByPlayer(state, world, pos, player, willHarvest);
-        	}
-        }
-		
+		if(!player.capabilities.isCreativeMode && !world.isRemote)
+			if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative)
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			else{
+				explode(world, pos);
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			}
+
 		return super.removedByPlayer(state, world, pos, player, willHarvest);
-    }
-	
+	}
+
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		float f = 0.2F;
 		float g = 0.1F;
-		
+
 		return BlockUtils.fromBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
 	}
-	
+
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
-		if(worldIn.isRemote){
+		if(worldIn.isRemote)
 			return;
-		}else{
-			if(entityIn instanceof EntityCreeper || entityIn instanceof EntityOcelot || entityIn instanceof EntityEnderman || entityIn instanceof EntityItem){
-				return;
-			}else{
-				if(entityIn instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entityIn))
-					this.explode(worldIn, pos);
-			}  		
-		}
+		else if(entityIn instanceof EntityCreeper || entityIn instanceof EntityOcelot || entityIn instanceof EntityEnderman || entityIn instanceof EntityItem)
+			return;
+		else if(entityIn instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entityIn))
+			explode(worldIn, pos);
 	}
-	
+
 	@Override
 	public void activateMine(World world, BlockPos pos) {
-		if(!world.isRemote){
+		if(!world.isRemote)
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
-		}
 	}
 
 	@Override
 	public void defuseMine(World world, BlockPos pos) {
-		if(!world.isRemote){
+		if(!world.isRemote)
 			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
-		}
 	}
 
 	@Override
 	public void explode(World par1World, BlockPos pos) {
-		if(par1World.isRemote){ return; }
+		if(par1World.isRemote)
+			return;
 
 		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			par1World.destroyBlock(pos, false);
-			if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+			if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
-			}else{
+			else
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
-			}
 		}
 	}
 
@@ -171,7 +162,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return this.getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
 	@Override
@@ -185,16 +176,16 @@ public class BlockMine extends BlockExplosive {
 	{
 		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
 	}
-	
+
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
-	
+
 	@Override
 	public boolean isDefusable() {
 		return true;
-	}      
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {

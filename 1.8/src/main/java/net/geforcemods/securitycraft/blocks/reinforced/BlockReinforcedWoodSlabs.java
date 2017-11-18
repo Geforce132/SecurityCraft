@@ -18,59 +18,62 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider {
 
 	private final boolean isDouble;
-	
-	public BlockReinforcedWoodSlabs(boolean isDouble){		
+
+	public BlockReinforcedWoodSlabs(boolean isDouble){
 		this.isDouble = isDouble;
-		
-		if(this.isDouble()){
-			this.setCreativeTab(null);
-		}
-		
-		if(!this.isDouble()){
-			this.useNeighborBrightness = true;
-		}
+
+		if(isDouble())
+			setCreativeTab(null);
+
+		if(!isDouble())
+			useNeighborBrightness = true;
 	}
-	
+
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
-	
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
-    }
+		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos){
-        return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getItem(World worldIn, BlockPos pos){
+		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+	}
 
-    public boolean isDouble(){
+	@Override
+	public boolean isDouble(){
 		return isDouble;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getRenderColor(IBlockState state)
-    {
-        return 0x999999;
-    }
-	
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getBlockColor()
-    {
-    	return 0x999999;
-    }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderColor(IBlockState state)
+	{
+		return 0x999999;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getBlockColor()
+	{
+		return 0x999999;
+	}
 }

@@ -12,29 +12,29 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedLog extends BlockOwnable
 {
-    public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
+	public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
 
-    protected BlockReinforcedLog()
-    {
-        super(Material.wood, true);
-    }
+	protected BlockReinforcedLog()
+	{
+		super(Material.wood, true);
+	}
 
-    public boolean rotateBlock(net.minecraft.world.World world, net.minecraft.util.BlockPos pos, EnumFacing axis)
-    {
-        IBlockState state = world.getBlockState(pos);
-        for (net.minecraft.block.properties.IProperty prop : (java.util.Set<net.minecraft.block.properties.IProperty>)state.getProperties().keySet())
-        {
-            if (prop.getName().equals("axis"))
-            {
-                world.setBlockState(pos, state.cycleProperty(prop));
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
-    }
+	@Override
+	public boolean rotateBlock(net.minecraft.world.World world, net.minecraft.util.BlockPos pos, EnumFacing axis)
+	{
+		IBlockState state = world.getBlockState(pos);
+		for (net.minecraft.block.properties.IProperty prop : (java.util.Set<net.minecraft.block.properties.IProperty>)state.getProperties().keySet())
+			if (prop.getName().equals("axis"))
+			{
+				world.setBlockState(pos, state.cycleProperty(prop));
+				return true;
+			}
+		return false;
+	}
+
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	{
+		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
+	}
 }

@@ -34,58 +34,65 @@ public class BlockScannerDoor extends BlockContainer
 		isBlockContainer = true;
 	}
 
+	@Override
 	public boolean isOpaqueCube()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
 
+	@Override
 	public int getRenderType()
 	{
 		return 7;
 	}
 
+	@Override
 	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
 	{
 		return (func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_) & 4) != 0;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_)
 	{
-		this.setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
+		setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
 		return super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
 	}
 
+	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
 	{
-		this.setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+		setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
 		return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
 	}
 
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
 	{
-		this.func_150011_b(this.func_150012_g(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_));
+		func_150011_b(func_150012_g(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_));
 	}
 
 	public int func_150013_e(IBlockAccess p_150013_1_, int p_150013_2_, int p_150013_3_, int p_150013_4_)
 	{
-		return this.func_150012_g(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
+		return func_150012_g(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
 	}
 
 	public boolean func_150015_f(IBlockAccess p_150015_1_, int p_150015_2_, int p_150015_3_, int p_150015_4_)
 	{
-		return (this.func_150012_g(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
+		return (func_150012_g(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
 	}
 
 	private void func_150011_b(int p_150011_1_)
 	{
 		float f = 0.1875F;
-		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
+		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
 		int j = p_150011_1_ & 3;
 		boolean flag = (p_150011_1_ & 4) != 0;
 		boolean flag1 = (p_150011_1_ & 16) != 0;
@@ -95,54 +102,52 @@ public class BlockScannerDoor extends BlockContainer
 			if(flag)
 			{
 				if(!flag1)
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 				else
-					this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 			}
 			else
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 		}
 		else if(j == 1)
 		{
 			if (flag)
 			{
 				if (!flag1)
-					this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				else
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 			}
 			else
-				this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 		}
 		else if(j == 2)
 		{
 			if(flag)
 			{
 				if(!flag1)
-					this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 				else
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 			}
 			else
-				this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
 		else if(j == 3)
-		{
 			if(flag)
 			{
 				if(!flag1)
-					this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 				else
-					this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 			}
 			else
-				this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
-		}
+				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 	}
 
 	public void func_150014_a(World p_150014_1_, int p_150014_2_, int p_150014_3_, int p_150014_4_, boolean p_150014_5_)
 	{
-		int l = this.func_150012_g(p_150014_1_, p_150014_2_, p_150014_3_, p_150014_4_);
+		int l = func_150012_g(p_150014_1_, p_150014_2_, p_150014_3_, p_150014_4_);
 		boolean flag1 = (l & 4) != 0;
 
 		if(flag1 != p_150014_5_)
@@ -166,6 +171,7 @@ public class BlockScannerDoor extends BlockContainer
 		}
 	}
 
+	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block)
 	{
 		int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -181,10 +187,8 @@ public class BlockScannerDoor extends BlockContainer
 			}
 
 			if(flag)
-			{
 				if(!par1World.isRemote)
 					this.dropBlockAsItem(par1World, par2, par3, par4, l, 0);
-			}
 		}
 		else
 		{
@@ -192,26 +196,30 @@ public class BlockScannerDoor extends BlockContainer
 				par1World.setBlockToAir(par2, par3, par4);
 
 			if(par5Block != this)
-				this.onNeighborBlockChange(par1World, par2, par3 - 1, par4, par5Block);
+				onNeighborBlockChange(par1World, par2, par3 - 1, par4, par5Block);
 		}
 	}
 
+	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
 	{
 		return (p_149650_1_ & 8) != 0 ? null : mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_)
 	{
-		this.setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
+		setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
 		return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
 	}
 
+	@Override
 	public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_)
 	{
 		return p_149742_3_ >= 255 ? false : World.doesBlockHaveSolidTopSurface(p_149742_1_, p_149742_2_, p_149742_3_ - 1, p_149742_4_) && super.canPlaceBlockAt(p_149742_1_, p_149742_2_, p_149742_3_, p_149742_4_) && super.canPlaceBlockAt(p_149742_1_, p_149742_2_, p_149742_3_ + 1, p_149742_4_);
 	}
 
+	@Override
 	public int getMobilityFlag()
 	{
 		return 1;
@@ -240,30 +248,34 @@ public class BlockScannerDoor extends BlockContainer
 		return i1 & 7 | (flag ? 8 : 0) | (flag1 ? 16 : 0);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
 	{
 		return mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_)
 	{
 		if (p_149681_6_.capabilities.isCreativeMode && (p_149681_5_ & 8) != 0 && p_149681_1_.getBlock(p_149681_2_, p_149681_3_ - 1, p_149681_4_) == this)
 			p_149681_1_.setBlockToAir(p_149681_2_, p_149681_3_ - 1, p_149681_4_);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
 	{
-		return this.field_150016_b[0];
+		return field_150016_b[0];
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
 	{
 		if(p_149673_5_ != 1 && p_149673_5_ != 0)
 		{
-			int i1 = this.func_150012_g(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_);
+			int i1 = func_150012_g(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_);
 			int j1 = i1 & 3;
 			boolean flag = (i1 & 4) != 0;
 			boolean flag1 = false;
@@ -295,23 +307,25 @@ public class BlockScannerDoor extends BlockContainer
 					flag1 = !flag1;
 			}
 
-			return flag2 ? this.field_150017_a[flag1?1:0] : this.field_150016_b[flag1?1:0];
+			return flag2 ? field_150017_a[flag1?1:0] : field_150016_b[flag1?1:0];
 		}
 		else
-			return this.field_150016_b[0];
+			return field_150016_b[0];
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister p_149651_1_)
 	{
-		this.field_150017_a = new IIcon[2];
-		this.field_150016_b = new IIcon[2];
-		this.field_150017_a[0] = p_149651_1_.registerIcon("securitycraft:scannerDoorUpper");
-		this.field_150016_b[0] = p_149651_1_.registerIcon("securitycraft:reinforcedDoorLower");
-		this.field_150017_a[1] = new IconFlipped(this.field_150017_a[0], true, false);
-		this.field_150016_b[1] = new IconFlipped(this.field_150016_b[0], true, false);
+		field_150017_a = new IIcon[2];
+		field_150016_b = new IIcon[2];
+		field_150017_a[0] = p_149651_1_.registerIcon("securitycraft:scannerDoorUpper");
+		field_150016_b[0] = p_149651_1_.registerIcon("securitycraft:reinforcedDoorLower");
+		field_150017_a[1] = new IconFlipped(field_150017_a[0], true, false);
+		field_150016_b[1] = new IconFlipped(field_150016_b[0], true, false);
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return new TileEntityScannerDoor().activatedByView();

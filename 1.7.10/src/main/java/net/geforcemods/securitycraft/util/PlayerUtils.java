@@ -20,7 +20,7 @@ public class PlayerUtils{
 
 	/**
 	 * Sets the given player's position and rotation. <p>
-	 * 
+	 *
 	 * Args: player, x, y, z, yaw, pitch.
 	 */
 	public static void setPlayerPosition(EntityPlayer player, double x, double y, double z, float yaw, float pitch){
@@ -30,7 +30,7 @@ public class PlayerUtils{
 
 	/**
 	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p>
-	 * 
+	 *
 	 * Args: playerName.
 	 */
 	public static EntityPlayer getPlayerFromName(String par1){
@@ -40,9 +40,8 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getCommandSenderName().matches(par1)){
+				if(tempPlayer.getCommandSenderName().matches(par1))
 					return tempPlayer;
-				}
 			}
 
 			return null;
@@ -52,9 +51,8 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getCommandSenderName().matches(par1)){
+				if(tempPlayer.getCommandSenderName().matches(par1))
 					return tempPlayer;
-				}
 			}
 
 			return null;
@@ -63,7 +61,7 @@ public class PlayerUtils{
 
 	/**
 	 * Returns true if a player with the given name is in the world.
-	 * 
+	 *
 	 * Args: playerName.
 	 */
 	public static boolean isPlayerOnline(String par1) {
@@ -71,20 +69,19 @@ public class PlayerUtils{
 			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
 				EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
 
-				if(player != null && player.getCommandSenderName().matches(par1)){
+				if(player != null && player.getCommandSenderName().matches(par1))
 					return true;
-				}
 			}
 
 			return false;
-		}else{
-			return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);  	
 		}
+		else
+			return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);
 	}
 
 	/**
 	 * Sends the given player a chat message. <p>
-	 * 
+	 *
 	 * Args: player, prefix, text, color.
 	 */
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, EnumChatFormatting color){
@@ -93,16 +90,16 @@ public class PlayerUtils{
 
 	/**
 	 * Sends the given {@link ICommandSender} a chat message. <p>
-	 * 
+	 *
 	 * Args: sender, prefix, text, color.
 	 */
 	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, EnumChatFormatting color){
 		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
 	}
-	
+
 	/**
 	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
-	 * 
+	 *
 	 * Args: sender, prefix, text, link, color.
 	 */
 	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, EnumChatFormatting color){
@@ -111,20 +108,19 @@ public class PlayerUtils{
 
 	/**
 	 * Returns true if the player is holding the given item.
-	 * 
+	 *
 	 * Args: player, item.
 	 */
 	public static boolean isHoldingItem(EntityPlayer player, Item item){
-		if(item == null && player.getCurrentEquippedItem() == null){
+		if(item == null && player.getCurrentEquippedItem() == null)
 			return true;
-		}
 
 		return (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == item);
 	}
 
 	/**
 	 * Is the entity mounted on to a security camera?
-	 * 
+	 *
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {

@@ -17,13 +17,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockRetinalScanner extends BlockContainer {
-	
+
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconTop;
-	
+
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconFront;
-	
+
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconFrontActive;
 
@@ -32,70 +32,69 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	/**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-        @SuppressWarnings("cast")
-		int l = MathHelper.floor_double((double)(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+		@SuppressWarnings("cast")
+		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-        if (l == 0){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);          
-        }
+		if (l == 0)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
 
-        if (l == 1){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);            
-        }
+		if (l == 1)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
 
-        if (l == 2){
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);    
-        }
+		if (l == 2)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
 
-        if (l == 3){
-        	par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);   
-    	}  
-    } 
-    
-    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-        if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) >= 7 && par1World.getBlockMetadata(par2, par3, par4) <= 10){
-        	par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) - 5, 3);
-        }                       
-    }
-    
-    public boolean canProvidePower(){
-        return true;
-    }
-    
-    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-    	if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10){
-    		return 15;
-    	}else{
-    		return 0;
-    	}
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int par1, int par2){
-        if(par1 == 3 && par2 == 0){
-    		return this.rtIconFront;
-    	}
-        
-    	if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10){
-    		return par1 == 1 ? this.rtIconTop : (par1 == 0 ? this.rtIconTop : (par1 != (par2 - 5) ? this.blockIcon : this.rtIconFrontActive));
-    	}else{
-    		return par1 == 1 ? this.rtIconTop : (par1 == 0 ? this.rtIconTop : (par1 != par2 ? this.blockIcon : this.rtIconFront));
-    	}
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister){
-    	this.blockIcon = par1IconRegister.registerIcon("furnace_side");
-        this.rtIconTop = par1IconRegister.registerIcon("furnace_top");
-        this.rtIconFront = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
-        this.rtIconFrontActive = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
-    }
-    
-    public TileEntity createNewTileEntity(World var1, int var2) {
+		if (l == 3)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+	}
+
+	@Override
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
+		if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) >= 7 && par1World.getBlockMetadata(par2, par3, par4) <= 10)
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) - 5, 3);
+	}
+
+	@Override
+	public boolean canProvidePower(){
+		return true;
+	}
+
+	@Override
+	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
+		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10)
+			return 15;
+		else
+			return 0;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(int par1, int par2){
+		if(par1 == 3 && par2 == 0)
+			return rtIconFront;
+
+		if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10)
+			return par1 == 1 ? rtIconTop : (par1 == 0 ? rtIconTop : (par1 != (par2 - 5) ? blockIcon : rtIconFrontActive));
+		else
+			return par1 == 1 ? rtIconTop : (par1 == 0 ? rtIconTop : (par1 != par2 ? blockIcon : rtIconFront));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister){
+		blockIcon = par1IconRegister.registerIcon("furnace_side");
+		rtIconTop = par1IconRegister.registerIcon("furnace_top");
+		rtIconFront = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
+		rtIconFrontActive = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
-    
+
 }

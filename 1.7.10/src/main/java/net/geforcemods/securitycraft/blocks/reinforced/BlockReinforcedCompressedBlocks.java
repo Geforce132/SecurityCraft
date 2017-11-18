@@ -24,13 +24,14 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 		super(Material.rock);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
 	{
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 0));
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
 	}
-	
+
 	@Override
 	public IIcon getIcon(int side, int meta)
 	{
@@ -41,31 +42,33 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 			default: return null; //won't happen
 		}
 	}
-	
+
 	@Override
 	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
 		return 0x999999;
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player)
 	{
-        return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
+		return new ItemStack(Item.getItemFromBlock(this), 1, world.getBlockMetadata(x, y, z));
 	}
-	
+
 	@Override
 	public ItemStack getDisplayStack(World world, int x, int y, int z)
 	{

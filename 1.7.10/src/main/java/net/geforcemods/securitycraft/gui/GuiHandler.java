@@ -47,6 +47,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
 
+	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 
@@ -91,7 +92,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
 			case KEY_CHANGER_GUI_ID:
-			if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
 					return null;
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
@@ -109,6 +110,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 	}
 
+	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 
@@ -150,10 +152,10 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiBriefcase(player.inventory, null);
 			case BRIEFCASE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
-						return null;
+					return null;
 				return new GuiBriefcaseInventory(player, player.inventory);
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger)) 
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
 					return null;
 				return new GuiKeyChanger(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:

@@ -25,64 +25,59 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 	public BlockFakeLavaBase(Material p_i45429_1_){
 		super(p_i45429_1_);
 	}
-	
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
-    {
-        if (!this.checkForMixing(worldIn, pos, state))
-        {
-            this.updateLiquid(worldIn, pos, state);
-        }
-    }
 
-    private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
-    {
-        BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.blockMaterial);
-        worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
-        worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, this.tickRate(worldIn));
-    }
-    
-    public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
-    {
-        if (materialIn == Material.water)
-        {
-            return (BlockDynamicLiquid) mod_SecurityCraft.bogusWaterFlowing;
-        }
-        else if (materialIn == Material.lava)
-        {
-            return (BlockDynamicLiquid) mod_SecurityCraft.bogusLavaFlowing;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid material");
-        }
-    }
+	@Override
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	{
+		if (!checkForMixing(worldIn, pos, state))
+			updateLiquid(worldIn, pos, state);
+	}
+
+	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
+	{
+		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
+		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
+		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
+	}
+
+	public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
+	{
+		if (materialIn == Material.water)
+			return (BlockDynamicLiquid) mod_SecurityCraft.bogusWaterFlowing;
+		else if (materialIn == Material.lava)
+			return (BlockDynamicLiquid) mod_SecurityCraft.bogusLavaFlowing;
+		else
+			throw new IllegalArgumentException("Invalid material");
+	}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
+	@Override
 	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-		if(!par1World.isRemote){
+		if(!par1World.isRemote)
 			if(par5Entity instanceof EntityPlayer){
 				((EntityPlayer) par5Entity).heal(4);
 				((EntityPlayer) par5Entity).extinguish();
 			}
-		}
 	}
 
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote){
+		if(!world.isRemote)
 			if(entity instanceof EntityPlayer){
 				((EntityPlayer) entity).heal(4);
 				((EntityPlayer) entity).extinguish();
 			}
-		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, BlockPos pos){
 		return null;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}

@@ -24,18 +24,12 @@ public class ContainerBlockReinforcer extends Container
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
-		{
 			for(int j = 0; j < 9; j++)
-			{
 				addSlotToContainer(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
 
 		//player hotbar
 		for(int i = 0; i < 9; i++)
-		{
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
-		}
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public class ContainerBlockReinforcer extends Container
 			Item item = stack.getItem();
 			ItemStack newStack = null;
 			int customMeta = 0;
-			
+
 			if(item.equals(Item.getItemFromBlock(Blocks.dirt)) || item.equals(Item.getItemFromBlock(Blocks.grass)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
 			else if(item.equals(Item.getItemFromBlock(Blocks.stone)))
@@ -128,14 +122,14 @@ public class ContainerBlockReinforcer extends Container
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedPrismarine);
 			else if(item.equals(Item.getItemFromBlock(Blocks.red_sandstone)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedRedSandstone);
-			
+
 			if(newStack != null)
 			{
 				if(Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedCompressedBlocks)
 					newStack.setItemDamage(customMeta);
 				else
 					newStack.setItemDamage(stack.getItemDamage());
-				
+
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
 				player.dropPlayerItemWithRandomChoice(newStack, false);
@@ -161,14 +155,9 @@ public class ContainerBlockReinforcer extends Container
 					return null;
 				slot.onSlotChange(stack1, stack);
 			}
-			else
-			{
-				if(id >= 1)
-				{
-					if(!mergeItemStack(stack1, 0, 1, false))
-						return null;
-				}
-			}
+			else if(id >= 1)
+				if(!mergeItemStack(stack1, 0, 1, false))
+					return null;
 
 			if(stack1.stackSize == 0)
 				slot.putStack((ItemStack) null);
@@ -188,77 +177,75 @@ public class ContainerBlockReinforcer extends Container
 	protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean useEndIndex)
 	{
 		boolean flag1 = false;
-        int k = startIndex;
+		int k = startIndex;
 
-        if(useEndIndex)
-            k = endIndex - 1;
+		if(useEndIndex)
+			k = endIndex - 1;
 
-        Slot slot;
-        ItemStack itemstack1;
+		Slot slot;
+		ItemStack itemstack1;
 
-        if(stack.isStackable())
-        {
-            while(stack.stackSize > 0 && (!useEndIndex && k < endIndex || useEndIndex && k >= startIndex))
-            {
-                slot = inventorySlots.get(k);
-                itemstack1 = slot.getStack();
+		if(stack.isStackable())
+			while(stack.stackSize > 0 && (!useEndIndex && k < endIndex || useEndIndex && k >= startIndex))
+			{
+				slot = inventorySlots.get(k);
+				itemstack1 = slot.getStack();
 
-                if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
-                {
-                    int l = itemstack1.stackSize + stack.stackSize;
+				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+				{
+					int l = itemstack1.stackSize + stack.stackSize;
 
-                    if(l <= stack.getMaxStackSize())
-                    {
-                        stack.stackSize = 0;
-                        itemstack1.stackSize = l;
-                        slot.onSlotChanged();
-                        flag1 = true;
-                    }
-                    else if(itemstack1.stackSize < stack.getMaxStackSize())
-                    {
-                        stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
-                        itemstack1.stackSize = stack.getMaxStackSize();
-                        slot.onSlotChanged();
-                        flag1 = true;
-                    }
-                }
+					if(l <= stack.getMaxStackSize())
+					{
+						stack.stackSize = 0;
+						itemstack1.stackSize = l;
+						slot.onSlotChanged();
+						flag1 = true;
+					}
+					else if(itemstack1.stackSize < stack.getMaxStackSize())
+					{
+						stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
+						itemstack1.stackSize = stack.getMaxStackSize();
+						slot.onSlotChanged();
+						flag1 = true;
+					}
+				}
 
-                if(useEndIndex)
-                    --k;
-                else
-                    ++k;
-            }
-        }
+				if(useEndIndex)
+					--k;
+				else
+					++k;
+			}
 
-        if(stack.stackSize > 0)
-        {
-            if(useEndIndex)
-                k = endIndex - 1;
-            else
-                k = startIndex;
+		if(stack.stackSize > 0)
+		{
+			if(useEndIndex)
+				k = endIndex - 1;
+			else
+				k = startIndex;
 
-            while(!useEndIndex && k < endIndex || useEndIndex && k >= startIndex)
-            {
-                slot = inventorySlots.get(k);
-                itemstack1 = slot.getStack();
+			while(!useEndIndex && k < endIndex || useEndIndex && k >= startIndex)
+			{
+				slot = inventorySlots.get(k);
+				itemstack1 = slot.getStack();
 
-                if(itemstack1 == null && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
-                {
-                    slot.putStack(stack.copy());
-                    slot.onSlotChanged();
-                    stack.stackSize = 0;
-                    flag1 = true;
-                    break;
-                }
+				if(itemstack1 == null && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
+				{
+					slot.putStack(stack.copy());
+					slot.onSlotChanged();
+					stack.stackSize = 0;
+					flag1 = true;
+					break;
+				}
 
-                if(useEndIndex)
-                    --k;
-                else
-                    ++k;
-            }
-        }
+				if(useEndIndex)
+					--k;
+				else
+					++k;
+			}
+		}
 
-        return flag1;
+		return flag1;
 	}
 
 	private class SlotBlockReinforcer extends Slot

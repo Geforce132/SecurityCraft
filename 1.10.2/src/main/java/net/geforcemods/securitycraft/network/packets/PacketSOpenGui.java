@@ -25,33 +25,33 @@ public class PacketSOpenGui implements IMessage {
 
 	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(this.id);
-		par1ByteBuf.writeInt(this.x);
-		par1ByteBuf.writeInt(this.y);
-		par1ByteBuf.writeInt(this.z);
+		par1ByteBuf.writeInt(id);
+		par1ByteBuf.writeInt(x);
+		par1ByteBuf.writeInt(y);
+		par1ByteBuf.writeInt(z);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.id = par1ByteBuf.readInt();
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
+		id = par1ByteBuf.readInt();
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
 	}
 
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSOpenGui, IMessage> {
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSOpenGui, IMessage> {
 
-	@Override
-	public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
-		int id = packet.id;
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
-		EntityPlayerMP player = context.getServerHandler().playerEntity;
+		@Override
+		public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
+			int id = packet.id;
+			int x = packet.x;
+			int y = packet.y;
+			int z = packet.z;
+			EntityPlayerMP player = context.getServerHandler().playerEntity;
 
-		player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
-		return null;
+			player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
+			return null;
+		}
 	}
-}
 
 }

@@ -13,53 +13,51 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityLaserBlock extends CustomizableSCTE {
-	
+
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
 		@Override
 		public void toggle() {
 			setValue(!getValue());
-			
+
 			toggleLaser(this);
 		}
 	};
-	
+
 	private void toggleLaser(OptionBoolean option) {
 		if(BlockUtils.getBlock(world, pos) != mod_SecurityCraft.laserBlock) return;
-		
-		if(option.getValue()) {
+
+		if(option.getValue())
 			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
-		}
-		else {
+		else
 			BlockLaserBlock.destroyAdjacentLasers(world, pos.getX(), pos.getY(), pos.getZ());
-		}
 	}
-	
+
 	@Override
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs) {
-    	if(action == EnumLinkedAction.OPTION_CHANGED) {
+		if(action == EnumLinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 			enabledOption.copy(option);
 			toggleLaser((OptionBoolean) option);
-			
+
 			excludedTEs.add(this);
 			createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Option[]{ option }, excludedTEs);
 		}
-    	else if(action == EnumLinkedAction.MODULE_INSERTED) {
-    		ItemStack module = (ItemStack) parameters[0];
-    		
-    		insertModule(module);
-    		
-    		excludedTEs.add(this);
+		else if(action == EnumLinkedAction.MODULE_INSERTED) {
+			ItemStack module = (ItemStack) parameters[0];
+
+			insertModule(module);
+
+			excludedTEs.add(this);
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, parameters, excludedTEs);
-    	}
-    	else if(action == EnumLinkedAction.MODULE_REMOVED) {
-    		EnumCustomModules module = (EnumCustomModules) parameters[1];
-    		
-    		removeModule(module);
-    		
-    		excludedTEs.add(this);
+		}
+		else if(action == EnumLinkedAction.MODULE_REMOVED) {
+			EnumCustomModules module = (EnumCustomModules) parameters[1];
+
+			removeModule(module);
+
+			excludedTEs.add(this);
 			createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, parameters, excludedTEs);
-    	}
+		}
 	}
 
 	@Override

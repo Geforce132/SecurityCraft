@@ -11,6 +11,7 @@ public class ItemBlockReinforcedStoneBrick extends ItemBlockWithMetadata
 		super(par1, par1);
 	}
 
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		if(stack.getItemDamage() == 0)

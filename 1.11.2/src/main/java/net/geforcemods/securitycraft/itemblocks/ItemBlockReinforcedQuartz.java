@@ -9,7 +9,7 @@ public class ItemBlockReinforcedQuartz extends ItemBlock
 	public ItemBlockReinforcedQuartz(Block block)
 	{
 		super(block);
-		
+
 		setHasSubtypes(true);
 	}
 
@@ -18,11 +18,12 @@ public class ItemBlockReinforcedQuartz extends ItemBlock
 	{
 		return damage;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();
-		
+
 		switch(stack.getItemDamage())
 		{
 			case 0: return name + "_default";

@@ -18,21 +18,24 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	public BlockReinforcedGlass(Material par1Material) {
 		super(par1Material, false);
 	}
-	
+
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-        super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-        par1World.removeTileEntity(par2, par3, par4);
-    }
-	
+		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
+		par1World.removeTileEntity(par2, par3, par4);
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IIconRegister){
-        this.blockIcon = par1IIconRegister.registerIcon("securitycraft:glass_reinforced");
-    }
-	
+	public void registerBlockIcons(IIconRegister par1IIconRegister){
+		blockIcon = par1IIconRegister.registerIcon("securitycraft:glass_reinforced");
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
-	
+
 	@Override
 	public int quantityDropped(Random r)
 	{

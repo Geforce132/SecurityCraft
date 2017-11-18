@@ -173,11 +173,12 @@ public class ClientProxy extends ServerProxy{
 				"securitycraft:reinforcedStone_smooth_diorite",
 				"securitycraft:reinforcedStone_andesite",
 				"securitycraft:reinforcedStone_smooth_andesite");
-		
+
 		Item fakeWater = GameRegistry.findItem(mod_SecurityCraft.MODID, "bogusWater");
 		registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, new ItemMeshDefinition()
 		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
@@ -185,6 +186,7 @@ public class ClientProxy extends ServerProxy{
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
 		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "water");
@@ -195,6 +197,7 @@ public class ClientProxy extends ServerProxy{
 		registerItemVariants(fakeWaterFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, new ItemMeshDefinition()
 		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
@@ -202,6 +205,7 @@ public class ClientProxy extends ServerProxy{
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
 		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing");
@@ -212,6 +216,7 @@ public class ClientProxy extends ServerProxy{
 		registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, new ItemMeshDefinition()
 		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
@@ -219,6 +224,7 @@ public class ClientProxy extends ServerProxy{
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
 		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava");
@@ -229,6 +235,7 @@ public class ClientProxy extends ServerProxy{
 		registerItemVariants(fakeLavaFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, new ItemMeshDefinition()
 		{
+			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
@@ -236,6 +243,7 @@ public class ClientProxy extends ServerProxy{
 		});
 		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
 		{
+			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
 			{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
@@ -248,9 +256,7 @@ public class ClientProxy extends ServerProxy{
 		ResourceLocation[] locations = new ResourceLocation[variants.length];
 
 		for(int i = 0; i < variants.length; i++)
-		{
 			locations[i] = new ResourceLocation(variants[i]);
-		}
 
 		ModelBakery.<ResourceLocation>registerItemVariants(item, locations);
 	}

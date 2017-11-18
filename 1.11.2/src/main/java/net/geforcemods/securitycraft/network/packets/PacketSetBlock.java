@@ -19,22 +19,22 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSetBlock implements IMessage{
-	
+
 	private int x, y, z, meta;
 	private String blockID;
-	
+
 	public PacketSetBlock(){
-		
+
 	}
-	
+
 	public PacketSetBlock(int x, int y, int z, String id, int meta){
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.blockID = id;
+		blockID = id;
 		this.meta = meta;
 	}
-	
+
 	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
@@ -46,76 +46,70 @@ public class PacketSetBlock implements IMessage{
 
 	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
-		this.blockID = ByteBufUtils.readUTF8String(par1ByteBuf);
-		this.meta = par1ByteBuf.readInt();
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
+		blockID = ByteBufUtils.readUTF8String(par1ByteBuf);
+		meta = par1ByteBuf.readInt();
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
-	//TODO
-	@Override
-	public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
-		BlockPos pos = BlockUtils.toPos(x, y, z);
-		String blockID = packet.blockID;
-		int meta = packet.meta;
-		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
-	
-		NonNullList<ItemStack> modules = null;
-		NonNullList<ItemStack> inventory = null;
-		int[] times = new int[4];
-		String password = "";
-		Owner owner = null;
 
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE){
-			modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules;
-		}
-		
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
-			inventory = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks;
-			times[0] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime;
-			times[1] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime;
-			times[2] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime;
-			times[3] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime;
-		}
-		
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner() != null){
-			owner = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner();
-		}
-		
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getPassword() != null){
-			password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(BlockUtils.toPos(x, y, z))).getPassword();
-		}
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
+		//TODO
+		@Override
+		public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
+			int x = packet.x;
+			int y = packet.y;
+			int z = packet.z;
+			BlockPos pos = BlockUtils.toPos(x, y, z);
+			String blockID = packet.blockID;
+			int meta = packet.meta;
+			EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(blockID));
-		getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
-		
-		if(modules != null){
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules = modules;
+			NonNullList<ItemStack> modules = null;
+			NonNullList<ItemStack> inventory = null;
+			int[] times = new int[4];
+			String password = "";
+			Owner owner = null;
+
+			if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE)
+				modules = ((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules;
+
+			if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+				inventory = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks;
+				times[0] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime;
+				times[1] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime;
+				times[2] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime;
+				times[3] = ((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime;
+			}
+
+			if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner() != null)
+				owner = ((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner();
+
+			if(getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).getPassword() != null)
+				password = ((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(BlockUtils.toPos(x, y, z))).getPassword();
+
+			Block block = Block.REGISTRY.getObject(new ResourceLocation(blockID));
+			getWorld(par1EntityPlayer).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
+
+			if(modules != null)
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).modules = modules;
+
+			if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
+				((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks = inventory;
+				((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime = times[0];
+				((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime = times[1];
+				((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime = times[2];
+				((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime = times[3];
+			}
+
+			if(owner != null)
+				((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+
+			if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest)
+				((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(password);
+
+			return null;
 		}
-		
-		if(inventory != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadFurnace){
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceItemStacks = inventory;
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).furnaceBurnTime = times[0];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).currentItemBurnTime = times[1];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).cookTime = times[2];
-			((TileEntityKeypadFurnace) getWorld(par1EntityPlayer).getTileEntity(pos)).totalCookTime = times[3];
-		}
-		
-		if(owner != null){
-			((TileEntityOwnable) getWorld(par1EntityPlayer).getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
-		}
-		
-		if(!password.isEmpty() && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof TileEntityKeypadChest){
-			((TileEntityKeypadChest) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(password);
-		}
-		
-		return null;
 	}
-}
-	
+
 }

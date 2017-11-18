@@ -9,11 +9,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}.
  * Gives easy access to the module ItemStack and name.
- * 
+ *
  * @author Geforce
  */
 public enum EnumCustomModules {
-		
+
 	REDSTONE(mod_SecurityCraft.redstoneModule, "redstoneModule", "Redstone module"),
 	WHITELIST(mod_SecurityCraft.whitelistModule, "whitelistModule", "Whitelist module"),
 	BLACKLIST(mod_SecurityCraft.blacklistModule, "blacklistModule", "Blacklist module"),
@@ -27,39 +27,36 @@ public enum EnumCustomModules {
 	private String moduleLocalizedName;
 
 	private EnumCustomModules(ItemModule moduleItem, String unlocalizedName, String localizedName){
-		this.module = moduleItem;
-		this.moduleUnlocalizedName = unlocalizedName;
-		this.moduleLocalizedName = localizedName;
+		module = moduleItem;
+		moduleUnlocalizedName = unlocalizedName;
+		moduleLocalizedName = localizedName;
 	}
-	
+
 	public ItemModule getItem() {
-		return this.module;
+		return module;
 	}
-	
+
 	public String getUnlocalizedName() {
-		return this.moduleUnlocalizedName;
+		return moduleUnlocalizedName;
 	}
-	
+
 	public String getName() {
-		return this.moduleLocalizedName;
+		return moduleLocalizedName;
 	}
-	
+
 	public static EnumCustomModules getModuleFromStack(ItemStack item) {
 		if(item == null || item.getItem() == null) return null;
-		
-		for(EnumCustomModules module : values()) {
-			if(module.getItem() == item.getItem()) {
+
+		for(EnumCustomModules module : values())
+			if(module.getItem() == item.getItem())
 				return module;
-			}
-		}
-		
+
 		return null;
 	}
-	
+
 	public static void refresh() {
-		for(EnumCustomModules module : values()) {
+		for(EnumCustomModules module : values())
 			module.module = (ItemModule) GameRegistry.findItem("securitycraft", module.getUnlocalizedName());
-		}
 	}
 
 }

@@ -41,7 +41,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			player.openGui(mod_SecurityCraft.MODID, GuiHandler.BLOCK_REINFORCER, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		return super.onItemRightClick(stack, world, player);
 	}
-	
+
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player)
 	{
@@ -103,7 +103,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
 				return true;
 			}
-			
+
 			//the following only happens if a block has been changed, as the else statement terminates in itself
 			((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
 			stack.damageItem(1, player);

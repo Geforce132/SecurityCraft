@@ -25,21 +25,22 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	public BlockScannerDoor(Material materialIn)
 	{
 		super(materialIn);
-		this.isBlockContainer = true;
+		isBlockContainer = true;
 		setSoundType(SoundType.METAL);
 	}
 
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
-    {
-    }
-    
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+	{
+	}
+
+	@Override
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor)
 	{
 		World worldIn = (World)world;
 		IBlockState state = worldIn.getBlockState(pos);
 		Block neighborBlock = worldIn.getBlockState(neighbor).getBlock();
-		
+
 		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
 			BlockPos blockpos1 = pos.down();
@@ -48,7 +49,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 			if(iblockstate1.getBlock() != this)
 				worldIn.setBlockToAir(pos);
 			else if (neighborBlock != this)
-				this.onNeighborChange(world, blockpos1, neighbor);
+				onNeighborChange(world, blockpos1, neighbor);
 		}
 		else
 		{
@@ -72,10 +73,8 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 			}
 
 			if(flag1)
-			{
 				if(!worldIn.isRemote)
-					this.dropBlockAsItem(worldIn, pos, state, 0);
-			}
+					dropBlockAsItem(worldIn, pos, state, 0);
 		}
 	}
 
@@ -96,6 +95,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{

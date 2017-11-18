@@ -10,11 +10,12 @@ public class ItemBlockReinforcedCompressedBlocks extends ItemBlockWithMetadata
 	{
 		super(block, block);
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();
-		
+
 		switch(stack.getItemDamage())
 		{
 			case 0: return name + "_lapis";

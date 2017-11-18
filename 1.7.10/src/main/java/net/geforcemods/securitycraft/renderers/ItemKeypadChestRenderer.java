@@ -9,21 +9,24 @@ import net.minecraftforge.client.IItemRenderer;
 public class ItemKeypadChestRenderer implements IItemRenderer {
 
 	protected ModelChest chestModel;
-	
+
 	public ItemKeypadChestRenderer(){
-		
+
 		chestModel = new ModelChest();
-		
+
 	}
-	
+
+	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return true;
 	}
 
+	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
 		return true;
 	}
 
+	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
 

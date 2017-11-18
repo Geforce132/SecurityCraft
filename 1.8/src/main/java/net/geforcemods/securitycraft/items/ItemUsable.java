@@ -10,8 +10,8 @@ public abstract class ItemUsable extends Item{
 	public ItemUsable() {
 		super();
 	}
-	
-    public abstract boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10);
+
+	public abstract boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10);
 
 
 }

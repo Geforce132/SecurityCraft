@@ -10,14 +10,16 @@ public class TileEntityCageTrap extends CustomizableSCTE {
 	private OptionBoolean shouldCaptureMobsOption = new OptionBoolean("captureMobs", false) {
 		@Override
 		public void toggle() {
-			setValue(!getValue());	
+			setValue(!getValue());
 		}
 	};
-	
+
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] { shouldCaptureMobsOption };
 	}

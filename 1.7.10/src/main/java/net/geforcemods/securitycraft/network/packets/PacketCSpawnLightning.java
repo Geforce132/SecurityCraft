@@ -10,41 +10,44 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.effect.EntityLightningBolt;
 
 public class PacketCSpawnLightning implements IMessage{
-	
+
 	private double x, y, z;
-	
+
 	public PacketCSpawnLightning(){
-		
+
 	}
-	
+
 	public PacketCSpawnLightning(double par1, double par2, double par3){
-		this.x = par1;
-		this.y = par2;
-		this.z = par3;
+		x = par1;
+		y = par2;
+		z = par3;
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.x = buf.readDouble();
-		this.y = buf.readDouble();
-		this.z = buf.readDouble();
+		x = buf.readDouble();
+		y = buf.readDouble();
+		z = buf.readDouble();
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeDouble(this.x);
-		buf.writeDouble(this.y);
-		buf.writeDouble(this.z);
+		buf.writeDouble(x);
+		buf.writeDouble(y);
+		buf.writeDouble(z);
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketCSpawnLightning, IMessage> {
 
-	@SideOnly(Side.CLIENT)
-	public IMessage onMessage(PacketCSpawnLightning packet, MessageContext ctx) {
-		EntityLightningBolt lightning = new EntityLightningBolt(Minecraft.getMinecraft().theWorld, packet.x, packet.y, packet.z);
-		Minecraft.getMinecraft().theWorld.addWeatherEffect(lightning);
-		
-		return null;
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketCSpawnLightning, IMessage> {
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public IMessage onMessage(PacketCSpawnLightning packet, MessageContext ctx) {
+			EntityLightningBolt lightning = new EntityLightningBolt(Minecraft.getMinecraft().theWorld, packet.x, packet.y, packet.z);
+			Minecraft.getMinecraft().theWorld.addWeatherEffect(lightning);
+
+			return null;
+		}
+
 	}
-	
-}
 
 }

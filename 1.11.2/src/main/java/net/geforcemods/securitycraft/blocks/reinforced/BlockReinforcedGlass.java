@@ -18,18 +18,18 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 		super(par1Material, false);
 		setSoundType(SoundType.GLASS);
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileEntityOwnable();
 	}
-	
+
 	@Override
 	public int quantityDropped(Random random)
 	{

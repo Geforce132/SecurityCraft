@@ -14,40 +14,36 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemTaser extends Item {
-	
+
 	public ItemTaser(){
 		super();
-		this.setMaxDamage(151);
+		setMaxDamage(151);
 	}
-	
+
 	@Override
 	public boolean isFull3D(){
 		return true;
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
-		if(!worldIn.isRemote){
+		if(!worldIn.isRemote)
 			if(!itemStackIn.isItemDamaged()){
 				worldIn.spawnEntityInWorld(new EntityTaserBullet(worldIn, playerIn));
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F));
-				
-				if(!playerIn.capabilities.isCreativeMode){
+
+				if(!playerIn.capabilities.isCreativeMode)
 					itemStackIn.damageItem(150, playerIn);
-				}
 			}
-		}
-		
+
 		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
-	
-    @Override
+
+	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(!par2World.isRemote){
-			if(par1ItemStack.getItemDamage() >= 1){
+		if(!par2World.isRemote)
+			if(par1ItemStack.getItemDamage() >= 1)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
-			}
-		}
-    }
+	}
 
 }

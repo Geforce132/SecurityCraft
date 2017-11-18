@@ -24,20 +24,14 @@ public class ContainerBlockReinforcer extends Container
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
-		{
 			for(int j = 0; j < 9; j++)
-			{
 				addSlotToContainer(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
 
 		//player hotbar
 		for(int i = 0; i < 9; i++)
-		{
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
-		}
 	}
-	
+
 	@Override
 	public boolean canInteractWith(EntityPlayer p_75145_1_)
 	{
@@ -54,7 +48,7 @@ public class ContainerBlockReinforcer extends Container
 			Item item = stack.getItem();
 			ItemStack newStack = null;
 			int customMeta = 0;
-			
+
 			if(item.equals(Item.getItemFromBlock(Blocks.dirt)) || item.equals(Item.getItemFromBlock(Blocks.grass)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
 			else if(item.equals(Item.getItemFromBlock(Blocks.stone)))
@@ -121,14 +115,14 @@ public class ContainerBlockReinforcer extends Container
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedWool);
 			else if(item.equals(Item.getItemFromBlock(Blocks.quartz_block)))
 				newStack = new ItemStack(mod_SecurityCraft.reinforcedQuartz);
-			
+
 			if(newStack != null)
 			{
 				if(Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedCompressedBlocks)
 					newStack.setItemDamage(customMeta);
 				else
 					newStack.setItemDamage(stack.getItemDamage());
-				
+
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
 				player.dropPlayerItemWithRandomChoice(newStack, false);
@@ -154,14 +148,9 @@ public class ContainerBlockReinforcer extends Container
 					return null;
 				slot.onSlotChange(stack1, stack);
 			}
-			else
-			{
-				if(id >= 1)
-				{
-					if(!mergeItemStack(stack1, 0, 1, false))
-						return null;
-				}
-			}
+			else if(id >= 1)
+				if(!mergeItemStack(stack1, 0, 1, false))
+					return null;
 
 			if(stack1.stackSize == 0)
 				slot.putStack((ItemStack) null);
@@ -190,7 +179,6 @@ public class ContainerBlockReinforcer extends Container
 		ItemStack itemstack1;
 
 		if(stack.isStackable())
-		{
 			while(stack.stackSize > 0 && (!p_75135_4_ && k < p_75135_3_ || p_75135_4_ && k >= p_75135_2_))
 			{
 				slot = (Slot)inventorySlots.get(k);
@@ -201,7 +189,7 @@ public class ContainerBlockReinforcer extends Container
 					flag1 = false;
 					break;
 				}
-				
+
 				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
 				{
 					int l = itemstack1.stackSize + stack.stackSize;
@@ -227,7 +215,6 @@ public class ContainerBlockReinforcer extends Container
 				else
 					++k;
 			}
-		}
 
 		if(stack.stackSize > 0)
 		{

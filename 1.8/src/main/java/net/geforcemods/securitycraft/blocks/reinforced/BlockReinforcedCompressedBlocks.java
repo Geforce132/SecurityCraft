@@ -17,111 +17,112 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedCompressedBlocks extends BlockOwnable
 {
-    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedCompressedBlocks.EnumType.class);
+	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedCompressedBlocks.EnumType.class);
 
-    public BlockReinforcedCompressedBlocks()
-    {
-        super(Material.rock, true);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.LAPIS));
-    }
+	public BlockReinforcedCompressedBlocks()
+	{
+		super(Material.rock, true);
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.LAPIS));
+	}
 
-    /**
-     * Gets the metadata of the item this Block can drop. This method is called when the block gets destroyed. It
-     * returns the metadata of the dropped item based on the old metadata of the block.
-     */
-    public int damageDropped(IBlockState state)
-    {
-        return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
-    }
+	/**
+	 * Gets the metadata of the item this Block can drop. This method is called when the block gets destroyed. It
+	 * returns the metadata of the dropped item based on the old metadata of the block.
+	 */
+	@Override
+	public int damageDropped(IBlockState state)
+	{
+		return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
+	}
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
-    {
-        BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
+	{
+		BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
 
-        for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
-        {
-            list.add(new ItemStack(itemIn, 1, var3.getMetadata()));
-        }
-    }
+		for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
+			list.add(new ItemStack(itemIn, 1, var3.getMetadata()));
+	}
 
-    /**
-     * Convert the given metadata into a BlockState for this Block
-     */
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.byMetadata(meta));
-    }
+	/**
+	 * Convert the given metadata into a BlockState for this Block
+	 */
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return getDefaultState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.byMetadata(meta));
+	}
 
-    /**
-     * Convert the BlockState into the correct metadata value
-     */
-    public int getMetaFromState(IBlockState state)
-    {
-        return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
-    }
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
+	}
 
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {VARIANT});
-    }
+	@Override
+	protected BlockState createBlockState()
+	{
+		return new BlockState(this, new IProperty[] {VARIANT});
+	}
 
-    public static enum EnumType implements IStringSerializable
-    {
-        LAPIS(0, "lapis", "lapis"),
-        COAL(1, "coal", "coal");
-        
-        private static final BlockReinforcedCompressedBlocks.EnumType[] META_LOOKUP = new BlockReinforcedCompressedBlocks.EnumType[values().length];
-        private final int meta;
-        private final String name;
-        private final String unlocalizedName;
+	public static enum EnumType implements IStringSerializable
+	{
+		LAPIS(0, "lapis", "lapis"),
+		COAL(1, "coal", "coal");
 
-        private EnumType(int meta, String name, String unlocalizedName)
-        {
-            this.meta = meta;
-            this.name = name;
-            this.unlocalizedName = unlocalizedName;
-        }
+		private static final BlockReinforcedCompressedBlocks.EnumType[] META_LOOKUP = new BlockReinforcedCompressedBlocks.EnumType[values().length];
+		private final int meta;
+		private final String name;
+		private final String unlocalizedName;
 
-        public int getMetadata()
-        {
-            return this.meta;
-        }
+		private EnumType(int meta, String name, String unlocalizedName)
+		{
+			this.meta = meta;
+			this.name = name;
+			this.unlocalizedName = unlocalizedName;
+		}
 
-        public String toString()
-        {
-            return this.name;
-        }
+		public int getMetadata()
+		{
+			return meta;
+		}
 
-        public static BlockReinforcedCompressedBlocks.EnumType byMetadata(int meta)
-        {
-            if (meta < 0 || meta >= META_LOOKUP.length)
-            {
-                meta = 0;
-            }
+		@Override
+		public String toString()
+		{
+			return name;
+		}
 
-            return META_LOOKUP[meta];
-        }
+		public static BlockReinforcedCompressedBlocks.EnumType byMetadata(int meta)
+		{
+			if (meta < 0 || meta >= META_LOOKUP.length)
+				meta = 0;
 
-        public String getName()
-        {
-            return this.name;
-        }
+			return META_LOOKUP[meta];
+		}
 
-        public String getUnlocalizedName()
-        {
-            return this.unlocalizedName;
-        }
+		@Override
+		public String getName()
+		{
+			return name;
+		}
 
-        static
-        {
-            for(BlockReinforcedCompressedBlocks.EnumType var3 : values())
-            {
-            	META_LOOKUP[var3.getMetadata()] = var3;
-            }
-        }
-    }
+		public String getUnlocalizedName()
+		{
+			return unlocalizedName;
+		}
+
+		static
+		{
+			for(BlockReinforcedCompressedBlocks.EnumType var3 : values())
+				META_LOOKUP[var3.getMetadata()] = var3;
+		}
+	}
 }

@@ -28,22 +28,22 @@ public class PacketSMountCamera implements IMessage {
 
 	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(this.x);
-		par1ByteBuf.writeInt(this.y);
-		par1ByteBuf.writeInt(this.z);
-		par1ByteBuf.writeInt(this.id);
+		par1ByteBuf.writeInt(x);
+		par1ByteBuf.writeInt(y);
+		par1ByteBuf.writeInt(z);
+		par1ByteBuf.writeInt(id);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
-		this.id = par1ByteBuf.readInt();
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
+		id = par1ByteBuf.readInt();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSMountCamera, IMessage>{
-		
+
 		@Override
 		public IMessage onMessage(PacketSMountCamera packet, MessageContext context) {
 			int x = packet.x;
@@ -52,12 +52,11 @@ public class PacketSMountCamera implements IMessage {
 			int id = packet.id;
 			EntityPlayerMP player = context.getServerHandler().playerEntity;
 
-			if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera)){
+			if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))
 				((BlockSecurityCamera) BlockUtils.getBlock(getWorld(player), x, y, z)).mountCamera(getWorld(player), x, y, z, id, player);
-			}
 
 			return null;
 		}
 	}
-	
+
 }

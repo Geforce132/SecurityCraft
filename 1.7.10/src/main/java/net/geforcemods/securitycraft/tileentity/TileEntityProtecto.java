@@ -12,36 +12,41 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityProtecto extends CustomizableSCTE {
-	
-	public boolean attackEntity(Entity entity){			
-		if(entity instanceof EntityLivingBase) 
+
+	@Override
+	public boolean attackEntity(Entity entity){
+		if(entity instanceof EntityLivingBase)
 		{
 			if((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) ||
 					(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
 					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))return false;
-	    	WorldUtils.spawnLightning(worldObj, entity.posX, entity.posY, entity.posZ);
-	    	
-	    	return true;
+			WorldUtils.spawnLightning(worldObj, entity.posX, entity.posY, entity.posZ);
+
+			return true;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean canAttack() {		
+
+	@Override
+	public boolean canAttack() {
 		return getAttackCooldown() == 200 && worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord) && worldObj.isRaining();
 	}
-	
+
+	@Override
 	public boolean shouldRefreshAttackCooldown(){
 		return false;
 	}
-	
+
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}
-	
+
 }

@@ -110,7 +110,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 				world.destroyBlock(pos, true); //destroy the block without the ubr taking damage
 				return true;
 			}
-			
+
 			//the following only happens if a block has been changed, as the else statement terminates in itself
 			((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
 			stack.damageItem(1, player);

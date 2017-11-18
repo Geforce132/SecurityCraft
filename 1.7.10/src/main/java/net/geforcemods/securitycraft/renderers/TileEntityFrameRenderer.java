@@ -16,14 +16,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
-	
+
 	private ModelFrame frameModel;
 	private ResourceLocation frameTexture = new ResourceLocation("securitycraft:textures/blocks/frame.png");
 
 	public TileEntityFrameRenderer() {
-		this.frameModel = new ModelFrame();
+		frameModel = new ModelFrame();
 	}
 
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
 		IWorldView lgView = null;
@@ -38,46 +39,44 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
-		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView()){
+
+		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView())
 			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()).getView();
-		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
+
 		Minecraft.getMinecraft().renderEngine.bindTexture(frameTexture);
-		
+
 		GL11.glPushMatrix();
-		
+
 		if(par1TileEntity.hasWorldObj()){
-			if(meta == 2){
+			if(meta == 2)
 				rotation = 0F;
-			}else if(meta == 4){
+			else if(meta == 4)
 				rotation = 1F;
-			}else if(meta == 3){
-				rotation = -10000F; 
-			}else if(meta == 5){
+			else if(meta == 3)
+				rotation = -10000F;
+			else if(meta == 5)
 				rotation = -1F;
-			}
-		}else{
-			rotation = -1F;
 		}
-		
+		else
+			rotation = -1F;
+
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
-		
-		this.frameModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		
-		if(lgView != null){			
+
+		frameModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+		if(lgView != null){
 			if(lgView.getTexture() != 0){
 				GL11.glTranslatef(0.625F, 0.375F, -0.475F);
 				GL11.glRotated(180D, 0D, 1D, 0D);
 
 				GL11.glDisable(3008);
-		        GL11.glDisable(2896);
+				GL11.glDisable(2896);
 
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, lgView.getTexture());
-				
+
 				tessellator.startDrawingQuads();
 
 				tessellator.addVertexWithUV(0.25, 1, 0, 1, 0);
@@ -86,18 +85,18 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 				tessellator.addVertexWithUV(1, 1, 0, 0, 0);
 
 				tessellator.draw();
-				
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);		
+
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
 				GL11.glEnable(3008);
-		        GL11.glEnable(2896);
-			}	
-			
+				GL11.glEnable(2896);
+			}
+
 			lgView.markDirty();
 		}
-		
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-	
+
 }

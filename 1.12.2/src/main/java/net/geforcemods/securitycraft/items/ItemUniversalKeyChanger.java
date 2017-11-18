@@ -24,12 +24,10 @@ public class ItemUniversalKeyChanger extends Item {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {
-			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
 				player.openGui(mod_SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			}
-			else {
+			else
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalKeyChanger.name"), ClientUtils.localize("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
-			}
 
 			return EnumActionResult.SUCCESS;
 		}

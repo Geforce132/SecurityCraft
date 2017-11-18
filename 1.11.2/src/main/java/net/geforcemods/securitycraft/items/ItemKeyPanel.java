@@ -15,29 +15,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemKeyPanel extends Item {
-	
+
 	public ItemKeyPanel(){
 		super();
 	}
-	
+
 	@Override
-    public EnumActionResult onItemUse( EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse( EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		ItemStack stack = playerIn.getHeldItem(hand);
-		
+
 		if(!worldIn.isRemote){
 			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.frame){
 				Owner owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
-		        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(BlockKeypad.FACING);
+				EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(BlockKeypad.FACING);
 				worldIn.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, enumfacing).withProperty(BlockKeypad.POWERED, false));
 				((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
 				stack.shrink(1);
 			}
-			
+
 			return EnumActionResult.SUCCESS;
 		}
-		
+
 		return EnumActionResult.FAIL;
-    }
+	}
 
 
 }

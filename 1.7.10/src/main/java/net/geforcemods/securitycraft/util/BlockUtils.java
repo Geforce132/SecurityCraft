@@ -10,7 +10,7 @@ public class BlockUtils{
 
 	/**
 	 * Used by the Cage Trap to create the cage. <p>
-	 * 
+	 *
 	 * Args: world, x, y, z, block.
 	 */
 	public static void setBlockInBox(World par1World, int par2, int par3, int par4, Block par5){
@@ -43,7 +43,7 @@ public class BlockUtils{
 		par1World.setBlock(par2 - 1, par3 + 1, par4 - 1, par5);
 		par1World.setBlock(par2 - 1, par3 + 2, par4 - 1, par5);
 		par1World.setBlock(par2 - 1, par3 + 3, par4 - 1, par5);
-		
+
 		par1World.setBlock(par2 + 1, par3 + 4, par4 + 1, par5);
 		par1World.setBlock(par2 + 1, par3 + 4, par4 - 1, par5);
 		par1World.setBlock(par2 - 1, par3 + 4, par4 + 1, par5);
@@ -52,13 +52,12 @@ public class BlockUtils{
 
 	/**
 	 * Updates a block and notify's neighboring blocks of a change. <p>
-	 * 
+	 *
 	 * Args: worldObj, x, y, z, blockID, tickRate, shouldUpdate.
 	 */
 	public static void updateAndNotify(World par1World, int par2, int par3, int par4, Block par5, int par6, boolean par7){
-		if(par7){
+		if(par7)
 			par1World.scheduleBlockUpdate(par2, par3, par4, par5, par6);
-		}
 
 		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par5, par1World.getBlockMetadata(par2, par3, par4));
 		par1World.notifyBlockOfNeighborChange(par2 + 1, par3, par4, par1World.getBlock(par2, par3, par4));
@@ -71,7 +70,7 @@ public class BlockUtils{
 
 	/**
 	 * Breaks the block at the given coordinates. <p>
-	 * 
+	 *
 	 * Args: world, x, y, z, shouldDropItem.
 	 */
 	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
@@ -80,7 +79,7 @@ public class BlockUtils{
 
 	/**
 	 * Checks if the block at the given coordinates is a beacon, and currently producing that light beam? <p>
-	 * 
+	 *
 	 * Args: World, x, y, z.
 	 */
 	public static boolean isActiveBeacon(World par1World, int beaconX, int beaconY, int beaconZ){
@@ -88,24 +87,23 @@ public class BlockUtils{
 			float f = ((TileEntityBeacon) par1World.getTileEntity(beaconX, beaconY, beaconZ)).func_146002_i();
 
 			return f > 0.0F ? true : false;
-		}else{
-			return false;
 		}
+		else
+			return false;
 	}
 
 	/**
 	 * Checks if the block at the given coordinates is touching the specified block on any side. <p>
-	 * 
+	 *
 	 * Args: world, x, y, z, blockToCheckFor, checkYAxis.
 	 */
 	public static boolean blockSurroundedBy(World world, int x, int y, int z, Block blockToCheckFor, boolean checkYAxis) {
-		if(!checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor)){
+		if(!checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor))
 			return true;
-		}else if(checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor || world.getBlock(x, y + 1, z) == blockToCheckFor || world.getBlock(x, y - 1, z) == blockToCheckFor)){
+		else if(checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor || world.getBlock(x, y + 1, z) == blockToCheckFor || world.getBlock(x, y - 1, z) == blockToCheckFor))
 			return true;
-		}else{
+		else
 			return false;
-		}
 	}
 
 	/**

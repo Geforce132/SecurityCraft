@@ -8,20 +8,22 @@ import net.minecraft.item.ItemStack;
 public class ItemBlockReinforcedLog extends ItemBlock
 {
 	private Block block;
-	
+
 	public ItemBlockReinforcedLog(Block block)
 	{
 		super(block);
-		
+
 		setHasSubtypes(true);
 		this.block = block;
 	}
-	
+
+	@Override
 	public int getMetadata(int meta)
 	{
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();

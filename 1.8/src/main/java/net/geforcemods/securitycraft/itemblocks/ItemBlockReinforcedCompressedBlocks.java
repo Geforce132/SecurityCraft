@@ -8,19 +8,21 @@ public class ItemBlockReinforcedCompressedBlocks extends ItemBlockTinted
 	public ItemBlockReinforcedCompressedBlocks(Block block)
 	{
 		super(block);
-		
-		this.setHasSubtypes(true);
+
+		setHasSubtypes(true);
 	}
-	
+
+	@Override
 	public int getMetadata(int meta)
 	{
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();
-		
+
 		switch(stack.getItemDamage())
 		{
 			case 0: return name + "_lapis";

@@ -20,6 +20,7 @@ public class BlockReinforcedStoneBrick extends BlockOwnable
 		super(Material.rock);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List)
 	{
@@ -29,6 +30,7 @@ public class BlockReinforcedStoneBrick extends BlockOwnable
 		par3List.add(new ItemStack(par1Item, 1, 3));
 	}
 
+	@Override
 	public int damageDropped(int par1)
 	{
 		return par1;
@@ -37,12 +39,14 @@ public class BlockReinforcedStoneBrick extends BlockOwnable
 	/**
 	 * Gets the block's texture. Args: side, meta
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2)
 	{
 		return Blocks.stonebrick.getIcon(par1, par2);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
@@ -55,12 +59,14 @@ public class BlockReinforcedStoneBrick extends BlockOwnable
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int p_149741_1_)
 	{
 		return 0x999999;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{

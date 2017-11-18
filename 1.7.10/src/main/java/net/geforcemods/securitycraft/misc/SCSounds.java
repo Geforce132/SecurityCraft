@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
 public enum SCSounds {
-	
+
 	ALARM("securitycraft:alarm", 20),
 	CAMERAZOOMIN("securitycraft:cameraZoomIn", 10),
 	CAMERASNAP("securitycraft:cameraSnap", 15),

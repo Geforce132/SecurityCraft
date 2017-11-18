@@ -11,37 +11,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class ItemTaser extends Item {
-	
+
 	public ItemTaser(){
 		super();
-		this.setMaxDamage(151);
+		setMaxDamage(151);
 	}
-	
+
+	@Override
 	public boolean isFull3D(){
 		return true;
 	}
-	
+
+	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(!par2World.isRemote){
+		if(!par2World.isRemote)
 			if(!par1ItemStack.isItemDamaged()){
 				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer));
 				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
-				
-				if(!par3EntityPlayer.capabilities.isCreativeMode){
+
+				if(!par3EntityPlayer.capabilities.isCreativeMode)
 					par1ItemStack.damageItem(150, par3EntityPlayer);
-				}
 			}
-		}
-		
+
 		return par1ItemStack;
 	}
-	
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(!par2World.isRemote){
-			if(par1ItemStack.getItemDamage() >= 1){
+
+	@Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+		if(!par2World.isRemote)
+			if(par1ItemStack.getItemDamage() >= 1)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
-			}
-		}
-    }
+	}
 
 }

@@ -10,7 +10,7 @@ public class ItemBlockTinted extends ItemBlock
 	{
 		super(block);
 	}
-	
+
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int renderPass)
 	{

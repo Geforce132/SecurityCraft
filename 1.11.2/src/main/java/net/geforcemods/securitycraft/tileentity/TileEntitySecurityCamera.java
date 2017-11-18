@@ -18,28 +18,26 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
-	
+
 	@Override
 	public void update(){
 		super.update();
-		
+
 		if(!shouldRotateOption.asBoolean())
 		{
 			cameraRotation = (float)customRotationOption.asDouble();
 			return;
 		}
-		
-		if(addToRotation && cameraRotation <= 1.55F){
+
+		if(addToRotation && cameraRotation <= 1.55F)
 			cameraRotation += rotationSpeedOption.asFloat();
-		}else{ 
-            addToRotation = false; 
-        } 
-		
-		if(!addToRotation && cameraRotation >= -1.55F){
+		else
+			addToRotation = false;
+
+		if(!addToRotation && cameraRotation >= -1.55F)
 			cameraRotation -= rotationSpeedOption.asFloat();
-		}else{ 
-            addToRotation = true; 
-        } 
+		else
+			addToRotation = true;
 	}
 
 	@Override
@@ -47,13 +45,13 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
-   
+
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
-	
+
 	@Override
 	public EnumCustomModules[] acceptedModules(){
 		return new EnumCustomModules[] { EnumCustomModules.REDSTONE };

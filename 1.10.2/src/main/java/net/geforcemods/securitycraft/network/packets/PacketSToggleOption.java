@@ -10,18 +10,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSToggleOption implements IMessage{
-	
+
 	private int x, y, z, id;
-	
+
 	public PacketSToggleOption(){ }
-	
+
 	public PacketSToggleOption(int x, int y, int z, int id){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.id = id;
 	}
-	
+
 	@Override
 	public void toBytes(ByteBuf par1ByteBuf) {
 		par1ByteBuf.writeInt(x);
@@ -32,31 +32,31 @@ public class PacketSToggleOption implements IMessage{
 
 	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
-		this.id = par1ByteBuf.readInt();
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
+		id = par1ByteBuf.readInt();
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSToggleOption, IMessage> {
 
-	@Override
-	public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
-		int x = packet.x;
-		int y = packet.y;
-		int z = packet.z;
-		BlockPos pos = BlockUtils.toPos(x, y, z);
-		int id = packet.id;
-		EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
-	
-		if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
-			((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSToggleOption, IMessage> {
+
+		@Override
+		public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
+			int x = packet.x;
+			int y = packet.y;
+			int z = packet.z;
+			BlockPos pos = BlockUtils.toPos(x, y, z);
+			int id = packet.id;
+			EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+
+			if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
+				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
+			}
+
+			return null;
 		}
-		
-		return null;
 	}
-}
-	
+
 }

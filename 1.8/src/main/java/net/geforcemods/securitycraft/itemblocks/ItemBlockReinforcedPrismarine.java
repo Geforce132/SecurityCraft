@@ -8,7 +8,7 @@ public class ItemBlockReinforcedPrismarine extends ItemBlockTinted
 	public ItemBlockReinforcedPrismarine(Block block)
 	{
 		super(block);
-		
+
 		setHasSubtypes(true);
 	}
 
@@ -17,11 +17,12 @@ public class ItemBlockReinforcedPrismarine extends ItemBlockTinted
 	{
 		return damage;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();
-		
+
 		switch(stack.getItemDamage())
 		{
 			case 0: return name + "_default";

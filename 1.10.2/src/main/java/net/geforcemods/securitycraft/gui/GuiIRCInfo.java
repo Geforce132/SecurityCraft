@@ -30,55 +30,54 @@ public class GuiIRCInfo extends GuiContainer
 		buttonList.add(new GuiButton(0, width / 2 - 48, height / 2 + 50, 100, 20, "Ok."));
 		buttonList.add(new GuiLinkedText(1, width / 2 - 54, height / 2 + 25, ClientUtils.localize("gui.ircInfo.infoLink")));
 	}
-	
+
 	@Override
 	public void onGuiClosed()
 	{
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
 	}
-    
-    @Override
+
+	@Override
 	public void drawScreen(int par1, int par2, float par3)
-    {
+	{
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
-    }
+	}
 
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
-    @Override
+	/**
+	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
+	 */
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-    	fontRendererObj.drawSplitString(ClientUtils.localize("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
-    }
+	{
+		fontRendererObj.drawSplitString(ClientUtils.localize("gui.ircInfo.explanation"), xSize / 12, ySize / 12, 150, 4210752);
+	}
 
-    /**
-     * Draw the background layer for the GuiContainer (everything behind the items)
-     */
-    @Override
+	/**
+	 * Draw the background layer for the GuiContainer (everything behind the items)
+	 */
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-    {
-    	int k = (width - xSize) / 2;
-        int l = (height - ySize) / 2;
-        
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(field_110410_t);
-        drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
-    }
-    
-    @Override
+	{
+		int k = (width - xSize) / 2;
+		int l = (height - ySize) / 2;
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.getTextureManager().bindTexture(field_110410_t);
+		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+	}
+
+	@Override
 	protected void actionPerformed(GuiButton guibutton)
-    {
-    	if(guibutton.id == 0) {
-    	    ClientUtils.closePlayerScreen();
-    	}
-    }
-    
-    @Override
-    public boolean doesGuiPauseGame()
-    {
-    	return true;
-    }
+	{
+		if(guibutton.id == 0)
+			ClientUtils.closePlayerScreen();
+	}
+
+	@Override
+	public boolean doesGuiPauseGame()
+	{
+		return true;
+	}
 }

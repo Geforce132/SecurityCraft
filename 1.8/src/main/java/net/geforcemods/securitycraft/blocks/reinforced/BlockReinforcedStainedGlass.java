@@ -22,19 +22,21 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	public BlockReinforcedStainedGlass(Material par1Material) {
 		super(par1Material);
 	}
-	
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
 
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){    	
-    	for(int i = 0; i < 16; i++){
-        	par3List.add(new ItemStack(par1Item, 1, i));
-        }
-    }
-    
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
+		for(int i = 0; i < 16; i++)
+			par3List.add(new ItemStack(par1Item, 1, i));
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

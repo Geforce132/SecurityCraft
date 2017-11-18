@@ -32,13 +32,12 @@ public class BlockAlarm extends BlockContainer {
 	public BlockAlarm(Material par1Material, boolean isLit) {
 		super(par1Material);
 		float f = 0.2F;
-		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
+		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
 
 		this.isLit = isLit;
 
-		if(this.isLit){
-			this.setLightLevel(1.0F);
-		}
+		if(this.isLit)
+			setLightLevel(1.0F);
 	}
 
 	@Override
@@ -46,22 +45,26 @@ public class BlockAlarm extends BlockContainer {
 	{
 		return false;
 	}
-	
+
+	@Override
 	public boolean isOpaqueCube(){
-        return false;
-    }
-    
-    public boolean isNormalCube(){
-        return false;
-    } 
-    
-    public int getRenderType(){
-    	return -1;
-    }
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube(){
+		return false;
+	}
+
+	@Override
+	public int getRenderType(){
+		return -1;
+	}
 
 	/**
 	 * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
 	 */
+	@Override
 	public boolean canPlaceBlockOnSide(World p_149707_1_, int p_149707_2_, int p_149707_3_, int p_149707_4_, int p_149707_5_)
 	{
 		ForgeDirection dir = ForgeDirection.getOrientation(p_149707_5_);
@@ -76,6 +79,7 @@ public class BlockAlarm extends BlockContainer {
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
+	@Override
 	public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_)
 	{
 		return p_149742_1_.isSideSolid(p_149742_2_ - 1, p_149742_3_, p_149742_4_, EAST ) ||
@@ -89,51 +93,40 @@ public class BlockAlarm extends BlockContainer {
 	/**
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
+	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		if(par1World.isRemote){
+		if(par1World.isRemote)
 			return;
-		}else{
+		else
 			par1World.scheduleBlockUpdate(par2, par3, par4, this, 1);
-		}
 	}
 
 	/**
 	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
 	 */
+	@Override
 	public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_)
 	{
 		int k1 = p_149660_9_ & 8;
 		byte b0 = -1;
 
 		if (p_149660_5_ == 0 && p_149660_1_.isSideSolid(p_149660_2_, p_149660_3_ + 1, p_149660_4_, DOWN))
-		{
 			b0 = 0;
-		}
 
 		if (p_149660_5_ == 1 && p_149660_1_.isSideSolid(p_149660_2_, p_149660_3_ - 1, p_149660_4_, UP))
-		{
 			b0 = 5;
-		}
 
 		if (p_149660_5_ == 2 && p_149660_1_.isSideSolid(p_149660_2_, p_149660_3_, p_149660_4_ + 1, NORTH))
-		{
 			b0 = 4;
-		}
 
 		if (p_149660_5_ == 3 && p_149660_1_.isSideSolid(p_149660_2_, p_149660_3_, p_149660_4_ - 1, SOUTH))
-		{
 			b0 = 3;
-		}
 
 		if (p_149660_5_ == 4 && p_149660_1_.isSideSolid(p_149660_2_ + 1, p_149660_3_, p_149660_4_, WEST))
-		{
 			b0 = 2;
-		}
 
 		if (p_149660_5_ == 5 && p_149660_1_.isSideSolid(p_149660_2_ - 1, p_149660_3_, p_149660_4_, EAST))
-		{
 			b0 = 1;
-		}
 
 		return b0 + k1;
 	}
@@ -141,6 +134,7 @@ public class BlockAlarm extends BlockContainer {
 	/**
 	 * Called when the block is placed in the world.
 	 */
+	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack p_149689_6_){
 		int l = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -182,9 +176,10 @@ public class BlockAlarm extends BlockContainer {
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
 		if(!par1World.isRemote){
-			this.playSoundAndUpdate(par1World, par2, par3, par4);
+			playSoundAndUpdate(par1World, par2, par3, par4);
 
 			par1World.scheduleBlockUpdate(par2, par3, par4, this, 5);
 		}
@@ -194,12 +189,12 @@ public class BlockAlarm extends BlockContainer {
 	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
 	 * their own) Args: x, y, z, neighbor Block
 	 */
+	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
-		if(!par1World.isRemote){
-			this.playSoundAndUpdate(par1World, par2, par3, par4);
-		}
-		
-		if (this.func_149820_e(par1World, par2, par3, par4))
+		if(!par1World.isRemote)
+			playSoundAndUpdate(par1World, par2, par3, par4);
+
+		if (func_149820_e(par1World, par2, par3, par4))
 		{
 			int l = par1World.getBlockMetadata(par2, par3, par4) & 7;
 			boolean flag = false;
@@ -227,21 +222,20 @@ public class BlockAlarm extends BlockContainer {
 
 	private boolean func_149820_e(World p_149820_1_, int p_149820_2_, int p_149820_3_, int p_149820_4_)
 	{
-		if (!this.canPlaceBlockAt(p_149820_1_, p_149820_2_, p_149820_3_, p_149820_4_))
+		if (!canPlaceBlockAt(p_149820_1_, p_149820_2_, p_149820_3_, p_149820_4_))
 		{
 			this.dropBlockAsItem(p_149820_1_, p_149820_2_, p_149820_3_, p_149820_4_, p_149820_1_.getBlockMetadata(p_149820_2_, p_149820_3_, p_149820_4_), 0);
 			p_149820_1_.setBlockToAir(p_149820_2_, p_149820_3_, p_149820_4_);
 			return false;
 		}
 		else
-		{
 			return true;
-		}
 	}
 
 	/**
 	 * Updates the blocks bounds based on its current state. Args: world, x, y, z
 	 */
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
 	{
 		int l = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_) & 7;
@@ -254,23 +248,23 @@ public class BlockAlarm extends BlockContainer {
 		switch(l)
 		{
 			case 0: //down
-				this.setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+				setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
 				break;
 			case 1: //east
-				this.setBlockBounds(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
+				setBlockBounds(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
 				break;
 			case 2: //west
-				this.setBlockBounds(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
+				setBlockBounds(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
 				break;
 			case 3: //north
-				this.setBlockBounds(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
+				setBlockBounds(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
 				break;
 			case 4: //south
-				this.setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
+				setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
 				break;
 			case 5: //up
 			{
-				this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
+				setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
 			}
 		}
 	}
@@ -303,15 +297,18 @@ public class BlockAlarm extends BlockContainer {
 	/**
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
 		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
 	}
 
+	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_){
 		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityAlarm();
 	}

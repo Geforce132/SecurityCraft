@@ -27,17 +27,20 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	public BlockBouncingBetty(Material par2Material) {
 		super(par2Material);
-		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
+		setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
+	@Override
 	public boolean isOpaqueCube(){
 		return false;
 	}
 
+	@Override
 	public boolean isNormalCube(){
 		return false;
-	} 
+	}
 
+	@Override
 	public int getRenderType(){
 		return 3;
 	}
@@ -45,39 +48,46 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * Sets the block's bounds for rendering it as an item
 	 */
+	@Override
 	public void setBlockBoundsForItemRender()
 	{
-		this.setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
+		setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
-	
+
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
+	@Override
 	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
 		return par1World.isSideSolid(pos.down(), EnumFacing.UP);
 	}
-	
+
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(entity instanceof EntityLivingBase){
+		if(entity instanceof EntityLivingBase)
 			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
-				this.explode(world, pos);
-		}
+				explode(world, pos);
 	}
 
+	@Override
 	public void onBlockClicked(World par1World, BlockPos pos, EntityPlayer par5EntityPlayer){
-		this.explode(par1World, pos);
+		explode(par1World, pos);
 	}
-	
+
+	@Override
 	public void activateMine(World world, BlockPos pos) {
 		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
 	}
 
+	@Override
 	public void defuseMine(World world, BlockPos pos) {
 		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 	}
-	
+
+	@Override
 	public void explode(World par1World, BlockPos pos){
-		if(par1World.isRemote){ return; }
+		if(par1World.isRemote)
+			return;
 		if(BlockUtils.getBlockPropertyAsBoolean(par1World, pos, DEACTIVATED))
 			return;
 
@@ -92,6 +102,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3)
 	{
 		return Item.getItemFromBlock(this);
@@ -100,35 +111,42 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
+	@Override
 	public Item getItem(World par1World, BlockPos pos){
 		return Item.getItemFromBlock(this);
 	}
-	
+
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return this.getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
+		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
 	}
 
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
 	}
 
+	@Override
 	protected BlockState createBlockState()
 	{
 		return new BlockState(this, new IProperty[] {DEACTIVATED});
 	}
-	
+
+	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
 	}
-	
+
+	@Override
 	public boolean isDefusable() {
 		return true;
 	}
-	
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
-	
+
 }

@@ -17,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 
 
 public class TileEntityRetinalScanner extends CustomizableSCTE {
-	
+
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 
 	@Override
@@ -25,33 +25,32 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 		if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
 				return;
-			
+
 			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
 				return;
-			
+
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(world, pos, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
-			
+
 			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
-    		world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
-    		
-            if(entity instanceof EntityPlayer){
-                PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
-            }             
-    	}
+			world.scheduleUpdate(new BlockPos(pos), mod_SecurityCraft.retinalScanner, 60);
+
+			if(entity instanceof EntityPlayer)
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
+		}
 	}
-	
+
 	@Override
 	public int getViewCooldown() {
-    	return 30;
-    }
-	
+		return 30;
+	}
+
 	@Override
 	public boolean activatedOnlyByPlayer() {
-    	return !activatedByEntities.asBoolean();
-    }
+		return !activatedByEntities.asBoolean();
+	}
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {

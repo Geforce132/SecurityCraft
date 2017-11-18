@@ -13,43 +13,50 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class BlockProtecto extends BlockOwnable {
-	
+
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
 	public BlockProtecto(Material par1) {
 		super(par1);
 	}
-	
+
+	@Override
 	public boolean isOpaqueCube(){
 		return false;
 	}
-	
-    public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-        return par1World.isSideSolid(pos.down(), EnumFacing.UP);
-    }
-    
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getDefaultState().withProperty(ACTIVATED, false);
-    }
-    
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().withProperty(ACTIVATED, meta == 1 ? true : false);
-    }
 
-    public int getMetaFromState(IBlockState state)
-    {
-    	return state.getValue(ACTIVATED).booleanValue() == true ? 1 : 0;
-    }
-    
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {ACTIVATED});
-    }
-	
+	@Override
+	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
+		return par1World.isSideSolid(pos.down(), EnumFacing.UP);
+	}
+
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	{
+		return getDefaultState().withProperty(ACTIVATED, false);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		return getDefaultState().withProperty(ACTIVATED, meta == 1 ? true : false);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		return state.getValue(ACTIVATED).booleanValue() == true ? 1 : 0;
+	}
+
+	@Override
+	protected BlockState createBlockState()
+	{
+		return new BlockState(this, new IProperty[] {ACTIVATED});
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
-	
+
 }

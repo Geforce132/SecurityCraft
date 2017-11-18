@@ -16,7 +16,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 	private String uuid;
 
 	public PacketSUpdateTEOwnable() {}
-	
+
 	/**
 	 * Initializes this packet with a tile entity
 	 * @param te The tile entity to initialize with
@@ -25,7 +25,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 	{
 		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID());
 	}
-	
+
 	/**
 	 * Initializes this packet
 	 * @param p The position of the tile entity
@@ -37,7 +37,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 		name = n;
 		uuid = id;
 	}
-	
+
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
@@ -45,7 +45,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 		ByteBufUtils.writeUTF8String(buf, name);
 		ByteBufUtils.writeUTF8String(buf, uuid);
 	}
-	
+
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
@@ -53,19 +53,13 @@ public class PacketSUpdateTEOwnable implements IMessage
 		name = ByteBufUtils.readUTF8String(buf);
 		uuid = ByteBufUtils.readUTF8String(buf);
 	}
-	
+
 	public static class Handler implements IMessageHandler<PacketSUpdateTEOwnable, IMessage>
 	{
 		@Override
 		public IMessage onMessage(final PacketSUpdateTEOwnable message, MessageContext ctx)
 		{
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run()
-				{
-					((TileEntityOwnable)Minecraft.getMinecraft().world.getTileEntity(message.pos)).setOwner(message.uuid, message.name);
-				}
-			});
+			Minecraft.getMinecraft().addScheduledTask(() -> ((TileEntityOwnable)Minecraft.getMinecraft().world.getTileEntity(message.pos)).setOwner(message.uuid, message.name));
 			return null;
 		}
 	}

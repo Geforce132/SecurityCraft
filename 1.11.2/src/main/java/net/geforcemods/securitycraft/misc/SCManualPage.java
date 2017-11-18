@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
 public class SCManualPage {
-	
+
 	private Item item;
 	private String helpInfo;
 	private NonNullList<ItemStack> customRecipe;
@@ -14,15 +14,15 @@ public class SCManualPage {
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
-		this.customRecipe = null;
+		customRecipe = null;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, boolean configValue){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.configValue = configValue;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, NonNullList<ItemStack> customRecipe){
 		this.item = item;
 		this.helpInfo = helpInfo;
@@ -40,11 +40,11 @@ public class SCManualPage {
 	public String getHelpInfo() {
 		return helpInfo;
 	}
-	
+
 	public NonNullList<ItemStack> getRecipe() {
 		return customRecipe;
 	}
-	
+
 	public boolean hasCustomRecipe() {
 		return (customRecipe != null);
 	}

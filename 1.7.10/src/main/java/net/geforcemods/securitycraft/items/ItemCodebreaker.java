@@ -8,25 +8,27 @@ import net.minecraft.item.ItemStack;
 
 public class ItemCodebreaker extends Item {
 
-	public ItemCodebreaker() {	
+	public ItemCodebreaker() {
 		super();
-		this.maxStackSize = 1;
+		maxStackSize = 1;
 		setMaxDamage(4); //5 uses because when the damage is 0 the item has one more use
 	}
-	
-	@SideOnly(Side.CLIENT)
- 	public boolean hasEffect(ItemStack par1ItemStack){
-        return true;
-    }	
 
-    /**
-     * Return an item rarity from EnumRarity
-     */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack){
-        return EnumRarity.rare;
-    }
-	
+	public boolean hasEffect(ItemStack par1ItemStack){
+		return true;
+	}
+
+	/**
+	 * Return an item rarity from EnumRarity
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return EnumRarity.rare;
+	}
+
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
 	{

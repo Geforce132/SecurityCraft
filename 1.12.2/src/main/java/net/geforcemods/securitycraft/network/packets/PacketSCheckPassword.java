@@ -12,19 +12,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSCheckPassword implements IMessage{
-	
+
 	private String password;
 	private int x, y, z;
-	
+
 	public PacketSCheckPassword(){
-		
+
 	}
-	
+
 	public PacketSCheckPassword(int x, int y, int z, String code){
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.password = code;
+		password = code;
 	}
 
 	@Override
@@ -37,30 +37,29 @@ public class PacketSCheckPassword implements IMessage{
 
 	@Override
 	public void fromBytes(ByteBuf par1ByteBuf) {
-		this.x = par1ByteBuf.readInt();
-		this.y = par1ByteBuf.readInt();
-		this.z = par1ByteBuf.readInt();
-		this.password = ByteBufUtils.readUTF8String(par1ByteBuf);
+		x = par1ByteBuf.readInt();
+		y = par1ByteBuf.readInt();
+		z = par1ByteBuf.readInt();
+		password = ByteBufUtils.readUTF8String(par1ByteBuf);
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSCheckPassword, IMessage> {
 
-	@Override
-	public IMessage onMessage(PacketSCheckPassword packet, MessageContext ctx) {
-		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-		String password = packet.password;
-		EntityPlayer player = ctx.getServerHandler().player;
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSCheckPassword, IMessage> {
 
-		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
-			if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().matches(password)){
-				((EntityPlayerMP) player).closeScreen();
-				((IPasswordProtected) getWorld(player).getTileEntity(pos)).activate(player);
-			}
+		@Override
+		public IMessage onMessage(PacketSCheckPassword packet, MessageContext ctx) {
+			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+			String password = packet.password;
+			EntityPlayer player = ctx.getServerHandler().player;
+
+			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected)
+				if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().matches(password)){
+					((EntityPlayerMP) player).closeScreen();
+					((IPasswordProtected) getWorld(player).getTileEntity(pos)).activate(player);
+				}
+
+			return null;
 		}
-		
-		return null;
+
 	}
-	
-}
 
 }

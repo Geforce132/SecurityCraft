@@ -32,39 +32,38 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GuiUtils{
-	
+
 	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/cameraDashboard.png");
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 
 	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
 		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
-	    Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.localize("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.localize("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + ClientUtils.localize("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.localize("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.localize("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
-	    mc.getTextureManager().bindTexture(cameraDashboard);
-	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	    gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
-	    gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
+		mc.getTextureManager().bindTexture(cameraDashboard);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
+		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
-	    if(player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null) {
-	    	gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
-	    }else{
-	    	mc.getTextureManager().bindTexture(potionIcons);
-	    	gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
-	    }
-
-	    if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
-	    	gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		}else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))){
-	    	gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
-		}else{
-	    	drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
+		if(player.getActivePotionEffect(Potion.getPotionFromResourceLocation("night_vision")) == null)
+			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
+		else{
+			mc.getTextureManager().bindTexture(potionIcons);
+			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 		}
+
+		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
+			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
+		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
+			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+		else
+			drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
 	}
 
 	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRenderer){
@@ -82,9 +81,7 @@ public class GuiUtils{
 				int l = fontRenderer.getStringWidth(s);
 
 				if (l > k)
-				{
 					k = l;
-				}
 			}
 
 			int j2 = x + 12;
@@ -92,19 +89,13 @@ public class GuiUtils{
 			int i1 = 8;
 
 			if (list.size() > 1)
-			{
 				i1 += 2 + (list.size() - 1) * 10;
-			}
 
-			if (j2 + k > Minecraft.getMinecraft().displayWidth) //w
-			{
+			if (j2 + k > Minecraft.getMinecraft().displayWidth)
 				j2 -= 28 + k;
-			}
 
-			if (k2 + i1 + 6 > Minecraft.getMinecraft().displayHeight) //h
-			{
+			if (k2 + i1 + 6 > Minecraft.getMinecraft().displayHeight)
 				k2 = Minecraft.getMinecraft().displayHeight - i1 - 6; //h
-			}
 
 			itemRender.zLevel = 300.0F;
 			int j1 = -267386864;
@@ -126,9 +117,7 @@ public class GuiUtils{
 				fontRenderer.drawStringWithShadow(s1, j2, k2, -1);
 
 				if (i2 == 0)
-				{
 					k2 += 2;
-				}
 
 				k2 += 10;
 			}
@@ -140,35 +129,33 @@ public class GuiUtils{
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
 	}
-	
+
 	public static void drawItemStackToGui(Minecraft mc, Item item, int itemDamage, int x, int y, boolean fixLighting){
-		if(fixLighting){
+		if(fixLighting)
 			GlStateManager.enableLighting();
-		}
-		
+
 		GlStateManager.enableRescaleNormal();
-        itemRender.renderItemAndEffectIntoGUI(new ItemStack(item, 1, itemDamage), x, y);
+		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item, 1, itemDamage), x, y);
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
 	}
-	
+
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		if(fixLighting){
+		if(fixLighting)
 			GlStateManager.enableLighting();
-		}
-		
+
 		GlStateManager.enableRescaleNormal();
-        itemRender.renderItemAndEffectIntoGUI(new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
+		itemRender.renderItemAndEffectIntoGUI(new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
 	}
-	
+
 	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		drawItemStackToGui(mc, item, 0, x, y, fixLighting);
 	}
-	
+
 	private static void drawGradientRect(int p_73733_1_, int p_73733_2_, int p_73733_3_, int p_73733_4_, int p_73733_5_, int p_73733_6_, float zLevel){
 		float f = (p_73733_5_ >> 24 & 255) / 255.0F;
 		float f1 = (p_73733_5_ >> 16 & 255) / 255.0F;

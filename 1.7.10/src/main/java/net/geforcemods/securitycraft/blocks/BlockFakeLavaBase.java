@@ -20,18 +20,16 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 
 	public BlockFakeLavaBase(Material p_i45429_1_){
 		super(p_i45429_1_);
-		this.setTickRandomly(false);
+		setTickRandomly(false);
 
-		if (p_i45429_1_ == Material.lava){
-			this.setTickRandomly(true);
-		}
+		if (p_i45429_1_ == Material.lava)
+			setTickRandomly(true);
 	}
 
+	@Override
 	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_){
 		if (p_149695_1_.getBlock(p_149695_2_, p_149695_3_, p_149695_4_) == this)
-		{
-			this.setNotStationary(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_);
-		}
+			setNotStationary(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_);
 	}
 
 	/**
@@ -40,11 +38,12 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 	private void setNotStationary(World p_149818_1_, int p_149818_2_, int p_149818_3_, int p_149818_4_){
 		int l = p_149818_1_.getBlockMetadata(p_149818_2_, p_149818_3_, p_149818_4_);
 		p_149818_1_.setBlock(p_149818_2_, p_149818_3_, p_149818_4_, mod_SecurityCraft.bogusLavaFlowing, l, 2);
-		p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, mod_SecurityCraft.bogusLavaFlowing, this.tickRate(p_149818_1_));
+		p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, mod_SecurityCraft.bogusLavaFlowing, tickRate(p_149818_1_));
 	}
 
+	@Override
 	public void updateTick(World world, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_){
-		if (this.blockMaterial == Material.lava){
+		if (blockMaterial == Material.lava){
 			int l = p_149674_5_.nextInt(3);
 			int i1;
 
@@ -56,15 +55,12 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 
 				if (block.getMaterial() == Material.air){
 					if(world.getGameRules().getGameRuleBooleanValue("doFireTick"))
-					{
 						if (this.isFlammable(world, p_149674_2_ - 1, p_149674_3_, p_149674_4_) || this.isFlammable(world, p_149674_2_ + 1, p_149674_3_, p_149674_4_) || this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_ - 1) || this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_ + 1) || this.isFlammable(world, p_149674_2_, p_149674_3_ - 1, p_149674_4_) || this.isFlammable(world, p_149674_2_, p_149674_3_ + 1, p_149674_4_)){
 							world.setBlock(p_149674_2_, p_149674_3_, p_149674_4_, Blocks.fire);
 							return;
 						}
-					}
-				}else if (block.getMaterial().blocksMovement()){
+				}else if (block.getMaterial().blocksMovement())
 					return;
-				}
 			}
 
 			if (l == 0){
@@ -75,23 +71,21 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 					p_149674_2_ = i1 + p_149674_5_.nextInt(3) - 1;
 					p_149674_4_ = k1 + p_149674_5_.nextInt(3) - 1;
 
-					if (world.isAirBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_) && this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_)){
-						if(world.getGameRules().getGameRuleBooleanValue("doFireTick")){
+					if (world.isAirBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_) && this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_))
+						if(world.getGameRules().getGameRuleBooleanValue("doFireTick"))
 							world.setBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_, Blocks.fire);
-						}
-					}
 				}
 			}
 		}
 	}
 
+	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(!par1World.isRemote){
+		if(!par1World.isRemote)
 			if(par5Entity instanceof EntityPlayer){
 				((EntityPlayer) par5Entity).heal(4);
 				((EntityPlayer) par5Entity).extinguish();
 			}
-		}
 	}
 
 	/**
@@ -101,6 +95,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 		return p_149817_1_.getBlock(p_149817_2_, p_149817_3_, p_149817_4_).getMaterial().getCanBurn();
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
 		return null;

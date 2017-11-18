@@ -7,11 +7,11 @@ import net.minecraft.client.settings.KeyBinding;
 
 /**
  * Custom {@link KeyBinding}s that SecurityCraft uses.
- * 
+ *
  * @author Geforce
  */
 public class KeyBindings {
-	
+
 	public static KeyBinding cameraZoomIn;
 	public static KeyBinding cameraZoomOut;
 	public static KeyBinding cameraEmitRedstone;
@@ -22,7 +22,7 @@ public class KeyBindings {
 		cameraZoomOut = new KeyBinding("key.cameraZoomOut", Keyboard.KEY_MINUS, "key.categories.securitycraft");
 		cameraEmitRedstone = new KeyBinding("key.cameraEmitRedstone", Keyboard.KEY_R, "key.categories.securitycraft");
 		cameraActivateNightVision = new KeyBinding("key.cameraActivateNightVision", Keyboard.KEY_N, "key.categories.securitycraft");
-		
+
 		ClientRegistry.registerKeyBinding(cameraZoomIn);
 		ClientRegistry.registerKeyBinding(cameraZoomOut);
 		ClientRegistry.registerKeyBinding(cameraEmitRedstone);

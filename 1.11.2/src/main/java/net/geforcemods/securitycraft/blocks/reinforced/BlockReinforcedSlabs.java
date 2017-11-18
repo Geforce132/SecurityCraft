@@ -36,12 +36,11 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		super(blockMaterial);
 
 		this.isDouble = isDouble;
-		if(!this.isDouble()){
-			this.useNeighborBrightness = true;
-		}
-		
-		this.setSoundType(SoundType.STONE);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
+		if(!isDouble())
+			useNeighborBrightness = true;
+
+		setSoundType(SoundType.STONE);
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
 	}
 
 	@Override
@@ -59,12 +58,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		if(!itemIn.equals(mod_SecurityCraft.reinforcedDoubleStoneSlabs))
-		{
-            for (EnumType et : EnumType.values())
-            {
-                list.add(new ItemStack(itemIn, 1, et.getMetadata()));
-            }
-		}
+			for (EnumType et : EnumType.values())
+				list.add(new ItemStack(itemIn, 1, et.getMetadata()));
 	}
 
 	@Override
@@ -95,7 +90,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
+		IBlockState iblockstate = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
 
 		iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
@@ -107,9 +102,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		byte b0 = 0;
 		int i = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
 
-		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP){
+		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
 			i |= 8;
-		}
 
 		return i;
 	}
@@ -160,29 +154,28 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		}
 
 		public int getMetadata(){
-			return this.meta;
+			return meta;
 		}
 
 		@Override
 		public String toString(){
-			return this.name;
+			return name;
 		}
 
 		public static BlockReinforcedSlabs.EnumType byMetadata(int meta){
-			if(meta < 0 || meta >= META_LOOKUP.length){
+			if(meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
-			}
 
 			return META_LOOKUP[meta];
 		}
 
 		@Override
 		public String getName(){
-			return this.name;
+			return name;
 		}
 
 		public String getUnlocalizedName(){
-			return this.unlocalizedName;
+			return unlocalizedName;
 		}
 
 		static {

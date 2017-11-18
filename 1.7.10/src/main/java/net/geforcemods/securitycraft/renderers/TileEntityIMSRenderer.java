@@ -15,12 +15,13 @@ import net.minecraft.util.ResourceLocation;
 public class TileEntityIMSRenderer extends TileEntitySpecialRenderer {
 
 	private ModelIMS imsModel;
-    private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/ims.png");
+	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/ims.png");
 
 	public TileEntityIMSRenderer(){
-		this.imsModel = new ModelIMS();
+		imsModel = new ModelIMS();
 	}
-	
+
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		int bombsRemaining = (par1TileEntity != null && par1TileEntity.hasWorldObj()) ? ((TileEntityIMS) par1TileEntity).getBombsRemaining() : 4;
 		float rotationX = 0F;
@@ -36,18 +37,18 @@ public class TileEntityIMSRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
+
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		
+
 		GL11.glPushMatrix();
-		
+
 		GL11.glRotatef(180F, rotationX, rotationY, rotationZ);
-		
-		this.imsModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, bombsRemaining);
-		
+
+		imsModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, bombsRemaining);
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 

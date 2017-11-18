@@ -20,82 +20,87 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockKeypadFurnace extends BlockOwnable {
-	
+
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
-	
+
 	public BlockKeypadFurnace(Material materialIn) {
 		super(materialIn);
 	}
-	
+
 	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-    
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean isNormalCube()
-    {
-        return false;
-    }
-	
+	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
+	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+	 */
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
+	/**
+	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
+	 */
+	@Override
+	public boolean isNormalCube()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote){     
-    		((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
-    	}
-        
-        return true;
-    }
-	
+		if(!par1World.isRemote)
+			((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+
+		return true;
+	}
+
 	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
-		if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN)){
+		if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN))
 			BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
-		}
-		
+
 		par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 		player.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
-	
+
+	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }
+	{
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
+	}
 
-    public IBlockState getStateFromMeta(int meta)
-    {
-        if(meta <= 5){
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(OPEN, false);
-        }else{
-        	return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(OPEN, true);
-        }
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IBlockState getStateForEntityRender(IBlockState state)
+	{
+		return getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+	}
 
-    public int getMetaFromState(IBlockState state)
-    {
-    	if(((Boolean) state.getValue(OPEN)).booleanValue()){
-    		return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
-    	}else{
-    		return ((EnumFacing) state.getValue(FACING)).getIndex();
-    	}
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta)
+	{
+		if(meta <= 5)
+			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(OPEN, false);
+		else
+			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(OPEN, true);
+	}
 
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, new IProperty[] {FACING, OPEN});
-    }
-	
+	@Override
+	public int getMetaFromState(IBlockState state)
+	{
+		if(((Boolean) state.getValue(OPEN)).booleanValue())
+			return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+		else
+			return ((EnumFacing) state.getValue(FACING)).getIndex();
+	}
+
+	@Override
+	protected BlockState createBlockState()
+	{
+		return new BlockState(this, new IProperty[] {FACING, OPEN});
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityKeypadFurnace();
 	}

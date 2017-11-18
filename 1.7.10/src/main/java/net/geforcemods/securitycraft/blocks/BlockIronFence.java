@@ -24,6 +24,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		super(texture, material);
 	}
 
+	@Override
 	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
 	{
 		return false;
@@ -46,6 +47,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 			return true;
 	}
 
+	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
 	{
 		//so dropped items don't get destroyed
@@ -70,12 +72,14 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
 	{
 		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
 		par1World.removeTileEntity(par2, par3, par4);
 	}
 
+	@Override
 	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
 	{
 		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);

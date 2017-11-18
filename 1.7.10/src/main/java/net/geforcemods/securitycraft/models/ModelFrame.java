@@ -9,47 +9,47 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class ModelFrame extends ModelBase {
-    public ModelRenderer shape1;
-    public ModelRenderer shape2;
-    public ModelRenderer shape3;
-    public ModelRenderer shape4;
-    public ModelRenderer shape5;
+	public ModelRenderer shape1;
+	public ModelRenderer shape2;
+	public ModelRenderer shape3;
+	public ModelRenderer shape4;
+	public ModelRenderer shape5;
 
-    public ModelFrame() {
-        this.textureWidth = 64;
-        this.textureHeight = 64;
-        this.shape1 = new ModelRenderer(this, 0, 0);
-        this.shape1.setRotationPoint(-8.0F, 8.0F, -8.0F);
-        this.shape1.addBox(0.0F, 0.0F, 1.0F, 16, 16, 15, 0.0F);
-        this.shape4 = new ModelRenderer(this, 0, 40);
-        this.shape4.setRotationPoint(-8.0F, 10.0F, -8.0F);
-        this.shape4.addBox(0.0F, 0.0F, 0.0F, 2, 12, 1, 0.0F);
-        this.shape3 = new ModelRenderer(this, 10, 40);
-        this.shape3.setRotationPoint(0.0F, 14.0F, 0.0F);
-        this.shape3.addBox(-8.0F, 8.0F, -8.0F, 16, 2, 1, 0.0F);
-        this.shape5 = new ModelRenderer(this, 10, 45);
-        this.shape5.setRotationPoint(6.0F, 10.0F, -8.0F);
-        this.shape5.addBox(0.0F, 0.0F, 0.0F, 2, 12, 1, 0.0F);
-        this.shape2 = new ModelRenderer(this, 0, 35);
-        this.shape2.setRotationPoint(-8.0F, 8.0F, -8.0F);
-        this.shape2.addBox(0.0F, 0.0F, 0.0F, 16, 2, 1, 0.0F);
-    }
+	public ModelFrame() {
+		textureWidth = 64;
+		textureHeight = 64;
+		shape1 = new ModelRenderer(this, 0, 0);
+		shape1.setRotationPoint(-8.0F, 8.0F, -8.0F);
+		shape1.addBox(0.0F, 0.0F, 1.0F, 16, 16, 15, 0.0F);
+		shape4 = new ModelRenderer(this, 0, 40);
+		shape4.setRotationPoint(-8.0F, 10.0F, -8.0F);
+		shape4.addBox(0.0F, 0.0F, 0.0F, 2, 12, 1, 0.0F);
+		shape3 = new ModelRenderer(this, 10, 40);
+		shape3.setRotationPoint(0.0F, 14.0F, 0.0F);
+		shape3.addBox(-8.0F, 8.0F, -8.0F, 16, 2, 1, 0.0F);
+		shape5 = new ModelRenderer(this, 10, 45);
+		shape5.setRotationPoint(6.0F, 10.0F, -8.0F);
+		shape5.addBox(0.0F, 0.0F, 0.0F, 2, 12, 1, 0.0F);
+		shape2 = new ModelRenderer(this, 0, 35);
+		shape2.setRotationPoint(-8.0F, 8.0F, -8.0F);
+		shape2.addBox(0.0F, 0.0F, 0.0F, 16, 2, 1, 0.0F);
+	}
 
-    @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
-        this.shape1.render(f5);
-        this.shape4.render(f5);
-        this.shape3.render(f5);
-        this.shape5.render(f5);
-        this.shape2.render(f5);
-    }
+	@Override
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+		shape1.render(f5);
+		shape4.render(f5);
+		shape3.render(f5);
+		shape5.render(f5);
+		shape2.render(f5);
+	}
 
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
-    }
+	/**
+	 * This is a helper function from Tabula to set the rotation of model parts
+	 */
+	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
+	}
 }

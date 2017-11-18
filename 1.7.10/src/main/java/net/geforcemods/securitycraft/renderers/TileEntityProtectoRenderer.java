@@ -19,9 +19,10 @@ public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 	private ResourceLocation deactivatedTexture = new ResourceLocation("securitycraft:textures/blocks/protectoDeactivated.png");
 
 	public TileEntityProtectoRenderer() {
-		this.protectoModel = new ModelProtecto();
+		protectoModel = new ModelProtecto();
 	}
-	
+
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
 		if(par1TileEntity.hasWorldObj()){
 			Tessellator tessellator = Tessellator.instance;
@@ -32,22 +33,21 @@ public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
-		if(par1TileEntity.hasWorldObj() && ((TileEntityProtecto) par1TileEntity).canAttack()){
+
+		if(par1TileEntity.hasWorldObj() && ((TileEntityProtecto) par1TileEntity).canAttack())
 			Minecraft.getMinecraft().renderEngine.bindTexture(activeTexture);
-		}else{
+		else
 			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedTexture);
-		}
-		
+
 		GL11.glPushMatrix();
-		
+
 		GL11.glRotatef(180F, 0, 0.0F, 1.0F);
-		
-		this.protectoModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		
+
+		protectoModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}

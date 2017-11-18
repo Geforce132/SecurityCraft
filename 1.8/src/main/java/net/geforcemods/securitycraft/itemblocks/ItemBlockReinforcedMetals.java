@@ -8,15 +8,17 @@ public class ItemBlockReinforcedMetals extends ItemBlockTinted
 	public ItemBlockReinforcedMetals(Block block)
 	{
 		super(block);
-		
+
 		setHasSubtypes(true);
 	}
-	
+
+	@Override
 	public int getMetadata(int meta)
 	{
 		return meta;
 	}
-	
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		String name = getUnlocalizedName();

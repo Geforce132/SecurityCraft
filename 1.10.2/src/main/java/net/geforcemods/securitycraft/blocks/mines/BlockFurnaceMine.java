@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisplay {
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockFurnaceMine(Material par1Material) {
 		super(par1Material);
@@ -35,56 +35,51 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 		return EnumBlockRenderType.MODEL;
 	}
 
-	
+
 	@Override
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion) {
-		if (!par1World.isRemote) {
-			this.explode(par1World, pos);
-		}
+		if (!par1World.isRemote)
+			explode(par1World, pos);
 	}
 
 	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote) {
-			this.explode(par1World, pos);
-		}
-	}	
+		if (!par1World.isRemote)
+			explode(par1World, pos);
+	}
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) {
+		if(worldIn.isRemote)
 			return true;
-		} else {
-			if(playerIn.inventory.getCurrentItem() == null || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
-				this.explode(worldIn, pos);
-				return true;
-			} else {
-				return false;	   		
-			}
+		else if(playerIn.inventory.getCurrentItem() == null || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+			explode(worldIn, pos);
+			return true;
 		}
+		else
+			return false;
 	}
-	
+
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    }
-	
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+
 	@Override
 	public void activateMine(World world, BlockPos pos) {}
 
 	@Override
 	public void defuseMine(World world, BlockPos pos) {}
-	
+
 	@Override
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
-		} else {
+		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
-		}
 
 	}
 
@@ -95,7 +90,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public boolean canDropFromExplosion(Explosion par1Explosion) {
 		return false;
 	}
-	
+
 	/* TODO: no clue about this
 	@SideOnly(Side.CLIENT)
     public IBlockState getStateForEntityRender(IBlockState state)
@@ -105,24 +100,24 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-        return this.getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
-    }
+		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
+	}
 
-    @Override
+	@Override
 	public int getMetaFromState(IBlockState state){
-        return state.getValue(FACING).getIndex();
-    }
+		return state.getValue(FACING).getIndex();
+	}
 
-    @Override
+	@Override
 	protected BlockStateContainer createBlockState(){
-        return new BlockStateContainer(this, new IProperty[] {FACING});
-    }
-	
+		return new BlockStateContainer(this, new IProperty[] {FACING});
+	}
+
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isDefusable() {
 		return false;

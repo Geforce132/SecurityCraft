@@ -23,155 +23,151 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 
 	private String passcode;
 	private Owner owner = new Owner();
-	
-    public void updateEntity(){
-        boolean flag = this.furnaceBurnTime > 0;
-        boolean flag1 = false;
 
-        if (this.furnaceBurnTime > 0){
-            this.furnaceBurnTime--;
-        }
+	@Override
+	public void updateEntity(){
+		boolean flag = furnaceBurnTime > 0;
+		boolean flag1 = false;
 
-        if(!this.worldObj.isRemote){
-            if(this.furnaceBurnTime != 0 || this.getStackInSlot(1) != null && this.getStackInSlot(0) != null){
-                if(this.furnaceBurnTime == 0 && this.canSmelt()){
-                    this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.getStackInSlot(1));
+		if (furnaceBurnTime > 0)
+			furnaceBurnTime--;
 
-                    if(this.furnaceBurnTime > 0){
-                        flag1 = true;
+		if(!worldObj.isRemote){
+			if(furnaceBurnTime != 0 || getStackInSlot(1) != null && getStackInSlot(0) != null){
+				if(furnaceBurnTime == 0 && canSmelt()){
+					currentItemBurnTime = furnaceBurnTime = getItemBurnTime(getStackInSlot(1));
 
-                        if(this.getStackInSlot(1) != null){
-                            this.getStackInSlot(1).stackSize--;
+					if(furnaceBurnTime > 0){
+						flag1 = true;
 
-                            if(this.getStackInSlot(1).stackSize == 0){
-                                this.setInventorySlotContents(1, this.getStackInSlot(1).getItem().getContainerItem(this.getStackInSlot(1)));
-                            }
-                        }
-                    }
-                }
+						if(getStackInSlot(1) != null){
+							getStackInSlot(1).stackSize--;
 
-                if(this.isBurning() && this.canSmelt()){
-                    this.furnaceCookTime++;
+							if(getStackInSlot(1).stackSize == 0)
+								setInventorySlotContents(1, getStackInSlot(1).getItem().getContainerItem(getStackInSlot(1)));
+						}
+					}
+				}
 
-                    if(this.furnaceCookTime == 200){
-                        this.furnaceCookTime = 0;
-                        this.smeltItem();
-                        flag1 = true;
-                    }
-                }else{
-                    this.furnaceCookTime = 0;
-                }
-            }
+				if(isBurning() && canSmelt()){
+					furnaceCookTime++;
 
-            if(flag != this.furnaceBurnTime > 0){
-                flag1 = true;
-            }
-        }
+					if(furnaceCookTime == 200){
+						furnaceCookTime = 0;
+						smeltItem();
+						flag1 = true;
+					}
+				}
+				else
+					furnaceCookTime = 0;
+			}
 
-        if(flag1){
-            this.markDirty();
-        }
-    }
+			if(flag != furnaceBurnTime > 0)
+				flag1 = true;
+		}
 
-	
+		if(flag1)
+			markDirty();
+	}
+
+
 	private boolean canSmelt(){
-        if (this.getStackInSlot(0) == null){
-            return false;
-        }else{
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.getStackInSlot(0));
-            if (itemstack == null) return false;
-            if (this.getStackInSlot(2) == null) return true;
-            if (!this.getStackInSlot(2).isItemEqual(itemstack)) return false;
-            int result = this.getStackInSlot(2).stackSize + itemstack.stackSize;
-            return result <= getInventoryStackLimit() && result <= this.getStackInSlot(2).getMaxStackSize(); 
-        }
-    }
-	
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);    
-		
-		if(this.passcode != null && !this.passcode.isEmpty()){
-        	par1NBTTagCompound.setString("passcode", this.passcode);
-        }
-		
-		if(this.owner != null){
-        	par1NBTTagCompound.setString("owner", this.owner.getName());
-        	par1NBTTagCompound.setString("ownerUUID", this.owner.getUUID());
-        }
+		if (getStackInSlot(0) == null)
+			return false;
+		else{
+			ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(getStackInSlot(0));
+			if (itemstack == null) return false;
+			if (getStackInSlot(2) == null) return true;
+			if (!getStackInSlot(2).isItemEqual(itemstack)) return false;
+			int result = getStackInSlot(2).stackSize + itemstack.stackSize;
+			return result <= getInventoryStackLimit() && result <= getStackInSlot(2).getMaxStackSize();
+		}
 	}
-	
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);   
-		
-		if (par1NBTTagCompound.hasKey("passcode"))
-        {
-        	if(par1NBTTagCompound.getInteger("passcode") != 0){
-        		this.passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
-        	}else{
-        		this.passcode = par1NBTTagCompound.getString("passcode");
-        	}
-        }
-		
-		if (par1NBTTagCompound.hasKey("owner"))
-        {
-            this.owner.setOwnerName(par1NBTTagCompound.getString("owner"));
-        }
-        
-        if (par1NBTTagCompound.hasKey("ownerUUID"))
-        {
-            this.owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
-        }
-	}
-	
-	public Packet getDescriptionPacket() {                
-    	NBTTagCompound tag = new NBTTagCompound();                
-    	this.writeToNBT(tag);                
-    	return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);        
-    }        
-    
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {                
-    	readFromNBT(packet.func_148857_g());        
-    }
-	
-	public Owner getOwner(){
-    	return owner;
-    }	
 
+	@Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+		super.writeToNBT(par1NBTTagCompound);
+
+		if(passcode != null && !passcode.isEmpty())
+			par1NBTTagCompound.setString("passcode", passcode);
+
+		if(owner != null){
+			par1NBTTagCompound.setString("owner", owner.getName());
+			par1NBTTagCompound.setString("ownerUUID", owner.getUUID());
+		}
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+		super.readFromNBT(par1NBTTagCompound);
+
+		if (par1NBTTagCompound.hasKey("passcode"))
+			if(par1NBTTagCompound.getInteger("passcode") != 0)
+				passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+			else
+				passcode = par1NBTTagCompound.getString("passcode");
+
+		if (par1NBTTagCompound.hasKey("owner"))
+			owner.setOwnerName(par1NBTTagCompound.getString("owner"));
+
+		if (par1NBTTagCompound.hasKey("ownerUUID"))
+			owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
+	}
+
+	@Override
+	public Packet getDescriptionPacket() {
+		NBTTagCompound tag = new NBTTagCompound();
+		writeToNBT(tag);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+		readFromNBT(packet.func_148857_g());
+	}
+
+	@Override
+	public Owner getOwner(){
+		return owner;
+	}
+
+	@Override
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
-    
+
+	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadFurnace){
+		if(!worldObj.isRemote && worldObj.getBlock(xCoord, yCoord, zCoord) instanceof BlockKeypadFurnace)
 			BlockKeypadFurnace.activate(worldObj, xCoord, yCoord, zCoord, player);
-    	}
 	}
-	
+
+	@Override
 	public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() != null) {
+		if(getPassword() != null)
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
-		}
-		else {
+		else
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
-		}		
 	}
-	
+
+	@Override
 	public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled) {
+		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
-		}
-		else {	
+		else {
 			activate(player);
 			return true;
 		}
-		
+
 		return false;
 	}
 
+	@Override
 	public String getPassword() {
 		return passcode;
 	}
 
+	@Override
 	public void setPassword(String password) {
 		passcode = password;
 	}

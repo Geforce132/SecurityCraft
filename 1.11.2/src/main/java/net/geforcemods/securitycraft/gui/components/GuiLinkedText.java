@@ -12,65 +12,62 @@ import net.minecraft.util.text.TextFormatting;
 /**
  * Invisible "button" which allows you to add clickable links to your GUIs.
  * Opens any link whenever you click on the button's text.
- * 
+ *
  * @author Geforce
  */
 public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 
 	private final String url;
 	private int textColor = 16777120;
-	
+
 	public GuiLinkedText(int id, int xPos, int yPos, String link) {
 		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(link), 14, link);
 		url = link;
 	}
-	
+
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString) {
 		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
 		url = link;
 	}
-	
+
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString, int color) {
 		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
 		url = link;
 		textColor = color;
 	}
-	
+
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-        if (this.visible) {
-            FontRenderer fontrenderer = mc.fontRendererObj;
-            this.mouseDragged(mc, mouseX, mouseY);
+		if (visible) {
+			FontRenderer fontrenderer = mc.fontRendererObj;
+			mouseDragged(mc, mouseX, mouseY);
 
-            this.drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, textColor);
-        }
-    }
-	
+			drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + displayString, xPosition + width / 2, yPosition + (height - 8) / 2, textColor);
+		}
+	}
+
 	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-		if(this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height) {
-			if (mc.gameSettings.chatLinksPrompt) {
+		if(enabled && visible && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+			if (mc.gameSettings.chatLinksPrompt)
 				mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
-            }
-			
-	        return true;
+
+			return true;
 		}
-		
-        return false;
-    }
+
+		return false;
+	}
 
 	@Override
-	public void confirmClicked(boolean choseYes, int buttonID) {		
-		if(buttonID == 0) {
-            if(choseYes) {
-    			ClientUtils.openURL(url);
-            }           
-        }
-		
-		ClientUtils.closePlayerScreen();		
+	public void confirmClicked(boolean choseYes, int buttonID) {
+		if(buttonID == 0)
+			if(choseYes)
+				ClientUtils.openURL(url);
+
+		ClientUtils.closePlayerScreen();
 	}
-	
-    @Override
+
+	@Override
 	public void playPressSound(SoundHandler soundHandler) {}
 
 }

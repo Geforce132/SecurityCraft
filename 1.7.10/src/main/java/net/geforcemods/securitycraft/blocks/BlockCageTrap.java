@@ -40,64 +40,69 @@ public class BlockCageTrap extends BlockOwnable {
 	{
 		return false;
 	}
-	
+
+	@Override
 	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-	
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
-		if(!deactivated){
-			return null;
-		}else{
-			return AxisAlignedBB.getBoundingBox(par2 + this.minX, par3 + this.minY, par4 + this.minZ, par2 + this.maxX, par3 + this.maxY, par4 + this.maxZ);
-		}
+	{
+		return false;
 	}
 
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
+		if(!deactivated)
+			return null;
+		else
+			return AxisAlignedBB.getBoundingBox(par2 + minX, par3 + minY, par4 + minZ, par2 + maxX, par3 + maxY, par4 + maxZ);
+	}
+
+	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
 		if(!par1World.isRemote){
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) par1World.getTileEntity(par2, par3, par4);
 			boolean isPlayer = par5Entity instanceof EntityPlayer;
 			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
-			
+
 			if((isPlayer || par5Entity instanceof EntityMob) && !deactivated){
 				IOwnable originalTrap = (IOwnable)par1World.getTileEntity(par2, par3, par4);
-				
+
 				if(isPlayer && originalTrap.getOwner().isOwner((EntityPlayer)par5Entity))
 					return;
-				
+
 				if(!isPlayer && !shouldCaptureMobs)
 					return;
-				
+
 				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.deactivatedCageTrap);
 
 				par1World.setBlock(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
-				par1World.setBlock(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
-				par1World.setBlock(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);	
-				par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);	
-				par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);	
+				par1World.setBlock(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
+				par1World.setBlock(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
+				par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);
+				par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);
 
 				BlockUtils.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
 				setTileEntities(par1World, par2, par3, par4, originalTrap.getOwner().getUUID(), originalTrap.getOwner().getName());
 
 				par1World.playSoundEffect(par2,par3,par4, "random.anvil_use", 3.0F, 1.0F);
-				
+
 				if(isPlayer)
 					MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) par5Entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(par2, par3, par4))));
 			}
 		}
 	}
 
+	@Override
 	public IIcon getIcon(int par1, int par2){
-		return this.blockIcon;
+		return blockIcon;
 	}
 
+	@Override
 	public int quantityDropped(Random par1Random){
-		return this.deactivated ? 0 : 1;
+		return deactivated ? 0 : 1;
 	}
 
+	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return this.deactivated ? Item.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : Item.getItemFromBlock(this);
+		return deactivated ? Item.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : Item.getItemFromBlock(this);
 	}
 
 	public void setTileEntities(World par1World, int par2, int par3, int par4, String uuid, String name)
@@ -105,11 +110,11 @@ public class BlockCageTrap extends BlockOwnable {
 		((IOwnable)par1World.getTileEntity(par2, par3, par4)).getOwner().set(uuid, name);
 
 		((IOwnable)par1World.getTileEntity(par2, par3 + 4, par4)).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4)).getOwner().set(uuid, name);	
-		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4)).getOwner().set(uuid, name);	
-		((IOwnable)par1World.getTileEntity(par2, par3 + 4, par4 + 1)).getOwner().set(uuid, name);	
+		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4)).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4)).getOwner().set(uuid, name);
+		((IOwnable)par1World.getTileEntity(par2, par3 + 4, par4 + 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2, par3 + 4, par4 - 1)).getOwner().set(uuid, name);
-		
+
 		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 1, par4)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 2, par4)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 3, par4)).getOwner().set(uuid, name);
@@ -139,13 +144,14 @@ public class BlockCageTrap extends BlockOwnable {
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 1, par4 - 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 2, par4 - 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 3, par4 - 1)).getOwner().set(uuid, name);
-		
+
 		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4 + 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 + 1, par3 + 4, par4 - 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4 + 1)).getOwner().set(uuid, name);
 		((IOwnable)par1World.getTileEntity(par2 - 1, par3 + 4, par4 - 1)).getOwner().set(uuid, name);
 	}
-	
+
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityCageTrap();
 	}

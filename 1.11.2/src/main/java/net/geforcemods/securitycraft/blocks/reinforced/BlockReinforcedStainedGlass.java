@@ -21,21 +21,21 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 		super(par1Material);
 		setSoundType(SoundType.GLASS);
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
 
 	/* TODO: no clue about this
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){    	
+    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
     	for(int i = 0; i < 16; i++){
         	par3List.add(new ItemStack(par1Item, 1, i));
         }
     }*/
-    
+
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
@@ -46,7 +46,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos)
 	{

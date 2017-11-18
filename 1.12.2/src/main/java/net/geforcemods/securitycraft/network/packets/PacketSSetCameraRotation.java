@@ -8,22 +8,22 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSSetCameraRotation implements IMessage {
-	
+
 	private float rotationYaw, rotationPitch;
-	
+
 	public PacketSSetCameraRotation(){
-		
+
 	}
-	
+
 	public PacketSSetCameraRotation(float yaw, float pitch){
-		this.rotationYaw = yaw;
-		this.rotationPitch = pitch;
+		rotationYaw = yaw;
+		rotationPitch = pitch;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		this.rotationYaw = buf.readFloat();
-		this.rotationPitch = buf.readFloat();
+		rotationYaw = buf.readFloat();
+		rotationPitch = buf.readFloat();
 	}
 
 	@Override
@@ -31,21 +31,21 @@ public class PacketSSetCameraRotation implements IMessage {
 		buf.writeFloat(rotationYaw);
 		buf.writeFloat(rotationPitch);
 	}
-	
-public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetCameraRotation, IMessage>{
 
-	@Override
-	public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
-		EntityPlayer player = ctx.getServerHandler().player;
-		
-		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
-			player.getRidingEntity().rotationYaw = packet.rotationYaw;
-			player.getRidingEntity().rotationPitch = packet.rotationPitch;
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetCameraRotation, IMessage>{
+
+		@Override
+		public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
+			EntityPlayer player = ctx.getServerHandler().player;
+
+			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
+				player.getRidingEntity().rotationYaw = packet.rotationYaw;
+				player.getRidingEntity().rotationPitch = packet.rotationPitch;
+			}
+
+			return null;
 		}
-		
-		return null;
+
 	}
-	
-}
 
 }

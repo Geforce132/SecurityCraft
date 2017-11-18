@@ -24,47 +24,44 @@ public class SCIRCBot extends PircBot{
 
 	private static final char prefix = '!';
 	private boolean message = false;
-	private HashMap<String, Integer> messageFrequency = new HashMap<String, Integer>(); 
-	
+	private HashMap<String, Integer> messageFrequency = new HashMap<String, Integer>();
+
 	public SCIRCBot(String par1String){
-		this.setName(par1String);
+		setName(par1String);
 	}
 
 	public void connectToChannel() throws IOException, IrcException, NickAlreadyInUseException{
 		this.connect("irc.esper.net");
 		this.joinChannel("#GeforceMods");
-		this.setVerbose(false);
+		setVerbose(false);
 
 		if(Minecraft.getMinecraft().getSession().getToken() == null)
 			sendMessage("#GeforceMods", "I am using a cracked client! (No Session token found.)");
 	}
-	
+
 	public void sendMessage(String message) {
 		// If the message is different than the previous message sent,
 		// reset the message "counter".
-		if(messageFrequency.size() > 0 && !messageFrequency.containsKey(message)) {
+		if(messageFrequency.size() > 0 && !messageFrequency.containsKey(message))
 			messageFrequency.clear();
-		}
-		
-		if(messageFrequency.containsKey(message)) {
+
+		if(messageFrequency.containsKey(message))
 			messageFrequency.put(message, messageFrequency.get(message) + 1);
-		}
-		else {
+		else
 			messageFrequency.put(message, 1);
-		}
-		
+
 		if(messageFrequency.get(message) > 2) {
 			PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", StatCollector.translateToLocal("messages.irc.spam"), EnumChatFormatting.RED);
 			return;
 		}
-		
+
 		sendMessage("#GeforceMods", message);
 	}
 
 	@Override
 	protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-		for(User user: this.getUsers(channel)){
-			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((this.getNick() + ":")) || message.startsWith((this.getNick() + ",")))){
+		for(User user: getUsers(channel))
+			if(channel.matches("#GeforceMods") && (user.hasVoice() || user.isOp()) && (message.startsWith((getNick() + ":")) || message.startsWith((getNick() + ",")))){
 				//commands
 				if(message.split(" ")[1].equals(prefix + "info"))
 				{
@@ -73,11 +70,10 @@ public class SCIRCBot extends PircBot{
 					sendMessage("#GeforceMods", "Uses LookingGlass: " + (mod_SecurityCraft.configHandler.useLookingGlass ? "Yes (" + Loader.instance().getIndexedModList().get("LookingGlass").getVersion() + ")" : "No"));
 				}
 				else
-					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayer().getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(this.getNick() + ":") ? message.replace(this.getNick() + ":", "") : message.replace(this.getNick() + ",", "")), getPlayer());
-				
+					sendMessageToPlayer(EnumChatFormatting.YELLOW + "<" + sender + " (IRC) --> " + getPlayer().getCommandSenderName() + "> " + EnumChatFormatting.RESET + (message.startsWith(getNick() + ":") ? message.replace(getNick() + ":", "") : message.replace(getNick() + ",", "")), getPlayer());
+
 				break;
 			}
-		}
 	}
 
 	@Override
@@ -92,9 +88,8 @@ public class SCIRCBot extends PircBot{
 
 		if(Minecraft.getMinecraft().getSession().getUsername().equals(userKicked.replaceFirst("SCUser_", "")))
 		{
-			if(mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")) != null){
-				mod_SecurityCraft.instance.getIrcBot(this.getNick().replaceFirst("SCUser_", "")).disconnect();
-			}
+			if(mod_SecurityCraft.instance.getIrcBot(getNick().replaceFirst("SCUser_", "")) != null)
+				mod_SecurityCraft.instance.getIrcBot(getNick().replaceFirst("SCUser_", "")).disconnect();
 
 			try{
 				PlayerUtils.sendMessageToPlayer(getPlayer(), "IRC", StatCollector.translateToLocal("messages.irc.disconnected").replace("#", reason), EnumChatFormatting.RED);
@@ -116,28 +111,28 @@ public class SCIRCBot extends PircBot{
 			e.printStackTrace();
 		}
 
-		if(sender.equals(this.getNick()))
+		if(sender.equals(getNick()))
 			sendMessage("#GeforceMods", "SecurityCraft version: " + mod_SecurityCraft.getVersion());
 	}
 
 	public void sendMessageToPlayer(String par1String, EntityPlayer par2EntityPlayer){
 		par2EntityPlayer.addChatComponentMessage(ForgeHooks.newChatWithLinks(par1String));
 	}
-	
+
 	private EntityPlayer getPlayer() {
-		return PlayerUtils.getPlayerFromName((this.getNick()).replaceFirst("SCUser_", ""));
+		return PlayerUtils.getPlayerFromName((getNick()).replaceFirst("SCUser_", ""));
 	}
-	
+
 	public void setMessageMode(boolean enable, ICommandSender sender)
 	{
 		message = enable;
-		
+
 		if(enable)
 			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.contacted"), EnumChatFormatting.GREEN);
 		else
 			PlayerUtils.sendMessageToPlayer(sender, "IRC", StatCollector.translateToLocal("messages.irc.resumed"), EnumChatFormatting.GREEN);
 	}
-	
+
 	/**
 	 * @return true if sending messages to IRC, false if sending messages to Minecraft chat
 	 */

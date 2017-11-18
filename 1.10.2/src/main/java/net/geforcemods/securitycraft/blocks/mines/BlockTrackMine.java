@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider {
-	
+
 	public BlockTrackMine() {
 		super();
 		setSoundType(SoundType.METAL);
@@ -28,13 +28,13 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), mod_SecurityCraft.configHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
 
 		cart.setDead();
-    }
-	
+	}
+
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-        super.breakBlock(worldIn, pos, state);
-        worldIn.removeTileEntity(pos);
-    }
+		super.breakBlock(worldIn, pos, state);
+		worldIn.removeTileEntity(pos);
+	}
 
 	@Override
 	public void explode(World world, BlockPos pos) {

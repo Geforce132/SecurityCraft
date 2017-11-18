@@ -15,7 +15,7 @@ public class BlockOwnable extends BlockContainer {
 
 	//if the color should be darkened, only used for reinforced blocks
 	private boolean flag;
-	
+
 	public BlockOwnable(Material par1) {
 		this(par1, false);
 	}
@@ -26,11 +26,13 @@ public class BlockOwnable extends BlockContainer {
 		flag = f;
 	}
 
+	@Override
 	public int getRenderType()
 	{
 		return 3;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}

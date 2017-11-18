@@ -23,19 +23,19 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class BlockFullMineBase extends BlockExplosive implements IIntersectable, ICustomWailaDisplay {
-	
+
 	private final Block blockDisguisedAs;
-	
+
 	public BlockFullMineBase(Material par1Material, Block disguisedBlock) {
 		super(par1Material);
-		 blockDisguisedAs = disguisedBlock;
-		 
-		 if(par1Material == Material.SAND)
-			 setSoundType(SoundType.SAND);
-		 else if(par1Material == Material.GROUND)
-			 setSoundType(SoundType.GROUND);
-		 else
-			 setSoundType(SoundType.STONE);
+		blockDisguisedAs = disguisedBlock;
+
+		if(par1Material == Material.SAND)
+			setSoundType(SoundType.SAND);
+		else if(par1Material == Material.GROUND)
+			setSoundType(SoundType.GROUND);
+		else
+			setSoundType(SoundType.STONE);
 	}
 
 	@Override
@@ -50,12 +50,10 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
-		if(entity instanceof EntityItem){
+		if(entity instanceof EntityItem)
 			return;
-		}else{
-			if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
-				this.explode(world, pos);
-		}
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			explode(world, pos);
 	}
 
 	/**
@@ -67,20 +65,17 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		{
 			Random random = new Random();
 
-			if(random.nextInt(3) == 1){
-				this.explode(par1World, pos);
-			}
+			if(random.nextInt(3) == 1)
+				explode(par1World, pos);
 		}
 	}
 
 	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
-		{
-			this.explode(par1World, pos);
-		}
-	}	
-	
+			explode(par1World, pos);
+	}
+
 	@Override
 	public void activateMine(World world, BlockPos pos) {}
 
@@ -91,11 +86,10 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion){
+		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
-		}else{
+		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
-		}
 	}
 
 	/**
@@ -105,12 +99,12 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public boolean canDropFromExplosion(Explosion par1Explosion){
 		return false;
 	}
-	
+
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
 		return true;
 	}
-	
+
 	@Override
 	public boolean explodesWhenInteractedWith() {
 		return false;

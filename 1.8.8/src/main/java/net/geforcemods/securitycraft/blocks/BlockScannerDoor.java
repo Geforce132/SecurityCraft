@@ -21,13 +21,14 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	public BlockScannerDoor(Material materialIn)
 	{
 		super(materialIn);
-		this.isBlockContainer = true;
+		isBlockContainer = true;
 	}
 
 	/**
 	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
 	 * their own) Args: x, y, z, neighbor Block
 	 */
+	@Override
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
 		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
@@ -38,7 +39,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 			if(iblockstate1.getBlock() != this)
 				worldIn.setBlockToAir(pos);
 			else if (neighborBlock != this)
-				this.onNeighborBlockChange(worldIn, blockpos1, iblockstate1, neighborBlock);
+				onNeighborBlockChange(worldIn, blockpos1, iblockstate1, neighborBlock);
 		}
 		else
 		{
@@ -62,19 +63,19 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 			}
 
 			if(flag1)
-			{
 				if(!worldIn.isRemote)
-					this.dropBlockAsItem(worldIn, pos, state, 0);
-			}
+					dropBlockAsItem(worldIn, pos, state, 0);
 		}
 	}
 
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 	{
 		super.breakBlock(worldIn, pos, state);
 		worldIn.removeTileEntity(pos);
 	}
 
+	@Override
 	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
 	{
 		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
@@ -84,17 +85,20 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World world, BlockPos pos)
 	{
 		return mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.scannerDoorItem;
 	}
 
+	@Override
 	public TileEntity createNewTileEntity(World var1, int var2)
 	{
 		return new TileEntityScannerDoor().activatedByView();

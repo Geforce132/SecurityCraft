@@ -14,27 +14,29 @@ import net.minecraft.util.StatCollector;
 public class CreativeTabSCExplosives extends CreativeTabs{
 
 	public static Comparator<ItemStack> itemSorter;
-	
+
 	public CreativeTabSCExplosives(){
 		super(getNextID(), "tabSecurityCraft");
 	}
 
+	@Override
 	public void displayAllReleventItems(List items){
 		super.displayAllReleventItems(items);
-		
-		if(itemSorter != null){
+
+		if(itemSorter != null)
 			Collections.sort(items, itemSorter);
-		}
 	}
-	
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
 		return Item.getItemFromBlock(mod_SecurityCraft.mine);
 	}
-	
+
+	@Override
 	public String getTranslatedTabLabel(){
 		return "SecurityCraft: " + StatCollector.translateToLocal("creativeTabExplosives");
-		
+
 	}
 
 }

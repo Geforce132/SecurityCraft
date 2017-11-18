@@ -27,6 +27,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		super(material);
 	}
 
+	@Override
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9)
 	{
 		return false;
@@ -49,6 +50,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 			return true;
 	}
 
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
@@ -73,18 +75,20 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
 	}
 
+	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)
 	{
 		super.breakBlock(par1World, pos, par3IBlockState);
 		par1World.removeTileEntity(pos);
 	}
 
+	@Override
 	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
-    {
-        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-        TileEntity tileentity = worldIn.getTileEntity(pos);
-        return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
-    }
+	{
+		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)

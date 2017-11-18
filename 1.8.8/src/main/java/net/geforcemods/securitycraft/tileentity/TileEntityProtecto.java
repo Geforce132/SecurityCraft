@@ -14,48 +14,48 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityProtecto extends CustomizableSCTE {
-	
-	public boolean attackEntity(Entity entity){	
+
+	@Override
+	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase) {
-	    	if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())))) ||
-	    			entity instanceof EntityPigZombie ||
-	    			(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered())) {
-	    		return false;
-	    	}
-	    	
-	    	EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ);
-	    	worldObj.addWeatherEffect(lightning);
-	    	
-	    	BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
-	    	return true;
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getCommandSenderName().toLowerCase())))) ||
+					entity instanceof EntityPigZombie ||
+					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))
+				return false;
+
+			EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ);
+			worldObj.addWeatherEffect(lightning);
+
+			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
+			return true;
 		}
-		
+
 		return false;
 	}
-	
-	public boolean canAttack() {	
+
+	@Override
+	public boolean canAttack() {
 		boolean canAttack = (getAttackCooldown() == 200 && worldObj.canBlockSeeSky(pos) && worldObj.isRaining());
 
-        if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
-        {
-        	BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, true);
-        }
-        else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
-        {
-        	BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
-        }
-        
-        return canAttack;
-	}
-	
-	public boolean shouldRefreshAttackCooldown() {
-    	return false;
-    }
+		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, true);
+		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
 
+		return canAttack;
+	}
+
+	@Override
+	public boolean shouldRefreshAttackCooldown() {
+		return false;
+	}
+
+	@Override
 	public EnumCustomModules[] acceptedModules() {
 		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
 	}
 
+	@Override
 	public Option<?>[] customOptions() {
 		return null;
 	}

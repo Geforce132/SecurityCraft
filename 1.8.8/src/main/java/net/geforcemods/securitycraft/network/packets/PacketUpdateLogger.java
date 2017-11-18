@@ -14,12 +14,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketUpdateLogger implements IMessage{
-	
+
 	private int x, y, z, i;
 	private String username;
-	
+
 	public PacketUpdateLogger(){
-		
+
 	}
 
 	public PacketUpdateLogger(int x, int y, int z, int i, String username){
@@ -30,6 +30,7 @@ public class PacketUpdateLogger implements IMessage{
 		this.username = username;
 	}
 
+	@Override
 	public void toBytes(ByteBuf par2ByteBuf) {
 		par2ByteBuf.writeInt(x);
 		par2ByteBuf.writeInt(y);
@@ -38,31 +39,32 @@ public class PacketUpdateLogger implements IMessage{
 		ByteBufUtils.writeUTF8String(par2ByteBuf, username);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf par2ByteBuf) {
-		this.x = par2ByteBuf.readInt();
-		this.y = par2ByteBuf.readInt();
-		this.z = par2ByteBuf.readInt();
-		this.i = par2ByteBuf.readInt();
-		this.username = ByteBufUtils.readUTF8String(par2ByteBuf);
+		x = par2ByteBuf.readInt();
+		y = par2ByteBuf.readInt();
+		z = par2ByteBuf.readInt();
+		i = par2ByteBuf.readInt();
+		username = ByteBufUtils.readUTF8String(par2ByteBuf);
 	}
 
-public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateLogger, IMessage> { 
-	
-	@SideOnly(Side.CLIENT)
-	public IMessage onMessage(PacketUpdateLogger packet, MessageContext context) {
-		BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-		int i = packet.i;
-		String username = packet.username;
-		EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateLogger, IMessage> {
 
-		TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(pos); 
-		
-		if(te != null){
-			te.players[i] = username;
+		@Override
+		@SideOnly(Side.CLIENT)
+		public IMessage onMessage(PacketUpdateLogger packet, MessageContext context) {
+			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+			int i = packet.i;
+			String username = packet.username;
+			EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
+
+			TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(pos);
+
+			if(te != null)
+				te.players[i] = username;
+
+			return null;
 		}
-		
-		return null;
 	}
-}
 
 }

@@ -5,30 +5,30 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 
 public class SCManualPage {
-	
+
 	private Item item;
 	private String helpInfo;
 	private NonNullList<Ingredient> customRecipe;
 	private boolean configValue = true;
-	
+
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
-		this.customRecipe = null;
+		customRecipe = null;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, boolean configValue){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.configValue = configValue;
 	}
-	
+
 	public SCManualPage(Item item, String helpInfo, NonNullList<Ingredient> customRecipe){
 		this.item = item;
 		this.helpInfo = helpInfo;
 		this.customRecipe = customRecipe;
 	}
-	
+
 	public Item getItem() {
 		return item;
 	}
@@ -40,11 +40,11 @@ public class SCManualPage {
 	public String getHelpInfo() {
 		return helpInfo;
 	}
-	
+
 	public NonNullList<Ingredient> getRecipe() {
 		return customRecipe;
 	}
-	
+
 	public boolean hasCustomRecipe() {
 		return (customRecipe != null);
 	}

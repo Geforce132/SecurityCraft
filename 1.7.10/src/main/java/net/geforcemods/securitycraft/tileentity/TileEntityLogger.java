@@ -7,81 +7,73 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityLogger extends TileEntityOwnable {
-	
+
 	public String[] players = new String[100];
-	
-	public boolean attackEntity(Entity entity) {		
-		if (!this.worldObj.isRemote) {		
-        	addPlayerName(((EntityPlayer) entity).getCommandSenderName());
-        	sendChangeToClient();
+
+	@Override
+	public boolean attackEntity(Entity entity) {
+		if (!worldObj.isRemote) {
+			addPlayerName(((EntityPlayer) entity).getCommandSenderName());
+			sendChangeToClient();
 		}
-		
+
 		return true;
 	}
-	
+
+	@Override
 	public boolean canAttack() {
 		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 	}
-	
+
 	private void addPlayerName(String username){
-		if(!hasPlayerName(username)){
-	        for(int i = 0; i < this.players.length; i++){
-	        	if(this.players[i] == "" || this.players[i] == null){
-	        		this.players[i] = username;
-	        		break;
-	        	}else{
-	        		continue;
-	        	}
-	        }
-		}
+		if(!hasPlayerName(username))
+			for(int i = 0; i < players.length; i++)
+				if(players[i] == "" || players[i] == null){
+					players[i] = username;
+					break;
+				}
+				else
+					continue;
 	}
 
 	private boolean hasPlayerName(String username){
-        for(int i = 0; i < this.players.length; i++){
-        	if(this.players[i] == username){
-        		return true;
-        	}else{
-        		continue;
-        	}
-        }
+		for(int i = 0; i < players.length; i++)
+			if(players[i] == username)
+				return true;
+			else
+				continue;
 
 		return false;
 	}
 
 	/**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-        super.writeToNBT(par1NBTTagCompound);
-        
-        for(int i = 0; i < this.players.length; i++){
-        	if(this.players[i] != null){
-        		par1NBTTagCompound.setString("player" + i, this.players[i]);
-        	}
-        }
-    }
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
+		super.writeToNBT(par1NBTTagCompound);
 
-    /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-        super.readFromNBT(par1NBTTagCompound);
-        
-        for(int i = 0; i < this.players.length; i++){
-        	if (par1NBTTagCompound.hasKey("player" + i))
-        	{
-        		this.players[i] = par1NBTTagCompound.getString("player" + i);
-        	}
-        }
-    }
-	
+		for(int i = 0; i < players.length; i++)
+			if(players[i] != null)
+				par1NBTTagCompound.setString("player" + i, players[i]);
+	}
+
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
+		super.readFromNBT(par1NBTTagCompound);
+
+		for(int i = 0; i < players.length; i++)
+			if (par1NBTTagCompound.hasKey("player" + i))
+				players[i] = par1NBTTagCompound.getString("player" + i);
+	}
+
 	public void sendChangeToClient(){
-        for(int i = 0; i < this.players.length; i++){
-        	if(this.players[i] != null){
-        		mod_SecurityCraft.network.sendToAll(new PacketUpdateLogger(this.xCoord, this.yCoord, this.zCoord, i, this.players[i]));
-        		
-        	}
-	    }
-    }
+		for(int i = 0; i < players.length; i++)
+			if(players[i] != null)
+				mod_SecurityCraft.network.sendToAll(new PacketUpdateLogger(xCoord, yCoord, zCoord, i, players[i]));
+	}
 
 }

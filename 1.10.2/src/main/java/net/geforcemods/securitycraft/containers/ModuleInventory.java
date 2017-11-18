@@ -13,28 +13,27 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 public class ModuleInventory implements IInventory {
-	
+
 	public int SIZE = 0;
 	private final ItemStack module;
-	
+
 	public ItemStack[] moduleInventory;
 	public int maxNumberOfItems;
 	public int maxNumberOfBlocks;
 
 	public ModuleInventory(ItemStack moduleItem) {
 		module = moduleItem;
-		
+
 		if(moduleItem.getItem() == null || !(moduleItem.getItem() instanceof ItemModule)) return;
 
 		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
 		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();
 		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
 		moduleInventory = new ItemStack[SIZE];
-				
-		if (!module.hasTagCompound()) {
+
+		if (!module.hasTagCompound())
 			module.setTagCompound(new NBTTagCompound());
-		}
-		
+
 		readFromNBT(module.getTagCompound());
 	}
 
@@ -47,7 +46,7 @@ public class ModuleInventory implements IInventory {
 	public ItemStack getStackInSlot(int index) {
 		return moduleInventory[index];
 	}
-	
+
 	public void readFromNBT(NBTTagCompound compound) {
 		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
@@ -55,24 +54,22 @@ public class ModuleInventory implements IInventory {
 			NBTTagCompound item = items.getCompoundTagAt(i);
 			int slot = item.getInteger("Slot");
 
-			if(slot < getSizeInventory()) {
+			if(slot < getSizeInventory())
 				moduleInventory[slot] = ItemStack.loadItemStackFromNBT(item);
-			}
 		}
 	}
 
 	public void writeToNBT(NBTTagCompound tagcompound) {
 		NBTTagList items = new NBTTagList();
 
-		for(int i = 0; i < getSizeInventory(); i++) {
+		for(int i = 0; i < getSizeInventory(); i++)
 			if(getStackInSlot(i) != null) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
-				
+
 				items.appendTag(item);
 			}
-		}
 
 		tagcompound.setTag("ItemInventory", items);
 		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
@@ -81,17 +78,15 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
-		
-		if(stack != null) {
+
+		if(stack != null)
 			if(stack.stackSize > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
-			else {
+			else
 				setInventorySlotContents(index, null);
-			}
-		}
-		
+
 		return stack;
 	}
 
@@ -106,9 +101,8 @@ public class ModuleInventory implements IInventory {
 	public void setInventorySlotContents(int index, ItemStack itemstack) {
 		moduleInventory[index] = itemstack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
 			itemstack.stackSize = getInventoryStackLimit();
-		}
 
 		markDirty();
 	}
@@ -117,7 +111,7 @@ public class ModuleInventory implements IInventory {
 	public String getName() {
 		return "ModuleCustomization";
 	}
-	
+
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TextComponentString(getName());
@@ -135,12 +129,10 @@ public class ModuleInventory implements IInventory {
 
 	@Override
 	public void markDirty() {
-		for(int i = 0; i < getSizeInventory(); i++) {
-			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
+		for(int i = 0; i < getSizeInventory(); i++)
+			if(getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0)
 				moduleInventory[i] = null;
-			}
-		}
-		
+
 		writeToNBT(module.getTagCompound());
 	}
 
@@ -163,7 +155,7 @@ public class ModuleInventory implements IInventory {
 	@Override
 	public int getField(int id) {
 		return 0;
-    }
+	}
 
 	@Override
 	public void setField(int id, int value) {}

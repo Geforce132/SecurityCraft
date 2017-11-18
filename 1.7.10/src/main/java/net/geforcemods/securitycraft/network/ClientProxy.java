@@ -42,13 +42,13 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends ServerProxy{
-	
+
 	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<String, IWorldViewHelper>();
-			
+
 	@Override
 	public void registerRenderThings(){
 		KeyBindings.init();
-				
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());

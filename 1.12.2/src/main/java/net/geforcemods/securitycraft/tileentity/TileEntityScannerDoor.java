@@ -43,7 +43,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
-			if(open) 
+			if(open)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.scannerDoorItem.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
 		}
 	}

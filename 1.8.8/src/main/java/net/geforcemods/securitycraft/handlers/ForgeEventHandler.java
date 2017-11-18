@@ -72,35 +72,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ForgeEventHandler {
-	
+
 	private static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
-	
+
 	public ForgeEventHandler()
 	{
 		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
 		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
 
-        String tipKey = getRandomTip();
-		
+		String tipKey = getRandomTip();
+
 		IChatComponent chatcomponenttext;
-		if(tipsWithLink.containsKey(tipKey.split("\\.")[2])) {
+		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
-		}
-		else {
+		else
 			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
-		}
-    	
-		if(mod_SecurityCraft.configHandler.sayThanksMessage){
-			event.player.addChatComponentMessage(chatcomponenttext);	
-		}
+
+		if(mod_SecurityCraft.configHandler.sayThanksMessage)
+			event.player.addChatComponentMessage(chatcomponenttext);
 	}
-	
+
 	@SubscribeEvent
 	public void onDamageTaken(LivingHurtEvent event)
 	{
@@ -108,24 +105,25 @@ public class ForgeEventHandler {
 			event.setCanceled(true);
 			return;
 		}
-		
+
 		if(event.source == CustomDamageSources.electricity)
 			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
-	
+
 	@SubscribeEvent
 	public void onBucketUsed(FillBucketEvent event){
 		ItemStack result = fillBucket(event.world, event.target.getBlockPos());
-		if(result == null){ return; }
+		if(result == null)
+			return;
 		event.result = result;
-		event.setResult(Result.ALLOW);	
+		event.setResult(Result.ALLOW);
 	}
-	
+
 	@SubscribeEvent
 	public void onServerChatEvent(ServerChatEvent event)
 	{
 		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName());
-		
+
 		if(bot != null && bot.getMessageMode())
 		{
 			event.setCanceled(true);
@@ -133,51 +131,50 @@ public class ForgeEventHandler {
 			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getCommandSenderName() + " --> IRC> " + event.message, event.player);
 		}
 	}
-	
-	@SubscribeEvent 
+
+	@SubscribeEvent
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
 		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
 			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
 			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
-		}		
+		}
 	}
-	
-	@SubscribeEvent 
+
+	@SubscribeEvent
 	public void onPlayerInteracted(PlayerInteractEvent event){
 		if(!event.entityPlayer.worldObj.isRemote){
 			World world = event.entityPlayer.worldObj;
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
 			Block block = event.entityPlayer.worldObj.getBlockState(event.pos).getBlock();
-			
+
 			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
 
 			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
-			
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
 				event.setCanceled(true);
-				
+
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockModifier.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), EnumChatFormatting.RED);
 					return;
 				}
-				
-				event.entityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.pos.getX(), event.pos.getY(), event.pos.getZ());	
+
+				event.entityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
 				return;
 			}
-			
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
-				
-				for(String character : new String[]{"(", ")"}) {
+
+				for(String character : new String[]{"(", ")"})
 					if(event.entityPlayer.getCurrentEquippedItem().getDisplayName().contains(character)) {
 						PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.error").replace("#n", event.entityPlayer.getCurrentEquippedItem().getDisplayName()).replace("#c", character), EnumChatFormatting.RED);
 						return;
 					}
-				}		
-				
+
 				if(((INameable) tileEntity).getCustomName().matches(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
 					return;
@@ -188,7 +185,7 @@ public class ForgeEventHandler {
 				((INameable) tileEntity).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
 				return;
 			}
-			
+
 			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockRemover)){
 				event.setCanceled(true);
 
@@ -211,14 +208,14 @@ public class ForgeEventHandler {
 	}
 
 	@SubscribeEvent
-    public void onConfigChanged(OnConfigChangedEvent event) {
-        if(event.modID.equals("securitycraft")){
-        	mod_SecurityCraft.configFile.save();
-        	
-        	mod_SecurityCraft.configHandler.setupConfiguration();
-        }
-    }
-	
+	public void onConfigChanged(OnConfigChangedEvent event) {
+		if(event.modID.equals("securitycraft")){
+			mod_SecurityCraft.configFile.save();
+
+			mod_SecurityCraft.configHandler.setupConfiguration();
+		}
+	}
+
 	@SubscribeEvent
 	public void onBlockPlaced(PlaceEvent event) {
 		handleOwnableTEs(event);
@@ -226,49 +223,43 @@ public class ForgeEventHandler {
 
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
-		if(!event.world.isRemote){
+		if(!event.world.isRemote)
 			if(event.world.getTileEntity(event.pos) != null && event.world.getTileEntity(event.pos) instanceof CustomizableSCTE){
 				CustomizableSCTE te = (CustomizableSCTE) event.world.getTileEntity(event.pos);
 
-				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++){
+				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
 					if(te.itemStacks[i] != null){
 						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ(), stack);
 						event.world.spawnEntityInWorld(item);
-						
+
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
 					}
-				}
 			}
-		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
 		if(event.target != null && event.target instanceof EntityPlayer && event.target != event.entityLiving.func_94060_bK())
-		{
 			if(PlayerUtils.isPlayerMountedOnCamera(event.target))
 				((EntityLiving)event.entityLiving).setAttackTarget(null);
-		}
 	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.entityPlayer)){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.entityPlayer))
 			event.setCanceled(true);
-		}
 	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(Minecraft.getMinecraft().thePlayer != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
-			if(event.type == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ))) instanceof BlockSecurityCamera))){
+			if(event.type == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ))) instanceof BlockSecurityCamera)))
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.resolution, Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posX), (int)(Minecraft.getMinecraft().thePlayer.ridingEntity.posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.ridingEntity.posZ)));
-			}
 		}
 		else if(event.type == ElementType.HOTBAR)
 		{
@@ -276,75 +267,67 @@ public class ForgeEventHandler {
 			EntityPlayerSP player = mc.thePlayer;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
-			
+
 			if(held < 0 || held >= player.inventory.mainInventory.length)
 				return;
-			
+
 			ItemStack monitor = player.inventory.mainInventory[held];
 
 			if(monitor != null && monitor.getItem() == mod_SecurityCraft.cameraMonitor)
 			{
 				String textureToUse = "cameraNotBound";
-	        	double eyeHeight = player.getEyeHeight();
-	        	Vec3 lookVec = new Vec3((player.posX + (player.getLookVec().xCoord * 5)), ((eyeHeight + player.posY) + (player.getLookVec().yCoord * 5)), (player.posZ + (player.getLookVec().zCoord * 5)));
-	        	MovingObjectPosition mop = world.rayTraceBlocks(new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
-	        	
-	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
-	        	{
-	        		NBTTagCompound cameras = monitor.getTagCompound();
+				double eyeHeight = player.getEyeHeight();
+				Vec3 lookVec = new Vec3((player.posX + (player.getLookVec().xCoord * 5)), ((eyeHeight + player.posY) + (player.getLookVec().yCoord * 5)), (player.posZ + (player.getLookVec().zCoord * 5)));
+				MovingObjectPosition mop = world.rayTraceBlocks(new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+
+				if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+				{
+					NBTTagCompound cameras = monitor.getTagCompound();
 
 					if(cameras != null)
-					{
-					    for(int i = 1; i < 31; i++)
-					    {
-					        if(!cameras.hasKey("Camera" + i))
-					            continue;
+						for(int i = 1; i < 31; i++)
+						{
+							if(!cameras.hasKey("Camera" + i))
+								continue;
 
-					        String[] coords = cameras.getString("Camera" + i).split(" ");
-	
-		        			if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
-		        			{
-		        				textureToUse = "cameraBound";
-		        				break;
-		        			}
-		        		}
-					}
-	        		
-	        		GlStateManager.enableBlend();
+							String[] coords = cameras.getString("Camera" + i).split(" ");
+
+							if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
+							{
+								textureToUse = "cameraBound";
+								break;
+							}
+						}
+
+					GlStateManager.enableBlend();
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(mod_SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
 					drawNonStandardTexturedRect(event.resolution.getScaledWidth() / 2 - 90 + held * 20 + 2, event.resolution.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableBlend();
-	        	}
+				}
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.entity)){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.entity))
 			event.newfov = ((EntitySecurityCamera) event.entity.ridingEntity).getZoomAmount();
-		}
 	}
-	
+
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
 			event.setCanceled(true);
-		}
 	}
-	
+
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onMouseClicked(MouseEvent event) {
 		if(Minecraft.getMinecraft().theWorld != null)
-		{
 			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
-			{
 				event.setCanceled(true);
-			}
-		}
 	}
 
 	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
@@ -361,44 +344,43 @@ public class ForgeEventHandler {
 		worldrenderer.func_181662_b(x, y, z).func_181673_a(u * f, v * f1).func_181675_d();
 		tessellator.draw();
 	}
-	
+
 	private ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
-		
+
 		if(block == mod_SecurityCraft.bogusWater){
 			world.setBlockToAir(pos);
 			return new ItemStack(mod_SecurityCraft.fWaterBucket, 1);
 		}else if(block == mod_SecurityCraft.bogusLava){
 			world.setBlockToAir(pos);
 			return new ItemStack(mod_SecurityCraft.fLavaBucket, 1);
-		}else{
-			return null;
 		}
+		else
+			return null;
 	}
-	
+
 	private void handleOwnableTEs(PlaceEvent event) {
 		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
 			String name = event.player.getCommandSenderName();
 			String uuid = event.player.getGameProfile().getId().toString();
 
 			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);
-		}		
+		}
 	}
-	
+
 	private boolean handleCodebreaking(PlayerInteractEvent event) {
 		World world = event.entityPlayer.worldObj;
 		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
-		
+
 		if(mod_SecurityCraft.configHandler.allowCodebreakerItem) //safety so when codebreakers are disabled they can't take damage
 			event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
-		
-		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1) {
+
+		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
 			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.configHandler.allowCodebreakerItem);
-		}
-		
+
 		return false;
 	}
-	
+
 	private String getRandomTip(){
 		String[] tips = {
 				"messages.tip.scHelp",
@@ -411,9 +393,9 @@ public class ForgeEventHandler {
 
 		return tips[new Random().nextInt(tips.length)];
 	}
-  
+
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
-    	return (tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable);
-    }
-	
+		return (tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable);
+	}
+
 }

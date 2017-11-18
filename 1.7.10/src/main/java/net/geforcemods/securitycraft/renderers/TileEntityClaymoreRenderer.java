@@ -13,16 +13,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
-	
+
 	private ModelClaymore claymoreModel;
 	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/claymore.png");
 
 	public TileEntityClaymoreRenderer() {
-		this.claymoreModel = new ModelClaymore();
+		claymoreModel = new ModelClaymore();
 	}
 
+	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		this.claymoreModel.setActive(par1TileEntity.hasWorldObj() && par1TileEntity.blockType != null && par1TileEntity.blockType == mod_SecurityCraft.claymoreActive);
+		claymoreModel.setActive(par1TileEntity.hasWorldObj() && par1TileEntity.blockType != null && par1TileEntity.blockType == mod_SecurityCraft.claymoreActive);
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
 		float rotation = 0F;
 
@@ -35,30 +36,29 @@ public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(f, f, f);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
-		
+
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-		
+
 		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-		
+
 		GL11.glPushMatrix();
-		
-		if(meta == 1){
+
+		if(meta == 1)
 			rotation = 0F;
-		}else if(meta == 2){
+		else if(meta == 2)
 			rotation = 1F;
-		}else if(meta == 3){
-			rotation = -10000F; 
-		}else if(meta == 4){
+		else if(meta == 3)
+			rotation = -10000F;
+		else if(meta == 4)
 			rotation = -1F;
-		}
-		
+
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
-		
-		this.claymoreModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		
+
+		claymoreModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-	
+
 }

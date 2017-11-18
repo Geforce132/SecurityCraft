@@ -20,13 +20,13 @@ public class BlockReinforcedStone extends BlockStone implements ITileEntityProvi
 	{
 		return new TileEntityOwnable();
 	}
-	
+
 	@Override
 	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{

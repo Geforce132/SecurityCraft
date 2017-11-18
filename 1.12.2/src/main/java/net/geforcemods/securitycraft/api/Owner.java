@@ -9,60 +9,56 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author Geforce
  */
 public class Owner {
-	
+
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
-	
+
 	public Owner() {}
-	
+
 	public Owner(String playerName, String playerUUID) {
 		this.playerName = playerName;
 		this.playerUUID = playerUUID;
 	}
-	
-    /**
-     * @return If this user is the owner of the given blocks.
-     */
+
+	/**
+	 * @return If this user is the owner of the given blocks.
+	 */
 	public boolean owns(IOwnable... ownables) {
 		for(IOwnable ownable : ownables) {
 			if(ownable == null) continue;
-			
+
 			String uuid = ownable.getOwner().getUUID();
 			String owner = ownable.getOwner().getName();
-			
+
 			// Check the player's UUID first.
-			if(uuid != null && !uuid.matches(playerUUID)) {
+			if(uuid != null && !uuid.matches(playerUUID))
 				return false;
-			}
-			
+
 			// If the TileEntity doesn't have a UUID saved, use the player's name instead.
-			if(owner != null && uuid.matches("ownerUUID") && !owner.matches("owner") && !owner.matches(playerName)) {
+			if(owner != null && uuid.matches("ownerUUID") && !owner.matches("owner") && !owner.matches(playerName))
 				return false;
-			}		
 		}
-		
+
 		return true;
 	}
-	
-    /**
-     * @return If this person is the same person as the given player.
-     */
+
+	/**
+	 * @return If this person is the same person as the given player.
+	 */
 	public boolean isOwner(EntityPlayer player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
 		String owner = player.getName();
 
-		if(uuid != null && uuid.matches(playerUUID)) {
+		if(uuid != null && uuid.matches(playerUUID))
 			return true;
-		}
-		
-		if(owner != null && playerUUID.matches("ownerUUID") && owner.matches(playerName)) {
+
+		if(owner != null && playerUUID.matches("ownerUUID") && owner.matches(playerName))
 			return true;
-		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Set the UUID and name of a new owner using strings.
 	 */
@@ -70,7 +66,7 @@ public class Owner {
 		playerName = name;
 		playerUUID = uuid;
 	}
-	
+
 	/**
 	 * Set the UUID and name of a new owner using another Owner object.
 	 */
@@ -78,39 +74,39 @@ public class Owner {
 		playerName = newOwner.getName();
 		playerUUID = newOwner.getUUID();
 	}
-	
+
 	/**
 	 * Set the owner's new name.
-	 * 
+	 *
 	 * @param name The new owner's name
 	 */
 	public void setOwnerName(String name) {
 		playerName = name;
 	}
-	
+
 	/**
 	 * Set the owner's new UUID.
-	 * 
+	 *
 	 * @param uuid The new owner's UUID
 	 */
 	public void setOwnerUUID(String uuid) {
 		playerUUID = uuid;
 	}
-	
+
 	/**
 	 * @return The owner's name.
 	 */
 	public String getName() {
 		return playerName;
 	}
-	
+
 	/**
 	 * @return The owner's UUID.
 	 */
 	public String getUUID() {
 		return playerUUID;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Name: " + playerName + "  UUID: " + playerUUID;

@@ -23,6 +23,7 @@ public class ItemUniversalOwnerChanger extends Item
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isFull3D()
 	{
@@ -33,6 +34,7 @@ public class ItemUniversalOwnerChanger extends Item
 	 * Returns true if this item should be rotated by 180 degrees around the Y axis when being held in an entities
 	 * hands.
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldRotateAroundWhenRendering()
 	{
@@ -67,12 +69,12 @@ public class ItemUniversalOwnerChanger extends Item
 
 			boolean door = false;
 			boolean updateTop = true;
-			
+
 			if(world.getBlock(x, y, z) instanceof BlockReinforcedDoor || world.getBlock(x, y, z) instanceof BlockScannerDoor)
 			{
 				door = true;
 				((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				
+
 				if(world.getBlock(x, y + 1, z) instanceof BlockReinforcedDoor || world.getBlock(x, y + 1, z) instanceof BlockScannerDoor)
 					((IOwnable)world.getTileEntity(x, y + 1, z)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 				else if(world.getBlock(x, y - 1, z) instanceof BlockReinforcedDoor || world.getBlock(x, y - 1, z) instanceof BlockScannerDoor)
@@ -81,15 +83,15 @@ public class ItemUniversalOwnerChanger extends Item
 					updateTop = false;
 				}
 			}
-			
+
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(te.getDescriptionPacket());
-			
+
 			if(door)
 				MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(x, updateTop ? y + 1 : y - 1, z)).getDescriptionPacket());
-			
+
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.universalOwnerChanger.name"), StatCollector.translateToLocal("messages.universalOwnerChanger.changed").replace("#", newOwner), EnumChatFormatting.GREEN);
 			return true;
 		}

@@ -16,38 +16,36 @@ public class ItemScannerDoor extends Item
 		maxStackSize = 1;
 	}
 
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10)
 	{
 		if(world.isRemote)
 			return true;
+		else if (par7 != 1)
+			return false;
 		else
 		{
-			if (par7 != 1)
-				return false;
-			else
+			Block block = mod_SecurityCraft.scannerDoor;
+
+			y++;
+
+			if(player.canPlayerEdit(x, y, z, par7, stack) && player.canPlayerEdit(x, y + 1, z, par7, stack))
 			{
-				Block block = mod_SecurityCraft.scannerDoor;
-
-				y++;
-
-				if(player.canPlayerEdit(x, y, z, par7, stack) && player.canPlayerEdit(x, y + 1, z, par7, stack))
-				{
-					if(!block.canPlaceBlockAt(world, x, y, z))
-						return false;
-					else
-					{
-						int i1 = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
-
-						placeDoorBlock(world, x, y, z, i1, block);
-						((TileEntityOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
-						((TileEntityOwnable) world.getTileEntity(x, y + 1, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
-						stack.stackSize--;
-						return true;
-					}
-				}
-				else
+				if(!block.canPlaceBlockAt(world, x, y, z))
 					return false;
+				else
+				{
+					int i1 = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
+
+					placeDoorBlock(world, x, y, z, i1, block);
+					((TileEntityOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+					((TileEntityOwnable) world.getTileEntity(x, y + 1, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+					stack.stackSize--;
+					return true;
+				}
 			}
+			else
+				return false;
 		}
 	}
 

@@ -15,20 +15,19 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 
 	public BlockReinforcedStairs(Block baseBlock, int meta) {
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
-		this.useNeighborBrightness = true;
-		
-		if(baseBlock == mod_SecurityCraft.reinforcedWoodPlanks) {
+		useNeighborBrightness = true;
+
+		if(baseBlock == mod_SecurityCraft.reinforcedWoodPlanks)
 			setSoundType(SoundType.WOOD);
-		} else { 
+		else
 			setSoundType(SoundType.STONE);
-		}
 	}
-	
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {

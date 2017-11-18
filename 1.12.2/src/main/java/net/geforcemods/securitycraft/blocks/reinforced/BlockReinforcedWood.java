@@ -18,23 +18,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, ICustomWailaDisplay {
-	
-    public BlockReinforcedWood(){
-        super();
-        setSoundType(SoundType.WOOD);
-    }
-    
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
-    {
-        return this.getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata(meta));
-    }
-	
+
+	public BlockReinforcedWood(){
+		super();
+		setSoundType(SoundType.WOOD);
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
+		return getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata(meta));
+	}
+
 	@Override
 	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-        super.breakBlock(par1World, pos, state);
-        par1World.removeTileEntity(pos);
-    }
+		super.breakBlock(par1World, pos, state);
+		par1World.removeTileEntity(pos);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {

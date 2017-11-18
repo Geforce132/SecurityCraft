@@ -7,11 +7,11 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 /**
  * Custom {@link KeyBinding}s that SecurityCraft uses.
- * 
+ *
  * @author Geforce
  */
 public class KeyBindings {
-	
+
 	public static KeyBinding cameraZoomIn;
 	public static KeyBinding cameraZoomOut;
 	public static KeyBinding cameraEmitRedstone;

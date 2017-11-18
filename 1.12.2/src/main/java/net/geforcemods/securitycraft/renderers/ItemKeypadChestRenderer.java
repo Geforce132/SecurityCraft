@@ -12,16 +12,12 @@ public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 	@Override
 	public void renderByItem(ItemStack item) {
 		Block block = Block.getBlockFromItem(item.getItem());
-		 
+
 		if (block == mod_SecurityCraft.keypadChest)
-        {
-            TileEntityRendererDispatcher.instance.render(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
-        }
-        else
-        {
-            super.renderByItem(item);
-        }
-		
+			TileEntityRendererDispatcher.instance.render(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
+		else
+			super.renderByItem(item);
+
 	}
-	
+
 }

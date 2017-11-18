@@ -8,24 +8,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCodebreaker extends Item {
 
-	public ItemCodebreaker() {	
+	public ItemCodebreaker() {
 		super();
-		this.maxStackSize = 1;
+		maxStackSize = 1;
 		setMaxDamage(4); //5 uses because when the damage is 0 the item has one more use
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
- 	public boolean hasEffect(ItemStack par1ItemStack){
-        return true;
-    }	
+	public boolean hasEffect(ItemStack par1ItemStack){
+		return true;
+	}
 
-    /**
-     * Return an item rarity from EnumRarity
-     */
+	/**
+	 * Return an item rarity from EnumRarity
+	 */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack){
-        return EnumRarity.RARE;
-    }
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return EnumRarity.RARE;
+	}
 
 	@Override
 	public boolean isBookEnchantable(ItemStack stack, ItemStack book)

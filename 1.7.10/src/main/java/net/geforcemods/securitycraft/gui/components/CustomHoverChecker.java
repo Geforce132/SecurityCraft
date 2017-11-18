@@ -4,25 +4,25 @@ import cpw.mods.fml.client.config.HoverChecker;
 import net.minecraft.client.gui.GuiButton;
 
 public class CustomHoverChecker extends HoverChecker {
-	
+
 	private int xPos = 0, yPos = 0;
 	private String name;
-	
+
 	public CustomHoverChecker(int top, int bottom, int left, int right, int threshold, String name) {
 		super(top, bottom, left, right, threshold);
-		this.xPos = left;
-		this.yPos = top;
+		xPos = left;
+		yPos = top;
 		this.name = name;
 	}
-	
+
 	public CustomHoverChecker(GuiButton button, int threshold) {
 		super(button, threshold);
 	}
-	
+
 	public int getX(){
 		return xPos;
 	}
-	
+
 	public int getY(){
 		return yPos;
 	}
