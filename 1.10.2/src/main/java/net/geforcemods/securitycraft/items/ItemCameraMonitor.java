@@ -107,7 +107,7 @@ public class ItemCameraMonitor extends Item {
 		par3List.add(ClientUtils.localize("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
 	}
 
-	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
 		for(int i = 1; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				String[] coords = nbt.getString("Camera" + i).split(" ");

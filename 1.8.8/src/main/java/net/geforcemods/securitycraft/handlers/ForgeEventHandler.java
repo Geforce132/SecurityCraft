@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.ircbot.SCIRCBot;
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -293,17 +292,23 @@ public class ForgeEventHandler {
 	        	if(mop != null && mop.typeOfHit == MovingObjectType.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
 	        	{
 	        		NBTTagCompound cameras = monitor.getTagCompound();
-	        		
-	        		for(int i = 1; i < ((ItemCameraMonitor)monitor.getItem()).getNumberOfCamerasBound(cameras) + 1; i++)
-	        		{
-	        			String[] coords = cameras.getString("Camera" + i).split(" ");
 
-	        			if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
-	        			{
-	        				textureToUse = "cameraBound";
-	        				break;
-	        			}
-	        		}
+					if(cameras != null)
+					{
+					    for(int i = 1; i < 31; i++)
+					    {
+					        if(!cameras.hasKey("Camera" + i))
+					            continue;
+
+					        String[] coords = cameras.getString("Camera" + i).split(" ");
+	
+		        			if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
+		        			{
+		        				textureToUse = "cameraBound";
+		        				break;
+		        			}
+		        		}
+					}
 	        		
 	        		GlStateManager.enableBlend();
 					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(mod_SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));

@@ -19,12 +19,15 @@
     - [1.12.2] Concrete
 - New: Keypad Gurnace
 - New: Information about how to exit the Security Camera
+- New: Cameras can now be unbound from within the Camera Monitors' GUI (press the X at the top right of the respective button)
 - Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Several incorrect language strings
 - Fix: Mines can be activated when viewing a camera (thanks LeKoopa!)
 - Fix: Incorrect string in Password-protected Furnace GUI
-- Fix: Crash involving the new Camera Monitor indicator
+- Fix: Crash involving the new Camera Monitor indicator (overlay in inventory when looking at a camera)
+- Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
+- Fix: [1.10.2+] Incorrect rendering of the Camera Monitor's inventory overly
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 

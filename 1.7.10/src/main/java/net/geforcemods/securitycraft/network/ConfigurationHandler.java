@@ -109,6 +109,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
+import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
@@ -1114,6 +1115,7 @@ public class ConfigurationHandler{
 		network.registerMessage(PacketSOpenGui.Handler.class, PacketSOpenGui.class, 24, Side.SERVER);
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 25, Side.SERVER);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 26, Side.SERVER);
+		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 27, Side.SERVER);
 	}
 	
 }

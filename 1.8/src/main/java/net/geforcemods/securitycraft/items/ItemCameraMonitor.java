@@ -27,6 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCameraMonitor extends Item {
 	
+	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing side, float par8, float par9, float par10){
 		if(!par3World.isRemote){
 			if(BlockUtils.getBlock(par3World, pos) == mod_SecurityCraft.securityCamera){
@@ -74,6 +75,7 @@ public class ItemCameraMonitor extends Item {
 		return true;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
 		if (par2World.isRemote) {
@@ -90,6 +92,7 @@ public class ItemCameraMonitor extends Item {
 		return par1ItemStack;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		if(par1ItemStack.getTagCompound() == null){
@@ -99,7 +102,7 @@ public class ItemCameraMonitor extends Item {
 		par3List.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
 	}
 
-	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
 		for(int i = 1; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				String[] coords = nbt.getString("Camera" + i).split(" ");

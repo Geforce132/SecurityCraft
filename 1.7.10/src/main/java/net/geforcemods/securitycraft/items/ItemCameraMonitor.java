@@ -33,6 +33,7 @@ public class ItemCameraMonitor extends ItemMap {
 		super();
 	}
 	
+	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		if(!par3World.isRemote){
 			//When the mod is using the LookingGlass system.
@@ -127,7 +128,8 @@ public class ItemCameraMonitor extends ItemMap {
 		return true;
 	}
 	
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   
+    @Override
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){  	   
     	if(!par2World.isRemote){
     		if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())){ 
 				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
@@ -151,8 +153,10 @@ public class ItemCameraMonitor extends ItemMap {
 		return par1ItemStack;
     }
 	
-    public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {}
+    @Override
+	public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     	if(par1ItemStack.getTagCompound() == null){
@@ -200,7 +204,7 @@ public class ItemCameraMonitor extends ItemMap {
 		return -1;
 	}
 	
-	public String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
 		for(int i = 1; i <= 30; i++){
 			if(nbt.hasKey("Camera" + i)){
 				String[] coords = nbt.getString("Camera" + i).split(" ");

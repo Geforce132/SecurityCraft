@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
+import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -32,6 +33,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
 	private GuiButton[] cameraButtons = new GuiButton[10];
+	private GuiButton[] unbindButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
 	private int[] cameraViewDim = new int[10];
@@ -50,6 +52,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		this.page = page;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
@@ -70,6 +73,17 @@ public class GuiCameraMonitor extends GuiContainer {
 		cameraButtons[8] = new GuiButton(9, this.width / 2 + 22, this.height / 2 + 10, 20, 20, "#");
 		cameraButtons[9] = new GuiButton(10, this.width / 2 - 38, this.height / 2 + 40, 80, 20, "#");
 
+		unbindButtons[0] = new GuiButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[1] = new GuiButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[2] = new GuiButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[3] = new GuiButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[4] = new GuiButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[5] = new GuiButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[6] = new GuiButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x");
+		unbindButtons[7] = new GuiButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x");
+		unbindButtons[8] = new GuiButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
+		unbindButtons[9] = new GuiButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
+		
 		for(int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
@@ -97,11 +111,17 @@ public class GuiCameraMonitor extends GuiContainer {
 			else
 			{
 				button.enabled = false;
+				unbindButtons[button.id - 1].enabled = false;
 				cameraTEs[button.id - 1] = null;
 				continue;
 			}
 		}
 
+		for(int i = 0; i < 10; i++)
+		{
+		    buttonList.add(unbindButtons[i]);
+		}
+		
 		if(page == 1) {
 			prevPageButton.enabled = false;
 		}
@@ -116,6 +136,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	}
 
+	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -132,6 +153,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		}
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {	
 		if(guibutton.id == -1) {
 			this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
@@ -139,7 +161,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		else if(guibutton.id == 0) {
 			this.mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
 		}
-		else { 
+		else if (guibutton.id < 11){
 			int camID = guibutton.id + ((page - 1) * 10);
 
 			CameraView view = (this.cameraMonitor.getCameraPositions(this.nbtTag).get(camID - 1));
@@ -153,12 +175,23 @@ public class GuiCameraMonitor extends GuiContainer {
 				guibutton.enabled = false;
 			}
 		}
+		else
+		{
+		    int camID = (guibutton.id - 10) + ((page - 1) * 10);
+
+		    mod_SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
+		    nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
+		    guibutton.enabled = false;
+		    cameraButtons[(camID - 1) % 10].enabled = false;
+		}
 	}
 
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("gui.monitor.selectCameras"), this.xSize / 2 - this.fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
+	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(field_110410_t);
@@ -167,6 +200,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);  
 	}
 
+	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
