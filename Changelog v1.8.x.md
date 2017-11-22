@@ -27,7 +27,8 @@
 - Fix: Incorrect string in Password-protected Furnace GUI
 - Fix: Crash involving the new Camera Monitor indicator (overlay in inventory when looking at a camera)
 - Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
-- Fix: [1.10.2+] Incorrect rendering of the Camera Monitor's inventory overly
+- Fix: Players get kicked sometimes when using the Codebreaker on a server
+- Fix: [1.10.2+] Incorrect rendering of the Camera Monitor's inventory overlay
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 

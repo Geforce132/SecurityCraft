@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockContainer;
@@ -116,7 +117,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 				return true;
 			}
 
-			((IPasswordProtected) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
+			if(!PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.codebreaker))
+				((IPasswordProtected) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
 
 			return true;
 		}
