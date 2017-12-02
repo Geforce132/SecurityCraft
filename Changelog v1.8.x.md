@@ -20,6 +20,7 @@
 - New: Keypad Gurnace
 - New: Information about how to exit the Security Camera
 - New: Cameras can now be unbound from within the Camera Monitors' GUI (press the X at the top right of the respective button)
+- New: [1.10.2+] Buttons overlapping with the JEI interface are now accessible
 - Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Several incorrect language strings
@@ -49,7 +50,7 @@
 - Fix: [1.12.2] Keycard recipes cannot be disabled via config
 - Fix: [1.12.2] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
 
---------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4)--------------------------
+--------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 and call it "Reinforced Update" -.-)--------------------------
 
 - New: Reinforced Blocks
     - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
