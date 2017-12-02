@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -104,28 +105,30 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(linkable && hasWorldObj() && linkedBlocks.size() > 0) {
 			NBTTagList tagList = new NBTTagList();
 
-			Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
+			((WorldServer)worldObj).addScheduledTask(() -> {
+				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
 
-			while(iterator.hasNext()) {
-				LinkedBlock block = iterator.next();
-				NBTTagCompound tag = new NBTTagCompound();
+				while(iterator.hasNext()) {
+					LinkedBlock block = iterator.next();
+					NBTTagCompound tag = new NBTTagCompound();
 
-				if(block != null) {
-					if(!block.validate(worldObj)) {
-						linkedBlocks.remove(block);
-						continue;
+					if(block != null) {
+						if(!block.validate(worldObj)) {
+							linkedBlocks.remove(block);
+							continue;
+						}
+
+						tag.setString("blockName", block.blockName);
+						tag.setInteger("blockX", block.getX());
+						tag.setInteger("blockY", block.getY());
+						tag.setInteger("blockZ", block.getZ());
 					}
 
-					tag.setString("blockName", block.blockName);
-					tag.setInteger("blockX", block.getX());
-					tag.setInteger("blockY", block.getY());
-					tag.setInteger("blockZ", block.getZ());
+					tagList.appendTag(tag);
 				}
 
-				tagList.appendTag(tag);
-			}
-
-			par1NBTTagCompound.setTag("linkedBlocks", tagList);
+				par1NBTTagCompound.setTag("linkedBlocks", tagList);
+			});
 		}
 	}
 

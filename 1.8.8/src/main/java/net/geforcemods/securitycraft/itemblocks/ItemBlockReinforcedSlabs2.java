@@ -90,7 +90,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlockTinted {
 		}
 	}
 
-	private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
+	private IBlockState getDoubleSlabBlock(Comparable comparable) {
 		if(comparable == BlockReinforcedSlabs2.EnumType.RED_SANDSTONE)
 			return mod_SecurityCraft.reinforcedDoubleStoneSlabs2.getDefaultState().withProperty(BlockReinforcedSlabs2.VARIANT, comparable);
 		else
@@ -126,7 +126,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlockTinted {
 			owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
 
 		if(iblockstate.getBlock() == singleSlab){
-			Comparable<?> comparable = iblockstate.getValue(singleSlab.getVariantProperty());
+			Comparable comparable = iblockstate.getValue(singleSlab.getVariantProperty());
 
 			if(comparable == variantInStack){
 				IBlockState iblockstate1 = doubleSlab.getDefaultState().withProperty((IProperty)singleSlab.getVariantProperty(), comparable);
