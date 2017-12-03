@@ -19,4 +19,10 @@ public class SlotMover implements IAdvancedGuiHandler<GuiCustomizeBlock>
 	{
 		return guiContainer.getGuiExtraAreas();
 	}
+
+	@Override
+	public Object getIngredientUnderMouse(GuiCustomizeBlock guiContainer, int mouseX, int mouseY)
+	{
+		return null;
+	}
 }
