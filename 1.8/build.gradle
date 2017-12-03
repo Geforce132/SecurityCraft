@@ -25,10 +25,23 @@ minecraft {
     version = "1.8-11.14.1.1338"
     assetDir = "eclipse/assets"
     mappings = "stable_18"
+    useDepAts = true
+}
+
+repositories {
+  maven { //main jei maven
+    name = "Progwml6 maven"
+    url = "http://dvs1.progwml6.com/files/maven"
+  }
+  maven { //fallback
+    name = "ModMaven"
+    url = "modmaven.k-4u.nl"
+  }
 }
 
 dependencies {
     compile files('lib/Waila-1.6.0-B2_1.8.jar')
+    deobfCompile 'mezz.jei:jei_1.8:2.15.0.155'
 }
 
 task deobfJar(type: Jar) {
