@@ -56,12 +56,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {
-		if(!player.getCommandSenderName().matches(lastPlayerName)) {
+		if(!player.getName().matches(lastPlayerName)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getCommandSenderName();
+			lastPlayerName = player.getName();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getCommandSenderName().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {

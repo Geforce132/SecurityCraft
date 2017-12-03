@@ -114,7 +114,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	 * like when you close a workbench GUI.
 	 */
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+	public ItemStack removeStackFromSlot(int par1)
 	{
 		if (inventoryContents[par1] != null)
 		{

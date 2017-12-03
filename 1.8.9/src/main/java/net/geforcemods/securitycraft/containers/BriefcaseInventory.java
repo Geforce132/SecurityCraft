@@ -81,7 +81,7 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int index) {
+	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
 		setInventorySlotContents(index, null);
 		return stack;
@@ -98,7 +98,7 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public String getCommandSenderName() {
+	public String getName() {
 		return "Briefcase";
 	}
 
@@ -139,7 +139,7 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public IChatComponent getDisplayName() {
-		return new ChatComponentText(getCommandSenderName());
+		return new ChatComponentText(getName());
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class Owner {
 	public boolean isOwner(EntityPlayer player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
-		String owner = player.getCommandSenderName();
+		String owner = player.getName();
 
 		if(uuid != null && uuid.matches(playerUUID))
 			return true;

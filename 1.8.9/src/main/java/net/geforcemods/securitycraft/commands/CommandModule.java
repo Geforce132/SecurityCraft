@@ -37,7 +37,7 @@ public class CommandModule extends CommandBase implements ICommand {
 	{
 		if(args.length == 1){
 			if(args[0].matches("copy")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
 					mod_SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().getTagCompound());
@@ -48,7 +48,7 @@ public class CommandModule extends CommandBase implements ICommand {
 
 				return;
 			}else if(args[0].matches("paste")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(mod_SecurityCraft.instance.getSavedModule() == null){
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.nothingSaved"), EnumChatFormatting.RED);
@@ -65,7 +65,7 @@ public class CommandModule extends CommandBase implements ICommand {
 			}
 		}else if(args.length == 2)
 			if(args[0].matches("add")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
 					if(player.getCurrentEquippedItem().getTagCompound() == null)
@@ -85,7 +85,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					return;
 				}
 			}else if(args[0].matches("remove")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getCommandSenderName());
+				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
 					if(player.getCurrentEquippedItem().getTagCompound() == null)

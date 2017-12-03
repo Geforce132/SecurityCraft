@@ -45,7 +45,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			worldObj.playAuxSFXAtEntity(null, 1006, pos, 0);
 
 			if(open)
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getCommandSenderName()), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getName()), EnumChatFormatting.GREEN);
 		}
 	}
 

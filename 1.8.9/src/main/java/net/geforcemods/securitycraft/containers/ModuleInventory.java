@@ -91,7 +91,7 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int index) {
+	public ItemStack removeStackFromSlot(int index) {
 		ItemStack stack = getStackInSlot(index);
 		setInventorySlotContents(index, null);
 		return stack;
@@ -107,12 +107,8 @@ public class ModuleInventory implements IInventory {
 		markDirty();
 	}
 
-	public String getName() {
-		return "ModuleCustomization";
-	}
-
 	@Override
-	public String getCommandSenderName() {
+	public String getName() {
 		return "ModuleCustomization";
 	}
 

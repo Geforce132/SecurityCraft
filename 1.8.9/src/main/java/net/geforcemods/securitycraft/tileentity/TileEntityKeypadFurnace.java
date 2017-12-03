@@ -90,7 +90,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int index)
+	public ItemStack removeStackFromSlot(int index)
 	{
 		if (furnaceItemStacks[index] != null)
 		{
@@ -120,7 +120,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public String getCommandSenderName()
+	public String getName()
 	{
 		return hasCustomName() ? furnaceCustomName : "container.furnace";
 	}
@@ -481,7 +481,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public IChatComponent getDisplayName() {
-		return hasCustomName() ? new ChatComponentText(getCommandSenderName()) : new ChatComponentTranslation(getCommandSenderName(), new Object[0]);
+		return hasCustomName() ? new ChatComponentText(getName()) : new ChatComponentTranslation(getName(), new Object[0]);
 	}
 
 	@Override

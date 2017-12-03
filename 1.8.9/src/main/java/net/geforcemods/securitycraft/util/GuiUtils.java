@@ -59,9 +59,9 @@ public class GuiUtils{
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
 		}
 
-		if((BlockUtils.getBlock(world, pos).isProvidingWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
+		if((BlockUtils.getBlock(world, pos).getWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
 			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		else if((BlockUtils.getBlock(world, pos).isProvidingWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
+		else if((BlockUtils.getBlock(world, pos).getWeakPower(world, pos, world.getBlockState(pos), BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
 			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
 		else
 			drawItemStackToGui(mc, Items.redstone, 10, 0, false);
@@ -173,12 +173,12 @@ public class GuiUtils{
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.func_181666_a(f1, f2, f3, f); //setColor
-		worldrenderer.func_181662_b(p_73733_3_, p_73733_2_, zLevel);
-		worldrenderer.func_181662_b(p_73733_1_, p_73733_2_, zLevel); //Addvertex
-		worldrenderer.func_181666_a(f5, f6, f7, f4);
-		worldrenderer.func_181662_b(p_73733_1_, p_73733_4_, zLevel);
-		worldrenderer.func_181662_b(p_73733_3_, p_73733_4_, zLevel);
+		worldrenderer.putColorRGB_F(f1, f2, f3, (int)f); //setColor
+		worldrenderer.putPosition(p_73733_3_, p_73733_2_, zLevel);
+		worldrenderer.putPosition(p_73733_1_, p_73733_2_, zLevel); //Addvertex
+		worldrenderer.putColorRGB_F(f5, f6, f7, (int)f4);
+		worldrenderer.putPosition(p_73733_1_, p_73733_4_, zLevel);
+		worldrenderer.putPosition(p_73733_3_, p_73733_4_, zLevel);
 		tessellator.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glDisable(GL11.GL_BLEND);

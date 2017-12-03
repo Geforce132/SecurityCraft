@@ -41,7 +41,7 @@ public class ContainerBlockReinforcer extends Container
 	@Override
 	public void onContainerClosed(EntityPlayer player)
 	{
-		ItemStack stack = itemInventory.getStackInSlotOnClosing(0);
+		ItemStack stack = itemInventory.removeStackFromSlot(0);
 
 		if(stack != null)
 		{

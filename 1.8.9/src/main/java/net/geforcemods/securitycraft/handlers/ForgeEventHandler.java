@@ -84,7 +84,7 @@ public class ForgeEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
+		mod_SecurityCraft.instance.createIrcBot(event.player.getName());
 
 		String tipKey = getRandomTip();
 
@@ -122,21 +122,21 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onServerChatEvent(ServerChatEvent event)
 	{
-		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName());
+		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getName());
 
 		if(bot != null && bot.getMessageMode())
 		{
 			event.setCanceled(true);
 			bot.sendMessage("> " + event.message);
-			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getCommandSenderName() + " --> IRC> " + event.message, event.player);
+			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getName() + " --> IRC> " + event.message, event.player);
 		}
 	}
 
 	@SubscribeEvent
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
-			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
-			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
+		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getName()) != null){
+			mod_SecurityCraft.instance.getIrcBot(event.player.getName()).disconnect();
+			mod_SecurityCraft.instance.removeIrcBot(event.player.getName());
 		}
 	}
 
@@ -242,7 +242,7 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.target != null && event.target instanceof EntityPlayer && event.target != event.entityLiving.func_94060_bK())
+		if(event.target != null && event.target instanceof EntityPlayer && event.target != event.entityLiving.getAttackingEntity())
 			if(PlayerUtils.isPlayerMountedOnCamera(event.target))
 				((EntityLiving)event.entityLiving).setAttackTarget(null);
 	}
@@ -337,11 +337,11 @@ public class ForgeEventHandler {
 		double f1 = 1F / (double) textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.func_181668_a(7, DefaultVertexFormats.field_181707_g);
-		worldrenderer.func_181662_b(x, y + height, z).func_181673_a(u * f, (v + height) * f1).func_181675_d();
-		worldrenderer.func_181662_b(x + width, y + height, z).func_181673_a((u + width) * f, (v + height) * f1).func_181675_d();
-		worldrenderer.func_181662_b(x + width, y, z).func_181673_a((u + width) * f, v * f1).func_181675_d();
-		worldrenderer.func_181662_b(x, y, z).func_181673_a(u * f, v * f1).func_181675_d();
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		worldrenderer.pos(x, y + height, z).tex(u * f, (v + height) * f1).endVertex();
+		worldrenderer.pos(x + width, y + height, z).tex((u + width) * f, (v + height) * f1).endVertex();
+		worldrenderer.pos(x + width, y, z).tex((u + width) * f, v * f1).endVertex();
+		worldrenderer.pos(x, y, z).tex(u * f, v * f1).endVertex();
 		tessellator.draw();
 	}
 
@@ -361,7 +361,7 @@ public class ForgeEventHandler {
 
 	private void handleOwnableTEs(PlaceEvent event) {
 		if(event.world.getTileEntity(event.pos) instanceof IOwnable) {
-			String name = event.player.getCommandSenderName();
+			String name = event.player.getName();
 			String uuid = event.player.getGameProfile().getId().toString();
 
 			((IOwnable) event.world.getTileEntity(event.pos)).getOwner().set(uuid, name);

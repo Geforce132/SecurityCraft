@@ -230,7 +230,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+	public ItemStack removeStackFromSlot(int par1)
 	{
 		if (itemStacks[par1] != null)
 		{
@@ -274,11 +274,11 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	@Override
 	public IChatComponent getDisplayName() {
-		return new ChatComponentTranslation(getCommandSenderName());
+		return new ChatComponentTranslation(getName());
 	}
 
 	@Override
-	public String getCommandSenderName(){
+	public String getName(){
 		return "Customize";
 	}
 

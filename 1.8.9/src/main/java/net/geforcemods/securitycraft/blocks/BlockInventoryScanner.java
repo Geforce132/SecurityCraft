@@ -188,7 +188,7 @@ public class BlockInventoryScanner extends BlockContainer {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
+	public int getWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
 	{
 		if(!(par1IBlockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(pos)).getType() == null){
 			mod_SecurityCraft.log("type is null on the " + FMLCommonHandler.instance().getEffectiveSide() + " side");
@@ -203,7 +203,7 @@ public class BlockInventoryScanner extends BlockContainer {
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
+	public int getStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
 	{
 		if(((TileEntityInventoryScanner) par1IBlockAccess.getTileEntity(pos)).getType() == null)
 			return 0 ;
