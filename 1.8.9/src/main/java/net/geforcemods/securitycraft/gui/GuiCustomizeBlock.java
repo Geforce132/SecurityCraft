@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -130,4 +134,18 @@ public class GuiCustomizeBlock extends GuiContainer{
 		return (StatCollector.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
 	}
 
+	public List<Rectangle> getGuiExtraAreas()
+	{
+		List<Rectangle> rects = new ArrayList<Rectangle>();
+
+		for(GuiButton button : optionButtons)
+		{
+			if(button == null)
+				continue;
+
+			rects.add(new Rectangle(button.xPosition, button.yPosition, button.width, button.height));
+		}
+
+		return rects;
+	}
 }

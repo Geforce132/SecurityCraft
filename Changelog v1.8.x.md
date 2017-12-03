@@ -29,7 +29,7 @@
 - Fix: Crash involving the new Camera Monitor indicator (overlay in inventory when looking at a camera)
 - Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
 - Fix: Players get kicked sometimes when using the Codebreaker on a server
-- Fix: [1.10.2+] Incorrect rendering of the Camera Monitor's inventory overlay
+- Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 
@@ -45,12 +45,12 @@
 - Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
 - Fix: [1.7.10] Reinforced Door can be held open with a redstone input (thanks LeKoopa!)
 - Fix: [1.7.10] Security Camera cannot emit redstone signal
-- Fix: [1.7.10-1.8.8] Unable to exit out of password GUIs
+- Fix: [1.7.10-1.8.9] Unable to exit out of password GUIs
 - Fix: [1.11.2+] Installed modules disappear in certain situations
 - Fix: [1.12.2] Keycard recipes cannot be disabled via config
 - Fix: [1.12.2] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
 
---------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 and call it "Reinforced Update" -.-)--------------------------
+--------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 with the reinforced blocks from v1.8.3 and call it "Reinforced Update" -.-)--------------------------
 
 - New: Reinforced Blocks
     - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
@@ -112,8 +112,8 @@
 - Fix: Alarm bounding box is too large for top/bottom alarm
 - Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecurityCraft Manual
 - Fix: Pick block does not work on Keypads
-- Fix: [1.8.8] Keypad crash
-- Fix: [1.8, 1.8.8] Bouncing Betty can explode while it is defused
+- Fix: [1.8.8/9] Keypad crash
+- Fix: [1.8, 1.8.8/9] Bouncing Betty can explode while it is defused
 - Removed: [1.10.2+] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2+] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
@@ -129,7 +129,7 @@
 - Fix: Specific crashes reported by OpenEye
 - Fix: [1.7.10] Defusing a mine removes owner
 - Fix: [1.7.10] Codebreaker does not work on Keypads
-- Fix: [1.8, 1.8.8] Unable to add players to modules
+- Fix: [1.8, 1.8.8/9] Unable to add players to modules
 
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
@@ -167,8 +167,8 @@
 - Fix: Protecto attacks whitelisted players
 - Fix: The Portable Radar sends a message when its owner is in its radius
 - Fix: Translations don't work in the SC Manual under certain circumstances
-- Fix: [1.8, 1.8.8] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
-- Fix: [1.8, 1.8.8] Reinforced Doors can be activated by normal redstone
+- Fix: [1.8, 1.8.8/9] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
+- Fix: [1.8, 1.8.8/9] Reinforced Doors can be activated by normal redstone
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 
