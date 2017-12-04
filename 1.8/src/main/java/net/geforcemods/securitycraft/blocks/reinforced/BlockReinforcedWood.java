@@ -1,10 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -14,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider {
+public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedWood(){
 		super();
@@ -62,5 +67,19 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	public int getBlockColor()
 	{
 		return 0x999999;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.planks
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 6;
 	}
 }

@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -13,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockReinforcedSandstone extends BlockOwnable {
+public class BlockReinforcedSandstone extends BlockOwnable implements IReinforcedBlock{
 	public BlockReinforcedSandstone(){
 		super(Material.rock);
 	}
@@ -65,5 +67,19 @@ public class BlockReinforcedSandstone extends BlockOwnable {
 	public int getBlockColor()
 	{
 		return 0x999999;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.sandstone
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 3;
 	}
 }

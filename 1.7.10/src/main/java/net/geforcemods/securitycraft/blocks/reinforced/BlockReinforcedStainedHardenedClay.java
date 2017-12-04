@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockReinforcedStainedHardenedClay extends BlockOwnable
+public class BlockReinforcedStainedHardenedClay extends BlockOwnable implements IReinforcedBlock
 {
 	private static final IIcon[] iicons = new IIcon[16];
 
@@ -93,5 +95,19 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable
 	public int getBlockColor()
 	{
 		return 0x999999;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.stained_hardened_clay
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 16;
 	}
 }

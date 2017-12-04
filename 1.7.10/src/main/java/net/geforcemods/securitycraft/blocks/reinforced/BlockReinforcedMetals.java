@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaDisplay
+public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
 {
 	public BlockReinforcedMetals()
 	{
@@ -90,5 +92,22 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	public boolean shouldShowSCInfo(World world, int x, int y, int z)
 	{
 		return true;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.gold_block,
+				Blocks.iron_block,
+				Blocks.diamond_block,
+				Blocks.emerald_block
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 4;
 	}
 }

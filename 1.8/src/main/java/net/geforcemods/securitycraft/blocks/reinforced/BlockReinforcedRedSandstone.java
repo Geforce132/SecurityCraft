@@ -1,10 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -13,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedRedSandstone extends BlockRedSandstone implements ITileEntityProvider {
+public class BlockReinforcedRedSandstone extends BlockRedSandstone implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedRedSandstone(){
 		super();
@@ -55,5 +60,19 @@ public class BlockReinforcedRedSandstone extends BlockRedSandstone implements IT
 	public int getBlockColor()
 	{
 		return 0x999999;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.red_sandstone
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 3;
 	}
 }

@@ -1,11 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockPrismarine;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -14,7 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileEntityProvider
+public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileEntityProvider, IReinforcedBlock
 {
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2)
@@ -53,5 +57,19 @@ public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileE
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		return Item.getItemFromBlock(this);
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.prismarine
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 3;
 	}
 }

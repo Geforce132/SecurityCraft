@@ -1,21 +1,24 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedMetals extends BlockOwnable
+public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBlock
 {
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
 
@@ -70,6 +73,23 @@ public class BlockReinforcedMetals extends BlockOwnable
 	protected BlockState createBlockState()
 	{
 		return new BlockState(this, new IProperty[] {VARIANT});
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.gold_block,
+				Blocks.iron_block,
+				Blocks.diamond_block,
+				Blocks.emerald_block
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 4;
 	}
 
 	public static enum EnumType implements IStringSerializable

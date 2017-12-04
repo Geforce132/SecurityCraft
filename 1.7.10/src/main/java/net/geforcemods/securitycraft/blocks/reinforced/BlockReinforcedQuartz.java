@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +18,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockReinforcedQuartz extends BlockOwnable
+public class BlockReinforcedQuartz extends BlockOwnable implements IReinforcedBlock
 {
 	public BlockReinforcedQuartz()
 	{
@@ -107,5 +109,19 @@ public class BlockReinforcedQuartz extends BlockOwnable
 			meta = 2;
 
 		return new ItemStack(Item.getItemFromBlock(this), 1, meta);
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.quartz_block
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 5;
 	}
 }

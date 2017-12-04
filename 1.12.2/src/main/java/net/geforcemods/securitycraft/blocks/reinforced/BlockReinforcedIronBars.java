@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -20,7 +22,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider {
+public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedIronBars(Material par1Material, boolean par2) {
 		super(par1Material, par2);
@@ -65,4 +67,17 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 		return new TileEntityOwnable();
 	}
 
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.IRON_BARS
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 1;
+	}
 }

@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -13,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockReinforcedWood extends BlockOwnable {
+public class BlockReinforcedWood extends BlockOwnable implements IReinforcedBlock{
 	public BlockReinforcedWood(Material par1) {
 		super(par1);
 	}
@@ -75,5 +77,19 @@ public class BlockReinforcedWood extends BlockOwnable {
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 4));
 		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 5));
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.planks
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 6;
 	}
 }

@@ -1,9 +1,13 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -12,6 +16,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -23,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaDisplay
+public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum<BlockReinforcedPurpur.EnumType> VARIANT = PropertyEnum.<BlockReinforcedPurpur.EnumType>create("variant", BlockReinforcedPurpur.EnumType.class);
 
@@ -165,6 +170,21 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos)
 	{
 		return true;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.PURPUR_BLOCK,
+				Blocks.PURPUR_PILLAR
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 2;
 	}
 
 	public static enum EnumType implements IStringSerializable

@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Predicate;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.IProperty;
@@ -11,12 +13,13 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedNewLog extends BlockReinforcedLog
+public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinforcedBlock
 {
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate()
 	{
@@ -117,6 +120,20 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog
 	public int damageDropped(IBlockState state)
 	{
 		return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata() - 4;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.log2
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 12;
 	}
 
 	static final class SwitchEnumAxis

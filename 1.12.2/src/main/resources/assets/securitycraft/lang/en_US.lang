@@ -465,6 +465,8 @@ messages.tip.scserver=The official SecurityCraft server is back! Join using this
 messages.universalKeyChanger.notKeypad=Right-click a keypad with the universal key changer to change its passcode.
 messages.universalKeyChanger.passcodeChanged=The passcode has been changed.
 
+jei.reinforcedBlock.info=Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.
+
 waila.displayOwner=Display Owner?
 waila.showModules=Show Modules?
 waila.showPasswords=Show Passwords?

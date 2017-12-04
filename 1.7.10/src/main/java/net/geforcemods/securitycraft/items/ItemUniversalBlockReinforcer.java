@@ -5,22 +5,11 @@ import java.util.HashSet;
 import com.google.common.collect.Sets;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockGlass;
-import net.minecraft.block.BlockGrass;
-import net.minecraft.block.BlockHardenedClay;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockQuartz;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockStone;
-import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.world.World;
@@ -50,64 +39,28 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 			World world = player.getEntityWorld();
 			Block block = world.getBlock(x, y, z);
 
-			if(block instanceof BlockDirt || block instanceof BlockGrass)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedDirt);
-			else if(block instanceof BlockStone)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStone);
-			else if(block instanceof BlockWood)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedWoodPlanks, block.getDamageValue(world, x, y, z), 2);
-			else if(block instanceof BlockGlass)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedGlass);
-			else if(block.getUnlocalizedName().equals(Blocks.glass_pane.getUnlocalizedName())) //glass panes and iron bars share the same class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedGlassPane);
-			else if(block.getUnlocalizedName().equals(Blocks.cobblestone.getUnlocalizedName())) //cobblestone doesn't have its own class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCobblestone);
-			else if(block.getUnlocalizedName().equals(Blocks.iron_bars.getUnlocalizedName())) //glass panes and iron bars share the same class
-				world.setBlock(x, y, z, mod_SecurityCraft.unbreakableIronBars);
-			else if(block instanceof BlockSandStone)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedSandstone, block.getDamageValue(world, x, y, z), 2);
-			else if(block instanceof BlockStoneBrick)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStoneBrick, block.getDamageValue(world, x, y, z), 2);
-			else if(block.getUnlocalizedName().equals(Blocks.mossy_cobblestone.getUnlocalizedName())) //mossy cobblestone doesn't have its own class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMossyCobblestone);
-			else if(block.getUnlocalizedName().equals(Blocks.brick_block.getUnlocalizedName())) //brick doesn't have its own class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedBrick);
-			else if(block.getUnlocalizedName().equals(Blocks.nether_brick.getUnlocalizedName())) //nether brick doesn't have its own class
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNetherBrick);
-			else if(block instanceof BlockHardenedClay)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedHardenedClay);
-			else if(block.getUnlocalizedName().startsWith(Blocks.stained_hardened_clay.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedStainedHardenedClay, block.getDamageValue(world, x, y, z), 2);
-			else if(block instanceof BlockOldLog)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedOldLogs, block.getDamageValue(world, x, y, z), 2);
-			else if(block instanceof BlockNewLog)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedNewLogs, block.getDamageValue(world, x, y, z), 2);
-			else if(block.getUnlocalizedName().equals(Blocks.lapis_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCompressedBlocks, 0, 2);
-			else if(block.getUnlocalizedName().equals(Blocks.coal_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedCompressedBlocks, 1, 2);
-			else if(block.getUnlocalizedName().equals(Blocks.gold_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 0, 2);
-			else if(block.getUnlocalizedName().equals(Blocks.iron_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 1, 2);
-			else if(block.getUnlocalizedName().equals(Blocks.diamond_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 2, 2);
-			else if(block.getUnlocalizedName().equals(Blocks.emerald_block.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedMetals, 3, 2);
-			else if(block.getUnlocalizedName().startsWith(Blocks.wool.getUnlocalizedName()))
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedWool, block.getDamageValue(world, x, y, z), 2);
-			else if(block instanceof BlockQuartz)
-				world.setBlock(x, y, z, mod_SecurityCraft.reinforcedQuartz, block.getDamageValue(world, x, y, z), 2);
-			else
+			for(Block rb : IReinforcedBlock.BLOCKS)
 			{
-				world.func_147480_a(x, y, z, true); //destroy the block without the ubr taking damage
-				return true;
-			}
+				IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-			//the following only happens if a block has been changed, as the else statement terminates in itself
-			((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
-			stack.damageItem(1, player);
-			return true;
+				if(reinforcedBlock.getVanillaBlocks().contains(block))
+				{
+					if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
+					{
+						for(int i = 0; i < reinforcedBlock.getAmount(); i++)
+						{
+							if(block.equals(reinforcedBlock.getVanillaBlocks().get(i)))
+								world.setBlock(x, y, z, rb, i, 3);
+						}
+					}
+					else
+						world.setBlock(x, y, z, rb, block.getDamageValue(world, x, y, z), 2);
+
+					((IOwnable)world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+					stack.damageItem(1, player);
+					return true;
+				}
+			}
 		}
 
 		return false;
@@ -115,32 +68,13 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 
 	private static HashSet<Block> getBreakableBlocks()
 	{
-		return Sets.newHashSet(new Block[]{
-				Blocks.dirt,
-				Blocks.grass,
-				Blocks.stone,
-				Blocks.planks,
-				Blocks.glass,
-				Blocks.glass_pane,
-				Blocks.cobblestone,
-				Blocks.iron_bars,
-				Blocks.sandstone,
-				Blocks.stonebrick,
-				Blocks.mossy_cobblestone,
-				Blocks.brick_block,
-				Blocks.nether_brick,
-				Blocks.hardened_clay,
-				Blocks.stained_hardened_clay,
-				Blocks.log,
-				Blocks.log2,
-				Blocks.lapis_block,
-				Blocks.coal_block,
-				Blocks.gold_block,
-				Blocks.iron_block,
-				Blocks.diamond_block,
-				Blocks.emerald_block,
-				Blocks.wool,
-				Blocks.quartz_block
+		HashSet<Block> set = Sets.newHashSet();
+
+		IReinforcedBlock.BLOCKS.forEach((reinforcedBlock) -> {
+			System.out.println(reinforcedBlock.getUnlocalizedName());
+			set.addAll(((IReinforcedBlock)reinforcedBlock).getVanillaBlocks());
 		});
+
+		return set;
 	}
 }

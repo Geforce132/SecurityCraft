@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -48,90 +48,17 @@ public class ContainerBlockReinforcer extends Container
 			ItemStack newStack = ItemStack.EMPTY;
 			int customMeta = -1;
 
-			if(item.equals(Item.getItemFromBlock(Blocks.DIRT)) || item.equals(Item.getItemFromBlock(Blocks.GRASS)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedDirt);
-			else if(item.equals(Item.getItemFromBlock(Blocks.STONE)))
+			for(Block rb : IReinforcedBlock.BLOCKS)
 			{
-				stack.setItemDamage(0);
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedStone);
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.PLANKS)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedWoodPlanks);
-			else if(item.equals(Item.getItemFromBlock(Blocks.GLASS)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedGlass);
-			else if(item.equals(Item.getItemFromBlock(Blocks.COBBLESTONE)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedCobblestone);
-			else if(item.equals(Item.getItemFromBlock(Blocks.IRON_BARS)))
-				newStack = new ItemStack(mod_SecurityCraft.unbreakableIronBars);
-			else if(item.equals(Item.getItemFromBlock(Blocks.SANDSTONE)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedSandstone);
-			else if(item.equals(Item.getItemFromBlock(Blocks.STONEBRICK)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedStoneBrick);
-			else if(item.equals(Item.getItemFromBlock(Blocks.MOSSY_COBBLESTONE)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedMossyCobblestone);
-			else if(item.equals(Item.getItemFromBlock(Blocks.BRICK_BLOCK)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedBrick);
-			else if(item.equals(Item.getItemFromBlock(Blocks.NETHER_BRICK)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedNetherBrick);
-			else if(item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedHardenedClay);
-			else if(item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedStainedHardenedClay);
-			else if(item.equals(Item.getItemFromBlock(Blocks.LOG)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedOldLogs);
-			else if(item.equals(Item.getItemFromBlock(Blocks.LOG2)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedNewLogs);
-			else if(item.equals(Item.getItemFromBlock(Blocks.LAPIS_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedCompressedBlocks);
-				customMeta = 0;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.COAL_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedCompressedBlocks);
-				customMeta = 1;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.GOLD_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
-				customMeta = 0;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.IRON_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
-				customMeta = 1;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
-				customMeta = 2;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.EMERALD_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedMetals);
-				customMeta = 3;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.WOOL)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedWool);
-			else if(item.equals(Item.getItemFromBlock(Blocks.QUARTZ_BLOCK)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedQuartz);
-			else if(item.equals(Item.getItemFromBlock(Blocks.PRISMARINE)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedPrismarine);
-			else if(item.equals(Item.getItemFromBlock(Blocks.RED_SANDSTONE)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedRedSandstone);
-			else if(item.equals(Item.getItemFromBlock(Blocks.END_BRICKS)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedEndStoneBricks);
-			else if(item.equals(Item.getItemFromBlock(Blocks.RED_NETHER_BRICK)))
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedRedNetherBrick);
-			else if(item.equals(Item.getItemFromBlock(Blocks.PURPUR_BLOCK)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedPurpur);
-				customMeta = 0;
-			}
-			else if(item.equals(Item.getItemFromBlock(Blocks.PURPUR_PILLAR)))
-			{
-				newStack = new ItemStack(mod_SecurityCraft.reinforcedPurpur);
-				customMeta = 1;
+				IReinforcedBlock block = (IReinforcedBlock)rb;
+
+				if(block.getVanillaBlocks().contains(Block.getBlockFromItem(item)))
+				{
+					newStack = new ItemStack(rb);
+
+					if(block.getVanillaBlocks().size() == block.getAmount())
+						customMeta = block.getVanillaBlocks().indexOf(Block.getBlockFromItem(item));
+				}
 			}
 
 			if(!newStack.isEmpty())
@@ -269,40 +196,15 @@ public class ContainerBlockReinforcer extends Container
 		@Override
 		public boolean isItemValid(ItemStack stack)
 		{
-			Item item = stack.getItem();
+			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
+				return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch((vanillaBlock) -> {
+					return stack.getItem().equals(Item.getItemFromBlock(vanillaBlock));
+				});
+			});
 
-			return (item.equals(Item.getItemFromBlock(Blocks.DIRT)) ||
-					item.equals(Item.getItemFromBlock(Blocks.GRASS)) ||
-					item.equals(Item.getItemFromBlock(Blocks.STONE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.PLANKS)) ||
-					item.equals(Item.getItemFromBlock(Blocks.GLASS)) ||
-					item.equals(Item.getItemFromBlock(Blocks.COBBLESTONE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.IRON_BARS)) ||
-					item.equals(Item.getItemFromBlock(Blocks.SANDSTONE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.STONEBRICK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.MOSSY_COBBLESTONE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.BRICK_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.NETHER_BRICK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.HARDENED_CLAY)) ||
-					item.equals(Item.getItemFromBlock(Blocks.STAINED_HARDENED_CLAY)) ||
-					item.equals(Item.getItemFromBlock(Blocks.LOG)) ||
-					item.equals(Item.getItemFromBlock(Blocks.LOG2)) ||
-					item.equals(Item.getItemFromBlock(Blocks.LAPIS_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.COAL_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.GOLD_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.IRON_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.EMERALD_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.WOOL)) ||
-					item.equals(Item.getItemFromBlock(Blocks.QUARTZ_BLOCK)) ||
-					item.equals(Item.getItemFromBlock(Blocks.PRISMARINE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.RED_SANDSTONE)) ||
-					item.equals(Item.getItemFromBlock(Blocks.END_BRICKS)) ||
-					item.equals(Item.getItemFromBlock(Blocks.RED_NETHER_BRICK))||
-					item.equals(Item.getItemFromBlock(Blocks.PURPUR_BLOCK))||
-					item.equals(Item.getItemFromBlock(Blocks.PURPUR_PILLAR))) &&
+			return validBlock &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
+							blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

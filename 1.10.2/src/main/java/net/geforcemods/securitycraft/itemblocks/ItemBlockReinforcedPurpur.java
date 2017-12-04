@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockPurpur extends ItemBlock
+public class ItemBlockReinforcedPurpur extends ItemBlock
 {
-	public ItemBlockPurpur(Block block)
+	public ItemBlockReinforcedPurpur(Block block)
 	{
 		super(block);
 

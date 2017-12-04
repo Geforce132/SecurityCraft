@@ -277,6 +277,7 @@ public class mod_SecurityCraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(mod_SecurityCraft.eventHandler);
+
 		log("Mod finished loading correctly! :D");
 	}
 

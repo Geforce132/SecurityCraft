@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -10,10 +12,11 @@ import net.minecraft.block.BlockGlass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider {
+public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedGlass(Material par1Material) {
 		super(par1Material, false);
@@ -38,6 +41,20 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 
 	@Override
 	public int quantityDropped(Random r)
+	{
+		return 1;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.glass
+		});
+	}
+
+	@Override
+	public int getAmount()
 	{
 		return 1;
 	}
