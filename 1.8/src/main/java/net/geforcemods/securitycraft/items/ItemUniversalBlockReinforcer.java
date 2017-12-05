@@ -72,7 +72,6 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 		HashSet<Block> set = Sets.newHashSet();
 
 		IReinforcedBlock.BLOCKS.forEach((reinforcedBlock) -> {
-			System.out.println(reinforcedBlock.getUnlocalizedName());
 			set.addAll(((IReinforcedBlock)reinforcedBlock).getVanillaBlocks());
 		});
 
