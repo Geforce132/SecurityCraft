@@ -49,15 +49,19 @@ public class ItemModule extends Item{
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		if(!par2World.isRemote) {
-			if(!par1ItemStack.hasTagCompound()) {
-				par1ItemStack.setTagCompound(new NBTTagCompound());
-				ClientUtils.syncItemNBT(par1ItemStack);
-			}
+		try
+		{
+			if(!par2World.isRemote) {
+				if(!par1ItemStack.hasTagCompound()) {
+					par1ItemStack.setTagCompound(new NBTTagCompound());
+					ClientUtils.syncItemNBT(par1ItemStack);
+				}
 
-			if(canBeCustomized())
-				par3EntityPlayer.openGui(mod_SecurityCraft.instance, guiToOpen, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+				if(canBeCustomized())
+					par3EntityPlayer.openGui(mod_SecurityCraft.instance, guiToOpen, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+			}
 		}
+		catch(NoSuchMethodError e) {/*:^)*/}
 
 		return par1ItemStack;
 	}

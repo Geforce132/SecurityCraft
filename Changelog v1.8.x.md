@@ -30,6 +30,7 @@
 - Fix: Crash involving the new Camera Monitor indicator (overlay in inventory when looking at a camera)
 - Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
 - Fix: Players get kicked sometimes when using the Codebreaker on a server
+- Fix: Issue when rightclicking a block with a module
 - Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
 

@@ -51,15 +51,19 @@ public class ItemModule extends Item{
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		if(!worldIn.isRemote) {
-			if(!itemStackIn.hasTagCompound()) {
-				itemStackIn.setTagCompound(new NBTTagCompound());
-				ClientUtils.syncItemNBT(itemStackIn);
-			}
+		try
+		{
+			if(!worldIn.isRemote) {
+				if(!itemStackIn.hasTagCompound()) {
+					itemStackIn.setTagCompound(new NBTTagCompound());
+					ClientUtils.syncItemNBT(itemStackIn);
+				}
 
-			if(canBeCustomized())
-				playerIn.openGui(mod_SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				if(canBeCustomized())
+					playerIn.openGui(mod_SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			}
 		}
+		catch(NoSuchMethodError e) {/*:^)*/}
 
 		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 	}
