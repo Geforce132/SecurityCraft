@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.collect.Ordering;
@@ -29,7 +28,6 @@ import net.geforcemods.securitycraft.handlers.ForgeEventHandler;
 import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassPanelRenderer;
 import net.geforcemods.securitycraft.imc.versionchecker.VersionUpdateChecker;
-import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -70,7 +68,6 @@ public class mod_SecurityCraft {
 
 	private GuiHandler GuiHandler = new GuiHandler();
 
-	public HashMap<String, SCIRCBot> ircBots = new HashMap<String, SCIRCBot>();
 	public LookingGlassPanelRenderer lgPanelRenderer;
 
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
@@ -278,27 +275,6 @@ public class mod_SecurityCraft {
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(mod_SecurityCraft.eventHandler);
 		log("Mod finished loading correctly! :D");
-	}
-
-	/**
-	 * Get the IRC bot for the given player.
-	 */
-	public SCIRCBot getIrcBot(String playerName) {
-		return ircBots.get(playerName);
-	}
-
-	/**
-	 * Create an IRC bot for the given player.
-	 */
-	public void createIrcBot(String playerName) {
-		ircBots.put(playerName, new SCIRCBot("SCUser_" + playerName));
-	}
-
-	/**
-	 * Remove/delete the given player's IRC bot.
-	 */
-	public void removeIrcBot(String playerName){
-		ircBots.remove(playerName);
 	}
 
 	public NBTTagCompound getSavedModule() {

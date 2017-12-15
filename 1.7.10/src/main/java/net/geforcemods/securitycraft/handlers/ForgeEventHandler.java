@@ -9,7 +9,6 @@ import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -22,7 +21,6 @@ import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.ircbot.SCIRCBot;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -60,7 +58,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
@@ -72,7 +69,7 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 
 public class ForgeEventHandler {
 
-	private static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
+	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
 
 	public ForgeEventHandler()
 	{
@@ -86,8 +83,6 @@ public class ForgeEventHandler {
 	 */
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		mod_SecurityCraft.instance.createIrcBot(event.player.getCommandSenderName());
-
 		String tipKey = getRandomTip();
 
 		IChatComponent chatcomponenttext;
@@ -98,17 +93,6 @@ public class ForgeEventHandler {
 
 		if(mod_SecurityCraft.configHandler.sayThanksMessage)
 			event.player.addChatComponentMessage(chatcomponenttext);
-	}
-
-	/**
-	 * Called whenever a {@link EntityPlayer} leaves the game.
-	 */
-	@SubscribeEvent
-	public void onPlayerLoggedOut(PlayerLoggedOutEvent event){
-		if(mod_SecurityCraft.configHandler.disconnectOnWorldClose && mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()) != null){
-			mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName()).disconnect();
-			mod_SecurityCraft.instance.removeIrcBot(event.player.getCommandSenderName());
-		}
 	}
 
 	@SubscribeEvent
@@ -130,19 +114,6 @@ public class ForgeEventHandler {
 			return;
 		event.result = result;
 		event.setResult(Result.ALLOW);
-	}
-
-	@SubscribeEvent
-	public void onServerChatEvent(ServerChatEvent event)
-	{
-		SCIRCBot bot = mod_SecurityCraft.instance.getIrcBot(event.player.getCommandSenderName());
-
-		if(bot != null && bot.getMessageMode())
-		{
-			event.setCanceled(true);
-			bot.sendMessage("> " + event.message);
-			bot.sendMessageToPlayer(EnumChatFormatting.GRAY + "<" + event.player.getCommandSenderName() + " --> IRC> " + event.message, event.player);
-		}
 	}
 
 	@SubscribeEvent

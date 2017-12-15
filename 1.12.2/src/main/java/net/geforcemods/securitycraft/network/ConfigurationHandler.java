@@ -190,8 +190,6 @@ public class ConfigurationHandler{
 	public boolean smallerMineExplosion;
 	public boolean mineExplodesWhenInCreative;
 	public boolean sayThanksMessage;
-	public boolean isIrcBotEnabled;
-	public boolean disconnectOnWorldClose;
 	public boolean checkForUpdates;
 	public double portableRadarSearchRadius;
 	public int usernameLoggerSearchRadius;
@@ -509,14 +507,6 @@ public class ConfigurationHandler{
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false);
 		dummyProp.setLanguageKey("config.debuggingMode");
 		mod_SecurityCraft.debuggingMode = dummyProp.getBoolean(false);
-
-		dummyProp = mod_SecurityCraft.configFile.get("options", "Is IRC bot enabled?", true);
-		dummyProp.setLanguageKey("config.isIrcBotEnabled");
-		isIrcBotEnabled = dummyProp.getBoolean(true);
-
-		dummyProp = mod_SecurityCraft.configFile.get("options", "Disconnect IRC bot on world exited?", true);
-		dummyProp.setLanguageKey("config.disconnectOnWorldClose");
-		disconnectOnWorldClose = dummyProp.getBoolean(true);
 
 		dummyProp = mod_SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
 		dummyProp.setLanguageKey("config.cameraSpeed");

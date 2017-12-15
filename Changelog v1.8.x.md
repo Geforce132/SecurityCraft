@@ -21,7 +21,6 @@
 - New: Information about how to exit the Security Camera
 - New: Cameras can now be unbound from within the Camera Monitors' GUI (press the X at the top right of the respective button)
 - New: [1.8+] JEI (JustEnoughItems) now shows information about blocks and items without a recipe
-- New: [1.8.8+] Buttons overlapping with the JEI interface are now accessible
 - Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable
 - Fix: Several incorrect language strings
@@ -31,8 +30,11 @@
 - Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
 - Fix: Players get kicked sometimes when using the Codebreaker on a server
 - Fix: Issue when rightclicking a block with a module
+- Fix: The sc command doesn't show help all the time when executing it incorrectly
 - Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
+- Fix: [1.8.8+] Buttons overlapping with the JEI interface are not accessible
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
+- Removed: 
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 
@@ -53,7 +55,7 @@
 - Fix: [1.12.2] Keycard recipes cannot be disabled via config
 - Fix: [1.12.2] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
 
---------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 with the reinforced blocks from v1.8.3 and call it "Reinforced Update" -.-)--------------------------
+--------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 with the reinforced blocks from v1.8.3 above and call it "Reinforced Update" -.-)--------------------------
 
 - New: Reinforced Blocks
     - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
