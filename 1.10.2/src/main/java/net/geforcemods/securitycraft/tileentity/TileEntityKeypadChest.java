@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -91,12 +92,15 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest)
+		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest & !isBlocked())
 			BlockKeypadChest.activate(worldObj, pos, player);
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
+		if(isBlocked())
+			return;
+
 		if(getPassword() != null)
 			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 		else
@@ -135,4 +139,26 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		owner.set(uuid, name);
 	}
 
+	public boolean isBlocked()
+	{
+		Block east = BlockUtils.getBlock(getWorld(), getPos().east());
+		Block south = BlockUtils.getBlock(getWorld(), getPos().south());
+		Block west = BlockUtils.getBlock(getWorld(), getPos().west());
+		Block north = BlockUtils.getBlock(getWorld(), getPos().north());
+
+		if(east instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().east()))
+			return true;
+		else if(south instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().south()))
+			return true;
+		else if(west instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().west()))
+			return true;
+		else if(north instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().north()))
+			return true;
+		else return isSingleBlocked();
+	}
+
+	public boolean isSingleBlocked()
+	{
+		return BlockKeypadChest.isBlocked(getWorld(), getPos());
+	}
 }

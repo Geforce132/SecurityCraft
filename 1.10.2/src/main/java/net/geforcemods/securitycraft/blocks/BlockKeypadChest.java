@@ -7,12 +7,15 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -40,7 +43,8 @@ public class BlockKeypadChest extends BlockChest {
 	}
 
 	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
-		player.displayGUIChest(((BlockChest) BlockUtils.getBlock(par1World, pos)).getLockableContainer(par1World, pos));
+		if(!isBlocked(par1World, pos))
+			player.displayGUIChest(((BlockChest) BlockUtils.getBlock(par1World, pos)).getLockableContainer(par1World, pos));
 	}
 
 	/**
@@ -79,4 +83,26 @@ public class BlockKeypadChest extends BlockChest {
 		return new TileEntityKeypadChest();
 	}
 
+	public static boolean isBlocked(World worldIn, BlockPos pos)
+	{
+		return isBelowSolidBlock(worldIn, pos) || isOcelotSittingOnChest(worldIn, pos);
+	}
+
+	private static boolean isBelowSolidBlock(World worldIn, BlockPos pos)
+	{
+		return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN);
+	}
+
+	private static boolean isOcelotSittingOnChest(World worldIn, BlockPos pos)
+	{
+		for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
+		{
+			EntityOcelot entityocelot = (EntityOcelot)entity;
+
+			if (entityocelot.isSitting())
+				return true;
+		}
+
+		return false;
+	}
 }

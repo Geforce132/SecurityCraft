@@ -31,6 +31,7 @@
 - Fix: Players get kicked sometimes when using the Codebreaker on a server
 - Fix: Issue when rightclicking a block with a module
 - Fix: The sc command doesn't show help all the time when executing it incorrectly
+- Fix: [1.8+] Crash when trying to open a blocked Password-protected Chest
 - Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
 - Fix: [1.8.8+] Buttons overlapping with the JEI interface are not accessible
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
