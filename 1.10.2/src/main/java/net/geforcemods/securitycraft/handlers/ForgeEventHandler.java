@@ -18,12 +18,14 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -139,7 +141,7 @@ public class ForgeEventHandler {
 						return;
 					}
 
-					event.getEntityPlayer().openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+					mod_SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.CUSTOMIZE_BLOCK, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()));
 					return;
 				}
 
@@ -208,7 +210,7 @@ public class ForgeEventHandler {
 					if(te.itemStacks[i] != null){
 						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						event.getWorld().spawnEntityInWorld(item);
+						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntityInWorld(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);

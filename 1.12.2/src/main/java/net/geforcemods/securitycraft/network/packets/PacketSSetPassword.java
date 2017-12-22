@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -47,14 +48,16 @@ public class PacketSSetPassword implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-			String password = packet.password;
-			EntityPlayer player = ctx.getServerHandler().player;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+				String password = packet.password;
+				EntityPlayer player = ctx.getServerHandler().player;
 
-			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
-				((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
-				checkForAdjecentChest(pos, password, player);
-			}
+				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
+					((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
+					checkForAdjecentChest(pos, password, player);
+				}
+			});
 
 			return null;
 		}

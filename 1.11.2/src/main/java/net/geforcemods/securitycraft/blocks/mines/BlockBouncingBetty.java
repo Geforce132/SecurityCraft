@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -98,7 +99,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(par1World, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
 		entitytntprimed.motionY = 0.50D;
-		par1World.spawnEntity(entitytntprimed);
+		WorldUtils.addScheduledTask(par1World, () -> par1World.spawnEntity(entitytntprimed));
 		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
 	}
 

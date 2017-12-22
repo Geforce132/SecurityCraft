@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -105,13 +106,13 @@ public class BlockSecurityCamera extends BlockContainer{
 
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.getRidingEntity());
-			world.spawnEntity(dummyEntity);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
 		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
-		world.spawnEntity(dummyEntity);
+		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
 		for(Object e : world.loadedEntityList)

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -45,15 +46,17 @@ public class PacketSetExplosiveState implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
-			EntityPlayer player = context.getServerHandler().player;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				EntityPlayer player = context.getServerHandler().player;
 
-			if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive)
-				if(packet.state.equalsIgnoreCase("activate"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).activateMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
-				else if(packet.state.equalsIgnoreCase("defuse"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).defuseMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
-				else if(packet.state.equalsIgnoreCase("detonate"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).explode(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
+				if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive)
+					if(packet.state.equalsIgnoreCase("activate"))
+						((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).activateMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
+					else if(packet.state.equalsIgnoreCase("defuse"))
+						((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).defuseMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
+					else if(packet.state.equalsIgnoreCase("detonate"))
+						((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).explode(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
+			});
 
 			return null;
 		}

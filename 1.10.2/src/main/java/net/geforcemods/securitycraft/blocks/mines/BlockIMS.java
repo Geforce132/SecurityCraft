@@ -16,9 +16,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -57,10 +59,12 @@ public class BlockIMS extends BlockOwnable {
 		return new AxisAlignedBB(0F, 0F, 0F, 1F, 0.45F, 1F);
 	}
 
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote)
-			if(((IOwnable) par1World.getTileEntity(pos)).getOwner().isOwner(par5EntityPlayer)){
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	{
+		if(!worldIn.isRemote)
+			if(((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
+				playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 

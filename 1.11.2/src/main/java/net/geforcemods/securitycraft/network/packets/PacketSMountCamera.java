@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -46,14 +47,16 @@ public class PacketSMountCamera implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSMountCamera packet, MessageContext context) {
-			int x = packet.x;
-			int y = packet.y;
-			int z = packet.z;
-			int id = packet.id;
-			EntityPlayerMP player = context.getServerHandler().playerEntity;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				int x = packet.x;
+				int y = packet.y;
+				int z = packet.z;
+				int id = packet.id;
+				EntityPlayerMP player = context.getServerHandler().playerEntity;
 
-			if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))
-				((BlockSecurityCamera) BlockUtils.getBlock(getWorld(player), x, y, z)).mountCamera(getWorld(player), x, y, z, id, player);
+				if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))
+					((BlockSecurityCamera) BlockUtils.getBlock(getWorld(player), x, y, z)).mountCamera(getWorld(player), x, y, z, id, player);
+			});
 
 			return null;
 		}

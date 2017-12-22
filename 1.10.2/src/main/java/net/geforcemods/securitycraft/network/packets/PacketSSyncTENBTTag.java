@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -46,12 +47,14 @@ public class PacketSSyncTENBTTag implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSSyncTENBTTag packet, MessageContext ctx) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-			NBTTagCompound tag = packet.tag;
-			EntityPlayer player = ctx.getServerHandler().playerEntity;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+				NBTTagCompound tag = packet.tag;
+				EntityPlayer player = ctx.getServerHandler().playerEntity;
 
-			if(getWorld(player).getTileEntity(pos) != null)
-				getWorld(player).getTileEntity(pos).readFromNBT(tag);
+				if(getWorld(player).getTileEntity(pos) != null)
+					getWorld(player).getTileEntity(pos).readFromNBT(tag);
+			});
 
 			return null;
 		}

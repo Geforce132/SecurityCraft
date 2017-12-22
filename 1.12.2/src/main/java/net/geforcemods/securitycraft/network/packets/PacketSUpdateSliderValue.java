@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -41,16 +42,18 @@ public class PacketSUpdateSliderValue implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
-			BlockPos pos = packet.pos;
-			int id = packet.id;
-			double value = packet.value;
-			EntityPlayer par1EntityPlayer = context.getServerHandler().player;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = packet.pos;
+				int id = packet.id;
+				double value = packet.value;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
-			if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
-				((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]).setValue(value);
-				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
-				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
-			}
+				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
+					((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]).setValue(value);
+					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
+					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
+				}
+			});
 
 			return null;
 		}

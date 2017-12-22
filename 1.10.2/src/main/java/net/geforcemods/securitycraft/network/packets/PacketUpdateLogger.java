@@ -53,15 +53,17 @@ public class PacketUpdateLogger implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketUpdateLogger packet, MessageContext context) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-			int i = packet.i;
-			String username = packet.username;
-			EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+				int i = packet.i;
+				String username = packet.username;
+				EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
 
-			TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(pos);
+				TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(pos);
 
-			if(te != null)
-				te.players[i] = username;
+				if(te != null)
+					te.players[i] = username;
+			});
 
 			return null;
 		}

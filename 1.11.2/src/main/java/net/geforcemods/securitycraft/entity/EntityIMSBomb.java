@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,7 +65,7 @@ public class EntityIMSBomb extends EntityFireball {
 
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, posX, posY, posZ, d5, d6, d7, 0);
 			entitylargefireball.launching = false;
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 			setDead();
 		}else if(targetMob != null && !targetMob.isDead){
 			double d5 = targetMob.posX - posX;
@@ -73,7 +74,7 @@ public class EntityIMSBomb extends EntityFireball {
 
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, targetMob, posX, posY, posZ, d5, d6, d7, 0);
 			entitylargefireball.launching = false;
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 			setDead();
 		}
 		else

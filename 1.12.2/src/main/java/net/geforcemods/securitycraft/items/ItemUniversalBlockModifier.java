@@ -7,5 +7,4 @@ public class ItemUniversalBlockModifier extends Item{
 	public ItemUniversalBlockModifier() {
 		super();
 	}
-
 }

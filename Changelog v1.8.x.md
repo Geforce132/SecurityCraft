@@ -30,12 +30,15 @@
 - Fix: The Camera Monitor's inventory overlay sometimes shows incorrect information
 - Fix: Players get kicked sometimes when using the Codebreaker on a server
 - Fix: Issue when rightclicking a block with a module
-- Fix: The sc command doesn't show help all the time when executing it incorrectly
+- Fix: The '/sc' command doesn't always show help when executing it incorrectly
 - Fix: [1.8+] Crash when trying to open a blocked Password-protected Chest
+- Fix: [1.8+] Unlocalized string in I.M.S. settings menu
 - Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
 - Fix: [1.8.8+] Buttons overlapping with the JEI interface are not accessible
+- Fix: [1.10.2+] Sponge incompatibilities (untested on 1.10.2 and 1.11.2, please report any issues you find to our Discord's #bugreport channel)
+- Fix: [1.10.2+] I.M.S. settings menu is not accessible
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
-- Removed: 
+- Removed: IRC support chat. Please refer to the #help channel on SecurityCraft's Discord! https://discord.gg/U8DvBAW
 
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 

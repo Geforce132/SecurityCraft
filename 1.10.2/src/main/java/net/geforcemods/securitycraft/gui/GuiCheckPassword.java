@@ -199,5 +199,4 @@ public class GuiCheckPassword extends GuiContainer {
 	public void checkCode(String par1String) {
 		mod_SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), par1String));
 	}
-
 }

@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -145,7 +146,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().length; i++)
 			if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i] != null){
 				EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents()[i]);
-				par1World.spawnEntityInWorld(item);
+				WorldUtils.addScheduledTask(par1World, () -> par1World.spawnEntityInWorld(item));
 			}
 
 		if(state.getValue(FACING) == EnumFacing.NORTH && par1World.getBlockState(pos.south()).getBlock() == mod_SecurityCraft.inventoryScannerField)

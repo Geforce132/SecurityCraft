@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -43,13 +44,16 @@ public class PacketSOpenGui implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
-			int id = packet.id;
-			int x = packet.x;
-			int y = packet.y;
-			int z = packet.z;
-			EntityPlayerMP player = context.getServerHandler().player;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				int id = packet.id;
+				int x = packet.x;
+				int y = packet.y;
+				int z = packet.z;
+				EntityPlayerMP player = context.getServerHandler().player;
 
-			player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
+				player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
+			});
+
 			return null;
 		}
 	}

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -42,18 +43,20 @@ public class PacketSToggleOption implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
-			int x = packet.x;
-			int y = packet.y;
-			int z = packet.z;
-			BlockPos pos = BlockUtils.toPos(x, y, z);
-			int id = packet.id;
-			EntityPlayer par1EntityPlayer = context.getServerHandler().player;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				int x = packet.x;
+				int y = packet.y;
+				int z = packet.z;
+				BlockPos pos = BlockUtils.toPos(x, y, z);
+				int id = packet.id;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
-			if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
-				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();
-				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
-				((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
-			}
+				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
+					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();
+					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
+					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
+				}
+			});
 
 			return null;
 		}

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -40,10 +41,13 @@ public class PacketSRemoveCameraTag implements IMessage
 		@Override
 		public IMessage onMessage(PacketSRemoveCameraTag packet, MessageContext context)
 		{
-			ItemStack monitor = context.getServerHandler().player.inventory.getCurrentItem();
-			int id = packet.camID;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				ItemStack monitor = context.getServerHandler().player.inventory.getCurrentItem();
+				int id = packet.camID;
 
-			monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));
+				monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));
+			});
+
 			return null;
 		}
 	}

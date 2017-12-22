@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -58,14 +59,16 @@ public class PacketSAddModules implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSAddModules packet, MessageContext context) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-			ItemStack[] modules = packet.modules;
-			EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+				ItemStack[] modules = packet.modules;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
-			if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE)
-				for(ItemStack module : modules)
-					if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).hasModule(EnumCustomModules.getModuleFromStack(module)))
-						((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).insertModule(module);
+				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE)
+					for(ItemStack module : modules)
+						if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).hasModule(EnumCustomModules.getModuleFromStack(module)))
+							((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).insertModule(module);
+			});
 
 			return null;
 		}

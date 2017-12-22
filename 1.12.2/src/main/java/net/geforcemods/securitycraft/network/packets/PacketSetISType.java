@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -49,14 +50,16 @@ public class PacketSetISType implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSetISType packet, MessageContext context) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 
-			((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setType(packet.type);
+				((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setType(packet.type);
 
-			mod_SecurityCraft.log("Setting type to " + packet.type);
-			getWorld(context.getServerHandler().player).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().player), pos), 1);
+				mod_SecurityCraft.log("Setting type to " + packet.type);
+				getWorld(context.getServerHandler().player).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().player), pos), 1);
 
-			Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getType());
+				Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getType());
+			});
 
 			return null;
 		}

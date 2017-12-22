@@ -129,16 +129,16 @@ public class TileEntityIMS extends CustomizableSCTE {
 	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
 		if(bombsRemaining == 4){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 3){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 2){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 1){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}
 	}
 
@@ -148,16 +148,16 @@ public class TileEntityIMS extends CustomizableSCTE {
 	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
 		if(bombsRemaining == 4){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 3){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 2){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}else if(bombsRemaining == 1){
 			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			world.spawnEntity(entitylargefireball);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 		}
 	}
 

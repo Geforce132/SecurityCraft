@@ -74,7 +74,7 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS)
-			targetButton.displayString = ClientUtils.localize("tooltip.module.players");
+			targetButton.displayString = ClientUtils.localize("tooltip.module.playerCustomization.players");
 		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.displayString = ClientUtils.localize("gui.ims.hostileAndPlayers");
 	}
