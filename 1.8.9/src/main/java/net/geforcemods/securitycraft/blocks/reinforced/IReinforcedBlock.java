@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
-import scala.actors.threadpool.Arrays;
 
 public interface IReinforcedBlock
 {
