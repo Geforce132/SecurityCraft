@@ -1,41 +1,50 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/securitycraft-mod/files",
   "promos": {
-    "1.7.10-latest": "v1.8.2.4",
-    "1.7.10-recommended": "v1.8.2.4",
-    "1.8-latest": "v1.8.2.4",
-    "1.8-recommended": "v1.8.2.4",
-    "1.8.8-latest": "v1.8.2.4",
-    "1.8.8-recommended": "v1.8.2.4",
-    "1.10.2-latest": "v1.8.2.4",
-    "1.10.2-recommended": "v1.8.2.4",
-    "1.11.2-latest": "v1.8.2.4",
-    "1.11.2-recommended": "v1.8.2.4",
-    "1.11.2-latest": "v1.8.2.4",
-    "1.11.2-recommended": "v1.8.2.4",
+    "1.7.10-latest": "v1.8.3",
+    "1.7.10-recommended": "v1.8.3",
+    "1.8-latest": "v1.8.3",
+    "1.8-recommended": "v1.8.3",
+    "1.8.8-latest": "v1.8.3",
+    "1.8.8-recommended": "v1.8.3",
+    "1.8.9-latest": "v1.8.3",
+    "1.8.9-recommended": "v1.8.3",
+    "1.10.2-latest": "v1.8.3",
+    "1.10.2-recommended": "v1.8.3",
+    "1.11.2-latest": "v1.8.3",
+    "1.11.2-recommended": "v1.8.3",
+    "1.12-latest": "v1.8.3",
+    "1.12-recommended": "v1.8.3",
+    "1.12.1-latest": "v1.8.3",
+    "1.12.1-recommended": "v1.8.3",
+    "1.12.2-latest": "v1.8.3",
+    "1.12.2-recommended": "v1.8.3"
   },
   "1.7.10": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.8": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.8.8": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
+  },
+  "1.8.9": {
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.10.2": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.11.2": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.12": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.12.1": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   },
   "1.12.2": {
-    "v1.8.2.4": "The seventh revision of the Security Camera update! Tons of bugfixes and a few small new features!"
+    "v1.8.3": "Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"
   }  
 }
