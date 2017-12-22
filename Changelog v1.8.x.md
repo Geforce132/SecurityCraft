@@ -19,7 +19,7 @@
     - [1.12.2] Concrete
 - New: Keypad Gurnace
 - New: Information about how to exit the Security Camera
-- New: Cameras can now be unbound from within the Camera Monitors' GUI (press the X at the top right of the respective button)
+- New: Cameras can now be unbound from within the Camera Monitors' GUI, even if they're no longer present in the world (press the X at the top right of the respective button)
 - New: [1.8+] JEI (JustEnoughItems) now shows information about blocks and items without a recipe
 - Change: The SecurityCraft Manual now only displays one general page about reinforced blocks as not to clutter the book
 - Fix: Reinforced Stained Hardened Clay (1.12.2: Terracotta) isn't craftable

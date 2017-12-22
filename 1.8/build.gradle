@@ -21,11 +21,15 @@ version = "1.0"
 group= "com.yourname.modid" 
 archivesBaseName = "securitycraft"
 
+sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
 minecraft {
     version = "1.8-11.14.1.1338"
     assetDir = "eclipse/assets"
     mappings = "stable_18"
-    useDepAts = true
 }
 
 repositories {
@@ -41,7 +45,7 @@ repositories {
 
 dependencies {
     compile files('lib/Waila-1.6.0-B2_1.8.jar')
-    deobfCompile 'mezz.jei:jei_1.8:2.15.0.155'
+    compile files('lib/jei_1.8-2.15.0.155.jar')
 }
 
 task deobfJar(type: Jar) {
