@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -48,7 +48,8 @@ public class PacketSSetPassword implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			System.out.println("blasbljadsjs");
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				String password = packet.password;
 				EntityPlayer player = ctx.getServerHandler().player;

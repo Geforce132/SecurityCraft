@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -47,7 +47,7 @@ public class PacketSMountCamera implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSMountCamera packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;

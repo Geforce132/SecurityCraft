@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -49,7 +49,7 @@ public class PacketSetKeycardLevel implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSetKeycardLevel packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				int level = packet.level;
 				boolean exactCard = packet.exactCard;

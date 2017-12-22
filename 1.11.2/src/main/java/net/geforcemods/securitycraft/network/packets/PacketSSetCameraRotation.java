@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -37,7 +37,7 @@ public class PacketSSetCameraRotation implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().playerEntity), () -> {
 				EntityPlayer player = ctx.getServerHandler().playerEntity;
 
 				if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){

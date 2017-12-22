@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -57,7 +57,7 @@ public class PacketSetBlock implements IMessage{
 		//TODO
 		@Override
 		public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;

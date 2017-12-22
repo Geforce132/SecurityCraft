@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -43,7 +43,7 @@ public class PacketSToggleOption implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;

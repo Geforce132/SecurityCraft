@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -47,7 +47,7 @@ public class PacketSSyncTENBTTag implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSSyncTENBTTag packet, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				NBTTagCompound tag = packet.tag;
 				EntityPlayer player = ctx.getServerHandler().player;

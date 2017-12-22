@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -41,7 +41,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
 				if(!context.getServerHandler().playerEntity.inventory.getCurrentItem().isEmpty() && context.getServerHandler().playerEntity.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName))
 					context.getServerHandler().playerEntity.inventory.getCurrentItem().setTagCompound(packet.stack);
 			});

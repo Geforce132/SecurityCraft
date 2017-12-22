@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.packets;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -42,7 +42,7 @@ public class PacketSUpdateSliderValue implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
 				BlockPos pos = packet.pos;
 				int id = packet.id;
 				double value = packet.value;
