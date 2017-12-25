@@ -40,6 +40,9 @@
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
 - Removed: IRC support chat. Please refer to the #help channel on SecurityCraft's Discord! https://discord.gg/U8DvBAW
 
+**Hotfixes:**
+- Fix: [1.10.2] Crash on server startup (Thanks Baconator_NoVeg!)
+
 --------------------------Changelog for v1.8.2.4 of SecurityCraft (this should have been v1.8.4.1)--------------------------
 
 - New: Camera can be set to a fixed angle using the Universal Block Modifier
