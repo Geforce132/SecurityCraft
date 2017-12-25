@@ -48,7 +48,6 @@ public class PacketSSetPassword implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
-			System.out.println("blasbljadsjs");
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				String password = packet.password;
