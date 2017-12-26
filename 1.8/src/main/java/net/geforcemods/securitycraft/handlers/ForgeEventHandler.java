@@ -357,7 +357,6 @@ public class ForgeEventHandler {
 	private String getRandomTip(){
 		String[] tips = {
 				"messages.tip.scHelp",
-				"messages.tip.scConnect",
 				"messages.tip.trello",
 				"messages.tip.patreon",
 				"messages.tip.discord",

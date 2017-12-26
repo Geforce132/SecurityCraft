@@ -5,7 +5,9 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -28,7 +30,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
+public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
 
 	public BlockKeypad(Material par2Material) {
 		super(par2Material);
@@ -203,5 +205,21 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		ItemStack stack = getDisplayStack(world, x, y, z);
 
 		return stack == null ? new ItemStack(this) : stack;
+	}
+
+	@Override
+	public Block getOriginalBlock()
+	{
+		return mod_SecurityCraft.frame;
+	}
+
+	@Override
+	public boolean convert(EntityPlayer player, World world, int x, int y, int z)
+	{
+		Owner owner = ((IOwnable) world.getTileEntity(x, y, z)).getOwner();
+
+		world.setBlock(x, y, z, mod_SecurityCraft.keypad, world.getBlockMetadata(x, y, z), 3);
+		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(owner);
+		return true;
 	}
 }

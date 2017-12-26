@@ -1,9 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -21,23 +18,20 @@ public class ItemKeyPanel extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse( EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		ItemStack stack = playerIn.getHeldItem(hand);
-
+	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(!worldIn.isRemote){
-			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.frame){
-				Owner owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
-				EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(BlockKeypad.FACING);
-				worldIn.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, enumfacing).withProperty(BlockKeypad.POWERED, false));
-				((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
-				stack.shrink(1);
-			}
+			ItemStack stack = playerIn.getHeldItem(hand);
 
+			IPasswordConvertible.BLOCKS.forEach((pc) -> {
+				if(BlockUtils.getBlock(worldIn, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
+				{
+					if(((IPasswordConvertible)pc).convert(playerIn, worldIn, pos) && !playerIn.capabilities.isCreativeMode)
+						stack.shrink(1);
+				}
+			});
 			return EnumActionResult.SUCCESS;
 		}
 
 		return EnumActionResult.FAIL;
 	}
-
-
 }

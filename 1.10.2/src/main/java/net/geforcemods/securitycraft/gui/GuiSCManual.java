@@ -134,7 +134,9 @@ public class GuiSCManual extends GuiScreen {
 			}
 
 			if(recipe != null)
+			{
 				for(int i = 0; i < 3; i++)
+				{
 					for(int j = 0; j < 3; j++){
 						if(((i * 3) + j) >= recipe.length)
 							break;
@@ -146,11 +148,17 @@ public class GuiSCManual extends GuiScreen {
 						else
 							GuiUtils.drawItemStackToGui(mc, recipe[(i * 3) + j].getItem(), recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
 					}
+				}
+			}
 
 			for(CustomHoverChecker chc : hoverCheckers)
+			{
 				if(chc != null && chc.checkHover(par1, par2))
+				{
 					if(chc.getName() != null)
 						drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(chc.getName(), 250), par1, par2, mc.fontRendererObj);
+				}
+			}
 		}
 	}
 
@@ -235,8 +243,10 @@ public class GuiSCManual extends GuiScreen {
 			}
 
 		if(recipe != null)
+		{
 			outer:
 				for(int i = 0; i < 3; i++)
+				{
 					for(int j = 0; j < 3; j++)
 					{
 						if((i * 3) + j == recipe.length)
@@ -245,15 +255,16 @@ public class GuiSCManual extends GuiScreen {
 						if(recipe[(i * 3) + j] != null)
 							hoverCheckers.add(new CustomHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (k + 100) + (j * 20), (k + 100) + (j * 20) + 16, 20, recipe[(i * 3) + j].getDisplayName()));
 					}
+				}
+		}
 		else if(mod_SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.disabled")));
 		else if(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe.reinforced")));
 		else
 		{
-			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItemName();
+			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getResourcePath();
 
-			name = name.substring(0, 1).toLowerCase() + name.substring(1, name.length()).replace(" ", ""); //make first character lower case and remove spaces
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe." + name)));
 		}
 

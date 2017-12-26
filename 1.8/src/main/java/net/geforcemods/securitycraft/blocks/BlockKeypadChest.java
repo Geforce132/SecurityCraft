@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -13,14 +14,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class BlockKeypadChest extends BlockChest {
+public class BlockKeypadChest extends BlockChest implements IPasswordConvertible {
 
 	public BlockKeypadChest(int par1){
 		super(par1);
@@ -111,6 +115,27 @@ public class BlockKeypadChest extends BlockChest {
 		}
 		while (!entityocelot.isSitting());
 
+		return true;
+	}
+
+	@Override
+	public Block getOriginalBlock()
+	{
+		return Blocks.chest;
+	}
+
+	@Override
+	public boolean convert(EntityPlayer player, World world, BlockPos pos)
+	{
+		EnumFacing enumfacing = (EnumFacing)world.getBlockState(pos).getValue(FACING);
+		TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
+		NBTTagCompound tag = new NBTTagCompound();
+
+		chest.writeToNBT(tag);
+		chest.clear();
+		world.setBlockState(pos, mod_SecurityCraft.keypadChest.getDefaultState().withProperty(FACING, enumfacing));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
+		((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;
 	}
 }

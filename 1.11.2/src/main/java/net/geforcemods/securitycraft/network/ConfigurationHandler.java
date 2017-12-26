@@ -549,7 +549,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
 		registerBlock(mod_SecurityCraft.unbreakableIronBars, false);
-		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ ItemStack.EMPTY, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.REDSTONE), ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.CHEST)), ItemStack.EMPTY});
+		registerBlock(mod_SecurityCraft.keypadChest);
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerBlock(mod_SecurityCraft.alarm);
 		GameRegistry.register(mod_SecurityCraft.alarmLit);
@@ -753,10 +753,6 @@ public class ConfigurationHandler{
 				"III", "ITI", "IRI", 'I', Items.IRON_INGOT, 'T', Blocks.REDSTONE_TORCH, 'R', Items.REDSTONE
 		});
 
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-				"K", "R", "C", 'K', mod_SecurityCraft.keyPanel, 'R', Items.REDSTONE, 'C', Blocks.CHEST
-		});
-
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
 				" R ", " DG", "S  ", 'R', Blocks.REDSTONE_TORCH, 'D', Items.DIAMOND, 'G', Items.GOLD_INGOT, 'S', Items.STICK
 		});
@@ -852,10 +848,6 @@ public class ConfigurationHandler{
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.usernameLogger, 1), new Object[]{
 				"SPS", "SRS", "SSS", 'S', Blocks.STONE, 'P', mod_SecurityCraft.portableRadar, 'R', Items.REDSTONE
-		});
-
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
-				"K", "F", "P", 'K', mod_SecurityCraft.frame, 'F', Blocks.FURNACE, 'P', mod_SecurityCraft.keyPanel
 		});
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.claymore, 1), new Object[]{
@@ -1062,23 +1054,6 @@ public class ConfigurationHandler{
 				mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.reinforced.info"));
 			else
 				mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
-	}
-
-	/**
-	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
-	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
-	 *
-	 */
-	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){
-		GameRegistry.register(block);
-		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName().toString()));
-
-		NonNullList<ItemStack> recipeItems = NonNullList.<ItemStack>withSize(customRecipe.length, ItemStack.EMPTY);
-
-		for(int i = 0; i < recipeItems.size(); i++)
-			recipeItems.set(i, customRecipe[i]);
-
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", recipeItems));
 	}
 
 	/**

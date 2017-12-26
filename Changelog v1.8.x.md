@@ -1,3 +1,10 @@
+--------------------------Changelog for v1.? of SecurityCraft--------------------------
+
+- Change: Password-protected blocks no longer have a crafting recipe. Instead, rightclick a Frame/Chest/Furnace with a Key Panel to create them (any contents are safe!)
+- Fix: [1.8-1.8.8/9] Reinforced Iron Fence Gate is not craftable
+- Fix: [1.11.2+] Incorrect string in Password-protected Furnace GUI
+- Removed: Tip for /sc connect
+
 --------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
 
 - New: Reinforced Blocks

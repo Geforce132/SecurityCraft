@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -37,7 +38,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
+public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -114,7 +115,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker))
+			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker) && !PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.keyPanel))
 				((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 
 			return true;
@@ -310,5 +311,19 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay {
 		ItemStack stack = getDisguisedStack(world, pos);
 
 		return stack == null ? new ItemStack(this) : stack;
+	}
+
+	@Override
+	public Block getOriginalBlock()
+	{
+		return mod_SecurityCraft.frame;
+	}
+
+	@Override
+	public boolean convert(EntityPlayer player, World world, BlockPos pos)
+	{
+		world.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(((IOwnable)world.getTileEntity(pos)).getOwner());
+		return true;
 	}
 }

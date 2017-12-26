@@ -7,8 +7,8 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.JEIPlugin;
+import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -18,9 +18,9 @@ public class SCJEIPlugin implements IModPlugin
 	public void register(IModRegistry registry)
 	{
 		registry.addAdvancedGuiHandlers(new SlotMover());
-		registry.addDescription(new ItemStack(mod_SecurityCraft.adminTool), "gui.scManual.recipe.adminTool");
-		registry.addDescription(new ItemStack(mod_SecurityCraft.keypad), "gui.scManual.recipe.keypad");
-		registry.addDescription(new ItemStack(mod_SecurityCraft.scManual), "gui.scManual.recipe.scManual");
+		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
+			registry.addDescription(new ItemStack(pc), "gui.scManual.recipe." + pc.getRegistryName().split(":")[1]);
+		});
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 

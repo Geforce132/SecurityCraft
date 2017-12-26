@@ -38,7 +38,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	{
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName() : ClientUtils.localize(ClientUtils.localize("gui.protectedFurnace.name"), new Object[0]));
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.protectedFurnace.name"), 8, ySize - 96 + 2, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

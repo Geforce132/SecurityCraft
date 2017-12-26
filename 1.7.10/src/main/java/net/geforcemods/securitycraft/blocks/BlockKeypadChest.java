@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
@@ -8,12 +9,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 
-public class BlockKeypadChest extends BlockChest {
+public class BlockKeypadChest extends BlockChest implements IPasswordConvertible{
 
 	public BlockKeypadChest(int par1){
 		super(par1);
@@ -25,6 +29,7 @@ public class BlockKeypadChest extends BlockChest {
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote) {
+			System.out.println("rc:"+par1World.getBlockMetadata(par2, par3, par4));
 			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker) && par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest)
 				((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
 
@@ -81,4 +86,30 @@ public class BlockKeypadChest extends BlockChest {
 		return new TileEntityKeypadChest();
 	}
 
+	@Override
+	public Block getOriginalBlock()
+	{
+		return Blocks.chest;
+	}
+
+	@Override
+	public boolean convert(EntityPlayer player, World world, int x, int y, int z)
+	{
+		TileEntityChest chest = (TileEntityChest)world.getTileEntity(x, y, z);
+		NBTTagCompound tag = new NBTTagCompound();
+		int newMeta = world.getBlockMetadata(x, y, z);
+
+		chest.writeToNBT(tag);
+
+		for(int i = 0; i < chest.getSizeInventory(); i++)
+		{
+			chest.setInventorySlotContents(i, null);
+		}
+
+		world.setBlock(x, y, z, mod_SecurityCraft.keypadChest, newMeta, 3);
+		world.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
+		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
+		((TileEntityChest)world.getTileEntity(x, y, z)).readFromNBT(tag);
+		return true;
+	}
 }

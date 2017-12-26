@@ -139,7 +139,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
@@ -541,7 +540,7 @@ public class ConfigurationHandler{
 		registerBlock(mod_SecurityCraft.cageTrap);
 		registerBlock(mod_SecurityCraft.portableRadar);
 		registerReinforcedBlock(mod_SecurityCraft.reinforcedStone, ItemBlockReinforcedStone.class);
-		registerBlockWithCustomRecipe(mod_SecurityCraft.keypadChest, new ItemStack[]{ null, ItemUtils.toItemStack(mod_SecurityCraft.keyPanel), null, null, ItemUtils.toItemStack(Items.redstone), null, null, ItemUtils.toItemStack(Item.getItemFromBlock(Blocks.chest)), null});
+		registerBlock(mod_SecurityCraft.keypadChest);
 		registerBlock(mod_SecurityCraft.usernameLogger);
 		registerReinforcedBlock(mod_SecurityCraft.reinforcedGlassPane);
 		registerBlock(mod_SecurityCraft.alarm);
@@ -739,10 +738,6 @@ public class ConfigurationHandler{
 				"III", "ITI", "IRI", 'I', Items.iron_ingot, 'T', Blocks.redstone_torch, 'R', Items.redstone
 		});
 
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadChest, 1), new Object[]{
-				"K", "R", "C", 'K', mod_SecurityCraft.keyPanel, 'R', Items.redstone, 'C', Blocks.chest
-		});
-
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.remoteAccessMine, 1), new Object[]{
 				" R ", " DG", "S  ", 'R', Blocks.redstone_torch, 'D', Items.diamond, 'G', Items.gold_ingot, 'S', Items.stick
 		});
@@ -773,9 +768,24 @@ public class ConfigurationHandler{
 				"GGG", "GNG", "GRG", 'G', Blocks.glass, 'R', Items.redstone, 'N', Blocks.noteblock
 		});
 
-		//		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
-		//			" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.fence_gate
-		//		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.acacia_fence_gate
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.birch_fence_gate
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.dark_oak_fence_gate
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.jungle_fence_gate
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence_gate
+		});
+		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.reinforcedFencegate, 1), new Object[]{
+				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.spruce_fence_gate
+		});
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.wireCutters, 1), new Object[]{
 				"SI ", "I I", " I ", 'I', Items.iron_ingot, 'S', Items.shears
@@ -823,10 +833,6 @@ public class ConfigurationHandler{
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.usernameLogger, 1), new Object[]{
 				"SPS", "SRS", "SSS", 'S', Blocks.stone, 'P', mod_SecurityCraft.portableRadar, 'R', Items.redstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.keypadFurnace, 1), new Object[]{
-				"K", "F", "P", 'K', mod_SecurityCraft.frame, 'F', Blocks.furnace, 'P', mod_SecurityCraft.keyPanel
 		});
 
 		GameRegistry.addRecipe(new ItemStack(mod_SecurityCraft.claymore, 1), new Object[]{
@@ -1034,17 +1040,6 @@ public class ConfigurationHandler{
 			mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.reinforced.info"));
 			hasReinforcedPage = true;
 		}
-	}
-
-	/**
-	 * Registers the given block with GameRegistry.registerBlock(), and adds the help info for the block to the SecurityCraft manual item.
-	 * Also overrides the default recipe that would've been drawn in the manual with a new recipe.
-	 *
-	 */
-	private void registerBlockWithCustomRecipe(Block block, ItemStack... customRecipe){
-		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
-
-		mod_SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info", customRecipe));
 	}
 
 	/**

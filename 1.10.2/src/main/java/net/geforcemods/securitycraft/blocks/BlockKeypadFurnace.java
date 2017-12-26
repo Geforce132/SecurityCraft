@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -14,15 +16,18 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockKeypadFurnace extends BlockOwnable {
+public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvertible {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
@@ -117,4 +122,23 @@ public class BlockKeypadFurnace extends BlockOwnable {
 		return new TileEntityKeypadFurnace();
 	}
 
+	@Override
+	public Block getOriginalBlock()
+	{
+		return Blocks.FURNACE;
+	}
+
+	@Override
+	public boolean convert(EntityPlayer player, World world, BlockPos pos)
+	{
+		EnumFacing enumfacing = world.getBlockState(pos).getValue(FACING);
+		TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
+		NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
+
+		furnace.clear();
+		world.setBlockState(pos, mod_SecurityCraft.keypadFurnace.getDefaultState().withProperty(FACING, enumfacing).withProperty(OPEN, false));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
+		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
+		return true;
+	}
 }
