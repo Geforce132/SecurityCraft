@@ -69,7 +69,7 @@ public class BlockPortableRadar extends BlockContainer {
 				}
 
 			while (iterator.hasNext()){
-				EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwner().getName());
+				EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwner().getName());
 
 				entityplayer = (EntityPlayer)iterator.next();
 
@@ -123,7 +123,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		sidesIcon = par1IconRegister.registerIcon("securitycraft:portableRadarSides");
 		topIcon = par1IconRegister.registerIcon("securitycraft:portableRadarTop1");
 	}

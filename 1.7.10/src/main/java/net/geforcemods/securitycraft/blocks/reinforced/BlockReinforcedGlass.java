@@ -30,7 +30,7 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IIconRegister){
+	public void registerIcons(IIconRegister par1IIconRegister){
 		blockIcon = par1IIconRegister.registerIcon("securitycraft:glass_reinforced");
 	}
 

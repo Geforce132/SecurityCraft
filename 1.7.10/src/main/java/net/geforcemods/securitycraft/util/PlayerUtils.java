@@ -76,7 +76,7 @@ public class PlayerUtils{
 			return false;
 		}
 		else
-			return (MinecraftServer.getServer().getConfigurationManager().func_152612_a(par1) != null);
+			return (MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(par1) != null);
 	}
 
 	/**

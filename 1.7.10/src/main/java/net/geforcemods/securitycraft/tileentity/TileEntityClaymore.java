@@ -21,10 +21,10 @@ public class TileEntityClaymore extends TileEntitySCTE{
 
 	@Override
 	public void updateEntity() {
-		if(getWorldObj().isRemote)
+		if(getWorld().isRemote)
 			return;
 		else{
-			if(getWorldObj().getBlock(xCoord, yCoord, zCoord) == mod_SecurityCraft.claymoreDefused)
+			if(getWorld().getBlock(xCoord, yCoord, zCoord) == mod_SecurityCraft.claymoreDefused)
 				return;
 
 			if(cooldown > 0){
@@ -33,12 +33,12 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 
 			if(cooldown == 0){
-				BlockUtils.destroyBlock(getWorldObj(), xCoord, yCoord, zCoord, false);
-				getWorldObj().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
+				BlockUtils.destroyBlock(getWorld(), xCoord, yCoord, zCoord, false);
+				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
 				return;
 			}
 
-			int meta = getWorldObj().getBlockMetadata(xCoord, yCoord, zCoord);
+			int meta = getWorld().getBlockMetadata(xCoord, yCoord, zCoord);
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
 
 			if(meta == 3)
@@ -50,7 +50,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			else if(meta == 4)
 				axisalignedbb = axisalignedbb.addCoord(-mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
 
-			List<?> list = getWorldObj().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 			Iterator<?> iterator = list.iterator();
 			EntityLivingBase entityliving;
 
@@ -65,7 +65,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 				entityZ = entityliving.posZ;
 				cooldown = 20;
 
-				getWorldObj().playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.3F, 0.6F);
+				getWorld().playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.3F, 0.6F);
 				break;
 			}
 		}

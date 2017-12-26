@@ -53,7 +53,7 @@ public class BlockInventoryScannerField extends Block{
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block) {
 		if(!par1World.isRemote)
 			if(!Utils.hasInventoryScannerFacingBlock(par1World, par2, par3, par4))
-				par1World.func_147480_a(par2, par3, par4, false);
+				par1World.breakBlock(par2, par3, par4, false);
 	}
 
 	/**
@@ -129,8 +129,8 @@ public class BlockInventoryScannerField extends Block{
 							par2TileEntity.setShouldProvidePower(true);
 
 						par2TileEntity.setCooldown(60);
-						checkAndUpdateTEAppropriately(par2TileEntity.getWorldObj(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity);
-						BlockUtils.updateAndNotify(par2TileEntity.getWorldObj(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorldObj().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
+						checkAndUpdateTEAppropriately(par2TileEntity.getWorld(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity);
+						BlockUtils.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorld().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
 					}
 		}else if(par2TileEntity.getType().matches("check"))
 			if(par2TileEntity instanceof CustomizableSCTE && ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE)){
@@ -222,7 +222,7 @@ public class BlockInventoryScannerField extends Block{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		blockIcon = par1IconRegister.registerIcon("securitycraft:aniLaser");
 	}
 

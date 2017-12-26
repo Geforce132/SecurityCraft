@@ -137,10 +137,10 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
+					drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRendererObj);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRenderer);
+					drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRendererObj);
 			}
 	}
 

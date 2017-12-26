@@ -72,9 +72,9 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable implements 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IIconRegister){
+	public void registerIcons(IIconRegister par1IIconRegister){
 		for(int i = 0; i < iicons.length; ++i)
-			iicons[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.field_150921_b[func_149997_b(i)]);
+			iicons[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.dyeIcons[func_149997_b(i)]);
 	}
 
 	@Override

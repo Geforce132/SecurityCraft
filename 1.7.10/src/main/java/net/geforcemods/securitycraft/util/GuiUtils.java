@@ -36,12 +36,12 @@ public class GuiUtils{
 	private static RenderItem itemRender = new RenderItem();
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, int x, int y, int z, int mouseX, int mouseY) {
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRenderer.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
-		Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRenderer.getStringWidth(StatCollector.translateToLocal("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(Minecraft.getMinecraft().gameSettings.keyBindSneak.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraZoomIn.getKeyCode()) + "/" + GameSettings.getKeyDisplayString(KeyBindings.cameraZoomOut.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision"), resolution.getScaledWidth() - 91 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraActivateNightVision.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.activateNightVision")) / 2, resolution.getScaledHeight() - 50, 16777215);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone"), resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(GameSettings.getKeyDisplayString(KeyBindings.cameraEmitRedstone.getKeyCode()) + " - " + StatCollector.translateToLocal("gui.camera.toggleRedstone")) / 2, resolution.getScaledHeight() - 40, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
+		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 83 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE)world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -63,7 +63,7 @@ public class GuiUtils{
 			drawItemStackToGui(mc, Items.redstone, 10, 0, false);
 	}
 
-	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRenderer){
+	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRendererObj){
 		if(!list.isEmpty()){
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.disableStandardItemLighting();
@@ -74,7 +74,7 @@ public class GuiUtils{
 
 			while (iterator.hasNext()){
 				String s = (String)iterator.next();
-				int l = fontRenderer.getStringWidth(s);
+				int l = fontRendererObj.getStringWidth(s);
 
 				if(l > k)
 					k = l;
@@ -110,7 +110,7 @@ public class GuiUtils{
 			for (int i2 = 0; i2 < list.size(); ++i2)
 			{
 				String s1 = (String)list.get(i2);
-				fontRenderer.drawStringWithShadow(s1, j2, k2, -1);
+				fontRendererObj.drawStringWithShadow(s1, j2, k2, -1);
 
 				if (i2 == 0)
 					k2 += 2;
@@ -131,7 +131,7 @@ public class GuiUtils{
 			GL11.glEnable(GL11.GL_LIGHTING);
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(item, 1, itemDamage), x, y);
+		itemRender.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(item, 1, itemDamage), x, y);
 
 		GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -143,7 +143,7 @@ public class GuiUtils{
 			GL11.glEnable(GL11.GL_LIGHTING);
 
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		itemRender.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
+		itemRender.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
 
 		GL11.glDisable(GL11.GL_LIGHTING);
 

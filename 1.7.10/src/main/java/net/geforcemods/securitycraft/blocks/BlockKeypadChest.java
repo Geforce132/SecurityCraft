@@ -40,7 +40,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	}
 
 	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		IInventory iinventory = ((BlockKeypadChest) par1World.getBlock(par2, par3, par4)).func_149951_m(par1World, par2, par3, par4);
+		IInventory iinventory = ((BlockKeypadChest) par1World.getBlock(par2, par3, par4)).getInventory(par1World, par2, par3, par4);
 
 		if(iinventory != null)
 			par5EntityPlayer.displayGUIChest(iinventory);

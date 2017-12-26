@@ -176,7 +176,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2 + i, par3, par4);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2 + j, par3, par4, false);
+						par1World.breakBlock(par2 + j, par3, par4, false);
 				else
 					continue;
 			}
@@ -185,7 +185,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2 - i, par3, par4);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2 - j, par3, par4, false);
+						par1World.breakBlock(par2 - j, par3, par4, false);
 				else
 					continue;
 			}
@@ -194,7 +194,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2, par3, par4 + i);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2, par3, par4 + j, false);
+						par1World.breakBlock(par2, par3, par4 + j, false);
 				else
 					continue;
 			}
@@ -203,7 +203,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2 , par3, par4 - i);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2, par3, par4 - j, false);
+						par1World.breakBlock(par2, par3, par4 - j, false);
 				else
 					continue;
 			}
@@ -212,7 +212,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2, par3 + i, par4);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2, par3 + j, par4, false);
+						par1World.breakBlock(par2, par3 + j, par4, false);
 				else
 					continue;
 			}
@@ -221,7 +221,7 @@ public class BlockLaserField extends Block{
 				Block id = par1World.getBlock(par2, par3 - i, par4);
 				if(id == mod_SecurityCraft.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.func_147480_a(par2, par3 - j, par4, false);
+						par1World.breakBlock(par2, par3 - j, par4, false);
 				else
 					continue;
 			}
@@ -291,7 +291,7 @@ public class BlockLaserField extends Block{
 	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
 	 * is the only chance you get to register icons.
 	 */
-	public void registerBlockIcons(IIconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon("securitycraft:aniLaser");
 		transparentIcon = par1IconRegister.registerIcon("securitycraft:transparent");

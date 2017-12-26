@@ -22,7 +22,7 @@ public class ItemBlockReinforcedLog extends ItemBlockWithMetadata
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		int dmg = stack.getItemDamage();
+		int dmg = stack.getMetadata();
 
 		if(block instanceof BlockReinforcedOldLog)
 			return getUnlocalizedName() + "_" + BlockOldLog.field_150168_M[dmg & 3];

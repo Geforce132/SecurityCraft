@@ -14,13 +14,13 @@ public class ItemBlockReinforcedStoneBrick extends ItemBlockWithMetadata
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		if(stack.getItemDamage() == 0)
+		if(stack.getMetadata() == 0)
 			return this.getUnlocalizedName() + "_default";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getMetadata() == 1)
 			return this.getUnlocalizedName() + "_mossy";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getMetadata() == 2)
 			return this.getUnlocalizedName() + "_cracked";
-		else if(stack.getItemDamage() == 3)
+		else if(stack.getMetadata() == 3)
 			return this.getUnlocalizedName() + "_chiseled";
 		else
 			return this.getUnlocalizedName();

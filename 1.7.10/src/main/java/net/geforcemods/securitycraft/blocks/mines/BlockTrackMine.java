@@ -50,7 +50,7 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	}
 
 	@Override
-	protected void func_150048_a(World par1World, int par2, int par3, int par4, int par5, int par6, Block par7){
+	protected void onRedstoneSignal(World par1World, int par2, int par3, int par4, int par5, int par6, Block par7){
 		try{
 			BlockRailBase.Rail rail = new BlockRailBase.Rail(par1World, par2, par3, par4);
 			Method method = rail.getClass().getDeclaredMethod("func_150650_a");
@@ -59,7 +59,7 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 			int number = (Integer) method.invoke(rail);
 
 			if (par7.canProvidePower() && number == 3)
-				func_150052_a(par1World, par2, par3, par4, false);
+				refreshTrackShape(par1World, par2, par3, par4, false);
 
 		}catch(IllegalAccessException e){
 			e.printStackTrace();
@@ -99,8 +99,8 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
-		super.registerBlockIcons(par1IconRegister);
+	public void registerIcons(IIconRegister par1IconRegister){
+		super.registerIcons(par1IconRegister);
 		theIcon = par1IconRegister.registerIcon("securitycraft:rail_mineTurned");
 	}
 

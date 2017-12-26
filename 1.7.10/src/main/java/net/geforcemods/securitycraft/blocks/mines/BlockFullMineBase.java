@@ -75,7 +75,7 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 
 	@Override
 	public void explode(World world, int par2, int par3, int par4) {
-		world.func_147480_a(par2, par3, par4, false);
+		world.breakBlock(par2, par3, par4, false);
 
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 2.5F, true);

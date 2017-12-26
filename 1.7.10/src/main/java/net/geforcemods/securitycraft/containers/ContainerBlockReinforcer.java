@@ -65,9 +65,9 @@ public class ContainerBlockReinforcer extends Container
 			if(newStack != null)
 			{
 				if(Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedCompressedBlocks)
-					newStack.setItemDamage(customMeta);
+					newStack.setMetadata(customMeta);
 				else
-					newStack.setItemDamage(stack.getItemDamage());
+					newStack.setMetadata(stack.getMetadata());
 
 				newStack.stackSize = stack.stackSize;
 				blockReinforcer.damageItem(stack.stackSize, player);
@@ -136,7 +136,7 @@ public class ContainerBlockReinforcer extends Container
 					break;
 				}
 
-				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
 				{
 					int l = itemstack1.stackSize + stack.stackSize;
 
@@ -216,8 +216,8 @@ public class ContainerBlockReinforcer extends Container
 			});
 
 			return validBlock &&
-					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-							blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
+					(blockReinforcer.getMaxDurability() == 0 ? true : //lvl3
+						blockReinforcer.getMaxDurability() - blockReinforcer.getMetadata() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

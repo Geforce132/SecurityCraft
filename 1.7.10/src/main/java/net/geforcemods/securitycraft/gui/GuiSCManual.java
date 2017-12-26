@@ -108,8 +108,8 @@ public class GuiSCManual extends GuiScreen {
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).field_150939_a instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).field_150939_a).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
-			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).field_150939_a : null);
+			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).blockInstance instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).blockInstance).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).blockInstance : null);
 
 			if(itemBlock != null){
 				if(itemBlock instanceof IExplosive)
@@ -143,7 +143,7 @@ public class GuiSCManual extends GuiScreen {
 						if(recipe[(i * 3) + j].getItem() instanceof ItemBlock)
 							GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(recipe[(i * 3) + j].getItem()), (k + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
 						else
-							GuiUtils.drawItemStackToGui(mc, recipe[(i * 3) + j].getItem(), recipe[(i * 3) + j].getItemDamage(), (k + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+							GuiUtils.drawItemStackToGui(mc, recipe[(i * 3) + j].getItem(), recipe[(i * 3) + j].getMetadata(), (k + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
 					}
 				}
 			}
@@ -153,7 +153,7 @@ public class GuiSCManual extends GuiScreen {
 				if(chc != null && chc.checkHover(par1, par2))
 				{
 					if(chc.getName() != null)
-						drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(chc.getName(), 220), par1, par2, mc.fontRenderer);
+						drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(chc.getName(), 220), par1, par2, mc.fontRendererObj);
 				}
 			}
 		}
@@ -264,8 +264,8 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).field_150939_a instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).field_150939_a).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
-		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).field_150939_a : null);
+		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).blockInstance instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).blockInstance).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
+		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).blockInstance : null);
 
 		if(te != null){
 			if(te instanceof IOwnable)

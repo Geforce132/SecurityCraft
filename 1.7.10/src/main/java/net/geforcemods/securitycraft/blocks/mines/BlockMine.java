@@ -137,7 +137,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public void explode(World par1World, int par2, int par3, int par4) {
 		if(!cut){
-			par1World.func_147480_a(par2, par3, par4, false);
+			par1World.breakBlock(par2, par3, par4, false);
 			if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 				newExplosion((Entity)null, par2, par3, par4,  1.0F, true, true, par1World);
 			else
@@ -151,7 +151,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		if(cut)
 			blockIcon = par1IconRegister.registerIcon("securitycraft:mineCut");
 		else

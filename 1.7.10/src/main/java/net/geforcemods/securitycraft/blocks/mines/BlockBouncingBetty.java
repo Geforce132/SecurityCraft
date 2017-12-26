@@ -133,7 +133,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		activeIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyActive");
 		defusedIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyDefused");
 	}

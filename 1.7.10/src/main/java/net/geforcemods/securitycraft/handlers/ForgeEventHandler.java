@@ -177,11 +177,11 @@ public class ForgeEventHandler {
 				}
 
 				if(block == mod_SecurityCraft.laserBlock){
-					world.func_147480_a(event.x, event.y, event.z, true);
+					world.breakBlock(event.x, event.y, event.z, true);
 					BlockLaserBlock.destroyAdjacentLasers(event.world, event.x, event.y, event.z);
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}else{
-					world.func_147480_a(event.x, event.y, event.z, true);
+					world.breakBlock(event.x, event.y, event.z, true);
 					world.removeTileEntity(event.x, event.y, event.z);
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}

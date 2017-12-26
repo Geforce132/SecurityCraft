@@ -14,7 +14,7 @@ public class ItemTaser extends Item {
 
 	public ItemTaser(){
 		super();
-		setMaxDamage(151);
+		setMaxDurability(151);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class ItemTaser extends Item {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		if(!par2World.isRemote)
-			if(par1ItemStack.getItemDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+			if(par1ItemStack.getMetadata() >= 1)
+				par1ItemStack.setMetadata(par1ItemStack.getMetadata() - 1);
 	}
 
 }

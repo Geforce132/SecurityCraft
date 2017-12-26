@@ -37,22 +37,22 @@ public class ItemKeycardBase extends Item{
 
 	public ItemKeycardBase() {
 		setHasSubtypes(true);
-		setMaxDamage(0);
+		setMaxDurability(0);
 		setCreativeTab(mod_SecurityCraft.tabSCTechnical);
 	}
 
 	public int getKeycardLV(ItemStack par1ItemStack){
-		if(par1ItemStack.getItemDamage() == 0)
+		if(par1ItemStack.getMetadata() == 0)
 			return 1;
-		else if(par1ItemStack.getItemDamage() == 1)
+		else if(par1ItemStack.getMetadata() == 1)
 			return 2;
-		else if(par1ItemStack.getItemDamage() == 2)
+		else if(par1ItemStack.getMetadata() == 2)
 			return 3;
-		else if(par1ItemStack.getItemDamage() == 3)
+		else if(par1ItemStack.getMetadata() == 3)
 			return 6;
-		else if(par1ItemStack.getItemDamage() == 4)
+		else if(par1ItemStack.getMetadata() == 4)
 			return 4;
-		else if(par1ItemStack.getItemDamage() == 5)
+		else if(par1ItemStack.getMetadata() == 5)
 			return 5;
 		else
 			return 0;
@@ -77,17 +77,17 @@ public class ItemKeycardBase extends Item{
 
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack){
-		if(par1ItemStack.getItemDamage() == 0)
+		if(par1ItemStack.getMetadata() == 0)
 			return "item.keycardOne";
-		else if(par1ItemStack.getItemDamage() == 1)
+		else if(par1ItemStack.getMetadata() == 1)
 			return "item.keycardTwo";
-		else if(par1ItemStack.getItemDamage() == 2)
+		else if(par1ItemStack.getMetadata() == 2)
 			return "item.keycardThree";
-		else if(par1ItemStack.getItemDamage() == 4)
+		else if(par1ItemStack.getMetadata() == 4)
 			return "item.keycardFour";
-		else if(par1ItemStack.getItemDamage() == 5)
+		else if(par1ItemStack.getMetadata() == 5)
 			return "item.keycardFive";
-		else if(par1ItemStack.getItemDamage() == 3)
+		else if(par1ItemStack.getMetadata() == 3)
 			return "item.limitedUseKeycard";
 		else
 			return "item.nullItem";
@@ -97,7 +97,7 @@ public class ItemKeycardBase extends Item{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(par1ItemStack.getItemDamage() == 3){
+		if(par1ItemStack.getMetadata() == 3){
 			if(par1ItemStack.stackTagCompound == null){
 				par1ItemStack.stackTagCompound = new NBTTagCompound();
 				par1ItemStack.stackTagCompound.setInteger("Uses", 5);

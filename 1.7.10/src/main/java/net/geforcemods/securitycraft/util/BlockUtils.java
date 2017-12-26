@@ -74,7 +74,7 @@ public class BlockUtils{
 	 * Args: world, x, y, z, shouldDropItem.
 	 */
 	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
-		par1World.func_147480_a(par2, par3, par4, par5);
+		par1World.breakBlock(par2, par3, par4, par5);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class BlockUtils{
 	 */
 	public static boolean isActiveBeacon(World par1World, int beaconX, int beaconY, int beaconZ){
 		if(par1World.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon){
-			float f = ((TileEntityBeacon) par1World.getTileEntity(beaconX, beaconY, beaconZ)).func_146002_i();
+			float f = ((TileEntityBeacon) par1World.getTileEntity(beaconX, beaconY, beaconZ)).shouldBeamRender();
 
 			return f > 0.0F ? true : false;
 		}

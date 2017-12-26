@@ -63,7 +63,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 
 	@Override
 	public void explode(World par1World, int par2, int par3, int par4) {
-		par1World.func_147480_a(par2, par3, par4, false);
+		par1World.breakBlock(par2, par3, par4, false);
 
 		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, par2, par3, par4, 2.5F, true);
@@ -92,7 +92,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister p_149651_1_){
+	public void registerIcons(IIconRegister p_149651_1_){
 		blockIcon = p_149651_1_.registerIcon("furnace_side");
 		field_149936_O = p_149651_1_.registerIcon("furnace_front_off");
 		field_149935_N = p_149651_1_.registerIcon("furnace_top");

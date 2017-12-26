@@ -75,7 +75,7 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 		if (getStackInSlot(0) == null)
 			return false;
 		else{
-			ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(getStackInSlot(0));
+			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(getStackInSlot(0));
 			if (itemstack == null) return false;
 			if (getStackInSlot(2) == null) return true;
 			if (!getStackInSlot(2).isItemEqual(itemstack)) return false;
@@ -123,7 +123,7 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		readFromNBT(packet.func_148857_g());
+		readFromNBT(packet.getNbtCompound());
 	}
 
 	@Override

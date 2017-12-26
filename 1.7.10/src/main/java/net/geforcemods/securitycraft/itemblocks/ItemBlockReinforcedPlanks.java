@@ -12,17 +12,17 @@ public class ItemBlockReinforcedPlanks extends ItemBlockWithMetadata{
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack){
-		if(stack.getItemDamage() == 0)
+		if(stack.getMetadata() == 0)
 			return this.getUnlocalizedName() + "_oak";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getMetadata() == 1)
 			return this.getUnlocalizedName() + "_spruce";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getMetadata() == 2)
 			return this.getUnlocalizedName() + "_birch";
-		else if(stack.getItemDamage() == 3)
+		else if(stack.getMetadata() == 3)
 			return this.getUnlocalizedName() + "_jungle";
-		else if(stack.getItemDamage() == 4)
+		else if(stack.getMetadata() == 4)
 			return this.getUnlocalizedName() + "_acacia";
-		else if(stack.getItemDamage() == 5)
+		else if(stack.getMetadata() == 5)
 			return this.getUnlocalizedName() + "_darkoak";
 		else
 			return this.getUnlocalizedName();

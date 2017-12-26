@@ -129,7 +129,7 @@ public class ItemModifiedBucket extends Item {
 						par1World.spawnParticle("largesmoke", par2 + Math.random(), par3 + Math.random(), par4 + Math.random(), 0.0D, 0.0D, 0.0D);
 				}else{
 					if (!par1World.isRemote && flag && !material.isLiquid())
-						par1World.func_147480_a(par2, par3, par4, true);
+						par1World.breakBlock(par2, par3, par4, true);
 
 					par1World.setBlock(par2, par3, par4, isFull, 0, 3);
 				}

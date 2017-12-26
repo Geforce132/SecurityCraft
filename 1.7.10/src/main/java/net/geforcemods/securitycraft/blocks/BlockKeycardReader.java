@@ -61,7 +61,7 @@ public class BlockKeycardReader extends BlockOwnable {
 			return;
 
 		if((((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword() != null) && (!((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword()) <= ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack) || ((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4)).getPassword()) == ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack))){
-			if(par5ItemStack.getItemDamage() == 3 && par5ItemStack.stackTagCompound != null && !par6EntityPlayer.capabilities.isCreativeMode){
+			if(par5ItemStack.getMetadata() == 3 && par5ItemStack.stackTagCompound != null && !par6EntityPlayer.capabilities.isCreativeMode){
 				par5ItemStack.stackTagCompound.setInteger("Uses", par5ItemStack.stackTagCompound.getInteger("Uses") - 1);
 
 				if(par5ItemStack.stackTagCompound.getInteger("Uses") <= 0)
@@ -150,7 +150,7 @@ public class BlockKeycardReader extends BlockOwnable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		blockIcon = par1IconRegister.registerIcon("furnace_side");
 		keypadIconTop = par1IconRegister.registerIcon("furnace_top");
 		keypadIconFront = par1IconRegister.registerIcon("securitycraft:keycardReaderFront");

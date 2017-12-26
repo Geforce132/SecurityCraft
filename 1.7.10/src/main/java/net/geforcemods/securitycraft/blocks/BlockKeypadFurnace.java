@@ -111,7 +111,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 							j1 = itemstack.stackSize;
 
 						itemstack.stackSize -= j1;
-						EntityItem entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
+						EntityItem entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getMetadata()));
 
 						if (itemstack.hasTagCompound())
 							entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
@@ -125,7 +125,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 				}
 			}
 
-			par1World.func_147453_f(par2, par3, par4, par5Block);
+			par1World.updateNeighborsAboutBlockChange(par2, par3, par4, par5Block);
 		}
 
 		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);

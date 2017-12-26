@@ -17,7 +17,7 @@ public class LinkedBlock {
 	}
 
 	public LinkedBlock(CustomizableSCTE tileEntity) {
-		blockName = tileEntity.getWorldObj().getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getUnlocalizedName();
+		blockName = tileEntity.getWorld().getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getUnlocalizedName();
 		blockX = tileEntity.xCoord;
 		blockY = tileEntity.yCoord;
 		blockZ = tileEntity.zCoord;

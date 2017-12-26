@@ -146,7 +146,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IIconRegister) {
+	public void registerIcons(IIconRegister par1IIconRegister) {
 		blockIcon = par1IIconRegister.registerIcon("securitycraft:panicButton");
 		buttonPowered = par1IIconRegister.registerIcon("securitycraft:panicButtonPowered");
 	}

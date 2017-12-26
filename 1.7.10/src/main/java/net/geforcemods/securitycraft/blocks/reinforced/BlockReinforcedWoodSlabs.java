@@ -41,7 +41,7 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	}
 
 	@Override
-	public String func_150002_b(int par1){
+	public String getFullSlabName(int par1){
 		if(par1 < 0 || par1 >= variants.length)
 			par1 = 0;
 
@@ -98,7 +98,7 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister p_149651_1_) {}
+	public void registerIcons(IIconRegister p_149651_1_) {}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {

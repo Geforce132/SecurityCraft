@@ -83,7 +83,7 @@ public class BlockLogger extends BlockOwnable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IIconRegister)
+	public void registerIcons(IIconRegister par1IIconRegister)
 	{
 		blockIcon = par1IIconRegister.registerIcon("securitycraft:usernameLoggerSide");
 		field_149936_O = par1IIconRegister.registerIcon("securitycraft:usernameLoggerFront");

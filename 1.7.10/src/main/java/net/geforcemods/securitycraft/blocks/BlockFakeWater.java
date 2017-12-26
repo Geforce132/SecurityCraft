@@ -48,7 +48,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	}
 
 	@Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
+	public boolean isPassable(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
 		return blockMaterial != Material.lava;
 	}
 

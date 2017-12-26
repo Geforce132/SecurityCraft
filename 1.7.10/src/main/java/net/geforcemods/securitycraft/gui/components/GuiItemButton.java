@@ -36,11 +36,11 @@ public class GuiItemButton extends GuiButton{
 	{
 		if (visible)
 		{
-			FontRenderer var4 = par1.fontRenderer;
+			FontRenderer var4 = par1.fontRendererObj;
 			par1.getTextureManager().bindTexture(buttonTextures);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			field_146123_n = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
-			int var5 = getHoverState(field_146123_n);
+			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
+			int var5 = getHoverState(hovered);
 			GL11.glEnable(GL11.GL_BLEND);
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -49,13 +49,13 @@ public class GuiItemButton extends GuiButton{
 
 			if(blockToRender != null){
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
-				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
 			}else{
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
 				GL11.glDisable(GL11.GL_LIGHTING);
 			}
 
@@ -66,7 +66,7 @@ public class GuiItemButton extends GuiButton{
 
 			if (!enabled)
 				var6 = 10526880;
-			else if (field_146123_n)
+			else if (hovered)
 				var6 = 16777120;
 
 			drawCenteredString(var4, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);

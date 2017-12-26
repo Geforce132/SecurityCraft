@@ -53,7 +53,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			{
 				try
 				{
-					((BlockChest)block).func_149954_e(p_147502_1_.getWorldObj(), p_147502_1_.xCoord, p_147502_1_.yCoord, p_147502_1_.zCoord);
+					((BlockChest)block).initMetadata(p_147502_1_.getWorld(), p_147502_1_.xCoord, p_147502_1_.yCoord, p_147502_1_.zCoord);
 				}
 				catch (ClassCastException e)
 				{

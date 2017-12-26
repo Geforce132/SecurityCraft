@@ -29,7 +29,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		singleSlab = par2Block;
 		isNotSlab = par3;
 		this.slabType = slabType;
-		setMaxDamage(0);
+		setMaxDurability(0);
 		setHasSubtypes(true);
 	}
 
@@ -38,7 +38,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		singleSlab = par2Block;
 		isNotSlab = par3;
 		this.slabType = slabType;
-		setMaxDamage(0);
+		setMaxDurability(0);
 		setHasSubtypes(true);
 	}
 
@@ -57,33 +57,33 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack){
 		if(slabType == ReinforcedSlabType.WOOD){
-			if(stack.getItemDamage() == 0)
+			if(stack.getMetadata() == 0)
 				return this.getUnlocalizedName() + "_oak";
-			else if(stack.getItemDamage() == 1)
+			else if(stack.getMetadata() == 1)
 				return this.getUnlocalizedName() + "_spruce";
-			else if(stack.getItemDamage() == 2)
-				return this.getUnlocalizedName() + "_birch";if(stack.getItemDamage() == 3)
+			else if(stack.getMetadata() == 2)
+				return this.getUnlocalizedName() + "_birch";if(stack.getMetadata() == 3)
 					return this.getUnlocalizedName() + "_jungle";
-				else if(stack.getItemDamage() == 4)
+				else if(stack.getMetadata() == 4)
 					return this.getUnlocalizedName() + "_acacia";
-				else if(stack.getItemDamage() == 5)
+				else if(stack.getMetadata() == 5)
 					return this.getUnlocalizedName() + "_darkoak";
 				else
 					return this.getUnlocalizedName();
 		}
-		else if(stack.getItemDamage() == 0)
+		else if(stack.getMetadata() == 0)
 			return this.getUnlocalizedName() + "_stone";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getMetadata() == 1)
 			return this.getUnlocalizedName() + "_cobble";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getMetadata() == 2)
 			return this.getUnlocalizedName() + "_sandstone";
-		else if(stack.getItemDamage() == 4)
+		else if(stack.getMetadata() == 4)
 			return this.getUnlocalizedName() + "_stonebrick";
-		else if(stack.getItemDamage() == 5)
+		else if(stack.getMetadata() == 5)
 			return this.getUnlocalizedName() + "_brick";
-		else if(stack.getItemDamage() == 6)
+		else if(stack.getMetadata() == 6)
 			return this.getUnlocalizedName() + "_netherbrick";
-		else if(stack.getItemDamage() == 7)
+		else if(stack.getMetadata() == 7)
 			return this.getUnlocalizedName() + "_quartz";
 		else
 			return this.getUnlocalizedName();
@@ -121,9 +121,9 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 				}
 			}
 
-			if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getItemDamage()){
+			if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getMetadata()){
 				if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == mod_SecurityCraft.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
-					par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(block, i1).stepSound.func_150496_b(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getPitch() * 0.8F);
+					par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(block, i1).stepSound.getPlaceSound(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getFrequency() * 0.8F);
 					--par1ItemStack.stackSize;
 
 					if(owner != null)
@@ -148,7 +148,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		int i2 = l1 & 7;
 		boolean flag = (l1 & 8) != 0;
 
-		if((par5 == 1 && !flag || par5 == 0 && flag) && block == singleSlab && i2 == par7ItemStack.getItemDamage())
+		if((par5 == 1 && !flag || par5 == 0 && flag) && block == singleSlab && i2 == par7ItemStack.getMetadata())
 			return true;
 		else{
 			if(par5 == 0)
@@ -172,7 +172,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 			Block block1 = par1World.getBlock(par2, par3, par4);
 			int j2 = par1World.getBlockMetadata(par2, par3, par4);
 			i2 = j2 & 7;
-			return block1 == singleSlab && i2 == par7ItemStack.getItemDamage() ? true : super.func_150936_a(par1World, i1, j1, k1, par5, par6EntityPlayer, par7ItemStack);
+			return block1 == singleSlab && i2 == par7ItemStack.getMetadata() ? true : super.func_150936_a(par1World, i1, j1, k1, par5, par6EntityPlayer, par7ItemStack);
 		}
 	}
 
@@ -204,9 +204,9 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable)
 			owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
 
-		if(block == singleSlab && j1 == par1ItemStack.getItemDamage()){
+		if(block == singleSlab && j1 == par1ItemStack.getMetadata()){
 			if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(i1), j1, 3)){
-				par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(i1).stepSound.func_150496_b(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getPitch() * 0.8F);
+				par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(i1).stepSound.getPlaceSound(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getFrequency() * 0.8F);
 				--par1ItemStack.stackSize;
 
 				if(owner != null)

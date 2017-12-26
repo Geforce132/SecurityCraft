@@ -53,7 +53,7 @@ public class BlockScannerDoor extends BlockContainer
 	}
 
 	@Override
-	public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+	public boolean isPassable(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
 	{
 		return (func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_) & 4) != 0;
 	}
@@ -315,7 +315,7 @@ public class BlockScannerDoor extends BlockContainer
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister p_149651_1_)
+	public void registerIcons(IIconRegister p_149651_1_)
 	{
 		field_150017_a = new IIcon[2];
 		field_150016_b = new IIcon[2];

@@ -161,7 +161,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-		readFromNBT(packet.func_148857_g());
+		readFromNBT(packet.getNbtCompound());
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return true;
 	}
 
@@ -305,10 +305,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openChest() {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeChest() {}
 
 	@Override
 	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {

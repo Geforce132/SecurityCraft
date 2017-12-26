@@ -85,7 +85,7 @@ public class BlockRetinalScanner extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		blockIcon = par1IconRegister.registerIcon("furnace_side");
 		rtIconTop = par1IconRegister.registerIcon("furnace_top");
 		rtIconFront = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");

@@ -16,7 +16,7 @@ public class ItemBlockReinforcedMetals extends ItemBlockWithMetadata
 	{
 		String name = getUnlocalizedName();
 
-		switch(stack.getItemDamage())
+		switch(stack.getMetadata())
 		{
 			case 0: return name + "_gold";
 			case 1: return name + "_iron";

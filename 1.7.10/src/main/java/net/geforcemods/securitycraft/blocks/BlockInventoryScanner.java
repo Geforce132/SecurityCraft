@@ -55,16 +55,16 @@ public class BlockInventoryScanner extends BlockContainer {
 			Block block3 = par1World.getBlock(par2 + 1, par3, par4);
 			byte b0 = 3;
 
-			if (block.func_149730_j() && !block1.func_149730_j())
+			if (block.isFullBlock() && !block1.isFullBlock())
 				b0 = 3;
 
-			if (block1.func_149730_j() && !block.func_149730_j())
+			if (block1.isFullBlock() && !block.isFullBlock())
 				b0 = 2;
 
-			if (block2.func_149730_j() && !block3.func_149730_j())
+			if (block2.isFullBlock() && !block3.isFullBlock())
 				b0 = 5;
 
-			if (block3.func_149730_j() && !block2.func_149730_j())
+			if (block3.isFullBlock() && !block2.isFullBlock())
 				b0 = 4;
 
 			par1World.setBlockMetadataWithNotify(par2, par3, par4, b0, 2);
@@ -210,7 +210,7 @@ public class BlockInventoryScanner extends BlockContainer {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		blockIcon = par1IconRegister.registerIcon("furnace_side");
 		furnaceIconFront = par1IconRegister.registerIcon("securitycraft:inventoryScanner");
 		furnaceIconTop = par1IconRegister.registerIcon("furnace_top");

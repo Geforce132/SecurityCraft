@@ -73,7 +73,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public String func_150002_b(int par1){
+	public String getFullSlabName(int par1){
 		if (par1 < 0 || par1 >= variants.length)
 			par1 = 0;
 

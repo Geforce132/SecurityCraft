@@ -16,7 +16,7 @@ public class ItemBlockReinforcedQuartz extends ItemBlockWithMetadata
 	{
 		String name = getUnlocalizedName();
 
-		switch(stack.getItemDamage())
+		switch(stack.getMetadata())
 		{
 			case 0: return name + "_default";
 			case 1: return name + "_chiseled";

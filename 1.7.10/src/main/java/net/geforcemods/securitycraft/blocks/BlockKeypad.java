@@ -154,7 +154,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 				ItemStack stack = stacks.get(0);
 				Block disguisedAs = Block.getBlockFromItem(stack.getItem());
 
-				return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getItemDamage()) : disguisedAs.getIcon(side, meta);
+				return stack.getHasSubtypes() ? disguisedAs.getIcon(side, stack.getMetadata()) : disguisedAs.getIcon(side, meta);
 			}
 		}
 
@@ -166,7 +166,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister par1IconRegister){
 		blockIcon = par1IconRegister.registerIcon("securitycraft:iron_block");
 		keypadIconFront = par1IconRegister.registerIcon("securitycraft:keypadUnactive");
 		keypadIconTop = par1IconRegister.registerIcon("securitycraft:iron_block");

@@ -154,7 +154,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 + j, par3, par4) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2 + j, par3, par4, false);
+						par1World.breakBlock(par2 + j, par3, par4, false);
 			}
 			else
 				continue;
@@ -165,7 +165,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 - j, par3, par4) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2 - j, par3, par4, false);
+						par1World.breakBlock(par2 - j, par3, par4, false);
 			}
 			else
 				continue;
@@ -176,7 +176,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 + j) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2, par3, par4 + j, false);
+						par1World.breakBlock(par2, par3, par4 + j, false);
 			}
 			else
 				continue;
@@ -187,7 +187,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 - j) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2, par3, par4 - j, false);
+						par1World.breakBlock(par2, par3, par4 - j, false);
 			}
 			else
 				continue;
@@ -198,7 +198,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 + j, par4) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2, par3 + j, par4, false);
+						par1World.breakBlock(par2, par3 + j, par4, false);
 			}
 			else
 				continue;
@@ -209,7 +209,7 @@ public class BlockLaserBlock extends BlockContainer {
 			if(id == mod_SecurityCraft.laserBlock){
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 - j, par4) == mod_SecurityCraft.laser)
-						par1World.func_147480_a(par2, par3 - j, par4, false);
+						par1World.breakBlock(par2, par3 - j, par4, false);
 			}
 			else
 				continue;

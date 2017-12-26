@@ -50,7 +50,7 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon func_149735_b(int par1, int par2){
+	public IIcon getItemIcon(int par1, int par2){
 		return paneTextures[par2 % paneTextures.length];
 	}
 
@@ -69,10 +69,10 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IIconRegister){
+	public void registerIcons(IIconRegister par1IIconRegister){
 		for(int i = 0; i < paneTextures.length; ++i){
-			paneTextures[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.field_150921_b[func_150103_c(i)]);
-			topPaneTextures[i] = par1IIconRegister.registerIcon(getTextureName() + "_pane_top_" + ItemDye.field_150921_b[func_150103_c(i)]);
+			paneTextures[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.dyeIcons[func_150103_c(i)]);
+			topPaneTextures[i] = par1IIconRegister.registerIcon(getTextureName() + "_pane_top_" + ItemDye.dyeIcons[func_150103_c(i)]);
 		}
 	}
 

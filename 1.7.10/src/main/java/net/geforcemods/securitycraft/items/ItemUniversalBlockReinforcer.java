@@ -20,7 +20,7 @@ public class ItemUniversalBlockReinforcer extends ItemTool
 	{
 		super(2.0F, ToolMaterial.GOLD, getBreakableBlocks());
 
-		setMaxDamage(damage);
+		setMaxDurability(damage);
 	}
 
 	@Override

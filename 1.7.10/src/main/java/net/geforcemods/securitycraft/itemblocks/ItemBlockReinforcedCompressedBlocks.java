@@ -16,7 +16,7 @@ public class ItemBlockReinforcedCompressedBlocks extends ItemBlockWithMetadata
 	{
 		String name = getUnlocalizedName();
 
-		switch(stack.getItemDamage())
+		switch(stack.getMetadata())
 		{
 			case 0: return name + "_lapis";
 			case 1: return name + "_coal";

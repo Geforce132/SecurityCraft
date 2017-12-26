@@ -37,7 +37,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomInventoryName() ? tileFurnace.getInventoryName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]));
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.isCustomInventoryName() ? tileFurnace.getInventoryName() : I18n.format(StatCollector.translateToLocal("gui.protectedFurnace.name"), new Object[0]));
 		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}

@@ -25,7 +25,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			cooldown--;
 		else if(isProvidingPower){
 			isProvidingPower = false;
-			BlockUtils.updateAndNotify(getWorldObj(), xCoord, yCoord, zCoord, getWorldObj().getBlock(xCoord, yCoord, zCoord), 1, true);
+			BlockUtils.updateAndNotify(getWorld(), xCoord, yCoord, zCoord, getWorld().getBlock(xCoord, yCoord, zCoord), 1, true);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return true;
 	}
 
@@ -193,10 +193,10 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openChest() {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeChest() {}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
@@ -237,34 +237,34 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
-		if(getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
-		}else if(getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
-		}else if(getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
-		}else if(getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
-			if(!((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
+		if(getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
+		}else if(getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
+		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
+		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
+			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		if(getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
-		}else if(getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
-		}else if(getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
-		}else if(getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
-			if(((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
-				((CustomizableSCTE) getWorldObj().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
+		if(getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
+		}else if(getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
+		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
+			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
+		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
+			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
+				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
 	}
 
 	@Override
