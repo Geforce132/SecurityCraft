@@ -3,5 +3,6 @@
     "cameraZoomIn": {"category": "player","sounds":["securitycraft:cameraZoomIn"], "subtitle": "securitycraft.subtitle.cameraZoomIn"},
     "cameraSnap": {"category": "player","sounds":["securitycraft:cameraSnap"], "subtitle": "securitycraft.subtitle.cameraSnap"},
     "taserFire": {"category": "player","sounds":["securitycraft:taserFire"], "subtitle": "securitycraft.subtitle.taserFire"},
-    "electrified": {"category": "player","sounds":["securitycraft:electrified"], "subtitle": "securitycraft.subtitle.electrified"}
+    "electrified": {"category": "player","sounds":["securitycraft:electrified"], "subtitle": "securitycraft.subtitle.electrified"},
+    "lock": {"category": "player","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"}
 }

@@ -3,5 +3,6 @@
     "cameraZoomIn": {"category": "player","sounds":["misc/cameraZoomIn"]},
     "cameraSnap": {"category": "player","sounds":["misc/cameraSnap"]},
     "taserFire": {"category": "player","sounds":["misc/taserFire"]},
-    "electrified": {"category": "player","sounds":["misc/electrified"]}
+    "electrified": {"category": "player","sounds":["misc/electrified"]},
+    "lock": {"category": "player","sounds":["misc/lock"]}
 }

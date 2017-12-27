@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
+import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +23,7 @@ public class ItemKeyPanel extends Item {
 				{
 					if(((IPasswordConvertible)pc).convert(par2EntityPlayer, par3World, par4, par5, par6) && !par2EntityPlayer.capabilities.isCreativeMode)
 						par1ItemStack.stackSize--;
+					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par2EntityPlayer.posX, par2EntityPlayer.posY, par2EntityPlayer.posZ, SCSounds.LOCK.path, 1.0F));
 				}
 			});
 			return true;
