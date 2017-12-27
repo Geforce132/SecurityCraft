@@ -105,7 +105,7 @@ public class ForgeEventHandler {
 		}
 
 		if(event.getSource() == CustomDamageSources.electricity)
-			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, SCSounds.ELECTRIFIED.path, 0.25F));
+			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, SCSounds.ELECTRIFIED.path, 0.25F, "block"));
 	}
 
 	@SubscribeEvent

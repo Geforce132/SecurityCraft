@@ -18,41 +18,46 @@ public class PacketCPlaySoundAtPos implements IMessage{
 	private int x, y, z;
 	private String sound;
 	private double volume;
+	private String category;
 
 	public PacketCPlaySoundAtPos(){
 
 	}
 
-	public PacketCPlaySoundAtPos(int par1, int par2, int par3, String par4String, double par5){
+	public PacketCPlaySoundAtPos(int par1, int par2, int par3, String par4String, double par5, String cat){
 		x = par1;
 		y = par2;
 		z = par3;
 		sound = par4String;
 		volume = par5;
+		category = cat;
 	}
 
-	public PacketCPlaySoundAtPos(double par1, double par2, double par3, String par4String, double par5){
+	public PacketCPlaySoundAtPos(double par1, double par2, double par3, String par4String, double par5, String cat){
 		x = (int) par1;
 		y = (int) par2;
 		z = (int) par3;
 		sound = par4String;
 		volume = par5;
+		category = cat;
 	}
 
-	public PacketCPlaySoundAtPos(int par1, int par2, int par3, ResourceLocation par4ResourceLocation, double par5){
+	public PacketCPlaySoundAtPos(int par1, int par2, int par3, ResourceLocation par4ResourceLocation, double par5, String cat){
 		x = par1;
 		y = par2;
 		z = par3;
 		sound = par4ResourceLocation.getResourcePath();
 		volume = par5;
+		category = cat;
 	}
 
-	public PacketCPlaySoundAtPos(double par1, double par2, double par3, ResourceLocation par4ResourceLocation, double par5){
+	public PacketCPlaySoundAtPos(double par1, double par2, double par3, ResourceLocation par4ResourceLocation, double par5, String cat){
 		x = (int) par1;
 		y = (int) par2;
 		z = (int) par3;
 		sound = par4ResourceLocation.getResourcePath();
 		volume = par5;
+		category = cat;
 	}
 
 	@Override
@@ -62,6 +67,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		z = buf.readInt();
 		sound = ByteBufUtils.readUTF8String(buf);
 		volume = buf.readDouble();
+		category = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
@@ -71,6 +77,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		buf.writeInt(z);
 		ByteBufUtils.writeUTF8String(buf, sound);
 		buf.writeDouble(volume);
+		ByteBufUtils.writeUTF8String(buf, category);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketCPlaySoundAtPos, IMessage> {
@@ -78,7 +85,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
-			Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.BLOCKS, (float) message.volume, 1.0F);
+			Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
 			return null;
 		}
 

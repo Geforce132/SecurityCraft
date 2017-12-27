@@ -1,8 +1,8 @@
 {
-    "alarm": {"category": "player","sounds":["misc/alarm"]},
-    "cameraZoomIn": {"category": "player","sounds":["misc/cameraZoomIn"]},
-    "cameraSnap": {"category": "player","sounds":["misc/cameraSnap"]},
-    "taserFire": {"category": "player","sounds":["misc/taserFire"]},
+    "alarm": {"category": "block","sounds":["misc/alarm"]},
+    "cameraZoomIn": {"category": "block","sounds":["misc/cameraZoomIn"]},
+    "cameraSnap": {"category": "block","sounds":["misc/cameraSnap"]},
+    "taserFire": {"category": "block","sounds":["misc/taserFire"]},
     "electrified": {"category": "player","sounds":["misc/electrified"]},
-    "lock": {"category": "player","sounds":["misc/lock"]}
+    "lock": {"category": "block","sounds":["misc/lock"]}
 }

@@ -28,7 +28,7 @@ public class ItemKeyPanel extends Item {
 				{
 					if(((IPasswordConvertible)pc).convert(playerIn, worldIn, pos) && !playerIn.capabilities.isCreativeMode)
 						stack.stackSize--;
-					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.LOCK.path, 1.0F));
+					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.LOCK.path, 1.0F, "block"));
 				}
 			});
 			return EnumActionResult.SUCCESS;

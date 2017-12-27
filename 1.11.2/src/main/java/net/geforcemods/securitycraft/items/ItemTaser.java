@@ -33,7 +33,7 @@ public class ItemTaser extends Item {
 		if(!worldIn.isRemote)
 			if(!itemStackIn.isItemDamaged()){
 				WorldUtils.addScheduledTask(worldIn, () -> worldIn.spawnEntity(new EntityTaserBullet(worldIn, playerIn)));
-				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F));
+				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
 				if(!playerIn.capabilities.isCreativeMode)
 					itemStackIn.damageItem(150, playerIn);

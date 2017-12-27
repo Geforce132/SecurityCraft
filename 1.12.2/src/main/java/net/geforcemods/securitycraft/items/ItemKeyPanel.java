@@ -32,7 +32,7 @@ public class ItemKeyPanel extends Item {
 					{
 						if(!playerIn.capabilities.isCreativeMode)
 							stack.shrink(1);
-						mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F));
+						mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F, "block"));
 					}
 				}
 			});

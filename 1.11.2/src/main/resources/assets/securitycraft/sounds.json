@@ -1,8 +1,8 @@
 {
-    "alarm": {"category": "player","sounds":["securitycraft:alarm"], "subtitle": "securitycraft.subtitle.alarm"},
-    "cameraZoomIn": {"category": "player","sounds":["securitycraft:camera_zoom_in"], "subtitle": "securitycraft.subtitle.cameraZoomIn"},
-    "cameraSnap": {"category": "player","sounds":["securitycraft:camera_snap"], "subtitle": "securitycraft.subtitle.cameraSnap"},
-    "taserFire": {"category": "player","sounds":["securitycraft:taser_fire"], "subtitle": "securitycraft.subtitle.taserFire"},
+    "alarm": {"category": "block","sounds":["securitycraft:alarm"], "subtitle": "securitycraft.subtitle.alarm"},
+    "cameraZoomIn": {"category": "block","sounds":["securitycraft:cameraZoomIn"], "subtitle": "securitycraft.subtitle.cameraZoomIn"},
+    "cameraSnap": {"category": "block","sounds":["securitycraft:cameraSnap"], "subtitle": "securitycraft.subtitle.cameraSnap"},
+    "taserFire": {"category": "block","sounds":["securitycraft:taserFire"], "subtitle": "securitycraft.subtitle.taserFire"},
     "electrified": {"category": "player","sounds":["securitycraft:electrified"], "subtitle": "securitycraft.subtitle.electrified"},
-    "lock": {"category": "player","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"}
+    "lock": {"category": "block","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"}
 }

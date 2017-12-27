@@ -78,7 +78,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, d5, d6, d7, launchHeight);
 
 				if(worldObj.isRemote)
-					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
+					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
 
 				bombsRemaining--;
 
@@ -109,7 +109,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, d5, d6, d7, launchHeight);
 
 				if(worldObj.isRemote)
-					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
+					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
 
 				bombsRemaining--;
 
