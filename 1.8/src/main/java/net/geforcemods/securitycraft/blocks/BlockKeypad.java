@@ -304,12 +304,23 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return !(getDisguisedStack(world, pos) != null);
 	}
+
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos)
 	{
 		ItemStack stack = getDisguisedStack(world, pos);
 
 		return stack == null ? new ItemStack(this) : stack;
+	}
+
+	@Override
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
+	{
+		TileEntityKeypad te = (TileEntityKeypad)world.getTileEntity(pos);
+
+		if(te.hasModule(EnumCustomModules.DISGUISE) && !((ItemModule) te.getModule(EnumCustomModules.DISGUISE).getItem()).getBlockAddons(te.getModule(EnumCustomModules.DISGUISE).getTagCompound()).isEmpty())
+			return Block.getBlockFromItem(getDisguisedStack(world, pos).getItem()).colorMultiplier(world, pos, renderPass);
+		return super.colorMultiplier(world, pos, renderPass);
 	}
 
 	@Override
