@@ -6,9 +6,16 @@
 - Fix: [1.8-1.8.8/9] Disguised Keypad doesn't respect biome colors (Gray grass etc.)
 - Fix: [1.8+] Password-protected Furnace doesn't drop items when being broken
 - Fix: [1.8+] Security Camera doesn't update Redstone correctly when the Redstone Module is removed/added/turned on/turned off
+- Fix: [1.10.2+] SecurityCraft Tile Entity data doesn't get synchronized correctly with clients on world load [1]
 - Fix: [1.11.2+] Incorrect string in Password-protected Furnace GUI
 - Removed: Tip for /sc connect
 
+[1] This fixes:
+    1. The camera not rotating when reloading the world
+    2. The Redstone Module not working when trying to change the camera's redstone output right after reloading the world
+    3. The Keypad not being disguised after reloading the world
+    4. Probably some other things
+    
 --------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
 
 - New: Reinforced Blocks
