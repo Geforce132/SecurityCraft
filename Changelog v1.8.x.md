@@ -4,6 +4,7 @@
 - Fix: Sounds don't respect their correct categories
 - Fix: [1.8-1.8.8/9] Reinforced Iron Fence Gate is not craftable
 - Fix: [1.8+] Password-protected Furnace doesn't drop items when being broken
+- Fix: [1.8+] Security Camera doesn't update Redstone correctly when the Redstone Module is removed/added/turned on/turned off
 - Fix: [1.11.2+] Incorrect string in Password-protected Furnace GUI
 - Removed: Tip for /sc connect
 

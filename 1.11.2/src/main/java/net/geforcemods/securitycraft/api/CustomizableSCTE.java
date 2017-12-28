@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -179,6 +181,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				modules.set(par1, ItemStack.EMPTY);
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+
 				return itemstack;
 			}
 			else
@@ -190,6 +196,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return itemstack;
 			}
@@ -214,6 +223,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				modules.set(par1, ItemStack.EMPTY);
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+
 				return itemstack;
 			}
 			else
@@ -225,6 +238,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return itemstack;
 			}
@@ -258,7 +274,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			par2 = new ItemStack(par2.getItem(), getInventoryStackLimit(), par2.getMetadata());
 
 		if(!par2.isEmpty())
+		{
 			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
+
+			if(this instanceof TileEntitySecurityCamera)
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+		}
 	}
 
 	/**
@@ -273,6 +294,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(!par2.isEmpty() && par2.getItem() != null && par2.getItem() instanceof ItemModule){
 			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, new Object[]{ par2, ((ItemModule) par2.getItem()).getModule() }, this);
+
+			if(this instanceof TileEntitySecurityCamera)
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 		}
 	}
 

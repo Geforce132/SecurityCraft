@@ -39,6 +39,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
@@ -208,6 +209,9 @@ public class ForgeEventHandler {
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
+
+						if(te instanceof TileEntitySecurityCamera)
+							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset((EnumFacing)te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
 					}
 			}
 	}

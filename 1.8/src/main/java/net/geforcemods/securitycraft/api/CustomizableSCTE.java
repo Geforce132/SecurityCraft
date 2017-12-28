@@ -3,15 +3,18 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
@@ -175,6 +178,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				itemStacks[par1] = null;
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
+
 				return itemstack;
 			}
 			else
@@ -186,6 +193,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
 
 				return itemstack;
 			}
@@ -210,6 +220,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				itemStacks[par1] = null;
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
+
 				return itemstack;
 			}
 			else
@@ -221,6 +235,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
+
+				if(this instanceof TileEntitySecurityCamera)
+					getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
 
 				return itemstack;
 			}
@@ -254,7 +271,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			par2.stackSize = getInventoryStackLimit();
 
 		if(par2 != null)
+		{
 			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
+
+			if(this instanceof TileEntitySecurityCamera)
+				getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
+		}
 	}
 
 	/**
@@ -269,6 +291,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(par2 != null && par2.getItem() != null && par2.getItem() instanceof ItemModule){
 			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, new Object[]{ par2, ((ItemModule) par2.getItem()).getModule() }, this);
+
+			if(this instanceof TileEntitySecurityCamera)
+				getWorld().notifyNeighborsOfStateChange(pos.offset((EnumFacing)getWorld().getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), getWorld().getBlockState(pos).getBlock());
 		}
 	}
 

@@ -214,6 +214,9 @@ public class ForgeEventHandler {
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
+
+						if(te instanceof TileEntitySecurityCamera)
+							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
 					}
 			}
 	}

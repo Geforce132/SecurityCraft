@@ -61,6 +61,17 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	{
+		super.breakBlock(world, pos, state);
+
+		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock(), true);
+		world.notifyNeighborsOfStateChange(pos.south(), world.getBlockState(pos).getBlock(), true);
+		world.notifyNeighborsOfStateChange(pos.east(), world.getBlockState(pos).getBlock(), true);
+		world.notifyNeighborsOfStateChange(pos.west(), world.getBlockState(pos).getBlock(), true);
+	}
+
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		// TODO: Check to make sure this works as intended, because if the 'source' object is a
