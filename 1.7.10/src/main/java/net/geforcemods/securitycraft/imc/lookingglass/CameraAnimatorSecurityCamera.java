@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.imc.lookingglass;
 import com.xcompwiz.lookingglass.api.animator.ICameraAnimator;
 import com.xcompwiz.lookingglass.api.view.IViewCamera;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChunkCoordinates;
@@ -60,7 +60,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 	public void update(long arg0) {
 		if(camera == null || cameraMeta == 0)
 			return;
-		if(Minecraft.getMinecraft().theWorld.getBlock(xCoord, yCoord, zCoord) != mod_SecurityCraft.securityCamera)
+		if(Minecraft.getMinecraft().theWorld.getBlock(xCoord, yCoord, zCoord) != SCContent.securityCamera)
 			return;
 
 		float cameraRotation = ((TileEntitySecurityCamera) Minecraft.getMinecraft().theWorld.getTileEntity(xCoord, yCoord, zCoord)).cameraRotation * 60;

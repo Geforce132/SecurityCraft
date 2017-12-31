@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.minecraft.client.Minecraft;
@@ -40,8 +40,8 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
-		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && mod_SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView())
-			lgView = mod_SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()).getView();
+		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView())
+			lgView = SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()).getView();
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);

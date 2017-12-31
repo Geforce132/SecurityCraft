@@ -5,10 +5,11 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -37,7 +38,7 @@ public class ItemCameraMonitor extends ItemMap {
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		if(!par3World.isRemote)
 			//When the mod is using the LookingGlass system.
-			if(mod_SecurityCraft.instance.useLookingGlass()){
+			if(SecurityCraft.instance.useLookingGlass()){
 				if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
 					if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
 						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
@@ -56,18 +57,18 @@ public class ItemCameraMonitor extends ItemMap {
 					}
 
 					par1ItemStack.getTagCompound().setString("Camera1", view.toNBTString());
-					mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
+					SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
 					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.GREEN);
 
 					return true;
-				}else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.frame){
+				}else if(par3World.getBlock(par4, par5, par6) == SCContent.frame){
 					if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) return false;
 
 					CameraView view = getCameraView(par1ItemStack.getTagCompound());
 					if(view == null) return true;
 
 					((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(view.x, view.y, view.z, view.dimension);
-					mod_SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, view.x, view.y, view.z, view.dimension));
+					SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, view.x, view.y, view.z, view.dimension));
 					par1ItemStack.stackSize--;
 
 					return true;
@@ -82,15 +83,15 @@ public class ItemCameraMonitor extends ItemMap {
 						return false;
 					}
 
-					if(mod_SecurityCraft.instance.useLookingGlass())
-						mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
+					if(SecurityCraft.instance.useLookingGlass())
+						SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
 					else
-						par2EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, par4, par5, par6);
+						par2EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, par4, par5, par6);
 
 					return false;
 				}
 			}
-			else if(par3World.getBlock(par4, par5, par6) == mod_SecurityCraft.securityCamera){
+			else if(par3World.getBlock(par4, par5, par6) == SCContent.securityCamera){
 				if(!((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
 					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 					return true;
@@ -114,7 +115,7 @@ public class ItemCameraMonitor extends ItemMap {
 						break;
 					}
 
-				mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP)par2EntityPlayer);
+				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP)par2EntityPlayer);
 
 				return true;
 			}
@@ -130,7 +131,7 @@ public class ItemCameraMonitor extends ItemMap {
 				return par1ItemStack;
 			}
 
-			if(mod_SecurityCraft.instance.useLookingGlass()){
+			if(SecurityCraft.instance.useLookingGlass()){
 				CameraView view = getCameraView(par1ItemStack.getTagCompound());
 
 				if(!(par2World.getBlock(view.x, view.y, view.z) instanceof BlockSecurityCamera)){
@@ -138,10 +139,10 @@ public class ItemCameraMonitor extends ItemMap {
 					return par1ItemStack;
 				}
 
-				mod_SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par3EntityPlayer);
+				SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par3EntityPlayer);
 			}
 			else
-				par3EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+				par3EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
 		}
 
 		return par1ItemStack;

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -46,7 +46,7 @@ public class ItemModule extends Item{
 		numberOfBlockAddons = blockAddons;
 
 		setMaxStackSize(1);
-		setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class ItemModule extends Item{
 				}
 
 				if(canBeCustomized())
-					playerIn.openGui(mod_SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+					playerIn.openGui(SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}

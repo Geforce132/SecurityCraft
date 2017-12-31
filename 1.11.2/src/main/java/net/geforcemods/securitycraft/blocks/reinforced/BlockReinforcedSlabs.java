@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
@@ -51,13 +51,13 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
 	@Override
 	public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		if(!itemIn.equals(mod_SecurityCraft.reinforcedDoubleStoneSlabs))
+		if(!isDouble)
 			for (EnumType et : EnumType.values())
 				list.add(new ItemStack(itemIn, 1, et.getMetadata()));
 	}
@@ -65,7 +65,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs));
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs));
 	}
 
 	@Override
@@ -192,7 +192,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.minecraft.client.Minecraft;
 
@@ -63,7 +63,7 @@ public class PacketCSetCameraLocation implements IMessage{
 			int camZ = packet.camZ;
 			int camDim = packet.camDim;
 
-			if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == mod_SecurityCraft.frame){
+			if(Minecraft.getMinecraft().theWorld.getBlock(x, y, z) == SCContent.frame){
 				((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).setCameraLocation(camX, camY, camZ, camDim);
 				((TileEntityFrame) Minecraft.getMinecraft().theWorld.getTileEntity(x, y, z)).enableView();
 			}

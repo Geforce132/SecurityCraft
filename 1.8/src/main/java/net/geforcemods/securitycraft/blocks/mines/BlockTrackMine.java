@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockRail;
@@ -23,7 +23,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos){
 		BlockUtils.destroyBlock(world, pos, false);
 
-		world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), mod_SecurityCraft.configHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
+		world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
 
 		cart.setDead();
 	}
@@ -37,7 +37,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	@Override
 	public void explode(World world, BlockPos pos) {
 		BlockUtils.destroyBlock(world, pos, false);
-		world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), mod_SecurityCraft.configHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
+		world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
 	}
 
 	@Override

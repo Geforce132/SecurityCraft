@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -68,7 +68,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	public static void searchForPlayers(World par1World, BlockPos pos, IBlockState state){
 		if(!par1World.isRemote){
-			double d0 = (mod_SecurityCraft.configHandler.portableRadarSearchRadius);
+			double d0 = (SecurityCraft.configHandler.portableRadarSearchRadius);
 
 			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
 			List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
@@ -150,7 +150,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int par2) {
-		return new TileEntityPortableRadar().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.portableRadarSearchRadius, mod_SecurityCraft.configHandler.portableRadarDelay).nameable();
+		return new TileEntityPortableRadar().attacks(EntityPlayer.class, SecurityCraft.configHandler.portableRadarSearchRadius, SecurityCraft.configHandler.portableRadarDelay).nameable();
 	}
 
 }

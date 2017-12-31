@@ -2,9 +2,10 @@ package net.geforcemods.securitycraft.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class GuiMRATActivate extends GuiContainer{
 			buttons[i - 1] = new GuiButton(i - 1, width / 2 - 49 - 25, height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, StatCollector.translateToLocal("gui.mrat.notBound"));
 			buttons[i - 1].enabled = false;
 
-			if(item.getItem() != null && item.getItem() == mod_SecurityCraft.remoteAccessMine && item.stackTagCompound != null &&  item.stackTagCompound.getIntArray("mine" + i) != null && item.stackTagCompound.getIntArray("mine" + i).length > 0){
+			if(item.getItem() != null && item.getItem() == SCContent.remoteAccessMine && item.stackTagCompound != null &&  item.stackTagCompound.getIntArray("mine" + i) != null && item.stackTagCompound.getIntArray("mine" + i).length > 0){
 				int[] coords = item.stackTagCompound.getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
@@ -82,7 +83,7 @@ public class GuiMRATActivate extends GuiContainer{
 		int[] coords = item.stackTagCompound.getIntArray("mine" + (guibutton.id + 1));
 
 		if(Minecraft.getMinecraft().theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive)
-			mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
+			SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
 
 		updateButton(guibutton);
 	}

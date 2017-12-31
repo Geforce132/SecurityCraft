@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -197,6 +197,6 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	public void checkCode(String par1String) {
-		mod_SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), par1String));
+		SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), par1String));
 	}
 }

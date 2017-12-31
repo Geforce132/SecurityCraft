@@ -1,12 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +15,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", mod_SecurityCraft.configHandler.portableRadarSearchRadius, 5.0D, 50.0D, 5.0D);
-	private OptionInt searchDelayOption = new OptionInt("searchDelay", mod_SecurityCraft.configHandler.portableRadarDelay, 4, 10, 1);
+	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", SecurityCraft.config.portableRadarSearchRadius, 5.0D, 50.0D, 5.0D);
+	private OptionInt searchDelayOption = new OptionInt("searchDelay", SecurityCraft.config.portableRadarDelay, 4, 10, 1);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
 

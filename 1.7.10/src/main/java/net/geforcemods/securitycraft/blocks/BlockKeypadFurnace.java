@@ -2,9 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -53,7 +54,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker))
+			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker))
 				((TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
 		}
 
@@ -61,7 +62,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 	}
 
 	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, par2, par3, par4);
+		par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, par2, par3, par4);
 		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
 	}
 
@@ -163,7 +164,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 			case 2: newMeta = 1; break;
 		}
 
-		world.setBlock(x, y, z, mod_SecurityCraft.keypadFurnace, newMeta, 3);
+		world.setBlock(x, y, z, SCContent.keypadFurnace, newMeta, 3);
 		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
 		((TileEntityFurnace)world.getTileEntity(x, y, z)).readFromNBT(tag);
 		return true;

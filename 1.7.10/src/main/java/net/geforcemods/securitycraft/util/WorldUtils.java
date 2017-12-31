@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCSpawnLightning;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.Vec3;
@@ -33,6 +33,6 @@ public class WorldUtils{
 		world.addWeatherEffect(lightning);
 
 		if(!world.isRemote)
-			mod_SecurityCraft.network.sendToAll(new PacketCSpawnLightning(x, y, z));
+			SecurityCraft.network.sendToAll(new PacketCSpawnLightning(x, y, z));
 	}
 }

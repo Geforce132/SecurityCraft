@@ -4,9 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.util.Utils;
@@ -38,7 +39,7 @@ public class GuiMRATDetonate extends GuiContainer{
 			buttons[i - 1] = new GuiButton(i - 1, width / 2 - 49 - 25, height / 2 - 7 - 60  + ((i - 1) * 25), 149, 20, StatCollector.translateToLocal("gui.mrat.notBound"));
 			buttons[i - 1].enabled = false;
 
-			if(item.getItem() != null && item.getItem() == mod_SecurityCraft.remoteAccessMine && item.stackTagCompound != null &&  item.stackTagCompound.getIntArray("mine" + i) != null && item.stackTagCompound.getIntArray("mine" + i).length > 0){
+			if(item.getItem() != null && item.getItem() == SCContent.remoteAccessMine && item.stackTagCompound != null &&  item.stackTagCompound.getIntArray("mine" + i) != null && item.stackTagCompound.getIntArray("mine" + i).length > 0){
 				int[] coords = item.stackTagCompound.getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
@@ -86,7 +87,7 @@ public class GuiMRATDetonate extends GuiContainer{
 		int[] coords = item.stackTagCompound.getIntArray("mine" + (guibutton.id + 1));
 
 		if(Minecraft.getMinecraft().theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive)
-			mod_SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
+			SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
 
 		updateButton(guibutton);
 
@@ -104,7 +105,7 @@ public class GuiMRATDetonate extends GuiContainer{
 
 				if(coords[0] == par2 && coords[1] == par3 && coords[2] == par4){
 					par1ItemStack.stackTagCompound.setIntArray("mine" + i, new int[]{0, 0, 0});
-					mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(par1ItemStack));
+					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(par1ItemStack));
 					return;
 				}
 			}

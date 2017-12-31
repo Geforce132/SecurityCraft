@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -36,7 +36,7 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 		Block block = p_149826_1_.getBlock(p_149826_2_, p_149826_3_, p_149826_4_);
 
 		//split up oneliner to be more readable
-		if(block != this && block != Blocks.fence_gate && block != mod_SecurityCraft.reinforcedFencegate)
+		if(block != this && block != Blocks.fence_gate && block != SCContent.reinforcedFencegate)
 		{
 			if(block.getMaterial().isOpaque() && block.renderAsNormalBlock())
 				return block.getMaterial() != Material.gourd;

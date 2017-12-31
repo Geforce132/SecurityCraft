@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockContainer;
@@ -82,11 +82,11 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!worldIn.isRemote)
-			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.wireCutters){
-				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
+			if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
+				worldIn.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
 			}else if(playerIn.inventory.getCurrentItem() != null && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				worldIn.setBlockState(pos, mod_SecurityCraft.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
+				worldIn.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
 

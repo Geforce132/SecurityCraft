@@ -10,7 +10,7 @@ public class ServerProxy {
 
 	}
 
-	public void setupTextureRegistry() {
+	public void registerResourceLocations() {
 
 	}
 

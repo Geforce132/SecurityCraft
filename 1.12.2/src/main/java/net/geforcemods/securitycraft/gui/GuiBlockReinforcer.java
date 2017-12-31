@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiBlockReinforcer extends GuiContainer
 {
-	private static final ResourceLocation texture = new ResourceLocation(mod_SecurityCraft.MODID + ":textures/gui/container/customize1.png");
+	private static final ResourceLocation texture = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/customize1.png");
 
 	public GuiBlockReinforcer(Container container)
 	{

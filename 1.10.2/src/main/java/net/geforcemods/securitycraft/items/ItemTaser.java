@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -31,7 +31,7 @@ public class ItemTaser extends Item {
 		if(!worldIn.isRemote)
 			if(!itemStackIn.isItemDamaged()){
 				WorldUtils.addScheduledTask(worldIn, () -> worldIn.spawnEntityInWorld(new EntityTaserBullet(worldIn, playerIn)));
-				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
+				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
 				if(!playerIn.capabilities.isCreativeMode)
 					itemStackIn.damageItem(150, playerIn);

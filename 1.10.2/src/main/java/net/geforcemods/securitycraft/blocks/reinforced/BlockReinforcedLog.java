@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
@@ -49,7 +49,7 @@ public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisp
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(this instanceof BlockReinforcedOldLog ? mod_SecurityCraft.reinforcedOldLogs : mod_SecurityCraft.reinforcedNewLogs), 1, BlockUtils.getBlockMeta(world, pos) & 3);
+		return new ItemStack(Item.getItemFromBlock(this instanceof BlockReinforcedOldLog ? SCContent.reinforcedOldLogs : SCContent.reinforcedNewLogs), 1, BlockUtils.getBlockMeta(world, pos) & 3);
 	}
 
 	@Override

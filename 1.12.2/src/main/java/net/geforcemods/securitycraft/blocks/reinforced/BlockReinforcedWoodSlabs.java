@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockWoodSlab;
@@ -43,13 +43,13 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs));
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlockMetadata;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -63,7 +63,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord, mc.theWorld.getBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord) - 5, false, 1, "", ""));
+		SecurityCraft.network.sendToServer(new PacketSetBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord, mc.theWorld.getBlockMetadata(tileFurnace.xCoord, tileFurnace.yCoord, tileFurnace.zCoord) - 5, false, 1, "", ""));
 	}
 
 }

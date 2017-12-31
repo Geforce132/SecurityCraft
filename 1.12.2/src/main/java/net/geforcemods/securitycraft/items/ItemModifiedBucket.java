@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -68,14 +68,14 @@ public class ItemModifiedBucket extends ItemBucket {
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket));
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, SCContent.fWaterBucket));
 					}
 					else if (material == Material.LAVA && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
 					{
 						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
 						playerIn.addStat(StatList.getObjectUseStats(this));
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket));
+						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, SCContent.fLavaBucket));
 					}
 					else
 						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);

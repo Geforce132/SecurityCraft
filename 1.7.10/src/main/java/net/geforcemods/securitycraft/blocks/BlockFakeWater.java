@@ -4,7 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.material.Material;
@@ -44,7 +44,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 
 	private void func_149811_n(World par1World, int par2, int par3, int par4){
 		int l = par1World.getBlockMetadata(par2, par3, par4);
-		par1World.setBlock(par2, par3, par4, mod_SecurityCraft.bogusWater, l, 2);
+		par1World.setBlock(par2, par3, par4, SCContent.bogusWater, l, 2);
 	}
 
 	@Override

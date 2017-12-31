@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
@@ -57,7 +57,7 @@ public class CommandModule extends CommandBase implements ICommand {
 				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
-					mod_SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().stackTagCompound);
+					SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().stackTagCompound);
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
 				}
 				else
@@ -67,14 +67,14 @@ public class CommandModule extends CommandBase implements ICommand {
 			}else if(par2String[0].matches("paste")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(par1ICommandSender.getCommandSenderName());
 
-				if(mod_SecurityCraft.instance.getSavedModule() == null){
+				if(SecurityCraft.instance.getSavedModule() == null){
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.nothingSaved"), EnumChatFormatting.RED);
 					return;
 				}
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
-					player.getCurrentEquippedItem().stackTagCompound = mod_SecurityCraft.instance.getSavedModule();
-					mod_SecurityCraft.instance.setSavedModule(null);
+					player.getCurrentEquippedItem().stackTagCompound = SecurityCraft.instance.getSavedModule();
+					SecurityCraft.instance.setSavedModule(null);
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
 				}
 

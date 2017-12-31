@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
@@ -59,7 +59,7 @@ public class CommandModule extends CommandBase implements ICommand {
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					mod_SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
+					SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
 				}
 				else
@@ -69,14 +69,14 @@ public class CommandModule extends CommandBase implements ICommand {
 			}else if(args[0].matches("paste")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
-				if(mod_SecurityCraft.instance.getSavedModule() == null){
+				if(SecurityCraft.instance.getSavedModule() == null){
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.nothingSaved"), TextFormatting.RED);
 					return;
 				}
 
 				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					player.inventory.getCurrentItem().setTagCompound(mod_SecurityCraft.instance.getSavedModule());
-					mod_SecurityCraft.instance.setSavedModule(null);
+					player.inventory.getCurrentItem().setTagCompound(SecurityCraft.instance.getSavedModule());
+					SecurityCraft.instance.setSavedModule(null);
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.module.manager"), ClientUtils.localize("messages.module.saved"), TextFormatting.GREEN);
 				}
 

@@ -2,7 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -85,7 +86,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if(!player.capabilities.isCreativeMode && !world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative)
+			if(player != null && player.capabilities.isCreativeMode && !SecurityCraft.configHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			else{
 				explode(world, pos);
@@ -136,7 +137,7 @@ public class BlockMine extends BlockExplosive {
 
 		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			par1World.destroyBlock(pos, false);
-			if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+			if(SecurityCraft.configHandler.smallerMineExplosion)
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
@@ -148,7 +149,7 @@ public class BlockMine extends BlockExplosive {
 	 */
 	@Override
 	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.mine);
+		return Item.getItemFromBlock(SCContent.mine);
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class BlockMine extends BlockExplosive {
 	 */
 	@Override
 	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.mine));
+		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
 	}
 
 	@Override

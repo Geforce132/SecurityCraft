@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -38,7 +38,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 */
 	private void launchMine() {
 		if(bombsRemaining > 0){
-			double d0 = mod_SecurityCraft.configHandler.imsRange;
+			double d0 = SecurityCraft.config.imsRange;
 
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(d0, d0, d0);
 			List<?> list1 = worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
@@ -65,7 +65,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, d5, d6, d7, launchHeight);
 
 				if(worldObj.isRemote)
-					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
+					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
 
 				bombsRemaining--;
 
@@ -92,7 +92,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, d5, d6, d7, launchHeight);
 
 				if(worldObj.isRemote)
-					mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
+					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
 
 				bombsRemaining--;
 

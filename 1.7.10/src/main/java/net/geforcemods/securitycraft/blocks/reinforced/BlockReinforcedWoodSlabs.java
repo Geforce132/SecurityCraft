@@ -5,7 +5,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -37,7 +37,7 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	@Override
 	protected ItemStack createStackedBlock(int par1)
 	{
-		return new ItemStack(mod_SecurityCraft.reinforcedWoodSlabs, 2, par1 & 7);
+		return new ItemStack(SCContent.reinforcedWoodSlabs, 2, par1 & 7);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
-		if(par1Item != Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodPlanks))
+		if(par1Item != Item.getItemFromBlock(SCContent.reinforcedWoodPlanks))
 			for(int i = 0; i < variants.length; i++)
 				par3List.add(new ItemStack(par1Item, 1, i));
 	}
@@ -82,18 +82,18 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int par1, int par2){
-		return mod_SecurityCraft.reinforcedWoodPlanks.getIcon(par1, par2 & 7);
+		return SCContent.reinforcedWoodPlanks.getIcon(par1, par2 & 7);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -54,13 +54,13 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return slabMaterial == Material.ground ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+		return slabMaterial == Material.ground ? Item.getItemFromBlock(SCContent.reinforcedDirtSlab) : Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return slabMaterial == Material.ground ? Item.getItemFromBlock(mod_SecurityCraft.reinforcedDirtSlab) : Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs);
+		return slabMaterial == Material.ground ? Item.getItemFromBlock(SCContent.reinforcedDirtSlab) : Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	 */
 	@Override
 	protected ItemStack createStackedBlock(int par1){
-		return new ItemStack(Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs), 2, par1 & 7);
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs), 2, par1 & 7);
 	}
 
 	@Override

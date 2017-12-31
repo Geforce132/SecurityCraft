@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.itemblocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -24,8 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 
-	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedWoodSlabs;
-	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleWoodSlabs;
+	private BlockSlab singleSlab = (BlockSlab) SCContent.reinforcedWoodSlabs;
+	private Block doubleSlab = SCContent.reinforcedDoubleWoodSlabs;
 
 	public ItemBlockReinforcedWoodSlabs(Block block) {
 		super(block);

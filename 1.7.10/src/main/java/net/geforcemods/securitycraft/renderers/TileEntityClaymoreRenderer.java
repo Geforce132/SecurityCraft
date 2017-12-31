@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import org.lwjgl.opengl.GL11;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.models.ModelClaymore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -23,7 +23,7 @@ public class TileEntityClaymoreRenderer extends TileEntitySpecialRenderer {
 
 	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		claymoreModel.setActive(par1TileEntity.hasWorldObj() && par1TileEntity.blockType != null && par1TileEntity.blockType == mod_SecurityCraft.claymoreActive);
+		claymoreModel.setActive(par1TileEntity.hasWorldObj() && par1TileEntity.blockType != null && par1TileEntity.blockType == SCContent.claymoreActive);
 		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
 		float rotation = 0F;
 

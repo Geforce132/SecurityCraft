@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.itemblocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs2;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -25,8 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
-	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedStoneSlabs2;
-	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleStoneSlabs2;
+	private BlockSlab singleSlab = (BlockSlab) SCContent.reinforcedStoneSlabs2;
+	private Block doubleSlab = SCContent.reinforcedDoubleStoneSlabs2;
 
 	public ItemBlockReinforcedSlabs2(Block block) {
 		super(block);
@@ -158,6 +158,6 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 	}
 
 	protected <T extends Comparable<T>> IBlockState makeState_Stone(IProperty<T> property, Comparable<?> comparable) {
-		return mod_SecurityCraft.reinforcedDoubleStoneSlabs2.getDefaultState().withProperty(property, (T)comparable);
+		return SCContent.reinforcedDoubleStoneSlabs2.getDefaultState().withProperty(property, (T)comparable);
 	}
 }

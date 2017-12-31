@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockContainer;
@@ -61,11 +61,11 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote)
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.wireCutters){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreDefused, par1World.getBlockMetadata(par2, par3, par4), 3);
+			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == SCContent.wireCutters){
+				par1World.setBlock(par2, par3, par4, SCContent.claymoreDefused, par1World.getBlockMetadata(par2, par3, par4), 3);
 				return true;
 			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreActive, par1World.getBlockMetadata(par2, par3, par4), 3);
+				par1World.setBlock(par2, par3, par4, SCContent.claymoreActive, par1World.getBlockMetadata(par2, par3, par4), 3);
 				return true;
 			}
 
@@ -108,7 +108,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, boolean willHarvest){
-		if (!world.isRemote && world.getBlock(par3, par4, par5) != mod_SecurityCraft.claymoreDefused){
+		if (!world.isRemote && world.getBlock(par3, par4, par5) != SCContent.claymoreDefused){
 			BlockUtils.destroyBlock(world, par3, par4, par5, false);
 			world.createExplosion((Entity) null, (double) par3 + 0.5F, (double) par4 + 0.5F, (double) par5 + 0.5F, 3.5F, true);
 		}
@@ -118,7 +118,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public void onBlockDestroyedByExplosion(World worldIn, int par2, int par3, int par4, Explosion explosionIn){
-		if (!worldIn.isRemote && worldIn.getBlock(par2, par3, par4) instanceof IExplosive && worldIn.getBlock(par2, par3, par4) == mod_SecurityCraft.claymoreActive)
+		if (!worldIn.isRemote && worldIn.getBlock(par2, par3, par4) instanceof IExplosive && worldIn.getBlock(par2, par3, par4) == SCContent.claymoreActive)
 		{
 			BlockUtils.destroyBlock(worldIn, par2, par3, par4, false);
 			worldIn.createExplosion((Entity) null, (double) par2 + 0.5F, (double) par3 + 0.5F, (double) par4 + 0.5F, 3.5F, true);
@@ -129,7 +129,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public void activateMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
 			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreActive);
+			world.setBlock(par2, par3, par4, SCContent.claymoreActive);
 			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
@@ -138,7 +138,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public void defuseMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
 			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.claymoreDefused);
+			world.setBlock(par2, par3, par4, SCContent.claymoreDefused);
 			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
@@ -163,7 +163,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.claymoreActive);
+		return Item.getItemFromBlock(SCContent.claymoreActive);
 	}
 
 	@Override

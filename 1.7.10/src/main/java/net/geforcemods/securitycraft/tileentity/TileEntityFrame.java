@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.tileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraShutoffTimer;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +18,7 @@ public class TileEntityFrame extends TileEntityOwnable {
 
 	@Override
 	public void updateEntity(){
-		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && hasCameraLocation() && !mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()) && !createdView){
+		if(worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord) && hasCameraLocation() && !SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()) && !createdView){
 			if(worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0 || createdView) return;
 
 			LookingGlassAPIProvider.createLookingGlassView(worldObj, cameraView.dimension, xCoord, yCoord, zCoord, 192, 192);
@@ -69,15 +69,15 @@ public class TileEntityFrame extends TileEntityOwnable {
 
 	@SideOnly(Side.CLIENT)
 	public boolean shouldShowView(){
-		return mod_SecurityCraft.configHandler.fiveMinAutoShutoff ? shouldShowView : true;
+		return SecurityCraft.config.fiveMinAutoShutoff ? shouldShowView : true;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void enableView(){
 		shouldShowView = true;
 
-		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff){
-			if(!mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()))
+		if(SecurityCraft.config.fiveMinAutoShutoff){
+			if(!SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()))
 				LookingGlassAPIProvider.createLookingGlassView(worldObj, cameraView.dimension, cameraView.x, cameraView.y, cameraView.z, 192, 192);
 
 			new CameraShutoffTimer(this);
@@ -86,9 +86,9 @@ public class TileEntityFrame extends TileEntityOwnable {
 
 	@SideOnly(Side.CLIENT)
 	public void disableView(){
-		if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff && mod_SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
-			mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(cameraView.toNBTString()).getView());
-			mod_SecurityCraft.instance.removeViewForCoords(cameraView.toNBTString());
+		if(SecurityCraft.config.fiveMinAutoShutoff && SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
+			SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(SecurityCraft.instance.getViewFromCoords(cameraView.toNBTString()).getView());
+			SecurityCraft.instance.removeViewForCoords(cameraView.toNBTString());
 		}
 
 		shouldShowView = false;

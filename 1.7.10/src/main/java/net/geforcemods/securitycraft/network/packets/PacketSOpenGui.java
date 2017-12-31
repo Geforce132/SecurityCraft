@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 public class PacketSOpenGui implements IMessage {
@@ -49,7 +49,7 @@ public class PacketSOpenGui implements IMessage {
 			int z = packet.z;
 			EntityPlayerMP player = context.getServerHandler().playerEntity;
 
-			player.openGui(mod_SecurityCraft.instance, id, getWorld(player), x, y, z);
+			player.openGui(SecurityCraft.instance, id, getWorld(player), x, y, z);
 			return null;
 		}
 	}

@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,8 +21,8 @@ public class ItemAdminTool extends Item {
 	public ItemAdminTool() {
 		super();
 
-		if(mod_SecurityCraft.configHandler.allowAdminTool)
-			setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		if(SecurityCraft.config.allowAdminTool)
+			setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	@Override

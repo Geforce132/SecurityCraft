@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -32,29 +32,29 @@ public class Utils {
 	}
 
 	public static void setISinTEAppropriately(World par1World, int par2, int par3, int par4, ItemStack[] contents, String type) {
-		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
+		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setType(type);
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setType(type);
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setType(type);
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setContents(contents);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setType(type);
 		}
 	}
 
 	public static boolean hasInventoryScannerFacingBlock(World par1World, int par2, int par3, int par4) {
-		if(par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4 && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5)
+		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4 && par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5)
 			return true;
-		else if(par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5 && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4)
+		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) == 5 && par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) == 4)
 			return true;
-		else if(par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2 && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3)
+		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2 && par1World.getBlock(par2, par3, par4 - 1) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3)
 			return true;
-		else if(par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3 && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2)
+		else if(par1World.getBlock(par2, par3, par4 - 1) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) == 3 && par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2)
 			return true;
 		else
 			return false;

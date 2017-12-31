@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
@@ -53,7 +54,6 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
 
@@ -99,7 +99,7 @@ public class GuiCameraMonitor extends GuiContainer {
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) != mod_SecurityCraft.securityCamera) {
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) != SCContent.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
@@ -156,9 +156,9 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
 
-			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == mod_SecurityCraft.securityCamera) {
+			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == SCContent.securityCamera) {
 				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation())).mountCamera(Minecraft.getMinecraft().theWorld, view.x, view.y, view.z, camID, Minecraft.getMinecraft().thePlayer);
-				mod_SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
+				SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
 				Minecraft.getMinecraft().thePlayer.closeScreen();
 			}
 			else
@@ -168,7 +168,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		{
 			int camID = (guibutton.id - 10) + ((page - 1) * 10);
 
-			mod_SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
+			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
 			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			guibutton.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;

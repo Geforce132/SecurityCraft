@@ -4,9 +4,9 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -81,10 +81,10 @@ public class BlockKeycardReader extends BlockOwnable {
 		if(par1World.isRemote)
 			return true;
 
-		if(par5EntityPlayer.getCurrentEquippedItem() == null || (!(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase) && par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.adminTool))
+		if(par5EntityPlayer.getCurrentEquippedItem() == null || (!(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase) && par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
-		else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == mod_SecurityCraft.adminTool)
-			((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, ItemUtils.toItemStack(mod_SecurityCraft.keycards, 3), par5EntityPlayer);
+		else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == SCContent.adminTool)
+			((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, ItemUtils.toItemStack(SCContent.keycards, 3), par5EntityPlayer);
 		else if(BlockUtils.isMetadataBetween(par1World, par2, par3, par4, 2, 5))
 			((BlockKeycardReader) par1World.getBlock(par2, par3, par4)).insertCard(par1World, par2, par3, par4, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
 
@@ -93,8 +93,8 @@ public class BlockKeycardReader extends BlockOwnable {
 
 	public static void activate(World par1World, int par2, int par3, int par4){
 		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
-		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, mod_SecurityCraft.keycardReader);
-		par1World.scheduleBlockUpdate(par2, par3, par4, mod_SecurityCraft.keycardReader, 60);
+		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, SCContent.keycardReader);
+		par1World.scheduleBlockUpdate(par2, par3, par4, SCContent.keycardReader, 60);
 	}
 
 	@Override

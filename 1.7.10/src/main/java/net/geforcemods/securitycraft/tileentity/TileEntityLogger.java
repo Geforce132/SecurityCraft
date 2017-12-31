@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,7 +73,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public void sendChangeToClient(){
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				mod_SecurityCraft.network.sendToAll(new PacketUpdateLogger(xCoord, yCoord, zCoord, i, players[i]));
+				SecurityCraft.network.sendToAll(new PacketUpdateLogger(xCoord, yCoord, zCoord, i, players[i]));
 	}
 
 }

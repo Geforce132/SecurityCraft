@@ -4,10 +4,10 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.material.Material;
@@ -41,7 +41,7 @@ public class BlockIMS extends BlockOwnable {
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(!par1World.isRemote)
 			if(((IOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().isOwner(par5EntityPlayer)){
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, par2, par3, par4);
+				par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, par2, par3, par4);
 				return true;
 			}
 

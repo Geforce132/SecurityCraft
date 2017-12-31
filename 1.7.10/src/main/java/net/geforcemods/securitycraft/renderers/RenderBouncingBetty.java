@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -46,7 +46,7 @@ public class RenderBouncingBetty extends Render
 
 		f2 = (1.0F - (par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(par1EntityTNTPrimed);
-		blockRenderer.renderBlockAsItem(mod_SecurityCraft.bouncingBetty, 0, par1EntityTNTPrimed.getBrightness(par9));
+		blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, par1EntityTNTPrimed.getBrightness(par9));
 
 		if (par1EntityTNTPrimed.fuse / 5 % 2 == 0)
 		{
@@ -55,7 +55,7 @@ public class RenderBouncingBetty extends Render
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, f2);
-			blockRenderer.renderBlockAsItem(mod_SecurityCraft.bouncingBetty, 0, 1.0F);
+			blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_LIGHTING);

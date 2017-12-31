@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.minecraft.client.Minecraft;
@@ -87,7 +87,7 @@ public class ClientUtils{
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.writeToNBT(tag);
-		mod_SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
+		SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class ClientUtils{
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void syncItemNBT(ItemStack item){
-		mod_SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
+		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class ClientUtils{
 		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes"})
 	@SideOnly(Side.CLIENT)
 	public static void openURL(String url) {
 		URI uri = null;

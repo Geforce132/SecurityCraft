@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -42,7 +42,7 @@ public class ItemMineRemoteAccessTool extends Item {
 		if(worldIn.isRemote)
 			return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 		else{
-			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int)playerIn.posX, (int)playerIn.posY, (int)playerIn.posZ);
+			playerIn.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int)playerIn.posX, (int)playerIn.posY, (int)playerIn.posZ);
 			return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 		}
 	}
@@ -70,7 +70,7 @@ public class ItemMineRemoteAccessTool extends Item {
 						stack.setTagCompound(new NBTTagCompound());
 
 					stack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-					mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) playerIn);
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) playerIn);
 					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.remoteAccessMine.name"), ClientUtils.localize("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos, playerIn);
@@ -78,7 +78,7 @@ public class ItemMineRemoteAccessTool extends Item {
 				}
 			}
 			else
-				playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				playerIn.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 
 		return EnumActionResult.SUCCESS;
 	}
@@ -114,7 +114,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					par1ItemStack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
-					mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par5EntityPlayer);
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par5EntityPlayer);
 					return;
 				}
 			}

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
@@ -62,7 +63,7 @@ public class BlockFrame extends BlockOwnable {
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(par1World.isRemote){
-			if(mod_SecurityCraft.configHandler.fiveMinAutoShutoff && ((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation()){
+			if(SecurityCraft.config.fiveMinAutoShutoff && ((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation()){
 				((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).enableView();
 				return true;
 			}
@@ -70,12 +71,12 @@ public class BlockFrame extends BlockOwnable {
 			if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityFrame))
 				return false;
 
-			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.cameraMonitor)){
+			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.cameraMonitor)){
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.keyPanel))
+			if(PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.keyPanel))
 				return false;
 		}
 

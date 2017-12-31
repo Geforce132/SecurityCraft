@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.handlers.ForgeEventHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
@@ -62,9 +62,9 @@ public class CommandSC extends CommandBase implements ICommand{
 			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
 		else if(args.length == 1){
 			if(args[0].matches("connect"))
-				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(ForgeEventHandler.tipsWithLink.get("discord"))));
+				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
 			else if(args[0].matches("help"))
-				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(mod_SecurityCraft.scManual));
+				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
 			else if(args[0].matches("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else

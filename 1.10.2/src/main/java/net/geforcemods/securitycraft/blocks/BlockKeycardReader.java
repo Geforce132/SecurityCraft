@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -105,10 +105,10 @@ public class BlockKeycardReader extends BlockOwnable  {
 		if(worldIn.isRemote)
 			return true;
 
-		if(playerIn.inventory.getCurrentItem() == null || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.adminTool))
+		if(playerIn.inventory.getCurrentItem() == null || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
-		else if(playerIn.inventory.getCurrentItem().getItem() == mod_SecurityCraft.adminTool)
-			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, ItemUtils.toItemStack(mod_SecurityCraft.limitedUseKeycard), playerIn);
+		else if(playerIn.inventory.getCurrentItem().getItem() == SCContent.adminTool)
+			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, ItemUtils.toItemStack(SCContent.limitedUseKeycard), playerIn);
 		else
 			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, playerIn.inventory.getCurrentItem(), playerIn);
 
@@ -117,15 +117,15 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 	public static void activate(World par1World, BlockPos pos){
 		BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
-		par1World.scheduleUpdate(pos, mod_SecurityCraft.keycardReader, 60);
+		par1World.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
+		par1World.scheduleUpdate(pos, SCContent.keycardReader, 60);
 	}
 
 	@Override
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
 		if(!par1World.isRemote){
 			BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-			par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keycardReader);
+			par1World.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
 		}
 	}
 

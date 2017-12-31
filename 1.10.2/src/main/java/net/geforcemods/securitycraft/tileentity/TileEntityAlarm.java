@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
@@ -22,13 +22,13 @@ public class TileEntityAlarm extends TileEntityOwnable {
 				cooldown--;
 
 				if(cooldown == 0)
-					mod_SecurityCraft.log("Cooldown is 0");
+					SecurityCraft.log("Cooldown is 0");
 			}
 
 			if(isPowered && cooldown == 0){
 				TileEntityAlarm TEA = (TileEntityAlarm) worldObj.getTileEntity(pos);
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 0.6F);
-				TEA.setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
+				TEA.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
 				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
 				worldObj.setTileEntity(pos, TEA);
 			}
@@ -69,7 +69,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	}
 
 	public void setCooldown(int par1){
-		mod_SecurityCraft.log("Setting cooldown to " + par1 + " | " + FMLCommonHandler.instance().getEffectiveSide());
+		SecurityCraft.log("Setting cooldown to " + par1 + " | " + FMLCommonHandler.instance().getEffectiveSide());
 		cooldown = par1;
 	}
 

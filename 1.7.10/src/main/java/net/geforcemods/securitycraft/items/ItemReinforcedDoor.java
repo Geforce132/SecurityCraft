@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,7 +23,7 @@ public class ItemReinforcedDoor extends Item {
 			return false;
 		else{
 			++par5;
-			Block block = mod_SecurityCraft.reinforcedDoor;
+			Block block = SCContent.reinforcedDoor;
 
 			if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack)){
 				if (!block.canPlaceBlockAt(par3World, par4, par5, par6))

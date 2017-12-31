@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -32,7 +32,7 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z){
 		BlockUtils.destroyBlock(world, x, y, z, false);
 
-		world.createExplosion(cart, x, y + 1, z, mod_SecurityCraft.configHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
+		world.createExplosion(cart, x, y + 1, z, SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
 
 		cart.setDead();
 	}
@@ -40,7 +40,7 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	@Override
 	public void explode(World world, int par2, int par3, int par4) {
 		BlockUtils.destroyBlock(world, par2, par3, par4, false);
-		world.createExplosion((Entity) null, par2, par3 + 1, par4, mod_SecurityCraft.configHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
+		world.createExplosion((Entity) null, par2, par3 + 1, par4, SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
 	}
 
 	@Override

@@ -2,8 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -133,7 +132,7 @@ public class BlockInventoryScannerField extends Block{
 						BlockUtils.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorld().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
 					}
 		}else if(par2TileEntity.getType().matches("check"))
-			if(par2TileEntity instanceof CustomizableSCTE && ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE)){
+			if(par2TileEntity.hasModule(EnumCustomModules.STORAGE)){
 				for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
 					if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
 						if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
@@ -154,21 +153,21 @@ public class BlockInventoryScannerField extends Block{
 	}
 
 	private void checkAndUpdateTEAppropriately(World par1World, int par2, int par3, int par4, TileEntityInventoryScanner par5TileEntityIS) {
-		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
+		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, par2 - 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, par2 + 2, par3, par4, par1World.getBlock(par2, par3, par4), 1, true);
 
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, par2, par3, par4 - 2, par1World.getBlock(par2, par3, par4), 1, true);
 
-		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == mod_SecurityCraft.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == mod_SecurityCraft.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
+		}else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setShouldProvidePower(true);
 			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).setCooldown(60);
 			BlockUtils.updateAndNotify(par1World, par2, par3, par4 + 2, par1World.getBlock(par2, par3, par4), 1, true);

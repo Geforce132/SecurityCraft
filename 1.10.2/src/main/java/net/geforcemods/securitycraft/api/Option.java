@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.GuiSlider;
 import net.geforcemods.securitycraft.gui.GuiSlider.ISlider;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,7 +52,6 @@ public class Option<T> {
 	 */
 	public void toggle() {}
 
-	@SuppressWarnings("unchecked")
 	public void copy(Option<?> option) {
 		value = (T) option.getValue();
 	}
@@ -85,7 +84,6 @@ public class Option<T> {
 		return (Float) value;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void readFromNBT(NBTTagCompound compound) {
 		if(value instanceof Boolean)
 			value = (T) ((Boolean) compound.getBoolean(name));
@@ -289,7 +287,7 @@ public class Option<T> {
 
 			setValue(slider.getValue());
 			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
-			mod_SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
+			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
 		}
 	}
 

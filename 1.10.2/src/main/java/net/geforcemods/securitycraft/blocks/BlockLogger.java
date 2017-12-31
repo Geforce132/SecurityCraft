@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -40,7 +40,7 @@ public class BlockLogger extends BlockContainer {
 		if(worldIn.isRemote)
 			return true;
 		else{
-			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}
@@ -90,6 +90,6 @@ public class BlockLogger extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int par1) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
+		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
 	}
 }

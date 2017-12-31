@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -38,13 +38,13 @@ public class ItemReinforcedDoor extends Item
 			if (!block.isReplaceable(worldIn, pos))
 				pos = pos.offset(facing);
 
-			if (playerIn.canPlayerEdit(pos, facing, stack) && mod_SecurityCraft.reinforcedDoor.canPlaceBlockAt(worldIn, pos))
+			if (playerIn.canPlayerEdit(pos, facing, stack) && SCContent.reinforcedDoor.canPlaceBlockAt(worldIn, pos))
 			{
 				EnumFacing enumfacing = EnumFacing.fromAngle(playerIn.rotationYaw);
 				int i = enumfacing.getFrontOffsetX();
 				int j = enumfacing.getFrontOffsetZ();
 				boolean flag = i < 0 && hitZ < 0.5F || i > 0 && hitZ > 0.5F || j < 0 && hitX > 0.5F || j > 0 && hitX < 0.5F;
-				placeDoor(worldIn, pos, enumfacing, mod_SecurityCraft.reinforcedDoor, flag);
+				placeDoor(worldIn, pos, enumfacing, SCContent.reinforcedDoor, flag);
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, playerIn);
 				worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());

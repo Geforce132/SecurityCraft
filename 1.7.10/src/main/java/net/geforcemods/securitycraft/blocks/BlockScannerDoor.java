@@ -4,7 +4,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -203,7 +203,7 @@ public class BlockScannerDoor extends BlockContainer
 	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
 	{
-		return (p_149650_1_ & 8) != 0 ? null : mod_SecurityCraft.scannerDoorItem;
+		return (p_149650_1_ & 8) != 0 ? null : SCContent.scannerDoorItem;
 	}
 
 	@Override
@@ -252,7 +252,7 @@ public class BlockScannerDoor extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
 	{
-		return mod_SecurityCraft.scannerDoorItem;
+		return SCContent.scannerDoorItem;
 	}
 
 	@Override

@@ -10,6 +10,8 @@
 - Fix: [1.11.2+] Incorrect string in Password-protected Furnace GUI
 - Fix: [1.11.2+] Some SecurityCraft sounds don't play at all (Taser/Camera)
 - Removed: Tip for /sc connect
+- Internal: Refactoring to make code a little more readable and cleaner
+- Internal: Removed legacy code
 
 [1] This fixes:
     1. The camera not rotating when reloading the world
@@ -56,8 +58,8 @@
 - Fix: [1.8.8+] Buttons overlapping with the JEI interface are not accessible
 - Fix: [1.10.2+] Sponge incompatibilities (untested on 1.10.2 and 1.11.2, please report any issues you find to our Discord's #bugreport channel)
 - Fix: [1.10.2+] I.M.S. settings menu is not accessible
-- Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
 - Removed: IRC support chat. Please refer to the #help channel on SecurityCraft's Discord! https://discord.gg/U8DvBAW
+- Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
 
 **Hotfixes:**
 - Fix: [1.10.2] Crash on server startup (Thanks Baconator_NoVeg!)

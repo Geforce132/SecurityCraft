@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.itemblocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -21,8 +21,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockReinforcedSlabs extends ItemBlockTinted {
 
-	private BlockSlab singleSlab = (BlockSlab) mod_SecurityCraft.reinforcedStoneSlabs;
-	private Block doubleSlab = mod_SecurityCraft.reinforcedDoubleStoneSlabs;
+	private BlockSlab singleSlab = (BlockSlab) SCContent.reinforcedStoneSlabs;
+	private Block doubleSlab = SCContent.reinforcedDoubleStoneSlabs;
 
 	public ItemBlockReinforcedSlabs(Block block) {
 		super(block);
@@ -104,21 +104,21 @@ public class ItemBlockReinforcedSlabs extends ItemBlockTinted {
 
 	private IBlockState getDoubleSlabBlock(Comparable<?> comparable) {
 		if(comparable == BlockReinforcedSlabs.EnumType.STONE)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.COBBLESTONE)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.SANDSTONE)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.DIRT)
-			return mod_SecurityCraft.reinforcedDoubleDirtSlab.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleDirtSlab.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.STONEBRICK)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.BRICK)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.NETHERBRICK)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else if(comparable == BlockReinforcedSlabs.EnumType.QUARTZ)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
+			return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(BlockReinforcedSlabs.VARIANT, comparable);
 		else
 			return null;
 	}

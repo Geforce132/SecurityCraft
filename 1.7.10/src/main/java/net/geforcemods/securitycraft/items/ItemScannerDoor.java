@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +25,7 @@ public class ItemScannerDoor extends Item
 			return false;
 		else
 		{
-			Block block = mod_SecurityCraft.scannerDoor;
+			Block block = SCContent.scannerDoor;
 
 			y++;
 

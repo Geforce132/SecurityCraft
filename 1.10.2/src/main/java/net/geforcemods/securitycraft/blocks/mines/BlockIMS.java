@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.SoundType;
@@ -64,7 +64,7 @@ public class BlockIMS extends BlockOwnable {
 	{
 		if(!worldIn.isRemote)
 			if(((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-				playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 

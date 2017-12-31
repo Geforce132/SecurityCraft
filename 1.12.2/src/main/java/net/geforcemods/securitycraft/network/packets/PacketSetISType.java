@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -55,7 +55,7 @@ public class PacketSetISType implements IMessage{
 
 				((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setType(packet.type);
 
-				mod_SecurityCraft.log("Setting type to " + packet.type);
+				SecurityCraft.log("Setting type to " + packet.type);
 				getWorld(context.getServerHandler().player).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().player), pos), 1);
 
 				Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getType());

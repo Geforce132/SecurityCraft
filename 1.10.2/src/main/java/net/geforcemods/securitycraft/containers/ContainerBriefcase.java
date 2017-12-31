@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -17,7 +17,7 @@ public class ContainerBriefcase extends Container {
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 4; j++)
-				addSlotToContainer(new SlotItemRestricted(inventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), mod_SecurityCraft.briefcase));
+				addSlotToContainer(new SlotItemRestricted(inventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.briefcase));
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)

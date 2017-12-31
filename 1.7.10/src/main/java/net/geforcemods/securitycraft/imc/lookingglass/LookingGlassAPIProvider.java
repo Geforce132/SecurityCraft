@@ -10,7 +10,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.util.ChunkCoordinates;
@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 /**
  * Simple class that gets the LookingGlass "view" API instance. <p>
- * Called from a IMC message sent in mod_SecurityCraft.init().
+ * Called from a IMC message sent in mod_SCContent.init().
  *
  * @author Geforce
  */
@@ -57,13 +57,13 @@ public class LookingGlassAPIProvider {
 		if(!Loader.isModLoaded("LookingGlass"))
 			return;
 
-		IWorldView lgView = mod_SecurityCraft.instance.getLGPanelRenderer().getApi().createWorldView(dimension, new ChunkCoordinates(xCoord, yCoord, zCoord), viewWidth, viewHeight);
+		IWorldView lgView = SecurityCraft.instance.getLGPanelRenderer().getApi().createWorldView(dimension, new ChunkCoordinates(xCoord, yCoord, zCoord), viewWidth, viewHeight);
 
 		lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), xCoord, yCoord, zCoord, world.getBlockMetadata(xCoord, yCoord, zCoord)));
 
-		if(!mod_SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord + " " + dimension)){
-			mod_SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
-			((ClientProxy) mod_SecurityCraft.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord + " " + dimension, new IWorldViewHelper(lgView));
+		if(!SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord + " " + dimension)){
+			SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
+			((ClientProxy) SecurityCraft.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord + " " + dimension, new IWorldViewHelper(lgView));
 		}
 	}
 

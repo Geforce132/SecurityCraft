@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -33,7 +33,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 			}
 
 			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
-			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, mod_SecurityCraft.retinalScanner, 60);
+			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, SCContent.retinalScanner, 60);
 
 			if(entity instanceof EntityPlayer)
 				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);

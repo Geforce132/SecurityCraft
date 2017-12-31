@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -44,7 +44,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 		Block block = par1IBlockAccess.getBlockState(pos).getBlock();
 
 		//split up oneliner to be more readable
-		if(block != this && !(block instanceof BlockFenceGate) && block != mod_SecurityCraft.reinforcedFencegate)
+		if(block != this && !(block instanceof BlockFenceGate) && block != SCContent.reinforcedFencegate)
 		{
 			if(block.getDefaultState().getMaterial().isOpaque())
 				return block.getDefaultState().getMaterial() != Material.GOURD;

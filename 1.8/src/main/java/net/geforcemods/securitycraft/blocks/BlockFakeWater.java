@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -40,9 +40,9 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	public static BlockStaticLiquid getStaticBlock(Material materialIn)
 	{
 		if (materialIn == Material.water)
-			return mod_SecurityCraft.bogusWater;
+			return SCContent.bogusWater;
 		else if (materialIn == Material.lava)
-			return mod_SecurityCraft.bogusLava;
+			return SCContent.bogusLava;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}

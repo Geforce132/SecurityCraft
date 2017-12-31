@@ -11,8 +11,8 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -277,7 +277,7 @@ public class BlockAlarm extends BlockContainer {
 
 			if(!isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarmLit, par1World.getBlockMetadata(par2, par3, par4), 3);
+				par1World.setBlock(par2, par3, par4, SCContent.alarmLit, par1World.getBlockMetadata(par2, par3, par4), 3);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(true);
 			}
@@ -287,7 +287,7 @@ public class BlockAlarm extends BlockContainer {
 
 			if(isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner();
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.alarm, par1World.getBlockMetadata(par2, par3, par4), 3);
+				par1World.setBlock(par2, par3, par4, SCContent.alarm, par1World.getBlockMetadata(par2, par3, par4), 3);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(par2, par3, par4)).setPowered(false);
 			}
@@ -300,12 +300,12 @@ public class BlockAlarm extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
-		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
+		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override
 	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_){
-		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
+		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override

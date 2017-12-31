@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
@@ -12,7 +13,6 @@ import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -77,23 +77,23 @@ public class GuiHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case CAMERA_MONITOR_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
 					return null;
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return null;
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return null;
 			case BRIEFCASE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.getCurrentEquippedItem()));
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
@@ -140,23 +140,23 @@ public class GuiHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new GuiIMS(player.inventory, (TileEntityIMS) tile_entity);
 			case CAMERA_MONITOR_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.cameraMonitor))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
 					return null;
 				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.getCurrentEquippedItem().getItem(), player.getCurrentEquippedItem().getTagCompound());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return new GuiBriefcaseSetup(player.inventory, null);
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return new GuiBriefcase(player.inventory, null);
 			case BRIEFCASE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, mod_SecurityCraft.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return new GuiBriefcaseInventory(player, player.inventory);
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, mod_SecurityCraft.universalKeyChanger))
+				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
 				return new GuiKeyChanger(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:

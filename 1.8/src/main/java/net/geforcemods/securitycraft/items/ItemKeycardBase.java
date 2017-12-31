@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ public class ItemKeycardBase extends Item{
 	public ItemKeycardBase(int level) {
 		this.level = level;
 		setMaxDamage(0);
-		setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	public int getKeycardLV(ItemStack par1ItemStack){

@@ -6,8 +6,8 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 
 public class PacketCCreateLGView implements IMessage{
@@ -46,7 +46,7 @@ public class PacketCCreateLGView implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCCreateLGView packet, MessageContext ctx) {
-			if(!mod_SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ + " " + packet.dimension))
+			if(!SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ + " " + packet.dimension))
 				//((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(packet.camX + " " + packet.camY + " " + packet.camZ, new IWorldViewHelper(lgView));
 				LookingGlassAPIProvider.createLookingGlassView(Minecraft.getMinecraft().theWorld, packet.dimension, packet.camX, packet.camY, packet.camZ, 192, 192);
 

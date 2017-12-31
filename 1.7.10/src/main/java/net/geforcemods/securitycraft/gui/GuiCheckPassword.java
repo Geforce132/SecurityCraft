@@ -5,8 +5,8 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -190,7 +190,7 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	public void checkCode(String par1String) {
-		mod_SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, par1String));
+		SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, par1String));
 	}
 
 }

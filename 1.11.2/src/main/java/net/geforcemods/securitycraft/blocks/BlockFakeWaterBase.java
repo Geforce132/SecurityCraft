@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -44,9 +44,9 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 	public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
 	{
 		if (materialIn == Material.WATER)
-			return (BlockDynamicLiquid) mod_SecurityCraft.bogusWaterFlowing;
+			return (BlockDynamicLiquid) SCContent.bogusWaterFlowing;
 		else if (materialIn == Material.LAVA)
-			return (BlockDynamicLiquid) mod_SecurityCraft.bogusLavaFlowing;
+			return (BlockDynamicLiquid) SCContent.bogusLavaFlowing;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}

@@ -7,13 +7,13 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.CustomHoverChecker;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.block.Block;
@@ -80,7 +80,7 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage == -1)
 			mc.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || mod_SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(recipe != null || SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
 			mc.getTextureManager().bindTexture(infoBookTexture);
 		else
 			mc.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -88,12 +88,12 @@ public class GuiSCManual extends GuiScreen {
 		this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
+			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
 				fontRendererObj.drawString(ClientUtils.localize("gui.scManual.reinforced"), k + 39, 27, 0, false);
 			else
-				fontRendererObj.drawString(ClientUtils.localize(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
+				fontRendererObj.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
 
-			fontRendererObj.drawSplitString(ClientUtils.localize(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
+			fontRendererObj.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
 		}else{
 			fontRendererObj.drawString(ClientUtils.localize("gui.scManual.intro.1"), k + 39, 27, 0, false);
 			fontRendererObj.drawString(ClientUtils.localize("gui.scManual.intro.2"), k + 60, 159, 0, false);
@@ -106,8 +106,8 @@ public class GuiSCManual extends GuiScreen {
 			buttonList.get(i).drawButton(mc, par1, par2);
 
 		if(currentPage > -1){
-			Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemStackToGui(mc, item, k + 19, 22, !(mod_SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
+			GuiUtils.drawItemStackToGui(mc, item, k + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
@@ -176,14 +176,14 @@ public class GuiSCManual extends GuiScreen {
 			currentPage--;
 
 			if(currentPage < -1)
-				currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
+				currentPage = SecurityCraft.instance.manualPages.size() - 1;
 
 			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			updateRecipeAndIcons();
 		}else if(par2 == Keyboard.KEY_RIGHT){
 			currentPage++;
 
-			if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
+			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
 				currentPage = -1;
 
 			Minecraft.getMinecraft().thePlayer.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
@@ -196,7 +196,7 @@ public class GuiSCManual extends GuiScreen {
 		if(par1GuiButton.id == 1){
 			currentPage++;
 
-			if(currentPage > mod_SecurityCraft.instance.manualPages.size() - 1)
+			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
 				currentPage = -1;
 
 			updateRecipeAndIcons();
@@ -204,7 +204,7 @@ public class GuiSCManual extends GuiScreen {
 			currentPage--;
 
 			if(currentPage < -1)
-				currentPage = mod_SecurityCraft.instance.manualPages.size() - 1;
+				currentPage = SecurityCraft.instance.manualPages.size() - 1;
 
 			updateRecipeAndIcons();
 		}
@@ -219,21 +219,21 @@ public class GuiSCManual extends GuiScreen {
 
 		hoverCheckers.clear();
 
-		if(mod_SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
-			recipe = mod_SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
+		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
+			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
 			for(Object object : CraftingManager.getInstance().getRecipeList()){
 				if(object instanceof ShapedRecipes){
 					ShapedRecipes recipe = (ShapedRecipes) object;
 
-					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
 						this.recipe = recipe.recipeItems;
 						break;
 					}
 				}else if(object instanceof ShapelessRecipes){
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
-					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == mod_SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(recipe.getRecipeOutput() != null && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
 						this.recipe = toItemStackArray(recipe.recipeItems);
 						break;
 					}
@@ -257,18 +257,18 @@ public class GuiSCManual extends GuiScreen {
 					}
 				}
 		}
-		else if(mod_SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.disabled")));
-		else if(mod_SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
+		else if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe.reinforced")));
 		else
 		{
-			String name = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getResourcePath();
+			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getResourcePath();
 
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe." + name)));
 		}
 
-		Item item = mod_SecurityCraft.instance.manualPages.get(currentPage).getItem();
+		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, 0) : null);
 		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 

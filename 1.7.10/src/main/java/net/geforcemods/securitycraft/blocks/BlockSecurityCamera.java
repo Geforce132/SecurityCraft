@@ -9,9 +9,10 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -122,7 +123,7 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		mod_SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4, par1World.provider.dimensionId));
+		SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4, par1World.provider.dimensionId));
 	}
 
 	@Override
@@ -182,13 +183,13 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.securityCamera);
+		return Item.getItemFromBlock(SCContent.securityCamera);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return Item.getItemFromBlock(mod_SecurityCraft.securityCamera);
+		return Item.getItemFromBlock(SCContent.securityCamera);
 	}
 
 	@Override

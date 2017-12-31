@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -99,13 +99,13 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	@SideOnly(Side.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
-		return new ItemStack(mod_SecurityCraft.scannerDoorItem);
+		return new ItemStack(SCContent.scannerDoorItem);
 	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
-		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : mod_SecurityCraft.scannerDoorItem;
+		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : SCContent.scannerDoorItem;
 	}
 
 	@Override

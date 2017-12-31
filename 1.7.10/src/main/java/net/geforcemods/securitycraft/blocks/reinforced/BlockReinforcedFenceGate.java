@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -116,7 +116,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
 	{
-		return mod_SecurityCraft.reinforcedDoor.getBlockTextureFromSide(p_149691_1_);
+		return SCContent.reinforcedDoor.getBlockTextureFromSide(p_149691_1_);
 	}
 
 	@Override

@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.renderers;
 
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -46,7 +46,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GL11.glPushMatrix();
 
-		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == mod_SecurityCraft.securityCamera){
+		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
 			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
 
 			if(side == EnumFacing.EAST)

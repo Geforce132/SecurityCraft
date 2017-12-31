@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -113,7 +113,7 @@ public class GuiInventoryScanner extends GuiContainer {
 
 	private void saveType(String type){
 		tileEntity.setType(type);
-		mod_SecurityCraft.network.sendToServer(new PacketSetISType(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, type));
+		SecurityCraft.network.sendToServer(new PacketSetISType(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, type));
 
 	}
 

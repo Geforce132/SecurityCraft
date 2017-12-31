@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import cpw.mods.fml.common.eventhandler.Event;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,12 +68,12 @@ public class ItemModifiedBucket extends Item {
 
 					if (material == Material.water && l == 0){
 						par2World.setBlockToAir(i, j, k);
-						return new ItemStack(mod_SecurityCraft.fWaterBucket, 1, 0);
+						return new ItemStack(SCContent.fWaterBucket, 1, 0);
 					}
 
 					if (material == Material.lava && l == 0){
 						par2World.setBlockToAir(i, j, k);
-						return new ItemStack(mod_SecurityCraft.fLavaBucket, 1, 0);
+						return new ItemStack(SCContent.fLavaBucket, 1, 0);
 					}
 				}else{
 					if (isFull == Blocks.air)

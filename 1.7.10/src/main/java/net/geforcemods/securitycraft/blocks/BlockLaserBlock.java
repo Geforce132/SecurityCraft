@@ -4,8 +4,9 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -53,86 +54,86 @@ public class BlockLaserBlock extends BlockContainer {
 	}
 
 	public void setLaser(World par1World, int par2, int par3, int par4) {
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4));
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 + j, par3, par4, mod_SecurityCraft.laser, 3, 3);
+						par1World.setBlock(par2 + j, par3, par4, SCContent.laser, 3, 3);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 - j, par3, par4, mod_SecurityCraft.laser, 3, 3);
+						par1World.setBlock(par2 - j, par3, par4, SCContent.laser, 3, 3);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 + j, mod_SecurityCraft.laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 + j, SCContent.laser, 2, 3);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 , par3, par4 - i);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 - j, mod_SecurityCraft.laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 - j, SCContent.laser, 2, 3);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 + j, par4, mod_SecurityCraft.laser, 1, 3);
+						par1World.setBlock(par2, par3 + j, par4, SCContent.laser, 1, 3);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
-			if(id != Blocks.air && id != mod_SecurityCraft.laserBlock)
+			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 - j, par4, mod_SecurityCraft.laser, 1, 3);
+						par1World.setBlock(par2, par3 - j, par4, SCContent.laser, 1, 3);
 			}
 			else
 				continue;
@@ -149,66 +150,66 @@ public class BlockLaserBlock extends BlockContainer {
 	}
 
 	public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 + i, par3, par4);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 + j, par3, par4) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2 + j, par3, par4) == SCContent.laser)
 						par1World.breakBlock(par2 + j, par3, par4, false);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2 - i, par3, par4);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 - j, par3, par4) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2 - j, par3, par4) == SCContent.laser)
 						par1World.breakBlock(par2 - j, par3, par4, false);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 + i);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 + j) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2, par3, par4 + j) == SCContent.laser)
 						par1World.breakBlock(par2, par3, par4 + j, false);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3, par4 - i);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 - j) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2, par3, par4 - j) == SCContent.laser)
 						par1World.breakBlock(par2, par3, par4 - j, false);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 + i, par4);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 + j, par4) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2, par3 + j, par4) == SCContent.laser)
 						par1World.breakBlock(par2, par3 + j, par4, false);
 			}
 			else
 				continue;
 		}
 
-		for(int i = 1; i <= mod_SecurityCraft.configHandler.laserBlockRange; i++){
+		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = par1World.getBlock(par2, par3 - i, par4);
-			if(id == mod_SecurityCraft.laserBlock){
+			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 - j, par4) == mod_SecurityCraft.laser)
+					if(par1World.getBlock(par2, par3 - j, par4) == SCContent.laser)
 						par1World.breakBlock(par2, par3 - j, par4, false);
 			}
 			else

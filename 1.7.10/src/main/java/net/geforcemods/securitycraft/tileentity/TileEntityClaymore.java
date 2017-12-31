@@ -3,8 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
@@ -24,7 +25,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 		if(getWorld().isRemote)
 			return;
 		else{
-			if(getWorld().getBlock(xCoord, yCoord, zCoord) == mod_SecurityCraft.claymoreDefused)
+			if(getWorld().getBlock(xCoord, yCoord, zCoord) == SCContent.claymoreDefused)
 				return;
 
 			if(cooldown > 0){
@@ -42,13 +43,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
 
 			if(meta == 3)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
+				axisalignedbb = axisalignedbb.addCoord(0, 0, -SecurityCraft.config.claymoreRange);
 			else if(meta == 1)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, mod_SecurityCraft.configHandler.claymoreRange);
+				axisalignedbb = axisalignedbb.addCoord(0, 0, SecurityCraft.config.claymoreRange);
 			else if(meta == 2)
-				axisalignedbb = axisalignedbb.addCoord(mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+				axisalignedbb = axisalignedbb.addCoord(SecurityCraft.config.claymoreRange, 0, 0);
 			else if(meta == 4)
-				axisalignedbb = axisalignedbb.addCoord(-mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+				axisalignedbb = axisalignedbb.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
 
 			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 			Iterator<?> iterator = list.iterator();

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"rawtypes"})
 public class ItemKeycardBase extends Item{
 
 	private final int level;
@@ -20,7 +20,7 @@ public class ItemKeycardBase extends Item{
 	public ItemKeycardBase(int level) {
 		this.level = level;
 		setMaxDamage(0);
-		setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	public int getKeycardLV(ItemStack par1ItemStack){

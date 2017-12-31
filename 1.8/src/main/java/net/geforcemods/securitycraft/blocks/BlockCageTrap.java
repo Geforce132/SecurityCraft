@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -55,7 +55,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state){
-		if(BlockUtils.getBlock(par1World, pos) == mod_SecurityCraft.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(par1World, pos, DEACTIVATED))
+		if(BlockUtils.getBlock(par1World, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(par1World, pos, DEACTIVATED))
 			return null;
 		else
 			return AxisAlignedBB.fromBounds(pos.getX() + minX, pos.getY() + minY, pos.getZ() + minZ, pos.getX() + maxX, pos.getY() + maxY, pos.getZ() + maxZ);
@@ -77,13 +77,13 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 
-				BlockUtils.setBlock(world, pos.up(4), mod_SecurityCraft.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, mod_SecurityCraft.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() - 1, mod_SecurityCraft.unbreakableIronBars);
+				BlockUtils.setBlock(world, pos.up(4), SCContent.unbreakableIronBars);
+				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.unbreakableIronBars);
+				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.unbreakableIronBars);
+				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.unbreakableIronBars);
+				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() - 1, SCContent.unbreakableIronBars);
 
-				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), mod_SecurityCraft.unbreakableIronBars);
+				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), SCContent.unbreakableIronBars);
 				setTileEntities(world, pos.getX(), pos.getY(), pos.getZ(), ((IOwnable)world.getTileEntity(pos)).getOwner().getUUID(), ((IOwnable)world.getTileEntity(pos)).getOwner().getName());
 
 				world.playSoundEffect(pos.getX(),pos.getY(),pos.getZ(), "random.anvil_use", 3.0F, 1.0F);

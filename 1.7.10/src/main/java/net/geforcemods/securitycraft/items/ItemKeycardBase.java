@@ -4,7 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +38,7 @@ public class ItemKeycardBase extends Item{
 	public ItemKeycardBase() {
 		setHasSubtypes(true);
 		setMaxDurability(0);
-		setCreativeTab(mod_SecurityCraft.tabSCTechnical);
+		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	public int getKeycardLV(ItemStack par1ItemStack){

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,8 +21,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 				cooldown--;
 
 			if(isPowered && cooldown == 0){
-				mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, SCSounds.ALARM.path, mod_SecurityCraft.configHandler.alarmSoundVolume));
-				setCooldown((mod_SecurityCraft.configHandler.alarmTickDelay * 20));
+				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, SCSounds.ALARM.path, SecurityCraft.config.alarmSoundVolume));
+				setCooldown((SecurityCraft.config.alarmTickDelay * 20));
 			}
 		}
 	}

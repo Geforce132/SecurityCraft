@@ -2,10 +2,11 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -47,7 +48,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
 		if(par1World.isRemote)
 			return true;
-		else if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+		else if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.remoteAccessMine){
 			explode(par1World, par2, par3, par4);
 			return true;
 		}
@@ -65,7 +66,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	public void explode(World par1World, int par2, int par3, int par4) {
 		par1World.breakBlock(par2, par3, par4, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, par2, par3, par4, 2.5F, true);
 		else
 			par1World.createExplosion((Entity)null, par2, par3, par4, 5.0F, true);

@@ -4,8 +4,8 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
@@ -37,8 +37,8 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWaila
 	 */
 	private void setNotStationary(World p_149818_1_, int p_149818_2_, int p_149818_3_, int p_149818_4_){
 		int l = p_149818_1_.getBlockMetadata(p_149818_2_, p_149818_3_, p_149818_4_);
-		p_149818_1_.setBlock(p_149818_2_, p_149818_3_, p_149818_4_, mod_SecurityCraft.bogusLavaFlowing, l, 2);
-		p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, mod_SecurityCraft.bogusLavaFlowing, tickRate(p_149818_1_));
+		p_149818_1_.setBlock(p_149818_2_, p_149818_3_, p_149818_4_, SCContent.bogusLavaFlowing, l, 2);
+		p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, SCContent.bogusLavaFlowing, tickRate(p_149818_1_));
 	}
 
 	@Override

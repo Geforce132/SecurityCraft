@@ -2,9 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -66,7 +67,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest){
 		if(!world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !mod_SecurityCraft.configHandler.mineExplodesWhenInCreative)
+			if(player != null && player.capabilities.isCreativeMode && !SecurityCraft.config.mineExplodesWhenInCreative)
 				return super.removedByPlayer(world, player, x, y, z, willHarvest);
 			else{
 				explode(world, x, y, z);
@@ -94,7 +95,7 @@ public class BlockMine extends BlockExplosive {
 	 */
 	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10, World par11World){
 		Explosion explosion = new Explosion(par11World, par1Entity, par2, par4, par6, par8);
-		if(mod_SecurityCraft.configHandler.shouldSpawnFire)
+		if(SecurityCraft.config.shouldSpawnFire)
 			explosion.isFlaming = true;
 		else
 			explosion.isFlaming = false;
@@ -108,19 +109,19 @@ public class BlockMine extends BlockExplosive {
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return Item.getItemFromBlock(mod_SecurityCraft.mine);
+		return Item.getItemFromBlock(SCContent.mine);
 	}
 
 	@Override
 	public Item getItem(World par1World, int par2, int par3, int par4){
-		return Item.getItemFromBlock(mod_SecurityCraft.mine);
+		return Item.getItemFromBlock(SCContent.mine);
 	}
 
 	@Override
 	public void activateMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
 			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.mine);
+			world.setBlock(par2, par3, par4, SCContent.mine);
 			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
@@ -129,7 +130,7 @@ public class BlockMine extends BlockExplosive {
 	public void defuseMine(World world, int par2, int par3, int par4) {
 		if(!world.isRemote){
 			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, mod_SecurityCraft.mineCut);
+			world.setBlock(par2, par3, par4, SCContent.mineCut);
 			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
@@ -138,7 +139,7 @@ public class BlockMine extends BlockExplosive {
 	public void explode(World par1World, int par2, int par3, int par4) {
 		if(!cut){
 			par1World.breakBlock(par2, par3, par4, false);
-			if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+			if(SecurityCraft.config.smallerMineExplosion)
 				newExplosion((Entity)null, par2, par3, par4,  1.0F, true, true, par1World);
 			else
 				newExplosion((Entity)null, par2, par3, par4,  3.0F, true, true, par1World);

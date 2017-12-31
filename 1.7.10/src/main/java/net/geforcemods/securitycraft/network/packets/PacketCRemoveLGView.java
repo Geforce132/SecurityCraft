@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 
 public class PacketCRemoveLGView implements IMessage{
@@ -47,9 +47,9 @@ public class PacketCRemoveLGView implements IMessage{
 		public IMessage onMessage(PacketCRemoveLGView packet, MessageContext ctx) {
 			CameraView view = new CameraView(packet.camX, packet.camY, packet.camZ, packet.camDim);
 
-			if(mod_SecurityCraft.instance.hasViewForCoords(view.toNBTString())){
-				mod_SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(mod_SecurityCraft.instance.getViewFromCoords(view.toNBTString()).getView());
-				mod_SecurityCraft.instance.removeViewForCoords(view.toNBTString());
+			if(SecurityCraft.instance.hasViewForCoords(view.toNBTString())){
+				SecurityCraft.instance.getLGPanelRenderer().getApi().cleanupWorldView(SecurityCraft.instance.getViewFromCoords(view.toNBTString()).getView());
+				SecurityCraft.instance.removeViewForCoords(view.toNBTString());
 			}
 
 			return null;

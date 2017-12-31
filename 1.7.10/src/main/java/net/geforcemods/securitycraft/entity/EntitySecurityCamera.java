@@ -4,11 +4,12 @@ import org.lwjgl.input.Mouse;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -35,7 +36,7 @@ import net.minecraft.world.World;
 
 public class EntitySecurityCamera extends Entity {
 
-	private final float CAMERA_SPEED = mod_SecurityCraft.configHandler.cameraSpeed;
+	private final float CAMERA_SPEED = SecurityCraft.config.cameraSpeed;
 
 	public int blockPosX;
 	public int blockPosY;
@@ -151,7 +152,7 @@ public class EntitySecurityCamera extends Entity {
 			if(toggleLightCooldown > 0)
 				toggleLightCooldown -= 1;
 
-			if((id == 0) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem() == mod_SecurityCraft.cameraMonitor))
+			if((id == 0) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem() == SCContent.cameraMonitor))
 				id = ((ItemCameraMonitor)((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)riddenByEntity).getCurrentEquippedItem().stackTagCompound, new CameraView((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), riddenByEntity.dimension));
 
 			if(((EntityPlayer)riddenByEntity).rotationYaw != rotationYaw)
@@ -169,12 +170,12 @@ public class EntitySecurityCamera extends Entity {
 			}
 
 			if((riddenByEntity != null) && (shouldProvideNightVision))
-				mod_SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.nightVision.id, 3, -1));
+				SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.nightVision.id, 3, -1));
 
 		}
 
 		if(!worldObj.isRemote)
-			if(riddenByEntity == null | worldObj.getBlock(blockPosX, blockPosY, blockPosZ) != mod_SecurityCraft.securityCamera){
+			if(riddenByEntity == null | worldObj.getBlock(blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
 				setDead();
 				return;
 			}
@@ -292,9 +293,9 @@ public class EntitySecurityCamera extends Entity {
 
 	public void setRedstonePower(int meta) {
 		if(meta == 5 || meta == 6 || meta == 7 || meta == 8)
-			mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) - 4, true, 1, "", ""));
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) - 4, true, 1, "", ""));
 		else if(meta == 1 || meta == 2 || meta == 3 || meta == 4)
-			mod_SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) + 4, true, 1, "", ""));
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) + 4, true, 1, "", ""));
 	}
 
 	public void enableNightVision(){
@@ -314,12 +315,12 @@ public class EntitySecurityCamera extends Entity {
 			if(!((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getModules().isEmpty())
 				modules = ((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).itemStacks;
 
-			if(block == mod_SecurityCraft.securityCamera){
-				mod_SecurityCraft.network.sendToServer(new PacketSetBlockAndMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), "securitycraft:securityCameraLit", meta));
-				mod_SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getUUID(), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getName()));
+			if(block == SCContent.securityCamera){
+				SecurityCraft.network.sendToServer(new PacketSetBlockAndMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), "securitycraft:securityCameraLit", meta));
+				SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getUUID(), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getName()));
 
 				if(modules != null)
-					mod_SecurityCraft.network.sendToServer(new PacketSAddModules((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), modules));
+					SecurityCraft.network.sendToServer(new PacketSAddModules((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), modules));
 			}
 		}
 	}
@@ -333,7 +334,7 @@ public class EntitySecurityCamera extends Entity {
 
 	@SideOnly(Side.CLIENT)
 	private void updateServerRotation(){
-		mod_SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
+		SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
 	}
 
 	public float getZoomAmount(){
@@ -347,7 +348,7 @@ public class EntitySecurityCamera extends Entity {
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
 			EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
 			player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
-			mod_SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
+			SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
 		}
 	}
 

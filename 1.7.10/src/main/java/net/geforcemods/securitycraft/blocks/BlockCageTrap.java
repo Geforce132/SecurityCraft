@@ -4,8 +4,8 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -71,15 +71,15 @@ public class BlockCageTrap extends BlockOwnable {
 				if(!isPlayer && !shouldCaptureMobs)
 					return;
 
-				par1World.setBlock(par2, par3, par4, mod_SecurityCraft.deactivatedCageTrap);
+				par1World.setBlock(par2, par3, par4, SCContent.deactivatedCageTrap);
 
-				par1World.setBlock(par2, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
-				par1World.setBlock(par2 + 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
-				par1World.setBlock(par2 - 1, par3 + 4, par4, mod_SecurityCraft.unbreakableIronBars);
-				par1World.setBlock(par2, par3 + 4, par4 + 1, mod_SecurityCraft.unbreakableIronBars);
-				par1World.setBlock(par2, par3 + 4, par4 - 1, mod_SecurityCraft.unbreakableIronBars);
+				par1World.setBlock(par2, par3 + 4, par4, SCContent.unbreakableIronBars);
+				par1World.setBlock(par2 + 1, par3 + 4, par4, SCContent.unbreakableIronBars);
+				par1World.setBlock(par2 - 1, par3 + 4, par4, SCContent.unbreakableIronBars);
+				par1World.setBlock(par2, par3 + 4, par4 + 1, SCContent.unbreakableIronBars);
+				par1World.setBlock(par2, par3 + 4, par4 - 1, SCContent.unbreakableIronBars);
 
-				BlockUtils.setBlockInBox(par1World, par2, par3, par4, mod_SecurityCraft.unbreakableIronBars);
+				BlockUtils.setBlockInBox(par1World, par2, par3, par4, SCContent.unbreakableIronBars);
 				setTileEntities(par1World, par2, par3, par4, originalTrap.getOwner().getUUID(), originalTrap.getOwner().getName());
 
 				par1World.playSoundEffect(par2,par3,par4, "random.anvil_use", 3.0F, 1.0F);
@@ -102,7 +102,7 @@ public class BlockCageTrap extends BlockOwnable {
 
 	@Override
 	public Item getItemDropped(int par1, Random par2Random, int par3){
-		return deactivated ? Item.getItemFromBlock(mod_SecurityCraft.deactivatedCageTrap) : Item.getItemFromBlock(this);
+		return deactivated ? Item.getItemFromBlock(SCContent.deactivatedCageTrap) : Item.getItemFromBlock(this);
 	}
 
 	public void setTileEntities(World par1World, int par2, int par3, int par4, String uuid, String name)

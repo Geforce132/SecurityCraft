@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -32,7 +32,7 @@ public class BlockLogger extends BlockOwnable {
 		if(par1World.isRemote)
 			return true;
 		else{
-			par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, par1World, par2, par3, par4);
+			par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, par1World, par2, par3, par4);
 			return true;
 		}
 	}
@@ -92,7 +92,7 @@ public class BlockLogger extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int par1) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, mod_SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
+		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
 	}
 
 }

@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.itemblocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWoodSlabs;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -49,9 +49,9 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int par1){
 		if(slabType == ReinforcedSlabType.OTHER)
-			return mod_SecurityCraft.reinforcedStoneSlabs.getIcon(2, par1);
+			return SCContent.reinforcedStoneSlabs.getIcon(2, par1);
 		else
-			return mod_SecurityCraft.reinforcedWoodSlabs.getIcon(2, par1);
+			return SCContent.reinforcedWoodSlabs.getIcon(2, par1);
 	}
 
 	@Override
@@ -122,7 +122,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 			}
 
 			if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getMetadata()){
-				if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == mod_SecurityCraft.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
+				if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == SCContent.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
 					par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(block, i1).stepSound.getPlaceSound(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getFrequency() * 0.8F);
 					--par1ItemStack.stackSize;
 
@@ -220,30 +220,30 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	public Block getBlockVariant(Block slab, int meta){
-		if(slab == mod_SecurityCraft.reinforcedWoodSlabs)
-			return mod_SecurityCraft.reinforcedDoubleWoodSlabs;
+		if(slab == SCContent.reinforcedWoodSlabs)
+			return SCContent.reinforcedDoubleWoodSlabs;
 
-		if(slab == mod_SecurityCraft.reinforcedStoneSlabs)
-			return mod_SecurityCraft.reinforcedDoubleStoneSlabs;
+		if(slab == SCContent.reinforcedStoneSlabs)
+			return SCContent.reinforcedDoubleStoneSlabs;
 
-		if(slab == mod_SecurityCraft.reinforcedDirtSlab)
-			return mod_SecurityCraft.reinforcedDoubleDirtSlab;
+		if(slab == SCContent.reinforcedDirtSlab)
+			return SCContent.reinforcedDoubleDirtSlab;
 
 		return slab;
 	}
 
 	public Block getBlockVariant(int meta){
 		if(slabType == ReinforcedSlabType.OTHER)
-			return Block.getBlockFromItem(new ItemStack(mod_SecurityCraft.reinforcedStoneSlabs, 1, meta).getItem());
+			return Block.getBlockFromItem(new ItemStack(SCContent.reinforcedStoneSlabs, 1, meta).getItem());
 		else
-			return Block.getBlockFromItem(new ItemStack(mod_SecurityCraft.reinforcedWoodSlabs, 1, meta).getItem());
+			return Block.getBlockFromItem(new ItemStack(SCContent.reinforcedWoodSlabs, 1, meta).getItem());
 	}
 
 	public boolean isBlock(Block block){
 		if(slabType == ReinforcedSlabType.OTHER)
-			return block == mod_SecurityCraft.reinforcedStoneSlabs || block == mod_SecurityCraft.reinforcedDirtSlab;
+			return block == SCContent.reinforcedStoneSlabs || block == SCContent.reinforcedDirtSlab;
 		else
-			return block == mod_SecurityCraft.reinforcedWoodSlabs;
+			return block == SCContent.reinforcedWoodSlabs;
 	}
 
 	public static enum ReinforcedSlabType {

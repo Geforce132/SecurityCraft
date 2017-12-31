@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -38,7 +38,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!worldIn.isRemote) {
-			if(!PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.codebreaker) && worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityKeypadChest)
+			if(!PlayerUtils.isHoldingItem(playerIn, SCContent.codebreaker) && worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityKeypadChest)
 				((TileEntityKeypadChest) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
 
 			return true;
@@ -125,7 +125,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 		NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
 
 		chest.clear();
-		world.setBlockState(pos, mod_SecurityCraft.keypadChest.getDefaultState().withProperty(FACING, enumfacing));
+		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, enumfacing));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
 		((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;

@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -28,11 +29,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 			if(getValue()) {
 				BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, true);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+				worldObj.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 			}
 			else {
 				BlockUtils.setBlockProperty(worldObj, pos, BlockKeypad.POWERED, false);
-				worldObj.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+				worldObj.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 			}
 		}
 	};
@@ -88,9 +89,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null)
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 		else
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

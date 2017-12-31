@@ -1,7 +1,8 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -52,7 +53,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote)
 			return true;
-		else if(playerIn.inventory.getCurrentItem().isEmpty() || playerIn.inventory.getCurrentItem().getItem() != mod_SecurityCraft.remoteAccessMine){
+		else if(playerIn.inventory.getCurrentItem().isEmpty() || playerIn.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
 			explode(worldIn, pos);
 			return true;
 		}
@@ -76,7 +77,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
 		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);

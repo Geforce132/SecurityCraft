@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -27,11 +28,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 			if(getValue()) {
 				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 5, 3);
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_SecurityCraft.keypad);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, SCContent.keypad);
 			}
 			else {
 				worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, worldObj.getBlockMetadata(xCoord, yCoord, zCoord) - 5, 3);
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, mod_SecurityCraft.keypad);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, SCContent.keypad);
 			}
 		}
 	};
@@ -88,9 +89,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null)
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
 		else
-			player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
 	}
 
 	@Override

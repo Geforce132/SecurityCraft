@@ -3,10 +3,11 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -36,7 +37,7 @@ public class ItemCameraMonitor extends Item {
 		ItemStack stack = playerIn.getHeldItem(hand);
 
 		if(!worldIn.isRemote){
-			if(BlockUtils.getBlock(worldIn, pos) == mod_SecurityCraft.securityCamera){
+			if(BlockUtils.getBlock(worldIn, pos) == SCContent.securityCamera){
 				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
 					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.cannotView"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
@@ -60,11 +61,11 @@ public class ItemCameraMonitor extends Item {
 						break;
 					}
 
-				mod_SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)playerIn);
+				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)playerIn);
 
 				return EnumActionResult.SUCCESS;
 			}
-		}else if(worldIn.isRemote && BlockUtils.getBlock(worldIn, pos) != mod_SecurityCraft.securityCamera){
+		}else if(worldIn.isRemote && BlockUtils.getBlock(worldIn, pos) != SCContent.securityCamera){
 			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera)
 				return EnumActionResult.SUCCESS;
 
@@ -73,7 +74,7 @@ public class ItemCameraMonitor extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 
-			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return EnumActionResult.SUCCESS;
 		}
 
@@ -94,7 +95,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 			}
 
-			playerIn.openGui(mod_SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);

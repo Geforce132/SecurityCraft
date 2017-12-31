@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -77,7 +77,7 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 	public void explode(World world, int par2, int par3, int par4) {
 		world.breakBlock(par2, par3, par4, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 2.5F, true);
 		else
 			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 5.0F, true);

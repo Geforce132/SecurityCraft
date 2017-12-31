@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.network;
 
+import net.geforcemods.securitycraft.RegistrationHandler;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
@@ -35,14 +37,14 @@ public class ClientProxy extends ServerProxy{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerTextureFiles() {
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedPlanks"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedPlanks"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_Oak"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_Spruce"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_Birch"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_Jungle"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_Acacia"),
 				new ResourceLocation("securitycraft:reinforcedPlanks_DarkOak"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStainedGlass"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStainedGlass"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_white"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_orange"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_magenta"),
@@ -59,18 +61,18 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_green"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_red"),
 				new ResourceLocation("securitycraft:reinforcedStainedGlass_black"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedSandstone"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedSandstone"),
 				new ResourceLocation("securitycraft:reinforcedSandstone_normal"),
 				new ResourceLocation("securitycraft:reinforcedSandstone_chiseled"),
 				new ResourceLocation("securitycraft:reinforcedSandstone_smooth"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedWoodSlabs"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedWoodSlabs"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_oak"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_spruce"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_birch"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_jungle"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_acacia"),
 				new ResourceLocation("securitycraft:reinforcedWoodSlabs_darkoak"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStoneSlabs"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_stone"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_cobblestone"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_sandstone"),
@@ -78,15 +80,15 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_brick"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_netherbrick"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs_quartz"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStoneSlabs2"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStoneSlabs2"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs2_red_sandstone"),
 				new ResourceLocation("securitycraft:reinforcedStoneSlabs2_purpur"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStoneBrick"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStoneBrick"),
 				new ResourceLocation("securitycraft:reinforcedStoneBrick_default"),
 				new ResourceLocation("securitycraft:reinforcedStoneBrick_mossy"),
 				new ResourceLocation("securitycraft:reinforcedStoneBrick_cracked"),
 				new ResourceLocation("securitycraft:reinforcedStoneBrick_chiseled"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStainedHardenedClay"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStainedHardenedClay"),
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_white"),
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_orange"),
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_magenta"),
@@ -103,23 +105,23 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_green"),
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_red"),
 				new ResourceLocation("securitycraft:reinforcedStainedHardenedClay_black"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedLogs"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedLogs"),
 				new ResourceLocation("securitycraft:reinforcedLogs_oak"),
 				new ResourceLocation("securitycraft:reinforcedLogs_spruce"),
 				new ResourceLocation("securitycraft:reinforcedLogs_birch"),
 				new ResourceLocation("securitycraft:reinforcedLogs_jungle"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedLogs2"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedLogs2"),
 				new ResourceLocation("securitycraft:reinforcedLogs2_acacia"),
 				new ResourceLocation("securitycraft:reinforcedLogs2_big_oak"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedMetals"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedMetals"),
 				new ResourceLocation("securitycraft:reinforcedMetals_gold"),
 				new ResourceLocation("securitycraft:reinforcedMetals_iron"),
 				new ResourceLocation("securitycraft:reinforcedMetals_diamond"),
 				new ResourceLocation("securitycraft:reinforcedMetals_emerald"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedCompressedBlocks"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedCompressedBlocks"),
 				new ResourceLocation("securitycraft:reinforcedCompressedBlocks_lapis"),
 				new ResourceLocation("securitycraft:reinforcedCompressedBlocks_coal"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedWool"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedWool"),
 				new ResourceLocation("securitycraft:reinforcedWool_white"),
 				new ResourceLocation("securitycraft:reinforcedWool_orange"),
 				new ResourceLocation("securitycraft:reinforcedWool_magenta"),
@@ -136,22 +138,22 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedWool_green"),
 				new ResourceLocation("securitycraft:reinforcedWool_red"),
 				new ResourceLocation("securitycraft:reinforcedWool_black"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedQuartz"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedQuartz"),
 				new ResourceLocation("securitycraft:reinforcedQuartz_default"),
 				new ResourceLocation("securitycraft:reinforcedQuartz_chiseled"),
 				new ResourceLocation("securitycraft:reinforcedQuartz_pillar"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedPrismarine"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedPrismarine"),
 				new ResourceLocation("securitycraft:reinforcedPrismarine_default"),
 				new ResourceLocation("securitycraft:reinforcedPrismarine_bricks"),
 				new ResourceLocation("securitycraft:reinforcedPrismarine_dark"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedRedSandstone"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedRedSandstone"),
 				new ResourceLocation("securitycraft:reinforcedRedSandstone_default"),
 				new ResourceLocation("securitycraft:reinforcedRedSandstone_chiseled"),
 				new ResourceLocation("securitycraft:reinforcedRedSandstone_smooth"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedPurpur"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedPurpur"),
 				new ResourceLocation("securitycraft:reinforcedPurpur_default"),
 				new ResourceLocation("securitycraft:reinforcedPurpur_pillar"));
-		ModelBakery.registerItemVariants(findItem(mod_SecurityCraft.MODID, "reinforcedStone"),
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforcedStone"),
 				new ResourceLocation("securitycraft:reinforcedStone_default"),
 				new ResourceLocation("securitycraft:reinforcedStone_granite"),
 				new ResourceLocation("securitycraft:reinforcedStone_smooth_granite"),
@@ -160,10 +162,10 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedStone_andesite"),
 				new ResourceLocation("securitycraft:reinforcedStone_smooth_andesite"));
 
-		Item fakeWater = findItem(mod_SecurityCraft.MODID, "bogusWater");
+		Item fakeWater = findItem(SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, stack -> new ModelResourceLocation("securitycraft:fakeLiquids", "water"));
-		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWater, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.bogusWater, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -172,10 +174,10 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeWaterFlowing = findItem(mod_SecurityCraft.MODID, "bogusWaterFlowing");
+		Item fakeWaterFlowing = findItem(SecurityCraft.MODID, "bogusWaterFlowing");
 		ModelBakery.registerItemVariants(fakeWaterFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeWaterFlowing, stack -> new ModelResourceLocation("securitycraft:fakeLiquids", "water_flowing"));
-		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusWaterFlowing, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.bogusWaterFlowing, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -184,10 +186,10 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeLava = findItem(mod_SecurityCraft.MODID, "bogusLava");
+		Item fakeLava = findItem(SecurityCraft.MODID, "bogusLava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, stack -> new ModelResourceLocation("securitycraft:fakeLiquids", "lava"));
-		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLava, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.bogusLava, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -196,10 +198,10 @@ public class ClientProxy extends ServerProxy{
 			}
 		});
 
-		Item fakeLavaFlowing = findItem(mod_SecurityCraft.MODID, "bogusLavaFlowing");
+		Item fakeLavaFlowing = findItem(SecurityCraft.MODID, "bogusLavaFlowing");
 		ModelBakery.registerItemVariants(fakeLavaFlowing);
 		ModelLoader.setCustomMeshDefinition(fakeLavaFlowing, stack -> new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing"));
-		ModelLoader.setCustomStateMapper(mod_SecurityCraft.bogusLavaFlowing, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.bogusLavaFlowing, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -216,8 +218,8 @@ public class ClientProxy extends ServerProxy{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setupTextureRegistry() {
-		mod_SecurityCraft.configHandler.setupTextureRegistry();
+	public void registerResourceLocations() {
+		RegistrationHandler.registerResourceLocations();
 	}
 
 	@Override
@@ -233,49 +235,49 @@ public class ClientProxy extends ServerProxy{
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
 
 		Block[] blocksToTint = {
-				mod_SecurityCraft.reinforcedBrick,
-				mod_SecurityCraft.reinforcedCobblestone,
-				mod_SecurityCraft.reinforcedCompressedBlocks,
-				mod_SecurityCraft.reinforcedDirt,
-				mod_SecurityCraft.reinforcedDoubleStoneSlabs,
-				mod_SecurityCraft.reinforcedDoubleStoneSlabs2,
-				mod_SecurityCraft.reinforcedDoubleWoodSlabs,
-				mod_SecurityCraft.reinforcedEndStoneBricks,
-				mod_SecurityCraft.reinforcedHardenedClay,
-				mod_SecurityCraft.reinforcedMetals,
-				mod_SecurityCraft.reinforcedMossyCobblestone,
-				mod_SecurityCraft.reinforcedNetherBrick,
-				mod_SecurityCraft.reinforcedNewLogs,
-				mod_SecurityCraft.reinforcedOldLogs,
-				mod_SecurityCraft.reinforcedPrismarine,
-				mod_SecurityCraft.reinforcedPurpur,
-				mod_SecurityCraft.reinforcedQuartz,
-				mod_SecurityCraft.reinforcedRedNetherBrick,
-				mod_SecurityCraft.reinforcedRedSandstone,
-				mod_SecurityCraft.reinforcedSandstone,
-				mod_SecurityCraft.reinforcedStainedHardenedClay,
-				mod_SecurityCraft.reinforcedStairsAcacia,
-				mod_SecurityCraft.reinforcedStairsBirch,
-				mod_SecurityCraft.reinforcedStairsBrick,
-				mod_SecurityCraft.reinforcedStairsCobblestone,
-				mod_SecurityCraft.reinforcedStairsDarkoak,
-				mod_SecurityCraft.reinforcedStairsJungle,
-				mod_SecurityCraft.reinforcedStairsNetherBrick,
-				mod_SecurityCraft.reinforcedStairsOak,
-				mod_SecurityCraft.reinforcedStairsPurpur,
-				mod_SecurityCraft.reinforcedStairsQuartz,
-				mod_SecurityCraft.reinforcedStairsRedSandstone,
-				mod_SecurityCraft.reinforcedStairsSandstone,
-				mod_SecurityCraft.reinforcedStairsSpruce,
-				mod_SecurityCraft.reinforcedStairsStone,
-				mod_SecurityCraft.reinforcedStairsStoneBrick,
-				mod_SecurityCraft.reinforcedStone,
-				mod_SecurityCraft.reinforcedStoneBrick,
-				mod_SecurityCraft.reinforcedStoneSlabs,
-				mod_SecurityCraft.reinforcedStoneSlabs2,
-				mod_SecurityCraft.reinforcedWoodPlanks,
-				mod_SecurityCraft.reinforcedWoodSlabs,
-				mod_SecurityCraft.reinforcedWool
+				SCContent.reinforcedBrick,
+				SCContent.reinforcedCobblestone,
+				SCContent.reinforcedCompressedBlocks,
+				SCContent.reinforcedDirt,
+				SCContent.reinforcedDoubleStoneSlabs,
+				SCContent.reinforcedDoubleStoneSlabs2,
+				SCContent.reinforcedDoubleWoodSlabs,
+				SCContent.reinforcedEndStoneBricks,
+				SCContent.reinforcedHardenedClay,
+				SCContent.reinforcedMetals,
+				SCContent.reinforcedMossyCobblestone,
+				SCContent.reinforcedNetherBrick,
+				SCContent.reinforcedNewLogs,
+				SCContent.reinforcedOldLogs,
+				SCContent.reinforcedPrismarine,
+				SCContent.reinforcedPurpur,
+				SCContent.reinforcedQuartz,
+				SCContent.reinforcedRedNetherBrick,
+				SCContent.reinforcedRedSandstone,
+				SCContent.reinforcedSandstone,
+				SCContent.reinforcedStainedHardenedClay,
+				SCContent.reinforcedStairsAcacia,
+				SCContent.reinforcedStairsBirch,
+				SCContent.reinforcedStairsBrick,
+				SCContent.reinforcedStairsCobblestone,
+				SCContent.reinforcedStairsDarkoak,
+				SCContent.reinforcedStairsJungle,
+				SCContent.reinforcedStairsNetherBrick,
+				SCContent.reinforcedStairsOak,
+				SCContent.reinforcedStairsPurpur,
+				SCContent.reinforcedStairsQuartz,
+				SCContent.reinforcedStairsRedSandstone,
+				SCContent.reinforcedStairsSandstone,
+				SCContent.reinforcedStairsSpruce,
+				SCContent.reinforcedStairsStone,
+				SCContent.reinforcedStairsStoneBrick,
+				SCContent.reinforcedStone,
+				SCContent.reinforcedStoneBrick,
+				SCContent.reinforcedStoneSlabs,
+				SCContent.reinforcedStoneSlabs2,
+				SCContent.reinforcedWoodPlanks,
+				SCContent.reinforcedWoodSlabs,
+				SCContent.reinforcedWool
 		};
 		//registering reinforced blocks color overlay for world
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x999999, blocksToTint);

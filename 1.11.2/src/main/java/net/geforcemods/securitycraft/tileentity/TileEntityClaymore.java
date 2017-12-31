@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
@@ -48,12 +48,12 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, -mod_SecurityCraft.configHandler.claymoreRange);
+				axisalignedbb = axisalignedbb.addCoord(0, 0, -SecurityCraft.configHandler.claymoreRange);
 			else if(dir == EnumFacing.SOUTH)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, mod_SecurityCraft.configHandler.claymoreRange);if(dir == EnumFacing.EAST)
-					axisalignedbb = axisalignedbb.addCoord(mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+				axisalignedbb = axisalignedbb.addCoord(0, 0, SecurityCraft.configHandler.claymoreRange);if(dir == EnumFacing.EAST)
+					axisalignedbb = axisalignedbb.addCoord(SecurityCraft.configHandler.claymoreRange, 0, 0);
 				else if(dir == EnumFacing.WEST)
-					axisalignedbb = axisalignedbb.addCoord(-mod_SecurityCraft.configHandler.claymoreRange, 0, 0);
+					axisalignedbb = axisalignedbb.addCoord(-SecurityCraft.configHandler.claymoreRange, 0, 0);
 
 				List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 				Iterator<?> iterator = list.iterator();

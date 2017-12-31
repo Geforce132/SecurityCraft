@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -28,10 +28,10 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(playerIn, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(worldIn, pos) && isDefusable() && PlayerUtils.isHoldingItem(playerIn, mod_SecurityCraft.wireCutters)) {
+			if(isActive(worldIn, pos) && isDefusable() && PlayerUtils.isHoldingItem(playerIn, SCContent.wireCutters)) {
 				defuseMine(worldIn, pos);
 				playerIn.inventory.getCurrentItem().damageItem(1, playerIn);
 				return false;

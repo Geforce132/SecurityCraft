@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -137,7 +137,7 @@ public class GuiKeyChanger extends GuiContainer {
 		switch(guibutton.id){
 			case 0:
 				((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
-				mod_SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, textboxNewPasscode.getText()));
+				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
 				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().thePlayer, StatCollector.translateToLocal("item.universalKeyChanger.name"), StatCollector.translateToLocal("messages.universalKeyChanger.passcodeChanged"), EnumChatFormatting.GREEN);

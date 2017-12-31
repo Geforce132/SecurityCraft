@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -14,13 +14,13 @@ import net.minecraft.item.ItemStack;
  */
 public enum EnumCustomModules {
 
-	REDSTONE(mod_SecurityCraft.redstoneModule, "redstoneModule", "Redstone module"),
-	WHITELIST(mod_SecurityCraft.whitelistModule, "whitelistModule", "Whitelist module"),
-	BLACKLIST(mod_SecurityCraft.blacklistModule, "blacklistModule", "Blacklist module"),
-	HARMING(mod_SecurityCraft.harmingModule, "harmingModule", "Harming module"),
-	SMART(mod_SecurityCraft.smartModule, "smartModule", "Smart module"),
-	STORAGE(mod_SecurityCraft.storageModule, "storageModule", "Storage module"),
-	DISGUISE(mod_SecurityCraft.disguiseModule, "disguiseModule", "Disguise module");
+	REDSTONE(SCContent.redstoneModule, "redstoneModule", "Redstone module"),
+	WHITELIST(SCContent.whitelistModule, "whitelistModule", "Whitelist module"),
+	BLACKLIST(SCContent.blacklistModule, "blacklistModule", "Blacklist module"),
+	HARMING(SCContent.harmingModule, "harmingModule", "Harming module"),
+	SMART(SCContent.smartModule, "smartModule", "Smart module"),
+	STORAGE(SCContent.storageModule, "storageModule", "Storage module"),
+	DISGUISE(SCContent.disguiseModule, "disguiseModule", "Disguise module");
 
 	private ItemModule module;
 	private String moduleUnlocalizedName;

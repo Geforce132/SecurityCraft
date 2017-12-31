@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -115,7 +115,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker) && !PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.keyPanel))
+			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.keyPanel))
 				((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 
 			return true;
@@ -124,14 +124,14 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 	public static void activate(World par1World, BlockPos pos){
 		BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
-		par1World.scheduleUpdate(pos, mod_SecurityCraft.keypad, 60);
+		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+		par1World.scheduleUpdate(pos, SCContent.keypad, 60);
 	}
 
 	@Override
 	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
 		BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-		par1World.notifyNeighborsOfStateChange(pos, mod_SecurityCraft.keypad);
+		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 	}
 
 	/**
@@ -326,13 +326,13 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	@Override
 	public Block getOriginalBlock()
 	{
-		return mod_SecurityCraft.frame;
+		return SCContent.frame;
 	}
 
 	@Override
 	public boolean convert(EntityPlayer player, World world, BlockPos pos)
 	{
-		world.setBlockState(pos, mod_SecurityCraft.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
+		world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(((IOwnable)world.getTileEntity(pos)).getOwner());
 		return true;
 	}

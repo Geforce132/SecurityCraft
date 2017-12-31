@@ -2,12 +2,12 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.item.ItemStack;
 
@@ -23,7 +23,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	};
 
 	private void toggleLaser(OptionBoolean option) {
-		if(worldObj.getBlock(xCoord, yCoord, zCoord) != mod_SecurityCraft.laserBlock) return;
+		if(worldObj.getBlock(xCoord, yCoord, zCoord) != SCContent.laserBlock) return;
 
 		if(option.getValue())
 			((BlockLaserBlock) worldObj.getBlock(xCoord, yCoord, zCoord)).setLaser(worldObj, xCoord, yCoord, zCoord);

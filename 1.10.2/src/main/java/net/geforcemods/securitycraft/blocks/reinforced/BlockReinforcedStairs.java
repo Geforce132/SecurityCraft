@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
@@ -17,7 +17,7 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		useNeighborBrightness = true;
 
-		if(baseBlock == mod_SecurityCraft.reinforcedWoodPlanks)
+		if(baseBlock == SCContent.reinforcedWoodPlanks)
 			setSoundType(SoundType.WOOD);
 		else
 			setSoundType(SoundType.STONE);

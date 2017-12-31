@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -49,8 +49,8 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 			if(item != null && item.getItem() instanceof ItemCameraMonitor && ((ItemCameraMonitor) item.getItem()).hasCameraAdded(item.getTagCompound())){
 				CameraView view = ((ItemCameraMonitor) item.getItem()).getCameraView(item.getTagCompound());
 
-				if(mod_SecurityCraft.instance.hasViewForCoords(view.toNBTString())){
-					IWorldView worldView = mod_SecurityCraft.instance.getViewFromCoords(view.toNBTString()).getView();
+				if(SecurityCraft.instance.hasViewForCoords(view.toNBTString())){
+					IWorldView worldView = SecurityCraft.instance.getViewFromCoords(view.toNBTString()).getView();
 
 					if(worldView.isReady() && worldView.getTexture() != 0){
 						//Bind the IWorldView texture then draw it.
