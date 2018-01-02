@@ -47,7 +47,7 @@ public class SecurityCraft {
 	public static ServerProxy serverProxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
-	public static ConfigHandler configHandler = new ConfigHandler();
+	public static ConfigHandler config = new ConfigHandler();
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
@@ -71,7 +71,7 @@ public class SecurityCraft {
 		log("Loading config file....");
 		log(SecurityCraft.VERSION + " of SecurityCraft is for a post MC-1.6.4 version! Configuration files are useless for setting anything besides options.");
 		SecurityCraft.configFile = new Configuration(event.getSuggestedConfigurationFile());
-		SecurityCraft.configHandler.setupConfiguration();
+		SecurityCraft.config.setupConfiguration();
 		log("Config file loaded.");
 		log("Setting up network....");
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
@@ -113,7 +113,7 @@ public class SecurityCraft {
 
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
 
-		if(configHandler.checkForUpdates) {
+		if(config.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
 			if(vcUpdateTag != null)
 				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);

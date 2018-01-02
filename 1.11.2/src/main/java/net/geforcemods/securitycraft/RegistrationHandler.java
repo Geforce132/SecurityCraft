@@ -95,7 +95,7 @@ public class RegistrationHandler
 	public static void registerContent()
 	{
 		registerBlock(SCContent.laserBlock);
-		GameRegistry.register(SCContent.laser);
+		GameRegistry.register(SCContent.laserField);
 		registerBlock(SCContent.keypad);
 		registerBlock(SCContent.mine);
 		GameRegistry.register(SCContent.mineCut);
@@ -184,12 +184,12 @@ public class RegistrationHandler
 		registerItem(SCContent.reinforcedDoorItem);
 		registerItem(SCContent.scannerDoorItem);
 		registerItem(SCContent.universalBlockRemover);
-		registerItem(SCContent.keycardLV1, SecurityCraft.configHandler.ableToCraftKeycard1);
-		registerItem(SCContent.keycardLV2, SecurityCraft.configHandler.ableToCraftKeycard2);
-		registerItem(SCContent.keycardLV3, SecurityCraft.configHandler.ableToCraftKeycard3);
-		registerItem(SCContent.keycardLV4, SecurityCraft.configHandler.ableToCraftKeycard4);
-		registerItem(SCContent.keycardLV5, SecurityCraft.configHandler.ableToCraftKeycard5);
-		registerItem(SCContent.limitedUseKeycard, SecurityCraft.configHandler.ableToCraftLUKeycard);
+		registerItem(SCContent.keycardLV1, SecurityCraft.config.ableToCraftKeycard1);
+		registerItem(SCContent.keycardLV2, SecurityCraft.config.ableToCraftKeycard2);
+		registerItem(SCContent.keycardLV3, SecurityCraft.config.ableToCraftKeycard3);
+		registerItem(SCContent.keycardLV4, SecurityCraft.config.ableToCraftKeycard4);
+		registerItem(SCContent.keycardLV5, SecurityCraft.config.ableToCraftKeycard5);
+		registerItem(SCContent.limitedUseKeycard, SecurityCraft.config.ableToCraftLUKeycard);
 		registerItem(SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.WATER_BUCKET), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, ItemUtils.toItemStack(Items.LAVA_BUCKET), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
@@ -240,7 +240,7 @@ public class RegistrationHandler
 
 	public static void registerRecipes()
 	{
-		if(SecurityCraft.configHandler.useOldKeypadRecipe)
+		if(SecurityCraft.config.useOldKeypadRecipe)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keypad, 1), new Object[]{
 					"III", "III", "III", 'I', Blocks.STONE_BUTTON
 			});
@@ -286,32 +286,32 @@ public class RegistrationHandler
 				"DTD", "GSG", "RER", 'D', Items.DIAMOND, 'T', Blocks.REDSTONE_TORCH, 'G', Items.GOLD_INGOT, 'S', Items.NETHER_STAR, 'R', Items.REDSTONE, 'E', Items.EMERALD
 		});
 
-		if(SecurityCraft.configHandler.ableToCraftKeycard1)
+		if(SecurityCraft.config.ableToCraftKeycard1)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV1, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.GOLD_INGOT
 			});
 
-		if(SecurityCraft.configHandler.ableToCraftKeycard2)
+		if(SecurityCraft.config.ableToCraftKeycard2)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV2, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.BRICK
 			});
 
-		if(SecurityCraft.configHandler.ableToCraftKeycard3)
+		if(SecurityCraft.config.ableToCraftKeycard3)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV3, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.NETHERBRICK
 			});
 
-		if(SecurityCraft.configHandler.ableToCraftKeycard4)
+		if(SecurityCraft.config.ableToCraftKeycard4)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV4, 1), new Object[]{
 					"III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 13)
 			});
 
-		if(SecurityCraft.configHandler.ableToCraftKeycard5)
+		if(SecurityCraft.config.ableToCraftKeycard5)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV5, 1), new Object[]{
 					"III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 5)
 			});
 
-		if(SecurityCraft.configHandler.ableToCraftLUKeycard)
+		if(SecurityCraft.config.ableToCraftLUKeycard)
 			GameRegistry.addRecipe(new ItemStack(SCContent.limitedUseKeycard, 1), new Object[]{
 					"III", "LLL", 'I', Items.IRON_INGOT, 'L', new ItemStack(Items.DYE, 1, 4)
 			});
@@ -641,7 +641,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStone), 5, new ModelResourceLocation("securitycraft:reinforced_stone_andesite", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStone), 6, new ModelResourceLocation("securitycraft:reinforced_stone_smooth_andesite", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.laserBlock), 0, new ModelResourceLocation("securitycraft:laser_block", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.laser), 0, new ModelResourceLocation("securitycraft:laser", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.laserField), 0, new ModelResourceLocation("securitycraft:laser", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypadChest), 0, new ModelResourceLocation("securitycraft:keypad_chest", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedDoor), 0, new ModelResourceLocation("securitycraft:reinforced_iron_door", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.ironTrapdoor), 0, new ModelResourceLocation("securitycraft:reinforced_iron_trapdoor", "inventory"));

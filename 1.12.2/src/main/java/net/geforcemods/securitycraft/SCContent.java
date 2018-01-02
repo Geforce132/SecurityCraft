@@ -30,7 +30,7 @@ public class SCContent
 	public static Block keypad;
 	public static Block keypadChest;
 	public static Block keypadFurnace;
-	public static Block laser;
+	public static Block laserField;
 	public static Block laserBlock;
 	public static Block panicButton;
 	public static Block portableRadar;

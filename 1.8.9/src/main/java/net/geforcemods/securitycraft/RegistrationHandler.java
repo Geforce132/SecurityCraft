@@ -83,7 +83,7 @@ public class RegistrationHandler
 	public static void registerContent()
 	{
 		registerBlock(SCContent.laserBlock);
-		GameRegistry.registerBlock(SCContent.laser, SCContent.laser.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.laserField, SCContent.laserField.getUnlocalizedName().substring(5));
 		registerBlock(SCContent.keypad);
 		registerBlock(SCContent.mine);
 		GameRegistry.registerBlock(SCContent.mineCut,SCContent.mineCut.getUnlocalizedName().substring(5));
@@ -626,7 +626,7 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedStone), 5, new ModelResourceLocation("securitycraft:reinforcedStone_andesite", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedStone), 6, new ModelResourceLocation("securitycraft:reinforcedStone_smooth_andesite", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.laserBlock), 0, new ModelResourceLocation("securitycraft:laserBlock", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.laser), 0, new ModelResourceLocation("securitycraft:laser", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.laserField), 0, new ModelResourceLocation("securitycraft:laser", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.keypadChest), 0, new ModelResourceLocation("securitycraft:keypadChest", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedDoor), 0, new ModelResourceLocation("securitycraft:reinforcedIronDoor", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.ironTrapdoor), 0, new ModelResourceLocation("securitycraft:reinforcedIronTrapdoor", "inventory"));

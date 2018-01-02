@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySecurityCamera extends Entity{
 
-	private final float CAMERA_SPEED = SecurityCraft.configHandler.cameraSpeed;
+	private final float CAMERA_SPEED = SecurityCraft.config.cameraSpeed;
 
 	public int blockPosX;
 	public int blockPosY;

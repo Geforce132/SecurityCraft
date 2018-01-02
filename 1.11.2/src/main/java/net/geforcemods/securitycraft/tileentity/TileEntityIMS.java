@@ -51,7 +51,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double d0 = SecurityCraft.configHandler.imsRange;
+			double d0 = SecurityCraft.config.imsRange;
 
 			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
 			List<?> list1 = world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);

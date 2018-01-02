@@ -89,6 +89,6 @@ public class BlockLogger extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int par1) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.configHandler.usernameLoggerSearchRadius, 80);
+		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
 	}
 }

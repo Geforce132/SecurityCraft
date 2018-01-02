@@ -24,7 +24,7 @@ public class ItemAdminTool extends Item {
 	public ItemAdminTool() {
 		super();
 
-		if(SecurityCraft.configHandler.allowAdminTool)
+		if(SecurityCraft.config.allowAdminTool)
 			setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 

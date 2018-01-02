@@ -77,7 +77,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
 		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);

@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft;
 
 import net.minecraftforge.common.config.Property;
 
-public class ConfigHandler{
-	private int[]  HARMING_POTIONS = {8268, 8236, 16460, 16428};
-	private int[]  HEALING_POTIONS = {8261, 8229, 16453, 16421};
-
+public class ConfigHandler
+{
 	//******************configuration options
 	public boolean allowCodebreakerItem;
 	public boolean allowAdminTool;
@@ -35,7 +33,8 @@ public class ConfigHandler{
 	public float cameraSpeed;
 	//***************************************
 
-	public void setupConfiguration() {
+	public void setupConfiguration()
+	{
 		SecurityCraft.configFile.load();
 
 		Property dummyProp;

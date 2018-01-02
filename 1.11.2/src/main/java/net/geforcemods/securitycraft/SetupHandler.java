@@ -85,7 +85,7 @@ public class SetupHandler
 	public static void setupBlocks()
 	{
 		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setUnlocalizedName("laserBlock");
-		SCContent.laser = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setRegistryName("laser");
+		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setRegistryName("laser");
 
 		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setUnlocalizedName("keypad");
 
@@ -206,21 +206,21 @@ public class SetupHandler
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setUnlocalizedName("mine");
-		SCContent.mineCut = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1F).setResistance(1000F).setRegistryName("mine_cut").setUnlocalizedName("mineCut");
+		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setUnlocalizedName("mine");
+		SCContent.mineCut = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setRegistryName("mine_cut").setUnlocalizedName("mineCut");
 
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1.25F).setRegistryName("dirt_mine").setUnlocalizedName("dirtMine");
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 2.5F).setRegistryName("stone_mine").setUnlocalizedName("stoneMine");
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 2.75F).setRegistryName("cobblestone_mine").setUnlocalizedName("cobblestoneMine");
-		SCContent.sandMine = new BlockFullMineBase(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1.25F).setRegistryName("sand_mine").setUnlocalizedName("sandMine");
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 3.75F).setRegistryName("diamond_mine").setUnlocalizedName("diamondMine");
-		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 3.75F).setRegistryName("furnace_mine").setUnlocalizedName("furnaceMine");
+		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1.25F).setRegistryName("dirt_mine").setUnlocalizedName("dirtMine");
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 2.5F).setRegistryName("stone_mine").setUnlocalizedName("stoneMine");
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 2.75F).setRegistryName("cobblestone_mine").setUnlocalizedName("cobblestoneMine");
+		SCContent.sandMine = new BlockFullMineBase(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1.25F).setRegistryName("sand_mine").setUnlocalizedName("sandMine");
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 3.75F).setRegistryName("diamond_mine").setUnlocalizedName("diamondMine");
+		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 3.75F).setRegistryName("furnace_mine").setUnlocalizedName("furnaceMine");
 
-		SCContent.trackMine = new BlockTrackMine().setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 0.7F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("track_mine").setUnlocalizedName("trackMine");
+		SCContent.trackMine = new BlockTrackMine().setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 0.7F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("track_mine").setUnlocalizedName("trackMine");
 
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setUnlocalizedName("bouncingBetty");
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setUnlocalizedName("bouncingBetty");
 
-		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setHardness(!SecurityCraft.configHandler.ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setUnlocalizedName("claymore");
+		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setUnlocalizedName("claymore");
 
 		SCContent.ims = new BlockIMS(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("ims").setUnlocalizedName("ims");
 	}

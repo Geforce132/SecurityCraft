@@ -73,7 +73,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.east(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.east(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
+						par1World.setBlockState(pos.east(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 			}
 			else
 				continue;
@@ -88,7 +88,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.west(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.west(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
+						par1World.setBlockState(pos.west(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 3));
 			}
 			else
 				continue;
@@ -103,7 +103,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.south(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.south(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
+						par1World.setBlockState(pos.south(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 			}
 			else
 				continue;
@@ -118,7 +118,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.north(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.north(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
+						par1World.setBlockState(pos.north(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 2));
 			}
 			else
 				continue;
@@ -133,7 +133,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.up(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.up(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
+						par1World.setBlockState(pos.up(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 			}
 			else
 				continue;
@@ -148,7 +148,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlockState(pos.down(j)).getBlock() == Blocks.air)
-						par1World.setBlockState(pos.down(j), SCContent.laser.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
+						par1World.setBlockState(pos.down(j), SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, 1));
 			}
 			else
 				continue;
@@ -161,15 +161,15 @@ public class BlockLaserBlock extends BlockOwnable {
 	@Override
 	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state) {
 		if(!par1World.isRemote)
-			destroyAdjecentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
+			destroyAdjacentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static void destroyAdjecentLasers(World par1World, int par2, int par3, int par4){
+	public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
 			Block id = BlockUtils.getBlock(par1World, par2 + i, par3, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2 + j, par3, par4) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2 + j, par3, par4) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2 + j, par3, par4)).getValue(BlockLaserField.BOUNDTYPE) == 3)
 						par1World.destroyBlock(new BlockPos(par2 + j, par3, par4), false);
 			}
 			else
@@ -180,7 +180,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			Block id = BlockUtils.getBlock(par1World, par2 - i, par3, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2 - j, par3, par4) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2 - j, par3, par4) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2 - j, par3, par4)).getValue(BlockLaserField.BOUNDTYPE) == 3)
 						par1World.destroyBlock(new BlockPos(par2 - j, par3, par4), false);
 			}
 			else
@@ -191,7 +191,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			Block id = BlockUtils.getBlock(par1World, par2, par3, par4 + i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2, par3, par4 + j) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2, par3, par4 + j) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2, par3, par4 + j)).getValue(BlockLaserField.BOUNDTYPE) == 2)
 						par1World.destroyBlock(new BlockPos(par2, par3, par4 + j), false);
 			}
 			else
@@ -202,7 +202,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			Block id = BlockUtils.getBlock(par1World, par2 , par3, par4 - i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2, par3, par4 - j) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2, par3, par4 - j) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2, par3, par4 - j)).getValue(BlockLaserField.BOUNDTYPE) == 2)
 						par1World.destroyBlock(new BlockPos(par2, par3, par4 - j), false);
 			}
 			else
@@ -213,7 +213,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			Block id = BlockUtils.getBlock(par1World, par2, par3 + i, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2, par3 + j, par4) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2, par3 + j, par4) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2, par3 + j, par4)).getValue(BlockLaserField.BOUNDTYPE) == 1)
 						par1World.destroyBlock(new BlockPos(par2, par3 + j, par4), false);
 			}
 			else
@@ -224,7 +224,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			Block id = BlockUtils.getBlock(par1World, par2, par3 - i, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(BlockUtils.getBlock(par1World, par2, par3 - j, par4) == SCContent.laser)
+					if(BlockUtils.getBlock(par1World, par2, par3 - j, par4) == SCContent.laserField && (Integer)par1World.getBlockState(new BlockPos(par2, par3 + j, par4)).getValue(BlockLaserField.BOUNDTYPE) == 1)
 						par1World.destroyBlock(new BlockPos(par2, par3 - j, par4), false);
 			}
 			else

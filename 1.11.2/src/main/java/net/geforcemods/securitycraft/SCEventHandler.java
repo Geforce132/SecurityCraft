@@ -91,7 +91,7 @@ public class SCEventHandler {
 		else
 			TextComponentString = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey));
 
-		if(SecurityCraft.configHandler.sayThanksMessage)
+		if(SecurityCraft.config.sayThanksMessage)
 			event.player.sendMessage(TextComponentString);
 	}
 
@@ -190,7 +190,7 @@ public class SCEventHandler {
 		if(event.getModID().equals("securitycraft")){
 			SecurityCraft.configFile.save();
 
-			SecurityCraft.configHandler.setupConfiguration();
+			SecurityCraft.config.setupConfiguration();
 		}
 	}
 
@@ -353,11 +353,11 @@ public class SCEventHandler {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-		if(SecurityCraft.configHandler.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
+		if(SecurityCraft.config.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
 			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !SecurityCraft.configHandler.allowCodebreakerItem);
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !SecurityCraft.config.allowCodebreakerItem);
 
 		return false;
 	}

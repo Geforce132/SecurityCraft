@@ -86,7 +86,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if(!player.capabilities.isCreativeMode && !world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !SecurityCraft.configHandler.mineExplodesWhenInCreative)
+			if(player != null && player.capabilities.isCreativeMode && !SecurityCraft.config.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			else{
 				explode(world, pos);
@@ -137,7 +137,7 @@ public class BlockMine extends BlockExplosive {
 
 		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			par1World.destroyBlock(pos, false);
-			if(SecurityCraft.configHandler.smallerMineExplosion)
+			if(SecurityCraft.config.smallerMineExplosion)
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
 				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);

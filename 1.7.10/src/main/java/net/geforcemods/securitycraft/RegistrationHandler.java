@@ -81,7 +81,7 @@ public class RegistrationHandler
 	public static void registerContent()
 	{
 		registerBlock(SCContent.laserBlock);
-		GameRegistry.registerBlock(SCContent.laser, SCContent.laser.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.laserField, SCContent.laserField.getUnlocalizedName().substring(5));
 		registerBlock(SCContent.keypad);
 		registerBlock(SCContent.mine);
 		GameRegistry.registerBlock(SCContent.mineCut,SCContent.mineCut.getUnlocalizedName().substring(5));

@@ -85,7 +85,7 @@ public class SetupHandler
 	public static void setupBlocks()
 	{
 		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("laserBlock");
-		SCContent.laser = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laser");
+		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("laser");
 
 		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("keypad");
 

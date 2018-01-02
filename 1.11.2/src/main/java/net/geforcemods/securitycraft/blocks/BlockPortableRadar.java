@@ -68,7 +68,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	public static void searchForPlayers(World par1World, BlockPos pos, IBlockState state){
 		if(!par1World.isRemote){
-			double d0 = (SecurityCraft.configHandler.portableRadarSearchRadius);
+			double d0 = (SecurityCraft.config.portableRadarSearchRadius);
 
 			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
 			List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
@@ -150,7 +150,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int par2) {
-		return new TileEntityPortableRadar().attacks(EntityPlayer.class, SecurityCraft.configHandler.portableRadarSearchRadius, SecurityCraft.configHandler.portableRadarDelay).nameable();
+		return new TileEntityPortableRadar().attacks(EntityPlayer.class, SecurityCraft.config.portableRadarSearchRadius, SecurityCraft.config.portableRadarDelay).nameable();
 	}
 
 }

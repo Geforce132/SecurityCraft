@@ -63,7 +63,7 @@ public class BlockLaserBlock extends BlockContainer {
 
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 + j, par3, par4, SCContent.laser, 3, 3);
+						par1World.setBlock(par2 + j, par3, par4, SCContent.laserField, 3, 3);
 			}
 			else
 				continue;
@@ -77,7 +77,7 @@ public class BlockLaserBlock extends BlockContainer {
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 - j, par3, par4, SCContent.laser, 3, 3);
+						par1World.setBlock(par2 - j, par3, par4, SCContent.laserField, 3, 3);
 			}
 			else
 				continue;
@@ -91,7 +91,7 @@ public class BlockLaserBlock extends BlockContainer {
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 + j, SCContent.laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 + j, SCContent.laserField, 2, 3);
 			}
 			else
 				continue;
@@ -105,7 +105,7 @@ public class BlockLaserBlock extends BlockContainer {
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 - j, SCContent.laser, 2, 3);
+						par1World.setBlock(par2, par3, par4 - j, SCContent.laserField, 2, 3);
 			}
 			else
 				continue;
@@ -119,7 +119,7 @@ public class BlockLaserBlock extends BlockContainer {
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 + j, par4, SCContent.laser, 1, 3);
+						par1World.setBlock(par2, par3 + j, par4, SCContent.laserField, 1, 3);
 			}
 			else
 				continue;
@@ -133,7 +133,7 @@ public class BlockLaserBlock extends BlockContainer {
 				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4));
 				for(int j = 1; j < i; j++)
 					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 - j, par4, SCContent.laser, 1, 3);
+						par1World.setBlock(par2, par3 - j, par4, SCContent.laserField, 1, 3);
 			}
 			else
 				continue;
@@ -154,7 +154,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2 + i, par3, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 + j, par3, par4) == SCContent.laser)
+					if(par1World.getBlock(par2 + j, par3, par4) == SCContent.laserField && par1World.getBlockMetadata(par2 + j, par3, par4) == 3)
 						par1World.breakBlock(par2 + j, par3, par4, false);
 			}
 			else
@@ -165,7 +165,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2 - i, par3, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 - j, par3, par4) == SCContent.laser)
+					if(par1World.getBlock(par2 - j, par3, par4) == SCContent.laserField && par1World.getBlockMetadata(par2 - j, par3, par4) == 3)
 						par1World.breakBlock(par2 - j, par3, par4, false);
 			}
 			else
@@ -176,7 +176,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2, par3, par4 + i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 + j) == SCContent.laser)
+					if(par1World.getBlock(par2, par3, par4 + j) == SCContent.laserField && par1World.getBlockMetadata(par2, par3, par4 + j) == 2)
 						par1World.breakBlock(par2, par3, par4 + j, false);
 			}
 			else
@@ -187,7 +187,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2, par3, par4 - i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 - j) == SCContent.laser)
+					if(par1World.getBlock(par2, par3, par4 - j) == SCContent.laserField && par1World.getBlockMetadata(par2, par3, par4 - j) == 2)
 						par1World.breakBlock(par2, par3, par4 - j, false);
 			}
 			else
@@ -198,7 +198,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2, par3 + i, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 + j, par4) == SCContent.laser)
+					if(par1World.getBlock(par2, par3 + j, par4) == SCContent.laserField && par1World.getBlockMetadata(par2, par3 + j, par4) == 1)
 						par1World.breakBlock(par2, par3 + j, par4, false);
 			}
 			else
@@ -209,7 +209,7 @@ public class BlockLaserBlock extends BlockContainer {
 			Block id = par1World.getBlock(par2, par3 - i, par4);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 - j, par4) == SCContent.laser)
+					if(par1World.getBlock(par2, par3 - j, par4) == SCContent.laserField && par1World.getBlockMetadata(par2, par3 - j, par4) == 1)
 						par1World.breakBlock(par2, par3 - j, par4, false);
 			}
 			else

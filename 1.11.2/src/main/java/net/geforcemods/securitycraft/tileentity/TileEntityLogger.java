@@ -31,7 +31,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	public void logPlayers(){
-		double d0 = SecurityCraft.configHandler.usernameLoggerSearchRadius;
+		double d0 = SecurityCraft.config.usernameLoggerSearchRadius;
 
 		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
 		List<?> list = world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);

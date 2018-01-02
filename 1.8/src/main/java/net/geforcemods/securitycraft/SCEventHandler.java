@@ -169,7 +169,7 @@ public class SCEventHandler {
 
 				if(block == SCContent.laserBlock){
 					world.destroyBlock(event.pos, true);
-					BlockLaserBlock.destroyAdjecentLasers(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
+					BlockLaserBlock.destroyAdjacentLasers(event.world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}else{
 					world.destroyBlock(event.pos, true);
