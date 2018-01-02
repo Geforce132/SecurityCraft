@@ -61,7 +61,7 @@ public class BlockLaserField extends Block{
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {
 		if(!par1World.isRemote && par5Entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) par5Entity, Potion.invisibility)){
-			for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 + i, par3, par4);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2 + i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2 + i, par3, par4, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -74,11 +74,9 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2 + i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 - i, par3, par4);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2 - i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2 - i, par3, par4, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -91,11 +89,9 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2 - i, par3, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3, par4 + i);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2, par3, par4 + i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4 + i, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -108,11 +104,9 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2, par3, par4 + i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3, par4 - i);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2, par3, par4 - i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4 - i, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -125,11 +119,9 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2, par3, par4 - i) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 + i, par4);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2, par3 + i, par4 ) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3 + i, par4, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -142,11 +134,9 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2, par3 + i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 - i, par4);
 				if(id == SCContent.laserBlock){
 					if(par1World.getTileEntity(par2, par3 - i, par4 ) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3 - i, par4, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) par5Entity).getCommandSenderName().toLowerCase()))
@@ -159,8 +149,6 @@ public class BlockLaserField extends Block{
 					if(par1World.getTileEntity(par2, par3 - i, par4) instanceof CustomizableSCTE && ((CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4)).hasModule(EnumCustomModules.HARMING))
 						((EntityLivingBase) par5Entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 				}
-				else
-					continue;
 			}
 		}
 	}
@@ -173,58 +161,46 @@ public class BlockLaserField extends Block{
 	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
 	{
 		if(!par1World.isRemote){
-			for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 + i, par3, par4);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2 + j, par3, par4, false);
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 - i, par3, par4);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2 - j, par3, par4, false);
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3, par4 + i);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2, par3, par4 + j, false);
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2 , par3, par4 - i);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2, par3, par4 - j, false);
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 + i, par4);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2, par3 + j, par4, false);
-				else
-					continue;
 			}
 
-			for(int i = 0; i <= SecurityCraft.config.laserBlockRange; i++){
+			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
 				Block id = par1World.getBlock(par2, par3 - i, par4);
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
 						par1World.breakBlock(par2, par3 - j, par4, false);
-				else
-					continue;
 			}
 		}
 	}
