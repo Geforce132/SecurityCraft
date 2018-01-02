@@ -5,8 +5,9 @@ import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -115,13 +116,13 @@ public class GuiBriefcaseSetup extends GuiContainer {
 					return;
 				}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, mod_SecurityCraft.briefcase)) {
+				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().thePlayer, SCContent.briefcase)) {
 					if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound() == null)
 						Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());
 
 					Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem());
-					Minecraft.getMinecraft().thePlayer.openGui(mod_SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+					Minecraft.getMinecraft().thePlayer.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
 				}
 		}
 	}

@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -73,7 +74,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, mod_SecurityCraft.codebreaker))
+			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker))
 				((TileEntityKeypadFurnace) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 		}
 
@@ -85,7 +86,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 			BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
 
 		par1World.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
-		player.openGui(mod_SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 
 		furnace.writeToNBT(tag);
 		furnace.clear();
-		world.setBlockState(pos, mod_SecurityCraft.keypadFurnace.getDefaultState().withProperty(FACING, enumfacing).withProperty(OPEN, false));
+		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, enumfacing).withProperty(OPEN, false));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
 		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;

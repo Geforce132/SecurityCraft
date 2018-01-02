@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -91,7 +91,7 @@ public class EntityBouncingBetty extends Entity {
 	{
 		float f = 6.0F;
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			worldObj.createExplosion(this, posX, posY, posZ, (f / 2), true);
 		else
 			worldObj.createExplosion(this, posX, posY, posZ, f, true);

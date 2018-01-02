@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.Loader;
 
@@ -29,8 +29,8 @@ public class VersionUpdateChecker {
 
 			if(update == null) return null;
 
-			if((update.getVersion().matches("0.0.0") && update.getFileName().matches("test")) || update.getVersion().matches(mod_SecurityCraft.getVersion())){
-				mod_SecurityCraft.log("Running the latest version, no new updates avaliable.");
+			if((update.getVersion().matches("0.0.0") && update.getFileName().matches("test")) || update.getVersion().matches(SecurityCraft.getVersion())){
+				SecurityCraft.log("Running the latest version, no new updates avaliable.");
 				return null;
 			}
 

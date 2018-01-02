@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
@@ -43,7 +43,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 		f2 = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(entity);
 		GlStateManager.translate(-0.5F, -0.5F, 0.5F);
-		blockrendererdispatcher.renderBlockBrightness(mod_SecurityCraft.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
+		blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
 		GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
 		if (entity.fuse / 5 % 2 == 0)
@@ -55,7 +55,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
 			GlStateManager.doPolygonOffset(-3.0F, -3.0F);
 			GlStateManager.enablePolygonOffset();
-			blockrendererdispatcher.renderBlockBrightness(mod_SecurityCraft.bouncingBetty.getDefaultState(), 1.0F);
+			blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), 1.0F);
 			GlStateManager.doPolygonOffset(0.0F, 0.0F);
 			GlStateManager.disablePolygonOffset();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

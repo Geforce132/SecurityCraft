@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -37,13 +37,13 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World worldIn, BlockPos pos){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedWoodSlabs);
+		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override

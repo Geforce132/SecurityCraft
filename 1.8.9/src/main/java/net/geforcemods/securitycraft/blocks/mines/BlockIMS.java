@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.material.Material;
@@ -51,7 +51,7 @@ public class BlockIMS extends BlockOwnable {
 	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
 		if(!par1World.isRemote)
 			if(((IOwnable) par1World.getTileEntity(pos)).getOwner().isOwner(par5EntityPlayer)){
-				par5EntityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+				par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 

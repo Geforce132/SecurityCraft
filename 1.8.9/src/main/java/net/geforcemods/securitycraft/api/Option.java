@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.GuiSlider;
 import net.geforcemods.securitycraft.gui.GuiSlider.ISlider;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -289,7 +289,7 @@ public class Option<T> {
 
 			setValue(slider.getValue());
 			slider.displayString = (StatCollector.translateToLocal("option." + blockName + "." + getName()) + " ").replace("#", toString());
-			mod_SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
+			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
 		}
 	}
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -43,11 +43,11 @@ public class ItemReinforcedDoor extends Item {
 
 			if (!player.canPlayerEdit(pos, side, stack))
 				return false;
-			else if (!mod_SecurityCraft.reinforcedDoor.canPlaceBlockAt(world, pos))
+			else if (!SCContent.reinforcedDoor.canPlaceBlockAt(world, pos))
 				return false;
 			else
 			{
-				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), mod_SecurityCraft.reinforcedDoor);                    //TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
+				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), SCContent.reinforcedDoor);                    //TERD.setOwner(player.getGameProfile().getId().toString(), player.getName());
 				((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				--stack.stackSize;
@@ -69,7 +69,7 @@ public class ItemReinforcedDoor extends Item {
 			flag2 = true;
 
 		BlockPos blockpos3 = pos.up();
-		IBlockState iblockstate = mod_SecurityCraft.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+		IBlockState iblockstate = SCContent.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
 		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
 		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
 		worldIn.notifyNeighborsOfStateChange(pos, door);

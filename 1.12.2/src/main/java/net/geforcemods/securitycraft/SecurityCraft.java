@@ -79,7 +79,7 @@ public class SecurityCraft {
 		log("Network setup.");
 
 		log("Loading mod content....");
-		SetupHandler.setupTechnicalBlocks();
+		SetupHandler.setupBlocks();
 		SetupHandler.setupMines();
 		SetupHandler.setupItems();
 		log("Finished loading mod content.");

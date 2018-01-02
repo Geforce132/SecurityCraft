@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -58,14 +58,14 @@ public class ItemModifiedBucket extends ItemBucket {
 					{
 						worldIn.setBlockToAir(blockpos);
 						playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-						return fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fWaterBucket);
+						return fillBucket(itemStackIn, playerIn, SCContent.fWaterBucket);
 					}
 
 					if (material == Material.lava && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
 					{
 						worldIn.setBlockToAir(blockpos);
 						playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-						return fillBucket(itemStackIn, playerIn, mod_SecurityCraft.fLavaBucket);
+						return fillBucket(itemStackIn, playerIn, SCContent.fLavaBucket);
 					}
 				}
 				else

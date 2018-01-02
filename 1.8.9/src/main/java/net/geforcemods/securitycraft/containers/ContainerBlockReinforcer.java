@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -64,7 +64,7 @@ public class ContainerBlockReinforcer extends Container
 
 			if(newStack != null)
 			{
-				if(Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == mod_SecurityCraft.reinforcedCompressedBlocks)
+				if(Block.getBlockFromItem(newStack.getItem()) == SCContent.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == SCContent.reinforcedCompressedBlocks)
 					newStack.setItemDamage(customMeta);
 				else
 					newStack.setItemDamage(stack.getItemDamage());

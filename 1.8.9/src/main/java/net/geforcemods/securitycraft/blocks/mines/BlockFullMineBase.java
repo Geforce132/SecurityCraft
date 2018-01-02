@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -77,7 +77,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void explode(World par1World, BlockPos pos) {
 		par1World.destroyBlock(pos, false);
 
-		if(mod_SecurityCraft.configHandler.smallerMineExplosion)
+		if(SecurityCraft.config.smallerMineExplosion)
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
 		else
 			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);

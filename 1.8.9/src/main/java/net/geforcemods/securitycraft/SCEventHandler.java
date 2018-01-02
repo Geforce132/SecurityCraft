@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.handlers;
+package net.geforcemods.securitycraft;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
@@ -68,11 +67,11 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ForgeEventHandler {
+public class SCEventHandler {
 
 	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
 
-	public ForgeEventHandler()
+	public SCEventHandler()
 	{
 		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
@@ -85,11 +84,11 @@ public class ForgeEventHandler {
 
 		IChatComponent chatcomponenttext;
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		else
-			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", mod_SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
+			chatcomponenttext = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
 
-		if(mod_SecurityCraft.configHandler.sayThanksMessage)
+		if(SecurityCraft.config.sayThanksMessage)
 			event.player.addChatComponentMessage(chatcomponenttext);
 	}
 
@@ -102,7 +101,7 @@ public class ForgeEventHandler {
 		}
 
 		if(event.source == CustomDamageSources.electricity)
-			mod_SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
+			SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(event.entity.posX, event.entity.posY, event.entity.posZ, SCSounds.ELECTRIFIED.path, 0.25F));
 	}
 
 	@SubscribeEvent
@@ -123,12 +122,12 @@ public class ForgeEventHandler {
 
 			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.codebreaker) && handleCodebreaking(event)) {
+			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockModifier)){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockModifier)){
 				event.setCanceled(true);
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
@@ -136,7 +135,7 @@ public class ForgeEventHandler {
 					return;
 				}
 
-				event.entityPlayer.openGui(mod_SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
+				event.entityPlayer.openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
 				return;
 			}
 
@@ -160,7 +159,7 @@ public class ForgeEventHandler {
 				return;
 			}
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.entityPlayer, mod_SecurityCraft.universalBlockRemover)){
+			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockRemover)){
 				event.setCanceled(true);
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
@@ -168,7 +167,7 @@ public class ForgeEventHandler {
 					return;
 				}
 
-				if(block == mod_SecurityCraft.laserBlock){
+				if(block == SCContent.laserBlock){
 					world.destroyBlock(event.pos, true);
 					BlockLaserBlock.destroyAdjecentLasers(world, event.pos.getX(), event.pos.getY(), event.pos.getZ());
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
@@ -184,9 +183,9 @@ public class ForgeEventHandler {
 	@SubscribeEvent
 	public void onConfigChanged(OnConfigChangedEvent event) {
 		if(event.modID.equals("securitycraft")){
-			mod_SecurityCraft.configFile.save();
+			SecurityCraft.configFile.save();
 
-			mod_SecurityCraft.configHandler.setupConfiguration();
+			SecurityCraft.config.setupConfiguration();
 		}
 	}
 
@@ -250,7 +249,7 @@ public class ForgeEventHandler {
 
 			ItemStack monitor = player.inventory.mainInventory[held];
 
-			if(monitor != null && monitor.getItem() == mod_SecurityCraft.cameraMonitor)
+			if(monitor != null && monitor.getItem() == SCContent.cameraMonitor)
 			{
 				String textureToUse = "cameraNotBound";
 				double eyeHeight = player.getEyeHeight();
@@ -277,7 +276,7 @@ public class ForgeEventHandler {
 						}
 
 					GlStateManager.enableBlend();
-					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(mod_SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
 					drawNonStandardTexturedRect(event.resolution.getScaledWidth() / 2 - 90 + held * 20 + 2, event.resolution.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableBlend();
 				}
@@ -325,12 +324,12 @@ public class ForgeEventHandler {
 	private ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block == mod_SecurityCraft.bogusWater){
+		if(block == SCContent.bogusWater){
 			world.setBlockToAir(pos);
-			return new ItemStack(mod_SecurityCraft.fWaterBucket, 1);
-		}else if(block == mod_SecurityCraft.bogusLava){
+			return new ItemStack(SCContent.fWaterBucket, 1);
+		}else if(block == SCContent.bogusLava){
 			world.setBlockToAir(pos);
-			return new ItemStack(mod_SecurityCraft.fLavaBucket, 1);
+			return new ItemStack(SCContent.fLavaBucket, 1);
 		}
 		else
 			return null;
@@ -349,11 +348,11 @@ public class ForgeEventHandler {
 		World world = event.entityPlayer.worldObj;
 		TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.pos);
 
-		if(mod_SecurityCraft.configHandler.allowCodebreakerItem) //safety so when codebreakers are disabled they can't take damage
+		if(SecurityCraft.config.allowCodebreakerItem) //safety so when codebreakers are disabled they can't take damage
 			event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !mod_SecurityCraft.configHandler.allowCodebreakerItem);
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.pos), event.entityPlayer, !SecurityCraft.config.allowCodebreakerItem);
 
 		return false;
 	}

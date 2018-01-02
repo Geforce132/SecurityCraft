@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -82,7 +82,7 @@ public class EntityIMSBomb extends EntityFireball {
 	@Override
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
 		if(!worldObj.isRemote)
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && BlockUtils.getBlock(worldObj, par1MovingObjectPosition.getBlockPos()) != mod_SecurityCraft.ims){
+			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && BlockUtils.getBlock(worldObj, par1MovingObjectPosition.getBlockPos()) != SCContent.ims){
 				worldObj.createExplosion(this, par1MovingObjectPosition.getBlockPos().getX(), par1MovingObjectPosition.getBlockPos().getY() + 1D, par1MovingObjectPosition.getBlockPos().getZ(), 7F, true);
 				setDead();
 			}

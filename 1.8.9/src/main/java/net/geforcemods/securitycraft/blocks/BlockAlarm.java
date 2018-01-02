@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -163,7 +163,7 @@ public class BlockAlarm extends BlockOwnable {
 			if(!isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
-				BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarmLit);
+				BlockUtils.setBlock(par1World, pos, SCContent.alarmLit);
 				BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
 				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(true);
@@ -175,7 +175,7 @@ public class BlockAlarm extends BlockOwnable {
 			if(isPowered){
 				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
-				BlockUtils.setBlock(par1World, pos, mod_SecurityCraft.alarm);
+				BlockUtils.setBlock(par1World, pos, SCContent.alarm);
 				BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
 				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
 				((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(false);
@@ -189,12 +189,12 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World p_149694_1_, BlockPos pos){
-		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
+		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
-		return Item.getItemFromBlock(mod_SecurityCraft.alarm);
+		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override

@@ -1,14 +1,15 @@
-package net.geforcemods.securitycraft.main;
+package net.geforcemods.securitycraft.tabs;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CreativeTabSCTechnical extends CreativeTabs{
+public class CreativeTabSCDecoration extends CreativeTabs{
 
-	public CreativeTabSCTechnical(){
+	public CreativeTabSCDecoration(){
 		super(getNextID(), "tabSecurityCraft");
 	}
 
@@ -16,12 +17,12 @@ public class CreativeTabSCTechnical extends CreativeTabs{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem(){
-		return Item.getItemFromBlock(mod_SecurityCraft.usernameLogger);
+		return Item.getItemFromBlock(SCContent.reinforcedStairsOak);
 	}
 
 	@Override
 	public String getTranslatedTabLabel(){
-		return "SecurityCraft: " + StatCollector.translateToLocal("creativeTabTechnical");
-
+		return "SecurityCraft: " + StatCollector.translateToLocal("creativeTabDecoration");
 	}
+
 }

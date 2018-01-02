@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -48,7 +48,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs2);
+		return Item.getItemFromBlock(SCContent.reinforcedStoneSlabs2);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World worldIn, BlockPos pos){
-		return Item.getItemFromBlock(mod_SecurityCraft.reinforcedStoneSlabs2);
+		return Item.getItemFromBlock(SCContent.reinforcedStoneSlabs2);
 	}
 
 	@Override

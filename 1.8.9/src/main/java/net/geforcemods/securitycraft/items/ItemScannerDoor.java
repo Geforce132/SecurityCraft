@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
-import net.geforcemods.securitycraft.main.mod_SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
@@ -36,11 +36,11 @@ public class ItemScannerDoor extends Item
 
 			if(!player.canPlayerEdit(pos, side, stack))
 				return false;
-			else if(!mod_SecurityCraft.scannerDoor.canPlaceBlockAt(world, pos))
+			else if(!SCContent.scannerDoor.canPlaceBlockAt(world, pos))
 				return false;
 			else
 			{
-				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), mod_SecurityCraft.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), SCContent.scannerDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				stack.stackSize--;
@@ -63,7 +63,7 @@ public class ItemScannerDoor extends Item
 			flag2 = true;
 
 		BlockPos blockpos3 = pos.up();
-		IBlockState iblockstate = mod_SecurityCraft.scannerDoor.getDefaultState().withProperty(BlockScannerDoor.FACING, facing).withProperty(BlockScannerDoor.HINGE, flag2 ? BlockScannerDoor.EnumHingePosition.RIGHT : BlockScannerDoor.EnumHingePosition.LEFT);
+		IBlockState iblockstate = SCContent.scannerDoor.getDefaultState().withProperty(BlockScannerDoor.FACING, facing).withProperty(BlockScannerDoor.HINGE, flag2 ? BlockScannerDoor.EnumHingePosition.RIGHT : BlockScannerDoor.EnumHingePosition.LEFT);
 
 		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.LOWER), 2);
 		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockScannerDoor.EnumDoorHalf.UPPER), 2);

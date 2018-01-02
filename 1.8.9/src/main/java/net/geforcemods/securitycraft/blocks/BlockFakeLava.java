@@ -44,11 +44,11 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 	//    {
 	//        if (materialIn == Material.water)
 	//        {
-	//            return mod_SecurityCraft.bogusWater;
+	//            return mod_SCContent.bogusWater;
 	//        }
 	//        else if (materialIn == Material.lava)
 	//        {
-	//            return mod_SecurityCraft.bogusLava;
+	//            return mod_SCContent.bogusLava;
 	//        }
 	//        else
 	//        {
