@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-package net.geforcemods.securitycraft.gui;
+package net.geforcemods.securitycraft.gui.components;
 
 import javax.annotation.Nullable;
 

@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiItemButton;
+import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;

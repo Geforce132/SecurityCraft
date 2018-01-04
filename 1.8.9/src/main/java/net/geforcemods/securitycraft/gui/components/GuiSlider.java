@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.gui;
+package net.geforcemods.securitycraft.gui.components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

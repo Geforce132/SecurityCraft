@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.GuiSlider;
-import net.geforcemods.securitycraft.gui.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.gui.components.GuiSlider;
+import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;

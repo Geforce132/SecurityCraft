@@ -1,27 +1,9 @@
-/*
- * Minecraft Forge
- * Copyright (c) 2016.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation version 2.1
- * of the License.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
+package net.geforcemods.securitycraft.gui.components;
 
-package net.geforcemods.securitycraft.gui;
+import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.config.GuiButtonExt;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 /**
  * This class is blatantly stolen from iChunUtils with permission.
@@ -125,9 +107,9 @@ public class GuiSlider extends GuiButtonExt
 				updateSlider();
 			}
 
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			this.drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)), yPosition, 0, 66, 4, 20);
-			this.drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)) + 4, yPosition, 196, 66, 4, 20);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)), yPosition, 0, 66, 4, 20);
+			drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)) + 4, yPosition, 196, 66, 4, 20);
 		}
 	}
 
