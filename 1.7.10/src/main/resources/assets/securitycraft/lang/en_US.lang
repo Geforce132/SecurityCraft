@@ -441,8 +441,8 @@ creativeTabExplosives=Explosives
 creativeTabTechnical=Technical
 
 module.ims.whitelistModule.description=Adding a whitelist module to an I.M.S. will allow the whitelisted players to walk into the range of the I.M.S without being targeted.
-module.inventoryScanner.whitelistModule.description=Adding a whitelist module to a inventory scanner will allow players to walk through the scanning field without checking their inventory.
-module.inventoryScanner.smartModule.description=Adding a smart module to a inventory scanner will make the scanner check for enchantments and other metadata changes when scanner their inventory.
+module.inventoryScanner.whitelistModule.description=Adding a whitelist module to an inventory scanner will allow whitelisted players to walk through the scanning field without checking their inventory.
+module.inventoryScanner.smartModule.description=Adding a smart module to an inventory scanner will make the scanner check for enchantments and other metadata changes when scanning inventories.
 module.inventoryScanner.storageModule.description=Adding a storage module will allow the scannners to store the items it deletes in a built-in inventory.
 module.keycardReader.whitelistModule.description=Adding a whitelist module to a keycard reader will allow players to use the reader using any keycard.
 module.keycardReader.blacklistModule.description=Adding a blacklist module to a keycard reader will ban players from interacting with the reader.
