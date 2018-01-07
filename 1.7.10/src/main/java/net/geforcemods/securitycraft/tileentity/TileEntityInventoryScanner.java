@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -236,35 +237,21 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
-		if(getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).insertModule(stack);
-		}else if(getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).insertModule(stack);
-		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).insertModule(stack);
-		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
-			if(!((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).insertModule(stack);
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, xCoord, yCoord, zCoord);
+
+		if(connectedScanner != null && !connectedScanner.hasModule(module))
+			connectedScanner.insertModule(stack);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		if(getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord + 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord + 2, yCoord, zCoord)).removeModule(module);
-		}else if(getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) != null && getWorld().getTileEntity(xCoord - 2, yCoord, zCoord) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord - 2, yCoord, zCoord)).removeModule(module);
-		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord + 2) instanceof TileEntityInventoryScanner){
-			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord + 2)).removeModule(module);
-		}else if(getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) != null && getWorld().getTileEntity(xCoord, yCoord, zCoord - 2) instanceof TileEntityInventoryScanner)
-			if(((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).hasModule(module))
-				((CustomizableSCTE) getWorld().getTileEntity(xCoord, yCoord, zCoord - 2)).removeModule(module);
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, xCoord, yCoord, zCoord);
+
+		if(connectedScanner != null && connectedScanner.hasModule(module))
+			connectedScanner.removeModule(module);
 	}
 
 	@Override

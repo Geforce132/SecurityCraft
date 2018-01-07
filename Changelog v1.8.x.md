@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.? of SecurityCraft--------------------------
 
+- New: Inventory Scanners can now be configured to have a higher range, similar to Laser Blocks
 - Change: Password-protected blocks no longer have a crafting recipe. Instead, rightclick a Frame/Chest/Furnace with a Key Panel to create them (any contents are safe!)
 - Fix: Sounds don't respect their correct categories
 - Fix: Laser fields break when breaking other Laser Blocks placed orthogonal to the fields

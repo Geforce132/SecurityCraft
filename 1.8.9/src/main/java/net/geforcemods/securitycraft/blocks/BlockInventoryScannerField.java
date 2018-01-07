@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,7 +19,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -91,103 +89,36 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		return 3;
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor Block
-	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block block) {
-		if(par1World.isRemote)
-			return;
-		else if(!Utils.hasInventoryScannerFacingBlock(par1World, pos))
-			par1World.destroyBlock(pos, false);
-	}
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(entity instanceof EntityPlayer){
-			if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
-				if(ModuleUtils.checkForModule(world, pos.west(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST))
-					return;
-				for(int i = 0; i < 10; i++)
-					for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++)
-						if(((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i) != null)
-							if(((EntityPlayer) entity).inventory.mainInventory[j] != null)
-								checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
-				if(ModuleUtils.checkForModule(world, pos.east(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST))
-					return;
-				for(int i = 0; i < 10; i++)
-					for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++)
-						if(((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i) != null)
-							if(((EntityPlayer) entity).inventory.mainInventory[j] != null)
-								checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
-				if(ModuleUtils.checkForModule(world, pos.north(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST))
-					return;
-				for(int i = 0; i < 10; i++)
-					for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++)
-						if(((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i) != null)
-							if(((EntityPlayer) entity).inventory.mainInventory[j] != null)
-								checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner){
-				if(ModuleUtils.checkForModule(world, pos.south(), ((EntityPlayer) entity), EnumCustomModules.WHITELIST))
-					return;
-				for(int i = 0; i < 10; i++)
-					for(int j = 0; j < ((EntityPlayer) entity).inventory.mainInventory.length; j++)
-						if(((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i) != null)
-							if(((EntityPlayer) entity).inventory.mainInventory[j] != null)
-								checkInventory(((EntityPlayer) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
+		if(entity instanceof EntityPlayer)
+		{
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumCustomModules.WHITELIST))
+				return;
+
+			for(int i = 0; i < 10; i++)
+			{
+				for(int j = 0; j < ((EntityPlayer)entity).inventory.mainInventory.length; j++)
+				{
+					if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityPlayer)entity).inventory.mainInventory[j] != null)
+						checkInventory((EntityPlayer)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+				}
 			}
-			//******************************************
-		}else if(entity instanceof EntityItem)
-			if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityInventoryScanner){
-				for(int i = 0; i < 10; i++)
-					if(((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i) != null)
-						if(((EntityItem) entity).getEntityItem() != null)
-							checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.west())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityInventoryScanner){
-				for(int i = 0; i < 10; i++)
-					if(((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i) != null)
-						if(((EntityItem) entity).getEntityItem() != null)
-							checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.east())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityInventoryScanner){
-				for(int i = 0; i < 10; i++)
-					if(((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i) != null)
-						if(((EntityItem) entity).getEntityItem() != null)
-							checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.north())).getStackInSlotCopy(i));
-			}else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityInventoryScanner)
-				for(int i = 0; i < 10; i++)
-					if(((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i) != null)
-						if(((EntityItem) entity).getEntityItem() != null)
-							checkEntity(((EntityItem) entity), ((TileEntityInventoryScanner)world.getTileEntity(pos.south())).getStackInSlotCopy(i));
+		}
+		else if(entity instanceof EntityItem)
+		{
+			for(int i = 0; i < 10; i++)
+			{
+				if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityItem)entity).getEntityItem() != null)
+					checkEntity((EntityItem)entity, connectedScanner.getStackInSlotCopy(i));
+			}
+		}
 	}
 
 	public static void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
-		//    	Block block = null;
-		//		Item item = null;
-		//		boolean flag = false;
-		//
-		//		if(hasMultipleItemStacks(par3)){
-		//			if (Item.itemRegistry.containsKey(par3))
-		//	        {
-		//
-		//	            item = (Item)Item.itemRegistry.getObject(par3);
-		//	            flag = true;
-		//	        }
-		//		}
-		//
-		//		if (Block.blockRegistry.containsKey(par3) && !flag)
-		//        {
-		//
-		//            block = (Block)Block.blockRegistry.getObject(par3);
-		//        }
-		//
-		//		if (Item.itemRegistry.containsKey(par3) && !flag)
-		//        {
-		//
-		//            item = (Item)Item.itemRegistry.getObject(par3);
-		//        }
 		if(par2TileEntity.getType().matches("redstone")){
 			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
 				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
@@ -197,7 +128,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 						SecurityCraft.log("Running te update");
 						par2TileEntity.setCooldown(60);
-						checkAndUpdateTEAppropriately(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity);
+						checkAndUpdateTEAppropriately(par2TileEntity);
 						BlockUtils.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity.getWorld().getBlockState(par2TileEntity.getPos()).getBlock(), 1, true);
 						SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: " + Utils.getFormattedCoordinates(par2TileEntity.getPos()));
 					}
@@ -220,25 +151,74 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	}
 
-	private static void checkAndUpdateTEAppropriately(World par1World, BlockPos pos, TileEntityInventoryScanner par5TileEntityIS) {
-		SecurityCraft.log("Updating te");
-		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == SCContent.inventoryScanner && BlockUtils.getBlock(par1World, pos.west()) == Blocks.air && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST){
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setShouldProvidePower(true);
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.west(2))).setCooldown(60);
-			BlockUtils.updateAndNotify(par1World, pos.west(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == SCContent.inventoryScanner && BlockUtils.getBlock(par1World, pos.east()) == Blocks.air && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST){
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setShouldProvidePower(true);
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.east(2))).setCooldown(60);
-			BlockUtils.updateAndNotify(par1World, pos.east(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == SCContent.inventoryScanner && BlockUtils.getBlock(par1World, pos.north()) == Blocks.air && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH){
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setShouldProvidePower(true);
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.north(2))).setCooldown(60);
-			BlockUtils.updateAndNotify(par1World, pos.north(2), BlockUtils.getBlock(par1World, pos), 1, true);
-		}else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == SCContent.inventoryScanner && BlockUtils.getBlock(par1World, pos.south()) == Blocks.air && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH){
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setShouldProvidePower(true);
-			((TileEntityInventoryScanner) par1World.getTileEntity(pos.south(2))).setCooldown(60);
-			BlockUtils.updateAndNotify(par1World, pos.south(2), BlockUtils.getBlock(par1World, pos), 1, true);
+	private static void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.getPos());
 
+		te.setShouldProvidePower(true);
+		te.setCooldown(60);
+		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockType(), 1, true);
+		connectedScanner.setShouldProvidePower(true);
+		connectedScanner.setCooldown(60);
+		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.getPos(), connectedScanner.getBlockType(), 1, true);
+	}
+
+	@Override
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	{
+		if(!worldIn.isRemote)
+		{
+			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			{
+				if(BlockUtils.getBlock(worldIn, pos.west(i)) == SCContent.inventoryScanner)
+				{
+					for(int j = 1; j < i; j++)
+					{
+						worldIn.destroyBlock(pos.west(j), false);
+					}
+
+					break;
+				}
+			}
+
+			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			{
+				if(BlockUtils.getBlock(worldIn, pos.east(i)) == SCContent.inventoryScanner)
+				{
+					for(int j = 1; j < i; j++)
+					{
+						worldIn.destroyBlock(pos.east(j), false);
+					}
+
+					break;
+				}
+			}
+
+			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			{
+				if(BlockUtils.getBlock(worldIn, pos.north(i)) == SCContent.inventoryScanner)
+				{
+					for(int j = 1; j < i; j++)
+					{
+						worldIn.destroyBlock(pos.north(j), false);
+					}
+
+					break;
+				}
+			}
+
+			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			{
+				if(BlockUtils.getBlock(worldIn, pos.south(i)) == SCContent.inventoryScanner)
+				{
+					for(int j = 1; j < i; j++)
+					{
+						worldIn.destroyBlock(pos.south(j), false);
+					}
+
+					break;
+				}
+			}
 		}
 	}
 

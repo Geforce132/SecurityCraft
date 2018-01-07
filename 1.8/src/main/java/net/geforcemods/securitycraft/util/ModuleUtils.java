@@ -19,7 +19,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ModuleUtils{
-
+	//North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
 	public static void insertModule(World par1World, BlockPos pos, EnumCustomModules module){
 		((CustomizableSCTE) par1World.getTileEntity(pos)).insertModule(module);
 	}

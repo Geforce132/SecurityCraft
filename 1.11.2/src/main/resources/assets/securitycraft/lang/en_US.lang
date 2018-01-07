@@ -540,6 +540,8 @@ config.cameraSpeed=Camera rotation speed:
 config.cameraSpeed.tooltip=How fast can you rotate when mounted to a camera and holding W-A-S-D?
 config.checkForUpdates=Should check for updates on GitHub?
 config.checkForUpdates.tooltip=Should SecurityCraft check for new updates of the mod through SecurityCraft's GitHub repository?
+config.inventoryScannerRange=Inventory Scanner range: 
+config.inventoryScannerRange.tooltip=From how many blocks away can one inventory scanner connect to another? 
 
 option.portableRadar.searchRadius=Search radius: #
 option.portableRadar.searchRadius.description=The radius the radar searches in.

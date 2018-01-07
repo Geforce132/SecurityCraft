@@ -516,6 +516,8 @@ config.cameraSpeed=Kamera Schnelligkeit ohne LookingGlass:
 config.cameraSpeed.tooltip=Wie schnell kannst du dich bewegen wenn du in einer Kamera bist und W-A-S-D drückst?
 config.checkForUpdates=Soll für Updates auf GitHub geprüft werden?
 config.checkForUpdates.tooltip=Soll SecurityCraft nach Updates für den Mod mittels SecurityCraft's GitHub repo suchen?
+config.inventoryScannerRange=Inventar Scanner Reichweite:
+config.inventoryScannerRange.tooltip=Von wie vielen Blöcken maximal entfernt soll ein Inventar Scanner sich mit einem anderen verbinden können?
 
 option.portableRadar.searchRadius=Suchradius: #
 option.portableRadar.searchRadius.description=Der Radius, in dem der Radar sucht.

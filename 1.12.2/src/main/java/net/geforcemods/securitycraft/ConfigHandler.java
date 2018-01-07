@@ -29,6 +29,7 @@ public class ConfigHandler
 	public int claymoreRange;
 	public int imsRange;
 	public float cameraSpeed;
+	public int inventoryScannerRange;
 
 	public void setupConfiguration()
 	{
@@ -131,6 +132,10 @@ public class ConfigHandler
 		dummyProp = SecurityCraft.configFile.get("options", "Should check for updates on Github?", true);
 		dummyProp.setLanguageKey("config.checkForUpdates");
 		checkForUpdates = dummyProp.getBoolean(true);
+
+		dummyProp = SecurityCraft.configFile.get("options", "Inventory Scanner range:", 2);
+		dummyProp.setLanguageKey("config.inventoryScannerRange");
+		inventoryScannerRange = dummyProp.getInt(2);
 
 		if(SecurityCraft.configFile.hasChanged())
 			SecurityCraft.configFile.save();

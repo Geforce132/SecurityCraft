@@ -2,14 +2,13 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
-import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -85,7 +84,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(worldIn.isRemote)
 			return true;
 		else{
-			if(isFacingAnotherBlock(worldIn, pos))
+			if(isFacingAnotherScanner(worldIn, pos))
 				playerIn.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("tile.inventoryScanner.name"), ClientUtils.localize("messages.invScan.notConnected"), TextFormatting.RED);
@@ -99,6 +98,9 @@ public class BlockInventoryScanner extends BlockContainer {
 	 */
 	@Override
 	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+		if(par1World.isRemote)
+			return;
+
 		IBlockState block = par1World.getBlockState(pos.north());
 		IBlockState block1 = par1World.getBlockState(pos.south());
 		IBlockState block2 = par1World.getBlockState(pos.west());
@@ -120,67 +122,191 @@ public class BlockInventoryScanner extends BlockContainer {
 
 	}
 
-	private void checkAndPlaceAppropriately(World par1World, BlockPos pos) {
-		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == Blocks.AIR && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST)
-			par1World.setBlockState(pos.west(), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == Blocks.AIR && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST)
-			par1World.setBlockState(pos.east(), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == Blocks.AIR && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH)
-			par1World.setBlockState(pos.north(), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == Blocks.AIR && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH)
-			par1World.setBlockState(pos.south(), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
-	}
+	private void checkAndPlaceAppropriately(World par1World, BlockPos pos)
+	{
+		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(par1World, pos);
 
-	private boolean isFacingAnotherBlock(World par1World, BlockPos pos){
-		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST && BlockUtils.getBlock(par1World, pos.west(2)) == this && BlockUtils.getBlock(par1World, pos.west()) == SCContent.inventoryScannerField && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.EAST)
-			return true;
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST && BlockUtils.getBlock(par1World, pos.east(2)) == this && BlockUtils.getBlock(par1World, pos.east()) == SCContent.inventoryScannerField && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.WEST)
-			return true;
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH && BlockUtils.getBlock(par1World, pos.north(2)) == this && BlockUtils.getBlock(par1World, pos.north()) == SCContent.inventoryScannerField && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.SOUTH)
-			return true;
-		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH && BlockUtils.getBlock(par1World, pos.south(2)) == this && BlockUtils.getBlock(par1World, pos.south()) == SCContent.inventoryScannerField && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.NORTH)
-			return true;
-		else
-			return false;
-	}
-
-	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
-		// Removes the contents of the connected inventory scanner.
-		Utils.setISinTEAppropriately(world, pos, null, ((TileEntityInventoryScanner) world.getTileEntity(pos)).getType());
-
-		return super.removedByPlayer(state, world, pos, player, willHarvest);
-	}
-
-	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().size(); i++)
-			if(!((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().get(i).isEmpty()){
-				EntityItem item = new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().get(i));
-				WorldUtils.addScheduledTask(par1World, () -> par1World.spawnEntity(item));
+		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
+		{
+			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
+			{
+				par1World.setBlockState(pos.west(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
 			}
+		}
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+		{
+			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
+			{
+				par1World.setBlockState(pos.east(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
+			}
+		}
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+		{
+			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
+			{
+				par1World.setBlockState(pos.north(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
+			}
+		}
+		else if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+		{
+			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
+			{
+				par1World.setBlockState(pos.south(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+			}
+		}
 
-		if(state.getValue(FACING) == EnumFacing.NORTH && par1World.getBlockState(pos.south()).getBlock() == SCContent.inventoryScannerField)
-			BlockUtils.destroyBlock(par1World, pos.south(), false);
-		else if(state.getValue(FACING) == EnumFacing.SOUTH && par1World.getBlockState(pos.north()).getBlock() == SCContent.inventoryScannerField)
-			BlockUtils.destroyBlock(par1World, pos.north(), false);
-		else if(state.getValue(FACING) == EnumFacing.EAST && par1World.getBlockState(pos.west()).getBlock() == SCContent.inventoryScannerField)
-			BlockUtils.destroyBlock(par1World, pos.west(), false);
-		else if(state.getValue(FACING) == EnumFacing.WEST && par1World.getBlockState(pos.east()).getBlock() == SCContent.inventoryScannerField)
-			BlockUtils.destroyBlock(par1World, pos.east(), false);
+		CustomizableSCTE.link((CustomizableSCTE)par1World.getTileEntity(pos), connectedScanner);
+	}
 
-		if(state.getValue(FACING) == EnumFacing.NORTH && par1World.getBlockState(pos.south(2)).getBlock() == SCContent.inventoryScanner && par1World.getBlockState(pos.south(2)).getValue(FACING) == EnumFacing.SOUTH)
-			ModuleUtils.insertModule(par1World, pos.south(2), null);
-		else if(state.getValue(FACING) == EnumFacing.SOUTH && par1World.getBlockState(pos.north(2)).getBlock() == SCContent.inventoryScanner && par1World.getBlockState(pos.north(2)).getValue(FACING) == EnumFacing.NORTH)
-			ModuleUtils.insertModule(par1World, pos.north(2), null);
-		else if(state.getValue(FACING) == EnumFacing.EAST && par1World.getBlockState(pos.west(2)).getBlock() == SCContent.inventoryScanner && par1World.getBlockState(pos.west(2)).getValue(FACING) == EnumFacing.WEST)
-			ModuleUtils.insertModule(par1World, pos.west(2), null);
-		else if(state.getValue(FACING) == EnumFacing.WEST && par1World.getBlockState(pos.east(2)).getBlock() == SCContent.inventoryScanner && par1World.getBlockState(pos.east(2)).getValue(FACING) == EnumFacing.EAST)
-			ModuleUtils.insertModule(par1World, pos.east(2), null);
+	@Override
+	public void breakBlock(World par1World, BlockPos pos, IBlockState state)
+	{
+		if(par1World.isRemote)
+			return;
 
-		par1World.removeTileEntity(pos);
+		TileEntityInventoryScanner connectedScanner = null;
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(BlockUtils.getBlock(par1World, pos.west(i)) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(BlockUtils.getBlock(par1World, pos.west(j)) == SCContent.inventoryScannerField)
+						par1World.destroyBlock(pos.west(j), false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner)par1World.getTileEntity(pos.west(i));
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(BlockUtils.getBlock(par1World, pos.east(i)) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(BlockUtils.getBlock(par1World, pos.east(j)) == SCContent.inventoryScannerField)
+						par1World.destroyBlock(pos.east(j), false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner)par1World.getTileEntity(pos.east(i));
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(BlockUtils.getBlock(par1World, pos.north(i)) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(BlockUtils.getBlock(par1World, pos.north(j)) == SCContent.inventoryScannerField)
+						par1World.destroyBlock(pos.north(j), false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner)par1World.getTileEntity(pos.north(i));
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(BlockUtils.getBlock(par1World, pos.south(i)) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(BlockUtils.getBlock(par1World, pos.south(j)) == SCContent.inventoryScannerField)
+						par1World.destroyBlock(pos.south(j), false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner)par1World.getTileEntity(pos.south(i));
+				break;
+			}
+		}
+
+		for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().size(); i++)
+		{
+			if(((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().size() != 0)
+				par1World.spawnEntity(new EntityItem(par1World, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) par1World.getTileEntity(pos)).getContents().get(i)));
+		}
+
+		if(connectedScanner != null)
+		{
+			for(int i = 0; i < connectedScanner.getContents().size(); i++)
+			{
+				connectedScanner.getContents().set(i, ItemStack.EMPTY);
+			}
+		}
 
 		super.breakBlock(par1World, pos, state);
+	}
+
+	private boolean isFacingAnotherScanner(World world, BlockPos pos)
+	{
+		return getConnectedInventoryScanner(world, pos) != null;
+	}
+
+	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos)
+	{
+		switch(world.getBlockState(pos).getValue(FACING))
+		{
+			case WEST:
+				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+				{
+					Block b = BlockUtils.getBlock(world, pos.west(i));
+					IBlockState s = world.getBlockState(pos.west(i));
+
+					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
+						return null;
+
+					if(b == SCContent.inventoryScanner && s.getValue(FACING) == EnumFacing.EAST)
+						return (TileEntityInventoryScanner)world.getTileEntity(pos.west(i));
+				}
+
+				return null;
+			case EAST:
+				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+				{
+					Block b = BlockUtils.getBlock(world, pos.east(i));
+
+					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
+						return null;
+
+					if(b == SCContent.inventoryScanner && world.getBlockState(pos.east(i)).getValue(FACING) == EnumFacing.WEST)
+						return (TileEntityInventoryScanner)world.getTileEntity(pos.east(i));
+				}
+
+				return null;
+			case NORTH:
+				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+				{
+					Block b = BlockUtils.getBlock(world, pos.north(i));
+
+					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
+						return null;
+
+					if(b == SCContent.inventoryScanner && world.getBlockState(pos.north(i)).getValue(FACING) == EnumFacing.SOUTH)
+						return (TileEntityInventoryScanner)world.getTileEntity(pos.north(i));
+				}
+
+				return null;
+			case SOUTH:
+				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+				{
+					Block b = BlockUtils.getBlock(world, pos.south(i));
+
+					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
+						return null;
+
+					if(b == SCContent.inventoryScanner && world.getBlockState(pos.south(i)).getValue(FACING) == EnumFacing.NORTH)
+						return (TileEntityInventoryScanner)world.getTileEntity(pos.south(i));
+				}
+
+				return null;
+			default: return null;
+		}
 	}
 
 	/**

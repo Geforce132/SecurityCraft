@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -231,37 +232,21 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module){
-		if(!getWorld().isRemote)
-			if(getWorld().getTileEntity(pos.east(2)) != null && getWorld().getTileEntity(pos.east(2)) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) getWorld().getTileEntity(pos.east(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.east(2))).insertModule(stack);
-			}else if(getWorld().getTileEntity(pos.west(2)) != null && getWorld().getTileEntity(pos.west(2)) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) getWorld().getTileEntity(pos.west(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.west(2))).insertModule(stack);
-			}else if(getWorld().getTileEntity(pos.south(2)) != null && getWorld().getTileEntity(pos.south(2)) instanceof TileEntityInventoryScanner){
-				if(!((CustomizableSCTE) getWorld().getTileEntity(pos.south(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.south(2))).insertModule(stack);
-			}else if(getWorld().getTileEntity(pos.north(2)) != null && getWorld().getTileEntity(pos.north(2)) instanceof TileEntityInventoryScanner)
-				if(!((CustomizableSCTE) getWorld().getTileEntity(pos.north(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.north(2))).insertModule(stack);
+	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, pos);
+
+		if(connectedScanner != null && !connectedScanner.hasModule(module))
+			connectedScanner.insertModule(stack);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module){
-		if(!getWorld().isRemote)
-			if(getWorld().getTileEntity(pos.east(2)) != null && getWorld().getTileEntity(pos.east(2)) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) getWorld().getTileEntity(pos.east(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.east(2))).removeModule(module);
-			}else if(getWorld().getTileEntity(pos.west(2)) != null && getWorld().getTileEntity(pos.west(2)) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) getWorld().getTileEntity(pos.west(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.west(2))).removeModule(module);
-			}else if(getWorld().getTileEntity(pos.south(2)) != null && getWorld().getTileEntity(pos.south(2)) instanceof TileEntityInventoryScanner){
-				if(((CustomizableSCTE) getWorld().getTileEntity(pos.south(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.south(2))).removeModule(module);
-			}else if(getWorld().getTileEntity(pos.north(2)) != null && getWorld().getTileEntity(pos.north(2)) instanceof TileEntityInventoryScanner)
-				if(((CustomizableSCTE) getWorld().getTileEntity(pos.north(2))).hasModule(module))
-					((CustomizableSCTE) getWorld().getTileEntity(pos.north(2))).removeModule(module);
+	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	{
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, pos);
+
+		if(connectedScanner != null && connectedScanner.hasModule(module))
+			connectedScanner.removeModule(module);
 	}
 
 	@Override

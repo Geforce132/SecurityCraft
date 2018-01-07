@@ -4,9 +4,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -77,7 +77,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(par1World.isRemote)
 			return true;
 		else{
-			if(isFacingAnotherBlock(par1World, par2, par3, par4))
+			if(isFacingAnotherScanner(par1World, par2, par3, par4))
 				par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, par1World, par2, par3, par4);
 			else
 				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.inventoryScanner.name"), StatCollector.translateToLocal("messages.invScan.notConnected"), EnumChatFormatting.RED);
@@ -91,6 +91,9 @@ public class BlockInventoryScanner extends BlockContainer {
 	 */
 	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
+		if(par1World.isRemote)
+			return;
+
 		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		if (l == 0)
@@ -108,55 +111,220 @@ public class BlockInventoryScanner extends BlockContainer {
 		checkAndPlaceAppropriately(par1World, par2, par3, par4);
 	}
 
-	private void checkAndPlaceAppropriately(World par1World, int par2, int par3, int par4) {
-		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == this && par1World.getBlock(par2 - 1, par3, par4) == Blocks.air && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5)
-			par1World.setBlock(par2 - 1, par3, par4, SCContent.inventoryScannerField, 1, 3);
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == this && par1World.getBlock(par2 + 1, par3, par4) == Blocks.air && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4)
-			par1World.setBlock(par2 + 1, par3, par4, SCContent.inventoryScannerField, 1, 3);
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == this && par1World.getBlock(par2, par3, par4 - 1) == Blocks.air && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3)
-			par1World.setBlock(par2, par3, par4 - 1, SCContent.inventoryScannerField, 2, 3);
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == this && par1World.getBlock(par2, par3, par4 + 1) == Blocks.air && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2)
-			par1World.setBlock(par2, par3, par4 + 1, SCContent.inventoryScannerField, 2, 3);
-	}
+	private void checkAndPlaceAppropriately(World par1World, int par2, int par3, int par4)
+	{
+		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(par1World, par2, par3, par4);
 
-	private boolean isFacingAnotherBlock(World par1World, int par2, int par3, int par4){
-		if(par1World.getBlockMetadata(par2, par3, par4) == 4 && par1World.getBlock(par2 - 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5)
-			return true;
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 5 && par1World.getBlock(par2 + 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScannerField&& par1World.getBlockMetadata(par2 + 2, par3, par4) == 4)
-			return true;
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 2 && par1World.getBlock(par2, par3, par4 - 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 - 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3)
-			return true;
-		else if(par1World.getBlockMetadata(par2, par3, par4) == 3 && par1World.getBlock(par2, par3, par4 + 2) == SCContent.inventoryScanner && par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScannerField && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2)
-			return true;
-		else
-			return false;
+		if(connectedScanner == null)
+			return;
+
+		if(par1World.getBlockMetadata(par2, par3, par4) == 4)
+		{
+			for(int j = 1; j < Math.abs(par2 - connectedScanner.xCoord); j++)
+			{
+				par1World.setBlock(par2 - j, par3, par4, SCContent.inventoryScannerField, 1, 3);
+			}
+		}
+		else if(par1World.getBlockMetadata(par2, par3, par4) == 5)
+		{
+			for(int j = 1; j < Math.abs(par2 - connectedScanner.xCoord); j++)
+			{
+				par1World.setBlock(par2 + j, par3, par4, SCContent.inventoryScannerField, 1, 3);
+			}
+		}
+		else if(par1World.getBlockMetadata(par2, par3, par4) == 2)
+		{
+			for(int j = 1; j < Math.abs(par4 - connectedScanner.zCoord); j++)
+			{
+				par1World.setBlock(par2, par3, par4 - j, SCContent.inventoryScannerField, 2, 3);
+			}
+		}
+		else if(par1World.getBlockMetadata(par2, par3, par4) == 3)
+		{
+			for(int j = 1; j < Math.abs(par4 - connectedScanner.zCoord); j++)
+			{
+				par1World.setBlock(par2, par3, par4 + j, SCContent.inventoryScannerField, 2, 3);
+			}
+		}
+
+		CustomizableSCTE.link((CustomizableSCTE)par1World.getTileEntity(par2, par3, par4), connectedScanner);
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		if(par6 == 4 && par1World.getBlock(par2 - 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 - 2, par3, par4) == 5){
-			ModuleUtils.insertModule(par1World, par2 - 2, par3, par4, null);
-			((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 2, par3, par4)).clearStorage();
-		}else if(par6 == 5 && par1World.getBlock(par2 + 2, par3, par4) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2 + 2, par3, par4) == 4){
-			ModuleUtils.insertModule(par1World, par2 + 2, par3, par4, null);
-			((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 2, par3, par4)).clearStorage();
-		}else if(par6 == 2 && par1World.getBlock(par2, par3, par4 - 2) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 - 2) == 3){
-			ModuleUtils.insertModule(par1World, par2, par3, par4 - 2, null);
-			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 2)).clearStorage();
-		}else if(par6 == 3 && par1World.getBlock(par2, par3, par4 + 2) == SCContent.inventoryScanner && par1World.getBlockMetadata(par2, par3, par4 + 2) == 2){
-			ModuleUtils.insertModule(par1World, par2, par3, par4 + 2, null);
-			((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 2)).clearStorage();
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
+	{
+		if(par1World.isRemote)
+			return;
+
+		TileEntityInventoryScanner connectedScanner = null;
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(par1World.getBlock(par2 - i, par3, par4) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2 - j, par3, par4) == SCContent.inventoryScannerField)
+						par1World.breakBlock(par2 - j, par3, par4, false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner) par1World.getTileEntity(par2 - i, par3, par4);
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(par1World.getBlock(par2 + i, par3, par4) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2 + j, par3, par4) == SCContent.inventoryScannerField)
+						par1World.breakBlock(par2 + j, par3, par4, false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner) par1World.getTileEntity(par2 + i, par3, par4);
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(par1World.getBlock(par2, par3, par4 - i) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3, par4 - j) == SCContent.inventoryScannerField)
+						par1World.breakBlock(par2, par3, par4 - j, false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - i);
+				break;
+			}
+		}
+
+		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		{
+			if(par1World.getBlock(par2, par3, par4 + i) == SCContent.inventoryScanner)
+			{
+				for(int j = 1; j < i; j++)
+				{
+					if(par1World.getBlock(par2, par3, par4 + j) == SCContent.inventoryScannerField)
+						par1World.breakBlock(par2, par3, par4 + j, false);
+				}
+
+				connectedScanner = (TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + i);
+				break;
+			}
 		}
 
 		for(int i = 0; i < ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents().length; i++)
-			if(((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents()[i] != null){
-				EntityItem item = new EntityItem(par1World, par2, par3, par4, ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents()[i]);
-				par1World.spawnEntityInWorld(item);
-			}
+		{
+			if(((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents()[i] != null)
+				par1World.spawnEntityInWorld(new EntityItem(par1World, par2, par3, par4, ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4)).getContents()[i]));
+		}
 
-		par1World.removeTileEntity(par2, par3, par4);
+		if(connectedScanner != null)
+		{
+			for(int i = 0; i < connectedScanner.getContents().length; i++)
+			{
+				connectedScanner.getContents()[i] = null;
+			}
+		}
 
 		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
+	}
+
+	private boolean isFacingAnotherScanner(World world, int x, int y, int z)
+	{
+		return getConnectedInventoryScanner(world, x, y, z) != null;
+	}
+
+	/**
+	 * @return the scanner, null if none found
+	 */
+	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, int x, int y, int z)
+	{
+		switch(world.getBlockMetadata(x, y, z))
+		{
+			case 4:
+				if(world.getBlock(x, y, z) == SCContent.inventoryScanner)
+				{
+					for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x - i, y, z) != Blocks.air && world.getBlock(x - i, y, z) != SCContent.inventoryScannerField && world.getBlock(x - i, y, z) != SCContent.inventoryScanner)
+							return null;
+
+						if(world.getBlock(x - i, y, z) == SCContent.inventoryScanner && world.getBlockMetadata(x - i, y, z) == 5)
+							return (TileEntityInventoryScanner)world.getTileEntity(x - i, y, z);
+					}
+				}
+
+				return null;
+			case 5:
+				if(world.getBlock(x, y, z) == SCContent.inventoryScanner)
+				{
+					for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x + i, y, z) != Blocks.air && world.getBlock(x + i, y, z) != SCContent.inventoryScannerField && world.getBlock(x + i, y, z) != SCContent.inventoryScanner)
+							return null;
+
+						if(world.getBlock(x + i, y, z) == SCContent.inventoryScanner && world.getBlockMetadata(x + i, y, z) == 4)
+							return (TileEntityInventoryScanner)world.getTileEntity(x + i, y, z);
+					}
+				}
+
+				return null;
+			case 2:
+				if(world.getBlock(x, y, z) == SCContent.inventoryScanner)
+				{
+					for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x, y, z - i) != Blocks.air && world.getBlock(x, y, z - i) != SCContent.inventoryScannerField && world.getBlock(x, y, z - i) != SCContent.inventoryScanner)
+							return null;
+
+						if(world.getBlock(x, y, z - i) == SCContent.inventoryScanner && world.getBlockMetadata(x, y, z - i) == 3)
+							return (TileEntityInventoryScanner)world.getTileEntity(x, y, z - i);
+					}
+
+					return null;
+				}
+				else if(world.getBlock(x, y, z) == SCContent.inventoryScannerField)
+				{
+					for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x, y, z - i) == SCContent.inventoryScanner)
+							return (TileEntityInventoryScanner)world.getTileEntity(x, y, z - i);
+					}
+				}
+
+				break;
+			case 3:
+				if(world.getBlock(x, y, z) == SCContent.inventoryScanner)
+				{
+					for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x, y, z + i) != Blocks.air && world.getBlock(x, y, z + i) != SCContent.inventoryScannerField && world.getBlock(x, y, z + i) != SCContent.inventoryScanner)
+							return null;
+
+						if(world.getBlock(x, y, z + i) == SCContent.inventoryScanner && world.getBlockMetadata(x, y, z + i) == 2)
+							return (TileEntityInventoryScanner)world.getTileEntity(x, y, z + i);
+					}
+				}
+
+				return null;
+			case 1:
+				if(world.getBlock(x, y, z) == SCContent.inventoryScannerField)
+				{
+					for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+					{
+						if(world.getBlock(x - i, y, z) == SCContent.inventoryScanner)
+							return (TileEntityInventoryScanner)world.getTileEntity(x - i, y, z);
+					}
+				}
+		}
+
+		return null;
 	}
 
 	/**
