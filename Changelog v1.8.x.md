@@ -9,6 +9,7 @@
 - Fix: [1.8+] Password-protected Furnace doesn't drop items when being broken
 - Fix: [1.8+] Security Camera doesn't update Redstone correctly when the Redstone Module is removed/added/turned on/turned off
 - Fix: [1.10.2+] SecurityCraft Tile Entity data doesn't get synchronized correctly with clients on world load [1]
+- Fix: [1.10.2+] Module GUI cannot be accessed
 - Fix: [1.11.2+] Incorrect string in Password-protected Furnace GUI
 - Fix: [1.11.2+] Some SecurityCraft sounds don't play at all (Taser/Camera)
 - Removed: Tip for /sc connect

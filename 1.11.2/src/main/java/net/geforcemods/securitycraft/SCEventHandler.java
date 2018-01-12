@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -122,10 +121,10 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onRightClickBlock(RightClickBlock event){
 		if(event.getHand() == EnumHand.MAIN_HAND)
-			if(!event.getEntityPlayer().world.isRemote){
-				World world = event.getEntityPlayer().world;
-				TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
-				Block block = event.getEntityPlayer().world.getBlockState(event.getPos()).getBlock();
+			if(!event.getWorld().isRemote){
+				World world = event.getWorld();
+				TileEntity tileEntity = world.getTileEntity(event.getPos());
+				Block block = world.getBlockState(event.getPos()).getBlock();
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
 					event.setCanceled(true);
@@ -140,7 +139,7 @@ public class SCEventHandler {
 						return;
 					}
 
-					SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.CUSTOMIZE_BLOCK, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()));
+					event.getEntityPlayer().openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
 					return;
 				}
 
