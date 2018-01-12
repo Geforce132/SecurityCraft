@@ -59,7 +59,7 @@
 - Fix: [1.8+] Unlocalized string in I.M.S. settings menu
 - Fix: [1.8.8+] Incorrect rendering of the Camera Monitor's inventory overlay
 - Fix: [1.8.8+] Buttons overlapping with the JEI interface are not accessible
-- Fix: [1.10.2+] Sponge incompatibilities (untested on 1.10.2 and 1.11.2, please report any issues you find to our Discord's #bugreport channel)
+- Fix: [1.10.2+] Sponge incompatibilities (~~untested on 1.10.2 and 1.11.2, please report any issues you find to our Discord's #bugreport channel.~~ As of 1. January 2018 Sponge no longer supports 1.10/1.11 versions, SecurityCraft will do the same)
 - Fix: [1.10.2+] I.M.S. settings menu is not accessible
 - Removed: IRC support chat. Please refer to the #help channel on SecurityCraft's Discord! https://discord.gg/U8DvBAW
 - Internal: Rewrote handling of reinforced blocks (Now much easier to add them)
