@@ -48,6 +48,10 @@ public class ContainerCustomizeBlock extends Container{
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack itemstack1 = slot.getStack();
+
+			if(!(itemstack1.getItem() instanceof ItemModule))
+				return null;
+
 			itemstack = itemstack1.copy();
 
 			if (par2 < tileEntity.getSizeInventory())

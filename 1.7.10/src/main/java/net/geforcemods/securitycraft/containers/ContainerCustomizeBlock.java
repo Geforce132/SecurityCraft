@@ -45,6 +45,10 @@ public class ContainerCustomizeBlock extends Container{
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack itemstack1 = slot.getStack();
+
+			if(!(itemstack1.getItem() instanceof ItemModule))
+				return null;
+
 			itemstack = itemstack1.copy();
 
 			if (par2 < tileEntity.getSizeInventory())
@@ -89,46 +93,46 @@ public class ContainerCustomizeBlock extends Container{
 		/**
 		 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 		 */
-		 @Override
-		 public boolean isItemValid(ItemStack par1ItemStack)
+		@Override
+		public boolean isItemValid(ItemStack par1ItemStack)
 		{
-			 if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule()))
-				 return true;
-			 else
-				 return false;
+			if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule()))
+				return true;
+			else
+				return false;
 		}
 
-		 @Override
-		 public ItemStack getStack(){
-			 return tileEntity.itemStacks[getSlotIndex()];
-		 }
+		@Override
+		public ItemStack getStack(){
+			return tileEntity.itemStacks[getSlotIndex()];
+		}
 
-		 @Override
-		 public void putStack(ItemStack p_75215_1_)
-		 {
-			 tileEntity.safeSetInventorySlotContents(getSlotIndex(), p_75215_1_);
-			 onSlotChanged();
-		 }
+		@Override
+		public void putStack(ItemStack p_75215_1_)
+		{
+			tileEntity.safeSetInventorySlotContents(getSlotIndex(), p_75215_1_);
+			onSlotChanged();
+		}
 
-		 /**
-		  * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-		  * stack.
-		  */
-		 @Override
-		 public ItemStack decrStackSize(int p_75209_1_)
-		 {
-			 return tileEntity.safeDecrStackSize(getSlotIndex(), p_75209_1_);
-		 }
+		/**
+		 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
+		 * stack.
+		 */
+		@Override
+		public ItemStack decrStackSize(int p_75209_1_)
+		{
+			return tileEntity.safeDecrStackSize(getSlotIndex(), p_75209_1_);
+		}
 
-		 /**
-		  * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the
-		  * case of armor slots)
-		  */
-		 @Override
-		 public int getSlotStackLimit()
-		 {
-			 return 1;
-		 }
+		/**
+		 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the
+		 * case of armor slots)
+		 */
+		@Override
+		public int getSlotStackLimit()
+		{
+			return 1;
+		}
 	}
 
 }
