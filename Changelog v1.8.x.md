@@ -5,6 +5,9 @@
 - Fix: Sounds don't respect their correct categories
 - Fix: Laser fields break when breaking other Laser Blocks placed orthogonal to the fields
 - Fix: Items can be duplicated within the Module GUI
+- Fix: Reinforced Iron Trapdoor can be broken by any player (Thanks shaiapouf!)
+- Fix: Portable Radar can be broken by any player
+- Fix: Username Logger can be broken by any player
 - Fix: [1.8-1.8.8/9] Reinforced Iron Fence Gate is not craftable
 - Fix: [1.8-1.8.8/9] Disguised Keypad doesn't respect biome colors (Gray grass etc.)
 - Fix: [1.8+] Password-protected Furnace doesn't drop items when being broken
