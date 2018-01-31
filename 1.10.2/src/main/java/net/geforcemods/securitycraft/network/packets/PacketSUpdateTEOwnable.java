@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -66,9 +67,12 @@ public class PacketSUpdateTEOwnable implements IMessage
 		public IMessage onMessage(final PacketSUpdateTEOwnable message, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntityOwnable te = ((TileEntityOwnable)Minecraft.getMinecraft().theWorld.getTileEntity(message.pos));
+				TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(message.pos);
 
-				te.setOwner(message.uuid, message.name);
+				if(!(te instanceof TileEntityOwnable))
+					return;
+
+				((TileEntityOwnable)te).setOwner(message.uuid, message.name);
 
 				if(message.customizable)
 					((CustomizableSCTE)te).readFromNBT(message.tag);

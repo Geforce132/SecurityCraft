@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -54,10 +55,10 @@ public class PacketCRequestTEOwnableUpdate implements IMessage
 		@Override
 		public PacketSUpdateTEOwnable onMessage(PacketCRequestTEOwnableUpdate message, MessageContext ctx)
 		{
-			TileEntityOwnable te = (TileEntityOwnable)FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(message.dimension).getTileEntity(message.pos);
+			TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(message.dimension).getTileEntity(message.pos);
 
-			if(te != null)
-				return new PacketSUpdateTEOwnable(te);
+			if(te != null && te instanceof TileEntityOwnable)
+				return new PacketSUpdateTEOwnable((TileEntityOwnable)te);
 			else
 				return null;
 		}
