@@ -27,7 +27,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 			if(isPowered && cooldown == 0){
 				TileEntityAlarm TEA = (TileEntityAlarm) worldObj.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.BLOCKS, SecurityCraft.config.alarmSoundVolume, 1.0F);
 				TEA.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
 				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
 				worldObj.setTileEntity(pos, TEA);

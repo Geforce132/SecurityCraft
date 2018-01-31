@@ -23,7 +23,7 @@ public class ConfigHandler
 	public int usernameLoggerSearchRadius;
 	public int laserBlockRange;
 	public int alarmTickDelay;
-	public double alarmSoundVolume;
+	public float alarmSoundVolume;
 	public int cageTrapTextureIndex;
 	public int empRadius;
 	public int portableRadarDelay;
@@ -102,9 +102,9 @@ public class ConfigHandler
 		dummyProp.setLanguageKey("config.alarmTickDelay");
 		alarmTickDelay = dummyProp.getInt(2);
 
-		dummyProp = SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D);
+		dummyProp = SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.3D);
 		dummyProp.setLanguageKey("config.alarmSoundVolume");
-		alarmSoundVolume = dummyProp.getDouble(0.8D);
+		alarmSoundVolume = (float)dummyProp.getDouble(0.3D);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4);
 		dummyProp.setLanguageKey("config.portableRadarDelay");
