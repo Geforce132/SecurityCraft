@@ -1,1 +1,6 @@
-{"version":"v1.8.3","downloadURL":"https://minecraft.curseforge.com/projects/security-craft/files/2512688/download","fileName":"[1.8.8_.9] SecurityCraft v1.8.3","changelog":"Another revision of the Security Camera update! New reinforced blocks and Sponge incompatibility fixes!"}
+{
+	"version": "v1.8.4",
+	"downloadURL": "https://minecraft.curseforge.com/projects/security-craft/files/2526474/download",
+	"fileName": "[1.8.8_.9] SecurityCraft v1.8.4",
+	"changelog": "Another revision of the Security Camera update! Tons of fixes and configurable Inventory Scanner range!"
+}
