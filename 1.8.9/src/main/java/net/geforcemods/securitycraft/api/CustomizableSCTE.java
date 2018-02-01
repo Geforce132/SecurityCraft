@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -107,7 +107,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(linkable && hasWorldObj() && linkedBlocks.size() > 0) {
 			NBTTagList tagList = new NBTTagList();
 
-			((WorldServer)worldObj).addScheduledTask(() -> {
+			WorldUtils.addScheduledTask(worldObj, () -> {
 				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
 
 				while(iterator.hasNext()) {

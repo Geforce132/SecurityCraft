@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.4.1 of SecurityCraft--------------------------
+
+- Fix: [1.8+] Crash when inserting a module into a Laser Block (Thanks Shrimplet596!)
+
 --------------------------Changelog for v1.8.4 of SecurityCraft--------------------------
 
 - New: Inventory Scanners can now be configured to have a higher range, similar to Laser Blocks
