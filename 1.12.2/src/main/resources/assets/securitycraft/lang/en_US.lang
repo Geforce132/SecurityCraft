@@ -249,10 +249,12 @@ death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
 death.attack.securitycraft.electricity=%s was electrocuted.
 
 key.categories.securitycraft=SecurityCraft
-key.cameraActivateNightVision=Toggle Night Vision
-key.cameraEmitRedstone=Toggle Redstone Output
-key.cameraZoomIn=Zoom In
-key.cameraZoomOut=Zoom Out
+key.securitycraft.cameraActivateNightVision=Toggle Night Vision
+key.securitycraft.cameraEmitRedstone=Toggle Redstone Output
+key.securitycraft.cameraZoomIn=Zoom In
+key.securitycraft.cameraZoomOut=Zoom Out
+key.securitycraft.cameraPrevious=Previous Camera
+key.securitycraft.cameraNext=Next Camera
 
 help.laserBlock.info=The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.
 help.keypad.info=The keypad is used by placing the keypad, rightclicking it, and setting a numerical passcode. Once the keycode is set, rightclicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.
@@ -294,7 +296,7 @@ help.reinforcedStairsQuartz.info=Reinforced quartz stairs are the same as vanill
 help.reinforcedStairsRedSandstone.info=Reinforced red sandstone stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedStairsPurpur.info=Reinforced purpur stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 
-help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it.
+help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
 help.scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner, but opens itself upon looking at the top part. It has to be closed manually again.
 help.universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.
@@ -526,6 +528,10 @@ config.smallerMineExplosion=Mines use a smaller explosion?
 config.smallerMineExplosion.tooltip=Should mines' explosions be smaller than usual.
 config.mineExplodesWhenInCreative=Mines explode when broken in Creative?
 config.mineExplodesWhenInCreative.tooltip=Should mines explode if broken while in Creative mode?
+config.fiveMinAutoShutoff=Monitors shutoff after 5 minutes?
+config.fiveMinAutoShutoff.tooltip=If LookingGlass is installed, should monitor views turn off to save resources after 5 minutes have passed since it was activated?
+config.useLookingGlass=Use LookingGlass for viewing cameras?
+config.useLookingGlass.tooltip=Should SecurityCraft use LookingGlass for viewing cameras?\n\nAutomatically gets set to "false" if LookingGlass is not installed.
 config.portableRadarSearchRadius=Portable radar search radius:
 config.portableRadarSearchRadius.tooltip=From how many blocks can the portable radar detect players?
 config.usernameLoggerSearchRadius=Username logger search radius:

@@ -250,10 +250,12 @@ death.attack.securitycraft.fakeWater=%s fiel in giftiges Wasser...?
 death.attack.securitycraft.electricity=%s erlitt einen Stromschlag.
 
 key.categories.securitycraft=SecurityCraft
-key.cameraActivateNightVision=Nachtsicht
-key.cameraEmitRedstone=Redstone Output
-key.cameraZoomIn=Reinzoomen
-key.cameraZoomOut=Rauszoomen
+key.securitycraft.cameraActivateNightVision=Nachtsicht
+key.securitycraft.cameraEmitRedstone=Redstone Output
+key.securitycraft.cameraZoomIn=Reinzoomen
+key.securitycraft.cameraZoomOut=Rauszoomen
+key.securitycraft.cameraPrevious=Vorherige Kamera
+key.securitycraft.cameraNext=Nächste Kamera
 
 help.laserBlock.info=Der Laser wird aktiviert in dem man 2 Laserblöcke innerhalb 5 Blöcke Abstand hinsetzt. Ein Laser sollte nun erscheinen. Sobald ein Spieler durchläuft, geben beide Blöcke ein 15 Block langes Redstonesignal ab.
 help.keypad.info=Das Nummernschloss wird verwendet, in dem man es durch Rechtsklicken aktiviert und einen numerischen Code eingibt. Sobald dies getan wurde fragt das Nummernschloss durch erneutes Rechtsklicken nach dem Code. Wenn er korrekt ist, gibt es ein 3 sekündiges Redstonesignal ab.
@@ -295,7 +297,7 @@ help.reinforcedStairsQuartz.info=Verstärkte Quarztreppen sind wie normale Trepp
 help.reinforcedStairsRedSandstone.info=Verstärkte rote Sandsteintreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.reinforcedStairsPurpur.info=Verstärkte Purpurtreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 
-help.codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick.
+help.codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.scannerDoorItem.info=Die Scannertür verhält sich wie der Augenscanner, aber sie öffnet sich von selbst wenn man auf den oberen Teil guckt. Sie muss manuell wieder geschlossen werden.
 help.universalBlockRemover.info=Der Universelle Block Entferner wird benutzt um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat kann ihn auch entfernen.

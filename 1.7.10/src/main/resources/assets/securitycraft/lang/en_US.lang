@@ -257,7 +257,7 @@ help.reinforcedStairsBrick.info=Reinforced brick stairs are the same as vanilla 
 help.reinforcedStairsNetherBrick.info=Reinforced nether brick stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedStairsQuartz.info=Reinforced quartz stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 
-help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it.
+help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
 help.scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner, but opens itself upon looking at the top part. It has to be closed manually again.
 help.universalBlockRemover.info=The universal block remover is used to destroy "reinforced" blocks by rightclicking it. Only the person who placed the block down can destroy it.

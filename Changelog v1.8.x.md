@@ -1,3 +1,6 @@
+--------------------------Changelog for v1.8.5 of SecurityCraft--------------------------
+- Fix: Language key for Codebreaker doesn't inform the user about its limited usability (Thanks DarraghB2004)
+
 --------------------------Changelog for v1.8.4.1 of SecurityCraft--------------------------
 
 - Fix: [1.8+] Crash when inserting a module into a Laser Block (Thanks Shrimplet596!)
