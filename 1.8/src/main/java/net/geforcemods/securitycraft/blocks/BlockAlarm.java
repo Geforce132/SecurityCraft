@@ -130,26 +130,27 @@ public class BlockAlarm extends BlockOwnable {
 		float ySideMax = 0.5F + f; //top of the alarm when placed on a block side
 		float hSideMin = 0.5F - f; //the left start for s/w and right start for n/e
 		float hSideMax = 0.5F + f; //the left start for n/e and right start for s/w
+		float px = 1.0F / 16.0F; //one sixteenth of a block
 
 		EnumFacing enumfacing = (EnumFacing) worldIn.getBlockState(pos).getValue(FACING);
 		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]){
 			case 1: //east
-				setBlockBounds(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
+				setBlockBounds(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
 				break;
 			case 2: //west
-				setBlockBounds(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
+				setBlockBounds(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
 				break;
 			case 3: //north
-				setBlockBounds(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
+				setBlockBounds(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
 				break;
 			case 4: //south
-				setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
+				setBlockBounds(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
 				break;
 			case 5: //up
-				setBlockBounds(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
+				setBlockBounds(0.5F - f - px, 0F, 0.5F - f - px, 0.5F + f + px, 0.5F, 0.5F + f + px);
 				break;
 			case 6: //down
-				setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+				setBlockBounds(0.5F - f - px, 0.5F, 0.5F - f - px, 0.5F + f + px, 1.0F, 0.5F + f + px);
 				break;
 		}
 	}

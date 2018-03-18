@@ -31,8 +31,6 @@ public class BlockAlarm extends BlockContainer {
 
 	public BlockAlarm(Material par1Material, boolean isLit) {
 		super(par1Material);
-		float f = 0.2F;
-		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
 
 		this.isLit = isLit;
 
@@ -244,11 +242,12 @@ public class BlockAlarm extends BlockContainer {
 		float ySideMax = 0.56F + f; //top of the alarm when placed on a block side
 		float hSideMin = 0.44F - f; //the left start for s/w and right start for n/e
 		float hSideMax = 0.56F + f; //the left start for n/e and right start for s/w
+		float px = 1.0F / 16.0F; //one sixteenth of a block
 
 		switch(l)
 		{
 			case 0: //down
-				setBlockBounds(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+				setBlockBounds(0.5F - f - px, 0.5F, 0.5F - f - px, 0.5F + f + px, 1.0F, 0.5F + f + px);
 				break;
 			case 1: //east
 				setBlockBounds(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
@@ -263,9 +262,7 @@ public class BlockAlarm extends BlockContainer {
 				setBlockBounds(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
 				break;
 			case 5: //up
-			{
-				setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
-			}
+				setBlockBounds(0.5F - f - px, 0.0F, 0.5F - f - px, 0.5F + f + px, 0.5F, 0.5F + f + px);
 		}
 	}
 

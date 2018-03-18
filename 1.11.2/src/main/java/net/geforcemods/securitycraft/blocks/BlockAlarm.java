@@ -72,20 +72,10 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
 	{
-		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
+		if (!canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING))) {
 			dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 		}
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
-				worldIn.isSideSolid(pos.east(),	EnumFacing.WEST ) ||
-				worldIn.isSideSolid(pos.north(),	EnumFacing.SOUTH) ||
-				worldIn.isSideSolid(pos.south(),	EnumFacing.NORTH) ||
-				worldIn.isSideSolid(pos.down(),	EnumFacing.UP   ) ||
-				worldIn.isSideSolid(pos.up(),	EnumFacing.DOWN );
 	}
 
 	@Override
@@ -143,21 +133,22 @@ public class BlockAlarm extends BlockOwnable {
 		float ySideMax = 0.5F + f; //top of the alarm when placed on a block side
 		float hSideMin = 0.5F - f; //the left start for s/w and right start for n/e
 		float hSideMax = 0.5F + f; //the left start for n/e and right start for s/w
+		float px = 1.0F / 16.0F; //one sixteenth of a block
 		EnumFacing enumfacing = state.getValue(FACING);
 
 		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]){
 			case 1: //east
-				return new AxisAlignedBB(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
+				return new AxisAlignedBB(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
 			case 2: //west
-				return new AxisAlignedBB(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
+				return new AxisAlignedBB(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
 			case 3: //north
-				return new AxisAlignedBB(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
+				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
 			case 4: //south
-				return new AxisAlignedBB(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
+				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
 			case 5: //up
-				return new AxisAlignedBB(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
+				return new AxisAlignedBB(0.5F - f - px, 0F, 0.5F - f - px, 0.5F + f + px, 0.5F, 0.5F + f + px);
 			case 6: //down
-				return new AxisAlignedBB(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+				return new AxisAlignedBB(0.5F - f - px, 0.5F, 0.5F - f - px, 0.5F + f + px, 1.0F, 0.5F + f + px);
 		}
 
 		return state.getBoundingBox(source, pos);
