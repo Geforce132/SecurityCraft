@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -69,6 +71,9 @@ public class BlockSecurityCamera extends BlockContainer{
 		world.notifyNeighborsOfStateChange(pos.south(), world.getBlockState(pos).getBlock(), true);
 		world.notifyNeighborsOfStateChange(pos.east(), world.getBlockState(pos).getBlock(), true);
 		world.notifyNeighborsOfStateChange(pos.west(), world.getBlockState(pos).getBlock(), true);
+
+		if(SecurityCraft.config.useLookingGlass())
+			SecurityCraft.network.sendToAll(new PacketCRemoveLGView(pos, world.provider.getDimension()));
 	}
 
 	@Override

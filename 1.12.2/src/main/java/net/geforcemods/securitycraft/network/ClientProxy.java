@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.network;
 
+import java.util.HashMap;
+
 import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
+import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
@@ -30,6 +33,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends ServerProxy{
+
+	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<String, IWorldViewHelper>();
 
 	/**
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.

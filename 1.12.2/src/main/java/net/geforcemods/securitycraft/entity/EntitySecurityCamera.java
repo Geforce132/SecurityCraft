@@ -1,11 +1,15 @@
 package net.geforcemods.securitycraft.entity;
 
+import java.util.ArrayList;
+
 import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -23,9 +27,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -207,6 +213,88 @@ public class EntitySecurityCamera extends Entity{
 
 		if(KeyBindings.cameraZoomOut.isPressed())
 			zoomCameraView(1);
+
+		if(KeyBindings.cameraPrevious.isPressed())
+		{
+			for(Entity e : getPassengers())
+			{
+				if(e instanceof EntityPlayer)
+				{
+					EntityPlayer player = ((EntityPlayer)e);
+
+					if(player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemCameraMonitor)
+					{
+						ItemCameraMonitor monitor = (ItemCameraMonitor)player.getHeldItem(EnumHand.MAIN_HAND).getItem();
+						ArrayList<CameraView> views = monitor.getCameraPositions(player.getHeldItem(EnumHand.MAIN_HAND).getTagCompound());
+						ArrayList<CameraView> nonNull = new ArrayList<CameraView>();
+						int newIndex = -1;
+						BlockPos newPos;
+
+						for(CameraView view : views)
+						{
+							if(view != null)
+							{
+								nonNull.add(view);
+
+								if(view.getLocation() == getPosition().subtract(new Vec3i(0.5D, 1.0D, 0.5D)))
+									newIndex = nonNull.indexOf(view) - 1;
+							}
+						}
+
+						if(newIndex == -1)
+							newIndex = nonNull.size() - 1;
+
+						newPos = views.get(newIndex).getLocation();
+
+						if(!(BlockUtils.getBlock(Minecraft.getMinecraft().world, newPos) instanceof BlockSecurityCamera))
+							return;
+
+						player.dismountRidingEntity();
+						((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, newPos)).mountCamera(world, newPos.getX(), newPos.getY(), newPos.getZ(), -1 /*does not get used*/, player);
+					}
+
+					break;
+				}
+			}
+		}
+
+		//		if(KeyBindings.cameraNext.isPressed())
+		//		{
+		//			if(getRidingEntity() instanceof EntityPlayer)
+		//			{
+		//				EntityPlayer player = ((EntityPlayer)getRidingEntity());
+		//
+		//				if(player.getActiveItemStack().getItem() == SCContent.cameraMonitor)
+		//				{
+		//					ItemCameraMonitor monitor = (ItemCameraMonitor)player.getActiveItemStack().getItem();
+		//					ArrayList<CameraView> views = monitor.getCameraPositions(player.getActiveItemStack().getTagCompound());
+		//					ArrayList<CameraView> nonNull = new ArrayList<CameraView>();
+		//					int newIndex = -1;
+		//					BlockPos newPos;
+		//
+		//					for(CameraView view : views)
+		//					{
+		//						if(view != null)
+		//						{
+		//							nonNull.add(view);
+		//
+		//							if(view.getLocation() == getPosition().subtract(new Vec3i(0.5D, 1.0D, 0.5D)))
+		//								newIndex = nonNull.indexOf(view) + 1;
+		//						}
+		//					}
+		//
+		//					if(newIndex == nonNull.size())
+		//						newIndex = 0;
+		//
+		//					newPos = views.get(newIndex).getLocation();
+		//
+		//					if(!(BlockUtils.getBlock(Minecraft.getMinecraft().world, newPos) instanceof BlockSecurityCamera))
+		//						return;
+		//
+		//					((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, newPos)).mountCamera(world, newPos.getX(), newPos.getY(), newPos.getZ(), -1 /*does not get used*/, player);
+		//				}
+		//			}
+		//		}
 	}
 
 	public void moveViewUp() {

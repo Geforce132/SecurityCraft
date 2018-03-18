@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
+
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.imc.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
@@ -51,6 +55,7 @@ public class SecurityCraft {
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
+	public WorldViewAPI2 lookingGlass;
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 	private NBTTagCompound savedModule;
@@ -110,6 +115,7 @@ public class SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
+		FMLInterModComms.sendMessage("lookingglass", "API", "net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider.register");
 
 		if(config.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
@@ -152,6 +158,27 @@ public class SecurityCraft {
 
 	public void setSavedModule(NBTTagCompound savedModule) {
 		this.savedModule = savedModule;
+	}
+
+	/**
+	 * Get the IWorldView object for the specified key.
+	 */
+	public IWorldViewHelper getViewFromCoords(String coords){
+		return ((ClientProxy) SecurityCraft.serverProxy).worldViews.get(coords);
+	}
+
+	/**
+	 * Do we have an IWorldView object for the given key already saved?
+	 */
+	public boolean hasViewForCoords(String coords){
+		return ((ClientProxy) SecurityCraft.serverProxy).worldViews.containsKey(coords);
+	}
+
+	/**
+	 * Remove the IWorldView object for the specified key.
+	 */
+	public void removeViewForCoords(String coords){
+		((ClientProxy) SecurityCraft.serverProxy).worldViews.remove(coords);
 	}
 
 	/**

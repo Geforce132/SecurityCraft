@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -7,6 +8,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -66,4 +68,8 @@ public class BlockFrame extends BlockOwnable {
 		return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
 
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TileEntityFrame();
+	}
 }

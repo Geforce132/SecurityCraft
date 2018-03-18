@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.Loader;
 
 public class ConfigHandler
 {
@@ -30,6 +31,8 @@ public class ConfigHandler
 	public int imsRange;
 	public float cameraSpeed;
 	public int inventoryScannerRange;
+	public boolean fiveMinAutoShutoff;
+	protected boolean useLookingGlass;
 
 	public void setupConfiguration()
 	{
@@ -137,7 +140,20 @@ public class ConfigHandler
 		dummyProp.setLanguageKey("config.inventoryScannerRange");
 		inventoryScannerRange = dummyProp.getInt(2);
 
+		dummyProp = SecurityCraft.configFile.get("options", "Monitors shutoff after 5 minutes?", true);
+		dummyProp.setLanguageKey("config.fiveMinAutoShutoff");
+		fiveMinAutoShutoff = dummyProp.getBoolean(true);
+
+		dummyProp = SecurityCraft.configFile.get("options", "Use LookingGlass for viewing cameras?", true);
+		dummyProp.setLanguageKey("config.useLookingGlass");
+		useLookingGlass = dummyProp.getBoolean(true);
+
 		if(SecurityCraft.configFile.hasChanged())
 			SecurityCraft.configFile.save();
+	}
+
+	public boolean useLookingGlass()
+	{
+		return Loader.isModLoaded("lookingglass") ? useLookingGlass : false;
 	}
 }

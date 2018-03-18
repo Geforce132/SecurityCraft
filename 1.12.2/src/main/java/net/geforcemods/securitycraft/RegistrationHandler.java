@@ -21,8 +21,11 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
@@ -47,6 +50,7 @@ import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
+import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -237,6 +241,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
+		GameRegistry.registerTileEntity(TileEntityFrame.class, "keypadFrame");
 	}
 
 	public static void registerEntities()
@@ -272,6 +277,9 @@ public class RegistrationHandler
 		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Side.CLIENT);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 23, Side.SERVER);
+		network.registerMessage(PacketCSetCameraLocation.Handler.class, PacketCSetCameraLocation.class, 24, Side.CLIENT);
+		network.registerMessage(PacketCRemoveLGView.Handler.class, PacketCRemoveLGView.class, 25, Side.CLIENT);
+		network.registerMessage(PacketCCreateLGView.Handler.class, PacketCCreateLGView.class, 26, Side.CLIENT);
 	}
 
 	@SideOnly(Side.CLIENT)
