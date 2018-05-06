@@ -35,28 +35,28 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
 	 */
 	@Override
-	protected ItemStack createStackedBlock(int par1)
+	protected ItemStack createStackedBlock(int meta)
 	{
-		return new ItemStack(SCContent.reinforcedWoodSlabs, 2, par1 & 7);
+		return new ItemStack(SCContent.reinforcedWoodSlabs, 2, meta & 7);
 	}
 
 	@Override
-	public String getFullSlabName(int par1){
-		if(par1 < 0 || par1 >= variants.length)
-			par1 = 0;
+	public String getFullSlabName(int meta){
+		if(meta < 0 || meta >= variants.length)
+			meta = 0;
 
-		return super.getUnlocalizedName() + "." + variants[par1];
+		return super.getUnlocalizedName() + "." + variants[meta];
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}
@@ -73,35 +73,35 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
-		if(par1Item != Item.getItemFromBlock(SCContent.reinforcedWoodPlanks))
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
+		if(item != Item.getItemFromBlock(SCContent.reinforcedWoodPlanks))
 			for(int i = 0; i < variants.length; i++)
-				par3List.add(new ItemStack(par1Item, 1, i));
+				list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int u){
 		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3){
+	public Item getItemDropped(int meta, Random random, int fortune){
 		return Item.getItemFromBlock(SCContent.reinforcedWoodSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return SCContent.reinforcedWoodPlanks.getIcon(par1, par2 & 7);
+	public IIcon getIcon(int side, int meta){
+		return SCContent.reinforcedWoodPlanks.getIcon(side, meta & 7);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister p_149651_1_) {}
+	public void registerIcons(IIconRegister register) {}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

@@ -41,18 +41,18 @@ public class ItemKeycardBase extends Item{
 		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
-	public int getKeycardLV(ItemStack par1ItemStack){
-		if(par1ItemStack.getMetadata() == 0)
+	public int getKeycardLV(ItemStack stack){
+		if(stack.getMetadata() == 0)
 			return 1;
-		else if(par1ItemStack.getMetadata() == 1)
+		else if(stack.getMetadata() == 1)
 			return 2;
-		else if(par1ItemStack.getMetadata() == 2)
+		else if(stack.getMetadata() == 2)
 			return 3;
-		else if(par1ItemStack.getMetadata() == 3)
+		else if(stack.getMetadata() == 3)
 			return 6;
-		else if(par1ItemStack.getMetadata() == 4)
+		else if(stack.getMetadata() == 4)
 			return 4;
-		else if(par1ItemStack.getMetadata() == 5)
+		else if(stack.getMetadata() == 5)
 			return 5;
 		else
 			return 0;
@@ -63,31 +63,31 @@ public class ItemKeycardBase extends Item{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item par1Item, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item item, CreativeTabs tab, List list)
 	{
-		par3List.add(new ItemStack(this, 1, 0)); //1
-		par3List.add(new ItemStack(this, 1, 1)); //2
-		par3List.add(new ItemStack(this, 1, 2)); //3
-		par3List.add(new ItemStack(this, 1, 3)); //LU
-		par3List.add(new ItemStack(this, 1, 4)); //4
-		par3List.add(new ItemStack(this, 1, 5)); //5
+		list.add(new ItemStack(this, 1, 0)); //1
+		list.add(new ItemStack(this, 1, 1)); //2
+		list.add(new ItemStack(this, 1, 2)); //3
+		list.add(new ItemStack(this, 1, 3)); //LU
+		list.add(new ItemStack(this, 1, 4)); //4
+		list.add(new ItemStack(this, 1, 5)); //5
 	}
 
 
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack){
-		if(par1ItemStack.getMetadata() == 0)
+	public String getUnlocalizedName(ItemStack stack){
+		if(stack.getMetadata() == 0)
 			return "item.keycardOne";
-		else if(par1ItemStack.getMetadata() == 1)
+		else if(stack.getMetadata() == 1)
 			return "item.keycardTwo";
-		else if(par1ItemStack.getMetadata() == 2)
+		else if(stack.getMetadata() == 2)
 			return "item.keycardThree";
-		else if(par1ItemStack.getMetadata() == 4)
+		else if(stack.getMetadata() == 4)
 			return "item.keycardFour";
-		else if(par1ItemStack.getMetadata() == 5)
+		else if(stack.getMetadata() == 5)
 			return "item.keycardFive";
-		else if(par1ItemStack.getMetadata() == 3)
+		else if(stack.getMetadata() == 3)
 			return "item.limitedUseKeycard";
 		else
 			return "item.nullItem";
@@ -96,14 +96,14 @@ public class ItemKeycardBase extends Item{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(par1ItemStack.getMetadata() == 3){
-			if(par1ItemStack.stackTagCompound == null){
-				par1ItemStack.stackTagCompound = new NBTTagCompound();
-				par1ItemStack.stackTagCompound.setInteger("Uses", 5);
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+		if(stack.getMetadata() == 3){
+			if(stack.stackTagCompound == null){
+				stack.stackTagCompound = new NBTTagCompound();
+				stack.stackTagCompound.setInteger("Uses", 5);
 			}
 
-			par3List.add(StatCollector.translateToLocal("tooltip.keycard.uses") + " " + par1ItemStack.stackTagCompound.getInteger("Uses"));
+			list.add(StatCollector.translateToLocal("tooltip.keycard.uses") + " " + stack.stackTagCompound.getInteger("Uses"));
 
 		}
 	}
@@ -113,32 +113,32 @@ public class ItemKeycardBase extends Item{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int par1){
-		if(par1 == 0)
+	public IIcon getIconFromDamage(int meta){
+		if(meta == 0)
 			return keycardOneIcon;
-		else if(par1 == 1)
+		else if(meta == 1)
 			return keycardTwoIcon;
-		else if(par1 == 2)
+		else if(meta == 2)
 			return keycardThreeIcon;
-		else if(par1 == 4)
+		else if(meta == 4)
 			return keycardFourIcon;
-		else if(par1 == 5)
+		else if(meta == 5)
 			return keycardFiveIcon;
-		else if(par1 == 3)
+		else if(meta == 3)
 			return limitedUseKeycardIcon;
 		else
-			return super.getIconFromDamage(par1);
+			return super.getIconFromDamage(meta);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){
-		keycardOneIcon = par1IconRegister.registerIcon("securitycraft:lv1Keycard");
-		keycardTwoIcon = par1IconRegister.registerIcon("securitycraft:lv2Keycard");
-		keycardThreeIcon = par1IconRegister.registerIcon("securitycraft:lv3Keycard");
-		keycardFourIcon = par1IconRegister.registerIcon("securitycraft:lv4Keycard");
-		keycardFiveIcon = par1IconRegister.registerIcon("securitycraft:lv5Keycard");
-		limitedUseKeycardIcon = par1IconRegister.registerIcon("securitycraft:limitedUseKeycard");
+	public void registerIcons(IIconRegister register){
+		keycardOneIcon = register.registerIcon("securitycraft:lv1Keycard");
+		keycardTwoIcon = register.registerIcon("securitycraft:lv2Keycard");
+		keycardThreeIcon = register.registerIcon("securitycraft:lv3Keycard");
+		keycardFourIcon = register.registerIcon("securitycraft:lv4Keycard");
+		keycardFiveIcon = register.registerIcon("securitycraft:lv5Keycard");
+		limitedUseKeycardIcon = register.registerIcon("securitycraft:limitedUseKeycard");
 	}
 
 }

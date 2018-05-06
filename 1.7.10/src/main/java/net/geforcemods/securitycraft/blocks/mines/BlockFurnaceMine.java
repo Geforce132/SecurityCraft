@@ -20,36 +20,36 @@ import net.minecraft.world.World;
 public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICustomWailaDisplay {
 
 	@SideOnly(Side.CLIENT)
-	private IIcon field_149935_N;
+	private IIcon topIcon;
 	@SideOnly(Side.CLIENT)
-	private IIcon field_149936_O;
+	private IIcon frontIcon;
 
-	public BlockFurnaceMine(Material par2Material) {
-		super(par2Material);
+	public BlockFurnaceMine(Material material) {
+		super(material);
 	}
 
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
+	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
 	{
-		if (!par1World.isRemote)
-			explode(par1World, par2, par3, par4);
+		if (!world.isRemote)
+			explode(world, x, y, z);
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5){
-		if (!par1World.isRemote)
-			explode(par1World, par2, par3, par4);
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta){
+		if (!world.isRemote)
+			explode(world, x, y, z);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(world.isRemote)
 			return true;
-		else if(par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.remoteAccessMine){
-			explode(par1World, par2, par3, par4);
+		else if(player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != SCContent.remoteAccessMine){
+			explode(world, x, y, z);
 			return true;
 		}
 		else
@@ -57,19 +57,19 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	}
 
 	@Override
-	public void activateMine(World world, int par2, int par3, int par4) {}
+	public void activateMine(World world, int x, int y, int z) {}
 
 	@Override
-	public void defuseMine(World world, int par2, int par3, int par4) {}
+	public void defuseMine(World world, int x, int y, int z) {}
 
 	@Override
-	public void explode(World par1World, int par2, int par3, int par4) {
-		par1World.breakBlock(par2, par3, par4, false);
+	public void explode(World world, int x, int y, int z) {
+		world.breakBlock(x, y, z, false);
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			par1World.createExplosion((Entity)null, par2, par3, par4, 2.5F, true);
+			world.createExplosion((Entity)null, x, y, z, 2.5F, true);
 		else
-			par1World.createExplosion((Entity)null, par2, par3, par4, 5.0F, true);
+			world.createExplosion((Entity)null, x, y, z, 5.0F, true);
 
 	}
 
@@ -84,23 +84,23 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		if(par1 == 3 && par2 == 0)
-			return field_149936_O;
+	public IIcon getIcon(int side, int meta){
+		if(side == 3 && meta == 0)
+			return frontIcon;
 
-		return par1 == 1 ? field_149935_N : (par1 == 0 ? field_149935_N : (par1 != par2 ? blockIcon : field_149936_O));
+		return side == 1 ? topIcon : (side == 0 ? topIcon : (side != meta ? blockIcon : frontIcon));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister p_149651_1_){
 		blockIcon = p_149651_1_.registerIcon("furnace_side");
-		field_149936_O = p_149651_1_.registerIcon("furnace_front_off");
-		field_149935_N = p_149651_1_.registerIcon("furnace_top");
+		frontIcon = p_149651_1_.registerIcon("furnace_front_off");
+		topIcon = p_149651_1_.registerIcon("furnace_top");
 	}
 
 	@Override
-	public boolean isActive(World world, int par2, int par3, int par4) {
+	public boolean isActive(World world, int x, int y, int z) {
 		return true;
 	}
 

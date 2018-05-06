@@ -22,17 +22,17 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
+		int meta = te.hasWorldObj() ? te.getBlockMetadata() : te.blockMetadata;
 		float rotation = 0F;
 
-		if(par1TileEntity.hasWorldObj()){
+		if(te.hasWorldObj()){
 			Tessellator tessellator = Tessellator.instance;
-			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);
-			int l = par1TileEntity.getWorld().getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
-			int l1 = l % 65536;
-			int l2 = l / 65536;
-			tessellator.setColorOpaque_F(f, f, f);
+			float brightness = te.getWorld().getLightBrightness(te.xCoord, te.yCoord, te.zCoord);
+			int skyBrightness = te.getWorld().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
+			int l1 = skyBrightness % 65536;
+			int l2 = skyBrightness / 65536;
+			tessellator.setColorOpaque_F(brightness, brightness, brightness);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
@@ -43,7 +43,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 
 		GL11.glPushMatrix();
 
-		if(par1TileEntity.hasWorldObj()){
+		if(te.hasWorldObj()){
 			if(meta == 1 || meta == 5)
 				rotation = -1F;
 			else if(meta == 2 || meta == 6)
@@ -58,7 +58,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) par1TileEntity).cameraRotation;
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) te).cameraRotation;
 
 		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 

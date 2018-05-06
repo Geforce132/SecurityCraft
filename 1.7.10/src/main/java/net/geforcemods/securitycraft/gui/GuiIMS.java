@@ -13,15 +13,15 @@ import net.minecraft.util.StatCollector;
 
 public class GuiIMS extends GuiContainer{
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
 	private TileEntityIMS tileEntity;
 	private GuiButton targetButton;
 	private int targetingOption = 0;
 
-	public GuiIMS(InventoryPlayer par1InventoryPlayer, TileEntityIMS par2TileEntity) {
-		super(new ContainerGeneric(par1InventoryPlayer, par2TileEntity));
-		tileEntity = par2TileEntity;
+	public GuiIMS(InventoryPlayer playerInv, TileEntityIMS te) {
+		super(new ContainerGeneric(playerInv, te));
+		tileEntity = te;
 		targetingOption = tileEntity.getTargetingOption();
 	}
 
@@ -33,26 +33,26 @@ public class GuiIMS extends GuiContainer{
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		fontRendererObj.drawString(StatCollector.translateToLocal("tile.ims.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

@@ -34,8 +34,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockSecurityCamera extends BlockContainer {
 
-	public BlockSecurityCamera(Material par2Material) {
-		super(par2Material);
+	public BlockSecurityCamera(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -65,13 +65,13 @@ public class BlockSecurityCamera extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
 		return null;
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z){
-		int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
+	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
+		int meta = access.getBlockMetadata(x, y, z);
 
 		if(meta == 3  || meta == 7)
 			setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -84,55 +84,55 @@ public class BlockSecurityCamera extends BlockContainer {
 	}
 
 	@Override
-	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9){
-		int k1 = par9 & 8;
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta){
+		int k1 = meta & 8;
 		byte b0 = -1;
 
-		if(par5 == 2 && par1World.isSideSolid(par2, par3, par4 + 1, NORTH))
+		if(side == 2 && world.isSideSolid(x, y, z + 1, NORTH))
 			b0 = 4;
 
-		if(par5 == 3 && par1World.isSideSolid(par2, par3, par4 - 1, SOUTH))
+		if(side == 3 && world.isSideSolid(x, y, z - 1, SOUTH))
 			b0 = 3;
 
-		if(par5 == 4 && par1World.isSideSolid(par2 + 1, par3, par4, WEST))
+		if(side == 4 && world.isSideSolid(x + 1, y, z, WEST))
 			b0 = 2;
 
-		if(par5 == 5 && par1World.isSideSolid(par2 - 1, par3, par4, EAST))
+		if(side == 5 && world.isSideSolid(x - 1, y, z, EAST))
 			b0 = 1;
 
 		return b0 + k1;
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block) {
-		int metadata = par1World.getBlockMetadata(par2, par3, par4);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+		int metadata = world.getBlockMetadata(x, y, z);
 
 		if(metadata == 1) {
-			if(!par1World.isSideSolid(par2 - 1, par3, par4, EAST))
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			if(!world.isSideSolid(x - 1, y, z, EAST))
+				BlockUtils.destroyBlock(world, x, y, z, true);
 		}else if(metadata == 2) {
-			if(!par1World.isSideSolid(par2 + 1, par3, par4, WEST))
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			if(!world.isSideSolid(x + 1, y, z, WEST))
+				BlockUtils.destroyBlock(world, x, y, z, true);
 		}else if(metadata == 3) {
-			if(!par1World.isSideSolid(par2, par3, par4 - 1, SOUTH))
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			if(!world.isSideSolid(x, y, z - 1, SOUTH))
+				BlockUtils.destroyBlock(world, x, y, z, true);
 		}else if(metadata == 4)
-			if(!par1World.isSideSolid(par2, par3, par4 + 1, NORTH))
-				BlockUtils.destroyBlock(par1World, par2, par3, par4, true);
+			if(!world.isSideSolid(x, y, z + 1, NORTH))
+				BlockUtils.destroyBlock(world, x, y, z, true);
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		SecurityCraft.network.sendToAll(new PacketCRemoveLGView(par2, par3, par4, par1World.provider.dimensionId));
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta){
+		SecurityCraft.network.sendToAll(new PacketCRemoveLGView(x, y, z, world.provider.dimensionId));
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5){
-		ForgeDirection dir = ForgeDirection.getOrientation(par5);
-		return (dir == NORTH && par1World.isSideSolid(par2, par3, par4 + 1, NORTH)) ||
-				(dir == SOUTH && par1World.isSideSolid(par2, par3, par4 - 1, SOUTH)) ||
-				(dir == WEST  && par1World.isSideSolid(par2 + 1, par3, par4, WEST )) ||
-				(dir == EAST  && par1World.isSideSolid(par2 - 1, par3, par4, EAST ));
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side){
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return (dir == NORTH && world.isSideSolid(x, y, z + 1, NORTH)) ||
+				(dir == SOUTH && world.isSideSolid(x, y, z - 1, SOUTH)) ||
+				(dir == WEST  && world.isSideSolid(x + 1, y, z, WEST )) ||
+				(dir == EAST  && world.isSideSolid(x - 1, y, z, EAST ));
 	}
 
 	@Override
@@ -151,27 +151,27 @@ public class BlockSecurityCamera extends BlockContainer {
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		return ((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 5, 8) ? 15 : 0;
+	public int isProvidingWeakPower(IBlockAccess access, int x, int y, int z, int side){
+		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 8) ? 15 : 0;
 	}
 
 	@Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		return ((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(par1IBlockAccess, par2, par3, par4, 5, 8) ? 15 : 0;
+	public int isProvidingStrongPower(IBlockAccess access, int x, int y, int z, int side){
+		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 8) ? 15 : 0;
 	}
 
-	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
+	public void mountCamera(World world, int x, int y, int z, int par5, EntityPlayer player){
 		if(!world.isRemote && player.ridingEntity == null)
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
 
 		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){
-			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.ridingEntity);
+			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, par5, (EntitySecurityCamera) player.ridingEntity);
 			world.spawnEntityInWorld(dummyEntity);
 			player.mountEntity(dummyEntity);
 			return;
 		}
 
-		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
+		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, par5, player);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
 
@@ -182,18 +182,18 @@ public class BlockSecurityCamera extends BlockContainer {
 	}
 
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3){
+	public Item getItemDropped(int meta, Random random, int fortune){
 		return Item.getItemFromBlock(SCContent.securityCamera);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int z){
 		return Item.getItemFromBlock(SCContent.securityCamera);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySecurityCamera().nameable();
 	}
 

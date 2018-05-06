@@ -21,8 +21,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockLaserBlock extends BlockContainer {
 
-	public BlockLaserBlock(Material par2Material) {
-		super(par2Material);
+	public BlockLaserBlock(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -40,100 +40,100 @@ public class BlockLaserBlock extends BlockContainer {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4){
-		super.onBlockAdded(par1World, par2, par3, par4);
+	public void onBlockAdded(World world, int x, int y, int z){
+		super.onBlockAdded(world, x, y, z);
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		if(!par1World.isRemote)
-			setLaser(par1World, par2, par3, par4);
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stacl){
+		if(!world.isRemote)
+			setLaser(world, x, y, z);
 	}
 
-	public void setLaser(World par1World, int par2, int par3, int par4) {
+	public void setLaser(World world, int x, int y, int z) {
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2 + i, par3, par4);
+			Block id = world.getBlock(x + i, y, z);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2 + i, par3, par4));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x + i, y, z));
 
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 + j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 + j, par3, par4, SCContent.laserField, 3, 3);
+					if(world.getBlock(x + j, y, z) == Blocks.air)
+						world.setBlock(x + j, y, z, SCContent.laserField, 3, 3);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2 - i, par3, par4);
+			Block id = world.getBlock(x - i, y, z);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2 - i, par3, par4));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x - i, y, z));
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 - j, par3, par4) == Blocks.air)
-						par1World.setBlock(par2 - j, par3, par4, SCContent.laserField, 3, 3);
+					if(world.getBlock(x - j, y, z) == Blocks.air)
+						world.setBlock(x - j, y, z, SCContent.laserField, 3, 3);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3, par4 + i);
+			Block id = world.getBlock(x, y, z + i);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 + i));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x, y, z + i));
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 + j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 + j, SCContent.laserField, 2, 3);
+					if(world.getBlock(x, y, z + j) == Blocks.air)
+						world.setBlock(x, y, z + j, SCContent.laserField, 2, 3);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2 , par3, par4 - i);
+			Block id = world.getBlock(x , y, z - i);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3, par4 - i));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x, y, z - i));
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 - j) == Blocks.air)
-						par1World.setBlock(par2, par3, par4 - j, SCContent.laserField, 2, 3);
+					if(world.getBlock(x, y, z - j) == Blocks.air)
+						world.setBlock(x, y, z - j, SCContent.laserField, 2, 3);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3 + i, par4);
+			Block id = world.getBlock(x, y + i, z);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 + i, par4));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x, y + i, z));
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 + j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 + j, par4, SCContent.laserField, 1, 3);
+					if(world.getBlock(x, y + j, z) == Blocks.air)
+						world.setBlock(x, y + j, z, SCContent.laserField, 1, 3);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3 - i, par4);
+			Block id = world.getBlock(x, y - i, z);
 			if(id != Blocks.air && id != SCContent.laserBlock)
 				break;
 			if(id == SCContent.laserBlock){
-				CustomizableSCTE.link((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4), (CustomizableSCTE) par1World.getTileEntity(par2, par3 - i, par4));
+				CustomizableSCTE.link((CustomizableSCTE) world.getTileEntity(x, y, z), (CustomizableSCTE) world.getTileEntity(x, y - i, z));
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 - j, par4) == Blocks.air)
-						par1World.setBlock(par2, par3 - j, par4, SCContent.laserField, 1, 3);
+					if(world.getBlock(x, y - j, z) == Blocks.air)
+						world.setBlock(x, y - j, z, SCContent.laserField, 1, 3);
 			}
 			else
 				continue;
@@ -144,73 +144,73 @@ public class BlockLaserBlock extends BlockContainer {
 	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
 	 */
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5) {
-		if(!par1World.isRemote)
-			destroyAdjacentLasers(par1World, par2, par3, par4);
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
+		if(!world.isRemote)
+			destroyAdjacentLasers(world, x, y, z);
 	}
 
-	public static void destroyAdjacentLasers(World par1World, int par2, int par3, int par4){
+	public static void destroyAdjacentLasers(World world, int x, int y, int z){
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2 + i, par3, par4);
+			Block id = world.getBlock(x + i, y, z);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 + j, par3, par4) == SCContent.laserField && par1World.getBlockMetadata(par2 + j, par3, par4) == 3)
-						par1World.breakBlock(par2 + j, par3, par4, false);
+					if(world.getBlock(x + j, y, z) == SCContent.laserField && world.getBlockMetadata(x + j, y, z) == 3)
+						world.breakBlock(x + j, y, z, false);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2 - i, par3, par4);
+			Block id = world.getBlock(x - i, y, z);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2 - j, par3, par4) == SCContent.laserField && par1World.getBlockMetadata(par2 - j, par3, par4) == 3)
-						par1World.breakBlock(par2 - j, par3, par4, false);
+					if(world.getBlock(x - j, y, z) == SCContent.laserField && world.getBlockMetadata(x - j, y, z) == 3)
+						world.breakBlock(x - j, y, z, false);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3, par4 + i);
+			Block id = world.getBlock(x, y, z + i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 + j) == SCContent.laserField && par1World.getBlockMetadata(par2, par3, par4 + j) == 2)
-						par1World.breakBlock(par2, par3, par4 + j, false);
+					if(world.getBlock(x, y, z + j) == SCContent.laserField && world.getBlockMetadata(x, y, z + j) == 2)
+						world.breakBlock(x, y, z + j, false);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3, par4 - i);
+			Block id = world.getBlock(x, y, z - i);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3, par4 - j) == SCContent.laserField && par1World.getBlockMetadata(par2, par3, par4 - j) == 2)
-						par1World.breakBlock(par2, par3, par4 - j, false);
+					if(world.getBlock(x, y, z - j) == SCContent.laserField && world.getBlockMetadata(x, y, z - j) == 2)
+						world.breakBlock(x, y, z - j, false);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3 + i, par4);
+			Block id = world.getBlock(x, y + i, z);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 + j, par4) == SCContent.laserField && par1World.getBlockMetadata(par2, par3 + j, par4) == 1)
-						par1World.breakBlock(par2, par3 + j, par4, false);
+					if(world.getBlock(x, y + j, z) == SCContent.laserField && world.getBlockMetadata(x, y + j, z) == 1)
+						world.breakBlock(x, y + j, z, false);
 			}
 			else
 				continue;
 		}
 
 		for(int i = 1; i <= SecurityCraft.config.laserBlockRange; i++){
-			Block id = par1World.getBlock(par2, par3 - i, par4);
+			Block id = world.getBlock(x, y - i, z);
 			if(id == SCContent.laserBlock){
 				for(int j = 1; j < i; j++)
-					if(par1World.getBlock(par2, par3 - j, par4) == SCContent.laserField && par1World.getBlockMetadata(par2, par3 - j, par4) == 1)
-						par1World.breakBlock(par2, par3 - j, par4, false);
+					if(world.getBlock(x, y - j, z) == SCContent.laserField && world.getBlockMetadata(x, y - j, z) == 1)
+						world.breakBlock(x, y - j, z, false);
 			}
 			else
 				continue;
@@ -228,8 +228,8 @@ public class BlockLaserBlock extends BlockContainer {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2)
+	public int isProvidingWeakPower(IBlockAccess access, int x, int y, int z, int side){
+		if(access.getBlockMetadata(x, y, z) == 2)
 			return 15;
 		else
 			return 0;
@@ -240,8 +240,8 @@ public class BlockLaserBlock extends BlockContainer {
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2)
+	public int isProvidingStrongPower(IBlockAccess access, int x, int y, int z, int side){
+		if(access.getBlockMetadata(x, y, z) == 2)
 			return 15;
 		else
 			return 0;
@@ -251,31 +251,31 @@ public class BlockLaserBlock extends BlockContainer {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if(!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) == 2)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+	public void updateTick(World world, int x, int y, int z, Random random){
+		if(!world.isRemote && world.getBlockMetadata(x, y, z) == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 1, 3);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if(par1World.getBlockMetadata(par2, par3, par4) == 2){
-			double d0 = par2 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d1 = par3 + 0.7F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d2 = par4 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+	public void randomDisplayTick(World world, int x, int y, int z, Random random){
+		if(world.getBlockMetadata(x, y, z) == 2){
+			double d0 = x + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double d1 = y + 0.7F + (random.nextFloat() - 0.5F) * 0.2D;
+			double d2 = z + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double d3 = 0.2199999988079071D;
 			double d4 = 0.27000001072883606D;
 
-			par1World.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLaserBlock().linkable();
 	}
 

@@ -23,24 +23,24 @@ public class ItemTaser extends Item {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(!par2World.isRemote)
-			if(!par1ItemStack.isItemDamaged()){
-				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer));
-				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+		if(!world.isRemote)
+			if(!stack.isItemDamaged()){
+				world.spawnEntityInWorld(new EntityTaserBullet(world, player));
+				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F));
 
-				if(!par3EntityPlayer.capabilities.isCreativeMode)
-					par1ItemStack.damageItem(150, par3EntityPlayer);
+				if(!player.capabilities.isCreativeMode)
+					stack.damageItem(150, player);
 			}
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(!par2World.isRemote)
-			if(par1ItemStack.getMetadata() >= 1)
-				par1ItemStack.setMetadata(par1ItemStack.getMetadata() - 1);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean update){
+		if(!world.isRemote)
+			if(stack.getMetadata() >= 1)
+				stack.setMetadata(stack.getMetadata() - 1);
 	}
 
 }

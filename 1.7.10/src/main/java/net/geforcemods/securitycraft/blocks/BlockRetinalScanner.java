@@ -27,34 +27,34 @@ public class BlockRetinalScanner extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	private IIcon rtIconFrontActive;
 
-	public BlockRetinalScanner(Material par1) {
-		super(par1);
+	public BlockRetinalScanner(Material material) {
+		super(material);
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if (l == 0)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		if (entityRotation == 0)
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
 
-		if (l == 1)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+		if (entityRotation == 1)
+			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
 
-		if (l == 2)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		if (entityRotation == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 
-		if (l == 3)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		if (entityRotation == 3)
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 	}
 
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if (!par1World.isRemote && par1World.getBlockMetadata(par2, par3, par4) >= 7 && par1World.getBlockMetadata(par2, par3, par4) <= 10)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) - 5, 3);
+	public void updateTick(World world, int x, int y, int z, Random random){
+		if (!world.isRemote && world.getBlockMetadata(x, y, z) >= 7 && world.getBlockMetadata(x, y, z) <= 10)
+			world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) - 5, 3);
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 7 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 8 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 9 || par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 10)
+	public int isProvidingWeakPower(IBlockAccess access, int x, int y, int z, int side){
+		if(access.getBlockMetadata(x, y, z) == 7 || access.getBlockMetadata(x, y, z) == 8 || access.getBlockMetadata(x, y, z) == 9 || access.getBlockMetadata(x, y, z) == 10)
 			return 15;
 		else
 			return 0;
@@ -72,27 +72,27 @@ public class BlockRetinalScanner extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		if(par1 == 3 && par2 == 0)
+	public IIcon getIcon(int side, int meta){
+		if(side == 3 && meta == 0)
 			return rtIconFront;
 
-		if(par2 == 7 || par2 == 8 || par2 == 9 || par2 == 10)
-			return par1 == 1 ? rtIconTop : (par1 == 0 ? rtIconTop : (par1 != (par2 - 5) ? blockIcon : rtIconFrontActive));
+		if(meta == 7 || meta == 8 || meta == 9 || meta == 10)
+			return side == 1 ? rtIconTop : (side == 0 ? rtIconTop : (side != (meta - 5) ? blockIcon : rtIconFrontActive));
 		else
-			return par1 == 1 ? rtIconTop : (par1 == 0 ? rtIconTop : (par1 != par2 ? blockIcon : rtIconFront));
+			return side == 1 ? rtIconTop : (side == 0 ? rtIconTop : (side != meta ? blockIcon : rtIconFront));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){
-		blockIcon = par1IconRegister.registerIcon("furnace_side");
-		rtIconTop = par1IconRegister.registerIcon("furnace_top");
-		rtIconFront = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
-		rtIconFrontActive = par1IconRegister.registerIcon("securitycraft:retinalScannerFront");
+	public void registerIcons(IIconRegister register){
+		blockIcon = register.registerIcon("furnace_side");
+		rtIconTop = register.registerIcon("furnace_top");
+		rtIconFront = register.registerIcon("securitycraft:retinalScannerFront");
+		rtIconFrontActive = register.registerIcon("securitycraft:retinalScannerFront");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

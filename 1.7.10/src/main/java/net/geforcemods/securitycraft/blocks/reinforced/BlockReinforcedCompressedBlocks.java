@@ -28,10 +28,10 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 0));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
 	}
 
 	@Override
@@ -46,14 +46,14 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}

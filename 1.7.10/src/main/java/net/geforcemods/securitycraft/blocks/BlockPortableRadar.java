@@ -37,8 +37,8 @@ public class BlockPortableRadar extends BlockContainer {
 	private IIcon sidesIcon;
 
 
-	public BlockPortableRadar(Material par2Material) {
-		super(par2Material);
+	public BlockPortableRadar(Material material) {
+		super(material);
 		setBlockBounds(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
 	}
 
@@ -52,59 +52,57 @@ public class BlockPortableRadar extends BlockContainer {
 		return false;
 	}
 
-	public static void searchForPlayers(World par1World, int par2, int par3, int par4, double searchRadius){
-		if(!par1World.isRemote){
-			double d0 = (searchRadius);
-
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1).expand(d0, d0, d0);
-			axisalignedbb.maxY = par1World.getHeight();
-			List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+	public static void searchForPlayers(World world, int x, int y, int z, double searchRadius){
+		if(!world.isRemote){
+			AxisAlignedBB searchArea = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(searchRadius, searchRadius, searchRadius);
+			searchArea.maxY = world.getHeight();
+			List<?> list = world.getEntitiesWithinAABB(EntityPlayer.class, searchArea);
 			Iterator<?> iterator = list.iterator();
 			EntityPlayer entityplayer;
 
 			if(list.isEmpty())
-				if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && par1World.getBlockMetadata(par2, par3, par4) == 1){
-					togglePowerOutput(par1World, par2, par3, par4, false);
+				if(world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityPortableRadar && ((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && world.getBlockMetadata(x, y, z) == 1){
+					togglePowerOutput(world, x, y, z, false);
 					return;
 				}
 
 			while (iterator.hasNext()){
-				EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwner().getName());
+				EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)world.getTileEntity(x, y, z)).getOwner().getName());
 
 				entityplayer = (EntityPlayer)iterator.next();
 
-				if(par1World.getTileEntity(par2, par3, par4) == null || !(par1World.getTileEntity(par2, par3, par4) instanceof CustomizableSCTE))
+				if(world.getTileEntity(x, y, z) == null || !(world.getTileEntity(x, y, z) instanceof CustomizableSCTE))
 					continue;
 
-				if(((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, par2, par3, par4, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase()))
+				if(((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, x, y, z, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase()))
 					continue;
 
-				if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(par2, par3, par4)).getOwner().getName())){
-					if(!((TileEntityPortableRadar) par1World.getTileEntity(par2, par3, par4)).shouldSendMessage(entityplayer))
+				if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)world.getTileEntity(x, y, z)).getOwner().getName())){
+					if(!((TileEntityPortableRadar) world.getTileEntity(x, y, z)).shouldSendMessage(entityplayer))
 						continue;
 
-					PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((INameable)par1World.getTileEntity(par2, par3, par4)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)par1World.getTileEntity(par2, par3, par4)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(par2, par3, par4))), EnumChatFormatting.BLUE);
-					((TileEntityPortableRadar) par1World.getTileEntity(par2, par3, par4)).setSentMessage();
+					PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((INameable)world.getTileEntity(x, y, z)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)world.getTileEntity(x, y, z)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(x, y, z))), EnumChatFormatting.BLUE);
+					((TileEntityPortableRadar) world.getTileEntity(x, y, z)).setSentMessage();
 				}
 
-				if(par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE))
-					togglePowerOutput(par1World, par2, par3, par4, true);
+				if(world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityPortableRadar && ((CustomizableSCTE) world.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE))
+					togglePowerOutput(world, x, y, z, true);
 			}
 		}
 	}
 
-	private static void togglePowerOutput(World par1World, int par2, int par3, int par4, boolean par5) {
-		if(par5)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+	private static void togglePowerOutput(World world, int x, int y, int z, boolean side) {
+		if(side)
+			world.setBlockMetadataWithNotify(x, y, z, 1, 3);
 		else
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 3);
+			world.setBlockMetadataWithNotify(x, y, z, 0, 3);
 
-		BlockUtils.updateAndNotify(par1World, par2, par3, par4, par1World.getBlock(par2, par3, par4), 1, false);
+		BlockUtils.updateAndNotify(world, x, y, z, world.getBlock(x, y, z), 1, false);
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5){
-		if(((CustomizableSCTE)par1IBlockAccess.getTileEntity(par2, par3, par4)).hasModule(EnumCustomModules.REDSTONE) && par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1)
+	public int isProvidingWeakPower(IBlockAccess access, int x, int y, int z, int side){
+		if(((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && access.getBlockMetadata(x, y, z) == 1)
 			return 15;
 		else
 			return 0;
@@ -117,19 +115,19 @@ public class BlockPortableRadar extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return par1 == 1 ? topIcon : sidesIcon;
+	public IIcon getIcon(int side, int meta){
+		return side == 1 ? topIcon : sidesIcon;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){
-		sidesIcon = par1IconRegister.registerIcon("securitycraft:portableRadarSides");
-		topIcon = par1IconRegister.registerIcon("securitycraft:portableRadarTop1");
+	public void registerIcons(IIconRegister register){
+		sidesIcon = register.registerIcon("securitycraft:portableRadarSides");
+		topIcon = register.registerIcon("securitycraft:portableRadarTop1");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityPortableRadar().attacks(EntityPlayer.class, SecurityCraft.config.portableRadarSearchRadius, SecurityCraft.config.portableRadarDelay).nameable();
 	}
 

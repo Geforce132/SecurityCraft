@@ -325,6 +325,9 @@ public class EntitySecurityCamera extends Entity {
 		}
 	}
 
+	/**
+	 * For debug purposes
+	 */
 	public String getCameraInfo(){
 		String nowViewing = EnumChatFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
 		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int)Math.floor(posX) + " Y: " + (int)(posY - 1.0D) + " Z: " + (int)Math.floor(posZ) + "\n";

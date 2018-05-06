@@ -42,7 +42,7 @@ public class ItemUniversalOwnerChanger extends Item
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float f1, float f2, float f3)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
 		TileEntity te = world.getTileEntity(x, y, z);
 		String newOwner = stack.getDisplayName();

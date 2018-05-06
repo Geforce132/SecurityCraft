@@ -17,10 +17,10 @@ public class PacketCSpawnLightning implements IMessage{
 
 	}
 
-	public PacketCSpawnLightning(double par1, double par2, double par3){
-		x = par1;
-		y = par2;
-		z = par3;
+	public PacketCSpawnLightning(double xPos, double yPos, double zPos){
+		x = xPos;
+		y = yPos;
+		z = zPos;
 	}
 
 	@Override

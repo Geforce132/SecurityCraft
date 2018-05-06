@@ -24,18 +24,18 @@ public class BlockReinforcedStoneBrick extends BlockOwnable implements IReinforc
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		par3List.add(new ItemStack(par1Item, 1, 0));
-		par3List.add(new ItemStack(par1Item, 1, 1));
-		par3List.add(new ItemStack(par1Item, 1, 2));
-		par3List.add(new ItemStack(par1Item, 1, 3));
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 3));
 	}
 
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(int meta)
 	{
-		return par1;
+		return meta;
 	}
 
 	/**
@@ -43,9 +43,9 @@ public class BlockReinforcedStoneBrick extends BlockOwnable implements IReinforc
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2)
+	public IIcon getIcon(int side, int meta)
 	{
-		return Blocks.stonebrick.getIcon(par1, par2);
+		return Blocks.stonebrick.getIcon(side, meta);
 	}
 
 	@Override
@@ -56,14 +56,14 @@ public class BlockReinforcedStoneBrick extends BlockOwnable implements IReinforc
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}

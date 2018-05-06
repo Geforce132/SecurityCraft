@@ -22,13 +22,13 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 
 	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material par2Material, Block disguisedBlock) {
-		super(par2Material);
+	public BlockFullMineBase(Material material, Block disguisedBlock) {
+		super(material);
 		blockDisguisedAs = disguisedBlock;
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		return null;
 	}
@@ -37,63 +37,63 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(par1World.isRemote)
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		if(world.isRemote)
 			return;
-		else if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem)
+		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
 			return;
-		else if(par5Entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)par5Entity))
-			explode(par1World, par2, par3, par4);
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			explode(world, x, y, z);
 	}
 
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
+	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion)
 	{
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 		{
 			Random random = new Random();
 
 			if(random.nextInt(3) == 1)
-				explode(par1World, par2, par3, par4);
+				explode(world, x, y, z);
 		}
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5){
-		if (!par1World.isRemote)
-			explode(par1World, par2, par3, par4);
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta){
+		if (!world.isRemote)
+			explode(world, x, y, z);
 	}
 
 	@Override
-	public void activateMine(World world, int par2, int par3, int par4) {}
+	public void activateMine(World world, int x, int y, int z) {}
 
 	@Override
-	public void defuseMine(World world, int par2, int par3, int par4) {}
+	public void defuseMine(World world, int x, int y, int z) {}
 
 	@Override
-	public void explode(World world, int par2, int par3, int par4) {
-		world.breakBlock(par2, par3, par4, false);
+	public void explode(World world, int x, int y, int z) {
+		world.breakBlock(x, y, z, false);
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 2.5F, true);
+			world.createExplosion((Entity)null, x, y + 0.5D, z, 2.5F, true);
 		else
-			world.createExplosion((Entity)null, par2, par3 + 0.5D, par4, 5.0F, true);
+			world.createExplosion((Entity)null, x, y + 0.5D, z, 5.0F, true);
 	}
 
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion par1Explosion)
+	public boolean canDropFromExplosion(Explosion explosion)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isActive(World world, int par2, int par3, int par4) {
+	public boolean isActive(World world, int x, int y, int z) {
 		return true;
 	}
 

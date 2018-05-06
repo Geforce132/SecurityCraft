@@ -26,20 +26,20 @@ public class PacketSetISType implements IMessage{
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		type = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		type = ByteBufUtils.readUTF8String(buf);
 
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, type);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, type);
 
 	}
 
@@ -52,14 +52,9 @@ public class PacketSetISType implements IMessage{
 			int z = packet.z;
 
 			((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).setType(packet.type);
-
-
-
 			SecurityCraft.log("Setting type to " + packet.type);
 			getWorld(context.getServerHandler().playerEntity).scheduleBlockUpdate(x, y, z, getWorld(context.getServerHandler().playerEntity).getBlock(x, y, z), 1);
-
 			Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), x, y, z, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(x, y, z)).getType());
-
 			return null;
 		}
 

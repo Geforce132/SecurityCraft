@@ -51,6 +51,7 @@ public class PacketSSetOwner implements IMessage {
 			int y = packet.y;
 			int z = packet.z;
 			EntityPlayer player = ctx.getServerHandler().playerEntity;
+
 			if(getWorld(player).getTileEntity(x, y, z) != null && getWorld(player).getTileEntity(x, y, z) instanceof IOwnable)
 				((IOwnable) getWorld(player).getTileEntity(x, y, z)).getOwner().set(packet.uuid, packet.name);
 

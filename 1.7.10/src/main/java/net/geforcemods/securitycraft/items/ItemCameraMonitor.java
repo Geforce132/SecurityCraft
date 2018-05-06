@@ -35,87 +35,87 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
-		if(!par3World.isRemote)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
 			//When the mod is using the LookingGlass system.
 			if(SecurityCraft.instance.useLookingGlass()){
-				if(par3World.getBlock(par4, par5, par6) instanceof BlockSecurityCamera){
-					if(!((TileEntitySecurityCamera) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
+				if(world.getBlock(x, y, z) instanceof BlockSecurityCamera){
+					if(!((TileEntitySecurityCamera) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 						return false;
 					}
 
-					if(par1ItemStack.getTagCompound() == null)
-						par1ItemStack.setTagCompound(new NBTTagCompound());
+					if(stack.getTagCompound() == null)
+						stack.setTagCompound(new NBTTagCompound());
 
-					CameraView view = new CameraView(par4, par5, par6, par2EntityPlayer.dimension);
+					CameraView view = new CameraView(x, y, z, player.dimension);
 
-					if(isCameraAdded(par1ItemStack.getTagCompound(), view)){
-						par1ItemStack.getTagCompound().removeTag(getTagNameFromPosition(par1ItemStack.getTagCompound(), view));
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
+					if(isCameraAdded(stack.getTagCompound(), view)){
+						stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
 						return true;
 					}
 
-					par1ItemStack.getTagCompound().setString("Camera1", view.toNBTString());
-					SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.GREEN);
+					stack.getTagCompound().setString("Camera1", view.toNBTString());
+					SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) player);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.GREEN);
 
 					return true;
-				}else if(par3World.getBlock(par4, par5, par6) == SCContent.frame){
-					if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) return false;
+				}else if(world.getBlock(x, y, z) == SCContent.frame){
+					if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) return false;
 
-					CameraView view = getCameraView(par1ItemStack.getTagCompound());
+					CameraView view = getCameraView(stack.getTagCompound());
 					if(view == null) return true;
 
-					((TileEntityFrame) par3World.getTileEntity(par4, par5, par6)).setCameraLocation(view.x, view.y, view.z, view.dimension);
-					SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(par4, par5, par6, view.x, view.y, view.z, view.dimension));
-					par1ItemStack.stackSize--;
+					((TileEntityFrame) world.getTileEntity(x, y, z)).setCameraLocation(view.x, view.y, view.z, view.dimension);
+					SecurityCraft.network.sendToAll(new PacketCSetCameraLocation(x, y, z, view.x, view.y, view.z, view.dimension));
+					stack.stackSize--;
 
 					return true;
 				}else{
-					if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())) return false;
+					if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) return false;
 
-					CameraView view = getCameraView(par1ItemStack.getTagCompound());
+					CameraView view = getCameraView(stack.getTagCompound());
 					if(view == null) return true;
 
-					if(!(par3World.getBlock(view.x, view.y, view.z) instanceof BlockSecurityCamera)){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
+					if(!(world.getBlock(view.x, view.y, view.z) instanceof BlockSecurityCamera)){
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
 						return false;
 					}
 
 					if(SecurityCraft.instance.useLookingGlass())
-						SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par2EntityPlayer);
+						SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) player);
 					else
-						par2EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par3World, par4, par5, par6);
+						player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, x, y, z);
 
 					return false;
 				}
 			}
-			else if(par3World.getBlock(par4, par5, par6) == SCContent.securityCamera){
-				if(!((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
+			else if(world.getBlock(x, y, z) == SCContent.securityCamera){
+				if(!((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.cannotView"), EnumChatFormatting.RED);
 					return true;
 				}
 
-				if(par2EntityPlayer.getCurrentEquippedItem().getTagCompound() == null)
-					par2EntityPlayer.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());
+				if(player.getCurrentEquippedItem().getTagCompound() == null)
+					player.getCurrentEquippedItem().setTagCompound(new NBTTagCompound());
 
-				CameraView view = new CameraView(par4, par5, par6, par2EntityPlayer.dimension);
+				CameraView view = new CameraView(x, y, z, player.dimension);
 
-				if(isCameraAdded(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), view)){
-					par2EntityPlayer.getCurrentEquippedItem().getTagCompound().removeTag(getTagNameFromPosition(par2EntityPlayer.getCurrentEquippedItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.RED);
+				if(isCameraAdded(player.getCurrentEquippedItem().getTagCompound(), view)){
+					player.getCurrentEquippedItem().getTagCompound().removeTag(getTagNameFromPosition(player.getCurrentEquippedItem().getTagCompound(), view));
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.RED);
 					return true;
 				}
 
 				for(int i = 1; i <= 30; i++)
-					if (!par2EntityPlayer.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
-						par2EntityPlayer.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(par4, par5, par6)), EnumChatFormatting.GREEN);
+					if (!player.getCurrentEquippedItem().getTagCompound().hasKey("Camera" + i)){
+						player.getCurrentEquippedItem().getTagCompound().setString("Camera" + i, view.toNBTString());
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.GREEN);
 						break;
 					}
 
-				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP)par2EntityPlayer);
+				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)player);
 
 				return true;
 			}
@@ -124,40 +124,40 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(!par2World.isRemote){
-			if(!par1ItemStack.hasTagCompound() || !hasCameraAdded(par1ItemStack.getTagCompound())){
-				PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
-				return par1ItemStack;
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+		if(!world.isRemote){
+			if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())){
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
+				return stack;
 			}
 
 			if(SecurityCraft.instance.useLookingGlass()){
-				CameraView view = getCameraView(par1ItemStack.getTagCompound());
+				CameraView view = getCameraView(stack.getTagCompound());
 
-				if(!(par2World.getBlock(view.x, view.y, view.z) instanceof BlockSecurityCamera)){
-					PlayerUtils.sendMessageToPlayer(par3EntityPlayer, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
-					return par1ItemStack;
+				if(!(world.getBlock(view.x, view.y, view.z) instanceof BlockSecurityCamera)){
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.cameraMonitor.name"), StatCollector.translateToLocal("messages.cameraMonitor.noCamera").replace("#", Utils.getFormattedCoordinates(view.x, view.y, view.z)), EnumChatFormatting.RED);
+					return stack;
 				}
 
-				SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) par3EntityPlayer);
+				SecurityCraft.network.sendTo(new PacketCCreateLGView(view.x, view.y, view.z, view.dimension), (EntityPlayerMP) player);
 			}
 			else
-				par3EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override
-	public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_, boolean p_77663_5_) {}
+	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean update) {}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(par1ItemStack.getTagCompound() == null)
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+		if(stack.getTagCompound() == null)
 			return;
 
-		par3List.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(par1ItemStack.getTagCompound()) + "/30");
+		list.add(StatCollector.translateToLocal("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
 	public CameraView getCameraView(NBTTagCompound nbt){

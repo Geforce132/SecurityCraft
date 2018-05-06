@@ -35,24 +35,24 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
 	{
-		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-		par1World.removeTileEntity(par2, par3, par4);
+		super.breakBlock(world, x, y, z, block, meta);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventData)
 	{
-		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		super.onBlockEventReceived(world, x, y, z, eventID, eventData);
+		TileEntity tileentity = world.getTileEntity(x, y, z);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, eventData) : false;
 	}
 
 	@Override
@@ -84,22 +84,22 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int x, int y, int z, Block neighborBlock) {
-		if (!par1World.isRemote)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!world.isRemote)
 		{
-			int l = par1World.getBlockMetadata(x, y, z);
-			boolean flag = isSCBlock(neighborBlock) && par1World.isBlockIndirectlyGettingPowered(x, y, z);
+			int l = world.getBlockMetadata(x, y, z);
+			boolean flag = isSCBlock(neighborBlock) && world.isBlockIndirectlyGettingPowered(x, y, z);
 
 			if (flag || neighborBlock.canProvidePower())
 				if (flag && !isFenceGateOpen(l))
 				{
-					par1World.setBlockMetadataWithNotify(x, y, z, l | 4, 2);
-					par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
+					world.setBlockMetadataWithNotify(x, y, z, l | 4, 2);
+					world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
 				}
 				else if (!flag && isFenceGateOpen(l))
 				{
-					par1World.setBlockMetadataWithNotify(x, y, z, l & -5, 2);
-					par1World.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
+					world.setBlockMetadataWithNotify(x, y, z, l & -5, 2);
+					world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
 				}
 		}
 	}
@@ -114,13 +114,13 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+	public IIcon getIcon(int side, int meta)
 	{
-		return SCContent.reinforcedDoor.getBlockTextureFromSide(p_149691_1_);
+		return SCContent.reinforcedDoor.getBlockTextureFromSide(side);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

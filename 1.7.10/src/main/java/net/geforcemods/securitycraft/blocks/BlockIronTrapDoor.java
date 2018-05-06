@@ -20,8 +20,8 @@ public class BlockIronTrapDoor extends Block {
 	/** Set this to allow trapdoors to remain free-floating */
 	public static boolean disableValidation = false;
 
-	public BlockIronTrapDoor(Material p_i45434_1_){
-		super(p_i45434_1_);
+	public BlockIronTrapDoor(Material material){
+		super(material);
 		float f = 0.5F;
 		float f1 = 1.0F;
 		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
@@ -43,26 +43,26 @@ public class BlockIronTrapDoor extends Block {
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_){
-		return !func_150118_d(p_149655_1_.getBlockMetadata(p_149655_2_, p_149655_3_, p_149655_4_));
+	public boolean isPassable(IBlockAccess access, int x, int y, int z){
+		return !isOpen(access.getBlockMetadata(x, y, z));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_){
-		setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
-		return super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_){
-		setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
-		return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_){
-		func_150117_b(p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_));
+	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
+		setBoundBasedOnMeta(access.getBlockMetadata(x, y, z));
 	}
 
 	@Override
@@ -71,42 +71,36 @@ public class BlockIronTrapDoor extends Block {
 		setBlockBounds(0.0F, 0.5F - f / 2.0F, 0.0F, 1.0F, 0.5F + f / 2.0F, 1.0F);
 	}
 
-	public void func_150117_b(int p_150117_1_){
+	public void setBoundBasedOnMeta(int meta){
 		float f = 0.1875F;
 
-		if ((p_150117_1_ & 8) != 0)
+		if ((meta & 8) != 0)
 			setBlockBounds(0.0F, 1.0F - f, 0.0F, 1.0F, 1.0F, 1.0F);
 		else
 			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, f, 1.0F);
 
-		if (func_150118_d(p_150117_1_)){
-			if ((p_150117_1_ & 3) == 0)
+		if (isOpen(meta)){
+			if ((meta & 3) == 0)
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 
-			if ((p_150117_1_ & 3) == 1)
+			if ((meta & 3) == 1)
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 
-			if ((p_150117_1_ & 3) == 2)
+			if ((meta & 3) == 2)
 				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-			if ((p_150117_1_ & 3) == 3)
+			if ((meta & 3) == 3)
 				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 		}
 	}
 
-	/**
-	 * Called when a player hits the block. Args: world, x, y, z, player
-	 */
-	@Override
-	public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_, EntityPlayer p_149699_5_) {}
+	public void changeOpenState(World world, int x, int y, int z, boolean open){
+		int meta = world.getBlockMetadata(x, y, z);
+		boolean isOpen = (meta & 4) > 0;
 
-	public void func_150120_a(World p_150120_1_, int p_150120_2_, int p_150120_3_, int p_150120_4_, boolean p_150120_5_){
-		int l = p_150120_1_.getBlockMetadata(p_150120_2_, p_150120_3_, p_150120_4_);
-		boolean flag1 = (l & 4) > 0;
-
-		if (flag1 != p_150120_5_){
-			p_150120_1_.setBlockMetadataWithNotify(p_150120_2_, p_150120_3_, p_150120_4_, l ^ 4, 2);
-			p_150120_1_.playAuxSFXAtEntity((EntityPlayer)null, 1003, p_150120_2_, p_150120_3_, p_150120_4_, 0);
+		if (isOpen != open){
+			world.setBlockMetadataWithNotify(x, y, z, meta ^ 4, 2);
+			world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
 		}
 	}
 
@@ -115,33 +109,33 @@ public class BlockIronTrapDoor extends Block {
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_){
-		if (!p_149695_1_.isRemote){
-			int l = p_149695_1_.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_);
-			int i1 = p_149695_2_;
-			int j1 = p_149695_4_;
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if (!world.isRemote){
+			int meta = world.getBlockMetadata(x, y, z);
+			int i1 = x;
+			int j1 = z;
 
-			if ((l & 3) == 0)
-				j1 = p_149695_4_ + 1;
+			if ((meta & 3) == 0)
+				j1 = z + 1;
 
-			if ((l & 3) == 1)
+			if ((meta & 3) == 1)
 				--j1;
 
-			if ((l & 3) == 2)
-				i1 = p_149695_2_ + 1;
+			if ((meta & 3) == 2)
+				i1 = x + 1;
 
-			if ((l & 3) == 3)
+			if ((meta & 3) == 3)
 				--i1;
 
-			if (!(func_150119_a(p_149695_1_.getBlock(i1, p_149695_3_, j1)) || p_149695_1_.isSideSolid(i1, p_149695_3_, j1, ForgeDirection.getOrientation((l & 3) + 2)))){
-				p_149695_1_.setBlockToAir(p_149695_2_, p_149695_3_, p_149695_4_);
-				this.dropBlockAsItem(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, l, 0);
+			if (!(canPlaceOn(world.getBlock(i1, y, j1)) || world.isSideSolid(i1, y, j1, ForgeDirection.getOrientation((meta & 3) + 2)))){
+				world.setBlockToAir(x, y, z);
+				this.dropBlockAsItem(world, x, y, z, meta, 0);
 			}
 
-			boolean flag = p_149695_1_.isBlockIndirectlyGettingPowered(p_149695_2_, p_149695_3_, p_149695_4_);
+			boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
 
-			if (flag || p_149695_5_.canProvidePower())
-				func_150120_a(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, flag);
+			if (powered || block.canProvidePower())
+				changeOpenState(world, x, y, z, powered);
 		}
 	}
 
@@ -150,31 +144,31 @@ public class BlockIronTrapDoor extends Block {
 	 * x, y, z, startVec, endVec
 	 */
 	@Override
-	public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_){
-		setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
-		return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.collisionRayTrace(world, x, y, z, start, end);
 	}
 
 	/**
 	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
 	 */
 	@Override
-	public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_){
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta){
 		int j1 = 0;
 
-		if (p_149660_5_ == 2)
+		if (side == 2)
 			j1 = 0;
 
-		if (p_149660_5_ == 3)
+		if (side == 3)
 			j1 = 1;
 
-		if (p_149660_5_ == 4)
+		if (side == 4)
 			j1 = 2;
 
-		if (p_149660_5_ == 5)
+		if (side == 5)
 			j1 = 3;
 
-		if (p_149660_5_ != 1 && p_149660_5_ != 0 && p_149660_7_ > 0.5F)
+		if (side != 1 && side != 0 && hitY > 0.5F)
 			j1 |= 8;
 
 		return j1;
@@ -184,37 +178,37 @@ public class BlockIronTrapDoor extends Block {
 	 * checks to see if you can place this block can be placed on that side of a block: BlockLever overrides
 	 */
 	@Override
-	public boolean canPlaceBlockOnSide(World p_149707_1_, int p_149707_2_, int p_149707_3_, int p_149707_4_, int p_149707_5_){
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side){
 		if (disableValidation) return true;
 
-		if (p_149707_5_ == 0)
+		if (side == 0)
 			return false;
-		else if (p_149707_5_ == 1)
+		else if (side == 1)
 			return false;
 		else{
-			if (p_149707_5_ == 2)
-				++p_149707_4_;
+			if (side == 2)
+				++z;
 
-			if (p_149707_5_ == 3)
-				--p_149707_4_;
+			if (side == 3)
+				--z;
 
-			if (p_149707_5_ == 4)
-				++p_149707_2_;
+			if (side == 4)
+				++x;
 
-			if (p_149707_5_ == 5)
-				--p_149707_2_;
+			if (side == 5)
+				--x;
 
-			return func_150119_a(p_149707_1_.getBlock(p_149707_2_, p_149707_3_, p_149707_4_)) || p_149707_1_.isSideSolid(p_149707_2_, p_149707_3_, p_149707_4_, ForgeDirection.UP);
+			return canPlaceOn(world.getBlock(x, y, z)) || world.isSideSolid(x, y, z, ForgeDirection.UP);
 		}
 	}
 
-	public static boolean func_150118_d(int p_150118_0_){
-		return (p_150118_0_ & 4) != 0;
+	public static boolean isOpen(int meta){
+		return (meta & 4) != 0;
 	}
 
-	private static boolean func_150119_a(Block p_150119_0_){
+	private static boolean canPlaceOn(Block block){
 		if (disableValidation) return true;
-		return p_150119_0_.getMaterial().isOpaque() && p_150119_0_.renderAsNormalBlock() || p_150119_0_ == Blocks.glowstone || p_150119_0_ instanceof BlockSlab || p_150119_0_ instanceof BlockStairs;
+		return block.getMaterial().isOpaque() && block.renderAsNormalBlock() || block == Blocks.glowstone || block instanceof BlockSlab || block instanceof BlockStairs;
 	}
 
 }

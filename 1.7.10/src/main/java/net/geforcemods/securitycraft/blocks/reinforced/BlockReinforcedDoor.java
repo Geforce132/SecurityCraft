@@ -26,12 +26,12 @@ import net.minecraft.world.World;
 public class BlockReinforcedDoor extends BlockContainer{
 
 	@SideOnly(Side.CLIENT)
-	private IIcon[] field_150017_a;
+	private IIcon[] upperIcons;
 	@SideOnly(Side.CLIENT)
-	private IIcon[] field_150016_b;
+	private IIcon[] lowerIcons;
 
-	public BlockReinforcedDoor(Material p_i45402_1_){
-		super(p_i45402_1_);
+	public BlockReinforcedDoor(Material material){
+		super(material);
 		isBlockContainer = true;
 	}
 
@@ -51,74 +51,66 @@ public class BlockReinforcedDoor extends BlockContainer{
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_){
-		int l = func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_);
+	public boolean isPassable(IBlockAccess access, int x, int y, int z){
+		int l = getDoorMeta(access, x, y, z);
 		return (l & 4) != 0;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int p_149633_2_, int p_149633_3_, int p_149633_4_){
-		setBlockBoundsBasedOnState(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
-		return super.getSelectedBoundingBoxFromPool(p_149633_1_, p_149633_2_, p_149633_3_, p_149633_4_);
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_){
-		setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
-		return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_){
-		func_150011_b(func_150012_g(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_));
+	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
+		setBoundsBasedOnMeta(getDoorMeta(access, x, y, z));
 	}
 
-	public int func_150013_e(IBlockAccess p_150013_1_, int p_150013_2_, int p_150013_3_, int p_150013_4_){
-		return func_150012_g(p_150013_1_, p_150013_2_, p_150013_3_, p_150013_4_) & 3;
-	}
-
-	public boolean func_150015_f(IBlockAccess p_150015_1_, int p_150015_2_, int p_150015_3_, int p_150015_4_){
-		return (func_150012_g(p_150015_1_, p_150015_2_, p_150015_3_, p_150015_4_) & 4) != 0;
-	}
-
-	private void func_150011_b(int p_150011_1_){
+	private void setBoundsBasedOnMeta(int meta){
 		float f = 0.1875F;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F);
-		int j = p_150011_1_ & 3;
-		boolean flag = (p_150011_1_ & 4) != 0;
-		boolean flag1 = (p_150011_1_ & 16) != 0;
+		int facing = meta & 3;
+		boolean isOpen = (meta & 4) != 0;
+		boolean isRightDoor = (meta & 16) != 0;
 
-		if (j == 0){
-			if (flag){
-				if (!flag1)
+		if (facing == 0){
+			if (isOpen){
+				if (!isRightDoor)
 					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 				else
 					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 			}
 			else
 				setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
-		}else if (j == 1){
-			if (flag){
-				if (!flag1)
+		}else if (facing == 1){
+			if (isOpen){
+				if (!isRightDoor)
 					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 				else
 					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 			}
 			else
 				setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
-		}else if (j == 2){
-			if (flag){
-				if (!flag1)
+		}else if (facing == 2){
+			if (isOpen){
+				if (!isRightDoor)
 					setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 				else
 					setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
 			}
 			else
 				setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-		}else if (j == 3)
-			if (flag){
-				if (!flag1)
+		}else if (facing == 3)
+			if (isOpen){
+				if (!isRightDoor)
 					setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
 				else
 					setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -127,72 +119,72 @@ public class BlockReinforcedDoor extends BlockContainer{
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void func_150014_a(World world, int x, int y, int z, boolean open){
-		int l = func_150012_g(world, x, y, z);
-		boolean isOpen = (l & 4) != 0;
+	public void changeDoorState(World world, int x, int y, int z, boolean open){
+		int meta = getDoorMeta(world, x, y, z);
+		boolean isOpen = (meta & 4) != 0;
 
 		if (isOpen != open){
-			int i1 = l & 7;
-			i1 ^= 4;
+			int newMeta = meta & 7;
+			newMeta ^= 4;
 
 			//the switch statements in here check whether this door is part of a double door and if it is, opens the other door as well
-			if ((l & 8) == 0){ //lower half
-				world.setBlockMetadataWithNotify(x, y, z, i1, 2);
+			if ((meta & 8) == 0){ //lower half
+				world.setBlockMetadataWithNotify(x, y, z, newMeta, 2);
 				world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 
-				switch(l)
+				switch(meta)
 				{
 					case 0:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 16)
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 16)
 						{
 							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 20 : 0, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
 						}
 						break;
 					case 16:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 0)
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 0)
 						{
 							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 4 : 16, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
 						}
 						break;
 					case 1:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 17)
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 17)
 						{
 							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 21 : 1, 2);
 							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
 						}
 						break;
 					case 17:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 1)
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 1)
 						{
 							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 5 : 17, 2);
 							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
 						}
 						break;
 					case 2:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 18)
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 18)
 						{
 							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 22 : 2, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
 						}
 						break;
 					case 18:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 2)
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 2)
 						{
 							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 6 : 18, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
 						}
 						break;
 					case 3:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 19)
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 19)
 						{
 							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 23 : 3, 2);
 							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
 						}
 						break;
 					case 19:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 3)
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 3)
 						{
 							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 7 : 19, 2);
 							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
@@ -201,62 +193,62 @@ public class BlockReinforcedDoor extends BlockContainer{
 				}
 
 			}else{ //upper half
-				world.setBlockMetadataWithNotify(x, y - 1, z, i1, 2);
+				world.setBlockMetadataWithNotify(x, y - 1, z, newMeta, 2);
 				world.markBlockRangeForRenderUpdate(x, y - 1, z, x, y, z);
 
-				switch(l)
+				switch(meta)
 				{
 					case 24:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 8)
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 8)
 						{
 							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 12 : 24, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
 						}
 						break;
 					case 8:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 24)
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 24)
 						{
 							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 28 : 8, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
 						}
 						break;
 					case 25:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 9)
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 9)
 						{
 							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 13 : 25, 2);
 							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
 						}
 						break;
 					case 9:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 25)
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 25)
 						{
 							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 29 : 9, 2);
 							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
 						}
 						break;
 					case 26:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 10)
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 10)
 						{
 							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 14 : 26, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
 						}
 						break;
 					case 10:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 26)
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 26)
 						{
 							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 30 : 10, 2);
 							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
 						}
 						break;
 					case 27:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 11)
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 11)
 						{
 							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 15 : 27, 2);
 							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
 						}
 						break;
 					case 11:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 27)
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 27)
 						{
 							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 31 : 11, 2);
 							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
@@ -270,77 +262,77 @@ public class BlockReinforcedDoor extends BlockContainer{
 
 		if (!open)//closing
 		{
-			if ((l & 8) == 0){ //lower half
-				switch(l)
+			if ((meta & 8) == 0){ //lower half
+				switch(meta)
 				{
 					case 4:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 20)
-							func_150014_a(world, x, y, z + 1, false);
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 20)
+							changeDoorState(world, x, y, z + 1, false);
 						break;
 					case 20:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 4)
-							func_150014_a(world, x, y, z - 1, false);
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 4)
+							changeDoorState(world, x, y, z - 1, false);
 						break;
 					case 5:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 21)
-							func_150014_a(world, x - 1, y, z, false);
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 21)
+							changeDoorState(world, x - 1, y, z, false);
 						break;
 					case 21:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 5)
-							func_150014_a(world, x + 1, y, z, false);
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 5)
+							changeDoorState(world, x + 1, y, z, false);
 						break;
 					case 6:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 22)
-							func_150014_a(world, x, y, z - 1, false);
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 22)
+							changeDoorState(world, x, y, z - 1, false);
 						break;
 					case 22:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 6)
-							func_150014_a(world, x, y, z + 1, false);
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 6)
+							changeDoorState(world, x, y, z + 1, false);
 						break;
 					case 7:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 23)
-							func_150014_a(world, x + 1, y, z, false);
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 23)
+							changeDoorState(world, x + 1, y, z, false);
 						break;
 					case 23:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 7)
-							func_150014_a(world, x - 1, y, z, false);
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 7)
+							changeDoorState(world, x - 1, y, z, false);
 						break;
 				}
 
 			}else{ //upper half
-				switch(l)
+				switch(meta)
 				{
 					case 28:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 12)
-							func_150014_a(world, x, y, z + 1, false);
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 12)
+							changeDoorState(world, x, y, z + 1, false);
 						break;
 					case 12:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 28)
-							func_150014_a(world, x, y, z - 1, false);
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 28)
+							changeDoorState(world, x, y, z - 1, false);
 						break;
 					case 29:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 13)
-							func_150014_a(world, x - 1, y, z, false);
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 13)
+							changeDoorState(world, x - 1, y, z, false);
 						break;
 					case 13:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 29)
-							func_150014_a(world, x + 1, y, z, false);
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 29)
+							changeDoorState(world, x + 1, y, z, false);
 						break;
 					case 30:
-						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 14)
-							func_150014_a(world, x, y, z - 1, false);
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z - 1) == 14)
+							changeDoorState(world, x, y, z - 1, false);
 						break;
 					case 14:
-						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 30)
-							func_150014_a(world, x, y, z + 1, false);
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && getDoorMeta(world, x, y, z + 1) == 30)
+							changeDoorState(world, x, y, z + 1, false);
 						break;
 					case 31:
-						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 15)
-							func_150014_a(world, x + 1, y, z, false);
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x + 1, y, z) == 15)
+							changeDoorState(world, x + 1, y, z, false);
 						break;
 					case 15:
-						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 31)
-							func_150014_a(world, x - 1, y, z, false);
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && getDoorMeta(world, x - 1, y, z) == 31)
+							changeDoorState(world, x - 1, y, z, false);
 						break;
 				}
 			}
@@ -348,114 +340,114 @@ public class BlockReinforcedDoor extends BlockContainer{
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
-		int l = par1World.getBlockMetadata(par2, par3, par4);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		int meta = world.getBlockMetadata(x, y, z);
 
-		if ((l & 8) == 0){
+		if ((meta & 8) == 0){
 			boolean flag = false;
 
-			if (par1World.getBlock(par2, par3 + 1, par4) != this){
-				par1World.setBlockToAir(par2, par3, par4);
+			if (world.getBlock(x, y + 1, z) != this){
+				world.setBlockToAir(x, y, z);
 				flag = true;
 			}
 
 			if (flag){
-				if (!par1World.isRemote)
-					this.dropBlockAsItem(par1World, par2, par3, par4, l, 0);
+				if (!world.isRemote)
+					this.dropBlockAsItem(world, x, y, z, meta, 0);
 			}
-			else if (par5Block.canProvidePower() && par5Block != this)
-				if(hasActiveKeypadNextTo(par1World, par2, par3, par4) || hasActiveKeypadNextTo(par1World, par2, par3 + 1, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3, par4) || hasActiveInventoryScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveReaderNextTo(par1World, par2, par3, par4) || hasActiveReaderNextTo(par1World, par2, par3 + 1, par4) || hasActiveScannerNextTo(par1World, par2, par3, par4) || hasActiveScannerNextTo(par1World, par2, par3 + 1, par4) || hasActiveLaserNextTo(par1World, par2, par3, par4) || hasActiveLaserNextTo(par1World, par2, par3 + 1, par4))
-					func_150014_a(par1World, par2, par3, par4, true);
+			else if (block.canProvidePower() && block != this)
+				if(hasActiveKeypadNextTo(world, x, y, z) || hasActiveKeypadNextTo(world, x, y + 1, z) || hasActiveInventoryScannerNextTo(world, x, y, z) || hasActiveInventoryScannerNextTo(world, x, y + 1, z) || hasActiveReaderNextTo(world, x, y, z) || hasActiveReaderNextTo(world, x, y + 1, z) || hasActiveScannerNextTo(world, x, y, z) || hasActiveScannerNextTo(world, x, y + 1, z) || hasActiveLaserNextTo(world, x, y, z) || hasActiveLaserNextTo(world, x, y + 1, z))
+					changeDoorState(world, x, y, z, true);
 				else
-					func_150014_a(par1World, par2, par3, par4, false);
+					changeDoorState(world, x, y, z, false);
 		}else{
-			if (par1World.getBlock(par2, par3 - 1, par4) != this)
-				par1World.setBlockToAir(par2, par3, par4);
+			if (world.getBlock(x, y - 1, z) != this)
+				world.setBlockToAir(x, y, z);
 
-			if (par5Block != this)
-				onNeighborBlockChange(par1World, par2, par3 - 1, par4, par5Block);
+			if (block != this)
+				onNeighborBlockChange(world, x, y - 1, z, block);
 		}
 	}
 
-	private boolean hasActiveLaserNextTo(World par1World, int par2, int par3, int par4) {
-		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.laserBlock && par1World.getBlockMetadata(par2 + 1, par3, par4) == 2)
-			return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.laserBlock && par1World.getBlockMetadata(par2 - 1, par3, par4) == 2)
-			return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.laserBlock && par1World.getBlockMetadata(par2, par3, par4 + 1) == 2)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 - 1) == SCContent.laserBlock && par1World.getBlockMetadata(par2, par3, par4 - 1) == 2)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
+	private boolean hasActiveLaserNextTo(World world, int x, int y, int z) {
+		if(world.getBlock(x + 1, y, z) == SCContent.laserBlock && world.getBlockMetadata(x + 1, y, z) == 2)
+			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x - 1, y, z) == SCContent.laserBlock && world.getBlockMetadata(x - 1, y, z) == 2)
+			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.laserBlock && world.getBlockMetadata(x, y, z + 1) == 2)
+			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z - 1) == SCContent.laserBlock && world.getBlockMetadata(x, y, z - 1) == 2)
+			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;
 	}
 
-	private boolean hasActiveScannerNextTo(World par1World, int par2, int par3, int par4) {
-		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.retinalScanner && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.retinalScanner && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 - 1) == SCContent.retinalScanner && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
+	private boolean hasActiveScannerNextTo(World world, int x, int y, int z) {
+		if(world.getBlock(x + 1, y, z) == SCContent.retinalScanner && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x - 1, y, z) == SCContent.retinalScanner && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.retinalScanner && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z - 1) == SCContent.retinalScanner && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;
 	}
 
-	private boolean hasActiveKeypadNextTo(World par1World, int par2, int par3, int par4){
-		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.keypad && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.keypad && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.keypad && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 - 1) == SCContent.keypad && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
+	private boolean hasActiveKeypadNextTo(World world, int x, int y, int z){
+		if(world.getBlock(x + 1, y, z) == SCContent.keypad && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x - 1, y, z) == SCContent.keypad && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.keypad && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z - 1) == SCContent.keypad && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;
 	}
 
-	private boolean hasActiveReaderNextTo(World par1World, int par2, int par3, int par4){
-		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.keycardReader && par1World.getBlockMetadata(par2 + 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 + 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.keycardReader && par1World.getBlockMetadata(par2 - 1, par3, par4) > 6 && par1World.getBlockMetadata(par2 - 1, par3, par4) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.keycardReader && par1World.getBlockMetadata(par2, par3, par4 + 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 + 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 - 1) == SCContent.keycardReader && par1World.getBlockMetadata(par2, par3, par4 - 1) > 6 && par1World.getBlockMetadata(par2, par3, par4 - 1) < 11)
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
+	private boolean hasActiveReaderNextTo(World world, int x, int y, int z){
+		if(world.getBlock(x + 1, y, z) == SCContent.keycardReader && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x - 1, y, z) == SCContent.keycardReader && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
+			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.keycardReader && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z - 1) == SCContent.keycardReader && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
+			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;
 	}
 
-	private boolean hasActiveInventoryScannerNextTo(World par1World, int par2, int par3, int par4){
-		if(par1World.getBlock(par2 + 1, par3, par4) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 + 1, par3, par4)).shouldProvidePower())
-			return ((IOwnable) par1World.getTileEntity(par2 + 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2 - 1, par3, par4) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2 - 1, par3, par4)).shouldProvidePower())
-			return ((IOwnable) par1World.getTileEntity(par2 - 1, par3, par4)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 + 1)).shouldProvidePower())
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 + 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
-		else if(par1World.getBlock(par2, par3, par4 + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(par2, par3, par4 - 1)).shouldProvidePower())
-			return ((IOwnable) par1World.getTileEntity(par2, par3, par4 - 1)).getOwner().owns((IOwnable)par1World.getTileEntity(par2, par3, par4));
+	private boolean hasActiveInventoryScannerNextTo(World world, int x, int y, int z){
+		if(world.getBlock(x + 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).shouldProvidePower())
+			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x - 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).shouldProvidePower())
+			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).shouldProvidePower())
+			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
+		else if(world.getBlock(x, y, z + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).shouldProvidePower())
+			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;
 	}
 
 	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_){
-		return (p_149650_1_ & 8) != 0 ? null : SCContent.reinforcedDoorItem;
+	public Item getItemDropped(int meta, Random random, int fortune){
+		return (meta & 8) != 0 ? null : SCContent.reinforcedDoorItem;
 	}
 
 	@Override
-	public MovingObjectPosition collisionRayTrace(World p_149731_1_, int p_149731_2_, int p_149731_3_, int p_149731_4_, Vec3 p_149731_5_, Vec3 p_149731_6_){
-		setBlockBoundsBasedOnState(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_);
-		return super.collisionRayTrace(p_149731_1_, p_149731_2_, p_149731_3_, p_149731_4_, p_149731_5_, p_149731_6_);
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 start, Vec3 end){
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.collisionRayTrace(world, x, y, z, start, end);
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_){
-		return p_149742_3_ >= 255 ? false : World.doesBlockHaveSolidTopSurface(p_149742_1_, p_149742_2_, p_149742_3_ - 1, p_149742_4_) && super.canPlaceBlockAt(p_149742_1_, p_149742_2_, p_149742_3_, p_149742_4_) && super.canPlaceBlockAt(p_149742_1_, p_149742_2_, p_149742_3_ + 1, p_149742_4_);
+	public boolean canPlaceBlockAt(World world, int x, int y, int z){
+		return y >= 255 ? false : World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
 	}
 
 	@Override
@@ -463,94 +455,94 @@ public class BlockReinforcedDoor extends BlockContainer{
 		return 1;
 	}
 
-	public int func_150012_g(IBlockAccess p_150012_1_, int p_150012_2_, int p_150012_3_, int p_150012_4_){
-		int l = p_150012_1_.getBlockMetadata(p_150012_2_, p_150012_3_, p_150012_4_);
-		boolean flag = (l & 8) != 0;
+	public int getDoorMeta(IBlockAccess access, int x, int y, int z){
+		int meta = access.getBlockMetadata(x, y, z);
+		boolean isOpen = (meta & 8) != 0;
 		int i1;
 		int j1;
 
-		if (flag){
-			i1 = p_150012_1_.getBlockMetadata(p_150012_2_, p_150012_3_ - 1, p_150012_4_);
-			j1 = l;
+		if (isOpen){
+			i1 = access.getBlockMetadata(x, y - 1, z);
+			j1 = meta;
 		}else{
-			i1 = l;
-			j1 = p_150012_1_.getBlockMetadata(p_150012_2_, p_150012_3_ + 1, p_150012_4_);
+			i1 = meta;
+			j1 = access.getBlockMetadata(x, y + 1, z);
 		}
 
-		boolean flag1 = (j1 & 1) != 0;
-		return i1 & 7 | (flag ? 8 : 0) | (flag1 ? 16 : 0);
+		boolean isRightDoor = (j1 & 1) != 0;
+		return i1 & 7 | (isOpen ? 8 : 0) | (isRightDoor ? 16 : 0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
+	public Item getItem(World world, int x, int y, int z){
 		return SCContent.reinforcedDoorItem;
 	}
 
 	@Override
-	public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_){
-		if (p_149681_6_.capabilities.isCreativeMode && (p_149681_5_ & 8) != 0 && p_149681_1_.getBlock(p_149681_2_, p_149681_3_ - 1, p_149681_4_) == this)
-			p_149681_1_.setBlockToAir(p_149681_2_, p_149681_3_ - 1, p_149681_4_);
+	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player){
+		if (player.capabilities.isCreativeMode && (meta & 8) != 0 && world.getBlock(x, y - 1, z) == this)
+			world.setBlockToAir(x, y - 1, z);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_){
-		return field_150016_b[0];
+	public IIcon getIcon(int side, int meta){
+		return lowerIcons[0];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_){
-		if (p_149673_5_ != 1 && p_149673_5_ != 0){
-			int i1 = func_150012_g(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_);
-			int j1 = i1 & 3;
-			boolean flag = (i1 & 4) != 0;
+	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side){
+		if (side != 1 && side != 0){
+			int meta = getDoorMeta(access, x, y, z);
+			int facing = meta & 3;
+			boolean flag = (meta & 4) != 0;
 			boolean flag1 = false;
-			boolean flag2 = (i1 & 8) != 0;
+			boolean flag2 = (meta & 8) != 0;
 
 			if (flag){
-				if (j1 == 0 && p_149673_5_ == 2)
+				if (facing == 0 && side == 2)
 					flag1 = !flag1;
-				else if (j1 == 1 && p_149673_5_ == 5)
+				else if (facing == 1 && side == 5)
 					flag1 = !flag1;
-				else if (j1 == 2 && p_149673_5_ == 3)
+				else if (facing == 2 && side == 3)
 					flag1 = !flag1;
-				else if (j1 == 3 && p_149673_5_ == 4)
+				else if (facing == 3 && side == 4)
 					flag1 = !flag1;
 			}else{
-				if (j1 == 0 && p_149673_5_ == 5)
+				if (facing == 0 && side == 5)
 					flag1 = !flag1;
-				else if (j1 == 1 && p_149673_5_ == 3)
+				else if (facing == 1 && side == 3)
 					flag1 = !flag1;
-				else if (j1 == 2 && p_149673_5_ == 4)
+				else if (facing == 2 && side == 4)
 					flag1 = !flag1;
-				else if (j1 == 3 && p_149673_5_ == 2)
+				else if (facing == 3 && side == 2)
 					flag1 = !flag1;
 
-				if ((i1 & 16) != 0)
+				if ((meta & 16) != 0)
 					flag1 = !flag1;
 			}
 
-			return flag2 ? field_150017_a[flag1?1:0] : field_150016_b[flag1?1:0];
+			return flag2 ? upperIcons[flag1?1:0] : lowerIcons[flag1?1:0];
 		}
 		else
-			return field_150016_b[0];
+			return lowerIcons[0];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister p_149651_1_){
-		field_150017_a = new IIcon[2];
-		field_150016_b = new IIcon[2];
-		field_150017_a[0] = p_149651_1_.registerIcon("securitycraft:reinforcedDoorUpper");
-		field_150016_b[0] = p_149651_1_.registerIcon("securitycraft:reinforcedDoorLower");
-		field_150017_a[1] = new IconFlipped(field_150017_a[0], true, false);
-		field_150016_b[1] = new IconFlipped(field_150016_b[0], true, false);
+	public void registerIcons(IIconRegister register){
+		upperIcons = new IIcon[2];
+		lowerIcons = new IIcon[2];
+		upperIcons[0] = register.registerIcon("securitycraft:reinforcedDoorUpper");
+		lowerIcons[0] = register.registerIcon("securitycraft:reinforcedDoorLower");
+		upperIcons[1] = new IconFlipped(upperIcons[0], true, false);
+		lowerIcons[1] = new IconFlipped(lowerIcons[0], true, false);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 }

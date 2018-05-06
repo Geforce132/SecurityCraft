@@ -40,14 +40,14 @@ public class TileEntityIMS extends CustomizableSCTE {
 		if(bombsRemaining > 0){
 			double d0 = SecurityCraft.config.imsRange;
 
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(d0, d0, d0);
-			List<?> list1 = worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-			List<?> list2 = worldObj.getEntitiesWithinAABB(IMob.class, axisalignedbb);
-			Iterator<?> iterator1 = list1.iterator();
-			Iterator<?> iterator2 = list2.iterator();
+			AxisAlignedBB area = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(d0, d0, d0);
+			List<?> playersWithinArea = worldObj.getEntitiesWithinAABB(EntityPlayer.class, area);
+			List<?> mobsWithinArea = worldObj.getEntitiesWithinAABB(IMob.class, area);
+			Iterator<?> playerIterator = playersWithinArea.iterator();
+			Iterator<?> mobIterator = mobsWithinArea.iterator();
 
-			while(targetingOption == 1 && iterator2.hasNext()){
-				EntityLivingBase entity = (EntityLivingBase) iterator2.next();
+			while(targetingOption == 1 && mobIterator.hasNext()){
+				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -75,8 +75,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 				return;
 			}
 
-			while(iterator1.hasNext()){
-				EntityPlayer entity = (EntityPlayer) iterator1.next();
+			while(playerIterator.hasNext()){
+				EntityPlayer entity = (EntityPlayer) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
@@ -159,25 +159,25 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
-		par1NBTTagCompound.setInteger("targetingOption", targetingOption);
+		tag.setInteger("bombsRemaining", bombsRemaining);
+		tag.setInteger("targetingOption", targetingOption);
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("bombsRemaining"))
-			bombsRemaining = par1NBTTagCompound.getInteger("bombsRemaining");
+		if (tag.hasKey("bombsRemaining"))
+			bombsRemaining = tag.getInteger("bombsRemaining");
 
-		if (par1NBTTagCompound.hasKey("targetingOption"))
-			targetingOption = par1NBTTagCompound.getInteger("targetingOption");
+		if (tag.hasKey("targetingOption"))
+			targetingOption = tag.getInteger("targetingOption");
 	}
 
 	public int getBombsRemaining() {

@@ -47,7 +47,6 @@ public class PacketCCreateLGView implements IMessage{
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCCreateLGView packet, MessageContext ctx) {
 			if(!SecurityCraft.instance.hasViewForCoords(packet.camX + " " + packet.camY + " " + packet.camZ + " " + packet.dimension))
-				//((ClientProxy) mod_SecurityCraft.instance.serverProxy).worldViews.put(packet.camX + " " + packet.camY + " " + packet.camZ, new IWorldViewHelper(lgView));
 				LookingGlassAPIProvider.createLookingGlassView(Minecraft.getMinecraft().theWorld, packet.dimension, packet.camX, packet.camY, packet.camZ, 192, 192);
 
 			return null;

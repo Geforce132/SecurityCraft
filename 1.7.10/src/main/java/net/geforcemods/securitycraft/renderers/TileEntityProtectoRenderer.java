@@ -23,21 +23,21 @@ public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		if(par1TileEntity.hasWorldObj()){
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
+		if(te.hasWorldObj()){
 			Tessellator tessellator = Tessellator.instance;
-			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);
-			int l = par1TileEntity.getWorld().getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
-			int l1 = l % 65536;
-			int l2 = l / 65536;
-			tessellator.setColorOpaque_F(f, f, f);
+			float brightness = te.getWorld().getLightBrightness(te.xCoord, te.yCoord, te.zCoord);
+			int skyBrightness = te.getWorld().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
+			int l1 = skyBrightness % 65536;
+			int l2 = skyBrightness / 65536;
+			tessellator.setColorOpaque_F(brightness, brightness, brightness);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		if(par1TileEntity.hasWorldObj() && ((TileEntityProtecto) par1TileEntity).canAttack())
+		if(te.hasWorldObj() && ((TileEntityProtecto) te).canAttack())
 			Minecraft.getMinecraft().renderEngine.bindTexture(activeTexture);
 		else
 			Minecraft.getMinecraft().renderEngine.bindTexture(deactivatedTexture);

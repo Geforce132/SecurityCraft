@@ -31,33 +31,33 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
+		NBTTagList nbttaglist = tag.getTagList("Items", 10);
 		inventoryContents = new ItemStack[getSizeInventory()];
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
 			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 255;
+			int slot = nbttagcompound1.getByte("Slot") & 255;
 
-			if (j >= 0 && j < inventoryContents.length)
-				inventoryContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			if (slot >= 0 && slot < inventoryContents.length)
+				inventoryContents[slot] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 		}
 
 
-		if(par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if(tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if(par1NBTTagCompound.hasKey("type"))
-			type = par1NBTTagCompound.getString("type");
+		if(tag.hasKey("type"))
+			type = tag.getString("type");
 
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		NBTTagList nbttaglist = new NBTTagList();
 
@@ -70,11 +70,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 				nbttaglist.appendTag(nbttagcompound1);
 			}
 
-		par1NBTTagCompound.setTag("Items", nbttaglist);
+		tag.setTag("Items", nbttaglist);
 
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
+		tag.setInteger("cooldown", cooldown);
 
-		par1NBTTagCompound.setString("type", type);
+		tag.setString("type", type);
 
 	}
 

@@ -25,13 +25,13 @@ public class ItemSCManual extends Item {
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(par1ItemStack.getTagCompound() == null){
+	public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean update){
+		if(stack.getTagCompound() == null){
 			NBTTagList bookPages = new NBTTagList();
 
-			par1ItemStack.setTagInfo("pages", bookPages);
-			par1ItemStack.setTagInfo("author", new NBTTagString("Geforce"));
-			par1ItemStack.setTagInfo("title", new NBTTagString("SecurityCraft"));
+			stack.setTagInfo("pages", bookPages);
+			stack.setTagInfo("author", new NBTTagString("Geforce"));
+			stack.setTagInfo("title", new NBTTagString("SecurityCraft"));
 		}
 	}
 

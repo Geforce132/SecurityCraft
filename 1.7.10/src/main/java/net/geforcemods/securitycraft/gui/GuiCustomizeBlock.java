@@ -33,10 +33,10 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	private final String blockName;
 
-	public GuiCustomizeBlock(InventoryPlayer par1InventoryPlayer, CustomizableSCTE par2TileEntity)
+	public GuiCustomizeBlock(InventoryPlayer playerInv, CustomizableSCTE te)
 	{
-		super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
-		tileEntity = par2TileEntity;
+		super(new ContainerCustomizeBlock(playerInv, te));
+		tileEntity = te;
 		blockName = Minecraft.getMinecraft().theWorld.getBlock(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord).getUnlocalizedName().substring(5);
 	}
 
@@ -86,7 +86,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String s = tileEntity.isCustomInventoryName() ? tileEntity.getInventoryName() : I18n.format(tileEntity.getInventoryName(), new Object[0]);
 		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
@@ -94,7 +94,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
@@ -121,9 +121,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
-
-		return StatCollector.translateToLocal(optionDescription);
+		return StatCollector.translateToLocal("option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description");
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {

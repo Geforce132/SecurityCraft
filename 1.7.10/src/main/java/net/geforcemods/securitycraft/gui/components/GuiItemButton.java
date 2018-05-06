@@ -18,9 +18,9 @@ public class GuiItemButton extends GuiButton{
 	private Block blockToRender;
 	private Item itemToRender;
 
-	public GuiItemButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem par7, ItemStack itemToRender) {
+	public GuiItemButton(int id, int xPos, int yPos, int width, int height, String displayString, RenderItem renderItem, ItemStack itemToRender) {
 		super(id, xPos, yPos, width, height, displayString);
-		itemRenderer = par7;
+		itemRenderer = renderItem;
 
 		if(itemToRender != null && itemToRender.getItem().getUnlocalizedName().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
@@ -32,57 +32,54 @@ public class GuiItemButton extends GuiButton{
 	 * Draws this button to the screen.
 	 */
 	@Override
-	public void drawButton(Minecraft par1, int par2, int par3)
+	public void drawButton(Minecraft mc, int mouseX, int mouseY)
 	{
 		if (visible)
 		{
-			FontRenderer var4 = par1.fontRendererObj;
-			par1.getTextureManager().bindTexture(buttonTextures);
+			FontRenderer fontRenderer = mc.fontRendererObj;
+			mc.getTextureManager().bindTexture(buttonTextures);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
-			int var5 = getHoverState(hovered);
+			hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+			int hoverState = getHoverState(hovered);
 			GL11.glEnable(GL11.GL_BLEND);
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			drawTexturedModalRect(xPosition, yPosition, 0, 46 + var5 * 20, width / 2, height);
-			drawTexturedModalRect(xPosition + width / 2, yPosition, 200 - width / 2, 46 + var5 * 20, width / 2, height);
+			drawTexturedModalRect(xPosition, yPosition, 0, 46 + hoverState * 20, width / 2, height);
+			drawTexturedModalRect(xPosition + width / 2, yPosition, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
 
 			if(blockToRender != null){
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
-				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
 			}else{
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-				itemRenderer.renderItemAndEffectIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, par1.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
+				itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
 				GL11.glDisable(GL11.GL_LIGHTING);
 			}
 
-			mouseDragged(par1, par2, par3);
+			mouseDragged(mc, mouseX, mouseY);
 
 			int var6 = 14737632;
-
 
 			if (!enabled)
 				var6 = 10526880;
 			else if (hovered)
 				var6 = 16777120;
 
-			drawCenteredString(var4, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);
-
-
+			drawCenteredString(fontRenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);
 		}
 	}
 
-	public void setDisplayItem(ItemStack par1ItemStack){
+	public void setDisplayItem(ItemStack stack){
 		blockToRender = null;
 		itemToRender = null;
 
-		if(par1ItemStack.getUnlocalizedName().startsWith("tile."))
-			blockToRender = Block.getBlockFromItem(par1ItemStack.getItem());
+		if(stack.getUnlocalizedName().startsWith("tile."))
+			blockToRender = Block.getBlockFromItem(stack.getItem());
 		else
-			itemToRender = par1ItemStack.getItem();
+			itemToRender = stack.getItem();
 
 	}
 

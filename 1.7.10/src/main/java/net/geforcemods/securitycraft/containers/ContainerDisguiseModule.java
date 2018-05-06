@@ -10,7 +10,7 @@ public class ContainerDisguiseModule extends Container {
 
 	private ModuleInventory inventory;
 
-	public ContainerDisguiseModule(EntityPlayer par1Player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(EntityPlayer player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
 		inventory = moduleInventory;
 		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 
@@ -23,7 +23,7 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(index);
 
@@ -49,7 +49,7 @@ public class ContainerDisguiseModule extends Container {
 			if(itemstack1.stackSize == itemstack.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+			slot.onPickupFromSlot(player, itemstack1);
 		}
 
 		return itemstack;
@@ -73,20 +73,20 @@ public class ContainerDisguiseModule extends Container {
 
 		private ModuleInventory inventory;
 
-		public AddonSlot(ModuleInventory par1IInventory, int par2, int par3, int par4) {
-			super(par1IInventory, par2, par3, par4);
-			inventory = par1IInventory;
+		public AddonSlot(ModuleInventory moduleInventory, int slotIndex, int xPos, int yPos) {
+			super(moduleInventory, slotIndex, xPos, yPos);
+			inventory = moduleInventory;
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack par1ItemStack) {
+		public boolean isItemValid(ItemStack stack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = par1ItemStack.getUnlocalizedName().startsWith("tile.");
+			boolean isStackBlock = stack.getUnlocalizedName().startsWith("tile.");
 
-			for(ItemStack stack : inventory.moduleInventory)
-				if(stack != null && stack.getItem() != null)
-					if(stack.getItem().getUnlocalizedName().startsWith("tile."))
+			for(ItemStack is : inventory.moduleInventory)
+				if(is != null && is.getItem() != null)
+					if(is.getItem().getUnlocalizedName().startsWith("tile."))
 						numberOfBlocks++;
 					else
 						numberOfItems++;

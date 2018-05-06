@@ -29,21 +29,21 @@ public class PacketUpdateLogger implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par2ByteBuf) {
-		par2ByteBuf.writeInt(x);
-		par2ByteBuf.writeInt(y);
-		par2ByteBuf.writeInt(z);
-		par2ByteBuf.writeInt(i);
-		ByteBufUtils.writeUTF8String(par2ByteBuf, username);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(i);
+		ByteBufUtils.writeUTF8String(buf, username);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par2ByteBuf) {
-		x = par2ByteBuf.readInt();
-		y = par2ByteBuf.readInt();
-		z = par2ByteBuf.readInt();
-		i = par2ByteBuf.readInt();
-		username = ByteBufUtils.readUTF8String(par2ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		i = buf.readInt();
+		username = ByteBufUtils.readUTF8String(buf);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateLogger, IMessage> {
@@ -57,7 +57,6 @@ public class PacketUpdateLogger implements IMessage{
 			int i = packet.i;
 			String username = packet.username;
 			EntityPlayer par1EntityPlayer = Minecraft.getMinecraft().thePlayer;
-
 			TileEntityLogger te = (TileEntityLogger) getClientWorld(par1EntityPlayer).getTileEntity(x, y, z); //((TileEntityLogger) getWorld()
 
 			if(te != null)

@@ -19,37 +19,37 @@ public class ItemBriefcase extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-		if(par3World.isRemote) {
-			if(!par1ItemStack.hasTagCompound()) {
-				par1ItemStack.stackTagCompound = new NBTTagCompound();
-				ClientUtils.syncItemNBT(par1ItemStack);
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+		if(world.isRemote) {
+			if(!stack.hasTagCompound()) {
+				stack.stackTagCompound = new NBTTagCompound();
+				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!par1ItemStack.getTagCompound().hasKey("passcode"))
-				par2EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+			if(!stack.getTagCompound().hasKey("passcode"))
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
-				par2EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par3World, par4, par5, par6);
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, x, y, z);
 		}
 
 		return false;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		if(par2World.isRemote) {
-			if(!par1ItemStack.hasTagCompound()) {
-				par1ItemStack.stackTagCompound = new NBTTagCompound();
-				ClientUtils.syncItemNBT(par1ItemStack);
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+		if(world.isRemote) {
+			if(!stack.hasTagCompound()) {
+				stack.stackTagCompound = new NBTTagCompound();
+				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!par1ItemStack.getTagCompound().hasKey("passcode"))
-				par3EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+			if(!stack.getTagCompound().hasKey("passcode"))
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
-				par3EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override

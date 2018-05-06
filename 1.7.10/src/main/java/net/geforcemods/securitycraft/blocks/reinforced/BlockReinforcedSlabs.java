@@ -25,41 +25,41 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	private final Material slabMaterial;
 
-	public BlockReinforcedSlabs(boolean isDouble, Material par1Material) {
-		super(isDouble, par1Material);
+	public BlockReinforcedSlabs(boolean isDouble, Material material) {
+		super(isDouble, material);
 
-		slabMaterial = par1Material;
+		slabMaterial = material;
 		useNeighborBrightness = true;
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-		par1World.removeTileEntity(par2, par3, par4);
+	public void breakBlock(World world, int x, int y, int z, Block par5Block, int par6){
+		super.breakBlock(world, x, y, z, par5Block, par6);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
 		if(slabMaterial != Material.ground)
 			for(int i = 0; i < variants.length; i++){
 				if(i == 3) //leave out space for dirt slab
 					continue;
 
-				par3List.add(new ItemStack(par1Item, 1, i));
+				list.add(new ItemStack(item, 1, i));
 			}
 		else
-			par3List.add(new ItemStack(par1Item, 1, 3));
+			list.add(new ItemStack(item, 1, 3));
 	}
 
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3){
+	public Item getItemDropped(int meta, Random random, int fortune){
 		return slabMaterial == Material.ground ? Item.getItemFromBlock(SCContent.reinforcedDirtSlab) : Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int z){
 		return slabMaterial == Material.ground ? Item.getItemFromBlock(SCContent.reinforcedDirtSlab) : Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
@@ -68,16 +68,16 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
 	 */
 	@Override
-	protected ItemStack createStackedBlock(int par1){
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs), 2, par1 & 7);
+	protected ItemStack createStackedBlock(int meta){
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs), 2, meta & 7);
 	}
 
 	@Override
-	public String getFullSlabName(int par1){
-		if (par1 < 0 || par1 >= variants.length)
-			par1 = 0;
+	public String getFullSlabName(int meta){
+		if (meta < 0 || meta >= variants.length)
+			meta = 0;
 
-		return super.getUnlocalizedName() + "." + variants[par1];
+		return super.getUnlocalizedName() + "." + variants[meta];
 	}
 
 	/**
@@ -85,9 +85,9 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		int block = getSlabBlock(par2);
-		return Block.getBlockById(getSlabBlock(par2)).getIcon(par1, block == 24 && (par2 != 2 || par2 != 10) ? 0 : par2);
+	public IIcon getIcon(int side, int meta){
+		int block = getSlabBlock(meta);
+		return Block.getBlockById(getSlabBlock(meta)).getIcon(side, block == 24 && (meta != 2 || meta != 10) ? 0 : meta);
 	}
 
 	@Override
@@ -123,14 +123,14 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}
@@ -143,7 +143,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 }

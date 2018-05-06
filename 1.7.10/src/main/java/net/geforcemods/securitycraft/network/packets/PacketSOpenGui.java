@@ -24,19 +24,19 @@ public class PacketSOpenGui implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(id);
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(id);
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		id = par1ByteBuf.readInt();
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
+	public void fromBytes(ByteBuf buf) {
+		id = buf.readInt();
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSOpenGui, IMessage> {

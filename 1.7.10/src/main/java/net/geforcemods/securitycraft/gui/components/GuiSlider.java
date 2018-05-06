@@ -80,19 +80,12 @@ public class GuiSlider extends GuiButtonExt
 	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
 	 * this button.
 	 */
-	/**
-	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-	 * this button.
-	 */
 	@Override
 	public int getHoverState(boolean par1)
 	{
 		return 0;
 	}
 
-	/**
-	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-	 */
 	/**
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
 	 */
@@ -113,10 +106,6 @@ public class GuiSlider extends GuiButtonExt
 		}
 	}
 
-	/**
-	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-	 * e).
-	 */
 	/**
 	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
 	 * e).
@@ -167,9 +156,6 @@ public class GuiSlider extends GuiButtonExt
 			parent.onChangeSliderValue(this, blockName, id);
 	}
 
-	/**
-	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-	 */
 	/**
 	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
 	 */

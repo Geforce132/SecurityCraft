@@ -48,63 +48,63 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		try
 		{
-			if(!par2World.isRemote) {
-				if(!par1ItemStack.hasTagCompound()) {
-					par1ItemStack.stackTagCompound = new NBTTagCompound();
-					ClientUtils.syncItemNBT(par1ItemStack);
+			if(!world.isRemote) {
+				if(!stack.hasTagCompound()) {
+					stack.stackTagCompound = new NBTTagCompound();
+					ClientUtils.syncItemNBT(stack);
 				}
 
 				if(canBeCustomized())
-					par3EntityPlayer.openGui(SecurityCraft.instance, guiToOpen, par2World, (int) par3EntityPlayer.posX, (int) par3EntityPlayer.posY, (int) par3EntityPlayer.posZ);
+					player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
 		if(nbtCanBeModified || canBeCustomized())
-			par3List.add(StatCollector.translateToLocal("tooltip.module.modifiable"));
+			list.add(StatCollector.translateToLocal("tooltip.module.modifiable"));
 		else
-			par3List.add(StatCollector.translateToLocal("tooltip.module.notModifiable"));
+			list.add(StatCollector.translateToLocal("tooltip.module.notModifiable"));
 
 		if(nbtCanBeModified) {
-			par3List.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.usage"));
+			list.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.usage"));
 
-			par3List.add(" ");
-			par3List.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.players") + ":");
+			list.add(" ");
+			list.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.players") + ":");
 
-			if(par1ItemStack.stackTagCompound != null)
+			if(stack.stackTagCompound != null)
 				for(int i = 1; i <= 10; i++)
-					if(!par1ItemStack.stackTagCompound.getString("Player" + i).isEmpty())
-						par3List.add(par1ItemStack.stackTagCompound.getString("Player" + i));
+					if(!stack.stackTagCompound.getString("Player" + i).isEmpty())
+						list.add(stack.stackTagCompound.getString("Player" + i));
 		}
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
 
 			if(getNumberOfAddons() > 0) {
-				par3List.add(" ");
+				list.add(" ");
 
-				par3List.add(StatCollector.translateToLocal("tooltip.module.itemAddons.added") + ":");
-				for(Item item : getItemAddons(par1ItemStack.stackTagCompound))
-					par3List.add("- " + StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"));
+				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.added") + ":");
+				for(Item item : getItemAddons(stack.stackTagCompound))
+					list.add("- " + StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"));
 
-				for(Block block : getBlockAddons(par1ItemStack.stackTagCompound))
-					par3List.add("- " + StatCollector.translateToLocal(block.getLocalizedName()));
+				for(Block block : getBlockAddons(stack.stackTagCompound))
+					list.add("- " + StatCollector.translateToLocal(block.getLocalizedName()));
 			}
 		}
 	}

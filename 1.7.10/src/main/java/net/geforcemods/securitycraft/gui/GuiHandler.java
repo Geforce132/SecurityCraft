@@ -48,10 +48,10 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BLOCK_REINFORCER = 103;
 
 	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 
-		switch(ID)
+		switch(id)
 		{
 			case SETUP_KEYCARD_READER_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
@@ -111,10 +111,10 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 
-		switch(ID)
+		switch(id)
 		{
 			case SETUP_KEYCARD_READER_ID:
 				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);

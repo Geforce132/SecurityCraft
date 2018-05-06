@@ -18,8 +18,8 @@ public class BlockOwnable extends BlockContainer {
 	//only true if it's a reinforced block
 	private boolean flag = false;
 
-	public BlockOwnable(Material par1) {
-		super(par1);
+	public BlockOwnable(Material material) {
+		super(material);
 	}
 
 	//only used for reinforced blocks
@@ -36,8 +36,8 @@ public class BlockOwnable extends BlockContainer {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return !flag ? super.getIcon(par1, par2) : type.getIcon(par1, par2);
+	public IIcon getIcon(int side, int meta){
+		return !flag ? super.getIcon(side, meta) : type.getIcon(side, meta);
 	}
 
 	@Override
@@ -48,16 +48,16 @@ public class BlockOwnable extends BlockContainer {
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
-		return !flag ? super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_) : 0x999999;
+		return !flag ? super.colorMultiplier(access, x, y, z) : 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
-		return !flag ? super.getRenderColor(p_149741_1_) : 0x999999;
+		return !flag ? super.getRenderColor(meta) : 0x999999;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class BlockOwnable extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

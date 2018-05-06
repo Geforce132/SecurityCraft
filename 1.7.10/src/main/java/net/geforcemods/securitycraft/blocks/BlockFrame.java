@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 public class BlockFrame extends BlockOwnable {
 
-	public BlockFrame(Material par1) {
-		super(par1);
+	public BlockFrame(Material meterial) {
+		super(meterial);
 	}
 
 	@Override
@@ -44,39 +44,39 @@ public class BlockFrame extends BlockOwnable {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if(l == 0)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		if(entityRotation == 0)
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
 
-		if(l == 1)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+		if(entityRotation == 1)
+			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
 
-		if(l == 2)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		if(entityRotation == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 
-		if(l == 3)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		if(entityRotation == 3)
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote){
-			if(SecurityCraft.config.fiveMinAutoShutoff && ((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation()){
-				((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).enableView();
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(world.isRemote){
+			if(SecurityCraft.config.fiveMinAutoShutoff && ((TileEntityFrame) world.getTileEntity(x, y, z)).hasCameraLocation()){
+				((TileEntityFrame) world.getTileEntity(x, y, z)).enableView();
 				return true;
 			}
 		}else{
-			if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityFrame))
+			if(!(world.getTileEntity(x, y, z) instanceof TileEntityFrame))
 				return false;
 
-			if(!((TileEntityFrame) par1World.getTileEntity(par2, par3, par4)).hasCameraLocation() && (par5EntityPlayer.getCurrentEquippedItem() == null || par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.cameraMonitor)){
-				PlayerUtils.sendMessageToPlayer(par5EntityPlayer, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
+			if(!((TileEntityFrame) world.getTileEntity(x, y, z)).hasCameraLocation() && (player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != SCContent.cameraMonitor)){
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.keyPanel))
+			if(PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
 				return false;
 		}
 
@@ -84,7 +84,7 @@ public class BlockFrame extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityFrame();
 	}
 

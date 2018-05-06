@@ -113,70 +113,70 @@ public class ContainerBlockReinforcer extends Container
 
 	//edited to check if the item to be merged is valid in that slot
 	@Override
-	protected boolean mergeItemStack(ItemStack stack, int p_75135_2_, int p_75135_3_, boolean p_75135_4_)
+	protected boolean mergeItemStack(ItemStack stack, int min, int max, boolean negativeDirection)
 	{
-		boolean flag1 = false;
-		int k = p_75135_2_;
+		boolean merged = false;
+		int currentSlot = min;
 
-		if(p_75135_4_)
-			k = p_75135_3_ - 1;
+		if(negativeDirection)
+			currentSlot = max - 1;
 
 		Slot slot;
 		ItemStack itemstack1;
 
 		if(stack.isStackable())
-			while(stack.stackSize > 0 && (!p_75135_4_ && k < p_75135_3_ || p_75135_4_ && k >= p_75135_2_))
+			while(stack.stackSize > 0 && (!negativeDirection && currentSlot < max || negativeDirection && currentSlot >= min))
 			{
-				slot = (Slot)inventorySlots.get(k);
+				slot = (Slot)inventorySlots.get(currentSlot);
 				itemstack1 = slot.getStack();
 
 				if(!slot.isItemValid(stack))
 				{
-					flag1 = false;
+					merged = false;
 					break;
 				}
 
 				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
 				{
-					int l = itemstack1.stackSize + stack.stackSize;
+					int combinedStackSize = itemstack1.stackSize + stack.stackSize;
 
-					if(l <= stack.getMaxStackSize())
+					if(combinedStackSize <= stack.getMaxStackSize())
 					{
 						stack.stackSize = 0;
-						itemstack1.stackSize = l;
+						itemstack1.stackSize = combinedStackSize;
 						slot.onSlotChanged();
-						flag1 = true;
+						merged = true;
 					}
 					else if(itemstack1.stackSize < stack.getMaxStackSize())
 					{
 						stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
 						itemstack1.stackSize = stack.getMaxStackSize();
 						slot.onSlotChanged();
-						flag1 = true;
+						merged = true;
 					}
 				}
 
-				if(p_75135_4_)
-					--k;
+				if(negativeDirection)
+					--currentSlot;
 				else
-					++k;
+					++currentSlot;
 			}
 
 		if(stack.stackSize > 0)
 		{
-			if(p_75135_4_)
-				k = p_75135_3_ - 1;
+			if(negativeDirection)
+				currentSlot = max - 1;
 			else
-				k = p_75135_2_;
+				currentSlot = min;
 
-			while(!p_75135_4_ && k < p_75135_3_ || p_75135_4_ && k >= p_75135_2_)
+			while(!negativeDirection && currentSlot < max || negativeDirection && currentSlot >= min)
 			{
-				slot = (Slot)inventorySlots.get(k);
+				slot = (Slot)inventorySlots.get(currentSlot);
 				itemstack1 = slot.getStack();
 
 				if(!slot.isItemValid(stack))
 				{
-					flag1 = false;
+					merged = false;
 					break;
 				}
 
@@ -185,18 +185,18 @@ public class ContainerBlockReinforcer extends Container
 					slot.putStack(stack.copy());
 					slot.onSlotChanged();
 					stack.stackSize = 0;
-					flag1 = true;
+					merged = true;
 					break;
 				}
 
-				if(p_75135_4_)
-					--k;
+				if(negativeDirection)
+					--currentSlot;
 				else
-					++k;
+					++currentSlot;
 			}
 		}
 
-		return flag1;
+		return merged;
 	}
 
 	private class SlotBlockReinforcer extends Slot

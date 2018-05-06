@@ -45,30 +45,30 @@ public class CommandSC extends CommandBase implements ICommand{
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
+	public String getCommandUsage(ICommandSender sender) {
 		return StatCollector.translateToLocal("messages.command.sc.usage");
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender icommandsender) {
+	public boolean canCommandSenderUseCommand(ICommandSender sender) {
 		return true;
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] par1String) {
-		if(par1String.length == 0)
+	public void processCommand(ICommandSender sender, String[] args) {
+		if(args.length == 0)
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
-		else if(par1String.length == 1){
-			if(par1String[0].matches("connect"))
+		else if(args.length == 1){
+			if(args[0].matches("connect"))
 				sender.addChatMessage(new ChatComponentText("[" + EnumChatFormatting.GREEN + "IRC" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
-			else if(par1String[0].matches("help"))
+			else if(args[0].matches("help"))
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
-			else if(par1String[0].matches("bug"))
+			else if(args[0].matches("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 			else
 				throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
-		}else if(par1String.length >= 2){
-			if(par1String[0].matches("bug"))
+		}else if(args.length >= 2){
+			if(args[0].matches("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 			else
 				throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
@@ -77,23 +77,9 @@ public class CommandSC extends CommandBase implements ICommand{
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
 	}
 
-	//	private static String getMessageFromArray(String[] par1String, int index) {
-	//		String startingString = "";
-	//		for(int i = index; i < par1String.length; i++){
-	//			startingString += (i == index ? "" : " ") + par1String[i];
-	//		}
-	//
-	//		return startingString;
-	//	}
-	//
-	//	private void sendMessageToPlayer(String par1, ICommandSender par2){
-	//		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-	//		getPlayer(par2, par2.getCommandSenderName()).addChatComponentMessage(chatcomponenttext);
-	//	}
-
 	@Override
-	public int compareTo(Object par1Obj)
+	public int compareTo(Object o)
 	{
-		return this.compareTo((ICommand)par1Obj);
+		return this.compareTo((ICommand)o);
 	}
 }

@@ -24,13 +24,13 @@ import net.minecraft.world.World;
 
 public class BlockInventoryScannerField extends Block{
 
-	public BlockInventoryScannerField(Material par2Material) {
-		super(par2Material);
+	public BlockInventoryScannerField(Material xMaterial) {
+		super(xMaterial);
 		setBlockBounds(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4){
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z){
 		return null;
 	}
 
@@ -48,92 +48,92 @@ public class BlockInventoryScannerField extends Block{
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(!par1World.isRemote)
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity e){
+		if(!world.isRemote)
 		{
-			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(par1World, par2, par3, par4);
+			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, x, y, z);
 
-			if(par5Entity instanceof EntityPlayer)
+			if(e instanceof EntityPlayer)
 			{
-				if(ModuleUtils.checkForModule(connectedScanner.getWorld(), connectedScanner.xCoord, connectedScanner.yCoord, connectedScanner.zCoord, (EntityPlayer)par5Entity, EnumCustomModules.WHITELIST))
+				if(ModuleUtils.checkForModule(connectedScanner.getWorld(), connectedScanner.xCoord, connectedScanner.yCoord, connectedScanner.zCoord, (EntityPlayer)e, EnumCustomModules.WHITELIST))
 					return;
 
 				for(int i = 0; i < 10; i++)
 				{
-					for(int j = 0; j < ((EntityPlayer)par5Entity).inventory.mainInventory.length; j++)
+					for(int j = 0; j < ((EntityPlayer)e).inventory.mainInventory.length; j++)
 					{
-						if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityPlayer)par5Entity).inventory.mainInventory[j] != null)
-							checkInventory((EntityPlayer)par5Entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+						if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityPlayer)e).inventory.mainInventory[j] != null)
+							checkInventory((EntityPlayer)e, connectedScanner, connectedScanner.getStackInSlotCopy(i));
 					}
 				}
 			}
-			else if(par5Entity instanceof EntityItem)
+			else if(e instanceof EntityItem)
 			{
 				for(int i = 0; i < 10; i++)
 				{
-					if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityItem)par5Entity).getEntityItem() != null)
-						checkEntity((EntityItem)par5Entity, connectedScanner.getStackInSlotCopy(i));
+					if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityItem)e).getEntityItem() != null)
+						checkEntity((EntityItem)e, connectedScanner.getStackInSlotCopy(i));
 				}
 			}
 		}
 	}
 
-	public void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
-		if(par2TileEntity.getType().matches("redstone")){
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
-					if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
-						if(!par2TileEntity.shouldProvidePower())
-							par2TileEntity.setShouldProvidePower(true);
+	public void checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack){
+		if(te.getType().matches("redstone")){
+			for(int i = 1; i <= player.inventory.mainInventory.length; i++)
+				if(player.inventory.mainInventory[i - 1] != null)
+					if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem()){
+						if(!te.shouldProvidePower())
+							te.setShouldProvidePower(true);
 
-						par2TileEntity.setCooldown(60);
-						checkAndUpdateTEAppropriately(par2TileEntity);
-						BlockUtils.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord, par2TileEntity.getWorld().getBlock(par2TileEntity.xCoord, par2TileEntity.yCoord, par2TileEntity.zCoord), 1, true);
+						te.setCooldown(60);
+						checkAndUpdateTEAppropriately(te);
+						BlockUtils.updateAndNotify(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, te.getWorld().getBlock(te.xCoord, te.yCoord, te.zCoord), 1, true);
 					}
-		}else if(par2TileEntity.getType().matches("check"))
-			if(par2TileEntity.hasModule(EnumCustomModules.STORAGE)){
-				for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
-					if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
-						if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
-							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
-							par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+		}else if(te.getType().matches("check"))
+			if(te.hasModule(EnumCustomModules.STORAGE)){
+				for(int i = 1; i <= player.inventory.mainInventory.length; i++)
+					if(player.inventory.mainInventory[i - 1] != null)
+						if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem()){
+							te.addItemToStorage(player.inventory.mainInventory[i - 1]);
+							player.inventory.mainInventory[i - 1] = null;
 						}
 			}
 			else
-				for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
-					if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
-						if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem())
-							par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+				for(int i = 1; i <= player.inventory.mainInventory.length; i++)
+					if(player.inventory.mainInventory[i - 1] != null)
+						if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem())
+							player.inventory.mainInventory[i - 1] = null;
 	}
 
-	public void checkEntity(EntityItem par1EntityItem, ItemStack par2){
-		if(par1EntityItem.getEntityItem().getItem() == par2.getItem())
-			par1EntityItem.setDead();
+	public void checkEntity(EntityItem entityItem, ItemStack stack){
+		if(entityItem.getEntityItem().getItem() == stack.getItem())
+			entityItem.setDead();
 	}
 
-	private void checkAndUpdateTEAppropriately(TileEntityInventoryScanner par5TileEntityIS) {
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(par5TileEntityIS.getWorld(), par5TileEntityIS.xCoord, par5TileEntityIS.yCoord, par5TileEntityIS.zCoord);
+	private void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te) {
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
 
-		par5TileEntityIS.setShouldProvidePower(true);
-		par5TileEntityIS.setCooldown(60);
-		BlockUtils.updateAndNotify(par5TileEntityIS.getWorld(), par5TileEntityIS.xCoord, par5TileEntityIS.yCoord, par5TileEntityIS.zCoord, par5TileEntityIS.getWorld().getBlock(par5TileEntityIS.xCoord, par5TileEntityIS.yCoord, par5TileEntityIS.zCoord), 1, true);
+		te.setShouldProvidePower(true);
+		te.setCooldown(60);
+		BlockUtils.updateAndNotify(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, te.getWorld().getBlock(te.xCoord, te.yCoord, te.zCoord), 1, true);
 		connectedScanner.setShouldProvidePower(true);
 		connectedScanner.setCooldown(60);
 		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.xCoord, connectedScanner.yCoord, connectedScanner.zCoord, connectedScanner.getWorld().getBlock(connectedScanner.xCoord, connectedScanner.yCoord, connectedScanner.zCoord), 1, true);
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5)
+	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta)
 	{
-		if(!par1World.isRemote)
+		if(!world.isRemote)
 		{
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(par1World.getBlock(par2 - i, par3, par4) == SCContent.inventoryScanner)
+				if(world.getBlock(x - i, y, z) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						par1World.breakBlock(par2 - j, par3, par4, false);
+						world.breakBlock(x - j, y, z, false);
 					}
 
 					break;
@@ -142,11 +142,11 @@ public class BlockInventoryScannerField extends Block{
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(par1World.getBlock(par2 + i, par3, par4) == SCContent.inventoryScanner)
+				if(world.getBlock(x + i, y, z) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						par1World.breakBlock(par2 + j, par3, par4, false);
+						world.breakBlock(x + j, y, z, false);
 					}
 
 					break;
@@ -155,11 +155,11 @@ public class BlockInventoryScannerField extends Block{
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(par1World.getBlock(par2 , par3, par4 - i) == SCContent.inventoryScanner)
+				if(world.getBlock(x , y, z - i) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						par1World.breakBlock(par2, par3, par4 - j, false);
+						world.breakBlock(x, y, z - j, false);
 					}
 
 					break;
@@ -168,11 +168,11 @@ public class BlockInventoryScannerField extends Block{
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(par1World.getBlock(par2, par3, par4 + i) == SCContent.inventoryScanner)
+				if(world.getBlock(x, y, z + i) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						par1World.breakBlock(par2, par3, par4 + j, false);
+						world.breakBlock(x, y, z + j, false);
 					}
 
 					break;
@@ -185,30 +185,30 @@ public class BlockInventoryScannerField extends Block{
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if (l == 0)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		if (entityRotation == 0)
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
 
-		if (l == 1)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+		if (entityRotation == 1)
+			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
 
-		if (l == 2)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		if (entityRotation == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 
-		if (l == 3)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		if (entityRotation == 3)
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 	}
 
 	/**
 	 * Updates the blocks bounds based on its current state. Args: world, x, y, z
 	 */
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){
-		if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 1)
+	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
+		if (access.getBlockMetadata(x, y, z) == 1)
 			setBlockBounds(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F);
-		else if (par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 2)
+		else if (access.getBlockMetadata(x, y, z) == 2)
 			setBlockBounds(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F);
 	}
 
@@ -217,7 +217,7 @@ public class BlockInventoryScannerField extends Block{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int z){
 		return null;
 	}
 
@@ -227,8 +227,8 @@ public class BlockInventoryScannerField extends Block{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){
-		blockIcon = par1IconRegister.registerIcon("securitycraft:aniLaser");
+	public void registerIcons(IIconRegister register){
+		blockIcon = register.registerIcon("securitycraft:aniLaser");
 	}
 
 }

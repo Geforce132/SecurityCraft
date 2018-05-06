@@ -16,17 +16,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockReinforcedWood extends BlockOwnable implements IReinforcedBlock{
-	public BlockReinforcedWood(Material par1) {
-		super(par1);
+	public BlockReinforcedWood(Material material) {
+		super(material);
 	}
 
 	/**
 	 * Determines the damage on the item the block drops. Used in cloth and wood.
 	 */
 	@Override
-	public int damageDropped(int par1)
+	public int damageDropped(int meta)
 	{
-		return par1;
+		return meta;
 	}
 
 	/**
@@ -34,8 +34,8 @@ public class BlockReinforcedWood extends BlockOwnable implements IReinforcedBloc
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return Blocks.planks.getIcon(par1, par2);
+	public IIcon getIcon(int side, int meta){
+		return Blocks.planks.getIcon(side, meta);
 	}
 
 	@Override
@@ -46,14 +46,14 @@ public class BlockReinforcedWood extends BlockOwnable implements IReinforcedBloc
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}
@@ -70,13 +70,13 @@ public class BlockReinforcedWood extends BlockOwnable implements IReinforcedBloc
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_){
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 0));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 2));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 4));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 5));
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 3));
+		list.add(new ItemStack(item, 1, 4));
+		list.add(new ItemStack(item, 1, 5));
 	}
 
 	@Override

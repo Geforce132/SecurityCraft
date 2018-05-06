@@ -75,11 +75,10 @@ public class ClientUtils{
 	 */
 	@SideOnly(Side.CLIENT)
 	public static String getFormattedMinecraftTime(){
-		Long time = Long.valueOf(Minecraft.getMinecraft().theWorld.provider.getWorldTime());
-
-		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
+		long time = Minecraft.getMinecraft().theWorld.provider.getWorldTime();
+		int hours24 = (int) ((float) time / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
-		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
+		int minutes = (int) (time / 16.666666F % 60.0F);
 
 		return String.format("%02d:%02d %s", new Object[]{Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM"});
 	}

@@ -26,10 +26,10 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 
 	@Override
 	public void updateEntity(){
-		boolean flag = furnaceBurnTime > 0;
-		boolean flag1 = false;
+		boolean hasTimeLeft = furnaceBurnTime > 0;
+		boolean smelting = false;
 
-		if (furnaceBurnTime > 0)
+		if (hasTimeLeft)
 			furnaceBurnTime--;
 
 		if(!worldObj.isRemote){
@@ -38,7 +38,7 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 					currentItemBurnTime = furnaceBurnTime = getItemBurnTime(getStackInSlot(1));
 
 					if(furnaceBurnTime > 0){
-						flag1 = true;
+						smelting = true;
 
 						if(getStackInSlot(1) != null){
 							getStackInSlot(1).stackSize--;
@@ -55,18 +55,18 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 					if(furnaceCookTime == 200){
 						furnaceCookTime = 0;
 						smeltItem();
-						flag1 = true;
+						smelting = true;
 					}
 				}
 				else
 					furnaceCookTime = 0;
 			}
 
-			if(flag != furnaceBurnTime > 0)
-				flag1 = true;
+			if(hasTimeLeft != furnaceBurnTime > 0)
+				smelting = true;
 		}
 
-		if(flag1)
+		if(smelting)
 			markDirty();
 	}
 
@@ -85,33 +85,33 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			par1NBTTagCompound.setString("passcode", passcode);
+			tag.setString("passcode", passcode);
 
 		if(owner != null){
-			par1NBTTagCompound.setString("owner", owner.getName());
-			par1NBTTagCompound.setString("ownerUUID", owner.getUUID());
+			tag.setString("owner", owner.getName());
+			tag.setString("ownerUUID", owner.getUUID());
 		}
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("passcode"))
-			if(par1NBTTagCompound.getInteger("passcode") != 0)
-				passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+		if (tag.hasKey("passcode"))
+			if(tag.getInteger("passcode") != 0)
+				passcode = String.valueOf(tag.getInteger("passcode"));
 			else
-				passcode = par1NBTTagCompound.getString("passcode");
+				passcode = tag.getString("passcode");
 
-		if (par1NBTTagCompound.hasKey("owner"))
-			owner.setOwnerName(par1NBTTagCompound.getString("owner"));
+		if (tag.hasKey("owner"))
+			owner.setOwnerName(tag.getString("owner"));
 
-		if (par1NBTTagCompound.hasKey("ownerUUID"))
-			owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
+		if (tag.hasKey("ownerUUID"))
+			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override

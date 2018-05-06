@@ -14,18 +14,18 @@ public class EntityTaserBullet extends EntityThrowable {
 
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
 
-	public EntityTaserBullet(World worldIn){
-		super(worldIn);
+	public EntityTaserBullet(World world){
+		super(world);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, EntityLivingBase shooter){
-		super(worldIn, shooter);
+	public EntityTaserBullet(World world, EntityLivingBase shooter){
+		super(world, shooter);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, double x, double y, double z){
-		super(worldIn, x, y, z);
+	public EntityTaserBullet(World world, double x, double y, double z){
+		super(world, x, y, z);
 		setSize(0.01F, 0.01F);
 	}
 
@@ -51,21 +51,21 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
+	protected void onImpact(MovingObjectPosition mop)
 	{
 		if(!worldObj.isRemote)
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.ENTITY)
+			if(mop.typeOfHit == MovingObjectType.ENTITY)
 			{
-				if(par1MovingObjectPosition.entityHit instanceof EntityPlayer)
-					if(((EntityPlayer)par1MovingObjectPosition.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1MovingObjectPosition.entityHit == getThrower())
+				if(mop.entityHit instanceof EntityPlayer)
+					if(((EntityPlayer)mop.entityHit).capabilities.isCreativeMode || (EntityLivingBase)mop.entityHit == getThrower())
 						return;
 
-				if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+				if(mop.entityHit instanceof EntityLivingBase)
 				{
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).attackEntityFrom(DamageSource.generic, 1F);
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 500, 2));
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, 500, 2));
-					((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 500, 2));
+					((EntityLivingBase) mop.entityHit).attackEntityFrom(DamageSource.generic, 1F);
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 500, 2));
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, 500, 2));
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 500, 2));
 					setDead();
 				}
 			}

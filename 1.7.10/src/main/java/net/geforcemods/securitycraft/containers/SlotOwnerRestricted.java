@@ -11,9 +11,9 @@ public class SlotOwnerRestricted extends Slot {
 	private final IInventory inventory;
 	private final IOwnable tileEntity;
 
-	public SlotOwnerRestricted(IInventory par1iInventory, IOwnable tileEntity, int par2, int par3, int par4) {
-		super(par1iInventory, par2, par3, par4);
-		inventory = par1iInventory;
+	public SlotOwnerRestricted(IInventory inv, IOwnable tileEntity, int slotIndex, int xPos, int yPos) {
+		super(inv, slotIndex, xPos, yPos);
+		inventory = inv;
 		this.tileEntity = tileEntity;
 	}
 
@@ -21,13 +21,13 @@ public class SlotOwnerRestricted extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(EntityPlayer par1EntityPlayer){
-		return (tileEntity.getOwner().isOwner(par1EntityPlayer));
+	public boolean canTakeStack(EntityPlayer player){
+		return (tileEntity.getOwner().isOwner(player));
 	}
 
 	@Override
-	public void putStack(ItemStack p_75215_1_){
-		inventory.setInventorySlotContents(getSlotIndex(), p_75215_1_);
+	public void putStack(ItemStack stack){
+		inventory.setInventorySlotContents(getSlotIndex(), stack);
 		onSlotChanged();
 	}
 

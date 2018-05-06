@@ -50,24 +50,24 @@ public class TileEntityLogger extends TileEntityOwnable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				par1NBTTagCompound.setString("player" + i, players[i]);
+				tag.setString("player" + i, players[i]);
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (par1NBTTagCompound.hasKey("player" + i))
-				players[i] = par1NBTTagCompound.getString("player" + i);
+			if (tag.hasKey("player" + i))
+				players[i] = tag.getString("player" + i);
 	}
 
 	public void sendChangeToClient(){

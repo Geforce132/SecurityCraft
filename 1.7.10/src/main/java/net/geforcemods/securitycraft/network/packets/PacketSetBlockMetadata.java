@@ -32,28 +32,28 @@ public class PacketSetBlockMetadata implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		par1ByteBuf.writeInt(blockMetadata);
-		par1ByteBuf.writeBoolean(shouldUpdateBlock);
-		par1ByteBuf.writeInt(amountOfTicks);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, extraOwnerUUID);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, extraOwnerName);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(blockMetadata);
+		buf.writeBoolean(shouldUpdateBlock);
+		buf.writeInt(amountOfTicks);
+		ByteBufUtils.writeUTF8String(buf, extraOwnerUUID);
+		ByteBufUtils.writeUTF8String(buf, extraOwnerName);
 
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		blockMetadata = par1ByteBuf.readInt();
-		shouldUpdateBlock = par1ByteBuf.readBoolean();
-		amountOfTicks = par1ByteBuf.readInt();
-		extraOwnerUUID = ByteBufUtils.readUTF8String(par1ByteBuf);
-		extraOwnerName = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		blockMetadata = buf.readInt();
+		shouldUpdateBlock = buf.readBoolean();
+		amountOfTicks = buf.readInt();
+		extraOwnerUUID = ByteBufUtils.readUTF8String(buf);
+		extraOwnerName = ByteBufUtils.readUTF8String(buf);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlockMetadata, IMessage> {

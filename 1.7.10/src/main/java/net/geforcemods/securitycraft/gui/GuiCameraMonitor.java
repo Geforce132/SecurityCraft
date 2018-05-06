@@ -24,7 +24,7 @@ import net.minecraft.util.StatCollector;
 
 public class GuiCameraMonitor extends GuiContainer {
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
 	private InventoryPlayer playerInventory;
 	private ItemCameraMonitor cameraMonitor;
@@ -53,7 +53,6 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void initGui(){
 		super.initGui();
 
@@ -176,14 +175,14 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.monitor.selectCameras"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
+		mc.getTextureManager().bindTexture(TEXTURE);
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;
 		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);

@@ -12,11 +12,11 @@ import net.minecraft.util.StatCollector;
 public class GuiLogger extends GuiContainer{
 
 	private TileEntityLogger tileEntity;
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
-	public GuiLogger(InventoryPlayer par1InventoryPlayer, TileEntityLogger par2TileEntityFurnace) {
-		super(new ContainerGeneric(par1InventoryPlayer, par2TileEntityFurnace));
-		tileEntity = par2TileEntityFurnace;
+	public GuiLogger(InventoryPlayer playerInv, TileEntityLogger te) {
+		super(new ContainerGeneric(playerInv, te));
+		tileEntity = te;
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+		super.drawScreen(mouseX, mouseY, partialTicks);
 
 	}
 
@@ -34,7 +34,7 @@ public class GuiLogger extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.logger.logged"), xSize / 2 - fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
 
@@ -45,12 +45,12 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 }

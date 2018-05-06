@@ -16,7 +16,7 @@ public class ItemCodebreaker extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack par1ItemStack){
+	public boolean hasEffect(ItemStack stack){
 		return true;
 	}
 
@@ -25,7 +25,7 @@ public class ItemCodebreaker extends Item {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
+	public EnumRarity getRarity(ItemStack stack){
 		return EnumRarity.rare;
 	}
 

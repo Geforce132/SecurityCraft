@@ -26,8 +26,8 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 
 	private Random random = new Random();
 
-	public BlockKeypadFurnace(Material materialIn) {
-		super(materialIn);
+	public BlockKeypadFurnace(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -51,46 +51,46 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(!par1World.isRemote)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker))
-				((TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
+				((TileEntityKeypadFurnace) world.getTileEntity(x, y, z)).openPasswordGUI(player);
 		}
 
 		return true;
 	}
 
-	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, par2, par3, par4);
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4) + 5, 3);
+	public static void activate(World world, int x, int y, int z, EntityPlayer player){
+		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, x, y, z);
+		world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) + 5, 3);
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		int l = MathHelper.floor_double(par5EntityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if(l == 0)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 1, 2);
+		if(entityRotation == 0)
+			world.setBlockMetadataWithNotify(x, y, z, 1, 2);
 
-		if(l == 1)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		if(entityRotation == 1)
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 
-		if(l == 2)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		if(entityRotation == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 
-		if(l == 3)
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		if(entityRotation == 3)
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
 		else
 			return;
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		TileEntityKeypadFurnace tileentityfurnace = (TileEntityKeypadFurnace) par1World.getTileEntity(par2, par3, par4);
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta){
+		TileEntityKeypadFurnace tileentityfurnace = (TileEntityKeypadFurnace) world.getTileEntity(x, y, z);
 
 		if (tileentityfurnace != null)
 		{
@@ -112,7 +112,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 							j1 = itemstack.stackSize;
 
 						itemstack.stackSize -= j1;
-						EntityItem entityitem = new EntityItem(par1World, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getMetadata()));
+						EntityItem entityitem = new EntityItem(world, x + f, y + f1, z + f2, new ItemStack(itemstack.getItem(), j1, itemstack.getMetadata()));
 
 						if (itemstack.hasTagCompound())
 							entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
@@ -121,19 +121,19 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 						entityitem.motionX = (float)random.nextGaussian() * f3;
 						entityitem.motionY = (float)random.nextGaussian() * f3 + 0.2F;
 						entityitem.motionZ = (float)random.nextGaussian() * f3;
-						par1World.spawnEntityInWorld(entityitem);
+						world.spawnEntityInWorld(entityitem);
 					}
 				}
 			}
 
-			par1World.updateNeighborsAboutBlockChange(par2, par3, par4, par5Block);
+			world.updateNeighborsAboutBlockChange(x, y, z, block);
 		}
 
-		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
+		super.breakBlock(world, x, y, z, block, meta);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityKeypadFurnace();
 	}
 

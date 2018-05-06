@@ -38,28 +38,28 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	}
 
 	@Override
-	public void explode(World world, int par2, int par3, int par4) {
-		BlockUtils.destroyBlock(world, par2, par3, par4, false);
-		world.createExplosion((Entity) null, par2, par3 + 1, par4, SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
+	public void explode(World world, int x, int y, int z) {
+		BlockUtils.destroyBlock(world, x, y, z, false);
+		world.createExplosion((Entity) null, x, y + 1, z, SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6){
-		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-		par1World.removeTileEntity(par2, par3, par4);
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta){
+		super.breakBlock(world, x, y, z, block, meta);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
-	protected void onRedstoneSignal(World par1World, int par2, int par3, int par4, int par5, int par6, Block par7){
+	protected void onRedstoneSignal(World world, int x, int y, int z, int meta, int par6, Block block){
 		try{
-			BlockRailBase.Rail rail = new BlockRailBase.Rail(par1World, par2, par3, par4);
+			BlockRailBase.Rail rail = new BlockRailBase.Rail(world, x, y, z);
 			Method method = rail.getClass().getDeclaredMethod("func_150650_a");
 
 			method.setAccessible(true);
 			int number = (Integer) method.invoke(rail);
 
-			if (par7.canProvidePower() && number == 3)
-				refreshTrackShape(par1World, par2, par3, par4, false);
+			if (block.canProvidePower() && number == 3)
+				refreshTrackShape(world, x, y, z, false);
 
 		}catch(IllegalAccessException e){
 			e.printStackTrace();
@@ -75,13 +75,13 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 	}
 
 	@Override
-	public void activateMine(World world, int par2, int par3, int par4) {}
+	public void activateMine(World world, int x, int y, int z) {}
 
 	@Override
-	public void defuseMine(World world, int par2, int par3, int par4) {}
+	public void defuseMine(World world, int x, int y, int z) {}
 
 	@Override
-	public boolean isActive(World world, int par2, int par3, int par4) {
+	public boolean isActive(World world, int x, int y, int z) {
 		return true;
 	}
 
@@ -92,20 +92,20 @@ public class BlockTrackMine extends BlockRailBase implements IExplosive, ITileEn
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return par2 >= 6 ? theIcon : blockIcon;
+	public IIcon getIcon(int side, int meta){
+		return meta >= 6 ? theIcon : blockIcon;
 	}
 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister){
-		super.registerIcons(par1IconRegister);
-		theIcon = par1IconRegister.registerIcon("securitycraft:rail_mineTurned");
+	public void registerIcons(IIconRegister register){
+		super.registerIcons(register);
+		theIcon = register.registerIcon("securitycraft:rail_mineTurned");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

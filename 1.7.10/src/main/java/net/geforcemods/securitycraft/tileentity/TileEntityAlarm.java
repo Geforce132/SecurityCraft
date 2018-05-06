@@ -31,25 +31,25 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setBoolean("isPowered", isPowered);
+		tag.setInteger("cooldown", cooldown);
+		tag.setBoolean("isPowered", isPowered);
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("isPowered"))
-			isPowered = par1NBTTagCompound.getBoolean("isPowered");
+		if (tag.hasKey("isPowered"))
+			isPowered = tag.getBoolean("isPowered");
 
 	}
 
@@ -57,8 +57,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 		return cooldown;
 	}
 
-	public void setCooldown(int par1){
-		cooldown = par1;
+	public void setCooldown(int value){
+		cooldown = value;
 	}
 
 	public boolean isPowered() {

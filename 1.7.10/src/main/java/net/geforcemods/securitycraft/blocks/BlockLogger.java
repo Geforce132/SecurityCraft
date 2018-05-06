@@ -19,20 +19,20 @@ import net.minecraft.world.World;
 public class BlockLogger extends BlockOwnable {
 
 	@SideOnly(Side.CLIENT)
-	private IIcon field_149935_N;
+	private IIcon topIcon;
 	@SideOnly(Side.CLIENT)
-	private IIcon field_149936_O;
+	private IIcon frontIcon;
 
-	public BlockLogger(Material par1Material) {
-		super(par1Material);
+	public BlockLogger(Material material) {
+		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(par1World.isRemote)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(world.isRemote)
 			return true;
 		else{
-			par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, par1World, par2, par3, par4);
+			player.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, world, x, y, z);
 			return true;
 		}
 	}
@@ -42,56 +42,56 @@ public class BlockLogger extends BlockOwnable {
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block p_149695_5_){
-		if(!par1World.isRemote)
-			if(par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
-				((TileEntityLogger) par1World.getTileEntity(par2, par3, par4)).attackNextTick();
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if(!world.isRemote)
+			if(world.isBlockIndirectlyGettingPowered(x, y, z))
+				((TileEntityLogger) world.getTileEntity(x, y, z)).attackNextTick();
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
-		super.onBlockPlacedBy(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_, p_149689_6_);
+		super.onBlockPlacedBy(world, x, y, z, entity, stack);
 
-		int l = MathHelper.floor_double(p_149689_5_.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-		if (l == 0)
-			p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 2, 2);
+		if (entityRotation == 0)
+			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
 
-		if (l == 1)
-			p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 5, 2);
+		if (entityRotation == 1)
+			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
 
-		if (l == 2)
-			p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 3, 2);
+		if (entityRotation == 2)
+			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 
-		if (l == 3)
-			p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, 4, 2);
+		if (entityRotation == 3)
+			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
 
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2) {
-		if(par1 == 3 && par2 == 0)
-			return field_149936_O;
+	public IIcon getIcon(int side, int meta) {
+		if(side == 3 && meta == 0)
+			return frontIcon;
 
-		return par1 == 1 ? field_149935_N : (par1 == 0 ? field_149935_N : (par1 != par2 ? blockIcon : field_149936_O));
+		return side == 1 ? topIcon : (side == 0 ? topIcon : (side != meta ? blockIcon : frontIcon));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IIconRegister)
+	public void registerIcons(IIconRegister register)
 	{
-		blockIcon = par1IIconRegister.registerIcon("securitycraft:usernameLoggerSide");
-		field_149936_O = par1IIconRegister.registerIcon("securitycraft:usernameLoggerFront");
-		field_149935_N = par1IIconRegister.registerIcon("securitycraft:usernameLoggerTop");
+		blockIcon = register.registerIcon("securitycraft:usernameLoggerSide");
+		frontIcon = register.registerIcon("securitycraft:usernameLoggerFront");
+		topIcon = register.registerIcon("securitycraft:usernameLoggerTop");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par1) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
 	}
 

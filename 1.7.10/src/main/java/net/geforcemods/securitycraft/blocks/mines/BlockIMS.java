@@ -17,8 +17,8 @@ import net.minecraft.world.World;
 
 public class BlockIMS extends BlockOwnable {
 
-	public BlockIMS(Material par1) {
-		super(par1);
+	public BlockIMS(Material material) {
+		super(material);
 		setBlockBounds(0F, 0F, 0F, 1F, 0.45F, 1F);
 	}
 
@@ -38,10 +38,10 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(!par1World.isRemote)
-			if(((IOwnable) par1World.getTileEntity(par2, par3, par4)).getOwner().isOwner(par5EntityPlayer)){
-				par5EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, par1World, par2, par3, par4);
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
+			if(((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
+				player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, x, y, z);
 				return true;
 			}
 
@@ -49,9 +49,9 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if(!par1World.isRemote)
-			BlockUtils.destroyBlock(par1World, par2, par3, par4, false);
+	public void updateTick(World world, int x, int y, int z, Random random){
+		if(!world.isRemote)
+			BlockUtils.destroyBlock(world, x, y, z, false);
 	}
 
 	/**
@@ -59,27 +59,27 @@ public class BlockIMS extends BlockOwnable {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random){
-		if(par1World.getTileEntity(par2, par3, par4) != null && ((TileEntityIMS) par1World.getTileEntity(par2, par3, par4)).getBombsRemaining() == 0){
-			double d0 = par2 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d1 = par3 + 0.4F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d2 = par4 + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
+	public void randomDisplayTick(World world, int x, int y, int z, Random random){
+		if(world.getTileEntity(x, y, z) != null && ((TileEntityIMS) world.getTileEntity(x, y, z)).getBombsRemaining() == 0){
+			double d0 = x + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double d1 = y + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
+			double d2 = z + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double d3 = 0.2199999988079071D;
 			double d4 = 0.27000001072883606D;
 
-			par1World.spawnParticle("smoke", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("smoke", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("smoke", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("smoke", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("smoke", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("smoke", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("smoke", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("smoke", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
-			par1World.spawnParticle("flame", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle("flame", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("flame", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("flame", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityIMS();
 	}
 

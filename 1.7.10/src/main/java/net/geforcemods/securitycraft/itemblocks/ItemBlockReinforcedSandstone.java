@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockReinforcedSandstone extends ItemBlockWithMetadata {
 
-	public ItemBlockReinforcedSandstone(Block par1) {
-		super(par1, par1);
+	public ItemBlockReinforcedSandstone(Block block) {
+		super(block, block);
 	}
 
 	@Override

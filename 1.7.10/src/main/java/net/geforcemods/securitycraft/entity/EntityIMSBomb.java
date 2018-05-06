@@ -18,20 +18,20 @@ public class EntityIMSBomb extends EntityFireball {
 	private int launchHeight;
 	public boolean launching = true;
 
-	public EntityIMSBomb(World worldIn){
-		super(worldIn);
+	public EntityIMSBomb(World world){
+		super(world);
 		setSize(0.25F, 0.3F);
 	}
 
-	public EntityIMSBomb(World worldIn, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(worldIn, x, y, z, targetX, targetY, targetZ);
+	public EntityIMSBomb(World world, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
+		super(world, x, y, z, targetX, targetY, targetZ);
 		playerName = targetEntity.getCommandSenderName();
 		launchHeight = height;
 		setSize(0.25F, 0.3F);
 	}
 
-	public EntityIMSBomb(World worldIn, EntityLivingBase targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(worldIn, x, y, z, targetX, targetY, targetZ);
+	public EntityIMSBomb(World world, EntityLivingBase targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
+		super(world, x, y, z, targetX, targetY, targetZ);
 		targetMob = targetEntity;
 		launchHeight = height;
 		setSize(0.25F, 0.3F);
@@ -56,22 +56,22 @@ public class EntityIMSBomb extends EntityFireball {
 		if(playerName != null && PlayerUtils.isPlayerOnline(playerName)){
 			EntityPlayer target = PlayerUtils.getPlayerFromName(playerName);
 
-			double d5 = target.posX - posX;
-			double d6 = target.boundingBox.minY + target.height / 2.0F - (posY + 1.25D);
-			double d7 = target.posZ - posZ;
+			double targetX = target.posX - posX;
+			double targetY = target.boundingBox.minY + target.height / 2.0F - (posY + 1.25D);
+			double targetZ = target.posZ - posZ;
+			EntityIMSBomb imsBomb = new EntityIMSBomb(worldObj, target, posX, posY, posZ, targetX, targetY, targetZ, 0);
 
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7, 0);
-			entitylargefireball.launching = false;
-			worldObj.spawnEntityInWorld(entitylargefireball);
+			imsBomb.launching = false;
+			worldObj.spawnEntityInWorld(imsBomb);
 			setDead();
 		}else if(targetMob != null && !targetMob.isDead){
-			double d5 = targetMob.posX - posX;
-			double d6 = targetMob.boundingBox.minY + targetMob.height / 2.0F - (posY + 1.25D);
-			double d7 = targetMob.posZ - posZ;
+			double targetX = targetMob.posX - posX;
+			double targetY = targetMob.boundingBox.minY + targetMob.height / 2.0F - (posY + 1.25D);
+			double targetZ = targetMob.posZ - posZ;
+			EntityIMSBomb imsBomb = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, targetX, targetY, targetZ, 0);
 
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7, 0);
-			entitylargefireball.launching = false;
-			worldObj.spawnEntityInWorld(entitylargefireball);
+			imsBomb.launching = false;
+			worldObj.spawnEntityInWorld(imsBomb);
 			setDead();
 		}
 		else
@@ -79,10 +79,10 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition){
+	protected void onImpact(MovingObjectPosition mop){
 		if(!worldObj.isRemote)
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.BLOCK && worldObj.getBlock(par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY, par1MovingObjectPosition.blockZ) != SCContent.ims){
-				worldObj.createExplosion(this, par1MovingObjectPosition.blockX, par1MovingObjectPosition.blockY + 1D, par1MovingObjectPosition.blockZ, 7F, true);
+			if(mop.typeOfHit == MovingObjectType.BLOCK && worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ) != SCContent.ims){
+				worldObj.createExplosion(this, mop.blockX, mop.blockY + 1D, mop.blockZ, 7F, true);
 				setDead();
 			}
 	}

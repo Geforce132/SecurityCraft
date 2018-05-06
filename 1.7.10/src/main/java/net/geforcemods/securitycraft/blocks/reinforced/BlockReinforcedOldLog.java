@@ -18,12 +18,12 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 0));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 2));
-		p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 3));
 	}
 
 	@Override

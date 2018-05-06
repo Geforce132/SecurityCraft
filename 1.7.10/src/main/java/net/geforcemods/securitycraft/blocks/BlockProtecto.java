@@ -9,8 +9,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockProtecto extends BlockOwnable {
 
-	public BlockProtecto(Material par1) {
-		super(par1);
+	public BlockProtecto(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
-		return par1World.isSideSolid(par2, par3 - 1, par4, ForgeDirection.UP);
+	public boolean canPlaceBlockAt(World world, int x, int y, int z){
+		return world.isSideSolid(x, y - 1, z, ForgeDirection.UP);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 

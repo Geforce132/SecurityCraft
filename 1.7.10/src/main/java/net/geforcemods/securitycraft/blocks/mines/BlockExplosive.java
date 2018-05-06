@@ -11,34 +11,34 @@ import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
-	public BlockExplosive(Material par1) {
-		super(par1);
+	public BlockExplosive(Material material) {
+		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
-		if(!par1World.isRemote){
-			if(par5EntityPlayer.getCurrentEquippedItem() == null && explodesWhenInteractedWith() && isActive(par1World, par2, par3, par4)) {
-				explode(par1World, par2, par3, par4);
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote){
+			if(player.getCurrentEquippedItem() == null && explodesWhenInteractedWith() && isActive(world, x, y, z)) {
+				explode(world, x, y, z);
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(par1World, par2, par3, par4) && isDefusable() && PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.wireCutters)) {
-				defuseMine(par1World, par2, par3, par4);
-				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
-				return false;
-			}
-
-			if(!isActive(par1World, par2, par3, par4) && PlayerUtils.isHoldingItem(par5EntityPlayer, Items.flint_and_steel)) {
-				activateMine(par1World, par2, par3, par4);
+			if(isActive(world, x, y, z) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+				defuseMine(world, x, y, z);
+				player.getCurrentEquippedItem().damageItem(1, player);
 				return false;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(par1World, par2, par3, par4))
-				explode(par1World, par2, par3, par4);
+			if(!isActive(world, x, y, z) && PlayerUtils.isHoldingItem(player, Items.flint_and_steel)) {
+				activateMine(world, x, y, z);
+				return false;
+			}
+
+			if(explodesWhenInteractedWith() && isActive(world, x, y, z))
+				explode(world, x, y, z);
 
 			return false;
 		}
@@ -54,7 +54,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 	}
 
 	@Override
-	public abstract void explode(World world, int par2, int par3, int par4);
+	public abstract void explode(World world, int x, int y, int z);
 
 	@Override
 	public boolean isDefusable(){

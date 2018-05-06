@@ -29,11 +29,11 @@ public class GuiInventoryScanner extends GuiContainer {
 	private EntityPlayer playerObj;
 	private boolean hasStorageModule = false;
 
-	public GuiInventoryScanner(IInventory par1IInventory, TileEntityInventoryScanner par2TileEntity, EntityPlayer par3EntityPlayer){
-		super(new ContainerInventoryScanner(par1IInventory, par2TileEntity));
-		tileEntity = par2TileEntity;
-		playerObj = par3EntityPlayer;
-		hasStorageModule = ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE);
+	public GuiInventoryScanner(IInventory inv, TileEntityInventoryScanner te, EntityPlayer player){
+		super(new ContainerInventoryScanner(inv, te));
+		tileEntity = te;
+		playerObj = player;
+		hasStorageModule = ((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 234;
@@ -53,8 +53,8 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+		super.drawScreen(mouseX, mouseY, partialTicks);
 		GL11.glDisable(GL11.GL_LIGHTING);
 
 		if(!buttonList.isEmpty()){
@@ -84,13 +84,13 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char par1, int par2){
-		super.keyTyped(par1, par2);
+	protected void keyTyped(char charTyped, int keyCode){
+		super.keyTyped(charTyped, keyCode);
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3){
-		super.mouseClicked(par1, par2, par3);
+	protected void mouseClicked(int mouseX, int mouseY, int partialTicks){
+		super.mouseClicked(mouseX, mouseY, partialTicks);
 
 	}
 
@@ -121,7 +121,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.prohibitedItems"), 8, 6, 4210752);
 		fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.admin")) : (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.invScan.mode.view")), 112, 6, 4210752);
@@ -133,14 +133,14 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseXi, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule)
 			mc.getTextureManager().bindTexture(enhancedInventory);
 		else
 			mc.getTextureManager().bindTexture(regularInventory);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize + 30);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize + 30);
 	}
 }

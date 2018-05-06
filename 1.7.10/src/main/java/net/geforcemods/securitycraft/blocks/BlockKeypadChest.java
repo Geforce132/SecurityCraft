@@ -19,19 +19,19 @@ import net.minecraft.world.World;
 
 public class BlockKeypadChest extends BlockChest implements IPasswordConvertible{
 
-	public BlockKeypadChest(int par1){
-		super(par1);
+	public BlockKeypadChest(int type){
+		super(type);
 	}
 
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9){
-		if(!par1World.isRemote) {
-			System.out.println("rc:"+par1World.getBlockMetadata(par2, par3, par4));
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker) && par1World.getTileEntity(par2, par3, par4) != null && par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest)
-				((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).openPasswordGUI(par5EntityPlayer);
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote) {
+			System.out.println("rc:"+world.getBlockMetadata(x, y, z));
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityKeypadChest)
+				((TileEntityKeypadChest) world.getTileEntity(x, y, z)).openPasswordGUI(player);
 
 			return true;
 		}
@@ -39,30 +39,30 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 		return true;
 	}
 
-	public static void activate(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		IInventory iinventory = ((BlockKeypadChest) par1World.getBlock(par2, par3, par4)).getInventory(par1World, par2, par3, par4);
+	public static void activate(World world, int x, int y, int z, EntityPlayer player){
+		IInventory iinventory = ((BlockKeypadChest) world.getBlock(x, y, z)).getInventory(world, x, y, z);
 
 		if(iinventory != null)
-			par5EntityPlayer.displayGUIChest(iinventory);
+			player.displayGUIChest(iinventory);
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		super.onBlockPlacedBy(par1World, par2, par3, par4, par5EntityLivingBase, par6ItemStack);
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
+		super.onBlockPlacedBy(world, x, y, z, entity, stack);
 
-		((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setOwner(((EntityPlayer) par5EntityLivingBase).getGameProfile().getId().toString(), par5EntityLivingBase.getCommandSenderName());
+		((TileEntityKeypadChest) world.getTileEntity(x, y, z)).setOwner(((EntityPlayer) entity).getGameProfile().getId().toString(), entity.getCommandSenderName());
 
-		if(par1World.getTileEntity(par2 + 1, par3, par4) != null && par1World.getTileEntity(par2 + 1, par3, par4) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setPassword(((IPasswordProtected) par1World.getTileEntity(par2 + 1, par3, par4)).getPassword());
-		else if(par1World.getTileEntity(par2 - 1, par3, par4) != null && par1World.getTileEntity(par2 - 1, par3, par4) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setPassword(((IPasswordProtected) par1World.getTileEntity(par2 - 1, par3, par4)).getPassword());
-		else if(par1World.getTileEntity(par2, par3, par4 + 1) != null && par1World.getTileEntity(par2, par3, par4 + 1) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setPassword(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4 + 1)).getPassword());
-		else if(par1World.getTileEntity(par2, par3, par4 - 1) != null && par1World.getTileEntity(par2, par3, par4 - 1) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest) par1World.getTileEntity(par2, par3, par4)).setPassword(((IPasswordProtected) par1World.getTileEntity(par2, par3, par4 - 1)).getPassword());
+		if(world.getTileEntity(x + 1, y, z) != null && world.getTileEntity(x + 1, y, z) instanceof TileEntityKeypadChest)
+			((TileEntityKeypadChest) world.getTileEntity(x, y, z)).setPassword(((IPasswordProtected) world.getTileEntity(x + 1, y, z)).getPassword());
+		else if(world.getTileEntity(x - 1, y, z) != null && world.getTileEntity(x - 1, y, z) instanceof TileEntityKeypadChest)
+			((TileEntityKeypadChest) world.getTileEntity(x, y, z)).setPassword(((IPasswordProtected) world.getTileEntity(x - 1, y, z)).getPassword());
+		else if(world.getTileEntity(x, y, z + 1) != null && world.getTileEntity(x, y, z + 1) instanceof TileEntityKeypadChest)
+			((TileEntityKeypadChest) world.getTileEntity(x, y, z)).setPassword(((IPasswordProtected) world.getTileEntity(x, y, z + 1)).getPassword());
+		else if(world.getTileEntity(x, y, z - 1) != null && world.getTileEntity(x, y, z - 1) instanceof TileEntityKeypadChest)
+			((TileEntityKeypadChest) world.getTileEntity(x, y, z)).setPassword(((IPasswordProtected) world.getTileEntity(x, y, z - 1)).getPassword());
 	}
 
 	/**
@@ -70,11 +70,11 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5Block){
-		if(!(par1World.getTileEntity(par2, par3, par4) instanceof TileEntityKeypadChest))
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if(!(world.getTileEntity(x, y, z) instanceof TileEntityKeypadChest))
 			return;
-		super.onNeighborBlockChange(par1World, par2, par3, par4, par5Block);
-		TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)par1World.getTileEntity(par2, par3, par4);
+		super.onNeighborBlockChange(world, x, y, z, block);
+		TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)world.getTileEntity(x, y, z);
 
 		if (tileentitychest != null)
 			tileentitychest.updateContainingBlockInfo();
@@ -82,7 +82,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityKeypadChest();
 	}
 

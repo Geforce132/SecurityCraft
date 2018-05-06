@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockReinforcedStoneBrick extends ItemBlockWithMetadata
 {
-	public ItemBlockReinforcedStoneBrick(Block par1)
+	public ItemBlockReinforcedStoneBrick(Block block)
 	{
-		super(par1, par1);
+		super(block, block);
 	}
 
 	@Override

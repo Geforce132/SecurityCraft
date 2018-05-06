@@ -40,18 +40,18 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 
 			int meta = getWorld().getBlockMetadata(xCoord, yCoord, zCoord);
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+			AxisAlignedBB area = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
 
 			if(meta == 3)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, -SecurityCraft.config.claymoreRange);
+				area = area.addCoord(0, 0, -SecurityCraft.config.claymoreRange);
 			else if(meta == 1)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, SecurityCraft.config.claymoreRange);
+				area = area.addCoord(0, 0, SecurityCraft.config.claymoreRange);
 			else if(meta == 2)
-				axisalignedbb = axisalignedbb.addCoord(SecurityCraft.config.claymoreRange, 0, 0);
+				area = area.addCoord(SecurityCraft.config.claymoreRange, 0, 0);
 			else if(meta == 4)
-				axisalignedbb = axisalignedbb.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
+				area = area.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
 
-			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
 			Iterator<?> iterator = list.iterator();
 			EntityLivingBase entityliving;
 
@@ -77,13 +77,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setDouble("entityX", entityX);
-		par1NBTTagCompound.setDouble("entityY", entityY);
-		par1NBTTagCompound.setDouble("entityZ", entityZ);
+		super.writeToNBT(tag);
+		tag.setInteger("cooldown", cooldown);
+		tag.setDouble("entityX", entityX);
+		tag.setDouble("entityY", entityY);
+		tag.setDouble("entityZ", entityZ);
 
 	}
 
@@ -91,21 +91,21 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("entityX"))
-			entityX = par1NBTTagCompound.getDouble("entityX");
+		if (tag.hasKey("entityX"))
+			entityX = tag.getDouble("entityX");
 
-		if (par1NBTTagCompound.hasKey("entityY"))
-			entityY = par1NBTTagCompound.getDouble("entityY");
+		if (tag.hasKey("entityY"))
+			entityY = tag.getDouble("entityY");
 
-		if (par1NBTTagCompound.hasKey("entityZ"))
-			entityZ = par1NBTTagCompound.getDouble("entityZ");
+		if (tag.hasKey("entityZ"))
+			entityZ = tag.getDouble("entityZ");
 	}
 
 }

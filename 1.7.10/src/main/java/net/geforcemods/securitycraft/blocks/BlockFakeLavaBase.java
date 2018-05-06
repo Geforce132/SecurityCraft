@@ -18,86 +18,86 @@ import net.minecraft.world.World;
 
 public class BlockFakeLavaBase extends BlockStaticLiquid implements ICustomWailaDisplay {
 
-	public BlockFakeLavaBase(Material p_i45429_1_){
-		super(p_i45429_1_);
+	public BlockFakeLavaBase(Material material){
+		super(material);
 		setTickRandomly(false);
 
-		if (p_i45429_1_ == Material.lava)
+		if (material == Material.lava)
 			setTickRandomly(true);
 	}
 
 	@Override
-	public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_){
-		if (p_149695_1_.getBlock(p_149695_2_, p_149695_3_, p_149695_4_) == this)
-			setNotStationary(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if (world.getBlock(x, y, z) == this)
+			setNotStationary(world, x, y, z);
 	}
 
 	/**
 	 * Changes the block ID to that of an updating fluid.
 	 */
-	private void setNotStationary(World p_149818_1_, int p_149818_2_, int p_149818_3_, int p_149818_4_){
-		int l = p_149818_1_.getBlockMetadata(p_149818_2_, p_149818_3_, p_149818_4_);
-		p_149818_1_.setBlock(p_149818_2_, p_149818_3_, p_149818_4_, SCContent.bogusLavaFlowing, l, 2);
-		p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, SCContent.bogusLavaFlowing, tickRate(p_149818_1_));
+	private void setNotStationary(World world, int x, int y, int z){
+		int l = world.getBlockMetadata(x, y, z);
+		world.setBlock(x, y, z, SCContent.bogusLavaFlowing, l, 2);
+		world.scheduleBlockUpdate(x, y, z, SCContent.bogusLavaFlowing, tickRate(world));
 	}
 
 	@Override
-	public void updateTick(World world, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_){
+	public void updateTick(World world, int x, int y, int z, Random random){
 		if (blockMaterial == Material.lava){
-			int l = p_149674_5_.nextInt(3);
+			int randomVal = random.nextInt(3);
 			int i1;
 
-			for (i1 = 0; i1 < l; ++i1){
-				p_149674_2_ += p_149674_5_.nextInt(3) - 1;
-				++p_149674_3_;
-				p_149674_4_ += p_149674_5_.nextInt(3) - 1;
-				Block block = world.getBlock(p_149674_2_, p_149674_3_, p_149674_4_);
+			for (i1 = 0; i1 < randomVal; ++i1){
+				x += random.nextInt(3) - 1;
+				++y;
+				z += random.nextInt(3) - 1;
+				Block block = world.getBlock(x, y, z);
 
 				if (block.getMaterial() == Material.air){
 					if(world.getGameRules().getGameRuleBooleanValue("doFireTick"))
-						if (this.isFlammable(world, p_149674_2_ - 1, p_149674_3_, p_149674_4_) || this.isFlammable(world, p_149674_2_ + 1, p_149674_3_, p_149674_4_) || this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_ - 1) || this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_ + 1) || this.isFlammable(world, p_149674_2_, p_149674_3_ - 1, p_149674_4_) || this.isFlammable(world, p_149674_2_, p_149674_3_ + 1, p_149674_4_)){
-							world.setBlock(p_149674_2_, p_149674_3_, p_149674_4_, Blocks.fire);
+						if (this.isFlammable(world, x - 1, y, z) || this.isFlammable(world, x + 1, y, z) || this.isFlammable(world, x, y, z - 1) || this.isFlammable(world, x, y, z + 1) || this.isFlammable(world, x, y - 1, z) || this.isFlammable(world, x, y + 1, z)){
+							world.setBlock(x, y, z, Blocks.fire);
 							return;
 						}
 				}else if (block.getMaterial().blocksMovement())
 					return;
 			}
 
-			if (l == 0){
-				i1 = p_149674_2_;
-				int k1 = p_149674_4_;
+			if (randomVal == 0){
+				i1 = x;
+				int k1 = z;
 
 				for (int j1 = 0; j1 < 3; ++j1){
-					p_149674_2_ = i1 + p_149674_5_.nextInt(3) - 1;
-					p_149674_4_ = k1 + p_149674_5_.nextInt(3) - 1;
+					x = i1 + random.nextInt(3) - 1;
+					z = k1 + random.nextInt(3) - 1;
 
-					if (world.isAirBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_) && this.isFlammable(world, p_149674_2_, p_149674_3_, p_149674_4_))
+					if (world.isAirBlock(x, y + 1, z) && this.isFlammable(world, x, y, z))
 						if(world.getGameRules().getGameRuleBooleanValue("doFireTick"))
-							world.setBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_, Blocks.fire);
+							world.setBlock(x, y + 1, z, Blocks.fire);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(!par1World.isRemote)
-			if(par5Entity instanceof EntityPlayer){
-				((EntityPlayer) par5Entity).heal(4);
-				((EntityPlayer) par5Entity).extinguish();
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		if(!world.isRemote)
+			if(entity instanceof EntityPlayer){
+				((EntityPlayer) entity).heal(4);
+				((EntityPlayer) entity).extinguish();
 			}
 	}
 
 	/**
 	 * Checks to see if the block is flammable.
 	 */
-	private boolean isFlammable(World p_149817_1_, int p_149817_2_, int p_149817_3_, int p_149817_4_){
-		return p_149817_1_.getBlock(p_149817_2_, p_149817_3_, p_149817_4_).getMaterial().getCanBurn();
+	private boolean isFlammable(World world, int x, int y, int z){
+		return world.getBlock(x, y, z).getMaterial().getCanBurn();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_){
+	public Item getItem(World world, int x, int y, int z){
 		return null;
 	}
 

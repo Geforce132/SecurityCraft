@@ -25,23 +25,23 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5) {
-		int meta = par1TileEntity.hasWorldObj() ? par1TileEntity.getBlockMetadata() : par1TileEntity.blockMetadata;
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
+		int meta = te.hasWorldObj() ? te.getBlockMetadata() : te.blockMetadata;
 		IWorldView lgView = null;
 		float rotation = 0F;
 		Tessellator tessellator = Tessellator.instance;
 
-		if(par1TileEntity.hasWorldObj()){
-			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord);
-			int l = par1TileEntity.getWorld().getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
-			int l1 = l % 65536;
-			int l2 = l / 65536;
-			tessellator.setColorOpaque_F(f, f, f);
+		if(te.hasWorldObj()){
+			float brightness = te.getWorld().getLightBrightness(te.xCoord, te.yCoord, te.zCoord);
+			int skyBrightness = te.getWorld().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
+			int l1 = skyBrightness % 65536;
+			int l2 = skyBrightness / 65536;
+			tessellator.setColorOpaque_F(brightness, brightness, brightness);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
-		if(par1TileEntity.hasWorldObj() && lgView == null && ((TileEntityFrame) par1TileEntity).hasCameraLocation() && SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()) && ((TileEntityFrame) par1TileEntity).shouldShowView())
-			lgView = SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) par1TileEntity).getCameraView().toNBTString()).getView();
+		if(te.hasWorldObj() && lgView == null && ((TileEntityFrame) te).hasCameraLocation() && SecurityCraft.instance.hasViewForCoords(((TileEntityFrame) te).getCameraView().toNBTString()) && ((TileEntityFrame) te).shouldShowView())
+			lgView = SecurityCraft.instance.getViewFromCoords(((TileEntityFrame) te).getCameraView().toNBTString()).getView();
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
@@ -50,7 +50,7 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glPushMatrix();
 
-		if(par1TileEntity.hasWorldObj()){
+		if(te.hasWorldObj()){
 			if(meta == 2)
 				rotation = 0F;
 			else if(meta == 4)

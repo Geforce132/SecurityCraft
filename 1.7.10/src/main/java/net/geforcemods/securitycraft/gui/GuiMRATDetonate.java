@@ -66,7 +66,7 @@ public class GuiMRATDetonate extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.mrat.detonate"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.mrat.detonate")) / 2, 6, 4210752);
 	}
 
@@ -74,7 +74,7 @@ public class GuiMRATDetonate extends GuiContainer{
 	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;
@@ -95,17 +95,17 @@ public class GuiMRATDetonate extends GuiContainer{
 	}
 
 	@SideOnly(Side.CLIENT)
-	private void removeTagFromItemAndUpdate(ItemStack par1ItemStack, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-		if(par1ItemStack.stackTagCompound == null)
+	private void removeTagFromItemAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+		if(stack.stackTagCompound == null)
 			return;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.stackTagCompound.getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.stackTagCompound.getIntArray("mine" + i);
+			if(stack.stackTagCompound.getIntArray("mine" + i).length > 0){
+				int[] coords = stack.stackTagCompound.getIntArray("mine" + i);
 
-				if(coords[0] == par2 && coords[1] == par3 && coords[2] == par4){
-					par1ItemStack.stackTagCompound.setIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(par1ItemStack));
+				if(coords[0] == x && coords[1] == y && coords[2] == z){
+					stack.stackTagCompound.setIntArray("mine" + i, new int[]{0, 0, 0});
+					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
 					return;
 				}
 			}

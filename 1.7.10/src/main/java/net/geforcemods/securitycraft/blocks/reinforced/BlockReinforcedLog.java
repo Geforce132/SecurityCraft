@@ -29,55 +29,55 @@ public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisp
 	}
 
 	@Override
-	public int quantityDropped(Random p_149745_1_)
+	public int quantityDropped(Random random)
 	{
 		return 1;
 	}
 
 	@Override
-	public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+	public Item getItemDropped(int meta, Random random, int fortune)
 	{
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
-	public int onBlockPlaced(World p_149660_1_, int p_149660_2_, int p_149660_3_, int p_149660_4_, int p_149660_5_, float p_149660_6_, float p_149660_7_, float p_149660_8_, int p_149660_9_)
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
 	{
-		int j1 = p_149660_9_ & 3;
-		byte b0 = 0;
+		int type = meta & 3;
+		byte orientation = 0;
 
-		switch (p_149660_5_)
+		switch (side)
 		{
 			case 0:
 			case 1:
-				b0 = 0;
+				orientation = 0;
 				break;
 			case 2:
 			case 3:
-				b0 = 8;
+				orientation = 8;
 				break;
 			case 4:
 			case 5:
-				b0 = 4;
+				orientation = 4;
 		}
 
-		return j1 | b0;
+		return type | orientation;
 	}
 
 	@Override
-	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
 	{
 		byte b0 = 4;
 		int i1 = b0 + 1;
 
-		if (p_149749_1_.checkChunksExist(p_149749_2_ - i1, p_149749_3_ - i1, p_149749_4_ - i1, p_149749_2_ + i1, p_149749_3_ + i1, p_149749_4_ + i1))
+		if (world.checkChunksExist(x - i1, y - i1, z - i1, x + i1, y + i1, z + i1))
 			for (int j1 = -b0; j1 <= b0; ++j1)
 				for (int k1 = -b0; k1 <= b0; ++k1)
 					for (int l1 = -b0; l1 <= b0; ++l1)
 					{
-						Block block = p_149749_1_.getBlock(p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1);
-						if (block.isLeaves(p_149749_1_, p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1))
-							block.beginLeavesDecay(p_149749_1_, p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1);
+						Block potentialLeaves = world.getBlock(x + j1, y + k1, z + l1);
+						if (potentialLeaves.isLeaves(world, x + j1, y + k1, z + l1))
+							potentialLeaves.beginLeavesDecay(world, x + j1, y + k1, z + l1);
 					}
 	}
 
@@ -99,31 +99,26 @@ public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisp
 	}
 
 	@Override
-	public int damageDropped(int p_149692_1_)
+	public int damageDropped(int meta)
 	{
-		return p_149692_1_ & 3;
-	}
-
-	public int func_150162_k(int p_150162_1_)
-	{
-		return p_150162_1_ & 3;
+		return meta & 3;
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(int p_149644_1_)
+	protected ItemStack createStackedBlock(int meta)
 	{
-		return new ItemStack(Item.getItemFromBlock(this), 1, func_150162_k(p_149644_1_));
+		return new ItemStack(Item.getItemFromBlock(this), 1, damageDropped(meta));
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}

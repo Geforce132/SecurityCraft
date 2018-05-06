@@ -25,15 +25,15 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 	}
 
 	@Override
-	public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canConnectFenceTo(IBlockAccess p_149826_1_, int p_149826_2_, int p_149826_3_, int p_149826_4_)
+	public boolean canConnectFenceTo(IBlockAccess access, int x, int y, int z)
 	{
-		Block block = p_149826_1_.getBlock(p_149826_2_, p_149826_3_, p_149826_4_);
+		Block block = access.getBlock(x, y, z);
 
 		//split up oneliner to be more readable
 		if(block != this && block != Blocks.fence_gate && block != SCContent.reinforcedFencegate)
@@ -73,22 +73,22 @@ public class BlockIronFence extends BlockFence implements ITileEntityProvider{
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5Block, int par6)
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
 	{
-		super.breakBlock(par1World, par2, par3, par4, par5Block, par6);
-		par1World.removeTileEntity(par2, par3, par4);
+		super.breakBlock(world, x, y, z, block, meta);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventData)
 	{
-		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-		TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+		super.onBlockEventReceived(world, x, y, z, eventID, eventData);
+		TileEntity tileentity = world.getTileEntity(x, y, z);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, eventData) : false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
 	}

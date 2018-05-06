@@ -27,8 +27,8 @@ public class BlockMine extends BlockExplosive {
 
 	public boolean cut;
 
-	public BlockMine(Material par1Material, boolean cut) {
-		super(par1Material);
+	public BlockMine(Material material, boolean cut) {
+		super(material);
 		float f = 0.2F;
 		float g = 0.1F;
 		this.cut = cut;
@@ -46,19 +46,19 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5){
-		if(par1World.getBlock(par2, par3 - 1, par4).getMaterial() != Material.air)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if(world.getBlock(x, y - 1, z).getMaterial() != Material.air)
 			return;
 		else
-			explode(par1World, par2, par3, par4);
+			explode(world, x, y, z);
 	}
 
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
-		if(par1World.getBlock(par2, par3 - 1, par4).getMaterial() == Material.glass || par1World.getBlock(par2, par3 - 1, par4).getMaterial() == Material.cactus || par1World.getBlock(par2, par3 - 1, par4).getMaterial() == Material.air || par1World.getBlock(par2, par3 - 1, par4).getMaterial() == Material.cake || par1World.getBlock(par2, par3 - 1, par4).getMaterial() == Material.plants)
+	public boolean canPlaceBlockAt(World world, int x, int y, int z){
+		if(world.getBlock(x, y - 1, z).getMaterial() == Material.glass || world.getBlock(x, y - 1, z).getMaterial() == Material.cactus || world.getBlock(x, y - 1, z).getMaterial() == Material.air || world.getBlock(x, y - 1, z).getMaterial() == Material.cake || world.getBlock(x, y - 1, z).getMaterial() == Material.plants)
 			return false;
 		else
 			return true;
@@ -81,25 +81,25 @@ public class BlockMine extends BlockExplosive {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(par1World.isRemote)
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		if(world.isRemote)
 			return;
-		else if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem)
+		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
 			return;
-		else if(par5Entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)par5Entity))
-			explode(par1World, par2, par3, par4);
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			explode(world, x, y, z);
 	}
 
 	/**
 	 * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
 	 */
-	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10, World par11World){
-		Explosion explosion = new Explosion(par11World, par1Entity, par2, par4, par6, par8);
+	public Explosion newExplosion(Entity entity, double size, double x, double y, float z, boolean smoke, World world){
+		Explosion explosion = new Explosion(world, entity, size, x, y, z);
 		if(SecurityCraft.config.shouldSpawnFire)
 			explosion.isFlaming = true;
 		else
 			explosion.isFlaming = false;
-		explosion.isSmoking = par10;
+		explosion.isSmoking = smoke;
 		explosion.doExplosionA();
 
 
@@ -108,59 +108,59 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3){
+	public Item getItemDropped(int meta, Random random, int fortune){
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
 	@Override
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int z){
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
 	@Override
-	public void activateMine(World world, int par2, int par3, int par4) {
+	public void activateMine(World world, int x, int y, int z) {
 		if(!world.isRemote){
-			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, SCContent.mine);
-			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
+			Owner owner = ((IOwnable)world.getTileEntity(x, y, z)).getOwner();
+			world.setBlock(x, y, z, SCContent.mine);
+			((IOwnable)world.getTileEntity(x, y, z)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 
 	@Override
-	public void defuseMine(World world, int par2, int par3, int par4) {
+	public void defuseMine(World world, int x, int y, int z) {
 		if(!world.isRemote){
-			Owner owner = ((IOwnable)world.getTileEntity(par2, par3, par4)).getOwner();
-			world.setBlock(par2, par3, par4, SCContent.mineCut);
-			((IOwnable)world.getTileEntity(par2, par3, par4)).setOwner(owner.getUUID(), owner.getName());
+			Owner owner = ((IOwnable)world.getTileEntity(x, y, z)).getOwner();
+			world.setBlock(x, y, z, SCContent.mineCut);
+			((IOwnable)world.getTileEntity(x, y, z)).setOwner(owner.getUUID(), owner.getName());
 		}
 	}
 
 	@Override
-	public void explode(World par1World, int par2, int par3, int par4) {
+	public void explode(World world, int x, int y, int z) {
 		if(!cut){
-			par1World.breakBlock(par2, par3, par4, false);
+			world.breakBlock(x, y, z, false);
 			if(SecurityCraft.config.smallerMineExplosion)
-				newExplosion((Entity)null, par2, par3, par4,  1.0F, true, true, par1World);
+				newExplosion((Entity)null, x, y, z, 1.0F, true, world);
 			else
-				newExplosion((Entity)null, par2, par3, par4,  3.0F, true, true, par1World);
+				newExplosion((Entity)null, x, y, z, 3.0F, true, world);
 		}
 	}
 
 	@Override
-	public boolean isActive(World world, int par2, int par3, int par4) {
+	public boolean isActive(World world, int x, int y, int z) {
 		return !cut;
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister){
+	public void registerIcons(IIconRegister register){
 		if(cut)
-			blockIcon = par1IconRegister.registerIcon("securitycraft:mineCut");
+			blockIcon = register.registerIcon("securitycraft:mineCut");
 		else
-			blockIcon = par1IconRegister.registerIcon("securitycraft:mine");
+			blockIcon = register.registerIcon("securitycraft:mine");
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

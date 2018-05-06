@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedGlassPane(String par2Str, String par3Str, Material par4Material, boolean par5) {
-		super(par2Str, par3Str, par4Material, par5);
+	public BlockReinforcedGlassPane(String frontIcon, String sideIcon, Material material, boolean drop) {
+		super(frontIcon, sideIcon, material, drop);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 25);
 	}
 
@@ -28,30 +28,30 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_)
+	public void onBlockAdded(World world, int x, int y, int z)
 	{
-		super.onBlockAdded(p_149726_1_, p_149726_2_, p_149726_3_, p_149726_4_);
+		super.onBlockAdded(world, x, y, z);
 	}
 
 	@Override
-	public void breakBlock(World p_149749_1_, int p_149749_2_, int p_149749_3_, int p_149749_4_, Block p_149749_5_, int p_149749_6_)
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta)
 	{
-		super.breakBlock(p_149749_1_, p_149749_2_, p_149749_3_, p_149749_4_, p_149749_5_, p_149749_6_);
-		p_149749_1_.removeTileEntity(p_149749_2_, p_149749_3_, p_149749_4_);
+		super.breakBlock(world, x, y, z, block, meta);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World p_149696_1_, int p_149696_2_, int p_149696_3_, int p_149696_4_, int p_149696_5_, int p_149696_6_)
+	public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventData)
 	{
-		super.onBlockEventReceived(p_149696_1_, p_149696_2_, p_149696_3_, p_149696_4_, p_149696_5_, p_149696_6_);
-		TileEntity tileentity = p_149696_1_.getTileEntity(p_149696_2_, p_149696_3_, p_149696_4_);
-		return tileentity != null ? tileentity.receiveClientEvent(p_149696_5_, p_149696_6_) : false;
+		super.onBlockEventReceived(world, x, y, z, eventID, eventData);
+		TileEntity tileentity = world.getTileEntity(x, y, z);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, eventData) : false;
 	}
 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+	public Item getItem(World world, int x, int y, int z)
 	{
 		return Item.getItemFromBlock(this);
 	}
@@ -62,7 +62,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public Item getItemDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int meta, Random random, int fortune)
 	{
 		return Item.getItemFromBlock(this);
 	}
@@ -74,7 +74,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

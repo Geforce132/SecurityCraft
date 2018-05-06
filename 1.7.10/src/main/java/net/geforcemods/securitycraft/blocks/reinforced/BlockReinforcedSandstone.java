@@ -22,15 +22,15 @@ public class BlockReinforcedSandstone extends BlockOwnable implements IReinforce
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
-		par3List.add(new ItemStack(par1Item, 1, 0));
-		par3List.add(new ItemStack(par1Item, 1, 1));
-		par3List.add(new ItemStack(par1Item, 1, 2));
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
 	}
 
 	@Override
-	public int damageDropped(int par1){
-		return par1;
+	public int damageDropped(int meta){
+		return meta;
 	}
 
 	/**
@@ -38,8 +38,8 @@ public class BlockReinforcedSandstone extends BlockOwnable implements IReinforce
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return Blocks.sandstone.getIcon(par1, par2);
+	public IIcon getIcon(int side, int meta){
+		return Blocks.sandstone.getIcon(side, meta);
 	}
 
 	@Override
@@ -50,14 +50,14 @@ public class BlockReinforcedSandstone extends BlockOwnable implements IReinforce
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}

@@ -69,15 +69,15 @@ public class GuiUtils{
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			int k = 0;
+			int maxWidth = 0;
 			Iterator<?> iterator = list.iterator();
 
 			while (iterator.hasNext()){
 				String s = (String)iterator.next();
-				int l = fontRendererObj.getStringWidth(s);
+				int stringWidth = fontRendererObj.getStringWidth(s);
 
-				if(l > k)
-					k = l;
+				if(stringWidth > maxWidth)
+					maxWidth = stringWidth;
 			}
 
 			int j2 = x + 12;
@@ -87,25 +87,25 @@ public class GuiUtils{
 			if(list.size() > 1)
 				i1 += 2 + (list.size() - 1) * 10;
 
-			if(j2 + k > Minecraft.getMinecraft().displayWidth)
-				j2 -= 28 + k;
+			if(j2 + maxWidth > Minecraft.getMinecraft().displayWidth)
+				j2 -= 28 + maxWidth;
 
 			if(k2 + i1 + 6 > Minecraft.getMinecraft().displayHeight)
 				k2 = Minecraft.getMinecraft().displayHeight - i1 - 6; //h
 
 			itemRender.zLevel = 300.0F;
 			int j1 = -267386864;
-			drawGradientRect(j2 - 3, k2 - 4, j2 + k + 3, k2 - 3, j1, j1, 300.0F);
-			drawGradientRect(j2 - 3, k2 + i1 + 3, j2 + k + 3, k2 + i1 + 4, j1, j1, 300.0F);
-			drawGradientRect(j2 - 3, k2 - 3, j2 + k + 3, k2 + i1 + 3, j1, j1, 300.0F);
+			drawGradientRect(j2 - 3, k2 - 4, j2 + maxWidth + 3, k2 - 3, j1, j1, 300.0F);
+			drawGradientRect(j2 - 3, k2 + i1 + 3, j2 + maxWidth + 3, k2 + i1 + 4, j1, j1, 300.0F);
+			drawGradientRect(j2 - 3, k2 - 3, j2 + maxWidth + 3, k2 + i1 + 3, j1, j1, 300.0F);
 			drawGradientRect(j2 - 4, k2 - 3, j2 - 3, k2 + i1 + 3, j1, j1, 300.0F);
-			drawGradientRect(j2 + k + 3, k2 - 3, j2 + k + 4, k2 + i1 + 3, j1, j1, 300.0F);
+			drawGradientRect(j2 + maxWidth + 3, k2 - 3, j2 + maxWidth + 4, k2 + i1 + 3, j1, j1, 300.0F);
 			int k1 = 1347420415;
 			int l1 = (k1 & 16711422) >> 1 | k1 & -16777216;
 			drawGradientRect(j2 - 3, k2 - 3 + 1, j2 - 3 + 1, k2 + i1 + 3 - 1, k1, l1, 300.0F);
-			drawGradientRect(j2 + k + 2, k2 - 3 + 1, j2 + k + 3, k2 + i1 + 3 - 1, k1, l1, 300.0F);
-			drawGradientRect(j2 - 3, k2 - 3, j2 + k + 3, k2 - 3 + 1, k1, k1, 300.0F);
-			drawGradientRect(j2 - 3, k2 + i1 + 2, j2 + k + 3, k2 + i1 + 3, l1, l1, 300.0F);
+			drawGradientRect(j2 + maxWidth + 2, k2 - 3 + 1, j2 + maxWidth + 3, k2 + i1 + 3 - 1, k1, l1, 300.0F);
+			drawGradientRect(j2 - 3, k2 - 3, j2 + maxWidth + 3, k2 - 3 + 1, k1, k1, 300.0F);
+			drawGradientRect(j2 - 3, k2 + i1 + 2, j2 + maxWidth + 3, k2 + i1 + 3, l1, l1, 300.0F);
 
 			for (int i2 = 0; i2 < list.size(); ++i2)
 			{
@@ -119,9 +119,7 @@ public class GuiUtils{
 			}
 
 			itemRender.zLevel = 0.0F;
-			//GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			//RenderHelper.enableStandardItemLighting();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		}
 	}

@@ -24,19 +24,19 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	private final BlockSlab singleSlab;
 	private final ReinforcedSlabType slabType;
 
-	public ItemBlockReinforcedSlabs(Block par1Block, BlockReinforcedWoodSlabs par2Block, Boolean par3, ReinforcedSlabType slabType){
-		super(par1Block);
-		singleSlab = par2Block;
-		isNotSlab = par3;
+	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedWoodSlabs slabBlock, boolean notSlab, ReinforcedSlabType slabType){
+		super(blockType);
+		singleSlab = slabBlock;
+		isNotSlab = notSlab;
 		this.slabType = slabType;
 		setMaxDurability(0);
 		setHasSubtypes(true);
 	}
 
-	public ItemBlockReinforcedSlabs(Block par1Block, BlockReinforcedSlabs par2Block, Boolean par3, ReinforcedSlabType slabType){
-		super(par1Block);
-		singleSlab = par2Block;
-		isNotSlab = par3;
+	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedSlabs slabBlock, boolean notSlab, ReinforcedSlabType slabType){
+		super(blockType);
+		singleSlab = slabBlock;
+		isNotSlab = notSlab;
 		this.slabType = slabType;
 		setMaxDurability(0);
 		setHasSubtypes(true);
@@ -47,11 +47,11 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconFromDamage(int par1){
+	public IIcon getIconFromDamage(int meta){
 		if(slabType == ReinforcedSlabType.OTHER)
-			return SCContent.reinforcedStoneSlabs.getIcon(2, par1);
+			return SCContent.reinforcedStoneSlabs.getIcon(2, meta);
 		else
-			return SCContent.reinforcedWoodSlabs.getIcon(2, par1);
+			return SCContent.reinforcedWoodSlabs.getIcon(2, meta);
 	}
 
 	@Override
@@ -90,127 +90,124 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	@Override
-	public int getMetadata(int par1){
-		return par1;
+	public int getMetadata(int meta){ //u wot
+		return meta;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
 		if(isNotSlab)
-			return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
-		else if(par1ItemStack.stackSize == 0)
+			return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+		else if(stack.stackSize == 0)
 			return false;
-		else if(!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
+		else if(!player.canPlayerEdit(x, y, z, side, stack))
 			return false;
 		else{
-			Block block = par3World.getBlock(par4, par5, par6);
-			int i1 = par3World.getBlockMetadata(par4, par5, par6);
-			int j1 = i1 & 7;
-			boolean flag = (i1 & 8) != 0;
+			Block block = world.getBlock(x, y, z);
+			int meta = world.getBlockMetadata(x, y, z);
+			int j1 = meta & 7;
+			boolean flag = (meta & 8) != 0;
 
 			Owner owner = null;
 
-			if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable){
-				owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
+			if(world.getTileEntity(x, y, z) instanceof IOwnable){
+				owner = ((IOwnable) world.getTileEntity(x, y, z)).getOwner();
 
-				if(!((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().isOwner(par2EntityPlayer)){
-					if(!par3World.isRemote)
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
+				if(!((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
+					if(!world.isRemote)
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
 
 					return false;
 				}
 			}
 
-			if((par7 == 1 && !flag || par7 == 0 && flag) && isBlock(block) && j1 == par1ItemStack.getMetadata()){
-				if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(block, i1), (block == SCContent.reinforcedStoneSlabs && i1 == 2 ? 2 : j1), 3)){
-					par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(block, i1).stepSound.getPlaceSound(), (this.getBlockVariant(block, i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, i1).stepSound.getFrequency() * 0.8F);
-					--par1ItemStack.stackSize;
+			if((side == 1 && !flag || side == 0 && flag) && isBlock(block) && j1 == stack.getMetadata()){
+				if(world.checkNoEntityCollision(this.getBlockVariant(meta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(block, meta), (block == SCContent.reinforcedStoneSlabs && meta == 2 ? 2 : j1), 3)){
+					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, this.getBlockVariant(block, meta).stepSound.getPlaceSound(), (this.getBlockVariant(block, meta).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, meta).stepSound.getFrequency() * 0.8F);
+					--stack.stackSize;
 
 					if(owner != null)
-						((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner);
+						((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(owner);
 				}
 
 				return true;
 			}
 			else
-				return func_150946_a(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7) ? true : super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
+				return tryPlace(stack, player, world, x, y, z, side) ? true : super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean func_150936_a(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack){
-		int i1 = par2;
-		int j1 = par3;
-		int k1 = par4;
-		Block block = par1World.getBlock(par2, par3, par4);
-		int l1 = par1World.getBlockMetadata(par2, par3, par4);
-		int i2 = l1 & 7;
-		boolean flag = (l1 & 8) != 0;
+	public boolean func_150936_a(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stack){
+		Block block = world.getBlock(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+		int i2 = meta & 7;
+		boolean flag = (meta & 8) != 0;
 
-		if((par5 == 1 && !flag || par5 == 0 && flag) && block == singleSlab && i2 == par7ItemStack.getMetadata())
+		if((side == 1 && !flag || side == 0 && flag) && block == singleSlab && i2 == stack.getMetadata())
 			return true;
 		else{
-			if(par5 == 0)
-				--par3;
+			if(side == 0)
+				--y;
 
-			if(par5 == 1)
-				++par3;
+			if(side == 1)
+				++y;
 
-			if(par5 == 2)
-				--par4;
+			if(side == 2)
+				--z;
 
-			if(par5 == 3)
-				++par4;
+			if(side == 3)
+				++z;
 
-			if(par5 == 4)
-				--par2;
+			if(side == 4)
+				--x;
 
-			if(par5 == 5)
-				++par2;
+			if(side == 5)
+				++x;
 
-			Block block1 = par1World.getBlock(par2, par3, par4);
-			int j2 = par1World.getBlockMetadata(par2, par3, par4);
-			i2 = j2 & 7;
-			return block1 == singleSlab && i2 == par7ItemStack.getMetadata() ? true : super.func_150936_a(par1World, i1, j1, k1, par5, par6EntityPlayer, par7ItemStack);
+			Block block1 = world.getBlock(x, y, z);
+			int block1Meta = world.getBlockMetadata(x, y, z);
+			i2 = block1Meta & 7;
+			return block1 == singleSlab && i2 == stack.getMetadata() ? true : super.func_150936_a(world, x, y, z, side, player, stack);
 		}
 	}
 
-	private boolean func_150946_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7){
-		if(par7 == 0)
-			--par5;
+	private boolean tryPlace(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int meta){
+		if(meta == 0)
+			--y;
 
-		if(par7 == 1)
-			++par5;
+		if(meta == 1)
+			++y;
 
-		if(par7 == 2)
-			--par6;
+		if(meta == 2)
+			--z;
 
-		if(par7 == 3)
-			++par6;
+		if(meta == 3)
+			++z;
 
-		if(par7 == 4)
-			--par4;
+		if(meta == 4)
+			--x;
 
-		if(par7 == 5)
-			++par4;
+		if(meta == 5)
+			++x;
 
-		Block block = par3World.getBlock(par4, par5, par6);
-		int i1 = par3World.getBlockMetadata(par4, par5, par6);
-		int j1 = i1 & 7;
+		Block block = world.getBlock(x, y, z);
+		int blockMeta = world.getBlockMetadata(x, y, z);
+		int j1 = blockMeta & 7;
 
 		Owner owner = null;
 
-		if(par3World.getTileEntity(par4, par5, par6) instanceof IOwnable)
-			owner = ((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner();
+		if(world.getTileEntity(x, y, z) instanceof IOwnable)
+			owner = ((IOwnable) world.getTileEntity(x, y, z)).getOwner();
 
-		if(block == singleSlab && j1 == par1ItemStack.getMetadata()){
-			if(par3World.checkNoEntityCollision(this.getBlockVariant(i1).getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.getBlockVariant(i1), j1, 3)){
-				par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.getBlockVariant(i1).stepSound.getPlaceSound(), (this.getBlockVariant(i1).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(i1).stepSound.getFrequency() * 0.8F);
-				--par1ItemStack.stackSize;
+		if(block == singleSlab && j1 == stack.getMetadata()){
+			if(world.checkNoEntityCollision(this.getBlockVariant(blockMeta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(blockMeta), j1, 3)){
+				world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, this.getBlockVariant(blockMeta).stepSound.getPlaceSound(), (this.getBlockVariant(blockMeta).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(blockMeta).stepSound.getFrequency() * 0.8F);
+				--stack.stackSize;
 
 				if(owner != null)
-					((IOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(owner.getUUID(), owner.getName());
+					((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(owner.getUUID(), owner.getName());
 			}
 
 			return true;

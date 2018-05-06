@@ -62,7 +62,7 @@ public class GuiMRATActivate extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2){
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		fontRendererObj.drawString(EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.mrat.activate"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.mrat.deactivate")) / 2, 6, 4210752);
 	}
 
@@ -70,12 +70,12 @@ public class GuiMRATActivate extends GuiContainer{
 	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

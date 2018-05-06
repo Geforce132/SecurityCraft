@@ -10,9 +10,9 @@ public class SlotItemRestricted extends Slot {
 	private final IInventory inventory;
 	private final Item[] prohibitedItems;
 
-	public SlotItemRestricted(IInventory par1IInventory, int par2, int par3, int par4, Item... prohibitedItems) {
-		super(par1IInventory, par2, par3, par4);
-		inventory = par1IInventory;
+	public SlotItemRestricted(IInventory inv, int slotIndex, int xPos, int yPos, Item... prohibitedItems) {
+		super(inv, slotIndex, xPos, yPos);
+		inventory = inv;
 		this.prohibitedItems = prohibitedItems;
 	}
 

@@ -9,12 +9,12 @@ import net.minecraft.client.gui.GuiScreen;
 public class SecurityCraftGuiFactory implements IModGuiFactory{
 
 	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement arg0) {
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
 		return null;
 	}
 
 	@Override
-	public void initialize(Minecraft arg0) {
+	public void initialize(Minecraft mc) {
 
 	}
 

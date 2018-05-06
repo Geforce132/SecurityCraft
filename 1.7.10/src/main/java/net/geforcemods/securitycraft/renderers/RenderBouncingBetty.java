@@ -22,15 +22,15 @@ public class RenderBouncingBetty extends Render
 		shadowSize = 0.5F;
 	}
 
-	public void renderPrimedTNT(EntityBouncingBetty par1EntityTNTPrimed, double par2, double par4, double par6, float par8, float par9)
+	public void renderBouncingBetty(EntityBouncingBetty bouncingBetty, double par2, double par4, double par6, float par8, float par9) // i don't actually know
 	{
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
 		float f2;
 
-		if (par1EntityTNTPrimed.fuse - par9 + 1.0F < 10.0F)
+		if (bouncingBetty.fuse - par9 + 1.0F < 10.0F)
 		{
-			f2 = 1.0F - (par1EntityTNTPrimed.fuse - par9 + 1.0F) / 10.0F;
+			f2 = 1.0F - (bouncingBetty.fuse - par9 + 1.0F) / 10.0F;
 
 			if (f2 < 0.0F)
 				f2 = 0.0F;
@@ -44,11 +44,11 @@ public class RenderBouncingBetty extends Render
 			GL11.glScalef(f3, f3, f3);
 		}
 
-		f2 = (1.0F - (par1EntityTNTPrimed.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
-		bindEntityTexture(par1EntityTNTPrimed);
-		blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, par1EntityTNTPrimed.getBrightness(par9));
+		f2 = (1.0F - (bouncingBetty.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
+		bindEntityTexture(bouncingBetty);
+		blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, bouncingBetty.getBrightness(par9));
 
-		if (par1EntityTNTPrimed.fuse / 5 % 2 == 0)
+		if (bouncingBetty.fuse / 5 % 2 == 0)
 		{
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -65,18 +65,13 @@ public class RenderBouncingBetty extends Render
 		GL11.glPopMatrix();
 	}
 
-	protected ResourceLocation func_110808_a(EntityBouncingBetty par1EntityTNTPrimed)
-	{
-		return TextureMap.locationBlocksTexture;
-	}
-
 	/**
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
-	 @Override
-	 protected ResourceLocation getEntityTexture(Entity par1Entity)
+	@Override
+	protected ResourceLocation getEntityTexture(Entity entity)
 	{
-		return func_110808_a((EntityBouncingBetty)par1Entity);
+		return TextureMap.locationBlocksTexture;
 	}
 
 	/**
@@ -85,9 +80,9 @@ public class RenderBouncingBetty extends Render
 	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
-	 @Override
-	 public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-	 {
-		 renderPrimedTNT((EntityBouncingBetty)par1Entity, par2, par4, par6, par8, par9);
-	 }
+	@Override
+	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9)
+	{
+		renderBouncingBetty((EntityBouncingBetty)entity, par2, par4, par6, par8, par9);
+	}
 }

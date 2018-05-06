@@ -7,12 +7,12 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerKeypadFurnace extends ContainerFurnace{
 
-	public ContainerKeypadFurnace(InventoryPlayer player, TileEntityFurnace par2TileEntity) {
-		super(player, par2TileEntity);
+	public ContainerKeypadFurnace(InventoryPlayer player, TileEntityFurnace te) {
+		super(player, te);
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer p_75145_1_){
+	public boolean canInteractWith(EntityPlayer player){
 		return true;
 	}
 

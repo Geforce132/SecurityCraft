@@ -28,24 +28,24 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable implements 
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static int func_149997_b(int par1){
-		return ~par1 & 15;
+	public int flipMeta(int meta){
+		return ~meta & 15;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
 		for (int i = 0; i < iicons.length; ++i)
-			par3List.add(new ItemStack(par1Item, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public int damageDropped(int par1){
-		return par1;
+	public int damageDropped(int meta){
+		return meta;
 	}
 
 	@Override
-	public int quantityDropped(Random par1Random){
+	public int quantityDropped(Random random){
 		return 1;
 	}
 
@@ -59,8 +59,8 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable implements 
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2){
-		return Blocks.stained_hardened_clay.getIcon(par1, par2);
+	public IIcon getIcon(int side, int meta){
+		return Blocks.stained_hardened_clay.getIcon(side, meta);
 	}
 
 	@Override
@@ -72,20 +72,20 @@ public class BlockReinforcedStainedHardenedClay extends BlockOwnable implements 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IIconRegister){
+	public void registerIcons(IIconRegister register){
 		for(int i = 0; i < iicons.length; ++i)
-			iicons[i] = par1IIconRegister.registerIcon(getTextureName() + "_" + ItemDye.dyeIcons[func_149997_b(i)]);
+			iicons[i] = register.registerIcon(getTextureName() + "_" + ItemDye.dyeIcons[flipMeta(i)]);
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_, int p_149720_3_, int p_149720_4_)
+	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
 		return 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getRenderColor(int p_149741_1_)
+	public int getRenderColor(int meta)
 	{
 		return 0x999999;
 	}

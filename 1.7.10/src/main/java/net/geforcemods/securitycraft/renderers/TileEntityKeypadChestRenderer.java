@@ -26,67 +26,67 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 	private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
 	private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
-	private ModelChest field_147510_h = new ModelChest();
-	private ModelChest field_147511_i = new ModelLargeChest();
-	private boolean field_147509_j;
+	private ModelChest smallModel = new ModelChest();
+	private ModelChest largeModel = new ModelLargeChest();
+	private boolean isChristmas;
 
 	public TileEntityKeypadChestRenderer()
 	{
 		Calendar calendar = Calendar.getInstance();
 
 		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
-			field_147509_j = true;
+			isChristmas = true;
 	}
 
-	public void renderTileEntityAt(TileEntityChest p_147502_1_, double p_147502_2_, double p_147502_4_, double p_147502_6_, float p_147502_8_)
+	public void renderTileEntityAt(TileEntityChest te, double x, double y, double z, float partialTicks)
 	{
-		int i;
+		int meta;
 
-		if (!p_147502_1_.hasWorldObj())
-			i = 0;
+		if (!te.hasWorldObj())
+			meta = 0;
 		else
 		{
-			Block block = p_147502_1_.getBlockType();
-			i = p_147502_1_.getBlockMetadata();
+			Block block = te.getBlockType();
+			meta = te.getBlockMetadata();
 
-			if (block instanceof BlockChest && i == 0)
+			if (block instanceof BlockChest && meta == 0)
 			{
 				try
 				{
-					((BlockChest)block).initMetadata(p_147502_1_.getWorld(), p_147502_1_.xCoord, p_147502_1_.yCoord, p_147502_1_.zCoord);
+					((BlockChest)block).initMetadata(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
 				}
 				catch (ClassCastException e)
 				{
-					FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest", p_147502_1_.xCoord, p_147502_1_.yCoord, p_147502_1_.zCoord);
+					FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest", te.xCoord, te.yCoord, te.zCoord);
 				}
-				i = p_147502_1_.getBlockMetadata();
+				meta = te.getBlockMetadata();
 			}
 
-			p_147502_1_.checkForAdjacentChests();
+			te.checkForAdjacentChests();
 		}
 
-		if (p_147502_1_.adjacentChestZNeg == null && p_147502_1_.adjacentChestXNeg == null)
+		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null)
 		{
 			ModelChest modelchest;
 
-			if (p_147502_1_.adjacentChestXPos == null && p_147502_1_.adjacentChestZPos == null)
+			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
 			{
-				modelchest = field_147510_h;
+				modelchest = smallModel;
 
-				if (field_147509_j)
+				if (isChristmas)
 					bindTexture(christmasNormal);
-				else if(p_147502_1_.lidAngle >= 0.9)
+				else if(te.lidAngle >= 0.9)
 					bindTexture(normalSingleActive);
 				else
 					bindTexture(normalSingleUnactive);
 			}
 			else
 			{
-				modelchest = field_147511_i;
+				modelchest = largeModel;
 
-				if (field_147509_j)
+				if (isChristmas)
 					bindTexture(christmasDouble);
-				else if(p_147502_1_.lidAngle >= 0.9)
+				else if(te.lidAngle >= 0.9)
 					bindTexture(normalDoubleActive);
 				else
 					bindTexture(normalDoubleUnactive);
@@ -95,53 +95,53 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			GL11.glPushMatrix();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float)p_147502_2_, (float)p_147502_4_ + 1.0F, (float)p_147502_6_ + 1.0F);
+			GL11.glTranslatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
 			GL11.glScalef(1.0F, -1.0F, -1.0F);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			short short1 = 0;
 
-			if (i == 2)
+			if (meta == 2)
 				short1 = 180;
 
-			if (i == 3)
+			if (meta == 3)
 				short1 = 0;
 
-			if (i == 4)
+			if (meta == 4)
 				short1 = 90;
 
-			if (i == 5)
+			if (meta == 5)
 				short1 = -90;
 
-			if (i == 2 && p_147502_1_.adjacentChestXPos != null)
+			if (meta == 2 && te.adjacentChestXPos != null)
 				GL11.glTranslatef(1.0F, 0.0F, 0.0F);
 
-			if (i == 5 && p_147502_1_.adjacentChestZPos != null)
+			if (meta == 5 && te.adjacentChestZPos != null)
 				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 
 			GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-			float f1 = p_147502_1_.prevLidAngle + (p_147502_1_.lidAngle - p_147502_1_.prevLidAngle) * p_147502_8_;
-			float f2;
+			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+			float adjacentAngle;
 
-			if (p_147502_1_.adjacentChestZNeg != null)
+			if (te.adjacentChestZNeg != null)
 			{
-				f2 = p_147502_1_.adjacentChestZNeg.prevLidAngle + (p_147502_1_.adjacentChestZNeg.lidAngle - p_147502_1_.adjacentChestZNeg.prevLidAngle) * p_147502_8_;
+				adjacentAngle = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
 
-				if (f2 > f1)
-					f1 = f2;
+				if (adjacentAngle > angle)
+					angle = adjacentAngle;
 			}
 
-			if (p_147502_1_.adjacentChestXNeg != null)
+			if (te.adjacentChestXNeg != null)
 			{
-				f2 = p_147502_1_.adjacentChestXNeg.prevLidAngle + (p_147502_1_.adjacentChestXNeg.lidAngle - p_147502_1_.adjacentChestXNeg.prevLidAngle) * p_147502_8_;
+				adjacentAngle = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
 
-				if (f2 > f1)
-					f1 = f2;
+				if (adjacentAngle > angle)
+					angle = adjacentAngle;
 			}
 
-			f1 = 1.0F - f1;
-			f1 = 1.0F - f1 * f1 * f1;
-			modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
+			angle = 1.0F - angle;
+			angle = 1.0F - angle * angle * angle;
+			modelchest.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
 			modelchest.renderAll();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
@@ -150,8 +150,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks)
 	{
-		this.renderTileEntityAt((TileEntityChest)p_147500_1_, p_147500_2_, p_147500_4_, p_147500_6_, p_147500_8_);
+		this.renderTileEntityAt((TileEntityChest)te, x, y, z, partialTicks);
 	}
 }

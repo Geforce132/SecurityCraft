@@ -24,21 +24,21 @@ public class PacketSUpdateSliderValue implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		par1ByteBuf.writeInt(id);
-		par1ByteBuf.writeDouble(value);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(id);
+		buf.writeDouble(value);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		id = par1ByteBuf.readInt();
-		value = par1ByteBuf.readDouble();
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		id = buf.readInt();
+		value = buf.readDouble();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateSliderValue, IMessage> {

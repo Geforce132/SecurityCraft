@@ -11,7 +11,7 @@ public class ContainerBriefcase extends Container {
 
 	private BriefcaseInventory inventory;
 
-	public ContainerBriefcase(EntityPlayer par1Player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
+	public ContainerBriefcase(EntityPlayer player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
 		inventory = briefcaseInventory;
 
 		for(int i = 0; i < 3; i++)
@@ -27,7 +27,7 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(index);
 
@@ -53,7 +53,7 @@ public class ContainerBriefcase extends Container {
 			if(itemstack1.stackSize == itemstack.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+			slot.onPickupFromSlot(player, itemstack1);
 		}
 
 		return itemstack;

@@ -28,19 +28,19 @@ public class TileEntityFrame extends TileEntityOwnable {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		if(hasCameraLocation())
-			par1NBTTagCompound.setString("cameraLoc", cameraView.toNBTString());
+			tag.setString("cameraLoc", cameraView.toNBTString());
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if(par1NBTTagCompound.hasKey("cameraLoc")){
-			String[] coords = par1NBTTagCompound.getString("cameraLoc").split(" ");
+		if(tag.hasKey("cameraLoc")){
+			String[] coords = tag.getString("cameraLoc").split(" ");
 
 			setCameraLocation(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), coords.length == 4 ? Integer.parseInt(coords[3]) : 0);
 		}

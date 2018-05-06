@@ -35,9 +35,9 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			}
 
 			if(!open)
-				((BlockScannerDoor)worldObj.getBlock(xCoord, yCoord, zCoord)).func_150014_a(worldObj, xCoord, yCoord, zCoord, true);
+				((BlockScannerDoor)worldObj.getBlock(xCoord, yCoord, zCoord)).changeDoorState(worldObj, xCoord, yCoord, zCoord, true);
 			else
-				((BlockScannerDoor)worldObj.getBlock(xCoord, yCoord, zCoord)).func_150014_a(worldObj, xCoord, yCoord, zCoord, false);
+				((BlockScannerDoor)worldObj.getBlock(xCoord, yCoord, zCoord)).changeDoorState(worldObj, xCoord, yCoord, zCoord, false);
 
 			if(!open)
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getCommandSenderName()), EnumChatFormatting.GREEN);

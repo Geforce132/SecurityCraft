@@ -16,24 +16,24 @@ public class ItemReinforcedDoor extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
-		if(par3World.isRemote)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
+		if(world.isRemote)
 			return true;
-		else if (par7 != 1)
+		else if (side != 1)
 			return false;
 		else{
-			++par5;
+			++y;
 			Block block = SCContent.reinforcedDoor;
 
-			if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack)){
-				if (!block.canPlaceBlockAt(par3World, par4, par5, par6))
+			if (player.canPlayerEdit(x, y, z, side, stack) && player.canPlayerEdit(x, y + 1, z, side, stack)){
+				if (!block.canPlaceBlockAt(world, x, y, z))
 					return false;
 				else{
-					int i1 = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
-					placeDoorBlock(par3World, par4, par5, par6, i1, block);
-					((TileEntityOwnable) par3World.getTileEntity(par4, par5, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
-					((TileEntityOwnable) par3World.getTileEntity(par4, par5 + 1, par6)).getOwner().set(par2EntityPlayer.getGameProfile().getId().toString(), par2EntityPlayer.getCommandSenderName());
-					--par1ItemStack.stackSize;
+					int rotation = MathHelper.floor_double((player.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
+					placeDoorBlock(world, x, y, z, rotation, block);
+					((TileEntityOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+					((TileEntityOwnable) world.getTileEntity(x, y + 1, z)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
+					--stack.stackSize;
 					return true;
 				}
 			}
@@ -42,23 +42,23 @@ public class ItemReinforcedDoor extends Item {
 		}
 	}
 
-	public static void placeDoorBlock(World par1World, int par2, int par3, int par4, int par5, Block par6Block){
+	public static void placeDoorBlock(World world, int x, int y, int z, int rotation, Block block){ //wtf is this code
 		byte b0 = 0;
 		byte b1 = 0;
 
-		if(par5 == 0)
+		if(rotation == 0)
 			b1 = 1;
-		else if(par5 == 1)
+		else if(rotation == 1)
 			b0 = -1;
-		else if(par5 == 2)
+		else if(rotation == 2)
 			b1 = -1;
-		else if(par5 == 3)
+		else if(rotation == 3)
 			b0 = 1;
 
-		int i1 = (par1World.getBlock(par2 - b0, par3, par4 - b1).isNormalCube() ? 1 : 0) + (par1World.getBlock(par2 - b0, par3 + 1, par4 - b1).isNormalCube() ? 1 : 0);
-		int j1 = (par1World.getBlock(par2 + b0, par3, par4 + b1).isNormalCube() ? 1 : 0) + (par1World.getBlock(par2 + b0, par3 + 1, par4 + b1).isNormalCube() ? 1 : 0);
-		boolean flag = par1World.getBlock(par2 - b0, par3, par4 - b1) == par6Block || par1World.getBlock(par2 - b0, par3 + 1, par4 - b1) == par6Block;
-		boolean flag1 = par1World.getBlock(par2 + b0, par3, par4 + b1) == par6Block || par1World.getBlock(par2 + b0, par3 + 1, par4 + b1) == par6Block;
+		int i1 = (world.getBlock(x - b0, y, z - b1).isNormalCube() ? 1 : 0) + (world.getBlock(x - b0, y + 1, z - b1).isNormalCube() ? 1 : 0);
+		int j1 = (world.getBlock(x + b0, y, z + b1).isNormalCube() ? 1 : 0) + (world.getBlock(x + b0, y + 1, z + b1).isNormalCube() ? 1 : 0);
+		boolean flag = world.getBlock(x - b0, y, z - b1) == block || world.getBlock(x - b0, y + 1, z - b1) == block;
+		boolean flag1 = world.getBlock(x + b0, y, z + b1) == block || world.getBlock(x + b0, y + 1, z + b1) == block;
 		boolean flag2 = false;
 
 		if (flag && !flag1)
@@ -66,10 +66,10 @@ public class ItemReinforcedDoor extends Item {
 		else if (j1 > i1)
 			flag2 = true;
 
-		par1World.setBlock(par2, par3, par4, par6Block, par5, 2);
-		par1World.setBlock(par2, par3 + 1, par4, par6Block, 8 | (flag2 ? 1 : 0), 2);
-		par1World.notifyBlocksOfNeighborChange(par2, par3, par4, par6Block);
-		par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, par6Block);
+		world.setBlock(x, y, z, block, rotation, 2);
+		world.setBlock(x, y + 1, z, block, 8 | (flag2 ? 1 : 0), 2);
+		world.notifyBlocksOfNeighborChange(x, y, z, block);
+		world.notifyBlocksOfNeighborChange(x, y + 1, z, block);
 	}
 
 }

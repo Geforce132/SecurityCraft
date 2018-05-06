@@ -64,19 +64,19 @@ public class PlayerUtils{
 	 *
 	 * Args: playerName.
 	 */
-	public static boolean isPlayerOnline(String par1) {
+	public static boolean isPlayerOnline(String name) {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
 				EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
 
-				if(player != null && player.getCommandSenderName().matches(par1))
+				if(player != null && player.getCommandSenderName().matches(name))
 					return true;
 			}
 
 			return false;
 		}
 		else
-			return (MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(par1) != null);
+			return (MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(name) != null);
 	}
 
 	/**

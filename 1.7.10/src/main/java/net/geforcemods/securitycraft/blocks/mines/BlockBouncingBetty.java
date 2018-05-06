@@ -26,8 +26,8 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	@SideOnly(Side.CLIENT)
 	private IIcon activeIcon;
 
-	public BlockBouncingBetty(Material par2Material) {
-		super(par2Material);
+	public BlockBouncingBetty(Material material) {
+		super(material);
 		setBlockBounds(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F);
 	}
 
@@ -53,26 +53,26 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4){
-		return par1World.isSideSolid(par2, par3 - 1, par4, ForgeDirection.UP);
+	public boolean canPlaceBlockAt(World world, int x, int y, int z){
+		return world.isSideSolid(x, y - 1, z, ForgeDirection.UP);
 	}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity){
-		if(par5Entity instanceof EntityLivingBase)
-			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)par5Entity))
-				explode(par1World, par2, par3, par4);
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		if(entity instanceof EntityLivingBase)
+			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+				explode(world, x, y, z);
 	}
 
 	/**
 	 * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
 	 */
 	@Override
-	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer){
-		explode(par1World, par2, par3, par4);
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player){
+		explode(world, x, y, z);
 	}
 
 	@Override
@@ -89,32 +89,32 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	}
 
 	@Override
-	public void activateMine(World world, int par2, int par3, int par4) {
-		world.setBlockMetadataWithNotify(par2, par3, par4, 0, 3);
+	public void activateMine(World world, int x, int y, int z) {
+		world.setBlockMetadataWithNotify(x, y, z, 0, 3);
 	}
 
 	@Override
-	public void defuseMine(World world, int par2, int par3, int par4) {
-		world.setBlockMetadataWithNotify(par2, par3, par4, 1, 3);
+	public void defuseMine(World world, int x, int y, int z) {
+		world.setBlockMetadataWithNotify(x, y, z, 1, 3);
 	}
 
 	@Override
-	public void explode(World world, int par2, int par3, int par4) {
-		if(world.getBlockMetadata(par2, par3, par4) == 1) return;
+	public void explode(World world, int x, int y, int z) {
+		if(world.getBlockMetadata(x, y, z) == 1) return;
 
-		world.setBlockToAir(par2, par3, par4);
-		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, par2 + 0.5F, par3 + 0.5F, par4 + 0.5F);
-		entitytntprimed.fuse = 15;
-		entitytntprimed.motionY = 0.50D;
-		world.spawnEntityInWorld(entitytntprimed);
-		world.playSoundAtEntity(entitytntprimed, "game.tnt.primed", 1.0F, 1.0F);
+		world.setBlockToAir(x, y, z);
+		EntityBouncingBetty bouncingBetty = new EntityBouncingBetty(world, x + 0.5F, y + 0.5F, z + 0.5F);
+		bouncingBetty.fuse = 15;
+		bouncingBetty.motionY = 0.50D;
+		world.spawnEntityInWorld(bouncingBetty);
+		world.playSoundAtEntity(bouncingBetty, "game.tnt.primed", 1.0F, 1.0F);
 	}
 
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public Item getItemDropped(int par1, Random par2Random, int par3){
+	public Item getItemDropped(int meta, Random random, int fortune){
 		return Item.getItemFromBlock(this);
 	}
 
@@ -122,25 +122,25 @@ public class BlockBouncingBetty extends BlockExplosive implements IExplosive {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public Item getItem(World par1World, int par2, int par3, int par4){
+	public Item getItem(World world, int x, int y, int z){
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int par1, int par2) {
-		return par2 == 0 ? activeIcon : defusedIcon;
+	public IIcon getIcon(int par1, int x) {
+		return x == 0 ? activeIcon : defusedIcon;
 	}
 
 	@Override
-	public void registerIcons(IIconRegister par1IconRegister){
-		activeIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyActive");
-		defusedIcon = par1IconRegister.registerIcon("securitycraft:bouncingBettyDefused");
+	public void registerIcons(IIconRegister register){
+		activeIcon = register.registerIcon("securitycraft:bouncingBettyActive");
+		defusedIcon = register.registerIcon("securitycraft:bouncingBettyDefused");
 	}
 
 	@Override
-	public boolean isActive(World world, int par2, int par3, int par4) {
-		return world.getBlockMetadata(par2, par3, par4) == 0;
+	public boolean isActive(World world, int x, int y, int z) {
+		return world.getBlockMetadata(x, y, z) == 0;
 	}
 
 	@Override
