@@ -44,7 +44,6 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BRIEFCASE_GUI_ID = 15;
 	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
-	public static final int IRC_INFORMATION = 101;
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
 
@@ -98,8 +97,6 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
-			case IRC_INFORMATION:
-				return new ContainerGeneric(null, null);
 			case DISGUISE_MODULE:
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;
@@ -161,8 +158,6 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiKeyChanger(player.inventory, tile_entity);
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
-			case IRC_INFORMATION:
-				return new GuiIRCInfo();
 			case DISGUISE_MODULE:
 				if(!(player.getCurrentEquippedItem().getItem() instanceof ItemModule) || !((ItemModule) player.getCurrentEquippedItem().getItem()).canBeCustomized())
 					return null;

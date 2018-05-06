@@ -69,9 +69,7 @@ import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
-import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
-import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -238,7 +236,7 @@ public class SetupHandler
 
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 
-		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
+		SCContent.universalBlockRemover = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockRemover");
 
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("remoteAccessMine");
 
@@ -246,7 +244,7 @@ public class SetupHandler
 
 		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("bucketFLava");
 
-		SCContent.universalBlockModifier = new ItemUniversalBlockModifier().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockModifier");
+		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalBlockModifier");
 
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setUnlocalizedName("redstoneModule");
 		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setUnlocalizedName("whitelistModule");

@@ -70,9 +70,7 @@ import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemTaser;
-import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
-import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -241,7 +239,7 @@ public class SetupHandler
 
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setUnlocalizedName("doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 
-		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setUnlocalizedName("universalBlockRemover");
+		SCContent.universalBlockRemover = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setUnlocalizedName("universalBlockRemover");
 
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setUnlocalizedName("remoteAccessMine");
 
@@ -249,7 +247,7 @@ public class SetupHandler
 
 		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_lava").setUnlocalizedName("bucketFLava");
 
-		SCContent.universalBlockModifier = new ItemUniversalBlockModifier().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setUnlocalizedName("universalBlockModifier");
+		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setUnlocalizedName("universalBlockModifier");
 
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module").setUnlocalizedName("redstoneModule");
 		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setRegistryName("whitelist_module").setUnlocalizedName("whitelistModule");
