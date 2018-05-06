@@ -108,6 +108,90 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 					{
 						worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)), 2);
 						worldIn.markBlockRangeForRenderUpdate(pos, pos);
+
+						IBlockState secondDoorState;
+
+						if(state.getValue(FACING) == EnumFacing.WEST)
+						{
+							secondDoorState = worldIn.getBlockState(pos.north());
+
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+							{
+								worldIn.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, flag), 2);
+								worldIn.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+							}
+							else
+							{
+								secondDoorState = worldIn.getBlockState(pos.south());
+
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+								{
+									worldIn.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, flag), 2);
+									worldIn.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+								}
+							}
+						}
+						else if(state.getValue(FACING) == EnumFacing.NORTH)
+						{
+							secondDoorState = worldIn.getBlockState(pos.east());
+
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+							{
+								worldIn.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, flag), 2);
+								worldIn.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+							}
+							else
+							{
+								secondDoorState = worldIn.getBlockState(pos.west());
+
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+								{
+									worldIn.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, flag), 2);
+									worldIn.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+								}
+							}
+						}
+						else if(state.getValue(FACING) == EnumFacing.EAST)
+						{
+							secondDoorState = worldIn.getBlockState(pos.south());
+
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+							{
+								worldIn.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, flag), 2);
+								worldIn.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+							}
+							else
+							{
+								secondDoorState = worldIn.getBlockState(pos.north());
+
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+								{
+									worldIn.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, flag), 2);
+									worldIn.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+								}
+							}
+						}
+						else if(state.getValue(FACING) == EnumFacing.SOUTH)
+						{
+							secondDoorState = worldIn.getBlockState(pos.west());
+
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+							{
+								worldIn.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, flag), 2);
+								worldIn.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+							}
+							else
+							{
+								secondDoorState = worldIn.getBlockState(pos.east());
+
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != flag)
+								{
+									worldIn.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, flag), 2);
+									worldIn.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+								}
+							}
+						}
+
 						worldIn.playEvent((EntityPlayer)null, flag ? 1005 : 1011, pos, 0);
 					}
 				}

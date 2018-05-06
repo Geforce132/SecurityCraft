@@ -127,23 +127,223 @@ public class BlockReinforcedDoor extends BlockContainer{
 				setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void func_150014_a(World p_150014_1_, int p_150014_2_, int p_150014_3_, int p_150014_4_, boolean p_150014_5_){
-		int l = func_150012_g(p_150014_1_, p_150014_2_, p_150014_3_, p_150014_4_);
-		boolean flag1 = (l & 4) != 0;
+	public void func_150014_a(World world, int x, int y, int z, boolean open){
+		int l = func_150012_g(world, x, y, z);
+		boolean isOpen = (l & 4) != 0;
 
-		if (flag1 != p_150014_5_){
+		if (isOpen != open){
 			int i1 = l & 7;
 			i1 ^= 4;
 
-			if ((l & 8) == 0){
-				p_150014_1_.setBlockMetadataWithNotify(p_150014_2_, p_150014_3_, p_150014_4_, i1, 2);
-				p_150014_1_.markBlockRangeForRenderUpdate(p_150014_2_, p_150014_3_, p_150014_4_, p_150014_2_, p_150014_3_, p_150014_4_);
-			}else{
-				p_150014_1_.setBlockMetadataWithNotify(p_150014_2_, p_150014_3_ - 1, p_150014_4_, i1, 2);
-				p_150014_1_.markBlockRangeForRenderUpdate(p_150014_2_, p_150014_3_ - 1, p_150014_4_, p_150014_2_, p_150014_3_, p_150014_4_);
+			//the switch statements in here check whether this door is part of a double door and if it is, opens the other door as well
+			if ((l & 8) == 0){ //lower half
+				world.setBlockMetadataWithNotify(x, y, z, i1, 2);
+				world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+
+				switch(l)
+				{
+					case 0:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 16)
+						{
+							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 20 : 0, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
+						}
+						break;
+					case 16:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 0)
+						{
+							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 4 : 16, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
+						}
+						break;
+					case 1:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 17)
+						{
+							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 21 : 1, 2);
+							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
+						}
+						break;
+					case 17:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 1)
+						{
+							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 5 : 17, 2);
+							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
+						}
+						break;
+					case 2:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 18)
+						{
+							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 22 : 2, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
+						}
+						break;
+					case 18:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 2)
+						{
+							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 6 : 18, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
+						}
+						break;
+					case 3:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 19)
+						{
+							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 23 : 3, 2);
+							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
+						}
+						break;
+					case 19:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 3)
+						{
+							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 7 : 19, 2);
+							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
+						}
+						break;
+				}
+
+			}else{ //upper half
+				world.setBlockMetadataWithNotify(x, y - 1, z, i1, 2);
+				world.markBlockRangeForRenderUpdate(x, y - 1, z, x, y, z);
+
+				switch(l)
+				{
+					case 24:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 8)
+						{
+							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 12 : 24, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
+						}
+						break;
+					case 8:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 24)
+						{
+							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 28 : 8, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
+						}
+						break;
+					case 25:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 9)
+						{
+							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 13 : 25, 2);
+							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
+						}
+						break;
+					case 9:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 25)
+						{
+							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 29 : 9, 2);
+							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
+						}
+						break;
+					case 26:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 10)
+						{
+							world.setBlockMetadataWithNotify(x, y, z - 1, open ? 14 : 26, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z - 1, x, y, z);
+						}
+						break;
+					case 10:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 26)
+						{
+							world.setBlockMetadataWithNotify(x, y, z + 1, open ? 30 : 10, 2);
+							world.markBlockRangeForRenderUpdate(x, y, z + 1, x, y, z);
+						}
+						break;
+					case 27:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 11)
+						{
+							world.setBlockMetadataWithNotify(x + 1, y, z, open ? 15 : 27, 2);
+							world.markBlockRangeForRenderUpdate(x + 1, y, z, x, y, z);
+						}
+						break;
+					case 11:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 27)
+						{
+							world.setBlockMetadataWithNotify(x - 1, y, z, open ? 31 : 11, 2);
+							world.markBlockRangeForRenderUpdate(x - 1, y, z, x, y, z);
+						}
+						break;
+				}
 			}
 
-			p_150014_1_.playAuxSFXAtEntity((EntityPlayer)null, 1003, p_150014_2_, p_150014_3_, p_150014_4_, 0);
+			world.playAuxSFXAtEntity((EntityPlayer)null, 1003, x, y, z, 0);
+		}
+
+		if (!open)//closing
+		{
+			if ((l & 8) == 0){ //lower half
+				switch(l)
+				{
+					case 4:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 20)
+							func_150014_a(world, x, y, z + 1, false);
+						break;
+					case 20:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 4)
+							func_150014_a(world, x, y, z - 1, false);
+						break;
+					case 5:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 21)
+							func_150014_a(world, x - 1, y, z, false);
+						break;
+					case 21:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 5)
+							func_150014_a(world, x + 1, y, z, false);
+						break;
+					case 6:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 22)
+							func_150014_a(world, x, y, z - 1, false);
+						break;
+					case 22:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 6)
+							func_150014_a(world, x, y, z + 1, false);
+						break;
+					case 7:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 23)
+							func_150014_a(world, x + 1, y, z, false);
+						break;
+					case 23:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 7)
+							func_150014_a(world, x - 1, y, z, false);
+						break;
+				}
+
+			}else{ //upper half
+				switch(l)
+				{
+					case 28:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 12)
+							func_150014_a(world, x, y, z + 1, false);
+						break;
+					case 12:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 28)
+							func_150014_a(world, x, y, z - 1, false);
+						break;
+					case 29:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 13)
+							func_150014_a(world, x - 1, y, z, false);
+						break;
+					case 13:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 29)
+							func_150014_a(world, x + 1, y, z, false);
+						break;
+					case 30:
+						if(world.getBlock(x, y, z - 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z - 1) == 14)
+							func_150014_a(world, x, y, z - 1, false);
+						break;
+					case 14:
+						if(world.getBlock(x, y, z + 1) == SCContent.reinforcedDoor && func_150012_g(world, x, y, z + 1) == 30)
+							func_150014_a(world, x, y, z + 1, false);
+						break;
+					case 31:
+						if(world.getBlock(x + 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x + 1, y, z) == 15)
+							func_150014_a(world, x + 1, y, z, false);
+						break;
+					case 15:
+						if(world.getBlock(x - 1, y, z) == SCContent.reinforcedDoor && func_150012_g(world, x - 1, y, z) == 31)
+							func_150014_a(world, x - 1, y, z, false);
+						break;
+				}
+			}
 		}
 	}
 
