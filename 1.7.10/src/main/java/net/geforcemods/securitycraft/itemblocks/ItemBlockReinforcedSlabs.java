@@ -24,7 +24,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	private final BlockSlab singleSlab;
 	private final ReinforcedSlabType slabType;
 
-	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedWoodSlabs slabBlock, boolean notSlab, ReinforcedSlabType slabType){
+	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedWoodSlabs slabBlock, Boolean notSlab, ReinforcedSlabType slabType){
 		super(blockType);
 		singleSlab = slabBlock;
 		isNotSlab = notSlab;
@@ -33,7 +33,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		setHasSubtypes(true);
 	}
 
-	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedSlabs slabBlock, boolean notSlab, ReinforcedSlabType slabType){
+	public ItemBlockReinforcedSlabs(Block blockType, BlockReinforcedSlabs slabBlock, Boolean notSlab, ReinforcedSlabType slabType){
 		super(blockType);
 		singleSlab = slabBlock;
 		isNotSlab = notSlab;
