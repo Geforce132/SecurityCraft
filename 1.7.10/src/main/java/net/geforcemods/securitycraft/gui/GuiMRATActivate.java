@@ -19,7 +19,7 @@ import net.minecraft.util.StatCollector;
 
 public class GuiMRATActivate extends GuiContainer{
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack item;
 	private GuiButton[] buttons = new GuiButton[6];
 
@@ -72,7 +72,7 @@ public class GuiMRATActivate extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
+		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
