@@ -41,8 +41,8 @@ public class ItemMineRemoteAccessTool extends Item {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
-			if(world.getBlock(side, y, z) instanceof IExplosive){
-				if(!isMineAdded(stack, world, side, y, z)){
+			if(world.getBlock(x, y, z) instanceof IExplosive){
+				if(!isMineAdded(stack, world, x, y, z)){
 					int availSlot = getNextAvaliableSlot(stack);
 
 					if(availSlot == 0){
@@ -50,7 +50,7 @@ public class ItemMineRemoteAccessTool extends Item {
 						return false;
 					}
 
-					if(world.getTileEntity(side, y, z) instanceof IOwnable && !((IOwnable) world.getTileEntity(side, y, z)).getOwner().isOwner(player)){
+					if(world.getTileEntity(x, y, z) instanceof IOwnable && !((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
 						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.cantBind"), EnumChatFormatting.RED);
 						return false;
 					}
@@ -58,12 +58,12 @@ public class ItemMineRemoteAccessTool extends Item {
 					if(stack.stackTagCompound == null)
 						stack.stackTagCompound = new NBTTagCompound();
 
-					stack.stackTagCompound.setIntArray(("mine" + availSlot), new int[]{side, y, z});
+					stack.stackTagCompound.setIntArray(("mine" + availSlot), new int[]{x, y, z});
 					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(side, y, z)), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.GREEN);
 				}else{
-					removeTagFromItemAndUpdate(stack, side, y, z, player);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(side, y, z)), EnumChatFormatting.RED);
+					removeTagFromItemAndUpdate(stack, x, y, z, player);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.RED);
 				}
 			}
 			else
