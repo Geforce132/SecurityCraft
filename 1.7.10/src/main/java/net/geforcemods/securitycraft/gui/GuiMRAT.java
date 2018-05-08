@@ -2,30 +2,89 @@ package net.geforcemods.securitycraft.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-public class GuiMRAT extends GuiContainer{
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+public class GuiMRAT extends GuiContainer
+{
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
+	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/infoBookIcons.png"); //for the explosion icon
+	private ItemStack mrat;
+	private GuiButton[][] buttons = new GuiButton[6][4]; //6 buttons, 4 actions (defuse, prime, detonate, unbind)
+	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 
-
-	public GuiMRAT(InventoryPlayer inventory) {
+	public GuiMRAT(InventoryPlayer inventory, ItemStack item)
+	{
 		super(new ContainerGeneric(inventory, null));
+
+		mrat = item;
+		xSize = 256;
+		ySize = 184;
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui()
+	{
 		super.initGui();
 
-		buttonList.add(new GuiButton(0, width / 2 - 49, height / 2 - 7 - 50, 99, 20, StatCollector.translateToLocal("gui.mrat.activate")));
-		buttonList.add(new GuiButton(1, width / 2 - 49, height / 2 - 7, 99, 20, StatCollector.translateToLocal("gui.mrat.deactivate")));
-		buttonList.add(new GuiButton(2, width / 2 - 49, height / 2 - 7 + 50, 99, 20, StatCollector.translateToLocal("gui.mrat.detonate")));
+		int padding = 25;
+		int y = padding;
+		int[] coords = null;
+		int id = 0;
+
+		for(int i = 0; i < 6; i++)
+		{
+			y += 30;
+			coords = getMineCoordinates(i);
+
+			boolean active = (mc.theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
+			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+
+			for(int j = 0; j < 4; j++)
+			{
+				int btnX = guiLeft + j * padding + 154;
+				int btnY = guiTop + y - 48;
+
+				switch(j)
+				{
+					case DEFUSE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters));
+						buttons[i][j].enabled = active && bound;
+						break;
+					case ACTIVATE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.flint_and_steel));
+						buttons[i][j].enabled = !active && bound;
+						break;
+					case DETONATE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18);
+						buttons[i][j].enabled = active && bound;
+						break;
+					case UNBIND:
+						buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
+						buttons[i][j].enabled = bound;
+						break;
+				}
+
+				buttonList.add(buttons[i][j]);
+			}
+		}
 	}
 
 	/**
@@ -34,7 +93,20 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.mrat.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.mrat.name")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("item.remoteAccessMine.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.remoteAccessMine.name")), -25 + 13, 0xFF0000);
+
+		for(int i = 0; i < 6; i++)
+		{
+			int[] coords = getMineCoordinates(i);
+			String line;
+
+			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
+				line = StatCollector.translateToLocal("gui.mrat.notBound");
+			else
+				line = StatCollector.translateToLocal("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(coords[0], coords[1], coords[2]));
+
+			fontRendererObj.drawString(line, xSize / 2 - fontRendererObj.getStringWidth(line) + 15, i * 30 + 13, 4210752);
+		}
 	}
 
 	/**
@@ -43,27 +115,85 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		drawTexturedModalRect((width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button)
 	{
-		switch(button.id){
-			case 0:
-				Minecraft.getMinecraft().thePlayer.openGui(SecurityCraft.instance, GuiHandler.MRAT_ACTIVATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+		int mine = button.id / 4;
+		int action = button.id % 4;
+
+		int[] coords = getMineCoordinates(mine);
+
+		switch(action)
+		{
+			case DEFUSE:
+				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
+				buttons[mine][DEFUSE].enabled = false;
+				buttons[mine][ACTIVATE].enabled = true;
+				buttons[mine][DETONATE].enabled = false;
 				break;
-			case 1:
-				Minecraft.getMinecraft().thePlayer.openGui(SecurityCraft.instance, GuiHandler.MRAT_DEACTIVATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+			case ACTIVATE:
+				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
+				buttons[mine][DEFUSE].enabled = true;
+				buttons[mine][ACTIVATE].enabled = false;
+				buttons[mine][DETONATE].enabled = true;
 				break;
-			case 2:
-				Minecraft.getMinecraft().thePlayer.openGui(SecurityCraft.instance, GuiHandler.MRAT_DETONATE_ID, Minecraft.getMinecraft().theWorld, (int) Minecraft.getMinecraft().thePlayer.posX, (int) Minecraft.getMinecraft().thePlayer.posY, (int) Minecraft.getMinecraft().thePlayer.posZ);
+			case DETONATE:
+				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().thePlayer);
+
+				for(int i = 0; i < 4; i++)
+				{
+					buttons[mine][i].enabled = false;
+				}
+
 				break;
+			case UNBIND:
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().thePlayer);
+
+				for(int i = 0; i < 4; i++)
+				{
+					buttons[mine][i].enabled = false;
+				}
+		}
+	}
+
+	/**
+	 * @param mine 0 based
+	 */
+	private int[] getMineCoordinates(int mine)
+	{
+		mine++; //mines are stored starting by mine1 up to mine6
+
+		if(mrat.getItem() != null && mrat.getItem() == SCContent.remoteAccessMine && mrat.stackTagCompound != null &&  mrat.stackTagCompound.getIntArray("mine" + mine) != null && mrat.stackTagCompound.getIntArray("mine" + mine).length > 0)
+			return mrat.stackTagCompound.getIntArray("mine" + mine);
+		else
+			return new int[] {0,0,0};
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player)
+	{
+		if(stack.stackTagCompound == null)
+			return;
+
+		for(int i = 1; i <= 6; i++)
+		{
+			if(stack.stackTagCompound.getIntArray("mine" + i).length > 0)
+			{
+				int[] coords = stack.stackTagCompound.getIntArray("mine" + i);
+
+				if(coords[0] == x && coords[1] == y && coords[2] == z)
+				{
+					stack.stackTagCompound.setIntArray("mine" + i, new int[]{0, 0, 0});
+					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
+					return;
+				}
+			}
 		}
 	}
 }

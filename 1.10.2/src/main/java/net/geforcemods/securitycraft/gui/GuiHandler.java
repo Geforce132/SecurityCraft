@@ -29,9 +29,6 @@ public class GuiHandler implements IGuiHandler {
 
 	public static final int SETUP_KEYCARD_READER_ID = 1;
 	public static final int MRAT_MENU_ID = 2;
-	public static final int MRAT_ACTIVATE_ID = 3;
-	public static final int MRAT_DEACTIVATE_ID = 4;
-	public static final int MRAT_DETONATE_ID = 5;
 	public static final int INVENTORY_SCANNER_GUI_ID = 6;
 	public static final int USERNAME_LOGGER_GUI_ID = 7;
 	public static final int KEYPAD_FURNACE_GUI_ID = 8;
@@ -56,12 +53,6 @@ public class GuiHandler implements IGuiHandler {
 			case SETUP_KEYCARD_READER_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case MRAT_MENU_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
-			case MRAT_ACTIVATE_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
-			case MRAT_DEACTIVATE_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
-			case MRAT_DETONATE_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case INVENTORY_SCANNER_GUI_ID:
 				return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity);
@@ -117,13 +108,9 @@ public class GuiHandler implements IGuiHandler {
 			case SETUP_KEYCARD_READER_ID:
 				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
 			case MRAT_MENU_ID:
-				return new GuiMRAT(player.inventory);
-			case MRAT_ACTIVATE_ID:
-				return new GuiMRATActivate(player.inventory, player.inventory.getCurrentItem());
-			case MRAT_DEACTIVATE_ID:
-				return new GuiMRATDeactivate(player.inventory, player.inventory.getCurrentItem());
-			case MRAT_DETONATE_ID:
-				return new GuiMRATDetonate(player.inventory, player.inventory.getCurrentItem());
+				if(player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessMine)
+					return new GuiMRAT(player.inventory, player.getHeldItemMainhand());
+				else return null;
 			case INVENTORY_SCANNER_GUI_ID:
 				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
 			case USERNAME_LOGGER_GUI_ID:

@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
-import net.geforcemods.securitycraft.gui.components.GuiItemButton;
+import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiCustomizeBlock extends GuiContainer{
 
 	private CustomizableSCTE tileEntity;
-	private GuiItemButton[] descriptionButtons = new GuiItemButton[5];
+	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 
@@ -46,7 +46,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 		super.initGui();
 
 		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-			descriptionButtons[i] = new GuiItemButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, "", itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
 			buttonList.add(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
@@ -106,7 +106,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	@Override
 	protected void actionPerformed(GuiButton guibutton) {
-		if(!(guibutton instanceof GuiItemButton)) {
+		if(!(guibutton instanceof GuiPictureButton)) {
 			Option<?> tempOption = tileEntity.customOptions()[guibutton.id];
 			tempOption.toggle();
 			guibutton.packedFGColour = tempOption.toString().matches(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
