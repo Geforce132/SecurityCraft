@@ -105,7 +105,7 @@ public class GuiMRAT extends GuiContainer{
 			else
 				line = ClientUtils.localize("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			fontRendererObj.drawString(line, xSize / 2 - fontRendererObj.getStringWidth(line) + 15, i * 30 + 13, 4210752);
+			fontRendererObj.drawString(line, xSize / 2 - fontRendererObj.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}
 	}
 
