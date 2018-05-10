@@ -117,7 +117,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();
-				AxisAlignedBB axisalignedbb = new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
+				AxisAlignedBB axisalignedbb = new AxisAlignedBB(i + getAttackRange(), j + getAttackRange(), k + getAttackRange(), i - getAttackRange(), j - getAttackRange(), k - getAttackRange());
 				List<?> list = world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 				Iterator<?> iterator = list.iterator();
 
@@ -174,7 +174,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		return false;
 	}
 
-	private boolean shouldAttackEntityType(Entity entity) {
+	public boolean shouldAttackEntityType(Entity entity) {
 		if(entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class)
 			return (entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class || entity.getClass() == EntityPlayerSP.class);
 		else

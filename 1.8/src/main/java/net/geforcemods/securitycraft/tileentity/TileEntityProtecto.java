@@ -24,8 +24,8 @@ public class TileEntityProtecto extends CustomizableSCTE {
 				return false;
 
 			EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ);
-			worldObj.addWeatherEffect(lightning);
 
+			worldObj.addWeatherEffect(lightning);
 			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
 			return true;
 		}
@@ -43,6 +43,12 @@ public class TileEntityProtecto extends CustomizableSCTE {
 			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
 
 		return canAttack;
+	}
+
+	@Override
+	public boolean shouldAttackEntityType(Entity entity)
+	{
+		return !(entity instanceof EntityPlayer) && entity instanceof EntityLivingBase;
 	}
 
 	@Override

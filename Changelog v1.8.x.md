@@ -6,6 +6,7 @@
 - Fix: Welcome message shows when connecting to a server, even when disabling it on clientside
 - [1.7.10] Fix: Incorrect Alarm hitbox
 - [1.8+] Fix: Inconsistent Alarm model
+- [1.8+] Fix: Protecto does not work
 - [1.10.2+] Fix: Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed 
 
 --------------------------Changelog for v1.8.4.1 of SecurityCraft--------------------------
