@@ -77,11 +77,11 @@ public class EntitySecurityCamera extends Entity {
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
 		playerViewingName = player.getCommandSenderName();
-		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30.0F;
 
-		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
 		if(meta == 4 || meta == 8)
 			rotationYaw = 180.0F;
@@ -105,11 +105,11 @@ public class EntitySecurityCamera extends Entity {
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
 		playerViewingName = camera.playerViewingName;
-		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30.0F;
 
-		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
 		if(meta == 4 || meta == 8)
 			rotationYaw = 180.0F;
@@ -153,7 +153,7 @@ public class EntitySecurityCamera extends Entity {
 				toggleLightCooldown -= 1;
 
 			if((id == 0) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem() != null) && (((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem() == SCContent.cameraMonitor))
-				id = ((ItemCameraMonitor)((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)riddenByEntity).getCurrentEquippedItem().stackTagCompound, new CameraView((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), riddenByEntity.dimension));
+				id = ((ItemCameraMonitor)((EntityPlayer)riddenByEntity).getCurrentEquippedItem().getItem()).getSlotFromPosition(((EntityPlayer)riddenByEntity).getCurrentEquippedItem().stackTagCompound, new CameraView((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), riddenByEntity.dimension));
 
 			if(((EntityPlayer)riddenByEntity).rotationYaw != rotationYaw)
 				((EntityPlayer)riddenByEntity).rotationYaw = rotationYaw;
@@ -195,9 +195,9 @@ public class EntitySecurityCamera extends Entity {
 		if(Minecraft.getMinecraft().gameSettings.keyBindRight.getIsKeyPressed())
 			moveViewRight();
 
-		if(worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) instanceof CustomizableSCTE)
-			if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) != null && ((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).hasModule(EnumCustomModules.REDSTONE) && redstoneCooldown == 0){
-				int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		if(worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) instanceof CustomizableSCTE)
+			if(KeyBindings.cameraEmitRedstone.getIsKeyPressed() && worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) != null && ((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ))).hasModule(EnumCustomModules.REDSTONE) && redstoneCooldown == 0){
+				int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 				setRedstonePower(meta);
 				redstoneCooldown = 30;
 			}
@@ -227,7 +227,7 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	public void moveViewLeft(){
-		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
 		if(meta == 4 || meta == 8){
 			if(rotationYaw < 0){
@@ -250,7 +250,7 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	public void moveViewRight(){
-		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
 		if(meta == 4 || meta == 8){
 			if(rotationYaw < 0){
@@ -293,9 +293,9 @@ public class EntitySecurityCamera extends Entity {
 
 	public void setRedstonePower(int meta) {
 		if(meta == 5 || meta == 6 || meta == 7 || meta == 8)
-			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) - 4, true, 1, "", ""));
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) - 4, true, 1, "", ""));
 		else if(meta == 1 || meta == 2 || meta == 3 || meta == 4)
-			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ)) + 4, true, 1, "", ""));
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) + 4, true, 1, "", ""));
 	}
 
 	public void enableNightVision(){
@@ -304,23 +304,23 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	public void emitLight() {
-		Block block = worldObj.getBlock((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+		Block block = worldObj.getBlock((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
 		if(block instanceof BlockSecurityCamera){
 			toggleLightCooldown = 30;
 
-			int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ));
+			int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 			ItemStack[] modules = null;
 
-			if(!((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getModules().isEmpty())
-				modules = ((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).itemStacks;
+			if(!((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ))).getModules().isEmpty())
+				modules = ((CustomizableSCTE)worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ))).itemStacks;
 
 			if(block == SCContent.securityCamera){
-				SecurityCraft.network.sendToServer(new PacketSetBlockAndMetadata((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), "securitycraft:securityCameraLit", meta));
-				SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getUUID(), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ))).getOwner().getName()));
+				SecurityCraft.network.sendToServer(new PacketSetBlockAndMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), "securitycraft:securityCameraLit", meta));
+				SecurityCraft.network.sendToServer(new PacketSSetOwner((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ))).getOwner().getUUID(), ((IOwnable)worldObj.getTileEntity((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ))).getOwner().getName()));
 
 				if(modules != null)
-					SecurityCraft.network.sendToServer(new PacketSAddModules((int)Math.floor(posX), (int)(posY - 1.0D), (int)Math.floor(posZ), modules));
+					SecurityCraft.network.sendToServer(new PacketSAddModules((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), modules));
 			}
 		}
 	}
@@ -330,7 +330,7 @@ public class EntitySecurityCamera extends Entity {
 	 */
 	public String getCameraInfo(){
 		String nowViewing = EnumChatFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int)Math.floor(posX) + " Y: " + (int)(posY - 1.0D) + " Z: " + (int)Math.floor(posZ) + "\n";
+		String pos = EnumChatFormatting.YELLOW + "Pos: " + EnumChatFormatting.RESET + "X: " + (int)Math.floor(posX) + " Y: " + (int)posY + " Z: " + (int)Math.floor(posZ) + "\n";
 		String viewingFrom = (riddenByEntity != null) ? EnumChatFormatting.YELLOW + "Viewing from: " + EnumChatFormatting.RESET + " X: " + (int)Math.floor(cameraUseX) + " Y: " + (int)Math.floor(cameraUseY) + " Z: " + (int)Math.floor(cameraUseZ) : "";
 		return nowViewing + pos + viewingFrom;
 	}

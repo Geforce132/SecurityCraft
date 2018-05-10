@@ -74,11 +74,11 @@ public class EntitySecurityCamera extends Entity{
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
 		playerViewingName = player.getName();
-		setPosition(x + 0.5D, y + 1, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30F;
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 		if(facing == EnumFacing.NORTH)
 			rotationYaw = 180F;
@@ -102,11 +102,11 @@ public class EntitySecurityCamera extends Entity{
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
 		playerViewingName = camera.playerViewingName;
-		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30.0F;
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 		if(facing == EnumFacing.NORTH)
 			rotationYaw = 180F;
@@ -224,8 +224,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST){
 				if((rotationYaw - CAMERA_SPEED) > -180F)
@@ -246,8 +246,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST){
 				if((rotationYaw + CAMERA_SPEED) < 0F)
@@ -282,7 +282,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
+		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
 
 		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
@@ -298,7 +298,7 @@ public class EntitySecurityCamera extends Entity{
 
 	public String getCameraInfo(){
 		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
+		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) posY + " Z: " + (int) Math.floor(posZ) + "\n";
 		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(getPassengers().get(0).getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[2]) : "";
 		return nowViewing + pos + viewingFrom;
 	}

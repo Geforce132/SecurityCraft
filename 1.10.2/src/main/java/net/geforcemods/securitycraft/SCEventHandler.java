@@ -48,6 +48,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -238,10 +239,18 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
+	public void onDrawBlockHighlight(DrawBlockHighlightEvent event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().thePlayer.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
+			event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent event) {
 		if(Minecraft.getMinecraft().thePlayer != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)(Minecraft.getMinecraft().thePlayer.getRidingEntity().posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
-				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)(Minecraft.getMinecraft().thePlayer.getRidingEntity().posY - 1.0D), (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ)));
+			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)Minecraft.getMinecraft().thePlayer.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
+				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)Minecraft.getMinecraft().thePlayer.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
