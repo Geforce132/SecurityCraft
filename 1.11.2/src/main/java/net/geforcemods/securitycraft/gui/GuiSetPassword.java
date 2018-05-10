@@ -45,7 +45,7 @@ public class GuiSetPassword extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode")));
 
-		keycodeTextbox = new GuiTextField(1, fontRendererObj, width / 2 - 37, height / 2 - 47, 77, 12);
+		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -67,7 +67,7 @@ public class GuiSetPassword extends GuiContainer {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		keycodeTextbox.drawTextBox();
-		drawString(fontRendererObj, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(fontRenderer, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	/**
@@ -77,12 +77,12 @@ public class GuiSetPassword extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
 
 		//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line. TODO: change to drawSplitString
-		if(fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) >= 170){
-			fontRendererObj.drawString(blockName, xSize / 2 - fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
-			fontRendererObj.drawString(ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.password.setup")) / 2, 16, 4210752);
+		if(fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) >= 170){
+			fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+			fontRenderer.drawString(ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.password.setup")) / 2, 16, 4210752);
 		}
 		else
-			fontRendererObj.drawString(blockName + " " + ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, 4210752);
+			fontRenderer.drawString(blockName + " " + ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, 4210752);
 	}
 
 	/**

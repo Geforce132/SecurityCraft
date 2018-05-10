@@ -55,7 +55,7 @@ public class PacketCRequestTEOwnableUpdate implements IMessage
 		@Override
 		public PacketSUpdateTEOwnable onMessage(PacketCRequestTEOwnableUpdate message, MessageContext ctx)
 		{
-			TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(message.dimension).getTileEntity(message.pos);
+			TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 
 			if(te != null && te instanceof TileEntityOwnable)
 				return new PacketSUpdateTEOwnable((TileEntityOwnable)te);

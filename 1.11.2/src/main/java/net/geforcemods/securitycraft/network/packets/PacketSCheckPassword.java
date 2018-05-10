@@ -48,10 +48,10 @@ public class PacketSCheckPassword implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSCheckPassword packet, MessageContext ctx) {
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				String password = packet.password;
-				EntityPlayer player = ctx.getServerHandler().playerEntity;
+				EntityPlayer player = ctx.getServerHandler().player;
 
 				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected)
 					if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().matches(password)){

@@ -42,8 +42,8 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRendererObj.drawString(ClientUtils.localize("tile.ims.name"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("tile.ims.name")) / 2, 6, 4210752);
-		fontRendererObj.drawString(ClientUtils.localize("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("tile.ims.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("tile.ims.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override

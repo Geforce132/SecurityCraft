@@ -92,7 +92,7 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		fontRendererObj.drawString(ClientUtils.localize("item.remoteAccessMine.name"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("item.remoteAccessMine.name")), -25 + 13, 0xFF0000);
+		fontRenderer.drawString(ClientUtils.localize("item.remoteAccessMine.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.remoteAccessMine.name")), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -104,7 +104,7 @@ public class GuiMRAT extends GuiContainer{
 			else
 				line = ClientUtils.localize("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			fontRendererObj.drawString(line, xSize / 2 - fontRendererObj.getStringWidth(line) + 25, i * 30 + 13, 4210752);
+			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}
 	}
 

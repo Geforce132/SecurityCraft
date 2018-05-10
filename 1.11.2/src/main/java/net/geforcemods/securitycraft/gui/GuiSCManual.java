@@ -90,17 +90,17 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
-				fontRendererObj.drawString(ClientUtils.localize("gui.scManual.reinforced"), k + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize("gui.scManual.reinforced"), k + 39, 27, 0, false);
 			else
-				fontRendererObj.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
 
-			fontRendererObj.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
+			fontRenderer.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
 		}else{
-			fontRendererObj.drawString(ClientUtils.localize("gui.scManual.intro.1"), k + 39, 27, 0, false);
-			fontRendererObj.drawString(ClientUtils.localize("gui.scManual.intro.2"), k + 60, 159, 0, false);
+			fontRenderer.drawString(ClientUtils.localize("gui.scManual.intro.1"), k + 39, 27, 0, false);
+			fontRenderer.drawString(ClientUtils.localize("gui.scManual.intro.2"), k + 60, 159, 0, false);
 
 			if(I18n.hasKey("gui.scManual.author"))
-				fontRendererObj.drawString(ClientUtils.localize("gui.scManual.author"), k + 65, 170, 0, false);
+				fontRenderer.drawString(ClientUtils.localize("gui.scManual.author"), k + 65, 170, 0, false);
 		}
 
 		for(int i = 0; i < buttonList.size(); i++)
@@ -157,7 +157,7 @@ public class GuiSCManual extends GuiScreen {
 				if(chc != null && chc.checkHover(par1, par2))
 				{
 					if(chc.getName() != null)
-						drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(chc.getName(), 250), par1, par2, mc.fontRendererObj);
+						drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(chc.getName(), 250), par1, par2, mc.fontRenderer);
 				}
 			}
 		}
@@ -318,7 +318,7 @@ public class GuiSCManual extends GuiScreen {
 		@Override
 		public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_){
 			if(visible){
-				boolean flag = p_146112_2_ >= xPosition && p_146112_3_ >= yPosition && p_146112_2_ < xPosition + width && p_146112_3_ < yPosition + height;
+				boolean flag = p_146112_2_ >= x && p_146112_3_ >= y && p_146112_2_ < x + width && p_146112_3_ < y + height;
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				p_146112_1_.getTextureManager().bindTexture(bookGuiTextures);
 				int k = 0;
@@ -330,7 +330,7 @@ public class GuiSCManual extends GuiScreen {
 				if(!field_146151_o)
 					l += 13;
 
-				this.drawTexturedModalRect(xPosition, yPosition, k, l, 23, 13);
+				this.drawTexturedModalRect(x, y, k, l, 23, 13);
 			}
 		}
 	}

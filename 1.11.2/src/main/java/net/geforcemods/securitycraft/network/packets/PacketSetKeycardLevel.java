@@ -49,11 +49,11 @@ public class PacketSetKeycardLevel implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSetKeycardLevel packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				int level = packet.level;
 				boolean exactCard = packet.exactCard;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
 				((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(String.valueOf(level));
 				((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setRequiresExactKeycard(exactCard);

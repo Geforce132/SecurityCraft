@@ -46,8 +46,8 @@ public class PacketSetExplosiveState implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
-				EntityPlayer player = context.getServerHandler().playerEntity;
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+				EntityPlayer player = context.getServerHandler().player;
 
 				if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive)
 					if(packet.state.equalsIgnoreCase("activate"))

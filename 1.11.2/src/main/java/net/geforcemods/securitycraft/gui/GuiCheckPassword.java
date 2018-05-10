@@ -56,7 +56,7 @@ public class GuiCheckPassword extends GuiContainer {
 		buttonList.add(new GuiButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9"));
 		buttonList.add(new GuiButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-"));
 
-		keycodeTextbox = new GuiTextField(11, fontRendererObj, width / 2 - 37, height / 2 - 67, 77, 12);
+		keycodeTextbox = new GuiTextField(11, fontRenderer, width / 2 - 37, height / 2 - 67, 77, 12);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -82,7 +82,7 @@ public class GuiCheckPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRendererObj.drawString(blockName, xSize / 2 - fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
+		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	/**

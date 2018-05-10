@@ -45,14 +45,14 @@ public class GuiKeyChanger extends GuiContainer {
 		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.universalKeyChanger.confirm")));
 		confirmButton.enabled = false;
 
-		textboxNewPasscode = new GuiTextField(0, fontRendererObj, width / 2 - 57, height / 2 - 47, 110, 12);
+		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
 
 		textboxNewPasscode.setTextColor(-1);
 		textboxNewPasscode.setDisabledTextColour(-1);
 		textboxNewPasscode.setEnableBackgroundDrawing(true);
 		textboxNewPasscode.setMaxStringLength(20);
 
-		textboxConfirmPasscode = new GuiTextField(1, fontRendererObj, width / 2 - 57, height / 2 - 7, 110, 12);
+		textboxConfirmPasscode = new GuiTextField(1, fontRenderer, width / 2 - 57, height / 2 - 7, 110, 12);
 
 		textboxConfirmPasscode.setTextColor(-1);
 		textboxConfirmPasscode.setDisabledTextColour(-1);
@@ -77,9 +77,9 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRendererObj.drawString(ClientUtils.localize("item.universalKeyChanger.name"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("item.universalKeyChanger.name")) / 2, 6, 4210752);
-		fontRendererObj.drawString(ClientUtils.localize("gui.universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		fontRendererObj.drawString(ClientUtils.localize("gui.universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("item.universalKeyChanger.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.universalKeyChanger.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
 
 	@Override

@@ -59,20 +59,20 @@ public class GuiInventoryScanner extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 
 		if(!buttonList.isEmpty()){
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
+			fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
+			fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
 
 			if(buttonList.get(0).displayString.matches(ClientUtils.localize("gui.invScan.checkInv"))){
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+				fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}else{
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+				fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
 		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRendererObj.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRenderer.drawString(ClientUtils.localize("gui.invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
+			fontRenderer.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
@@ -123,13 +123,13 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-		fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.view")), 112, 6, 4210752);
+		fontRenderer.drawString("Prohibited Items", 8, 6, 4210752);
+		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.view")), 112, 6, 4210752);
 
 		if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj))
-			fontRendererObj.drawString("Storage", 183, 6, 4210752);
+			fontRenderer.drawString("Storage", 183, 6, 4210752);
 
-		fontRendererObj.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);
 	}
 
 	@Override

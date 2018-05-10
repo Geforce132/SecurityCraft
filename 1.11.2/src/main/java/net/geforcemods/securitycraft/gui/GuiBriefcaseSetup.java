@@ -38,7 +38,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode")));
 
-		keycodeTextbox = new GuiTextField(1, fontRendererObj, width / 2 - 37, height / 2 - 47, 77, 12);
+		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -60,12 +60,12 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		super.drawScreen(par1, par2, par3);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		keycodeTextbox.drawTextBox();
-		drawString(fontRendererObj, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(fontRenderer, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRendererObj.drawString(ClientUtils.localize("gui.briefcase.setupTitle"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.briefcase.setupTitle")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.briefcase.setupTitle"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.briefcase.setupTitle")) / 2, 6, 4210752);
 	}
 
 	@Override

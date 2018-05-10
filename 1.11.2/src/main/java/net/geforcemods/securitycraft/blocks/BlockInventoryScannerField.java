@@ -112,7 +112,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		{
 			for(int i = 0; i < 10; i++)
 			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem)entity).getEntityItem().isEmpty())
+				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem)entity).getItem().isEmpty())
 					checkEntity((EntityItem)entity, connectedScanner.getStackInSlotCopy(i));
 			}
 		}
@@ -146,7 +146,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	public static void checkEntity(EntityItem par1EntityItem, ItemStack par2){
-		if(par1EntityItem.getEntityItem().getItem() == par2.getItem())
+		if(par1EntityItem.getItem().getItem() == par2.getItem())
 			par1EntityItem.setDead();
 
 	}

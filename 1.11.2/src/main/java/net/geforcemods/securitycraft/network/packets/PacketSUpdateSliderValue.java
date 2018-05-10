@@ -42,11 +42,11 @@ public class PacketSUpdateSliderValue implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				BlockPos pos = packet.pos;
 				int id = packet.id;
 				double value = packet.value;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
 				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
 					((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]).setValue(value);

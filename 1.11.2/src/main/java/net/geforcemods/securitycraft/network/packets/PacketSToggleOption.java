@@ -43,13 +43,13 @@ public class PacketSToggleOption implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSToggleOption packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
 				BlockPos pos = BlockUtils.toPos(x, y, z);
 				int id = packet.id;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
 				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
 					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id].toggle();

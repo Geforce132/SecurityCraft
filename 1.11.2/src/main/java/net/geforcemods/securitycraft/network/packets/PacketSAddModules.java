@@ -59,10 +59,10 @@ public class PacketSAddModules implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSAddModules packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
 				ItemStack[] modules = packet.modules;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
 
 				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE)
 					for(ItemStack module : modules)

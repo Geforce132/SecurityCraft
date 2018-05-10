@@ -41,8 +41,8 @@ public class PacketSRemoveCameraTag implements IMessage
 		@Override
 		public IMessage onMessage(PacketSRemoveCameraTag packet, MessageContext context)
 		{
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
-				ItemStack monitor = context.getServerHandler().playerEntity.inventory.getCurrentItem();
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+				ItemStack monitor = context.getServerHandler().player.inventory.getCurrentItem();
 				int id = packet.camID;
 
 				monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));

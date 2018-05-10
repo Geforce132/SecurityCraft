@@ -62,14 +62,14 @@ public class PacketSetBlock implements IMessage{
 		//TODO
 		@Override
 		public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
 				BlockPos pos = BlockUtils.toPos(x, y, z);
 				String blockID = packet.blockID;
 				int meta = packet.meta;
-				EntityPlayer player = context.getServerHandler().playerEntity;
+				EntityPlayer player = context.getServerHandler().player;
 				World world = getWorld(player);
 				TileEntity te = world.getTileEntity(pos);
 				NonNullList<ItemStack> modules = null;

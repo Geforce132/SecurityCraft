@@ -81,9 +81,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < tileEntity.getNumberOfCustomizableOptions())
-					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, mc.fontRendererObj);
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
 				else
-					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, mc.fontRendererObj);
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class GuiCustomizeBlock extends GuiContainer{
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		String s = tileEntity.hasCustomName() ? tileEntity.getName() : ClientUtils.localize(tileEntity.getName(), new Object[0]);
-		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-		fontRendererObj.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
+		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 			if(button == null)
 				continue;
 
-			rects.add(new Rectangle(button.xPosition, button.yPosition, button.width, button.height));
+			rects.add(new Rectangle(button.x, button.y, button.width, button.height));
 		}
 
 		return rects;

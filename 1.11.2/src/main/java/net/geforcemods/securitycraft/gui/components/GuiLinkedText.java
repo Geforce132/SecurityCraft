@@ -21,17 +21,17 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	private int textColor = 16777120;
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(link), 14, link);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(link), 14, link);
 		url = link;
 	}
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 	}
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString, int color) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRendererObj.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 		textColor = color;
 	}
@@ -39,16 +39,16 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (visible) {
-			FontRenderer fontrenderer = mc.fontRendererObj;
+			FontRenderer fontrenderer = mc.fontRenderer;
 			mouseDragged(mc, mouseX, mouseY);
 
-			drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + displayString, xPosition + width / 2, yPosition + (height - 8) / 2, textColor);
+			drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + displayString, x + width / 2, y + (height - 8) / 2, textColor);
 		}
 	}
 
 	@Override
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-		if(enabled && visible && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+		if(enabled && visible && mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height) {
 			if (mc.gameSettings.chatLinksPrompt)
 				mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
 

@@ -44,12 +44,12 @@ public class PacketSOpenGui implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				int id = packet.id;
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
-				EntityPlayerMP player = context.getServerHandler().playerEntity;
+				EntityPlayerMP player = context.getServerHandler().player;
 
 				player.openGui(SecurityCraft.instance, id, getWorld(player), x, y, z);
 			});

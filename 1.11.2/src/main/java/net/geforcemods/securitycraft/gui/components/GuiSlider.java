@@ -124,13 +124,13 @@ public class GuiSlider extends GuiButtonExt
 		{
 			if (dragging)
 			{
-				sliderValue = (par2 - (xPosition + 4)) / (double)(width - 8);
+				sliderValue = (par2 - (x + 4)) / (double)(width - 8);
 				updateSlider();
 			}
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			this.drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)), yPosition, 0, 66, 4, 20);
-			this.drawTexturedModalRect(xPosition + (int)(sliderValue * (width - 8)) + 4, yPosition, 196, 66, 4, 20);
+			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)), y, 0, 66, 4, 20);
+			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)) + 4, y, 196, 66, 4, 20);
 		}
 	}
 
@@ -147,7 +147,7 @@ public class GuiSlider extends GuiButtonExt
 	{
 		if (super.mousePressed(par1Minecraft, par2, par3))
 		{
-			sliderValue = (double)(par2 - (xPosition + 4)) / (double)(width - 8);
+			sliderValue = (double)(par2 - (x + 4)) / (double)(width - 8);
 			updateSlider();
 			dragging = true;
 			return true;

@@ -36,11 +36,11 @@ public class GuiLogger extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		fontRendererObj.drawString(ClientUtils.localize("gui.logger.logged"), xSize / 2 - fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.logger.logged"), xSize / 2 - fontRenderer.getStringWidth("Logged players:") / 2, 6, 4210752);
 
 		for(int i = 0; i < tileEntity.players.length; i++)
 			if(tileEntity.players[i] != "")
-				fontRendererObj.drawString(tileEntity.players[i], xSize / 2 - fontRendererObj.getStringWidth(tileEntity.players[i]) / 2, 25 + (10 * i), 4210752);
+				fontRenderer.drawString(tileEntity.players[i], xSize / 2 - fontRenderer.getStringWidth(tileEntity.players[i]) / 2, 25 + (10 * i), 4210752);
 
 	}
 

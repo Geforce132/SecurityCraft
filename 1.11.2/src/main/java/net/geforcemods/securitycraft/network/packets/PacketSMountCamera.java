@@ -47,12 +47,12 @@ public class PacketSMountCamera implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSMountCamera packet, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
+			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
 				int id = packet.id;
-				EntityPlayerMP player = context.getServerHandler().playerEntity;
+				EntityPlayerMP player = context.getServerHandler().player;
 
 				if((BlockUtils.getBlock(getWorld(player), BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))
 					((BlockSecurityCamera) BlockUtils.getBlock(getWorld(player), x, y, z)).mountCamera(getWorld(player), x, y, z, id, player);

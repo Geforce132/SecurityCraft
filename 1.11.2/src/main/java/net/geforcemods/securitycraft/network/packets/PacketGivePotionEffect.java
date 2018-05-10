@@ -40,7 +40,7 @@ public class PacketGivePotionEffect implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().playerEntity), () -> ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true)));
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> ctx.getServerHandler().player.addPotionEffect(new PotionEffect(Potion.getPotionById(packet.potionID), packet.duration, packet.amplifier, false, true)));
 			return null;
 		}
 
