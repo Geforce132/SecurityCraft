@@ -164,7 +164,8 @@ public class SCEventHandler {
 					return;
 				}
 
-				event.entityPlayer.getCurrentEquippedItem().stackSize--;
+				if(!event.entityPlayer.capabilities.isCreativeMode)
+					event.entityPlayer.getCurrentEquippedItem().stackSize--;
 
 				((INameable) tileEntity).setCustomName(event.entityPlayer.getCurrentEquippedItem().getDisplayName());
 				return;

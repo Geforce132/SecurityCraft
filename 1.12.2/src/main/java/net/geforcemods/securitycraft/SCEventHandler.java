@@ -160,7 +160,8 @@ public class SCEventHandler {
 						return;
 					}
 
-					event.getEntityPlayer().inventory.getCurrentItem().shrink(1);
+					if(!event.getEntityPlayer().isCreative())
+						event.getEntityPlayer().inventory.getCurrentItem().shrink(1);
 
 					((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
 					return;
