@@ -24,11 +24,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	private String passcode;
 	private Owner owner = new Owner();
 
-	public TileEntityKeypadChest adjacentChestZNeg;
-	public TileEntityKeypadChest adjacentChestXPos;
-	public TileEntityKeypadChest adjacentChestXNeg;
-	public TileEntityKeypadChest adjacentChestZPos;
-
 	/**
 	 * Writes a tile entity to NBT.
 	 */
