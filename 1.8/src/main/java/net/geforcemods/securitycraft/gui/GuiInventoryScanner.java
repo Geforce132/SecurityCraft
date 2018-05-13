@@ -38,7 +38,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		hasStorageModule = ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE);
 
 		if(hasStorageModule)
-			xSize = 234;
+			xSize = 236;
 		else
 			xSize = 176;
 
