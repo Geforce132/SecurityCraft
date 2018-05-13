@@ -114,18 +114,31 @@ public class BlockSecurityCamera extends BlockContainer {
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
 		int metadata = world.getBlockMetadata(x, y, z);
 
-		if(metadata == 1) {
+		if(metadata == 1 || metadata == 5)
+		{
 			if(!world.isSideSolid(x - 1, y, z, EAST))
 				BlockUtils.destroyBlock(world, x, y, z, true);
-		}else if(metadata == 2) {
+		}
+		else if(metadata == 2 || metadata == 6)
+		{
 			if(!world.isSideSolid(x + 1, y, z, WEST))
 				BlockUtils.destroyBlock(world, x, y, z, true);
-		}else if(metadata == 3) {
+		}
+		else if(metadata == 3 || metadata == 7)
+		{
 			if(!world.isSideSolid(x, y, z - 1, SOUTH))
 				BlockUtils.destroyBlock(world, x, y, z, true);
-		}else if(metadata == 4)
+		}
+		else if(metadata == 4 || metadata == 8)
+		{
 			if(!world.isSideSolid(x, y, z + 1, NORTH))
 				BlockUtils.destroyBlock(world, x, y, z, true);
+		}
+		else if(metadata == 0 || metadata == 9)
+		{
+			if(!world.isSideSolid(x, y + 1, z, DOWN))
+				BlockUtils.destroyBlock(world, x, y, z, true);
+		}
 	}
 
 	@Override

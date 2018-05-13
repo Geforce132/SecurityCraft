@@ -9,6 +9,7 @@
 - Fix;: Name Tag gets deleted when renaming cameras in creative mod
 - Fix: Incorrect model for double Password-protected Chest
 - [1.7.10] Fix: Incorrect Alarm hitbox
+- [1.7.10] Fix: Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - [1.8+] Fix: Inconsistent Alarm model
 - [1.8+] Fix: Protecto does not work
 - [1.10.2+] Fix: Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed 
