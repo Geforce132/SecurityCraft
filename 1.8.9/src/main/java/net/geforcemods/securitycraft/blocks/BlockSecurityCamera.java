@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockSecurityCamera(Material par2Material) {
@@ -46,7 +46,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public int getRenderType(){
-		return -1;
+		return 3;
 	}
 
 	@Override
@@ -72,7 +72,11 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
+		if(!(world instanceof World))
+			return;
+
 		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) world, pos, FACING);
+		float px = 1.0F/16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
 			setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -80,6 +84,8 @@ public class BlockSecurityCamera extends BlockContainer{
 			setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
 		else if(dir == EnumFacing.WEST)
 			setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+		else if(dir == EnumFacing.DOWN)
+			setBlockBounds(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
 		else
 			setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
@@ -107,18 +113,31 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){
-		if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.NORTH){
+		if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.NORTH)
+		{
 			if(!par1World.isSideSolid(pos.south(), EnumFacing.NORTH))
 				BlockUtils.destroyBlock(par1World, pos, true);
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.SOUTH){
+		}
+		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.SOUTH)
+		{
 			if(!par1World.isSideSolid(pos.north(), EnumFacing.SOUTH))
 				BlockUtils.destroyBlock(par1World, pos, true);
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.EAST){
+		}
+		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.EAST)
+		{
 			if(!par1World.isSideSolid(pos.west(), EnumFacing.EAST))
 				BlockUtils.destroyBlock(par1World, pos, true);
-		}else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.WEST)
+		}
+		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.WEST)
+		{
 			if(!par1World.isSideSolid(pos.east(), EnumFacing.WEST))
 				BlockUtils.destroyBlock(par1World, pos, true);
+		}
+		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.DOWN)
+		{
+			if(!par1World.isSideSolid(pos.up(), EnumFacing.DOWN))
+				BlockUtils.destroyBlock(par1World, pos, true);
+		}
 	}
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
@@ -144,7 +163,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-		return (side != EnumFacing.UP && side != EnumFacing.DOWN) ? super.canPlaceBlockOnSide(worldIn, pos, side) : false;
+		return (side != EnumFacing.UP) ? (side == EnumFacing.DOWN ? true : super.canPlaceBlockOnSide(worldIn, pos, side)) : false;
 	}
 
 	@Override
@@ -153,7 +172,8 @@ public class BlockSecurityCamera extends BlockContainer{
 				(world.isSideSolid(pos.west(), EnumFacing.EAST, true) ||
 						world.isSideSolid(pos.east(), EnumFacing.WEST, true) ||
 						world.isSideSolid(pos.north(), EnumFacing.SOUTH, true) ||
-						world.isSideSolid(pos.south(), EnumFacing.NORTH, true));
+						world.isSideSolid(pos.south(), EnumFacing.NORTH, true) ||
+						world.isSideSolid(pos.south(), EnumFacing.DOWN, true));
 	}
 
 	@Override
@@ -188,7 +208,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	public IBlockState getStateFromMeta(int meta)
 	{
 		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP || EnumFacing.values()[meta] == EnumFacing.DOWN) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
 	}

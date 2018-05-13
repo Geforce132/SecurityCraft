@@ -91,6 +91,8 @@ public class EntitySecurityCamera extends Entity {
 			rotationYaw = 0.0F;
 		else if(meta == 1 || meta == 5)
 			rotationYaw = 270.0F;
+		else if(meta == 0 || meta == 9)
+			rotationPitch = 75;
 	}
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
@@ -119,6 +121,8 @@ public class EntitySecurityCamera extends Entity {
 			rotationYaw = 0.0F;
 		else if(meta == 1 || meta == 5)
 			rotationYaw = 270.0F;
+		else if(meta == 0 || meta == 9)
+			rotationPitch = 75;
 	}
 
 	@Override
@@ -213,14 +217,24 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	public void moveViewUp(){
-		if(rotationPitch > -25.0F)
+		if(isCameraDown())
+		{
+			if(rotationPitch > 55F)
+				setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
+		}
+		else if(rotationPitch > -25.0F)
 			setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
 
 		updateServerRotation();
 	}
 
 	public void moveViewDown(){
-		if(rotationPitch < 60.0F)
+		if(isCameraDown())
+		{
+			if(rotationPitch < 100F)
+				setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
+		}
+		else if(rotationPitch < 60.0F)
 			setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
 
 		updateServerRotation();
@@ -229,22 +243,33 @@ public class EntitySecurityCamera extends Entity {
 	public void moveViewLeft(){
 		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
-		if(meta == 4 || meta == 8){
-			if(rotationYaw < 0){
+		if(meta == 4 || meta == 8)
+		{
+			if(rotationYaw < 0)
+			{
 				if(rotationYaw - CAMERA_SPEED < 180F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 			}
 			else if(rotationYaw - CAMERA_SPEED > 90F)
 				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-		}else if(meta == 2 || meta == 6){
+		}
+		else if(meta == 2 || meta == 6)
+		{
 			if((rotationYaw - CAMERA_SPEED) > 0.0F)
 				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-		}else if(meta == 3 || meta == 7){
+		}
+		else if(meta == 3 || meta == 7)
+		{
 			if((rotationYaw - CAMERA_SPEED) > -90.0F)
 				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-		}else if(meta == 1 || meta == 5)
+		}
+		else if(meta == 1 || meta == 5)
+		{
 			if((rotationYaw - CAMERA_SPEED) > -180.0F)
 				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+		}
+		else if(meta == 0 || meta == 9)
+			setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 
 		updateServerRotation();
 	}
@@ -252,22 +277,33 @@ public class EntitySecurityCamera extends Entity {
 	public void moveViewRight(){
 		int meta = worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ));
 
-		if(meta == 4 || meta == 8){
-			if(rotationYaw < 0){
+		if(meta == 4 || meta == 8)
+		{
+			if(rotationYaw < 0)
+			{
 				if((Math.abs(rotationYaw) + CAMERA_SPEED) > 90F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 			}
 			else if(rotationYaw + CAMERA_SPEED < 185F)
 				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-		}else if(meta == 2 || meta == 6){
+		}
+		else if(meta == 2 || meta == 6)
+		{
 			if((rotationYaw + CAMERA_SPEED) < 180.0F)
 				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-		}else if(meta == 3 || meta == 7){
+		}
+		else if(meta == 3 || meta == 7)
+		{
 			if((rotationYaw + CAMERA_SPEED) < 90.0F)
 				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-		}else if(meta == 1 || meta == 5)
+		}
+		else if(meta == 1 || meta == 5)
+		{
 			if((rotationYaw + CAMERA_SPEED) < 0.0F)
 				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+		}
+		else if(meta == 0 || meta == 9)
+			setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 
 		updateServerRotation();
 	}
@@ -292,10 +328,14 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	public void setRedstonePower(int meta) {
-		if(meta == 5 || meta == 6 || meta == 7 || meta == 8)
+		if(meta == 0)
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), 9, true, 1, "", ""));
+		else if(meta == 5 || meta == 6 || meta == 7 || meta == 8)
 			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) - 4, true, 1, "", ""));
 		else if(meta == 1 || meta == 2 || meta == 3 || meta == 4)
 			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), worldObj.getBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ)) + 4, true, 1, "", ""));
+		else if(meta == 9)
+			SecurityCraft.network.sendToServer(new PacketSetBlockMetadata((int)Math.floor(posX), (int)posY, (int)Math.floor(posZ), 0, true, 1, "", ""));
 	}
 
 	public void enableNightVision(){
@@ -338,6 +378,11 @@ public class EntitySecurityCamera extends Entity {
 	@SideOnly(Side.CLIENT)
 	private void updateServerRotation(){
 		SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
+	}
+
+	private boolean isCameraDown()
+	{
+		return worldObj.getBlockMetadata(blockPosX, blockPosY, blockPosZ) == 0 || worldObj.getBlockMetadata(blockPosX, blockPosY, blockPosZ) == 9;
 	}
 
 	public float getZoomAmount(){

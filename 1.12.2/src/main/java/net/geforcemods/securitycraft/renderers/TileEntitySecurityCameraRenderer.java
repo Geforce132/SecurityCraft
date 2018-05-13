@@ -27,7 +27,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
+		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
 			return;
 
 		float rotation = 0F;

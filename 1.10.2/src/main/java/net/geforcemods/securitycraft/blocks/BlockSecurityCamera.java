@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockSecurityCamera(Material par2Material) {
@@ -46,6 +46,8 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
+		if(state.getValue(FACING) == EnumFacing.DOWN)
+			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
@@ -77,6 +79,7 @@ public class BlockSecurityCamera extends BlockContainer{
 		//		 ChunkCache object instead of World, it may only be able to return properties
 		//		 if the X and Y coordinates are less than 256.
 		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+		float px = 1.0F/16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
 			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -84,6 +87,8 @@ public class BlockSecurityCamera extends BlockContainer{
 			return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
 		else if(dir == EnumFacing.WEST)
 			return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+		else if(dir == EnumFacing.DOWN)
+			return new AxisAlignedBB(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
 		else
 			return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
@@ -132,7 +137,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-		if(side == EnumFacing.UP || side == EnumFacing.DOWN)
+		if(side == EnumFacing.UP)
 			return false;
 		else
 			return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
@@ -178,7 +183,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	public IBlockState getStateFromMeta(int meta)
 	{
 		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP || EnumFacing.values()[meta] == EnumFacing.DOWN) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
 	}

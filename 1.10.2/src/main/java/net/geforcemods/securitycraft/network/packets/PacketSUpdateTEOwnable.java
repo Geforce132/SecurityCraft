@@ -2,10 +2,13 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -18,6 +21,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 	private String name;
 	private String uuid;
 	private boolean customizable;
+	private byte cameraDown;
 	NBTTagCompound tag;
 
 	public PacketSUpdateTEOwnable() {}
@@ -35,6 +39,16 @@ public class PacketSUpdateTEOwnable implements IMessage
 
 		if(customizable)
 			tag = ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound());
+
+		if(te instanceof TileEntitySecurityCamera)
+		{
+			if(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN)
+				cameraDown = 2;
+			else
+				cameraDown = 1;
+		}
+		else
+			cameraDown = 0;
 	}
 
 	@Override
@@ -47,6 +61,8 @@ public class PacketSUpdateTEOwnable implements IMessage
 
 		if(customizable)
 			ByteBufUtils.writeTag(buf, tag);
+
+		buf.writeByte(cameraDown);
 	}
 
 	@Override
@@ -59,6 +75,8 @@ public class PacketSUpdateTEOwnable implements IMessage
 
 		if(customizable)
 			tag = ByteBufUtils.readTag(buf);
+
+		cameraDown = buf.readByte();
 	}
 
 	public static class Handler implements IMessageHandler<PacketSUpdateTEOwnable, IMessage>
@@ -76,6 +94,9 @@ public class PacketSUpdateTEOwnable implements IMessage
 
 				if(message.customizable)
 					((CustomizableSCTE)te).readFromNBT(message.tag);
+
+				if(message.cameraDown > 0)
+					((TileEntitySecurityCamera)te).down = message.cameraDown == 2;
 			});
 			return null;
 		}

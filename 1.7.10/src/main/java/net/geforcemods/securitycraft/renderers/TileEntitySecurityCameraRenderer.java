@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
+import net.geforcemods.securitycraft.models.ModelSecurityCameraCeiling;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -17,9 +18,12 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 
 	private ModelSecurityCamera modelSecurityCamera;
 	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera.png");
+	private ModelSecurityCameraCeiling modelSecurityCameraCeiling;
+	private ResourceLocation cameraTextureCeiling = new ResourceLocation("securitycraft:textures/blocks/securityCameraCeiling.png");
 
 	public TileEntitySecurityCameraRenderer() {
 		modelSecurityCamera = new ModelSecurityCamera();
+		modelSecurityCameraCeiling = new ModelSecurityCameraCeiling();
 	}
 
 	@Override
@@ -43,7 +47,10 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
+		if(((TileEntitySecurityCamera)te).down)
+			Minecraft.getMinecraft().renderEngine.bindTexture(cameraTextureCeiling);
+		else
+			Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
 
 		GL11.glPushMatrix();
 
@@ -62,13 +69,15 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) te).cameraRotation;
+		if(!((TileEntitySecurityCamera)te).down)
+			modelSecurityCamera.cameraRotationPoint.rotateAngleY = ((TileEntitySecurityCamera) te).cameraRotation;
 
-		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		if(((TileEntitySecurityCamera)te).down)
+			modelSecurityCameraCeiling.render((Entity)null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		else
+			modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
 	}
-
-
 }

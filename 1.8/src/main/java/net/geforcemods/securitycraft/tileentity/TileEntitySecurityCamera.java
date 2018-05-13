@@ -5,8 +5,10 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionFloat;
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 
@@ -14,7 +16,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 
 	public float cameraRotation = 0.0F;
 	private boolean addToRotation = true;
-
+	public boolean down = false;
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
@@ -22,6 +24,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	@Override
 	public void update(){
 		super.update();
+
+		down = worldObj.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
 
 		if(!shouldRotateOption.asBoolean())
 		{

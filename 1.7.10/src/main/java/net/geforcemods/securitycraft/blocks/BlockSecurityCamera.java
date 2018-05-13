@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
@@ -72,6 +73,7 @@ public class BlockSecurityCamera extends BlockContainer {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
 		int meta = access.getBlockMetadata(x, y, z);
+		float px = 1.0F/16.0F; //one sixteenth of a block
 
 		if(meta == 3  || meta == 7)
 			setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -79,6 +81,8 @@ public class BlockSecurityCamera extends BlockContainer {
 			setBlockBounds(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
 		else if(meta == 2 || meta == 6)
 			setBlockBounds(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+		else if(meta == 0 || meta == 9)
+			setBlockBounds(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
 		else
 			setBlockBounds(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
@@ -100,7 +104,10 @@ public class BlockSecurityCamera extends BlockContainer {
 		if(side == 5 && world.isSideSolid(x - 1, y, z, EAST))
 			b0 = 1;
 
-		return b0 + k1;
+		if(side == 0 && world.isSideSolid(x, y + 1, z, DOWN))
+			b0 = 0;
+
+		return b0 == 0 ? 0 : b0 + k1;
 	}
 
 	@Override
@@ -132,7 +139,8 @@ public class BlockSecurityCamera extends BlockContainer {
 		return (dir == NORTH && world.isSideSolid(x, y, z + 1, NORTH)) ||
 				(dir == SOUTH && world.isSideSolid(x, y, z - 1, SOUTH)) ||
 				(dir == WEST  && world.isSideSolid(x + 1, y, z, WEST )) ||
-				(dir == EAST  && world.isSideSolid(x - 1, y, z, EAST ));
+				(dir == EAST  && world.isSideSolid(x - 1, y, z, EAST )) ||
+				(dir == DOWN && world.isSideSolid(x, y + 1, z, DOWN ));
 	}
 
 	@Override
@@ -142,7 +150,8 @@ public class BlockSecurityCamera extends BlockContainer {
 				(world.isSideSolid(x - 1, y, z, EAST) ||
 						world.isSideSolid(x + 1, y, z, WEST) ||
 						world.isSideSolid(x, y, z - 1, SOUTH) ||
-						world.isSideSolid(x, y, z + 1, NORTH));
+						world.isSideSolid(x, y, z + 1, NORTH) ||
+						world.isSideSolid(x, y + 1, z,  DOWN));
 	}
 
 	@Override
@@ -152,12 +161,12 @@ public class BlockSecurityCamera extends BlockContainer {
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess access, int x, int y, int z, int side){
-		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 8) ? 15 : 0;
+		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 9) ? 15 : 0;
 	}
 
 	@Override
 	public int isProvidingStrongPower(IBlockAccess access, int x, int y, int z, int side){
-		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 8) ? 15 : 0;
+		return ((CustomizableSCTE)access.getTileEntity(x, y, z)).hasModule(EnumCustomModules.REDSTONE) && BlockUtils.isMetadataBetween(access, x, y, z, 5, 9) ? 15 : 0;
 	}
 
 	public void mountCamera(World world, int x, int y, int z, int par5, EntityPlayer player){
