@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
+import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -23,13 +25,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable {
+public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProvider {
 
 	int adjacentSourceBlocks;
 
 	public BlockFakeLava(Material par1Material)
 	{
 		super(par1Material);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity)
+	{
+		if(!world.isRemote)
+			if(entity instanceof EntityPlayer){
+				((EntityPlayer) entity).heal(4);
+				((EntityPlayer) entity).extinguish();
+			}
 	}
 
 	/**
@@ -40,21 +52,15 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 		par1World.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 	}
 
-	//    public static BlockStaticLiquid getStaticBlock(Material materialIn)
-	//    {
-	//        if (materialIn == Material.water)
-	//        {
-	//            return mod_SCContent.bogusWater;
-	//        }
-	//        else if (materialIn == Material.lava)
-	//        {
-	//            return mod_SCContent.bogusLava;
-	//        }
-	//        else
-	//        {
-	//            throw new IllegalArgumentException("Invalid material");
-	//        }
-	//    }
+	public static BlockStaticLiquid getStaticBlock(Material materialIn)
+	{
+		if (materialIn == Material.water)
+			return SCContent.bogusWater;
+		else if (materialIn == Material.lava)
+			return SCContent.bogusLava;
+		else
+			throw new IllegalArgumentException("Invalid material");
+	}
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
@@ -282,15 +288,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 	}
 
-	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer){
-				((EntityPlayer) entity).heal(4);
-				((EntityPlayer) entity).extinguish();
-			}
-	}
-
 	/**
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
@@ -303,6 +300,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntitySCTE();
 	}
 }

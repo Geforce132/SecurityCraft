@@ -1,13 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -20,15 +20,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: look at this class for changed method signatures
-public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersectable, ICustomWailaDisplay {
+public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
 
 	public BlockFakeWaterBase(Material par2Material)
 	{
 		super(par2Material);
 	}
 
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
 	{
 		if (!checkForMixing(worldIn, pos, state))
 			updateLiquid(worldIn, pos, state);
@@ -52,7 +52,8 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
+	{
 		if(!world.isRemote)
 			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
 				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
@@ -72,7 +73,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntitySCTE();
 	}
 
 	@Override

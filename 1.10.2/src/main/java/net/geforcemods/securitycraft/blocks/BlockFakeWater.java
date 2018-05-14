@@ -6,12 +6,15 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -20,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: look at this class for changed method signatures
 public class BlockFakeWater extends BlockDynamicLiquid{
 
 	int adjacentSourceBlocks;
@@ -259,6 +261,16 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 
 			return currentMinLevel >= 0 && j >= currentMinLevel ? currentMinLevel : j;
 		}
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
+	{
+		if(!world.isRemote)
+			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
+				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+			else
+				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 	}
 
 	private boolean canFlowInto(World worldIn, BlockPos pos, IBlockState state)

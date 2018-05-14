@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
@@ -201,6 +203,15 @@ public class BlockFakeLava extends BlockDynamicLiquid{
 			}
 
 		return j1;
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		if(!world.isRemote)
+			if(entity instanceof EntityPlayer){
+				((EntityPlayer) entity).heal(4);
+				((EntityPlayer) entity).extinguish();
+			}
 	}
 
 	/**

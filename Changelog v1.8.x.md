@@ -9,7 +9,8 @@
 - Fix: Name Tag gets deleted when renaming cameras in creative mode
 - Fix: Incorrect model for double Password-protected Chest
 - Fix: Rare crash involving Inventory Scanner Fields
-- Fix (potential): StackOverflowException involving block mines 
+- Fix: Fake Liquids sometimes don't work correctly
+- Fix (potential): StackOverflowException involving block mines
 - [1.7.10] Fix: Incorrect Alarm hitbox
 - [1.7.10] Fix: Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - [1.8+] Fix: Inconsistent Alarm model

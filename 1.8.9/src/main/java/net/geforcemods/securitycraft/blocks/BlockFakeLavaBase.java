@@ -1,12 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectable, ICustomWailaDisplay {
+public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
 
 	public BlockFakeLavaBase(Material p_i45429_1_){
 		super(p_i45429_1_);
@@ -63,15 +63,6 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer){
-				((EntityPlayer) entity).heal(4);
-				((EntityPlayer) entity).extinguish();
-			}
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getItem(World par1World, BlockPos pos){
 		return null;
@@ -79,7 +70,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntitySCTE();
 	}
 
 	@Override

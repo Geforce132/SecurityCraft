@@ -6,12 +6,15 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
@@ -35,6 +38,16 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	private void placeStaticBlock(World par1World, BlockPos pos, IBlockState state)
 	{
 		par1World.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity)
+	{
+		if(!world.isRemote)
+			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
+				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+			else
+				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 	}
 
 	public static BlockStaticLiquid getStaticBlock(Material materialIn)

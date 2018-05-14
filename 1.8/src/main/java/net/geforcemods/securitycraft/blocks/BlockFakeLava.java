@@ -6,12 +6,12 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable {
+public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProvider {
 
 	int adjacentSourceBlocks;
 
@@ -158,6 +158,15 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 		}
 	}
 
+	@Override
+	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
+		if(!par1World.isRemote)
+			if(par5Entity instanceof EntityPlayer){
+				((EntityPlayer) par5Entity).heal(4);
+				((EntityPlayer) par5Entity).extinguish();
+			}
+	}
+
 	private void tryFlowInto(World worldIn, BlockPos pos, IBlockState state, int level)
 	{
 		if (canFlowInto(worldIn, pos, state))
@@ -278,15 +287,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 	}
 
-	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer){
-				((EntityPlayer) entity).heal(4);
-				((EntityPlayer) entity).extinguish();
-			}
-	}
-
 	/**
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
@@ -299,6 +299,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntitySCTE();
 	}
 }

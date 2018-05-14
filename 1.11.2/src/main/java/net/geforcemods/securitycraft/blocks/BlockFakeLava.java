@@ -6,12 +6,12 @@ import java.util.Random;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -25,8 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: look at this class for changed method signatures
-public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable {
+public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProvider {
 
 	int adjacentSourceBlocks;
 
@@ -281,7 +280,8 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
+	{
 		if(!world.isRemote)
 			if(entity instanceof EntityPlayer){
 				((EntityPlayer) entity).heal(4);
@@ -301,6 +301,6 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntitySCTE();
 	}
 }
