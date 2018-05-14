@@ -34,6 +34,9 @@ public class Utils {
 	public static void setISinTEAppropriately(World world, int x, int y, int z, ItemStack[] contents, String type) {
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, x, y, z);
 
+		if(connectedScanner == null)
+			return;
+
 		connectedScanner.setContents(contents);
 		connectedScanner.setType(type);
 	}

@@ -53,6 +53,9 @@ public class BlockInventoryScannerField extends Block{
 		{
 			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, x, y, z);
 
+			if(connectedScanner == null)
+				return;
+
 			if(e instanceof EntityPlayer)
 			{
 				if(ModuleUtils.checkForModule(connectedScanner.getWorld(), connectedScanner.xCoord, connectedScanner.yCoord, connectedScanner.zCoord, (EntityPlayer)e, EnumCustomModules.WHITELIST))
@@ -113,6 +116,9 @@ public class BlockInventoryScannerField extends Block{
 
 	private void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te) {
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
+
+		if(connectedScanner == null)
+			return;
 
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);

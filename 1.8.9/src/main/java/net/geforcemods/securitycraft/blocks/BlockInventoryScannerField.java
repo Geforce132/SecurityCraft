@@ -94,6 +94,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	{
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
+		if(connectedScanner == null)
+			return;
+
 		if(entity instanceof EntityPlayer)
 		{
 			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumCustomModules.WHITELIST))
@@ -154,6 +157,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	private static void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te)
 	{
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(te.getWorld(), te.getPos());
+
+		if(connectedScanner == null)
+			return;
 
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);

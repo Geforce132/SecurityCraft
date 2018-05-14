@@ -29,6 +29,9 @@ public class Utils {
 	{
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(par1World, pos);
 
+		if(connectedScanner == null)
+			return;
+
 		connectedScanner.setContents(contents);
 		connectedScanner.setType(type);
 	}

@@ -126,6 +126,9 @@ public class BlockInventoryScanner extends BlockContainer {
 	{
 		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(par1World, pos);
 
+		if(connectedScanner == null)
+			return;
+
 		if(par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
 		{
 			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
