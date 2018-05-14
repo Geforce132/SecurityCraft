@@ -155,13 +155,6 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
 	}
 
-	/* TODO: no clue about this
-	@SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
-
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{

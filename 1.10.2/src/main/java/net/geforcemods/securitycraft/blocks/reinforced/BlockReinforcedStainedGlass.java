@@ -28,14 +28,6 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 		par1World.removeTileEntity(pos);
 	}
 
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
-    	for(int i = 0; i < 16; i++){
-        	par3List.add(new ItemStack(par1Item, 1, i));
-        }
-    }*/
-
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();

@@ -39,13 +39,6 @@ public class BlockFrame extends BlockOwnable {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state){
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
-
 	@Override
 	public IBlockState getStateFromMeta(int meta){
 		EnumFacing enumfacing = EnumFacing.getFront(meta);

@@ -75,9 +75,6 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		// TODO: Check to make sure this works as intended, because if the 'source' object is a
-		//		 ChunkCache object instead of World, it may only be able to return properties
-		//		 if the X and Y coordinates are less than 256.
 		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
 		float px = 1.0F/16.0F; //one sixteenth of a block
 
@@ -171,13 +168,6 @@ public class BlockSecurityCamera extends BlockContainer{
 			worldIn.setBlockToAir(pos);
 		}
 	}
-
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)

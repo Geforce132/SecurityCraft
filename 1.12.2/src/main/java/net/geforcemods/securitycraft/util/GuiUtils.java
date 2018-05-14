@@ -171,7 +171,7 @@ public class GuiUtils{
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder vertexBuffer = tessellator.getBuffer();//TODO: i am not sure about the vertexBuffer methods, need to check wether they work how they are now
+		BufferBuilder vertexBuffer = tessellator.getBuffer();
 		vertexBuffer.putColorRGBA(0, (int)f1, (int)f2, (int)f3, (int)f);
 		vertexBuffer.putPosition(p_73733_3_, p_73733_2_, zLevel);
 		vertexBuffer.putPosition(p_73733_1_, p_73733_2_, zLevel);

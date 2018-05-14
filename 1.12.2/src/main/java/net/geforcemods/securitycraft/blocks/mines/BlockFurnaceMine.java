@@ -97,13 +97,6 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 		return false;
 	}
 
-	/* TODO: no clue about this
-	@SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
-
 	@Override
 	public IBlockState getStateFromMeta(int meta){
 		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);

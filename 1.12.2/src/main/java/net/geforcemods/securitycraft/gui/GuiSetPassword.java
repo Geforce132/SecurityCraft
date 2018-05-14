@@ -75,14 +75,7 @@ public class GuiSetPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-
-		//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line. TODO: change to drawSplitString
-		if(fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) >= 170){
-			fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
-			fontRenderer.drawString(ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.password.setup")) / 2, 16, 4210752);
-		}
-		else
-			fontRenderer.drawString(blockName + " " + ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, 4210752);
+		fontRenderer.drawSplitString(blockName + " " + ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, xSize, 4210752);
 	}
 
 	/**

@@ -105,12 +105,6 @@ public class BlockIMS extends BlockOwnable {
 		return getDefaultState().withProperty(MINES, 4);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public IBlockState getStateForEntityRender(IBlockState state)
-	{
-		return getDefaultState().withProperty(MINES, 4);
-	}
-
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
