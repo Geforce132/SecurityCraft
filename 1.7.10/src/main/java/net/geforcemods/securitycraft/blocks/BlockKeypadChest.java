@@ -29,7 +29,6 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote) {
-			System.out.println("rc:"+world.getBlockMetadata(x, y, z));
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(x, y, z) != null && world.getTileEntity(x, y, z) instanceof TileEntityKeypadChest)
 				((TileEntityKeypadChest) world.getTileEntity(x, y, z)).openPasswordGUI(player);
 
