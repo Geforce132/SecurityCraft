@@ -120,6 +120,9 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public void onBlockDestroyedByExplosion(World worldIn, int x, int y, int z, Explosion explosion){
 		if (!worldIn.isRemote && worldIn.getBlock(x, y, z) instanceof IExplosive && worldIn.getBlock(x, y, z) == SCContent.claymoreActive)
 		{
+			if(x == explosion.explosionX && y == explosion.explosionY && z == explosion.explosionZ)
+				return;
+
 			BlockUtils.destroyBlock(worldIn, x, y, z, false);
 			worldIn.createExplosion((Entity) null, (double) x + 0.5F, (double) y + 0.5F, (double) z + 0.5F, 3.5F, true);
 		}

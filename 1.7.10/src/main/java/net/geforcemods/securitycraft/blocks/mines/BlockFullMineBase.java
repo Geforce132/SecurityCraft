@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -54,10 +52,10 @@ public class BlockFullMineBase extends BlockExplosive implements ICustomWailaDis
 	{
 		if (!world.isRemote)
 		{
-			Random random = new Random();
+			if(x == explosion.explosionX && y == explosion.explosionY && z == explosion.explosionZ)
+				return;
 
-			if(random.nextInt(3) == 1)
-				explode(world, x, y, z);
+			explode(world, x, y, z);
 		}
 	}
 

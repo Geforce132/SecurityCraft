@@ -6,8 +6,9 @@
 - Change: When viewing a camera, the view now more closely represents what the camera would see
 - Fix: Language key for Codebreaker doesn't inform the user about its limited usability (Thanks DarraghB2004!)
 - Fix: Welcome message shows when connecting to a server, even when disabling it on clientside
-- Fix;: Name Tag gets deleted when renaming cameras in creative mod
+- Fix: Name Tag gets deleted when renaming cameras in creative mode
 - Fix: Incorrect model for double Password-protected Chest
+- Fix (potential): StackOverflowException involving block mines 
 - [1.7.10] Fix: Incorrect Alarm hitbox
 - [1.7.10] Fix: Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - [1.8+] Fix: Inconsistent Alarm model

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
@@ -63,10 +61,10 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion){
 		if (!par1World.isRemote)
 		{
-			Random random = new Random();
+			if(pos.equals(new BlockPos(par5Explosion.getPosition())))
+				return;
 
-			if(random.nextInt(3) == 1)
-				explode(par1World, pos);
+			explode(par1World, pos);
 		}
 	}
 

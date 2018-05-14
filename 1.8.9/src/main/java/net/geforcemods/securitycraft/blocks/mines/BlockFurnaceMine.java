@@ -37,7 +37,12 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion)
 	{
 		if (!par1World.isRemote)
+		{
+			if(pos.equals(new BlockPos(par5Explosion.getPosition())))
+				return;
+
 			explode(par1World, pos);
+		}
 	}
 
 	@Override
