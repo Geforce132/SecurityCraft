@@ -13,7 +13,7 @@
       "item": "minecraft:iron_ingot"
     },
     "C": {
-      "item": "minecraft:chest"
+      "item": "securitycraft:keypad_chest"
     }
   },
   "result": {

@@ -570,7 +570,7 @@ public class RegistrationHandler
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.briefcase, 1), new Object[]{
-				"SSS", "ICI", "III", 'S', Items.STICK, 'I', Items.IRON_INGOT, 'C', Blocks.CHEST
+				"SSS", "ICI", "III", 'S', Items.STICK, 'I', Items.IRON_INGOT, 'C', SCContent.keypadChest
 		});
 
 

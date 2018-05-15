@@ -573,7 +573,7 @@ public class RegistrationHandler
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.briefcase, 1), new Object[]{
-				"SSS", "ICI", "III", 'S', Items.STICK, 'I', Items.IRON_INGOT, 'C', Blocks.CHEST
+				"SSS", "ICI", "III", 'S', Items.STICK, 'I', Items.IRON_INGOT, 'C', SCContent.keypadChest
 		});
 
 
@@ -590,7 +590,6 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.universalOwnerChanger, 1), new Object[] {SCContent.universalBlockModifier, Items.NAME_TAG});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scannerDoorItem), new Object[]{SCContent.reinforcedDoorItem, SCContent.retinalScanner});
 	}
-
 
 	public static void registerEntities()
 	{

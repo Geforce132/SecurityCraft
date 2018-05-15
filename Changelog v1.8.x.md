@@ -4,6 +4,7 @@
 - New: Completely overhauled the GUI of the Mine Remote Access Tool
 - New: The Security Camera can now be placed on the ceiling
 - Change: When viewing a camera, the view now more closely represents what the camera would see
+- Change: The Briefcase recipe now requires a Password-protected Chest instead of a regular one
 - Fix: Language key for Codebreaker doesn't inform the user about its limited usability (Thanks DarraghB2004!)
 - Fix: Welcome message shows when connecting to a server, even when disabling it on clientside
 - Fix: Name Tag gets deleted when renaming cameras in creative mode
