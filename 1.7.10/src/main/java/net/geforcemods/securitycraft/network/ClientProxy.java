@@ -69,7 +69,8 @@ public class ClientProxy extends ServerProxy{
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.ims), new CustomModeledBlockRenderer(new TileEntityIMS(), new ModelIMS(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.protecto), new CustomModeledBlockRenderer(new TileEntityProtecto(), new ModelProtecto(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(SCContent.cameraMonitor, new ItemCameraMonitorRenderer());
-		MinecraftForgeClient.registerItemRenderer(SCContent.taser, new ItemTaserRenderer());
+		MinecraftForgeClient.registerItemRenderer(SCContent.taser, new ItemTaserRenderer(false));
+		MinecraftForgeClient.registerItemRenderer(SCContent.taserPowered, new ItemTaserRenderer(true));
 		MinecraftForgeClient.registerItemRenderer(SCContent.briefcase, new ItemBriefcaseRenderer());
 	}
 

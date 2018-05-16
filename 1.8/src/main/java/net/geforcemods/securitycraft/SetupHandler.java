@@ -263,7 +263,8 @@ public class SetupHandler
 
 		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("scManual");
 
-		SCContent.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
+		SCContent.taser = new ItemTaser(false).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
+		SCContent.taserPowered = new ItemTaser(true).setMaxStackSize(1).setUnlocalizedName("taser");
 
 		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalOwnerChanger");
 

@@ -113,6 +113,7 @@ public class SCContent
 	public static Item universalKeyChanger;
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
+	public static Item taserPowered;
 
 	//Modules
 	public static ItemModule redstoneModule;

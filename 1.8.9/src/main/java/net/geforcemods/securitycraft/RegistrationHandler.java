@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockTinted;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.network.packets.PacketCChangeStackSize;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -201,6 +202,7 @@ public class RegistrationHandler
 		registerItem(SCContent.universalBlockReinforcerLvL3);
 		registerItem(SCContent.briefcase);
 		registerItem(SCContent.universalKeyChanger);
+		GameRegistry.registerItem(SCContent.taserPowered, "taserPowered"); //won't show up in the manual
 	}
 
 	public static void registerTileEntities()
@@ -610,6 +612,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 19, Side.SERVER);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 20, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 21, Side.SERVER);
+		network.registerMessage(PacketCChangeStackSize.Handler.class, PacketCChangeStackSize.class, 22, Side.CLIENT);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -812,6 +815,7 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.cameraMonitor, 0, new ModelResourceLocation("securitycraft:cameraMonitor", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.scManual, 0, new ModelResourceLocation("securitycraft:scManual", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.taser, 0, new ModelResourceLocation("securitycraft:taser", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.taserPowered, 0, new ModelResourceLocation("securitycraft:taserPowered", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.universalOwnerChanger, 0, new ModelResourceLocation("securitycraft:universalOwnerChanger", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.universalBlockReinforcerLvL1, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL1", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.universalBlockReinforcerLvL2, 0, new ModelResourceLocation("securitycraft:universalBlockReinforcerLvL2", "inventory"));

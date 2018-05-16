@@ -3,8 +3,10 @@
 - New: Two Reinforced Doors placed next to each other will open together when one of them is opened
 - New: Completely overhauled the GUI of the Mine Remote Access Tool
 - New: The Security Camera can now be placed on the ceiling
+- New: Sneak-rightclicking the Taser with redstone in the inventory will double the Taser's power for one shot
 - Change: When viewing a camera, the view now more closely represents what the camera would see
 - Change: The Briefcase recipe now requires a Password-protected Chest instead of a regular one
+- Change: The Taser now only applies level 2 potion effects for 10 seconds
 - Fix: Language key for Codebreaker doesn't inform the user about its limited usability (Thanks DarraghB2004!)
 - Fix: Welcome message shows when connecting to a server, even when disabling it on clientside
 - Fix: Name Tag gets deleted when renaming cameras in creative mode

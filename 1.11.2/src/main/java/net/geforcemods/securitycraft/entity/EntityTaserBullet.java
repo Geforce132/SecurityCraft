@@ -13,21 +13,18 @@ import net.minecraft.world.World;
 public class EntityTaserBullet extends EntityThrowable {
 
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
+	private boolean powered;
 
 	public EntityTaserBullet(World worldIn){
 		super(worldIn);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, EntityLivingBase shooter){
+	public EntityTaserBullet(World worldIn, EntityLivingBase shooter, boolean isPowered){
 		super(worldIn, shooter);
 		setSize(0.01F, 0.01F);
 		setHeadingFromThrower(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
-	}
-
-	public EntityTaserBullet(World worldIn, double x, double y, double z){
-		super(worldIn, x, y, z);
-		setSize(0.01F, 0.01F);
+		powered = isPowered;
 	}
 
 	@Override
@@ -58,10 +55,13 @@ public class EntityTaserBullet extends EntityThrowable {
 
 				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
 				{
+					int strength = powered ? 4 : 1;
+					int length = powered ? 400 : 200;
+
 					((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F);
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 500, 2));
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), 500, 2));
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 500, 2));
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
 					setDead();
 				}
 			}

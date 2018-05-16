@@ -11,12 +11,13 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class ItemTaserRenderer implements IItemRenderer {
 
-	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/items/taser.png");
+	private ResourceLocation texture;
 
 	public ModelTaser model;
 
-	public ItemTaserRenderer() {
+	public ItemTaserRenderer(boolean isPowered) {
 		model = new ModelTaser();
+		texture = new ResourceLocation("securitycraft:textures/items/taser" + (isPowered ? "Powered" : "") + ".png");
 	}
 
 	@Override

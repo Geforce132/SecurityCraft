@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.network.packets.PacketCChangeStackSize;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
@@ -191,6 +192,7 @@ public class RegistrationHandler
 		registerItem(SCContent.universalBlockReinforcerLvL3);
 		registerItem(SCContent.briefcase);
 		registerItem(SCContent.universalKeyChanger);
+		GameRegistry.registerItem(SCContent.taserPowered, "taserPowered");
 	}
 
 	public static void registerTileEntities()
@@ -583,6 +585,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 25, Side.SERVER);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 26, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 27, Side.SERVER);
+		network.registerMessage(PacketCChangeStackSize.Handler.class, PacketCChangeStackSize.class, 28, Side.CLIENT);
 	}
 
 	/**

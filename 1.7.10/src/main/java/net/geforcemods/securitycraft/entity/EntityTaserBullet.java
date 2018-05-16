@@ -13,20 +13,17 @@ import net.minecraft.world.World;
 public class EntityTaserBullet extends EntityThrowable {
 
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
+	private boolean powered;
 
 	public EntityTaserBullet(World world){
 		super(world);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World world, EntityLivingBase shooter){
+	public EntityTaserBullet(World world, EntityLivingBase shooter, boolean isPowered){
 		super(world, shooter);
 		setSize(0.01F, 0.01F);
-	}
-
-	public EntityTaserBullet(World world, double x, double y, double z){
-		super(world, x, y, z);
-		setSize(0.01F, 0.01F);
+		powered = isPowered;
 	}
 
 	@Override
@@ -62,10 +59,13 @@ public class EntityTaserBullet extends EntityThrowable {
 
 				if(mop.entityHit instanceof EntityLivingBase)
 				{
+					int strength = powered ? 4 : 1;
+					int length = powered ? 400 : 200;
+
 					((EntityLivingBase) mop.entityHit).attackEntityFrom(DamageSource.generic, 1F);
-					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 500, 2));
-					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, 500, 2));
-					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 500, 2));
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, length, strength));
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, length, strength));
+					((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, length, strength));
 					setDead();
 				}
 			}
