@@ -124,6 +124,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onRightClickBlock(RightClickBlock event){
 		if(event.getHand() == EnumHand.MAIN_HAND)
+		{
 			if(!event.getWorld().isRemote){
 				World world = event.getWorld();
 				TileEntity tileEntity = world.getTileEntity(event.getPos());
@@ -186,6 +187,7 @@ public class SCEventHandler {
 					}
 				}
 			}
+		}
 	}
 
 	@SubscribeEvent

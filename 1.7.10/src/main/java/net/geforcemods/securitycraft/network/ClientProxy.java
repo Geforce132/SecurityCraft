@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.renderers.TileEntityIMSRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadFurnaceRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityProtectoRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
@@ -37,6 +38,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -59,6 +61,7 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAlarm.class, new TileEntityAlarmRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityIMS.class, new TileEntityIMSRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProtecto.class, new TileEntityProtectoRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
 
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.keypadChest), new CustomModeledBlockRenderer(new TileEntityKeypadChest()));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.frame), new CustomModeledBlockRenderer(new TileEntityFrame(), new ModelFrame(), 0.0D, -0.1D, 0.0D, 0.0F));

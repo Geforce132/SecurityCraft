@@ -23,6 +23,8 @@ import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
@@ -68,6 +70,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
+import net.geforcemods.securitycraft.items.ItemSecretSign;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
@@ -156,7 +159,6 @@ public class SetupHandler
 		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStoneSlabs");
 		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.ROCK).setBlockUnbreakable().setResistance(1000).setUnlocalizedName("reinforcedDoubleStoneSlabs");
 
-
 		SCContent.protecto = new BlockProtecto(Material.IRON).setBlockUnbreakable().setResistance(1000F).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("protecto");
 
 		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("scannerDoor");
@@ -200,6 +202,9 @@ public class SetupHandler
 
 		SCContent.reinforcedPurpur = new BlockReinforcedPurpur().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedPurpur");
 		SCContent.reinforcedStairsPurpur = new BlockReinforcedStairs(SCContent.reinforcedPurpur, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsPurpur");
+
+		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
+		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 	}
 
 	public static void setupMines()
@@ -265,7 +270,7 @@ public class SetupHandler
 		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("scManual");
 
 		SCContent.taser = new ItemTaser(false).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("taser");
-		SCContent.taserPowered = new ItemTaser(true).setMaxStackSize(1).setRegistryName("taser_powered").setUnlocalizedName("taser");
+		SCContent.taserPowered = new ItemTaser(true).setMaxStackSize(1).setUnlocalizedName("taser");
 
 		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalOwnerChanger");
 
@@ -278,5 +283,7 @@ public class SetupHandler
 		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger");
 
 		SCContent.scannerDoorItem = new ItemScannerDoor().setUnlocalizedName("scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+
+		SCContent.secretSignItem = new ItemSecretSign().setUnlocalizedName("secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 	}
 }

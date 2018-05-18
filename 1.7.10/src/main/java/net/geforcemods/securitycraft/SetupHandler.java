@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.blocks.BlockSecretSign;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
@@ -65,6 +66,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
+import net.geforcemods.securitycraft.items.ItemSecretSign;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
@@ -187,6 +189,9 @@ public class SetupHandler
 
 		SCContent.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston/*?!?!?!?*/).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedQuartz").setTextureName("securitycraft:reinforcedQuartz");
 		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedStairsQuartz");
+
+		SCContent.secretSignStanding = new BlockSecretSign(true).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
+		SCContent.secretSignWall = new BlockSecretSign(false).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 	}
 
 	public static void setupMines()
@@ -260,5 +265,7 @@ public class SetupHandler
 		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("universalKeyChanger").setTextureName("securitycraft:universalKeyChanger");
 
 		SCContent.scannerDoorItem = new ItemScannerDoor().setUnlocalizedName("scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration).setTextureName("securitycraft:scannerDoor");
+
+		SCContent.secretSignItem = new ItemSecretSign().setUnlocalizedName("secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration).setTextureName("minecraft:sign");
 	}
 }

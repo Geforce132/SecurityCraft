@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
@@ -180,6 +181,8 @@ public class RegistrationHandler
 		registerBlock(SCContent.reinforcedPurpur, new ItemBlockReinforcedPurpur(SCContent.reinforcedPurpur), false);
 		registerBlock(SCContent.reinforcedStairsPurpur);
 		registerBlock(SCContent.reinforcedConcrete, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedConcrete), false);
+		GameData.register_impl(SCContent.secretSignWall);
+		GameData.register_impl(SCContent.secretSignStanding);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem);
@@ -215,6 +218,7 @@ public class RegistrationHandler
 		registerItem(SCContent.briefcase);
 		registerItem(SCContent.universalKeyChanger);
 		GameData.register_impl(SCContent.taserPowered); //won't show up in the manual
+		registerItem(SCContent.secretSignItem);
 	}
 
 	public static void registerTileEntities()
@@ -238,6 +242,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
+		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
 	}
 
 	public static void registerEntities()
@@ -487,6 +492,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.briefcase, 0, new ModelResourceLocation("securitycraft:briefcase", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universal_key_changer", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scanner_door_item", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secret_sign_item", "inventory"));
 
 		//Mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

@@ -61,6 +61,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -168,6 +169,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedStairsRedSandstone, ItemBlockTinted.class);
 		registerReinforcedBlock(SCContent.reinforcedStoneSlabs2, ItemBlockReinforcedSlabs2.class); //technically not a reinforced block, but doesn't need a page
 		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs2, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs2.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
+		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -203,6 +206,7 @@ public class RegistrationHandler
 		registerItem(SCContent.briefcase);
 		registerItem(SCContent.universalKeyChanger);
 		GameRegistry.registerItem(SCContent.taserPowered, "taserPowered");
+		registerItem(SCContent.secretSignItem);
 	}
 
 	public static void registerTileEntities()
@@ -226,6 +230,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
+		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
 	}
 
 	public static void registerRecipes()
@@ -578,7 +583,8 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.sandMine, 1), new Object[] {Blocks.sand, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.furnaceMine, 1), new Object[] {Blocks.furnace, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.universalOwnerChanger, 1), new Object[] {SCContent.universalBlockModifier, Items.name_tag});
-		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scannerDoorItem), new Object[]{SCContent.reinforcedDoorItem, SCContent.retinalScanner});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scannerDoorItem, 1), new Object[]{SCContent.reinforcedDoorItem, SCContent.retinalScanner});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.secretSignItem, 3), new Object[]{Items.sign, Items.sign, Items.sign, SCContent.retinalScanner});
 	}
 
 	public static void registerEntities()
@@ -823,6 +829,7 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.briefcase, 0, new ModelResourceLocation("securitycraft:briefcase", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universalKeyChanger", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scannerDoorItem", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secretSignItem", "inventory"));
 
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

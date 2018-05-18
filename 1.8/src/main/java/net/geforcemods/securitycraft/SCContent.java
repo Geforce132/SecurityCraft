@@ -94,6 +94,8 @@ public class SCContent
 	public static BlockMine mineCut;
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
+	public static Block secretSignWall;
+	public static Block secretSignStanding;
 
 	//Items
 	public static Item adminTool;
@@ -123,6 +125,7 @@ public class SCContent
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
 	public static Item taserPowered;
+	public static Item secretSignItem;
 
 	//Modules
 	public static ItemModule redstoneModule;

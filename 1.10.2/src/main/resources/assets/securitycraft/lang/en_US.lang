@@ -227,6 +227,7 @@ item.universalBlockReinforcerLvL3.name=Universal Block Reinforcer (LvL3)
 item.briefcase.name=Briefcase
 item.universalKeyChanger.name=Universal Key Changer
 item.scannerDoorItem.name=Scanner Door
+item.secretSignItem.name=Secret Sign
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
@@ -311,6 +312,7 @@ help.universalBlockReinforcerLvL2.info=The Universal Block Reinforcer reinforces
 help.universalBlockReinforcerLvL3.info=The Universal Block Reinforcer reinforces several vanilla blocks, and turns them into the SecurityCraft variants. LvL3 has unlimited uses. Break any block outside of Creative mode to reinforce it.
 help.briefcase.info=The briefcase is a simple keypad-locked item that allows you to store up to twelve additional items in it. After crafting it, right-click it to setup the 4-digit passcode to use from then on. Right-click it again and insert the code to view the items.
 help.universalKeyChanger.info=The universal key changer allows you to change the passcode of passcode-protected blocks you own. Right-click a passcode-protected block to open a GUI, then type in the new passcode you want. Craft it together with a Briefcase to remove the code of it.
+help.secretSignItem.info=The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign can view the text on it. Make sure noone can break the block it's placed on!
 
 gui.scManual.disabled=Disabled
 gui.scManual.intro.1=Getting started with SecurityCraft
