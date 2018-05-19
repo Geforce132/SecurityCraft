@@ -102,9 +102,6 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(worldIn.isRemote)
-			return true;
-
 		if(playerIn.inventory.getCurrentItem().isEmpty() || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
 		else if(playerIn.inventory.getCurrentItem().getItem() == SCContent.adminTool)
@@ -112,7 +109,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 		else
 			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, playerIn.inventory.getCurrentItem(), playerIn);
 
-		return false;
+		return true;
 	}
 
 	public static void activate(World par1World, BlockPos pos){
