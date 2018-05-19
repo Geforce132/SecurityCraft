@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,6 +22,17 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 
 	public BlockKeypadChest(int type){
 		super(type);
+	}
+
+	@Override
+	public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
+	{
+		if(world.getBlock(x, y, z) instanceof BlockKeypadChest)
+		{
+			effectRenderer.addBlockDestroyEffects(x, y, z, SCContent.frame, 0);
+			return true;
+		}
+		else return false;
 	}
 
 	/**
