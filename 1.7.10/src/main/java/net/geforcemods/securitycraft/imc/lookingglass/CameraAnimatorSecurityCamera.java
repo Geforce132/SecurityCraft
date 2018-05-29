@@ -30,14 +30,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		this.yCoord = yCoord;
 		this.zCoord = zCoord;
 
-		if(securityCameraMeta == 1)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
-		else if(securityCameraMeta == 2)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
-		else if(securityCameraMeta == 3)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
-		else if(securityCameraMeta == 4)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
+		this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 
 		if(securityCameraMeta == 1)
 			this.camera.setYaw(180F);
@@ -47,6 +40,8 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 			this.camera.setYaw(0F);
 		else if(securityCameraMeta == 4)
 			this.camera.setYaw(270F);
+		else if(cameraMeta == 0)
+			camera.setPitch(90F);
 	}
 
 
@@ -58,7 +53,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 
 	@Override
 	public void update(long arg0) {
-		if(camera == null || cameraMeta == 0)
+		if(camera == null)
 			return;
 		if(Minecraft.getMinecraft().theWorld.getBlock(xCoord, yCoord, zCoord) != SCContent.securityCamera)
 			return;
@@ -73,5 +68,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 			camera.setYaw(0 + cameraRotation);
 		else if(cameraMeta == 1)
 			camera.setYaw(270 + cameraRotation);
+		else if(cameraMeta == 0)
+			camera.setYaw(cameraRotation);
 	}
 }

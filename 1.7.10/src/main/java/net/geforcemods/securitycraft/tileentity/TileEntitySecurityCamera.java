@@ -31,15 +31,20 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 			return;
 		}
 
-		if(addToRotation && cameraRotation <= 1.55F)
-			cameraRotation += rotationSpeedOption.asFloat();
+		if(down)
+			cameraRotation += rotationSpeedOption.asFloat() % 360;
 		else
-			addToRotation = false;
+		{
+			if(addToRotation && cameraRotation <= 1.55F)
+				cameraRotation += rotationSpeedOption.asFloat();
+			else
+				addToRotation = false;
 
-		if(!addToRotation && cameraRotation >= -1.55F)
-			cameraRotation -= rotationSpeedOption.asFloat();
-		else
-			addToRotation = true;
+			if(!addToRotation && cameraRotation >= -1.55F)
+				cameraRotation -= rotationSpeedOption.asFloat();
+			else
+				addToRotation = true;
+		}
 	}
 
 	@Override
