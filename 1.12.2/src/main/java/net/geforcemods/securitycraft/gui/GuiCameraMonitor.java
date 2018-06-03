@@ -43,7 +43,6 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag) {
 		super(new ContainerGeneric(inventory, null));
-		Thread.dumpStack();
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;

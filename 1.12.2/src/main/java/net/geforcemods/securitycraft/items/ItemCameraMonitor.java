@@ -137,7 +137,8 @@ public class ItemCameraMonitor extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 
-			playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			if(!SecurityCraft.config.useLookingGlass())
+				playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return EnumActionResult.SUCCESS;
 		}
 

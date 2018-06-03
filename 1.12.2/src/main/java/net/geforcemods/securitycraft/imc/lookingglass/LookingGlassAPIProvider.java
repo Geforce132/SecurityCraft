@@ -1,11 +1,7 @@
 package net.geforcemods.securitycraft.imc.lookingglass;
 
-import com.xcompwiz.lookingglass.api.APIInstanceProvider;
-import com.xcompwiz.lookingglass.api.APIUndefined;
-import com.xcompwiz.lookingglass.api.APIVersionRemoved;
-import com.xcompwiz.lookingglass.api.APIVersionUndefined;
-import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
+import com.xcompwiz.lookingglass.client.proxyworld.ProxyWorldManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -15,7 +11,6 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,21 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author Geforce
  */
 public class LookingGlassAPIProvider {
-
-	public static void register(APIInstanceProvider provider){
-		try{
-			WorldViewAPI2 viewAPI = (WorldViewAPI2)provider.getAPIInstance("view-2");
-
-			if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-				SecurityCraft.instance.lookingGlass = viewAPI;
-		}catch(APIUndefined e){
-			e.printStackTrace();
-		}catch(APIVersionUndefined e){
-			e.printStackTrace();
-		}catch(APIVersionRemoved e){
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Creates an {@link IWorldView} object, then adds it to ClientProxy.worldViews.
@@ -64,7 +44,7 @@ public class LookingGlassAPIProvider {
 		try
 		{
 			WorldUtils.addScheduledTask(Minecraft.getMinecraft().world, () -> {
-				IWorldView lgView = SecurityCraft.instance.lookingGlass.createWorldView(dimension, pos, viewWidth, viewHeight);
+				IWorldView lgView = ProxyWorldManager.createWorldView(dimension, pos, viewWidth, viewHeight);
 
 				lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), pos, BlockUtils.getBlockMeta(world, pos)));
 

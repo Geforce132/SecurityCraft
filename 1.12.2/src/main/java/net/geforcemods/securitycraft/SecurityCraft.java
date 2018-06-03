@@ -115,7 +115,6 @@ public class SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
-		FMLInterModComms.sendMessage("lookingglass", "API", "net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider.register");
 
 		if(config.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
