@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -60,7 +59,6 @@ public class GuiPictureButton extends GuiButton{
 			hovered = par2 >= xPosition && par3 >= yPosition && par2 < xPosition + width && par3 < yPosition + height;
 			int var5 = getHoverState(hovered);
 			GlStateManager.enableBlend();
-			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			this.drawTexturedModalRect(xPosition, yPosition, 0, 46 + var5 * 20, width / 2, height);
 			this.drawTexturedModalRect(xPosition + width / 2, yPosition, 200 - width / 2, 46 + var5 * 20, width / 2, height);
@@ -69,11 +67,12 @@ public class GuiPictureButton extends GuiButton{
 				GlStateManager.enableRescaleNormal(); //(this.width / 2) - 8
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), xPosition + 2, yPosition + 3);
 				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(blockToRender), xPosition + 2, yPosition + 3, "");
+				GlStateManager.disableRescaleNormal();
 			}else if(itemToRender != null){
 				GlStateManager.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
 				itemRenderer.renderItemOverlayIntoGUI(par1.fontRendererObj, new ItemStack(itemToRender), xPosition + 2, yPosition + 2, "");
-				GlStateManager.disableLighting();
+				GlStateManager.disableRescaleNormal();
 			}
 			else if(textureLocation != null)
 			{
@@ -92,7 +91,7 @@ public class GuiPictureButton extends GuiButton{
 				var6 = 16777120;
 
 			drawCenteredString(var4, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);
-
+			GlStateManager.disableBlend();
 		}
 	}
 

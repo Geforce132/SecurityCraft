@@ -7,7 +7,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -60,7 +59,6 @@ public class GuiPictureButton extends GuiButton{
 			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
 			int var5 = getHoverState(hovered);
 			GlStateManager.enableBlend();
-			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 			this.drawTexturedModalRect(x, y, 0, 46 + var5 * 20, width / 2, height);
 			this.drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + var5 * 20, width / 2, height);
@@ -69,11 +67,12 @@ public class GuiPictureButton extends GuiButton{
 				GlStateManager.enableRescaleNormal(); //(this.width / 2) - 8
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(blockToRender), x + 2, y + 3, "");
+				GlStateManager.disableRescaleNormal();
 			}else if(itemToRender != null){
 				GlStateManager.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), x + 2, y + 2);
 				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(itemToRender), x + 2, y + 2, "");
-				GlStateManager.disableLighting();
+				GlStateManager.disableRescaleNormal();
 			}
 			else if(textureLocation != null)
 			{
@@ -93,7 +92,7 @@ public class GuiPictureButton extends GuiButton{
 				var6 = 16777120;
 
 			drawCenteredString(var4, displayString, x + width / 2, y + (height - 8) / 2, var6);
-
+			GlStateManager.disableBlend();
 		}
 	}
 

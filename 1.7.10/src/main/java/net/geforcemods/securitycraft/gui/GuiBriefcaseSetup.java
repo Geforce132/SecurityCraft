@@ -60,6 +60,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		keycodeTextbox.drawTextBox();
 		drawString(fontRendererObj, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
 	@Override

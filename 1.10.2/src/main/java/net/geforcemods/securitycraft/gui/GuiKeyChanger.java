@@ -73,6 +73,7 @@ public class GuiKeyChanger extends GuiContainer {
 		GlStateManager.disableLighting();
 		textboxNewPasscode.drawTextBox();
 		textboxConfirmPasscode.drawTextBox();
+		GlStateManager.enableLighting();
 	}
 
 	@Override

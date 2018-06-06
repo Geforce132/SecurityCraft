@@ -69,6 +69,8 @@ public class GuiBriefcase extends GuiContainer {
 
 		for(GuiTextField textfield : keycodeTextboxes)
 			textfield.drawTextBox();
+
+		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
 	@Override

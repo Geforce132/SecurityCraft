@@ -74,6 +74,7 @@ public class GuiCheckPassword extends GuiContainer {
 		super.drawScreen(par1, par2, par3);
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
+		GlStateManager.enableLighting();
 	}
 
 	/**

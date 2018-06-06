@@ -61,6 +61,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 		drawString(fontRenderer, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		GlStateManager.enableLighting();
 	}
 
 	@Override
