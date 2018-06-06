@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -47,7 +46,7 @@ public class GuiUtils{
 		Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(ClientUtils.localize("gui.camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(ClientUtils.localize("gui.camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
 		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
@@ -68,10 +67,10 @@ public class GuiUtils{
 
 	public static void drawTooltip(List<?> list, int x, int y, FontRenderer fontRenderer){
 		if (!list.isEmpty()){
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			GlStateManager.disableRescaleNormal();
 			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GlStateManager.disableLighting();
+			GlStateManager.disableDepth();
 			int k = 0;
 			Iterator<?> iterator = list.iterator();
 
@@ -123,10 +122,10 @@ public class GuiUtils{
 			}
 
 			itemRender.zLevel = 0.0F;
-			//GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			//GlStateManager.glEnable(GlStateManager.GL_LIGHTING);
+			GlStateManager.enableDepth();
 			//RenderHelper.enableStandardItemLighting();
-			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			GlStateManager.enableRescaleNormal();
 		}
 	}
 
@@ -165,11 +164,11 @@ public class GuiUtils{
 		float f5 = (p_73733_6_ >> 16 & 255) / 255.0F;
 		float f6 = (p_73733_6_ >> 8 & 255) / 255.0F;
 		float f7 = (p_73733_6_ & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.getInstance();
 		VertexBuffer vertexBuffer = tessellator.getBuffer();
 		vertexBuffer.putColorRGBA(0, (int)f1, (int)f2, (int)f3, (int)f);
@@ -179,9 +178,9 @@ public class GuiUtils{
 		vertexBuffer.putPosition(p_73733_1_, p_73733_4_, zLevel);
 		vertexBuffer.putPosition(p_73733_3_, p_73733_4_, zLevel);
 		tessellator.draw();
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableTexture2D();
 	}
 }

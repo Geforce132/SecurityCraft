@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -48,7 +47,7 @@ public class GuiIMS extends GuiContainer{
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;

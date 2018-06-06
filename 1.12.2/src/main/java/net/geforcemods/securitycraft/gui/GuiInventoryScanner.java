@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.gui;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -14,6 +13,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
@@ -56,7 +56,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
-		GL11.glDisable(GL11.GL_LIGHTING);
+		GlStateManager.disableLighting();
 
 		if(!buttonList.isEmpty()){
 			fontRenderer.drawString(ClientUtils.localize("gui.invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
@@ -134,7 +134,7 @@ public class GuiInventoryScanner extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule)
 			mc.getTextureManager().bindTexture(exhancedInventory);
 		else

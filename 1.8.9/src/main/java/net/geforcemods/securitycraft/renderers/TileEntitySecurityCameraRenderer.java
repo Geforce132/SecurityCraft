@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
@@ -9,6 +7,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -38,12 +37,12 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
 
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 
 		if(par1TileEntity.hasWorldObj() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
 			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
@@ -60,14 +59,14 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		else
 			rotation = -10000F;
 
-		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
+		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 
 		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		GL11.glPopMatrix();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
 	}
 
 

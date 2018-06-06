@@ -2,13 +2,12 @@ package net.geforcemods.securitycraft.gui;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +43,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
 	{
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(furnaceGuiTextures);
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;

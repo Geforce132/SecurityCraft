@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -21,6 +20,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -70,7 +70,7 @@ public class GuiSCManual extends GuiScreen {
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
 		{
@@ -315,7 +315,7 @@ public class GuiSCManual extends GuiScreen {
 		public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_){
 			if(visible){
 				boolean flag = p_146112_2_ >= xPosition && p_146112_3_ >= yPosition && p_146112_2_ < xPosition + width && p_146112_3_ < yPosition + height;
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				p_146112_1_.getTextureManager().bindTexture(bookGuiTextures);
 				int k = 0;
 				int l = 192;

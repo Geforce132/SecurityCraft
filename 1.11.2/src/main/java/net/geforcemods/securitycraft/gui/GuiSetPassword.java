@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.gui;
 import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -15,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -65,7 +65,7 @@ public class GuiSetPassword extends GuiContainer {
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
 		super.drawScreen(par1, par2, par3);
-		GL11.glDisable(GL11.GL_LIGHTING);
+		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 		drawString(fontRenderer, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
@@ -83,7 +83,7 @@ public class GuiSetPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3){
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;
