@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
@@ -166,6 +167,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedQuartz, ItemBlockReinforcedQuartz.class);
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
+		registerBlock(SCContent.motionActivatedLightOff);
+		GameRegistry.registerBlock(SCContent.motionActivatedLightOn, "motionActivatedLightOn");
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -222,6 +225,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
+		GameRegistry.registerTileEntity(TileEntityMotionLight.class, "motionLight");
 	}
 
 	public static void registerRecipes()

@@ -28,7 +28,7 @@ import net.minecraft.util.Vec3;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  *
- * @version 1.1.2
+ * @version 1.1.3
  *
  * @author Geforce
  */
@@ -105,10 +105,13 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 				if(!worldObj.isRemote){
 					boolean attacked = false;
 
+					if(!iterator.hasNext())
+						attackFailed();
+
 					while (iterator.hasNext()) {
 						Entity mobToAttack = (Entity) iterator.next();
 
-						if (mobToAttack == null || mobToAttack instanceof EntityItem || !shouldAttackEntityType(mobToAttack))
+						if ((mobToAttack == null || mobToAttack instanceof EntityItem || !shouldAttackEntityType(mobToAttack)))
 							continue;
 
 						if (attackEntity(mobToAttack))
@@ -140,6 +143,8 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 	public boolean attackEntity(Entity entity) {
 		return false;
 	}
+
+	public void attackFailed() {}
 
 	/**
 	 * Check if your TileEntity is ready to attack. (i.e: block conditions, metadata, etc.) <p>

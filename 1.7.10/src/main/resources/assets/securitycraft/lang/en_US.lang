@@ -173,6 +173,8 @@ tile.reinforcedQuartz_chiseled.name=Reinforced Chiseled Quartz Block
 tile.reinforcedQuartz_pillar.name=Reinforced Pillar Quartz Block
 tile.reinforcedStairsQuartz.name=Reinforced Quartz Stairs
 tile.reinforcedStoneSlabs_quartz.name=Reinforced Quartz Slab
+tile.motionActivatedLightOff.name=Motion-Activated Light
+tile.motionActivatedLightOn.name=Motion-Activated Light
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -536,3 +538,5 @@ option.retinalScanner.activatedByEntities=NPC-activated: #
 option.retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
 option.cageTrap.captureMobs=Capture mobs: #
 option.cageTrap.captureMobs.description=Should this cage trap capture hostile mobs and players, or only players?
+option.motionActivatedLightOff.searchRadius.description=Search radius: #
+option.motionActivatedLightOn.searchRadius.description=Search radius: #
