@@ -173,6 +173,8 @@ tile.reinforcedQuartz_chiseled.name=Verstärkter gemeißelter Quarzblock
 tile.reinforcedQuartz_pillar.name=Verstärkte Quarzsäule
 tile.reinforcedStairsQuartz.name=Verstärkte Quarztreppe
 tile.reinforcedStoneSlabs_quartz.name=Verstärkte Quarzstufe
+tile.motionActivatedLightOff.name=Automatisches Licht
+tile.motionActivatedLightOn.name=Automatisches Licht
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -537,3 +539,5 @@ option.retinalScanner.activatedByEntities=NPC aktiviert: #
 option.retinalScanner.activatedByEntities.description=Kann dieser Augenscanner von NPCs aktiviert werden?
 option.cageTrap.captureMobs=Mobs einfangen: #
 option.cageTrap.captureMobs.description=Solle die Käfigfalle Mobs und Spieler einfangen, oder nur Spieler?
+option.motionActivatedLightOff.searchRadius.description=Suchradius: #
+option.motionActivatedLightOn.searchRadius.description=Suchradius: # 
