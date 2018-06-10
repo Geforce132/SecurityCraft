@@ -144,6 +144,14 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 		return false;
 	}
 
+	/**
+	 * Is called when a {@link TileEntitySCTE} is ready to attack, but cannot for some reason. <p>
+	 * 
+	 * These reasons may include: <p>
+	 * - There are no Entities in this block's attack range. <p>
+	 * - Only EntityItems are in the attack range. <p>
+	 * - The Entities in this block's attack range are not of the type set in entityTypeToAttack().
+	 */
 	public void attackFailed() {}
 
 	/**

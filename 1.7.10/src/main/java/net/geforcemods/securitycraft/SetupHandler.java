@@ -194,8 +194,8 @@ public class SetupHandler
 		SCContent.secretSignStanding = new BlockSecretSign(true).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 		SCContent.secretSignWall = new BlockSecretSign(false).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 
-		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass, false).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical);
-		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass, true).setBlockUnbreakable().setResistance(1000F).setLightLevel(1.0F).setUnlocalizedName("motionActivatedLightOn").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setLightLevel(1.0F).setUnlocalizedName("motionActivatedLightOn").setStepSound(Block.soundTypeGlass);
 	}
 
 	public static void setupMines()

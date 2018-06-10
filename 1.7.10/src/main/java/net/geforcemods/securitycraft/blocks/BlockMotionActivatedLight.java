@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
 	
-	public BlockMotionActivatedLight(Material material, boolean lightState) {
+	public BlockMotionActivatedLight(Material material) {
 		super(material);
 		
 	}
