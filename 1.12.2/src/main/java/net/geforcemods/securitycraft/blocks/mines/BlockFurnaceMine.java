@@ -58,7 +58,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote)
 			return true;
-		else if(playerIn.inventory.getCurrentItem().isEmpty() || playerIn.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
+		else if(playerIn.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
 			explode(worldIn, pos);
 			return true;
 		}
