@@ -454,6 +454,7 @@ messages.tip.discord=Tritt unserem Discord Server bei, um mit uns zu chatten und
 messages.tip.scserver=Der offizielle SecurityCraft Server ist zurück! Tritt bei mit folgender IP: 64.38.249.237
 messages.universalKeyChanger.notKeypad=Rechtsklicke ein Nummernschloss mit dem Universellen Passwort Wechsler um das Passwort zu ändern.
 messages.universalKeyChanger.passcodeChanged=Das Passwort wurde verändert.
+messages.passwordProtected.notSetUp=Dieser Block hat noch kein Passwort. Du kannst nicht auf ihn zugreifen.
 
 jei.reinforcedBlock.info=Rechtsklicke einen Universellen Block Entferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Block Entferner zerbrechen.
 

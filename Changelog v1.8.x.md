@@ -15,6 +15,7 @@
 - Fix: Rare crash involving Inventory Scanner Fields
 - Fix: Fake Liquids sometimes don't work correctly
 - Fix: Furnace Mine doesn't explode when an item is held
+- Fix: Password-protected blocks can be set-up by players other than the owner
 - Fix: [1.7.10] Incorrect Alarm hitbox
 - Fix: [1.7.10] Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - Fix: [1.7.10] Ownership data doesn't update correctly on the client side

@@ -98,7 +98,12 @@ public class TileEntityKeypadChest extends TileEntityChest implements IOwnable, 
 		if(getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
 		else
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+		{
+			if(getOwner().isOwner(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", StatCollector.translateToLocal("messages.passwordProtected.notSetUp"), EnumChatFormatting.DARK_RED);
+		}
 	}
 
 	@Override

@@ -85,10 +85,15 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() == null)
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
-		else
+		if(getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+		else
+		{
+			if(getOwner().isOwner(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", StatCollector.translateToLocal("messages.passwordProtected.notSetUp"), EnumChatFormatting.DARK_RED);
+		}
 	}
 
 	@Override

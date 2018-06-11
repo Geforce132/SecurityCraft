@@ -508,7 +508,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		if(getPassword() != null)
 			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		else
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		{
+			if(getOwner().isOwner(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+		}
 	}
 
 	@Override
