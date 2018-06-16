@@ -64,7 +64,7 @@ public class EntityBouncingBetty extends Entity {
 		prevPosY = posY;
 		prevPosZ = posZ;
 		motionY -= 0.03999999910593033D;
-		moveEntity(motionX, motionY, motionZ);
+		move(motionX, motionY, motionZ);
 		motionX *= 0.9800000190734863D;
 		motionY *= 0.9800000190734863D;
 		motionZ *= 0.9800000190734863D;
@@ -80,11 +80,11 @@ public class EntityBouncingBetty extends Entity {
 		{
 			setDead();
 
-			if (!worldObj.isRemote)
+			if (!world.isRemote)
 				explode();
 		}
 		else
-			worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode()
@@ -92,9 +92,9 @@ public class EntityBouncingBetty extends Entity {
 		float f = 6.0F;
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			worldObj.createExplosion(this, posX, posY, posZ, (f / 2), true);
+			world.createExplosion(this, posX, posY, posZ, (f / 2), true);
 		else
-			worldObj.createExplosion(this, posX, posY, posZ, f, true);
+			world.createExplosion(this, posX, posY, posZ, f, true);
 	}
 
 	/**

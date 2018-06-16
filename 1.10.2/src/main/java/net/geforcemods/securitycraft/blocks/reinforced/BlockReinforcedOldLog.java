@@ -109,7 +109,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(IBlockState state)
+	protected ItemStack getSilkTouchDrop(IBlockState state)
 	{
 		return new ItemStack(Item.getItemFromBlock(this), 1, ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata());
 	}

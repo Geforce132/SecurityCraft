@@ -27,7 +27,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if (entity instanceof EntityPlayer) {
-			BlockPortableRadar.searchForPlayers(worldObj, pos, worldObj.getBlockState(pos));
+			BlockPortableRadar.searchForPlayers(world, pos, world.getBlockState(pos));
 			return false;
 		}
 		else
@@ -102,12 +102,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
-		worldObj.notifyNeighborsOfStateChange(pos, blockType);
+		world.notifyNeighborsOfStateChange(pos, blockType);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
-		worldObj.notifyNeighborsOfStateChange(pos, blockType);
+		world.notifyNeighborsOfStateChange(pos, blockType);
 	}
 }

@@ -94,7 +94,7 @@ public class SCEventHandler {
 		else
 			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey));
 
-		event.player.addChatComponentMessage(message);
+		event.player.sendMessage(message);
 	}
 
 	@SubscribeEvent
@@ -198,7 +198,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBlockPlaced(PlaceEvent event) {
+	public void getStateForPlacement(PlaceEvent event) {
 		handleOwnableTEs(event);
 	}
 
@@ -212,7 +212,7 @@ public class SCEventHandler {
 					if(te.itemStacks[i] != null){
 						ItemStack stack = te.itemStacks[i];
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntityInWorld(item));
+						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
@@ -242,21 +242,21 @@ public class SCEventHandler {
 	@SideOnly(Side.CLIENT)
 	public void onDrawBlockHighlight(DrawBlockHighlightEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().thePlayer.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent event) {
-		if(Minecraft.getMinecraft().thePlayer != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)Minecraft.getMinecraft().thePlayer.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
-				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().thePlayer, Minecraft.getMinecraft().theWorld, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posX), (int)Minecraft.getMinecraft().thePlayer.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().thePlayer.getRidingEntity().posZ)));
+		if(Minecraft.getMinecraft().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
+			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
+				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
 			Minecraft mc = Minecraft.getMinecraft();
-			EntityPlayerSP player = mc.thePlayer;
+			EntityPlayerSP player = mc.player;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
 
@@ -310,15 +310,15 @@ public class SCEventHandler {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onMouseClicked(MouseEvent event) {
-		if(Minecraft.getMinecraft().theWorld != null)
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer))
+		if(Minecraft.getMinecraft().world != null)
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
 				event.setCanceled(true);
 	}
 
@@ -361,8 +361,8 @@ public class SCEventHandler {
 	}
 
 	private boolean handleCodebreaking(PlayerInteractEvent event) {
-		World world = event.getEntityPlayer().worldObj;
-		TileEntity tileEntity = event.getEntityPlayer().worldObj.getTileEntity(event.getPos());
+		World world = event.getEntityPlayer().world;
+		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
 		if(SecurityCraft.config.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
 			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());

@@ -22,7 +22,7 @@ public class ClientUtils{
 
 	@SideOnly(Side.CLIENT)
 	public static void closePlayerScreen(){
-		Minecraft.getMinecraft().thePlayer.closeScreen();
+		Minecraft.getMinecraft().player.closeScreen();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ClientUtils{
 	 */
 	@SideOnly(Side.CLIENT)
 	public static String getFormattedMinecraftTime(){
-		Long time = Long.valueOf(Minecraft.getMinecraft().theWorld.provider.getWorldTime());
+		Long time = Long.valueOf(Minecraft.getMinecraft().world.provider.getWorldTime());
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;

@@ -43,13 +43,13 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
-		worldObj.notifyNeighborsOfStateChange(pos, blockType);
+		world.notifyNeighborsOfStateChange(pos, blockType);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
-		worldObj.notifyNeighborsOfStateChange(pos, blockType);
+		world.notifyNeighborsOfStateChange(pos, blockType);
 	}
 
 	@Override

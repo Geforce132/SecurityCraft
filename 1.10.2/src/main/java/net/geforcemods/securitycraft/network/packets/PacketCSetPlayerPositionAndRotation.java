@@ -48,7 +48,7 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCSetPlayerPositionAndRotation message, MessageContext ctx) {
-			Minecraft.getMinecraft().thePlayer.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
+			Minecraft.getMinecraft().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
 			return null;
 		}
 

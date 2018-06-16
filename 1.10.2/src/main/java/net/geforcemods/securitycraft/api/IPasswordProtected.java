@@ -34,10 +34,10 @@ public interface IPasswordProtected {
 	 * Open the correct password GUI depending on if a password is already set or not. <p>
 	 *
 	 * To open the "password setup" GUI:
-	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());</pre>
+	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());</pre>
 	 *
 	 * To open the "insert password" GUI:
-	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());</pre>
+	 * <pre>player.openGui(mod_SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());</pre>
 	 *
 	 * @param player The player who the GUI should be opened to.
 	 */

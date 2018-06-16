@@ -142,7 +142,7 @@ public class GuiKeyChanger extends GuiContainer {
 				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().thePlayer, ClientUtils.localize("item.universalKeyChanger.name"), ClientUtils.localize("messages.universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize("item.universalKeyChanger.name"), ClientUtils.localize("messages.universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
 		}
 	}
 

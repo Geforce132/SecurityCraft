@@ -61,7 +61,7 @@ public class ItemTaser extends Item {
 					return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 				}
 
-				WorldUtils.addScheduledTask(worldIn, () -> worldIn.spawnEntityInWorld(new EntityTaserBullet(worldIn, playerIn, powered)));
+				WorldUtils.addScheduledTask(worldIn, () -> worldIn.spawnEntity(new EntityTaserBullet(worldIn, playerIn, powered)));
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
 				if(!playerIn.capabilities.isCreativeMode)

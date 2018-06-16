@@ -70,7 +70,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 	@Override
 	public void onLoad()
 	{
-		if(worldObj.isRemote)
+		if(world.isRemote)
 			SecurityCraft.network.sendToServer(new PacketCRequestTEOwnableUpdate(getPos(), getWorld().provider.getDimension()));
 	}
 }

@@ -54,14 +54,14 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader)
-			BlockKeycardReader.activate(worldObj, getPos());
+		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader)
+			BlockKeycardReader.activate(world, getPos());
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null)
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

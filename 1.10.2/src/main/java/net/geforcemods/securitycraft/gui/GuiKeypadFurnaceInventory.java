@@ -61,7 +61,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		SecurityCraft.network.sendToServer(new PacketSetBlock(tileFurnace.getPos().getX(), tileFurnace.getPos().getY(), tileFurnace.getPos().getZ(), "securitycraft:keypadFurnace", mc.theWorld.getBlockState(tileFurnace.getPos()).getBlock().getMetaFromState(mc.theWorld.getBlockState(tileFurnace.getPos())) - 6));
+		SecurityCraft.network.sendToServer(new PacketSetBlock(tileFurnace.getPos().getX(), tileFurnace.getPos().getY(), tileFurnace.getPos().getZ(), "securitycraft:keypadFurnace", mc.world.getBlockState(tileFurnace.getPos()).getBlock().getMetaFromState(mc.world.getBlockState(tileFurnace.getPos())) - 6));
 	}
 
 }

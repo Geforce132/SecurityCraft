@@ -42,7 +42,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	 * IBlockstate
 	 */
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		if (meta == BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata())
 			switch (facing.getAxis())
@@ -70,10 +70,10 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	}
 
 	@Override
-	protected ItemStack createStackedBlock(IBlockState state)
+	protected ItemStack getSilkTouchDrop(IBlockState state)
 	{
 		BlockReinforcedPurpur.EnumType blockquartz$enumtype = state.getValue(VARIANT);
-		return blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_X && blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_Z ? super.createStackedBlock(state) : new ItemStack(Item.getItemFromBlock(this), 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata());
+		return blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_X && blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_Z ? super.getSilkTouchDrop(state) : new ItemStack(Item.getItemFromBlock(this), 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata());
 	}
 
 	/**

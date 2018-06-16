@@ -17,10 +17,10 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	@Override
 	public void entityViewed(EntityLivingBase entity)
 	{
-		IBlockState upperState = worldObj.getBlockState(pos);
-		IBlockState lowerState = worldObj.getBlockState(pos.down());
+		IBlockState upperState = world.getBlockState(pos);
+		IBlockState lowerState = world.getBlockState(pos.down());
 
-		if(!worldObj.isRemote && upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
+		if(!world.isRemote && upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;
@@ -36,12 +36,12 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 				return;
 			}
 
-			boolean open = !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos.down(), BlockDoor.OPEN);
+			boolean open = !BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockDoor.OPEN);
 
-			worldObj.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN).booleanValue()), 3);
-			worldObj.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN).booleanValue()), 3);
-			worldObj.markBlockRangeForRenderUpdate(pos.down(), pos);
-			worldObj.playEvent(null, open ? 1005 : 1011, pos, 0);
+			world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN).booleanValue()), 3);
+			world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN).booleanValue()), 3);
+			world.markBlockRangeForRenderUpdate(pos.down(), pos);
+			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
 			if(open)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.scannerDoorItem.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);

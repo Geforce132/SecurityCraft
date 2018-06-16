@@ -17,7 +17,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			addPlayerName(((EntityPlayer) entity).getName());
 			sendChangeToClient();
 		}
@@ -27,14 +27,14 @@ public class TileEntityLogger extends TileEntityOwnable {
 
 	@Override
 	public boolean canAttack() {
-		return worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
+		return world.isBlockIndirectlyGettingPowered(pos) > 0;
 	}
 
 	public void logPlayers(){
 		double d0 = SecurityCraft.config.usernameLoggerSearchRadius;
 
 		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
-		List<?> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
+		List<?> list = world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
 		Iterator<?> iterator = list.iterator();
 
 		while(iterator.hasNext())

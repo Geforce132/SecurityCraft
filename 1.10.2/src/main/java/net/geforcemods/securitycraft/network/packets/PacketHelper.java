@@ -18,7 +18,7 @@ public class PacketHelper {
 
 	@SideOnly(Side.CLIENT)
 	public World getClientWorld(EntityPlayer par1EntityPlayer){
-		return Minecraft.getMinecraft().theWorld;
+		return Minecraft.getMinecraft().world;
 	}
 
 }

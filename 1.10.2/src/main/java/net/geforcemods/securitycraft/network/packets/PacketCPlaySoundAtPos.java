@@ -85,7 +85,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
-			Minecraft.getMinecraft().theWorld.playSound(Minecraft.getMinecraft().thePlayer, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
+			Minecraft.getMinecraft().world.playSound(Minecraft.getMinecraft().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
 			return null;
 		}
 

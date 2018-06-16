@@ -26,12 +26,12 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
-		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().thePlayer.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
+		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
 			return;
 
 		float rotation = 0F;
 
-		if(par1TileEntity.hasWorldObj()){
+		if(par1TileEntity.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
 			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
 			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
@@ -49,7 +49,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GlStateManager.pushMatrix();
 
-		if(par1TileEntity.hasWorldObj() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
+		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
 			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
 
 			if(side == EnumFacing.EAST)

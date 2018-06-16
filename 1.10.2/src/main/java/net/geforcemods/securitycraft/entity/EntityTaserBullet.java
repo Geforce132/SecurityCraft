@@ -46,7 +46,7 @@ public class EntityTaserBullet extends EntityThrowable {
 	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult)
 	{
-		if(!worldObj.isRemote)
+		if(!world.isRemote)
 			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
 			{
 				if(par1RayTraceResult.entityHit instanceof EntityPlayer)

@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandBase;
@@ -37,17 +37,17 @@ public class CommandSC extends CommandBase implements ICommand{
 	}
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "sc";
 	}
 
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		return nicknames;
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
+	public String getUsage(ICommandSender icommandsender) {
 		return ClientUtils.localize("messages.command.sc.usage");
 	}
 
@@ -62,7 +62,7 @@ public class CommandSC extends CommandBase implements ICommand{
 			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
 		else if(args.length == 1){
 			if(args[0].matches("connect"))
-				sender.addChatMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
 			else if(args[0].matches("help"))
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
 			else if(args[0].matches("bug"))
@@ -90,6 +90,6 @@ public class CommandSC extends CommandBase implements ICommand{
 	//
 	//	private void sendMessageToPlayer(String par1, ICommandSender par2) throws PlayerNotFoundException{
 	//		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-	//		getPlayer(par2, par2.getName()).addChatComponentMessage(chatcomponenttext);
+	//		getPlayer(par2, par2.getName()).sendMessage(chatcomponenttext);
 	//	}
 }

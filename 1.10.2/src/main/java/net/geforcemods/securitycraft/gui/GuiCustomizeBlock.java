@@ -40,7 +40,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	{
 		super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
 		tileEntity = par2TileEntity;
-		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, tileEntity.getPos()).getUnlocalizedName().substring(5);
+		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().world, tileEntity.getPos()).getUnlocalizedName().substring(5);
 	}
 
 	@Override

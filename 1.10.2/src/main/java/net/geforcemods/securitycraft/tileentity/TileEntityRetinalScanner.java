@@ -22,20 +22,20 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 
 	@Override
 	public void entityViewed(EntityLivingBase entity){
-		if(!worldObj.isRemote && !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockRetinalScanner.POWERED)){
+		if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
 				return;
 
 			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
 				return;
 
-			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(worldObj, pos, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
+			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(world, pos, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
 				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
-			BlockUtils.setBlockProperty(worldObj, pos, BlockRetinalScanner.POWERED, true);
-			worldObj.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, 60);
+			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
+			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, 60);
 
 			if(entity instanceof EntityPlayer)
 				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.retinalScanner.name"), ClientUtils.localize("messages.retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);

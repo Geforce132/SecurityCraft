@@ -246,12 +246,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		if (this.isBurning())
 			--furnaceBurnTime;
 
-		if (!worldObj.isRemote)
+		if (!world.isRemote)
 		{
 			if (!this.isBurning() && (furnaceItemStacks[1] == null || furnaceItemStacks[0] == null))
 			{
 				if (!this.isBurning() && cookTime > 0)
-					cookTime = MathHelper.clamp_int(cookTime - 2, 0, totalCookTime);
+					cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
 			}
 			else
 			{
@@ -378,9 +378,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player)
+	public boolean isUsableByPlayer(EntityPlayer player)
 	{
-		return worldObj.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
+		return world.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
@@ -488,18 +488,18 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace)
-			BlockKeypadFurnace.activate(worldObj, pos, player);
+		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace)
+			BlockKeypadFurnace.activate(world, pos, player);
 	}
 
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() != null)
-			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		else
 		{
 			if(getOwner().isOwner(player))
-				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}

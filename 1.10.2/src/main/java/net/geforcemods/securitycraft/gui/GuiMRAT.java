@@ -53,7 +53,7 @@ public class GuiMRAT extends GuiContainer{
 			y += 30;
 			coords = getMineCoordinates(i);
 
-			boolean active = (mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() instanceof IExplosive && ((IExplosive) mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isDefusable() && ((IExplosive) mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isActive(mc.theWorld, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
+			boolean active = (mc.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() instanceof IExplosive && ((IExplosive) mc.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isDefusable() && ((IExplosive) mc.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isActive(mc.world, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 			for(int j = 0; j < 4; j++)
@@ -144,7 +144,7 @@ public class GuiMRAT extends GuiContainer{
 				break;
 			case DETONATE:
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().thePlayer);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
 
 				for(int i = 0; i < 4; i++)
 				{
@@ -153,7 +153,7 @@ public class GuiMRAT extends GuiContainer{
 
 				break;
 			case UNBIND:
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().thePlayer);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
 
 				for(int i = 0; i < 4; i++)
 				{

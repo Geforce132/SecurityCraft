@@ -82,7 +82,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 		model.renderSign();
 		GlStateManager.popMatrix();
 
-		if(te.getOwner().isOwner(Minecraft.getMinecraft().thePlayer))
+		if(te.getOwner().isOwner(Minecraft.getMinecraft().player))
 		{
 			FontRenderer fontrenderer = getFontRenderer();
 			GlStateManager.translate(0.0F, 0.33333334F, 0.046666667F);

@@ -184,7 +184,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
+	public boolean isUsableByPlayer(EntityPlayer var1) {
 		return true;
 	}
 
@@ -234,7 +234,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, pos);
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && !connectedScanner.hasModule(module))
 			connectedScanner.insertModule(stack);
@@ -243,7 +243,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(worldObj, pos);
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && connectedScanner.hasModule(module))
 			connectedScanner.removeModule(module);

@@ -49,7 +49,7 @@ public class EntityIMSBomb extends EntityFireball {
 		if(ticksFlying < launchHeight && launching){
 			motionY = 0.35F;
 			ticksFlying++;
-			moveEntity(motionX, motionY, motionZ);
+			move(motionX, motionY, motionZ);
 		}else if(ticksFlying >= launchHeight && launching)
 			setTarget();
 	}
@@ -62,18 +62,18 @@ public class EntityIMSBomb extends EntityFireball {
 			double d6 = target.getEntityBoundingBox().minY + target.height / 2.0F - (posY + 1.25D);
 			double d7 = target.posZ - posZ;
 
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, posX, posY, posZ, d5, d6, d7, 0);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, posX, posY, posZ, d5, d6, d7, 0);
 			entitylargefireball.launching = false;
-			WorldUtils.addScheduledTask(worldObj, () -> worldObj.spawnEntityInWorld(entitylargefireball));
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 			setDead();
 		}else if(targetMob != null && !targetMob.isDead){
 			double d5 = targetMob.posX - posX;
 			double d6 = targetMob.getEntityBoundingBox().minY + targetMob.height / 2.0F - (posY + 1.25D);
 			double d7 = targetMob.posZ - posZ;
 
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, targetMob, posX, posY, posZ, d5, d6, d7, 0);
+			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, targetMob, posX, posY, posZ, d5, d6, d7, 0);
 			entitylargefireball.launching = false;
-			WorldUtils.addScheduledTask(worldObj, () -> worldObj.spawnEntityInWorld(entitylargefireball));
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
 			setDead();
 		}
 		else
@@ -82,9 +82,9 @@ public class EntityIMSBomb extends EntityFireball {
 
 	@Override
 	protected void onImpact(RayTraceResult par1RayTraceResult){
-		if(!worldObj.isRemote)
-			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(worldObj, par1RayTraceResult.getBlockPos()) != SCContent.ims){
-				worldObj.createExplosion(this, par1RayTraceResult.getBlockPos().getX(), par1RayTraceResult.getBlockPos().getY() + 1D, par1RayTraceResult.getBlockPos().getZ(), 7F, true);
+		if(!world.isRemote)
+			if(par1RayTraceResult.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, par1RayTraceResult.getBlockPos()) != SCContent.ims){
+				world.createExplosion(this, par1RayTraceResult.getBlockPos().getX(), par1RayTraceResult.getBlockPos().getY() + 1D, par1RayTraceResult.getBlockPos().getZ(), 7F, true);
 				setDead();
 			}
 	}

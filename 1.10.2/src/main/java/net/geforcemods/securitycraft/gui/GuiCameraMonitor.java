@@ -93,18 +93,18 @@ public class GuiCameraMonitor extends GuiContainer {
 			buttonList.add(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(view.dimension != Minecraft.getMinecraft().thePlayer.dimension) {
+				if(view.dimension != Minecraft.getMinecraft().player.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) != SCContent.securityCamera) {
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) != SCContent.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 
-				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().theWorld.getTileEntity(view.getLocation());
+				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
 				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 			}
 			else
@@ -155,10 +155,10 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
 
-			if(BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation()) == SCContent.securityCamera) {
-				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().theWorld, view.getLocation())).mountCamera(Minecraft.getMinecraft().theWorld, view.x, view.y, view.z, camID, Minecraft.getMinecraft().thePlayer);
+			if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) == SCContent.securityCamera) {
+				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation())).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
 				SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
-				Minecraft.getMinecraft().thePlayer.closeScreen();
+				Minecraft.getMinecraft().player.closeScreen();
 			}
 			else
 				guibutton.enabled = false;

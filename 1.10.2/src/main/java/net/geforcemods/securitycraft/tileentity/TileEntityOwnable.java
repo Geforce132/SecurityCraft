@@ -76,7 +76,7 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	@Override
 	public void onLoad()
 	{
-		if(worldObj.isRemote)
+		if(world.isRemote)
 			SecurityCraft.network.sendToServer(new PacketCRequestTEOwnableUpdate(this));
 	}
 }

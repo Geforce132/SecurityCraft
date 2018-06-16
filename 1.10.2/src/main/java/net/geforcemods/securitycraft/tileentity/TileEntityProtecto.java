@@ -18,15 +18,15 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase) {
-			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
 					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))
 				return false;
 
-			EntityLightningBolt lightning = new EntityLightningBolt(worldObj, entity.posX, entity.posY, entity.posZ, false);
+			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);
 
-			worldObj.addWeatherEffect(lightning);
-			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
+			world.addWeatherEffect(lightning);
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
 			return true;
 		}
 
@@ -35,12 +35,12 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() == 200 && worldObj.canBlockSeeSky(pos) && worldObj.isRaining());
+		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
 
-		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
-			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, true);
-		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(worldObj, pos, BlockProtecto.ACTIVATED))
-			BlockUtils.setBlockProperty(worldObj, pos, BlockProtecto.ACTIVATED, false);
+		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
+		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
 
 		return canAttack;
 	}

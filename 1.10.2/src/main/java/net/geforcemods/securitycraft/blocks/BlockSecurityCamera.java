@@ -91,7 +91,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
 		IBlockState iblockstate = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
 
 		if(worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing))
@@ -117,13 +117,13 @@ public class BlockSecurityCamera extends BlockContainer{
 
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.getRidingEntity());
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntityInWorld(dummyEntity));
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
 		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
-		WorldUtils.addScheduledTask(world, () -> world.spawnEntityInWorld(dummyEntity));
+		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
 		for(Object e : world.loadedEntityList)

@@ -87,8 +87,8 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!worldObj.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest & !isBlocked())
-			BlockKeypadChest.activate(worldObj, pos, player);
+		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest & !isBlocked())
+			BlockKeypadChest.activate(world, pos, player);
 	}
 
 	@Override
@@ -97,11 +97,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			return;
 
 		if(getPassword() != null)
-			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		else
 		{
 			if(getOwner().isOwner(player))
-				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}

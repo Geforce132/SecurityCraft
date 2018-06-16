@@ -67,7 +67,7 @@ public class BlockUtils{
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.
 	 *
-	 * Args: worldObj, pos, blockID, tickRate, shouldUpdate
+	 * Args: world, pos, blockID, tickRate, shouldUpdate
 	 *
 	 *
 	 */
