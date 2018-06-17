@@ -186,8 +186,7 @@ tile.reinforcedRedSandstone_chiseled.name=Verstärkter gemeißelter roter Sandst
 tile.reinforcedRedSandstone_smooth.name=Verstärkter glatter roter Sandstein
 tile.reinforcedStairsRedSandstone.name=Verstärkte rote Sandsteintreppe
 tile.reinforcedStoneSlabs2_red_sandstone.name=Verstärkte rote Sandsteinstufe
-tile.motionActivatedLightOff.name=Automatisches Licht
-tile.motionActivatedLightOn.name=Automatisches Licht
+tile.motionActivatedLight.name=Automatisches Licht
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -273,7 +272,7 @@ help.reinforcedStairsBrick.info=Verstärkte Ziegeltreppen sind wie normale Trepp
 help.reinforcedStairsNetherBrick.info=Verstärkte Netherziegeltreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.mover.
 help.reinforcedStairsQuartz.info=Verstärkte Quarztreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.reinforcedStairsRedSandstone.info=Verstärkte rote Sandsteintreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
-help.motionActivatedLightOff.info=Das Automatische Licht geht an, sobald sich ein Spieler in seiner Nähe befindet. Es wird ausgeschaltet, wenn sich in dem Radius kein Spieler mehr befindet (Radius konfigurierbar).
+help.motionActivatedLight.info=Das Automatische Licht geht an, sobald sich ein Spieler in seiner Nähe befindet. Es wird ausgeschaltet, wenn sich in dem Radius kein Spieler mehr befindet (Radius konfigurierbar).
 
 help.codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
@@ -564,5 +563,4 @@ option.retinalScanner.activatedByEntities=NPC aktiviert: #
 option.retinalScanner.activatedByEntities.description=Kann dieser Augenscanner von NPCs aktiviert werden?
 option.cageTrap.captureMobs=Mobs einfangen: #
 option.cageTrap.captureMobs.description=Solle die Käfigfalle Mobs und Spieler einfangen, oder nur Spieler?
-option.motionActivatedLightOff.searchRadius.description=Suchradius: #
-option.motionActivatedLightOn.searchRadius.description=Suchradius: #
+option.motionActivatedLight.searchRadius.description=Suchradius: #

@@ -172,8 +172,7 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs2, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs2.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
-		registerBlock(SCContent.motionActivatedLightOff);
-		GameRegistry.registerBlock(SCContent.motionActivatedLightOn, "motionActivatedLightOn");
+		registerBlock(SCContent.motionActivatedLight);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -580,7 +579,7 @@ public class RegistrationHandler
 				" RL", " IR", "I  ", 'R', Items.redstone, 'L', SCContent.laserBlock, 'I', Items.iron_ingot
 		});
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLightOff, 1), new Object[]{
+		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLight, 1), new Object[]{
 				"L", "R", "S", 'L', Blocks.redstone_lamp, 'R', SCContent.portableRadar, 'S', Items.stick
 		});
 
@@ -801,8 +800,7 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedRedSandstone), 1, new ModelResourceLocation("securitycraft:reinforcedRedSandstone_chiseled", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedRedSandstone), 2, new ModelResourceLocation("securitycraft:reinforcedRedSandstone_smooth", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedStairsRedSandstone), 0, new ModelResourceLocation("securitycraft:reinforcedStairsRedSandstone", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.motionActivatedLightOff), 0, new ModelResourceLocation("securitycraft:motionActivatedLightOff", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.motionActivatedLightOn), 0, new ModelResourceLocation("securitycraft:motionActivatedLightOn", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.motionActivatedLight), 0, new ModelResourceLocation("securitycraft:motionActivatedLight", "inventory"));
 
 		//Items
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

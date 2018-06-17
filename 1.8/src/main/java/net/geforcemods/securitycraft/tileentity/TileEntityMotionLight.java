@@ -19,7 +19,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof EntityPlayer)
 		{
-			if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLightOff)
+			if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 				BlockMotionActivatedLight.toggleLight(worldObj, pos, searchRadiusOption.asDouble(), getOwner(), true);
 			
 			return false;
@@ -30,7 +30,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	
 	@Override
 	public void attackFailed() {
-		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLightOn)
+		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 			BlockMotionActivatedLight.toggleLight(worldObj, pos, searchRadiusOption.asDouble(), getOwner(), false);
 	}
 	
@@ -57,6 +57,11 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {searchRadiusOption};
+	}
+
+	@Override
+	public String getCommandSenderName() {
+		return "Motion-Activated Light";
 	}
 
 }
