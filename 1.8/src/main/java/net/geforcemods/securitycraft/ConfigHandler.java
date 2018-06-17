@@ -31,6 +31,7 @@ public class ConfigHandler{
 	public int imsRange;
 	public float cameraSpeed;
 	public int inventoryScannerRange;
+	public double motionActivatedLightSearchRadius;
 
 	public void setupConfiguration()
 	{
@@ -141,6 +142,10 @@ public class ConfigHandler{
 		dummyProp = SecurityCraft.configFile.get("options", "Inventory Scanner range:", 2);
 		dummyProp.setLanguageKey("config.inventoryScannerRange");
 		inventoryScannerRange = dummyProp.getInt(2);
+		
+		dummyProp = SecurityCraft.configFile.get("options", "Motion-activated light range:", 2);
+		dummyProp.setLanguageKey("config.motionLightSearchRadius");
+		motionActivatedLightSearchRadius = dummyProp.getDouble(5.0D);
 
 		if(SecurityCraft.configFile.hasChanged())
 			SecurityCraft.configFile.save();

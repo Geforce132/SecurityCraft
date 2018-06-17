@@ -125,6 +125,9 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 				if(!worldObj.isRemote){
 					boolean attacked = false;
 
+					if(!iterator.hasNext())
+						attackFailed();
+
 					while (iterator.hasNext()) {
 						Entity mobToAttack = (Entity) iterator.next();
 
@@ -166,6 +169,16 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 	public boolean attackEntity(Entity entity) {
 		return false;
 	}
+
+	/**
+	 * Is called when a {@link TileEntitySCTE} is ready to attack, but cannot for some reason. <p>
+	 * 
+	 * These reasons may include: <p>
+	 * - There are no Entities in this block's attack range. <p>
+	 * - Only EntityItems are in the attack range. <p>
+	 * - The Entities in this block's attack range are not of the type set in entityTypeToAttack().
+	 */
+	public void attackFailed() {}
 
 	/**
 	 * Check if your TileEntity is ready to attack. (i.e: block conditions, metadata, etc.) <p>

@@ -96,6 +96,8 @@ public class SCContent
 	public static BlockStaticLiquid bogusWater;
 	public static Block secretSignWall;
 	public static Block secretSignStanding;
+	public static Block motionActivatedLightOff;
+	public static Block motionActivatedLightOn;
 
 	//Items
 	public static Item adminTool;

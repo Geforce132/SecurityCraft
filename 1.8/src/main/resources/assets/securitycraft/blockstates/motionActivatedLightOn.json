@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "securitycraft:motionActivatedLightOn" },
+        "facing=south": { "model": "securitycraft:motionActivatedLightOn", "y": 180 },
+        "facing=west":  { "model": "securitycraft:motionActivatedLightOn", "y": 270 },
+        "facing=east":  { "model": "securitycraft:motionActivatedLightOn", "y": 90 }
+    }
+}
