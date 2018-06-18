@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -38,6 +37,11 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
+	public boolean isFullCube(){
+		return false;
+	}
+
+	@Override
 	public boolean isNormalCube(){
 		return false;
 	}
@@ -45,6 +49,22 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	public int getRenderType(){
 		return 3;
+	}
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
+		if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.NORTH) {
+			setBlockBounds(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
+		}
+		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.SOUTH) {
+			setBlockBounds(0.35F, 0.18F, 1F, 0.65F, 0.58F, 0.75F);
+		}
+		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.EAST) {
+			setBlockBounds(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
+		}
+		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.WEST) {
+			setBlockBounds(0F, 0.18F, 0.35F, 0.25F, 0.58F, 0.65F);
+		}
 	}
 
 	@Override
@@ -75,39 +95,11 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			}
 		}
 	}
-	
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
-	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
-	{
-		setDefaultFacing(par1World, pos, state);
-	}
 
-	private void setDefaultFacing(World par1World, BlockPos pos, IBlockState state) {
-		Block block = par1World.getBlockState(pos.north()).getBlock();
-		Block block1 = par1World.getBlockState(pos.south()).getBlock();
-		Block block2 = par1World.getBlockState(pos.west()).getBlock();
-		Block block3 = par1World.getBlockState(pos.east()).getBlock();
-		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
-
-		if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-			enumfacing = EnumFacing.SOUTH;
-		else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-			enumfacing = EnumFacing.NORTH;
-		else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-			enumfacing = EnumFacing.EAST;
-		else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-			enumfacing = EnumFacing.WEST;
-
-		par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
-	}
-	
 	@Override
 	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(LIT, false);
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
 	}
 	
 	@Override
