@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.5 of SecurityCraft (unreleased)--------------------------
 
+- New: 1.9.4 support
 - New: Two Reinforced Doors placed next to each other will open together when one of them is opened
 - New: Completely overhauled the GUI of the Mine Remote Access Tool
 - New: The Security Camera can now be placed on the ceiling

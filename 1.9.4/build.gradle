@@ -37,7 +37,7 @@ repositories {
 
 dependencies {
     compile files('libs/Waila-1.7.0-B3_1.9.4-dev.jar')
-    runtime 'mezz.jei:jei_1.9.4-3.6.8.225'
+    runtime 'mezz.jei:jei_1.9.4:3.6.8.225'
 }
 
 processResources
