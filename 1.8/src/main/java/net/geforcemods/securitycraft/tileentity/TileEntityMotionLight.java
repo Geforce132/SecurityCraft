@@ -19,7 +19,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof EntityPlayer)
 		{
-			if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
+			if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 				BlockMotionActivatedLight.toggleLight(worldObj, pos, searchRadiusOption.asDouble(), getOwner(), true);
 			
 			return false;
