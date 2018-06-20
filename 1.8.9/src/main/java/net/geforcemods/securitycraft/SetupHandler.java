@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockLaserField;
 import net.geforcemods.securitycraft.blocks.BlockLogger;
+import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
@@ -205,6 +206,8 @@ public class SetupHandler
 
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
+
+		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("motionActivatedLight").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	public static void setupMines()

@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUtils{
@@ -261,6 +262,10 @@ public class BlockUtils{
 
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {
 		return par1World.getBlockState(pos).getValue(property);
+	}
+
+	public static EnumFacing getBlockProperty(IBlockAccess par1World, BlockPos pos, PropertyDirection property) {
+		return (EnumFacing) par1World.getBlockState(pos).getValue(property);
 	}
 
 	public static EnumFacing getBlockProperty(World par1World, int par2, int par3, int par4, PropertyDirection property) {

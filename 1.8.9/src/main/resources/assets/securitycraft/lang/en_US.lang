@@ -186,6 +186,7 @@ tile.reinforcedRedSandstone_chiseled.name=Reinforced Chiseled Red Sandstone
 tile.reinforcedRedSandstone_smooth.name=Reinforced Smooth Red Sandstone
 tile.reinforcedStairsRedSandstone.name=Reinforced Red Sandstone Stairs
 tile.reinforcedStoneSlabs2_red_sandstone.name=Reinforced Red Sandstone Slab
+tile.motionActivatedLight.name=Motion-Activated Light
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -271,6 +272,7 @@ help.reinforcedStairsBrick.info=Reinforced brick stairs are the same as vanilla 
 help.reinforcedStairsNetherBrick.info=Reinforced nether brick stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedStairsQuartz.info=Reinforced quartz stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.reinforcedStairsRedSandstone.info=Reinforced red sandstone stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
+help.motionActivatedLight.info=The motion-activated light will emit a light, similar to a redstone lamp, when a player is within a certain range of the block (configurable).
 
 help.codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
@@ -555,3 +557,4 @@ option.retinalScanner.activatedByEntities=NPC-activated: #
 option.retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
 option.cageTrap.captureMobs=Capture mobs: #
 option.cageTrap.captureMobs.description=Should this cage trap capture hostile mobs and players, or only players?
+option.motionActivatedLight.searchRadius.description=Search radius: #
