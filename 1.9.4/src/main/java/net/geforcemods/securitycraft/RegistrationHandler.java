@@ -55,6 +55,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
@@ -64,6 +65,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -178,6 +180,7 @@ public class RegistrationHandler
 		registerBlock(SCContent.reinforcedStairsPurpur);
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
+		registerBlock(SCContent.motionActivatedLight);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -238,6 +241,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
+		GameRegistry.registerTileEntity(TileEntityMotionLight.class, "motionLight");
 	}
 
 	public static void registerRecipes()
@@ -583,6 +587,10 @@ public class RegistrationHandler
 				" RL", " IR", "I  ", 'R', Items.REDSTONE, 'L', SCContent.laserBlock, 'I', Items.IRON_INGOT
 		});
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLight, 1), new Object[]{
+				"L", "R", "S", 'L', Blocks.REDSTONE_LAMP, 'R', SCContent.portableRadar, 'S', Items.STICK
+		});
+
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.DIRT, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.STONE, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.cobblestoneMine, 1), new Object[] {Blocks.COBBLESTONE, SCContent.mine});
@@ -788,6 +796,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedPurpur), 0, new ModelResourceLocation("securitycraft:reinforcedPurpur_default", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedPurpur), 1, new ModelResourceLocation("securitycraft:reinforcedPurpur_pillar", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStairsPurpur), 0, new ModelResourceLocation("securitycraft:reinforcedStairsPurpur", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.motionActivatedLight), 0, new ModelResourceLocation("securitycraft:motionActivatedLight", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

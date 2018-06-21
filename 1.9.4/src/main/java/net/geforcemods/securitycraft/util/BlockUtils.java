@@ -273,6 +273,10 @@ public class BlockUtils{
 		return par1World.getBlockState(pos).getValue(property);
 	}
 
+	public static EnumFacing getBlockProperty(IBlockAccess par1World, BlockPos pos, PropertyDirection property) {
+		return (EnumFacing) par1World.getBlockState(pos).getValue(property);
+	}
+
 	public static EnumFacing getBlockProperty(World par1World, int par2, int par3, int par4, PropertyDirection property) {
 		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
 	}
