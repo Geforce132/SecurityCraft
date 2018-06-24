@@ -31,7 +31,7 @@ import net.minecraft.world.World;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  *
- * @version 1.1.2
+ * @version 1.1.3
  *
  * @author Geforce
  */
@@ -118,7 +118,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();
-				AxisAlignedBB axisalignedbb = new AxisAlignedBB(i + getAttackRange(), j + getAttackRange(), k + getAttackRange(), i - getAttackRange(), j - getAttackRange(), k - getAttackRange());
+				AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
 				List<?> list = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 				Iterator<?> iterator = list.iterator();
 
@@ -172,7 +172,7 @@ public class TileEntitySCTE extends TileEntity implements IUpdatePlayerListBox, 
 
 	/**
 	 * Is called when a {@link TileEntitySCTE} is ready to attack, but cannot for some reason. <p>
-	 * 
+	 *
 	 * These reasons may include: <p>
 	 * - There are no Entities in this block's attack range. <p>
 	 * - Only EntityItems are in the attack range. <p>

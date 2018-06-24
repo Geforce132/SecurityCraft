@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  *
- * @version 1.1.2
+ * @version 1.1.3
  *
  * @author Geforce
  */
@@ -114,10 +114,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			}
 
 			if (canAttack()) {
-				int i = pos.getX();
-				int j = pos.getY();
-				int k = pos.getZ();
-				AxisAlignedBB axisalignedbb = new AxisAlignedBB(i + getAttackRange(), j + getAttackRange(), k + getAttackRange(), i - getAttackRange(), j - getAttackRange(), k - getAttackRange());
+				AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).expand(getAttackRange(), getAttackRange(), getAttackRange());
 				List<?> list = world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 				Iterator<?> iterator = list.iterator();
 
@@ -171,7 +168,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	/**
 	 * Is called when a {@link TileEntitySCTE} is ready to attack, but cannot for some reason. <p>
-	 * 
+	 *
 	 * These reasons may include: <p>
 	 * - There are no Entities in this block's attack range. <p>
 	 * - Only EntityItems are in the attack range. <p>
