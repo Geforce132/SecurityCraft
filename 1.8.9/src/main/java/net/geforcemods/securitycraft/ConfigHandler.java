@@ -143,7 +143,7 @@ public class ConfigHandler
 		dummyProp.setLanguageKey("config.inventoryScannerRange");
 		inventoryScannerRange = dummyProp.getInt(2);
 
-		dummyProp = SecurityCraft.configFile.get("options", "Motion-activated light range:", 2);
+		dummyProp = SecurityCraft.configFile.get("options", "Motion-activated light range:", 5);
 		dummyProp.setLanguageKey("config.motionLightSearchRadius");
 		motionActivatedLightSearchRadius = dummyProp.getDouble(5.0D);
 

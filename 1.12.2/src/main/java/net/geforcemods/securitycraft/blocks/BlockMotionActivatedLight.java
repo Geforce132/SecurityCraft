@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -18,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -57,7 +59,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
 		EnumFacing dir = state.getValue(FACING);
-		
+
 		if(dir == EnumFacing.NORTH) {
 			return new AxisAlignedBB(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
 		}
@@ -104,6 +106,27 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 				
 				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
 			}
+		}
+	}
+
+	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
+
+		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	{
+		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING))) {
+			dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos);
 		}
 	}
 

@@ -104,8 +104,15 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
+
+		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+	}
+
+	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
+		return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
 	}
 
 	@Override

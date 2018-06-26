@@ -97,18 +97,24 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public IBlockState getStateForEntityRender(IBlockState state)
 	{
 		return getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
 	}
-	
+
+	@Override
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+		return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+	}
+
+	@Override
+	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
+
+		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+	}
+
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
