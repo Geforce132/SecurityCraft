@@ -1,5 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
+import java.util.Random;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -7,15 +14,15 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWailaDisplay {
 	
@@ -50,34 +57,34 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 		if(meta == 3)
 			setBlockBounds(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
 		else if(meta == 4)
-			setBlockBounds(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
-		else if(meta == 2)
 			setBlockBounds(0.35F, 0.18F, 1F, 0.65F, 0.58F, 0.75F);
-		else if(meta == 5) {
+		else if(meta == 2)
+			setBlockBounds(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
+		else if(meta == 1) {
 			setBlockBounds(0F, 0.18F, 0.35F, 0.25F, 0.58F, 0.65F);
 		}
 	}
-
-	/**
-	 * Called when the block is placed in the world.
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		int entityRotation = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-
-		if (entityRotation == 0)
-			world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-
-		if (entityRotation == 1)
-			world.setBlockMetadataWithNotify(x, y, z, 5, 2);
-
-		if (entityRotation == 2)
-			world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-
-		if (entityRotation == 3)
-			world.setBlockMetadataWithNotify(x, y, z, 4, 2);
-	}
 	
+	@Override
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta){
+		int k1 = meta & 8;
+		byte b0 = -1;
+
+		if(side == 2 && world.isSideSolid(x, y, z + 1, NORTH))
+			b0 = 4;
+
+		if(side == 3 && world.isSideSolid(x, y, z - 1, SOUTH))
+			b0 = 3;
+
+		if(side == 4 && world.isSideSolid(x + 1, y, z, WEST))
+			b0 = 2;
+
+		if(side == 5 && world.isSideSolid(x - 1, y, z, EAST))
+			b0 = 1;
+
+		return b0 == 0 ? 0 : b0 + k1;
+	}
+
 	public static void toggleLight(World world, int x, int y, int z, double searchRadius, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
@@ -100,6 +107,60 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 				BlockUtils.updateAndNotify(world, x, y, z, SCContent.motionActivatedLightOff, 1, false);
 			}
 		}
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
+		if(canPlaceAt(world, x, y, z))
+		{
+			int meta = world.getBlockMetadata(x, y, z) & 7;
+			boolean notSolid = false;
+
+			if (!world.isSideSolid(x - 1, y, z, EAST) && meta == 1)
+				notSolid = true;
+			else if (!world.isSideSolid(x + 1, y, z, WEST) && meta == 2)
+				notSolid = true;
+			else if (!world.isSideSolid(x, y, z - 1, SOUTH) && meta == 3)
+				notSolid = true;
+			else if (!world.isSideSolid(x, y, z + 1, NORTH) && meta == 4)
+				notSolid = true;
+
+			if (notSolid)
+			{
+				this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+				world.setBlockToAir(x, y, z);
+			}
+		}
+	}
+
+	/**
+	 * Also automatically drops the block and sets it to air if not possible to place the block at the given position
+	 */
+	private boolean canPlaceAt(World world, int x, int y, int z)
+	{
+		if (!canPlaceBlockAt(world, x, y, z))
+		{
+			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			world.setBlockToAir(x, y, z);
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return (dir == NORTH && world.isSideSolid(x, y, z + 1, NORTH)) ||
+				(dir == SOUTH && world.isSideSolid(x, y, z - 1, SOUTH)) ||
+				(dir == WEST  && world.isSideSolid(x + 1, y, z, WEST )) ||
+				(dir == EAST  && world.isSideSolid(x - 1, y, z, EAST ));
+	}
+	
+	@Override
+	public Item getItemDropped(int meta, Random random, int fortune) {
+		return Item.getItemFromBlock(SCContent.motionActivatedLightOff);
 	}
 
 	@Override
