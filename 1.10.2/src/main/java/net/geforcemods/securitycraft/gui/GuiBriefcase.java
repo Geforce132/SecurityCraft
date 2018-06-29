@@ -67,8 +67,6 @@ public class GuiBriefcase extends GuiContainer {
 
 		for(GuiTextField textfield : keycodeTextboxes)
 			textfield.drawTextBox();
-
-		GlStateManager.enableLighting();
 	}
 
 	@Override

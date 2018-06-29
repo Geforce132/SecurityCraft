@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,6 +60,7 @@ public class GuiPictureButton extends GuiButton{
 			hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
 			int hoverState = getHoverState(hovered);
 			GL11.glEnable(GL11.GL_BLEND);
+			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			drawTexturedModalRect(xPosition, yPosition, 0, 46 + hoverState * 20, width / 2, height);
 			drawTexturedModalRect(xPosition + width / 2, yPosition, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
@@ -67,13 +69,11 @@ public class GuiPictureButton extends GuiButton{
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL); //(this.width / 2) - 8
 				itemRenderer.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
 				itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(blockToRender), xPosition + 2, yPosition + 2);
-				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			}else if(itemToRender != null){
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				itemRenderer.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
 				itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(itemToRender), xPosition + 2, yPosition + 2);
-				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
 			}
 			else if(textureLocation != null)
@@ -93,7 +93,6 @@ public class GuiPictureButton extends GuiButton{
 				var6 = 16777120;
 
 			drawCenteredString(fontRenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);
-			GL11.glDisable(GL11.GL_BLEND);
 		}
 	}
 

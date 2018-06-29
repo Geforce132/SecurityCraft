@@ -74,9 +74,9 @@ public class GuiInventoryScanner extends GuiContainer {
 		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
 			fontRendererObj.drawString(StatCollector.translateToLocal("gui.invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
 			fontRendererObj.drawString((tileEntity.getType().matches("check") ? StatCollector.translateToLocal("gui.invScan.checkInv") : StatCollector.translateToLocal("gui.invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+
 		}
 
-		GlStateManager.enableLighting();
 	}
 
 	@Override
