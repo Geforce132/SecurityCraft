@@ -21,9 +21,10 @@
 - Fix: [1.7.10] Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - Fix: [1.7.10] Ownership data doesn't update correctly on the client side
 - Fix: [1.7.10] Password-protected Chest has incorrect breaking particles
+- Fix: [1.8.9] Reinforced Cobblestone is not tinted in inventory
 - Fix: [1.8+] Inconsistent Alarm model
 - Fix: [1.8+] Protecto does not work
-- Fix: [1.8+] Some ranges for SecurityCraft blocks were not calculated correctly
+- Fix: [1.8+] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 - Fix: [1.10.2+] Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed
 - Potential Fix: StackOverflowException involving block mines
 - Sponge Fix: [1.10.2+] Keycard Reader cannot be configured on when Sponge

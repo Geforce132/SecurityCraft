@@ -119,7 +119,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.unbreakableIronBars);
 		registerReinforcedBlock(SCContent.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
 		registerReinforcedBlock(SCContent.reinforcedDirt, ItemBlockTinted.class);
-		registerReinforcedBlock(SCContent.reinforcedCobblestone);
+		registerReinforcedBlock(SCContent.reinforcedCobblestone, ItemBlockTinted.class);
 		registerBlock(SCContent.reinforcedFencegate);
 		registerReinforcedBlock(SCContent.reinforcedWoodPlanks, ItemBlockReinforcedPlanks.class);
 		registerBlock(SCContent.panicButton);
