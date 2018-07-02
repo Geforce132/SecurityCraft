@@ -52,6 +52,7 @@ public class SCContent
 	public static Block reinforcedGlass;
 	public static Block reinforcedGlassPane;
 	public static Block reinforcedHardenedClay;
+	public static Block reinforcedIronBars;
 	public static Block reinforcedMetals;
 	public static Block reinforcedMossyCobblestone;
 	public static Block reinforcedNetherBrick;
@@ -89,7 +90,6 @@ public class SCContent
 	public static Block securityCamera;
 	public static Block stoneMine;
 	public static Block trackMine;
-	public static Block unbreakableIronBars;
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;

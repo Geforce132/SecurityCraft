@@ -116,7 +116,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedGlassPane);
 		registerBlock(SCContent.alarm);
 		GameRegistry.registerBlock(SCContent.alarmLit, SCContent.alarmLit.getUnlocalizedName().substring(5));
-		registerReinforcedBlock(SCContent.unbreakableIronBars);
+		registerReinforcedBlock(SCContent.reinforcedIronBars);
 		registerReinforcedBlock(SCContent.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
 		registerReinforcedBlock(SCContent.reinforcedDirt, ItemBlockTinted.class);
 		registerReinforcedBlock(SCContent.reinforcedCobblestone, ItemBlockTinted.class);
@@ -349,7 +349,7 @@ public class RegistrationHandler
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.cageTrap, 1), new Object[]{
-				"BBB", "GRG", "III", 'B', SCContent.unbreakableIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
+				"BBB", "GRG", "III", 'B', SCContent.reinforcedIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.alarm, 1), new Object[]{
@@ -656,7 +656,7 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.inventoryScannerField), 0, new ModelResourceLocation("securitycraft:inventoryScannerField", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.retinalScanner), 0, new ModelResourceLocation("securitycraft:retinalScanner", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedGlassPane), 0, new ModelResourceLocation("securitycraft:reinforcedGlass", "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.unbreakableIronBars), 0, new ModelResourceLocation("securitycraft:reinforcedIronBars", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedIronBars), 0, new ModelResourceLocation("securitycraft:reinforcedIronBars", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.portableRadar), 0, new ModelResourceLocation("securitycraft:portableRadar", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.alarm), 0, new ModelResourceLocation("securitycraft:alarm", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.alarmLit), 0, new ModelResourceLocation("securitycraft:alarmLit", "inventory"));

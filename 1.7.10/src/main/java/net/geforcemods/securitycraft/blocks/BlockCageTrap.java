@@ -73,13 +73,13 @@ public class BlockCageTrap extends BlockOwnable {
 
 				world.setBlock(x, y, z, SCContent.deactivatedCageTrap);
 
-				world.setBlock(x, y + 4, z, SCContent.unbreakableIronBars);
-				world.setBlock(x + 1, y + 4, z, SCContent.unbreakableIronBars);
-				world.setBlock(x - 1, y + 4, z, SCContent.unbreakableIronBars);
-				world.setBlock(x, y + 4, z + 1, SCContent.unbreakableIronBars);
-				world.setBlock(x, y + 4, z - 1, SCContent.unbreakableIronBars);
+				world.setBlock(x, y + 4, z, SCContent.reinforcedIronBars);
+				world.setBlock(x + 1, y + 4, z, SCContent.reinforcedIronBars);
+				world.setBlock(x - 1, y + 4, z, SCContent.reinforcedIronBars);
+				world.setBlock(x, y + 4, z + 1, SCContent.reinforcedIronBars);
+				world.setBlock(x, y + 4, z - 1, SCContent.reinforcedIronBars);
 
-				BlockUtils.setBlockInBox(world, x, y, z, SCContent.unbreakableIronBars);
+				BlockUtils.setBlockInBox(world, x, y, z, SCContent.reinforcedIronBars);
 				setTileEntities(world, x, y, z, originalTrap.getOwner().getUUID(), originalTrap.getOwner().getName());
 
 				world.playSoundEffect(x,y,z, "random.anvil_use", 3.0F, 1.0F);

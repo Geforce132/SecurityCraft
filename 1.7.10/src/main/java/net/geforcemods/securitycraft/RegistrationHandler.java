@@ -115,7 +115,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedGlassPane);
 		registerBlock(SCContent.alarm);
 		GameRegistry.registerBlock(SCContent.alarmLit, SCContent.alarmLit.getUnlocalizedName().substring(5));
-		registerReinforcedBlock(SCContent.unbreakableIronBars);
+		registerReinforcedBlock(SCContent.reinforcedIronBars);
 		registerReinforcedBlock(SCContent.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
 		registerReinforcedBlock(SCContent.reinforcedDirt);
 		registerReinforcedBlock(SCContent.reinforcedCobblestone);
@@ -340,7 +340,7 @@ public class RegistrationHandler
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.cageTrap, 1), new Object[]{
-				"BBB", "GRG", "III", 'B', SCContent.unbreakableIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
+				"BBB", "GRG", "III", 'B', SCContent.reinforcedIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.alarm, 1), new Object[]{

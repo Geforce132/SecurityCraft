@@ -17,7 +17,7 @@ public interface IReinforcedBlock
 			SCContent.reinforcedEndStoneBricks,
 			SCContent.reinforcedGlass,
 			SCContent.reinforcedHardenedClay,
-			SCContent.unbreakableIronBars,
+			SCContent.reinforcedIronBars,
 			SCContent.reinforcedMetals,
 			SCContent.reinforcedMossyCobblestone,
 			SCContent.reinforcedNetherBrick,
