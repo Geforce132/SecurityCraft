@@ -187,6 +187,10 @@ tile.reinforcedRedSandstone_smooth.name=Verstärkter glatter roter Sandstein
 tile.reinforcedStairsRedSandstone.name=Verstärkte rote Sandsteintreppe
 tile.reinforcedStoneSlabs2_red_sandstone.name=Verstärkte rote Sandsteinstufe
 tile.motionActivatedLight.name=Automatisches Licht
+tile.reinforcedObsidian.name=Verstärktes Obsidian
+tile.reinforcedEndStone.name=Verstärkter Endstein
+tile.reinforcedNetherrack.name=Verstärkter Netherrack
+tile.reinforcedSeaLantern.name=Verstärkte Seelaterne
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür

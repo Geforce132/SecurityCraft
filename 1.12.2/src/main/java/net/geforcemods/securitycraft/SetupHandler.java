@@ -35,6 +35,7 @@ import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedConcrete;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
@@ -211,6 +212,16 @@ public class SetupHandler
 		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(1000F).setRegistryName("secret_sign_wall").setUnlocalizedName("secretSign");
 
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setRegistryName("motion_activated_light").setUnlocalizedName("motionActivatedLight").setCreativeTab(SecurityCraft.tabSCTechnical);
+
+		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.ROCK, 1, Blocks.OBSIDIAN).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_obsidian").setUnlocalizedName("reinforcedObsidian");
+
+		SCContent.reinforcedNetherrack = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHERRACK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_netherrack").setUnlocalizedName("reinforcedNetherrack");
+
+		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_STONE).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_stone").setUnlocalizedName("reinforcedEndStone");
+
+		SCContent.reinforcedSeaLantern = new BlockReinforcedBase(Material.GLASS, 1, Blocks.SEA_LANTERN).setBlockUnbreakable().setResistance(1000).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sea_lantern").setUnlocalizedName("reinforcedSeaLantern");
+
+		SCContent.reinforcedBoneBlock = new BlockReinforcedBoneBlock(Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bone_block").setUnlocalizedName("reinforcedBoneBlock");
 	}
 
 	public static void setupMines()

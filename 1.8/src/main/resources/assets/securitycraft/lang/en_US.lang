@@ -187,6 +187,10 @@ tile.reinforcedRedSandstone_smooth.name=Reinforced Smooth Red Sandstone
 tile.reinforcedStairsRedSandstone.name=Reinforced Red Sandstone Stairs
 tile.reinforcedStoneSlabs2_red_sandstone.name=Reinforced Red Sandstone Slab
 tile.motionActivatedLight.name=Motion-Activated Light
+tile.reinforcedObsidian.name=Reinforced Obsidian
+tile.reinforcedEndStone.name=Reinforced End Stone
+tile.reinforcedNetherrack.name=Reinforced Netherrack
+tile.reinforcedSeaLantern.name=Reinforced Sea Lantern
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door

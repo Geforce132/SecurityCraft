@@ -192,6 +192,10 @@ tile.reinforcedPurpur_pillar.name=Reinforced Purpur Pillar
 tile.reinforcedStairsPurpur.name=Reinforced Purpur Stairs
 tile.reinforcedStoneSlabs2_purpur.name=Reinforced Purpur Slab
 tile.motionActivatedLight.name=Motion-Activated Light
+tile.reinforcedObsidian.name=Reinforced Obsidian
+tile.reinforcedEndStone.name=Reinforced End Stone
+tile.reinforcedNetherrack.name=Reinforced Netherrack
+tile.reinforcedSeaLantern.name=Reinforced Sea Lantern
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door

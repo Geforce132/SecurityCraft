@@ -210,6 +210,11 @@ tile.reinforcedConcrete_green.name=Verstärkter grünre Beton
 tile.reinforcedConcrete_red.name=Verstärkter roter Beton
 tile.reinforcedConcrete_black.name=Verstärkter schwarzer Beton
 tile.motionActivatedLight.name=Automatisches Licht
+tile.reinforcedObsidian.name=Verstärktes Obsidian
+tile.reinforcedEndStone.name=Verstärkter Endstein
+tile.reinforcedNetherrack.name=Verstärkter Netherrack
+tile.reinforcedSeaLantern.name=Verstärkte Seelaterne
+tile.reinforcedBoneBlock.name=Verstärkter Knochenblock
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür

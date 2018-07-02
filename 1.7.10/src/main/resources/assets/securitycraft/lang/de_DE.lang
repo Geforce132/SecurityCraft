@@ -175,6 +175,9 @@ tile.reinforcedStairsQuartz.name=Verstärkte Quarztreppe
 tile.reinforcedStoneSlabs_quartz.name=Verstärkte Quarzstufe
 tile.motionActivatedLightOff.name=Automatisches Licht
 tile.motionActivatedLightOn.name=Automatisches Licht
+tile.reinforcedObsidian.name=Verstärktes Obsidian
+tile.reinforcedEndStone.name=Verstärkter Endstein
+tile.reinforcedNetherrack.name=Verstärkter Netherrack
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür

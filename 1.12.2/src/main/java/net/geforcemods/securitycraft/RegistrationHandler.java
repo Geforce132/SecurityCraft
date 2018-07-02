@@ -185,6 +185,11 @@ public class RegistrationHandler
 		GameData.register_impl(SCContent.secretSignWall);
 		GameData.register_impl(SCContent.secretSignStanding);
 		registerBlock(SCContent.motionActivatedLight);
+		registerBlock(SCContent.reinforcedObsidian, false);
+		registerBlock(SCContent.reinforcedNetherrack, false);
+		registerBlock(SCContent.reinforcedEndStone, false);
+		registerBlock(SCContent.reinforcedSeaLantern, false);
+		registerBlock(SCContent.reinforcedBoneBlock, false);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem);
@@ -460,6 +465,11 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedConcrete), 14, new ModelResourceLocation("securitycraft:reinforced_concrete_red", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedConcrete), 15, new ModelResourceLocation("securitycraft:reinforced_concrete_black", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.motionActivatedLight), 0, new ModelResourceLocation("securitycraft:motion_activated_light", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedObsidian), 0, new ModelResourceLocation("securitycraft:reinforced_obsidian", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedNetherrack), 0, new ModelResourceLocation("securitycraft:reinforced_netherrack", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedEndStone), 0, new ModelResourceLocation("securitycraft:reinforced_end_stone", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSeaLantern), 0, new ModelResourceLocation("securitycraft:reinforced_sea_lantern", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedBoneBlock), 0, new ModelResourceLocation("securitycraft:reinforced_bone_block", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

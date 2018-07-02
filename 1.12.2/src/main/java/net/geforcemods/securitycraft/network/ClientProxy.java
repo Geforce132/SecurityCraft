@@ -255,6 +255,7 @@ public class ClientProxy extends ServerProxy{
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
 
 		Block[] blocksToTint = {
+				SCContent.reinforcedBoneBlock,
 				SCContent.reinforcedBrick,
 				SCContent.reinforcedCobblestone,
 				SCContent.reinforcedCompressedBlocks,
@@ -263,12 +264,15 @@ public class ClientProxy extends ServerProxy{
 				SCContent.reinforcedDoubleStoneSlabs,
 				SCContent.reinforcedDoubleStoneSlabs2,
 				SCContent.reinforcedDoubleWoodSlabs,
+				SCContent.reinforcedEndStone,
 				SCContent.reinforcedEndStoneBricks,
 				SCContent.reinforcedHardenedClay,
 				SCContent.reinforcedMetals,
 				SCContent.reinforcedMossyCobblestone,
 				SCContent.reinforcedNetherBrick,
+				SCContent.reinforcedNetherrack,
 				SCContent.reinforcedNewLogs,
+				SCContent.reinforcedObsidian,
 				SCContent.reinforcedOldLogs,
 				SCContent.reinforcedPrismarine,
 				SCContent.reinforcedPurpur,
@@ -276,6 +280,7 @@ public class ClientProxy extends ServerProxy{
 				SCContent.reinforcedRedNetherBrick,
 				SCContent.reinforcedRedSandstone,
 				SCContent.reinforcedSandstone,
+				SCContent.reinforcedSeaLantern,
 				SCContent.reinforcedStainedHardenedClay,
 				SCContent.reinforcedStairsAcacia,
 				SCContent.reinforcedStairsBirch,

@@ -192,6 +192,10 @@ tile.reinforcedPurpur_pillar.name=Verstärkte Purpursäule
 tile.reinforcedStairsPurpur.name=Verstärkte Purpurtreppe
 tile.reinforcedStoneSlabs2_purpur.name=Verstärkte Purpurstufe
 tile.motionActivatedLight.name=Automatisches Licht
+tile.reinforcedObsidian.name=Verstärktes Obsidian
+tile.reinforcedEndStone.name=Verstärkter Endstein
+tile.reinforcedNetherrack.name=Verstärkter Netherrack
+tile.reinforcedSeaLantern.name=Verstärkte Seelaterne
 
 item.codebreaker.name=Codebrecher
 item.doorIndestructibleIronItem.name=Verstärkte Eisentür

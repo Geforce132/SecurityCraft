@@ -18,6 +18,8 @@ public class BlockOwnable extends BlockContainer {
 
 		if(par1 == Material.GROUND)
 			setSoundType(SoundType.GROUND);
+		else if(par1 == Material.GLASS)
+			setSoundType(SoundType.GLASS);
 		else
 			setSoundType(SoundType.STONE);
 	}

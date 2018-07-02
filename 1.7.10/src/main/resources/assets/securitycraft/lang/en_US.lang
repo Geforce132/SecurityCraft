@@ -175,6 +175,9 @@ tile.reinforcedStairsQuartz.name=Reinforced Quartz Stairs
 tile.reinforcedStoneSlabs_quartz.name=Reinforced Quartz Slab
 tile.motionActivatedLightOff.name=Motion-Activated Light
 tile.motionActivatedLightOn.name=Motion-Activated Light
+tile.reinforcedObsidian.name=Reinforced Obsidian
+tile.reinforcedEndStone.name=Reinforced End Stone
+tile.reinforcedNetherrack.name=Reinforced Netherrack
 
 item.codebreaker.name=Codebreaker
 item.doorIndestructibleIronItem.name=Reinforced Iron Door

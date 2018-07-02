@@ -35,6 +35,7 @@ public class SCContent
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block protecto;
+	public static Block reinforcedBoneBlock;
 	public static Block reinforcedBrick;
 	public static Block reinforcedCobblestone;
 	public static Block reinforcedCompressedBlocks;
@@ -46,6 +47,7 @@ public class SCContent
 	public static Block reinforcedDoubleStoneSlabs;
 	public static Block reinforcedDoubleStoneSlabs2;
 	public static Block reinforcedDoubleWoodSlabs;
+	public static Block reinforcedEndStone;
 	public static Block reinforcedEndStoneBricks;
 	public static Block reinforcedFencegate;
 	public static Block reinforcedGlass;
@@ -54,7 +56,9 @@ public class SCContent
 	public static Block reinforcedMetals;
 	public static Block reinforcedMossyCobblestone;
 	public static Block reinforcedNetherBrick;
+	public static Block reinforcedNetherrack;
 	public static Block reinforcedNewLogs;
+	public static Block reinforcedObsidian;
 	public static Block reinforcedOldLogs;
 	public static Block reinforcedPrismarine;
 	public static Block reinforcedPurpur;
@@ -62,6 +66,7 @@ public class SCContent
 	public static Block reinforcedRedNetherBrick;
 	public static Block reinforcedRedSandstone;
 	public static Block reinforcedSandstone;
+	public static Block reinforcedSeaLantern;
 	public static Block reinforcedStainedGlass;
 	public static Block reinforcedStainedGlassPanes;
 	public static Block reinforcedStainedHardenedClay;

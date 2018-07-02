@@ -173,6 +173,10 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
 		registerBlock(SCContent.motionActivatedLight);
+		registerReinforcedBlock(SCContent.reinforcedObsidian, ItemBlockTinted.class);
+		registerReinforcedBlock(SCContent.reinforcedNetherrack, ItemBlockTinted.class);
+		registerReinforcedBlock(SCContent.reinforcedEndStone, ItemBlockTinted.class);
+		registerReinforcedBlock(SCContent.reinforcedSeaLantern, ItemBlockTinted.class);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -838,6 +842,10 @@ public class RegistrationHandler
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universalKeyChanger", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scannerDoorItem", "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secretSignItem", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedObsidian), 0, new ModelResourceLocation("securitycraft:reinforcedObsidian", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedNetherrack), 0, new ModelResourceLocation("securitycraft:reinforcedNetherrack", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedEndStone), 0, new ModelResourceLocation("securitycraft:reinforcedEndStone", "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.reinforcedSeaLantern), 0, new ModelResourceLocation("securitycraft:reinforcedSeaLantern", "inventory"));
 
 		//Mines
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

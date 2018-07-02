@@ -9,11 +9,13 @@ import net.minecraft.block.Block;
 public interface IReinforcedBlock
 {
 	public static final List<Block> BLOCKS = Arrays.asList(new Block[] {
+			SCContent.reinforcedBoneBlock,
 			SCContent.reinforcedBrick,
 			SCContent.reinforcedCobblestone,
 			SCContent.reinforcedCompressedBlocks,
 			SCContent.reinforcedConcrete,
 			SCContent.reinforcedDirt,
+			SCContent.reinforcedEndStone,
 			SCContent.reinforcedEndStoneBricks,
 			SCContent.reinforcedGlass,
 			SCContent.reinforcedHardenedClay,
@@ -21,7 +23,9 @@ public interface IReinforcedBlock
 			SCContent.reinforcedMetals,
 			SCContent.reinforcedMossyCobblestone,
 			SCContent.reinforcedNetherBrick,
+			SCContent.reinforcedNetherrack,
 			SCContent.reinforcedNewLogs,
+			SCContent.reinforcedObsidian,
 			SCContent.reinforcedOldLogs,
 			SCContent.reinforcedPrismarine,
 			SCContent.reinforcedPurpur,
@@ -29,6 +33,7 @@ public interface IReinforcedBlock
 			SCContent.reinforcedRedNetherBrick,
 			SCContent.reinforcedRedSandstone,
 			SCContent.reinforcedSandstone,
+			SCContent.reinforcedSeaLantern,
 			SCContent.reinforcedStainedHardenedClay,
 			SCContent.reinforcedStone,
 			SCContent.reinforcedStoneBrick,

@@ -47,6 +47,7 @@ public class SCContent
 	public static Block reinforcedDoubleDirtSlab;
 	public static Block reinforcedDoubleStoneSlabs;
 	public static Block reinforcedDoubleWoodSlabs;
+	public static Block reinforcedEndStone;
 	public static Block reinforcedFencegate;
 	public static Block reinforcedGlass;
 	public static Block reinforcedGlassPane;
@@ -54,7 +55,9 @@ public class SCContent
 	public static Block reinforcedMetals;
 	public static Block reinforcedMossyCobblestone;
 	public static Block reinforcedNetherBrick;
+	public static Block reinforcedNetherrack;
 	public static Block reinforcedNewLogs;
+	public static Block reinforcedObsidian;
 	public static Block reinforcedOldLogs;
 	public static Block reinforcedQuartz;
 	public static Block reinforcedSandstone;

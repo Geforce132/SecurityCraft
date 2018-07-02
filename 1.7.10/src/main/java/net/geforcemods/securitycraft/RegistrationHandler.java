@@ -169,6 +169,9 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
 		registerBlock(SCContent.motionActivatedLightOff);
 		GameRegistry.registerBlock(SCContent.motionActivatedLightOn, "motionActivatedLightOn");
+		registerReinforcedBlock(SCContent.reinforcedObsidian);
+		registerReinforcedBlock(SCContent.reinforcedNetherrack);
+		registerReinforcedBlock(SCContent.reinforcedEndStone);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
