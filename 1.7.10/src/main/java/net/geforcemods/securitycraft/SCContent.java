@@ -93,10 +93,10 @@ public class SCContent
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;
-	public static Block secretSignWall;
-	public static Block secretSignStanding;
 	public static Block motionActivatedLightOff;
 	public static Block motionActivatedLightOn;
+	public static Block secretSignWall;
+	public static Block secretSignStanding;
 
 	//Items
 	public static Item adminTool;

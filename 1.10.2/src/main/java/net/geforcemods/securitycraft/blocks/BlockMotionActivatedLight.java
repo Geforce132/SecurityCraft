@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -108,6 +109,14 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
 
 		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+		if (!canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
+			dropBlockAsItem(worldIn, pos, state, 0);
+			worldIn.setBlockToAir(pos);
+		}
 	}
 
 	@Override

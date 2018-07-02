@@ -45,12 +45,12 @@ public class TileEntityMotionLightRenderer extends TileEntitySpecialRenderer {
 		if(te.hasWorldObj())
 		{
 			if(meta == 2)
-				rotation = 0F;
+				rotation = 1F;
 			else if(meta == 3)
 				rotation = -10000F;
 			else if(meta == 4)
-				rotation = 1F;
-			else if(meta == 5)
+				rotation = 0F;
+			else if(meta == 1)
 				rotation = -1F;
 		}
 		else

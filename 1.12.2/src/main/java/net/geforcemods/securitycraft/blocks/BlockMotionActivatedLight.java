@@ -108,7 +108,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
 		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
@@ -121,7 +121,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	{
 		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
 	}
-
+	
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING))) {
