@@ -32,6 +32,7 @@
 - Fix: [1.8+] Protecto does not work
 - Fix: [1.8+] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 - Fix: [1.10.2+] Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed
+- Fix: [1.12.2] Sponge server crashes when placing Reinforced Stained Glass over an active Beacon
 - Potential Fix: StackOverflowException involving block mines
 - Sponge Fix: [1.10.2+] Keycard Reader cannot be configured on when Sponge
 

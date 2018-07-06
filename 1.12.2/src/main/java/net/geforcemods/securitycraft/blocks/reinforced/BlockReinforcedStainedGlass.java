@@ -42,6 +42,10 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	@Override
 	public float[] getBeaconColorMultiplier(IBlockState state, World world, BlockPos pos, BlockPos beaconPos)
 	{
-		return EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(BlockUtils.getBlockMeta(world, pos)));
+		//sponge fix
+		if(world.isRemote)
+			return EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(BlockUtils.getBlockMeta(world, pos)));
+		else
+			return new float[] {0.0F, 0.0F, 0.0F};
 	}
 }
