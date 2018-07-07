@@ -121,7 +121,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING))) {
+		if (!canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
 			dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 		}
