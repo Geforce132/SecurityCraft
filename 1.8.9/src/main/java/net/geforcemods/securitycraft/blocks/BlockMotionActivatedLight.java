@@ -54,17 +54,19 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
+		float px = 1.0F / 16.0F;
+
 		if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.NORTH) {
-			setBlockBounds(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
+			setBlockBounds(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.SOUTH) {
-			setBlockBounds(0.35F, 0.18F, 1F, 0.65F, 0.58F, 0.75F);
+			setBlockBounds(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.EAST) {
-			setBlockBounds(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
+			setBlockBounds(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.WEST) {
-			setBlockBounds(0F, 0.18F, 0.35F, 0.25F, 0.58F, 0.65F);
+			setBlockBounds(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
 		}
 	}
 

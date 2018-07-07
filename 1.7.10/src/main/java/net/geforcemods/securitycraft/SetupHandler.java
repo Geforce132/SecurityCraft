@@ -194,8 +194,8 @@ public class SetupHandler
 		SCContent.secretSignStanding = new BlockSecretSign(true).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 		SCContent.secretSignWall = new BlockSecretSign(false).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("secretSign");
 
-		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical);
-		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setLightLevel(1.0F).setUnlocalizedName("motionActivatedLightOn").setStepSound(Block.soundTypeGlass);
+		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical).setTextureName("securitycraft:motion_activated_light_particles");
+		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setLightLevel(1.0F).setUnlocalizedName("motionActivatedLightOn").setStepSound(Block.soundTypeGlass).setTextureName("securitycraft:motion_activated_light_particles");
 
 		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.rock, 1, Blocks.obsidian).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("reinforcedObsidian");
 

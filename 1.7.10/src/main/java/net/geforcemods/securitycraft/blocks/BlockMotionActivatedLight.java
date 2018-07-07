@@ -53,15 +53,16 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess access, int x, int y, int z){
 		int meta = access.getBlockMetadata(x, y, z);
+		float px = 1.0F / 16.0F;
 
 		if(meta == 3)
-			setBlockBounds(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
+			setBlockBounds(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 		else if(meta == 4)
-			setBlockBounds(0.35F, 0.18F, 1F, 0.65F, 0.58F, 0.75F);
+			setBlockBounds(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
 		else if(meta == 2)
-			setBlockBounds(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
+			setBlockBounds(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
 		else if(meta == 1) {
-			setBlockBounds(0F, 0.18F, 0.35F, 0.25F, 0.58F, 0.65F);
+			setBlockBounds(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
 		}
 	}
 	
@@ -110,27 +111,24 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block){
-		if(canPlaceAt(world, x, y, z))
-		{
-			int meta = world.getBlockMetadata(x, y, z) & 7;
-			boolean notSolid = false;
-
-			if (!world.isSideSolid(x - 1, y, z, EAST) && meta == 1)
-				notSolid = true;
-			else if (!world.isSideSolid(x + 1, y, z, WEST) && meta == 2)
-				notSolid = true;
-			else if (!world.isSideSolid(x, y, z - 1, SOUTH) && meta == 3)
-				notSolid = true;
-			else if (!world.isSideSolid(x, y, z + 1, NORTH) && meta == 4)
-				notSolid = true;
-
-			if (notSolid)
-			{
-				this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-				world.setBlockToAir(x, y, z);
-			}
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
+		if (!canPlaceBlockOnSide(world, x, y, z, getSide(world.getBlockMetadata(x, y, z)))) {
+			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			world.setBlockToAir(x, y, z);
 		}
+	}
+
+	private int getSide(int blockMetadata) {
+		if(blockMetadata == 1)
+			return 5;
+		else if(blockMetadata == 2)
+			return 4;
+		else if(blockMetadata == 3)
+			return 3;
+		else if(blockMetadata == 4)
+			return 2;
+
+		return 0;
 	}
 
 	/**

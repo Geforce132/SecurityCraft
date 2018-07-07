@@ -58,21 +58,22 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
 		EnumFacing dir = state.getValue(FACING);
-		
+		float px = 1.0F / 16.0F;
+
 		if(dir == EnumFacing.NORTH) {
-			return new AxisAlignedBB(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
+			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 		}
 		else if(dir == EnumFacing.SOUTH) {
-			return new AxisAlignedBB(0.35F, 0.18F, 1F, 0.65F, 0.58F, 0.75F);
+			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
 		}
 		else if(dir == EnumFacing.EAST) {
-			return new AxisAlignedBB(1F, 0.18F, 0.35F, 0.75F, 0.58F, 0.65F);
+			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
 		}
 		else if(dir == EnumFacing.WEST) {
-			return new AxisAlignedBB(0F, 0.18F, 0.35F, 0.25F, 0.58F, 0.65F);
+			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
 		}
 		
-		return new AxisAlignedBB(0.35F, 0.18F, 0F, 0.65F, 0.58F, 0.25F);
+		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 	}
 
 	@Override
