@@ -58,9 +58,9 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 		if(meta == 3)
 			setBlockBounds(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 		else if(meta == 4)
-			setBlockBounds(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
+			setBlockBounds(px * 6, px * 3, .995F - (px * 3), px * 10, px * 9, .995F);
 		else if(meta == 2)
-			setBlockBounds(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
+			setBlockBounds(.995F - (px * 3), px * 3, px * 6, .995F, px * 9, px * 10); //1F - (px * 3)
 		else if(meta == 1) {
 			setBlockBounds(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
 		}
@@ -129,21 +129,6 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 			return 2;
 
 		return 0;
-	}
-
-	/**
-	 * Also automatically drops the block and sets it to air if not possible to place the block at the given position
-	 */
-	private boolean canPlaceAt(World world, int x, int y, int z)
-	{
-		if (!canPlaceBlockAt(world, x, y, z))
-		{
-			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlockToAir(x, y, z);
-			return false;
-		}
-
-		return true;
 	}
 
 	@Override

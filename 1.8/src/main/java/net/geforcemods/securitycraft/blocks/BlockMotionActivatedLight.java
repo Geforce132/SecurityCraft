@@ -60,10 +60,10 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			setBlockBounds(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.SOUTH) {
-			setBlockBounds(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
+			setBlockBounds(px * 6, px * 3, .995F - (px * 3), px * 10, px * 9, .995F);
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.EAST) {
-			setBlockBounds(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
+			setBlockBounds(.995F - (px * 3), px * 3, px * 6, .995F, px * 9, px * 10);
 		}
 		else if(BlockUtils.getBlockProperty(world, pos, FACING) == EnumFacing.WEST) {
 			setBlockBounds(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
