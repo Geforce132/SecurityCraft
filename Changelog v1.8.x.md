@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.5 of SecurityCraft (unreleased)--------------------------
+--------------------------Changelog for v1.8.5 of SecurityCraft--------------------------
 
 - New: 1.9.4 support
 - New: Two Reinforced Doors placed next to each other will open together when one of them is opened
@@ -15,7 +15,7 @@
 - Change: When viewing a camera, the view now more closely represents what the camera would see
 - Change: The Briefcase recipe now requires a Password-protected Chest instead of a regular one
 - Change: The Taser now only applies level 2 potion effects for 10 seconds
-- Fix: Language key for Codebreaker doesn't inform the user about its limited usability (Thanks DarraghB2004!)
+- Fix: Language key for Codebreaker doesn't inform the user about its limited usability
 - Fix: Welcome message shows when connecting to a server, even when disabling it on clientside
 - Fix: Name Tag gets deleted when renaming cameras in creative mode
 - Fix: Incorrect model for double Password-protected Chest
@@ -32,9 +32,9 @@
 - Fix: [1.8+] Protecto does not work
 - Fix: [1.8+] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 - Fix: [1.10.2+] Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed
-- Fix: [1.12.2] Sponge server crashes when placing Reinforced Stained Glass over an active Beacon
 - Potential Fix: StackOverflowException involving block mines
-- Sponge Fix: [1.10.2+] Keycard Reader cannot be configured on when Sponge
+- Sponge Fix: Keycard Reader cannot be configured
+- Sponge Fix: Server crashes when placing Reinforced Stained Glass over an active Beacon
 
 --------------------------Changelog for v1.8.4.1 of SecurityCraft--------------------------
 
