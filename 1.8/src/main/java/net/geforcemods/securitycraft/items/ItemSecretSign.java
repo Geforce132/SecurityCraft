@@ -63,7 +63,7 @@ public class ItemSecretSign extends Item
 				--stack.stackSize;
 				TileEntity tileentity = worldIn.getTileEntity(pos);
 
-				if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(worldIn, pos, stack, playerIn))
+				if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(worldIn, pos, stack))
 				{
 					playerIn.openEditSign((TileEntitySecretSign)tileentity);
 				}
