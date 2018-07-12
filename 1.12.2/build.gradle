@@ -21,7 +21,7 @@ compileJava {
 minecraft {
     version = "1.12.2-14.23.2.2635"
     runDir = "run"
-    mappings = "snapshot_20171003"
+    mappings = "snapshot_20180712"
 }
 
 repositories {
@@ -37,8 +37,8 @@ repositories {
 
 dependencies {
     compile files('libs/Hwyla-1.8.20-B35_1.12.deobf.jar')
-    runtime 'mezz.jei:jei_1.12.2:4.8.4.131'
-    deobfProvided 'mezz.jei:jei_1.12.2:4.8.4.131:api'
+    runtime 'mezz.jei:jei_1.12.2:4.11.0.204'
+    deobfProvided 'mezz.jei:jei_1.12.2:4.11.0.204:api'
 }
 
 processResources
