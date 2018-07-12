@@ -161,7 +161,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedNetherBrick);
 		registerBlock(SCContent.reinforcedStairsNetherBrick);
 		registerReinforcedBlock(SCContent.reinforcedHardenedClay);
-		registerReinforcedBlock(SCContent.reinforcedStainedHardenedClay, ItemBlockReinforcedStainedBlock.class);
+		registerBlock(SCContent.reinforcedStainedHardenedClay, ItemBlockReinforcedStainedBlock.class);
 		registerReinforcedBlock(SCContent.reinforcedOldLogs, ItemBlockReinforcedLog.class);
 		registerReinforcedBlock(SCContent.reinforcedNewLogs, ItemBlockReinforcedLog.class);
 		registerReinforcedBlock(SCContent.reinforcedMetals, ItemBlockReinforcedMetals.class);
