@@ -1,24 +1,24 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
     }
 }
 
-apply plugin: 'forge'
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
+}
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0"
-group= "com.yourname.modid" 
+group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "securitycraft"
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
@@ -27,8 +27,8 @@ compileJava {
 }
 
 minecraft {
-    version = "1.8-11.14.1.1338"
-    assetDir = "eclipse/assets"
+    version = "1.8-11.14.3.1556"
+    runDir = "run"
     mappings = "stable_18"
 }
 
@@ -44,21 +44,9 @@ repositories {
 }
 
 dependencies {
-    compile files('lib/Waila-1.6.0-B2_1.8.jar')
-    compile files('lib/jei_1.8-2.15.0.155.jar')
+	compile files('lib/Waila-1.6.0-B2_1.8.jar')
+	compile files('lib/jei_1.8-2.15.0.155.jar')
 }
-
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-tasks.build.dependsOn('sourceJar', 'deobfJar')
 
 processResources
 {
@@ -67,18 +55,11 @@ processResources
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
+                
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
-
-artifacts {
-	archives deobfJar
-	archives sourceJar
-	archives jar
-}
-
