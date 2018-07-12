@@ -122,9 +122,9 @@ public class GuiUtils{
 			}
 
 			itemRender.zLevel = 0.0F;
-			GlStateManager.enableLighting();
+			//			GlStateManager.enableLighting();
 			GlStateManager.enableDepth();
-			RenderHelper.enableStandardItemLighting();
+			//			RenderHelper.enableStandardItemLighting();
 			GlStateManager.enableRescaleNormal();
 		}
 	}

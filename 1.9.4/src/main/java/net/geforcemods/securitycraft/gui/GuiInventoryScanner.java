@@ -74,8 +74,6 @@ public class GuiInventoryScanner extends GuiContainer {
 			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
 			fontRendererObj.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 		}
-
-		GlStateManager.enableLighting();
 	}
 
 	@Override
