@@ -17,6 +17,13 @@ public class GuiBlockReinforcer extends GuiContainer
 	}
 
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
+	@Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
 	{
 		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.title"), 8, 5, 4210752);

@@ -55,6 +55,7 @@ public class GuiInventoryScanner extends GuiContainer {
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
+		drawDefaultBackground();
 		super.drawScreen(par1, par2, par3);
 		GlStateManager.disableLighting();
 

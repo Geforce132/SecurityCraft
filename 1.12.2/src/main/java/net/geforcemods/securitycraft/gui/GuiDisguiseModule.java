@@ -16,6 +16,13 @@ public class GuiDisguiseModule extends GuiContainer {
 	}
 
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:disguiseModule.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:disguiseModule.name")) / 2, 6, 4210752);
 	}

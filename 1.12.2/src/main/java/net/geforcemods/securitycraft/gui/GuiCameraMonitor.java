@@ -132,6 +132,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		for(int i = 0; i < hoverCheckers.length; i++)

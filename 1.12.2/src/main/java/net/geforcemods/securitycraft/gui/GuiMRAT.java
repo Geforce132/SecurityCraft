@@ -86,6 +86,13 @@ public class GuiMRAT extends GuiContainer{
 		}
 	}
 
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+	}
+
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */

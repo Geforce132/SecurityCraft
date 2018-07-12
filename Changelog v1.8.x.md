@@ -2,7 +2,8 @@
 
 - Fix: Possible conflicting language strings with other mods
 - Fix: [1.8,1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
-- Fix: [1.9.4] Fix incorrect lighting in some GUIs
+- Fix: [1.9.4,1.12.2] Fix incorrect lighting in some GUIs
+- Fix: [1.12.2] Fix GUI tooltips rendering under JEI interface
 
 --------------------------Changelog for v1.8.5 of SecurityCraft--------------------------
 

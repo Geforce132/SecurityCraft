@@ -72,6 +72,7 @@ public class GuiSCManual extends GuiScreen {
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
+		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
