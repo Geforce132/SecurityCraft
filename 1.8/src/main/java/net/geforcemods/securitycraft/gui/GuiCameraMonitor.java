@@ -137,10 +137,10 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRendererObj);
+					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRendererObj);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRendererObj);
+					this.drawHoveringText(mc.fontRendererObj.listFormattedStringToWidth(StatCollector.translateToLocal("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRendererObj);
 			}
 	}
 
@@ -176,7 +176,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.monitor.selectCameras"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.monitor.selectCameras")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:monitor.selectCameras"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	@Override

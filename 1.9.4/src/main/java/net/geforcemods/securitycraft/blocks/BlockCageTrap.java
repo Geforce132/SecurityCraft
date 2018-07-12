@@ -90,7 +90,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer)
-					world.getMinecraftServer().addChatMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					world.getMinecraftServer().addChatMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.securitycraft:cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}

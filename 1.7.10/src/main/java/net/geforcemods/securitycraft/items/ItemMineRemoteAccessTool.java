@@ -46,12 +46,12 @@ public class ItemMineRemoteAccessTool extends Item {
 					int availSlot = getNextAvaliableSlot(stack);
 
 					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.noSlots"), EnumChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.noSlots"), EnumChatFormatting.RED);
 						return false;
 					}
 
 					if(world.getTileEntity(x, y, z) instanceof IOwnable && !((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.cantBind"), EnumChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.cantBind"), EnumChatFormatting.RED);
 						return false;
 					}
 
@@ -60,10 +60,10 @@ public class ItemMineRemoteAccessTool extends Item {
 
 					stack.stackTagCompound.setIntArray(("mine" + availSlot), new int[]{x, y, z});
 					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.bound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, x, y, z, player);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.remoteAccessMine.name"), StatCollector.translateToLocal("messages.mrat.unbound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(x, y, z)), EnumChatFormatting.RED);
 				}
 			}
 			else
@@ -87,7 +87,7 @@ public class ItemMineRemoteAccessTool extends Item {
 					continue;
 				}
 				else
-					list.add(StatCollector.translateToLocal("tooltip.mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
+					list.add(StatCollector.translateToLocal("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
 			}
 			else
 				list.add("---");

@@ -36,7 +36,7 @@ public class GuiLogger extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.logger.logged"), xSize / 2 - fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:logger.logged"), xSize / 2 - fontRendererObj.getStringWidth("Logged players:") / 2, 6, 4210752);
 
 		for(int i = 0; i < tileEntity.players.length; i++)
 			if(tileEntity.players[i] != "")

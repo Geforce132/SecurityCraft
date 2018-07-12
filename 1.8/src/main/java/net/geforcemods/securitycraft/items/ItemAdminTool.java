@@ -35,13 +35,13 @@ public class ItemAdminTool extends Item {
 				boolean hasInfo = false;
 
 				if(te instanceof IOwnable) {
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), EnumChatFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), EnumChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
 				if(te instanceof IPasswordProtected) {
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), EnumChatFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
@@ -49,22 +49,22 @@ public class ItemAdminTool extends Item {
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 
 					if(!modules.isEmpty()) {
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.equippedModules"), EnumChatFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.equippedModules"), EnumChatFormatting.DARK_PURPLE);
 
 						for(EnumCustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), "-" + module.getName(), EnumChatFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), "-" + module.getName(), EnumChatFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
 				}
 
 				if(!hasInfo)
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.noInfo"), EnumChatFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.noInfo"), EnumChatFormatting.DARK_PURPLE);
 
 				return false;
 			}
 
-			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.adminTool.name"), StatCollector.translateToLocal("messages.adminTool.noInfo"), EnumChatFormatting.DARK_PURPLE);
+			PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), StatCollector.translateToLocal("messages.securitycraft:adminTool.noInfo"), EnumChatFormatting.DARK_PURPLE);
 		}
 
 		return false;

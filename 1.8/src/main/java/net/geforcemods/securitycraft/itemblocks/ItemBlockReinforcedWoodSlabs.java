@@ -73,7 +73,7 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlockTinted {
 
 					if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
 						if(!worldIn.isRemote)
-							PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.reinforcedSlab"), StatCollector.translateToLocal("messages.reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(playerIn, StatCollector.translateToLocal("messages.securitycraft:reinforcedSlab"), StatCollector.translateToLocal("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), EnumChatFormatting.RED);
 
 						return false;
 					}

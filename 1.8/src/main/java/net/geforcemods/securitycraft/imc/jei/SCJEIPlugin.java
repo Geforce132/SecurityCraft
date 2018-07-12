@@ -17,19 +17,19 @@ public class SCJEIPlugin implements IModPlugin
 	public void register(IModRegistry registry)
 	{
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
-			registry.addDescription(new ItemStack(pc), "gui.scManual.recipe." + pc.getUnlocalizedName().substring(5));
+			registry.addDescription(new ItemStack(pc), "gui.securitycraft:scManual.recipe." + pc.getUnlocalizedName().substring(5));
 		});
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
 			reinforcedBlock.getVanillaBlocks().forEach((vanillaBlock) -> {
 				if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
-					registry.addDescription(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), "jei.reinforcedBlock.info", "", vanillaBlock.getUnlocalizedName() + ".name");
+					registry.addDescription(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), "jei.securitycraft:reinforcedBlock.info", "", vanillaBlock.getUnlocalizedName() + ".name");
 				else
 				{
 					for(int i = 0; i < reinforcedBlock.getAmount(); i++)
 					{
-						registry.addDescription(new ItemStack(rb, 1, i), "jei.reinforcedBlock.info", "", new ItemStack(vanillaBlock, 1, i).getUnlocalizedName() + ".name");
+						registry.addDescription(new ItemStack(rb, 1, i), "jei.securitycraft:reinforcedBlock.info", "", new ItemStack(vanillaBlock, 1, i).getUnlocalizedName() + ".name");
 					}
 				}
 			});

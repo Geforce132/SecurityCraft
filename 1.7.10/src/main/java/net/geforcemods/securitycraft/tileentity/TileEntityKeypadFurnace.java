@@ -151,14 +151,14 @@ public class TileEntityKeypadFurnace extends TileEntityFurnace implements IOwnab
 			if(getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, xCoord, yCoord, zCoord);
 			else
-				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", StatCollector.translateToLocal("messages.passwordProtected.notSetUp"), EnumChatFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", StatCollector.translateToLocal("messages.securitycraft:passwordProtected.notSetUp"), EnumChatFormatting.DARK_RED);
 		}
 	}
 
 	@Override
 	public boolean onCodebreakerUsed(int meta, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadFurnace.name"), StatCollector.translateToLocal("messages.codebreakerDisabled"), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keypadFurnace.name"), StatCollector.translateToLocal("messages.securitycraft:codebreakerDisabled"), EnumChatFormatting.RED);
 		else {
 			activate(player);
 			return true;

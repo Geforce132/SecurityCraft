@@ -28,7 +28,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 				return;
 
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(worldObj, xCoord, yCoord, zCoord, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.securitycraft:retinalScanner.name"), StatCollector.translateToLocal("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
 				return;
 			}
 
@@ -36,7 +36,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 			worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, SCContent.retinalScanner, 60);
 
 			if(entity instanceof EntityPlayer)
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.retinalScanner.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, StatCollector.translateToLocal("tile.securitycraft:retinalScanner.name"), StatCollector.translateToLocal("messages.securitycraft:retinalScanner.hello").replace("#", entity.getCommandSenderName()), EnumChatFormatting.GREEN);
 		}
 	}
 

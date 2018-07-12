@@ -41,7 +41,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, StatCollector.translateToLocal("gui.universalKeyChanger.confirm")));
+		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, StatCollector.translateToLocal("gui.securitycraft:universalKeyChanger.confirm")));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(fontRendererObj, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -76,9 +76,9 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRendererObj.drawString(StatCollector.translateToLocal("item.universalKeyChanger.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.universalKeyChanger.name")) / 2, 6, 4210752);
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("item.securitycraft:universalKeyChanger.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.securitycraft:universalKeyChanger.name")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class GuiKeyChanger extends GuiContainer {
 				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().thePlayer, StatCollector.translateToLocal("item.universalKeyChanger.name"), StatCollector.translateToLocal("messages.universalKeyChanger.passcodeChanged"), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().thePlayer, StatCollector.translateToLocal("item.securitycraft:universalKeyChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalKeyChanger.passcodeChanged"), EnumChatFormatting.GREEN);
 		}
 	}
 

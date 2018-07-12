@@ -90,9 +90,9 @@ public class SCEventHandler {
 		ITextComponent message;
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		else
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.tip") + " " + ClientUtils.localize(tipKey));
+			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
 		event.player.addChatComponentMessage(message);
 	}
@@ -138,7 +138,7 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.universalBlockModifier.name"), ClientUtils.localize("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 
@@ -151,12 +151,12 @@ public class SCEventHandler {
 
 					for(String character : new String[]{"(", ")"})
 						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomName().matches(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 						return;
 					}
 
@@ -171,7 +171,7 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.universalBlockRemover.name"), ClientUtils.localize("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
 

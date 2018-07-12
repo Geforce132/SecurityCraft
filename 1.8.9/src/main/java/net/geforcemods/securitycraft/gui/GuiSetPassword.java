@@ -44,7 +44,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode")));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(1, fontRendererObj, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -78,12 +78,12 @@ public class GuiSetPassword extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
 
 		//If the "*blockName* + setup" string goes outside of the GUI, draw the word "setup" on the next line.
-		if(fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.password.setup")) >= 170){
+		if(fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.securitycraft:password.setup")) >= 170){
 			fontRendererObj.drawString(blockName, xSize / 2 - fontRendererObj.getStringWidth(blockName) / 2, 6, 4210752);
-			fontRendererObj.drawString(StatCollector.translateToLocal("gui.password.setup"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.password.setup")) / 2, 16, 4210752);
+			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:password.setup"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:password.setup")) / 2, 16, 4210752);
 		}
 		else
-			fontRendererObj.drawString(blockName + " " + StatCollector.translateToLocal("gui.password.setup"), xSize / 2 - fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.password.setup")) / 2, 6, 4210752);
+			fontRendererObj.drawString(blockName + " " + StatCollector.translateToLocal("gui.securitycraft:password.setup"), xSize / 2 - fontRendererObj.getStringWidth(blockName + " " + StatCollector.translateToLocal("gui.securitycraft:password.setup")) / 2, 6, 4210752);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
 	private void updateButtonText(){
-		saveAndContinueButton.displayString = !flag ? StatCollector.translateToLocal("gui.keycardSetup.save") : StatCollector.translateToLocal("gui.password.invalidCode");
+		saveAndContinueButton.displayString = !flag ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode");
 	}
 
 	@Override

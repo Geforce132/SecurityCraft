@@ -19,7 +19,7 @@ public class GuiBlockReinforcer extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
 	{
-		fontRenderer.drawString(ClientUtils.localize("gui.blockReinforcer.title"), 8, 5, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.title"), 8, 5, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 

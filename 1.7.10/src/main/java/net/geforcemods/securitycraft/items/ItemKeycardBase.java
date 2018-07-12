@@ -78,19 +78,19 @@ public class ItemKeycardBase extends Item{
 	@Override
 	public String getUnlocalizedName(ItemStack stack){
 		if(stack.getMetadata() == 0)
-			return "item.keycardOne";
+			return "item.securitycraft:keycardOne";
 		else if(stack.getMetadata() == 1)
-			return "item.keycardTwo";
+			return "item.securitycraft:keycardTwo";
 		else if(stack.getMetadata() == 2)
-			return "item.keycardThree";
+			return "item.securitycraft:keycardThree";
 		else if(stack.getMetadata() == 4)
-			return "item.keycardFour";
+			return "item.securitycraft:keycardFour";
 		else if(stack.getMetadata() == 5)
-			return "item.keycardFive";
+			return "item.securitycraft:keycardFive";
 		else if(stack.getMetadata() == 3)
-			return "item.limitedUseKeycard";
+			return "item.securitycraft:limitedUseKeycard";
 		else
-			return "item.nullItem";
+			return "item.securitycraft:nullItem";
 
 	}
 
@@ -103,7 +103,7 @@ public class ItemKeycardBase extends Item{
 				stack.stackTagCompound.setInteger("Uses", 5);
 			}
 
-			list.add(StatCollector.translateToLocal("tooltip.keycard.uses") + " " + stack.stackTagCompound.getInteger("Uses"));
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:keycard.uses") + " " + stack.stackTagCompound.getInteger("Uses"));
 
 		}
 	}

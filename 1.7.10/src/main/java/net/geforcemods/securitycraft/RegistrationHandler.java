@@ -623,7 +623,7 @@ public class RegistrationHandler
 
 		if(!hasReinforcedPage)
 		{
-			SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.reinforced.info"));
+			SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
 			hasReinforcedPage = true;
 		}
 	}
@@ -634,7 +634,7 @@ public class RegistrationHandler
 
 		if(!hasReinforcedPage)
 		{
-			SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.reinforced.info"));
+			SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
 			hasReinforcedPage = true;
 		}
 	}

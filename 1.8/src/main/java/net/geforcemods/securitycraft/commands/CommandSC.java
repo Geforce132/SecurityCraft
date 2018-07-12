@@ -46,7 +46,7 @@ public class CommandSC extends CommandBase implements ICommand{
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return StatCollector.translateToLocal("messages.command.sc.usage");
+		return StatCollector.translateToLocal("messages.securitycraft:command.sc.usage");
 	}
 
 	public boolean canCommandSenderUse(ICommandSender icommandsender) {
@@ -56,24 +56,24 @@ public class CommandSC extends CommandBase implements ICommand{
 	@Override
 	public void processCommand(ICommandSender sender, String[] par1String) throws CommandException {
 		if(par1String.length == 0)
-			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
+			throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.sc.usage"));
 		else if(par1String.length == 1){
 			if(par1String[0].matches("connect"))
-				sender.addChatMessage(new ChatComponentText("[" + EnumChatFormatting.GREEN + "IRC" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+				sender.addChatMessage(new ChatComponentText("[" + EnumChatFormatting.GREEN + "IRC" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
 			else if(par1String[0].matches("help"))
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
 			else if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 			else
-				throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
+				throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.sc.usage"));
 		}else if(par1String.length >= 2){
 			if(par1String[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", StatCollector.translateToLocal("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", EnumChatFormatting.GOLD);
 			else
-				throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
+				throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.sc.usage"));
 		}
 		else
-			throw new WrongUsageException(StatCollector.translateToLocal("messages.command.sc.usage"));
+			throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.sc.usage"));
 	}
 
 	//	private static String getMessageFromArray(String[] par1String, int index) {

@@ -29,7 +29,7 @@ public class CommandModule extends CommandBase implements ICommand {
 
 	@Override
 	public String getCommandUsage(ICommandSender p_71518_1_) {
-		return StatCollector.translateToLocal("messages.command.module.usage");
+		return StatCollector.translateToLocal("messages.securitycraft:command.module.usage");
 	}
 
 	@Override
@@ -41,24 +41,24 @@ public class CommandModule extends CommandBase implements ICommand {
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
 					SecurityCraft.instance.setSavedModule(player.getCurrentEquippedItem().getTagCompound());
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.saved"), EnumChatFormatting.GREEN);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForData"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.notHoldingForData"), EnumChatFormatting.RED);
 
 				return;
 			}else if(args[0].matches("paste")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(SecurityCraft.instance.getSavedModule() == null){
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.nothingSaved"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.nothingSaved"), EnumChatFormatting.RED);
 					return;
 				}
 
 				if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemModule && ((ItemModule) player.getCurrentEquippedItem().getItem()).canNBTBeModified()){
 					player.getCurrentEquippedItem().setTagCompound(SecurityCraft.instance.getSavedModule());
 					SecurityCraft.instance.setSavedModule(null);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.saved"), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.saved"), EnumChatFormatting.GREEN);
 				}
 
 				return;
@@ -73,15 +73,15 @@ public class CommandModule extends CommandBase implements ICommand {
 
 					for(int i = 1; i <= 10; i++)
 						if(player.getCurrentEquippedItem().getTagCompound().hasKey("Player" + i) && player.getCurrentEquippedItem().getTagCompound().getString("Player" + i).matches(args[1])){
-							PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.alreadyContained").replace("#", args[1]), EnumChatFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.alreadyContained").replace("#", args[1]), EnumChatFormatting.RED);
 							return;
 						}
 
 					player.getCurrentEquippedItem().getTagCompound().setString("Player" + getNextSlot(player.getCurrentEquippedItem().getTagCompound()), args[1]);
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.added").replace("#", args[1]), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.added").replace("#", args[1]), EnumChatFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForModify"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.notHoldingForModify"), EnumChatFormatting.RED);
 					return;
 				}
 			}else if(args[0].matches("remove")){
@@ -95,15 +95,15 @@ public class CommandModule extends CommandBase implements ICommand {
 						if(player.getCurrentEquippedItem().getTagCompound().hasKey("Player" + i) && player.getCurrentEquippedItem().getTagCompound().getString("Player" + i).matches(args[1]))
 							player.getCurrentEquippedItem().getTagCompound().removeTag("Player" + i);
 
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.removed").replace("#", args[1]), EnumChatFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.removed").replace("#", args[1]), EnumChatFormatting.GREEN);
 					return;
 				}else{
-					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.module.manager"), StatCollector.translateToLocal("messages.module.notHoldingForModify"), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("messages.securitycraft:module.manager"), StatCollector.translateToLocal("messages.securitycraft:module.notHoldingForModify"), EnumChatFormatting.RED);
 					return;
 				}
 			}
 
-		throw new WrongUsageException(StatCollector.translateToLocal("messages.command.module.usage"));
+		throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.module.usage"));
 	}
 
 	private int getNextSlot(NBTTagCompound stackTagCompound) {

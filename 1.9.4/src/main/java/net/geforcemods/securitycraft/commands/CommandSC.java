@@ -48,7 +48,7 @@ public class CommandSC extends CommandBase implements ICommand{
 
 	@Override
 	public String getCommandUsage(ICommandSender icommandsender) {
-		return ClientUtils.localize("messages.command.sc.usage");
+		return ClientUtils.localize("messages.securitycraft:command.sc.usage");
 	}
 
 	@Override
@@ -59,24 +59,24 @@ public class CommandSC extends CommandBase implements ICommand{
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if(args.length == 0)
-			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
+			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 		else if(args.length == 1){
 			if(args[0].matches("connect"))
-				sender.addChatMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+				sender.addChatMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
 			else if(args[0].matches("help"))
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
 			else if(args[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else
-				throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
+				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 		}else if(args.length >= 2){
 			if(args[0].matches("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else
-				throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
+				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 		}
 		else
-			throw new WrongUsageException(ClientUtils.localize("messages.command.sc.usage"));
+			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 	}
 
 	//	private static String getMessageFromArray(String[] par1String, int index) {

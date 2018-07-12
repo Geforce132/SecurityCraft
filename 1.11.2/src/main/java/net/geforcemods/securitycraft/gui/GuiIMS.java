@@ -28,7 +28,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.ims.hostileAndPlayers") : ClientUtils.localize("tooltip.module.players")));
+		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players")));
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRenderer.drawString(ClientUtils.localize("tile.ims.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("tile.ims.name")) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("tile.securitycraft:ims.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("tile.securitycraft:ims.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS)
-			targetButton.displayString = ClientUtils.localize("tooltip.module.playerCustomization.players");
+			targetButton.displayString = ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players");
 		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.displayString = ClientUtils.localize("gui.ims.hostileAndPlayers");
+			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers");
 	}
 
 }

@@ -72,7 +72,7 @@ public class BlockFrame extends BlockOwnable {
 				return false;
 
 			if(!((TileEntityFrame) world.getTileEntity(x, y, z)).hasCameraLocation() && (player.getCurrentEquippedItem() == null || player.getCurrentEquippedItem().getItem() != SCContent.cameraMonitor)){
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.keypadFrame.name"), StatCollector.translateToLocal("messages.frame.rightclick"), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keypadFrame.name"), StatCollector.translateToLocal("messages.securitycraft:frame.rightclick"), EnumChatFormatting.RED);
 				return false;
 			}
 

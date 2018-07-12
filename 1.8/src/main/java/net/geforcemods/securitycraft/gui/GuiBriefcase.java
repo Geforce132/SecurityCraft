@@ -71,7 +71,7 @@ public class GuiBriefcase extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.briefcase.enterPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.briefcase.enterPasscode")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
 	}
 
 	@Override

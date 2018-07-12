@@ -119,7 +119,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	private String getModuleDescription(int buttonID) {
-		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getUnlocalizedName().substring(5) + ".description";
+		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getUnlocalizedName().substring(5).replace("securitycraft:", "") + ".description";
 
 		return StatCollector.translateToLocal(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + EnumChatFormatting.RESET + "\n\n" + StatCollector.translateToLocal(moduleDescription);
 	}

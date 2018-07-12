@@ -50,7 +50,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
-			buttonList.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getType().contains("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")));
+			buttonList.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
 	}
 
 	@Override
@@ -59,20 +59,20 @@ public class GuiInventoryScanner extends GuiContainer {
 		GlStateManager.disableLighting();
 
 		if(!buttonList.isEmpty()){
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
+			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
+			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
 
-			if(buttonList.get(0).displayString.matches(ClientUtils.localize("gui.invScan.checkInv"))){
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+			if(buttonList.get(0).displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv"))){
+				fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}else{
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRendererObj.drawString(ClientUtils.localize("gui.invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+				fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
 		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
-			fontRendererObj.drawString(ClientUtils.localize("gui.invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRendererObj.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.invScan.checkInv") : ClientUtils.localize("gui.invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
+			fontRendererObj.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
@@ -99,12 +99,12 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void actionPerformed(GuiButton guibutton){
 		switch(guibutton.id){
 			case 0:
-				if(guibutton.displayString.matches(ClientUtils.localize("gui.invScan.checkInv")))
-					guibutton.displayString = ClientUtils.localize("gui.invScan.emitRedstone");
-				else if(guibutton.displayString.matches(ClientUtils.localize("gui.invScan.emitRedstone")))
-					guibutton.displayString = ClientUtils.localize("gui.invScan.checkInv");
+				if(guibutton.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
+					guibutton.displayString = ClientUtils.localize("gui.securitycraft:invScan.emitRedstone");
+				else if(guibutton.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
+					guibutton.displayString = ClientUtils.localize("gui.securitycraft:invScan.checkInv");
 
-				saveType(guibutton.displayString.matches(ClientUtils.localize("gui.invScan.checkInv")) ? "check" : "redstone");
+				saveType(guibutton.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}
@@ -124,7 +124,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
-		fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.invScan.mode.view")), 112, 6, 4210752);
+		fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
 
 		if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj))
 			fontRendererObj.drawString("Storage", 183, 6, 4210752);

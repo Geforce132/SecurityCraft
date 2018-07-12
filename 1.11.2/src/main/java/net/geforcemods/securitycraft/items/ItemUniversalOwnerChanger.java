@@ -45,19 +45,19 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			if(!stack.hasDisplayName())
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.noName"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.cantChange"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
 			if(!((IOwnable)te).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
@@ -86,7 +86,7 @@ public class ItemUniversalOwnerChanger extends Item
 			if(door)
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return EnumActionResult.SUCCESS;
 		}
 

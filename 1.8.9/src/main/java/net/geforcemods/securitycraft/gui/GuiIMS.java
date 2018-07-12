@@ -30,7 +30,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? StatCollector.translateToLocal("gui.ims.hostileAndPlayers") : StatCollector.translateToLocal("tooltip.module.players")));
+		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? StatCollector.translateToLocal("gui.securitycraft:ims.hostileAndPlayers") : StatCollector.translateToLocal("tooltip.securitycraft:module.players")));
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRendererObj.drawString(StatCollector.translateToLocal("tile.ims.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("tile.securitycraft:ims.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.securitycraft:ims.name")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
@@ -75,9 +75,9 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS)
-			targetButton.displayString = StatCollector.translateToLocal("tooltip.module.playerCustomization.players");
+			targetButton.displayString = StatCollector.translateToLocal("tooltip.securitycraft:module.playerCustomization.players");
 		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.displayString = StatCollector.translateToLocal("gui.ims.hostileAndPlayers");
+			targetButton.displayString = StatCollector.translateToLocal("gui.securitycraft:ims.hostileAndPlayers");
 	}
 
 }

@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 
+- Fix: Possible duplicate language strings with other mods
 - Fix: [1.8,1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
 
 --------------------------Changelog for v1.8.5 of SecurityCraft--------------------------

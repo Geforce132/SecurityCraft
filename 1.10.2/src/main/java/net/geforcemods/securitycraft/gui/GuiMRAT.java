@@ -92,7 +92,7 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		fontRendererObj.drawString(ClientUtils.localize("item.remoteAccessMine.name"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("item.remoteAccessMine.name")), -25 + 13, 0xFF0000);
+		fontRendererObj.drawString(ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessMine.name")), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -100,9 +100,9 @@ public class GuiMRAT extends GuiContainer{
 			String line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.mrat.notBound");
+				line = ClientUtils.localize("gui.securitycraft:mrat.notBound");
 			else
-				line = ClientUtils.localize("gui.mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
 			fontRendererObj.drawString(line, xSize / 2 - fontRendererObj.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}

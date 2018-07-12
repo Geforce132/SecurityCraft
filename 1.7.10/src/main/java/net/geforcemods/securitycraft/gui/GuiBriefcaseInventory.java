@@ -20,7 +20,7 @@ public class GuiBriefcaseInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRendererObj.drawString(StatCollector.translateToLocal("item.briefcase.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.briefcase.name")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("item.securitycraft:briefcase.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("item.securitycraft:briefcase.name")) / 2, 6, 4210752);
 	}
 
 	@Override

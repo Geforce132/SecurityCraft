@@ -89,18 +89,18 @@ public class GuiSCManual extends GuiScreen {
 		this.drawTexturedModalRect(k, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
-				fontRenderer.drawString(ClientUtils.localize("gui.scManual.reinforced"), k + 39, 27, 0, false);
+			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), k + 39, 27, 0, false);
 			else
 				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
 
 			fontRenderer.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
 		}else{
-			fontRenderer.drawString(ClientUtils.localize("gui.scManual.intro.1"), k + 39, 27, 0, false);
-			fontRenderer.drawString(ClientUtils.localize("gui.scManual.intro.2"), k + 60, 159, 0, false);
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), k + 39, 27, 0, false);
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), k + 60, 159, 0, false);
 
-			if(I18n.hasKey("gui.scManual.author"))
-				fontRenderer.drawString(ClientUtils.localize("gui.scManual.author"), k + 65, 170, 0, false);
+			if(I18n.hasKey("gui.securitycraft:scManual.author"))
+				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), k + 65, 170, 0, false);
 		}
 
 		for(int i = 0; i < buttonList.size(); i++)
@@ -269,16 +269,16 @@ public class GuiSCManual extends GuiScreen {
 				}
 		}
 		else if(SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.disabled")));
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
 		else if(SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.disabled")));
-		else if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe.reinforced")));
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
+		else if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
 		else
 		{
 			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getResourcePath();
 
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.scManual.recipe." + name)));
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
@@ -287,19 +287,19 @@ public class GuiSCManual extends GuiScreen {
 
 		if(te != null){
 			if(te instanceof IOwnable)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20, ClientUtils.localize("gui.scManual.ownableBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 29, (k + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
 
 			if(te instanceof IPasswordProtected)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20, ClientUtils.localize("gui.scManual.passwordProtectedBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 55, (k + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
 
 			if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20, ClientUtils.localize("gui.scManual.viewActivatedBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 81, (k + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 			if(itemBlock instanceof IExplosive)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20, ClientUtils.localize("gui.scManual.explosiveBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 107, (k + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableSCTE)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, ClientUtils.localize("gui.scManual.customizableBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, k + 213, (k + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 		}
 	}
 

@@ -28,7 +28,7 @@ public class ItemUniversalKeyChanger extends Item {
 			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.KEY_CHANGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalKeyChanger.name"), ClientUtils.localize("messages.notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
 
 			return EnumActionResult.SUCCESS;
 		}

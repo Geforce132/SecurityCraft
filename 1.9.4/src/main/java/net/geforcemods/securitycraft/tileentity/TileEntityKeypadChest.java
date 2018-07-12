@@ -103,14 +103,14 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			if(getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 			else
-				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
 	}
 
 	@Override
 	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.keypadChest.name"), ClientUtils.localize("messages.codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypadChest.name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else {
 			activate(player);
 			return true;

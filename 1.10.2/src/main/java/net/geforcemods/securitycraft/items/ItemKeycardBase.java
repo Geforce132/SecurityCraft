@@ -48,7 +48,7 @@ public class ItemKeycardBase extends Item{
 				par1ItemStack.getTagCompound().setInteger("Uses", 5);
 			}
 
-			par3List.add(ClientUtils.localize("tooltip.keycard.uses") + " " + par1ItemStack.getTagCompound().getInteger("Uses"));
+			par3List.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + par1ItemStack.getTagCompound().getInteger("Uses"));
 
 		}
 	}

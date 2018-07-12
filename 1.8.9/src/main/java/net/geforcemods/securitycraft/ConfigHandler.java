@@ -40,111 +40,111 @@ public class ConfigHandler
 		Property dummyProp;
 
 		dummyProp = SecurityCraft.configFile.get("options", "Is codebreaker allowed?", true);
-		dummyProp.setLanguageKey("config.isCodebreakerAllowed");
+		dummyProp.setLanguageKey("config.securitycraft:isCodebreakerAllowed");
 		allowCodebreakerItem = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Is admin tool allowed?", false);
-		dummyProp.setLanguageKey("config.allowAdminTool");
+		dummyProp.setLanguageKey("config.securitycraft:allowAdminTool");
 		allowAdminTool = dummyProp.getBoolean(false);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Mine(s) spawn fire when detonated?", true);
-		dummyProp.setLanguageKey("config.shouldSpawnFire");
+		dummyProp.setLanguageKey("config.securitycraft:shouldSpawnFire");
 		shouldSpawnFire = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Are mines unbreakable?", true);
-		dummyProp.setLanguageKey("config.ableToBreakMines");
+		dummyProp.setLanguageKey("config.securitycraft:ableToBreakMines");
 		ableToBreakMines = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable level 1 keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftKeycard1");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftKeycard1");
 		ableToCraftKeycard1 = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable level 2 keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftKeycard2");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftKeycard2");
 		ableToCraftKeycard2 = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable level 3 keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftKeycard3");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftKeycard3");
 		ableToCraftKeycard3 = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable level 4 keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftKeycard4");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftKeycard4");
 		ableToCraftKeycard4 = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable level 5 keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftKeycard5");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftKeycard5");
 		ableToCraftKeycard5 = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Craftable Limited Use keycard?", true);
-		dummyProp.setLanguageKey("config.ableToCraftLUKeycard");
+		dummyProp.setLanguageKey("config.securitycraft:ableToCraftLUKeycard");
 		ableToCraftLUKeycard = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Mines use a smaller explosion?", false);
-		dummyProp.setLanguageKey("config.smallerMineExplosion");
+		dummyProp.setLanguageKey("config.securitycraft:smallerMineExplosion");
 		smallerMineExplosion = dummyProp.getBoolean(false);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Mines explode when broken in Creative?", true);
-		dummyProp.setLanguageKey("config.mineExplodesWhenInCreative");
+		dummyProp.setLanguageKey("config.securitycraft:mineExplodesWhenInCreative");
 		mineExplodesWhenInCreative = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Portable radar search radius:", 25);
-		dummyProp.setLanguageKey("config.portableRadarSearchRadius");
+		dummyProp.setLanguageKey("config.securitycraft:portableRadarSearchRadius");
 		portableRadarSearchRadius = dummyProp.getDouble(25);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Username logger search radius:", 3);
-		dummyProp.setLanguageKey("config.usernameLoggerSearchRadius");
+		dummyProp.setLanguageKey("config.securitycraft:usernameLoggerSearchRadius");
 		usernameLoggerSearchRadius = dummyProp.getInt(3);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Laser range:", 5);
-		dummyProp.setLanguageKey("config.laserBlockRange");
+		dummyProp.setLanguageKey("config.securitycraft:laserBlockRange");
 		laserBlockRange = dummyProp.getInt(5);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Delay between alarm sounds (seconds):", 2);
-		dummyProp.setLanguageKey("config.alarmTickDelay");
+		dummyProp.setLanguageKey("config.securitycraft:alarmTickDelay");
 		alarmTickDelay = dummyProp.getInt(2);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Alarm sound volume:", 0.8D);
-		dummyProp.setLanguageKey("config.alarmSoundVolume");
+		dummyProp.setLanguageKey("config.securitycraft:alarmSoundVolume");
 		alarmSoundVolume = dummyProp.getDouble(0.8D);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Portable radar delay (seconds):", 4);
-		dummyProp.setLanguageKey("config.portableRadarDelay");
+		dummyProp.setLanguageKey("config.securitycraft:portableRadarDelay");
 		portableRadarDelay = dummyProp.getInt(4);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Claymore range:", 5);
-		dummyProp.setLanguageKey("config.claymoreRange");
+		dummyProp.setLanguageKey("config.securitycraft:claymoreRange");
 		claymoreRange = dummyProp.getInt(5);
 
 		dummyProp = SecurityCraft.configFile.get("options", "IMS range:", 12);
-		dummyProp.setLanguageKey("config.imsRange");
+		dummyProp.setLanguageKey("config.securitycraft:imsRange");
 		imsRange = dummyProp.getInt(12);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Display a 'tip' message at spawn?", true);
-		dummyProp.setLanguageKey("config.sayThanksMessage");
+		dummyProp.setLanguageKey("config.securitycraft:sayThanksMessage");
 		sayThanksMessage = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false);
-		dummyProp.setLanguageKey("config.debuggingMode");
+		dummyProp.setLanguageKey("config.securitycraft:debuggingMode");
 		SecurityCraft.debuggingMode = dummyProp.getBoolean(false);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false);
-		dummyProp.setLanguageKey("config.useOldKeypadRecipe");
+		dummyProp.setLanguageKey("config.securitycraft:useOldKeypadRecipe");
 		useOldKeypadRecipe = dummyProp.getBoolean(false);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
-		dummyProp.setLanguageKey("config.cameraSpeed");
+		dummyProp.setLanguageKey("config.securitycraft:cameraSpeed");
 		cameraSpeed = dummyProp.getInt(2);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Should check for updates on Github?", true);
-		dummyProp.setLanguageKey("config.checkForUpdates");
+		dummyProp.setLanguageKey("config.securitycraft:checkForUpdates");
 		checkForUpdates = dummyProp.getBoolean(true);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Inventory Scanner range:", 2);
-		dummyProp.setLanguageKey("config.inventoryScannerRange");
+		dummyProp.setLanguageKey("config.securitycraft:inventoryScannerRange");
 		inventoryScannerRange = dummyProp.getInt(2);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Motion-activated light range:", 5);
-		dummyProp.setLanguageKey("config.motionLightSearchRadius");
+		dummyProp.setLanguageKey("config.securitycraft:motionLightSearchRadius");
 		motionActivatedLightSearchRadius = dummyProp.getDouble(5.0D);
 
 		if(SecurityCraft.configFile.hasChanged())

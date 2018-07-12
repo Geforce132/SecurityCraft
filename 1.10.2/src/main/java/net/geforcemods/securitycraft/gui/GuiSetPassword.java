@@ -43,7 +43,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode")));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(1, fontRendererObj, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -75,7 +75,7 @@ public class GuiSetPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2){
-		fontRendererObj.drawSplitString(blockName + " " + ClientUtils.localize("gui.password.setup"), xSize / 2 - fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.password.setup")) / 2, 6, xSize, 4210752);
+		fontRendererObj.drawSplitString(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup"), xSize / 2 - fontRendererObj.getStringWidth(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup")) / 2, 6, xSize, 4210752);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
 	private void updateButtonText(){
-		saveAndContinueButton.displayString = !flag ? ClientUtils.localize("gui.keycardSetup.save") : ClientUtils.localize("gui.password.invalidCode");
+		saveAndContinueButton.displayString = !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode");
 	}
 
 	@Override

@@ -85,18 +85,18 @@ public class GuiSCManual extends GuiScreen {
 		drawTexturedModalRect(startY, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
-				fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.reinforced"), startY + 39, 27, 0, false);
+			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+				fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:scManual.reinforced"), startY + 39, 27, 0, false);
 			else
 				fontRendererObj.drawString(StatCollector.translateToLocal(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), startY + 39, 27, 0, false);
 
 			fontRendererObj.drawSplitString(StatCollector.translateToLocal(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), startY + 18, 45, 225, 0);
 		}else{
-			fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.1"), startY + 39, 27, 0, false);
-			fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.intro.2"), startY + 60, 159, 0, false);
+			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:scManual.intro.1"), startY + 39, 27, 0, false);
+			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:scManual.intro.2"), startY + 60, 159, 0, false);
 
-			if(StatCollector.canTranslate("gui.scManual.author"))
-				fontRendererObj.drawString(StatCollector.translateToLocal("gui.scManual.author"), startY + 65, 170, 0, false);
+			if(StatCollector.canTranslate("gui.securitycraft:.scManual.author"))
+				fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:scManual.author"), startY + 65, 170, 0, false);
 		}
 
 		for(int i = 0; i < buttonList.size(); i++)
@@ -254,13 +254,13 @@ public class GuiSCManual extends GuiScreen {
 					}
 				}
 		}
-		else if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.reinforced.info"))
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, startY + 100, (startY + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe.reinforced")));
+		else if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, startY + 100, (startY + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.recipe.reinforced")));
 		else
 		{
-			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName().substring(5);
+			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName().substring(5).replace("securitycraft:", "");
 
-			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, startY + 100, (startY + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.scManual.recipe." + name)));
+			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, startY + 100, (startY + 100) + (2 * 20) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.recipe." + name)));
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
@@ -269,19 +269,19 @@ public class GuiSCManual extends GuiScreen {
 
 		if(te != null){
 			if(te instanceof IOwnable)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 29, (startY + 29) + 16, 20, StatCollector.translateToLocal("gui.scManual.ownableBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 29, (startY + 29) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.ownableBlock")));
 
 			if(te instanceof IPasswordProtected)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 55, (startY + 55) + 16, 20, StatCollector.translateToLocal("gui.scManual.passwordProtectedBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 55, (startY + 55) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.passwordProtectedBlock")));
 
 			if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 81, (startY + 81) + 16, 20, StatCollector.translateToLocal("gui.scManual.viewActivatedBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 81, (startY + 81) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.viewActivatedBlock")));
 
 			if(itemBlock instanceof IExplosive)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 107, (startY + 107) + 16, 20, StatCollector.translateToLocal("gui.scManual.explosiveBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 107, (startY + 107) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableSCTE)
-				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 213, (startY + 213) + 16, 20, StatCollector.translateToLocal("gui.scManual.customizableBlock")));
+				hoverCheckers.add(new CustomHoverChecker(118, 118 + 16, startY + 213, (startY + 213) + 16, 20, StatCollector.translateToLocal("gui.securitycraft:scManual.customizableBlock")));
 		}
 	}
 

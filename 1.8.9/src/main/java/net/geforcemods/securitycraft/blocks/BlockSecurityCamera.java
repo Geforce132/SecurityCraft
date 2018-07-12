@@ -142,7 +142,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
 		if(!world.isRemote && player.ridingEntity == null)
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securityCamera.name"), StatCollector.translateToLocal("messages.securityCamera.mounted"), EnumChatFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:securityCamera.name"), StatCollector.translateToLocal("messages.securitycraft:securityCamera.mounted"), EnumChatFormatting.GREEN);
 
 		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.ridingEntity);

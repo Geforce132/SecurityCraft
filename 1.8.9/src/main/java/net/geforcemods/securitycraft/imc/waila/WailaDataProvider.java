@@ -25,10 +25,10 @@ public class WailaDataProvider implements IWailaDataProvider {
 	public static void callbackRegister(IWailaRegistrar registrar){
 		SecurityCraft.log("Adding Waila support!");
 
-		registrar.addConfig("SecurityCraft", "securitycraft.showowner", StatCollector.translateToLocal("waila.displayOwner"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", StatCollector.translateToLocal("waila.showModules"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.showPasswords"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", StatCollector.translateToLocal("waila.showCustomName"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showowner", StatCollector.translateToLocal("waila.securitycraft:displayOwner"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", StatCollector.translateToLocal("waila.securitycraft:showModules"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", StatCollector.translateToLocal("waila.securitycraft:showPasswords"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", StatCollector.translateToLocal("waila.securitycraft:showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
 	}
@@ -51,11 +51,11 @@ public class WailaDataProvider implements IWailaDataProvider {
 		if(iDataAccessor.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) iDataAccessor.getBlock()).shouldShowSCInfo(iDataAccessor.getWorld(), iDataAccessor.getBlockState(), iDataAccessor.getPosition())) return tipList;
 
 		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable)
-			tipList.add(StatCollector.translateToLocal("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
+			tipList.add(StatCollector.translateToLocal("waila.securitycraft:owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
 
 		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
 			if(!((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules().isEmpty())
-				tipList.add(StatCollector.translateToLocal("waila.equipped"));
+				tipList.add(StatCollector.translateToLocal("waila.securitycraft:equipped"));
 
 			for(EnumCustomModules module : ((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules())
 				tipList.add("- " + module.getName());
@@ -64,13 +64,13 @@ public class WailaDataProvider implements IWailaDataProvider {
 		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && ((IOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
 			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
 
-			tipList.add(StatCollector.translateToLocal("waila.password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.password.notSet")));
+			tipList.add(StatCollector.translateToLocal("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : StatCollector.translateToLocal("waila.securitycraft:password.notSet")));
 		}
 
 		if(iConfigHandler.getConfig("securitycraft.showcustomname") && iDataAccessor.getTileEntity() instanceof INameable && ((INameable) iDataAccessor.getTileEntity()).canBeNamed()){
 			String name = ((INameable) iDataAccessor.getTileEntity()).getCustomName();
 
-			tipList.add(StatCollector.translateToLocal("waila.customName") + " " + (((INameable) iDataAccessor.getTileEntity()).hasCustomName() ? name : StatCollector.translateToLocal("waila.customName.notSet")));
+			tipList.add(StatCollector.translateToLocal("waila.securitycraft:customName") + " " + (((INameable) iDataAccessor.getTileEntity()).hasCustomName() ? name : StatCollector.translateToLocal("waila.securitycraft:customName.notSet")));
 		}
 
 		return tipList;

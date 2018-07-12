@@ -94,9 +94,9 @@ public class BlockKeycardReader extends BlockOwnable  {
 			BlockKeycardReader.activate(par1World, pos);
 		}
 		else if(Integer.parseInt(((TileEntityKeycardReader)par1World.getTileEntity(pos)).getPassword()) != 0)
-			PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.keycardReader.required").replace("#r", ((IPasswordProtected) par1World.getTileEntity(pos)).getPassword()).replace("#c", "" + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) par1World.getTileEntity(pos)).getPassword()).replace("#c", "" + ((ItemKeycardBase) par5ItemStack.getItem()).getKeycardLV(par5ItemStack)), TextFormatting.RED);
 		else
-			PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.keycardReader.name"), ClientUtils.localize("messages.keycardReader.notSet"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(par6EntityPlayer, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 
 	}
 

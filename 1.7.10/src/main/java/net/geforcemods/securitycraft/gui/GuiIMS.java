@@ -29,7 +29,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == 1 ? StatCollector.translateToLocal("gui.ims.hostileAndPlayers") : StatCollector.translateToLocal("tooltip.module.players")));
+		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == 1 ? StatCollector.translateToLocal("gui.securitycraft:ims.hostileAndPlayers") : StatCollector.translateToLocal("tooltip.securitycraft:module.players")));
 	}
 
 	@Override
@@ -42,8 +42,8 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRendererObj.drawString(StatCollector.translateToLocal("tile.ims.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.ims.name")) / 2, 6, 4210752);
-		fontRendererObj.drawString(StatCollector.translateToLocal("gui.ims.target"), xSize / 2 - 78, 30, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("tile.securitycraft:ims.name"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("tile.securitycraft:ims.name")) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(targetingOption == 0)
-			targetButton.displayString = StatCollector.translateToLocal("tooltip.module.playerCustomization.players");
+			targetButton.displayString = StatCollector.translateToLocal("tooltip.securitycraft:module.playerCustomization.players");
 		else if(targetingOption == 1)
-			targetButton.displayString = StatCollector.translateToLocal("gui.ims.hostileAndPlayers");
+			targetButton.displayString = StatCollector.translateToLocal("gui.securitycraft:ims.hostileAndPlayers");
 	}
 
 }

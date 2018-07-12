@@ -19,19 +19,19 @@ public class SCJEIPlugin implements IModPlugin
 	{
 		registry.addAdvancedGuiHandlers(new SlotMover());
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
-			registry.addIngredientInfo(new ItemStack(pc), ItemStack.class, "gui.scManual.recipe." + pc.getRegistryName().getResourcePath());
+			registry.addIngredientInfo(new ItemStack(pc), ItemStack.class, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getResourcePath());
 		});
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
 			reinforcedBlock.getVanillaBlocks().forEach((vanillaBlock) -> {
 				if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
-					registry.addIngredientInfo(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), ItemStack.class, "jei.reinforcedBlock.info", "", vanillaBlock.getUnlocalizedName() + ".name");
+					registry.addIngredientInfo(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", vanillaBlock.getUnlocalizedName() + ".name");
 				else
 				{
 					for(int i = 0; i < reinforcedBlock.getAmount(); i++)
 					{
-						registry.addIngredientInfo(new ItemStack(rb, 1, i), ItemStack.class, "jei.reinforcedBlock.info", "", new ItemStack(vanillaBlock, 1, i).getUnlocalizedName() + ".name");
+						registry.addIngredientInfo(new ItemStack(rb, 1, i), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", new ItemStack(vanillaBlock, 1, i).getUnlocalizedName() + ".name");
 					}
 				}
 			});

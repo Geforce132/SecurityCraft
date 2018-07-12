@@ -33,7 +33,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 
 			if(!getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:scannerDoorItem.name"), StatCollector.translateToLocal("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), EnumChatFormatting.RED);
 				return;
 			}
 
@@ -45,7 +45,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			worldObj.playAuxSFXAtEntity(null, 1006, pos, 0);
 
 			if(open)
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.scannerDoorItem.name"), StatCollector.translateToLocal("messages.retinalScanner.hello").replace("#", player.getName()), EnumChatFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:scannerDoorItem.name"), StatCollector.translateToLocal("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), EnumChatFormatting.GREEN);
 		}
 	}
 

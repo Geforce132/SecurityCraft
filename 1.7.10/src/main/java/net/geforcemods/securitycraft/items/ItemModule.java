@@ -70,15 +70,15 @@ public class ItemModule extends Item{
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(StatCollector.translateToLocal("tooltip.module.modifiable"));
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.modifiable"));
 		else
-			list.add(StatCollector.translateToLocal("tooltip.module.notModifiable"));
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.notModifiable"));
 
 		if(nbtCanBeModified) {
-			list.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.usage"));
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.playerCustomization.usage"));
 
 			list.add(" ");
-			list.add(StatCollector.translateToLocal("tooltip.module.playerCustomization.players") + ":");
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.playerCustomization.players") + ":");
 
 			if(stack.stackTagCompound != null)
 				for(int i = 1; i <= 10; i++)
@@ -88,18 +88,18 @@ public class ItemModule extends Item{
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
+				list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
 
 			if(getNumberOfAddons() > 0) {
 				list.add(" ");
 
-				list.add(StatCollector.translateToLocal("tooltip.module.itemAddons.added") + ":");
+				list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.itemAddons.added") + ":");
 				for(Item item : getItemAddons(stack.stackTagCompound))
 					list.add("- " + StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"));
 

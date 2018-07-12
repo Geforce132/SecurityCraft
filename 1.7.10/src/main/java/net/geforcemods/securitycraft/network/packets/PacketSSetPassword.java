@@ -53,13 +53,13 @@ public class PacketSSetPassword implements IMessage{
 
 			if(getWorld(player).getTileEntity(x, y, z) != null && getWorld(player).getTileEntity(x, y, z) instanceof IPasswordProtected){
 				((IPasswordProtected) getWorld(player).getTileEntity(x, y, z)).setPassword(password);
-				checkForAdjecentChest(x, y, z, password, player);
+				checkForAdjacentChest(x, y, z, password, player);
 			}
 
 			return null;
 		}
 
-		private void checkForAdjecentChest(int x, int y, int z, String codeToSet, EntityPlayer player) {
+		private void checkForAdjacentChest(int x, int y, int z, String codeToSet, EntityPlayer player) {
 			if(getWorld(player).getTileEntity(x, y, z) != null && getWorld(player).getTileEntity(x, y, z) instanceof TileEntityKeypadChest)
 				if(getWorld(player).getTileEntity(x + 1, y, z) != null && getWorld(player).getTileEntity(x + 1, y, z) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(x + 1, y, z)).setPassword(codeToSet);

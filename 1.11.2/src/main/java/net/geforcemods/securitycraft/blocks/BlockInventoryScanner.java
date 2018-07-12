@@ -87,7 +87,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			if(isFacingAnotherScanner(worldIn, pos))
 				playerIn.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			else
-				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("tile.inventoryScanner.name"), ClientUtils.localize("messages.invScan.notConnected"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
 			return true;
 		}

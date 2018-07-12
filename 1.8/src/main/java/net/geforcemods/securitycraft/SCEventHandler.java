@@ -88,9 +88,9 @@ public class SCEventHandler {
 		IChatComponent message;
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			message = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.securitycraft:tip") + " " + StatCollector.translateToLocal(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		else
-			message = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.tip") + " " + StatCollector.translateToLocal(tipKey));
+			message = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.securitycraft:tip") + " " + StatCollector.translateToLocal(tipKey));
 
 		event.player.addChatComponentMessage(message);
 	}
@@ -134,7 +134,7 @@ public class SCEventHandler {
 				event.setCanceled(true);
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockModifier.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.securitycraft:universalBlockModifier.name"), StatCollector.translateToLocal("messages.securitycraft:notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), EnumChatFormatting.RED);
 					return;
 				}
 
@@ -147,12 +147,12 @@ public class SCEventHandler {
 
 				for(String character : new String[]{"(", ")"})
 					if(event.entityPlayer.getCurrentEquippedItem().getDisplayName().contains(character)) {
-						PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.error").replace("#n", event.entityPlayer.getCurrentEquippedItem().getDisplayName()).replace("#c", character), EnumChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.securitycraft:naming.error").replace("#n", event.entityPlayer.getCurrentEquippedItem().getDisplayName()).replace("#c", character), EnumChatFormatting.RED);
 						return;
 					}
 
 				if(((INameable) tileEntity).getCustomName().matches(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
 					return;
 				}
 
@@ -167,7 +167,7 @@ public class SCEventHandler {
 				event.setCanceled(true);
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
-					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.universalBlockRemover.name"), StatCollector.translateToLocal("messages.notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), EnumChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.entityPlayer, StatCollector.translateToLocal("item.securitycraft:universalBlockRemover.name"), StatCollector.translateToLocal("messages.securitycraft:notOwned").replace("#", ((TileEntityOwnable) tileEntity).getOwner().getName()), EnumChatFormatting.RED);
 					return;
 				}
 

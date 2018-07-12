@@ -39,7 +39,7 @@ public class ItemCameraMonitor extends Item {
 		if(!worldIn.isRemote){
 			if(BlockUtils.getBlock(worldIn, pos) == SCContent.securityCamera){
 				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.cannotView"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
@@ -50,14 +50,14 @@ public class ItemCameraMonitor extends Item {
 
 				if(isCameraAdded(playerIn.inventory.getCurrentItem().getTagCompound(), view)){
 					playerIn.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(playerIn.inventory.getCurrentItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
 					if (!playerIn.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
 						playerIn.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 
@@ -70,7 +70,7 @@ public class ItemCameraMonitor extends Item {
 				return EnumActionResult.SUCCESS;
 
 			if(stack.getTagCompound() == null || stack.getTagCompound().hasNoTags()) {
-				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -91,7 +91,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 
 			if(!itemStackIn.hasTagCompound() || !hasCameraAdded(itemStackIn.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
 			}
 
@@ -107,7 +107,7 @@ public class ItemCameraMonitor extends Item {
 		if(stack.getTagCompound() == null)
 			return;
 
-		tooltip.add(ClientUtils.localize("tooltip.cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
+		tooltip.add(ClientUtils.localize("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
 	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {

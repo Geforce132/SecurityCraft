@@ -81,7 +81,7 @@ public class BlockPortableRadar extends BlockContainer {
 					if(!((TileEntityPortableRadar) world.getTileEntity(x, y, z)).shouldSendMessage(entityplayer))
 						continue;
 
-					PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.portableRadar.name"), ((INameable)world.getTileEntity(x, y, z)).hasCustomName() ? (StatCollector.translateToLocal("messages.portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)world.getTileEntity(x, y, z)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(x, y, z))), EnumChatFormatting.BLUE);
+					PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.securitycraft:portableRadar.name"), ((INameable)world.getTileEntity(x, y, z)).hasCustomName() ? (StatCollector.translateToLocal("messages.securitycraft:portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)world.getTileEntity(x, y, z)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.securitycraft:portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(x, y, z))), EnumChatFormatting.BLUE);
 					((TileEntityPortableRadar) world.getTileEntity(x, y, z)).setSentMessage();
 				}
 

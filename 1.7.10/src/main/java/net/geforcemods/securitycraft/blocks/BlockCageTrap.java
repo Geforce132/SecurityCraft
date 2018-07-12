@@ -85,7 +85,7 @@ public class BlockCageTrap extends BlockOwnable {
 				world.playSoundEffect(x,y,z, "random.anvil_use", 3.0F, 1.0F);
 
 				if(isPlayer)
-					MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(x, y, z))));
+					MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText("["+ EnumChatFormatting.BLACK + StatCollector.translateToLocal("tile.securitycraft:cageTrap.name") + EnumChatFormatting.RESET + "] " + StatCollector.translateToLocal("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getCommandSenderName()).replace("#location", Utils.getFormattedCoordinates(x, y, z))));
 			}
 		}
 	}

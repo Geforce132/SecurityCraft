@@ -26,10 +26,10 @@ public class WailaDataProvider implements IWailaDataProvider {
 	public static void callbackRegister(IWailaRegistrar registrar){
 		SecurityCraft.log("Adding Waila support!");
 
-		registrar.addConfig("SecurityCraft", "securitycraft.showowner", ClientUtils.localize("waila.displayOwner"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", ClientUtils.localize("waila.showModules"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", ClientUtils.localize("waila.showPasswords"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", ClientUtils.localize("waila.showCustomName"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showowner", ClientUtils.localize("waila.securitycraft:displayOwner"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", ClientUtils.localize("waila.securitycraft:showModules"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", ClientUtils.localize("waila.securitycraft:showPasswords"));
+		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", ClientUtils.localize("waila.securitycraft:showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
 	}
@@ -52,11 +52,11 @@ public class WailaDataProvider implements IWailaDataProvider {
 		if(iDataAccessor.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) iDataAccessor.getBlock()).shouldShowSCInfo(iDataAccessor.getWorld(), iDataAccessor.getBlockState(), iDataAccessor.getPosition())) return tipList;
 
 		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable)
-			tipList.add(ClientUtils.localize("waila.owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
+			tipList.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
 
 		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
 			if(!((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules().isEmpty())
-				tipList.add(ClientUtils.localize("waila.equipped"));
+				tipList.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 			for(EnumCustomModules module : ((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules())
 				tipList.add("- " + module.getName());
@@ -65,13 +65,13 @@ public class WailaDataProvider implements IWailaDataProvider {
 		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && !(iDataAccessor.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
 			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
 
-			tipList.add(ClientUtils.localize("waila.password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.password.notSet")));
+			tipList.add(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
 		}
 
 		if(iConfigHandler.getConfig("securitycraft.showcustomname") && iDataAccessor.getTileEntity() instanceof INameable && ((INameable) iDataAccessor.getTileEntity()).canBeNamed()){
 			String name = ((INameable) iDataAccessor.getTileEntity()).getCustomName();
 
-			tipList.add(ClientUtils.localize("waila.customName") + " " + (((INameable) iDataAccessor.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.customName.notSet")));
+			tipList.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) iDataAccessor.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
 		}
 
 		return tipList;

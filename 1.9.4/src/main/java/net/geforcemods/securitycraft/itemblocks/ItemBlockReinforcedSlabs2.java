@@ -69,7 +69,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
 					if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
 						if(!worldIn.isRemote)
-							PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("messages.reinforcedSlab"), ClientUtils.localize("messages.reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 						return EnumActionResult.FAIL;
 					}
