@@ -1,8 +1,9 @@
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 
 - Fix: Possible conflicting language strings with other mods
-- Fix: [1.8,1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
-- Fix: [1.9.4,1.12.2] Fix incorrect lighting in some GUIs
+- Fix: [1.8, 1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
+- Fix: [1.8-1.11.2] Information about the Admin Tool and SecurityCraft Manual don't show up in JEI
+- Fix: [1.9.4, 1.12.2] Fix incorrect lighting in some GUIs
 - Fix: [1.12.2] Fix GUI tooltips rendering under JEI interface
 
 --------------------------Changelog for v1.8.5 of SecurityCraft--------------------------
@@ -58,8 +59,8 @@
 - Fix: Portable Radar can be broken by any player
 - Fix: Username Logger can be broken by any player
 - Fix: Alarm sound pitch is incorrect
-- Fix: [1.8-1.8.8/9] Reinforced Iron Fence Gate is not craftable
-- Fix: [1.8-1.8.8/9] Disguised Keypad doesn't respect biome colors (Gray grass etc.)
+- Fix: [1.8-1.8.9] Reinforced Iron Fence Gate is not craftable
+- Fix: [1.8-1.8.9] Disguised Keypad doesn't respect biome colors (Gray grass etc.)
 - Fix: [1.8+] Password-protected Furnace doesn't drop items when being broken
 - Fix: [1.8+] Security Camera doesn't update Redstone correctly when the Redstone Module is removed/added/turned on/turned off
 - Fix: [1.10.2+] SecurityCraft Tile Entity data doesn't get synchronized correctly with clients on world load [1]
@@ -137,7 +138,7 @@
 - Fix: [1.7.10] Inconsistent behavior when opening a keypad while being whitelisted
 - Fix: [1.7.10] Reinforced Door can be held open with a redstone input (thanks LeKoopa!)
 - Fix: [1.7.10] Security Camera cannot emit redstone signal
-- Fix: [1.7.10-1.8.8/9] Unable to exit out of password GUIs
+- Fix: [1.7.10-1.8.9] Unable to exit out of password GUIs
 - Fix: [1.11.2+] Installed modules disappear in certain situations
 - Fix: [1.12.2] Keycard recipes cannot be disabled via config
 - Fix: [1.12.2] WAILA can now be used again (Use Hwyla https://minecraft.curseforge.com/projects/hwyla)
@@ -204,8 +205,8 @@
 - Fix: Alarm bounding box is too large for top/bottom alarm
 - Fix: Missing language strings for SecurityCraft Manual and Reinforced Planks within the SecurityCraft Manual
 - Fix: Pick block does not work on Keypads
-- Fix: [1.8.8/9] Keypad crash
-- Fix: [1.8, 1.8.8/9] Bouncing Betty can explode while it is defused
+- Fix: [1.8.9] Keypad crash
+- Fix: [1.8, 1.8.9] Bouncing Betty can explode while it is defused
 - Removed: [1.10.2+] Reinforced Glass Pane (updating this would have required a complete rewrite and a big chunk of time. Our priorities are sadly not positioned here)
 - Removed: [1.10.2+] Reinforced Dirt Slab (The slab was not working at all and despite tons of debugging and checking, we could not iron out the issue)
 
@@ -221,7 +222,7 @@
 - Fix: Specific crashes reported by OpenEye
 - Fix: [1.7.10] Defusing a mine removes owner
 - Fix: [1.7.10] Codebreaker does not work on Keypads
-- Fix: [1.8, 1.8.8/9] Unable to add players to modules
+- Fix: [1.8, 1.8.9] Unable to add players to modules
 
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
@@ -259,8 +260,8 @@
 - Fix: Protecto attacks whitelisted players
 - Fix: The Portable Radar sends a message when its owner is in its radius
 - Fix: Translations don't work in the SC Manual under certain circumstances
-- Fix: [1.8, 1.8.8/9] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
-- Fix: [1.8, 1.8.8/9] Reinforced Doors can be activated by normal redstone
+- Fix: [1.8, 1.8.9] North-facing camera views being able to rotate backwards when turning left, and not being able to turn right after previously turning left
+- Fix: [1.8, 1.8.9] Reinforced Doors can be activated by normal redstone
 
 --------------------------Changelog for v1.8.1 of SecurityCraft--------------------------
 

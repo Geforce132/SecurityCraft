@@ -6,6 +6,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.JEIPlugin;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,8 @@ public class SCJEIPlugin implements IModPlugin
 	@Override
 	public void register(IModRegistry registry)
 	{
+		registry.addDescription(new ItemStack(SCContent.adminTool), "gui.securitycraft:scManual.recipe.adminTool");
+		registry.addDescription(new ItemStack(SCContent.scManual), "gui.securitycraft:scManual.recipe.scManual");
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
 			registry.addDescription(new ItemStack(pc), "gui.securitycraft:scManual.recipe." + pc.getUnlocalizedName().substring(5));
 		});
