@@ -20,6 +20,7 @@
 	- Netherrack
 	- [1.8+] Sea Lantern
 	- [1.10.2+] Bone Block
+- New: Motion Activated Light
 - Change: When viewing a camera, the view now more closely represents what the camera would see
 - Change: The Briefcase recipe now requires a Password-protected Chest instead of a regular one
 - Change: The Taser now only applies level 2 potion effects for 10 seconds
