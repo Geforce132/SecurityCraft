@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 
+- New: Right-clicking an activated Cage Trap with a Universal Block Remover will remove the complete cage, provided the trap and bars are owned by the same person
 - Fix: Possible conflicting language strings with other mods
 - Fix: [1.8, 1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
 - Fix: [1.8-1.11.2] Information about the Admin Tool and SecurityCraft Manual don't show up in JEI

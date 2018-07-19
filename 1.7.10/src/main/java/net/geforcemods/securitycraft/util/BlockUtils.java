@@ -68,6 +68,12 @@ public class BlockUtils{
 		world.notifyBlockOfNeighborChange(x, y - 1, z, world.getBlock(x, y, z));
 	}
 
+	//laziness when backporting
+	public static Block getBlock(World world, int x, int y, int z)
+	{
+		return world.getBlock(x, y, z);
+	}
+
 	/**
 	 * Breaks the block at the given coordinates. <p>
 	 *
