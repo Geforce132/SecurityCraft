@@ -241,6 +241,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
+		if(EnumFacing.values()[meta] == EnumFacing.DOWN || EnumFacing.values()[meta] == EnumFacing.UP)
+			return getDefaultState();
+
 		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);
 	}
 

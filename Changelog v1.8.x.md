@@ -4,6 +4,7 @@
 - Fix: Possible conflicting language strings with other mods
 - Fix: [1.8, 1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
 - Fix: [1.8-1.11.2] Information about the Admin Tool and SecurityCraft Manual don't show up in JEI
+- Fix: [1.8+] Crashes involving the Username Logger or Inventory Scanner Field
 - Fix: [1.9.4, 1.12.2] Fix incorrect lighting in some GUIs
 - Fix: [1.12.2] Fix GUI tooltips rendering under JEI interface
 
