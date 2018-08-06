@@ -41,12 +41,12 @@ public class ContainerBlockReinforcer extends Container
 	@Override
 	public void onContainerClosed(EntityPlayer player)
 	{
-		ItemStack stack = itemInventory.getStackInSlotOnClosing(0);
+		ItemStack vanillaStack = itemInventory.getStackInSlotOnClosing(0);
 
-		if(stack != null)
+		if(vanillaStack != null)
 		{
-			Item item = stack.getItem();
-			ItemStack newStack = null;
+			Item item = vanillaStack.getItem();
+			ItemStack reinforcedStack = null;
 			int customMeta = 0;
 
 			for(Block rb : IReinforcedBlock.BLOCKS)
@@ -55,23 +55,23 @@ public class ContainerBlockReinforcer extends Container
 
 				if(block.getVanillaBlocks().contains(Block.getBlockFromItem(item)))
 				{
-					newStack = new ItemStack(rb);
+					reinforcedStack = new ItemStack(rb);
 
 					if(block.getVanillaBlocks().size() == block.getAmount())
 						customMeta = block.getVanillaBlocks().indexOf(Block.getBlockFromItem(item));
 				}
 			}
 
-			if(newStack != null)
+			if(reinforcedStack != null)
 			{
-				if(Block.getBlockFromItem(newStack.getItem()) == SCContent.reinforcedMetals || Block.getBlockFromItem(newStack.getItem()) == SCContent.reinforcedCompressedBlocks)
-					newStack.setMetadata(customMeta);
+				if(Block.getBlockFromItem(reinforcedStack.getItem()) == SCContent.reinforcedMetals || Block.getBlockFromItem(reinforcedStack.getItem()) == SCContent.reinforcedCompressedBlocks)
+					reinforcedStack.setMetadata(customMeta);
 				else
-					newStack.setMetadata(stack.getMetadata());
+					reinforcedStack.setMetadata(vanillaStack.getMetadata());
 
-				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
-				player.dropPlayerItemWithRandomChoice(newStack, false);
+				reinforcedStack.stackSize = vanillaStack.stackSize;
+				player.getCurrentEquippedItem().damageItem(vanillaStack.stackSize, player);
+				player.dropPlayerItemWithRandomChoice(reinforcedStack, false);
 			}
 		}
 	}

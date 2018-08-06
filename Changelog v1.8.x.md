@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
+
+- [1.7.10-1.8.9] Fix: Reinforced Glass Panes cannot be created
+- [1.7.10-1.8.9] Fix: The Universal Block Reinforcer doesn't take damage when blocks are reinforced with its slot
+
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 
 - New: Right-clicking an activated Cage Trap with a Universal Block Remover will remove the complete cage, provided the trap and bars are owned by the same person

@@ -70,7 +70,7 @@ public class ContainerBlockReinforcer extends Container
 					newStack.setItemDamage(stack.getItemDamage());
 
 				newStack.stackSize = stack.stackSize;
-				blockReinforcer.damageItem(stack.stackSize, player);
+				player.getCurrentEquippedItem().damageItem(stack.stackSize, player);
 				player.dropPlayerItemWithRandomChoice(newStack, false);
 			}
 		}
@@ -205,7 +205,7 @@ public class ContainerBlockReinforcer extends Container
 
 			return validBlock &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-							blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
+						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.stackSize + (getHasStack() ? getStack().stackSize : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }
