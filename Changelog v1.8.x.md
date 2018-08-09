@@ -1,7 +1,11 @@
+--------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+
+- Fix: Taser doesn't respect PVP settings
+
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
 
-- [1.7.10-1.8.9] Fix: Reinforced Glass Panes cannot be created
-- [1.7.10-1.8.9] Fix: The Universal Block Reinforcer doesn't take damage when blocks are reinforced with its slot
+- Fix: [1.7.10-1.8.9] Reinforced Glass Panes cannot be created
+- Fix: [1.7.10-1.8.9] The Universal Block Reinforcer doesn't take damage when blocks are reinforced with its slot
 
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 

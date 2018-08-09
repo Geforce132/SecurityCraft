@@ -78,7 +78,6 @@ public class SecurityCraft {
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
 		RegistrationHandler.registerPackets(SecurityCraft.network);
 		log("Network setup.");
-
 		log("Loading mod content....");
 		SetupHandler.setupBlocks();
 		SetupHandler.setupMines();
