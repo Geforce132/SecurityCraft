@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
+- New: The SC Manual can now be navigated using the mouse's scroll wheel
 - Fix: Taser doesn't respect PVP settings
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------

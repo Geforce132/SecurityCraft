@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
@@ -169,42 +170,50 @@ public class GuiSCManual extends GuiScreen {
 	protected void keyTyped(char typedChar, int keyCode){
 		super.keyTyped(typedChar, keyCode);
 
-		if(keyCode == Keyboard.KEY_LEFT){
-			currentPage--;
-
-			if(currentPage < -1)
-				currentPage = SecurityCraft.instance.manualPages.size() - 1;
-
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			updateRecipeAndIcons();
-		}else if(keyCode == Keyboard.KEY_RIGHT){
-			currentPage++;
-
-			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
-				currentPage = -1;
-
-			Minecraft.getMinecraft().thePlayer.playSound("random.click", 0.15F, 1.0F);
-			updateRecipeAndIcons();
-		}
+		if(keyCode == Keyboard.KEY_LEFT)
+			nextPage();
+		else if(keyCode == Keyboard.KEY_RIGHT)
+			previousPage();
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button){
-		if(button.id == 1){
-			currentPage++;
+		if(button.id == 1)
+			nextPage();
+		else if(button.id == 2)
+			previousPage();
+	}
 
-			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
-				currentPage = -1;
+	@Override
+	public void handleMouseInput()
+	{
+		super.handleMouseInput();
 
-			updateRecipeAndIcons();
-		}else if(button.id == 2){
-			currentPage--;
-
-			if(currentPage < -1)
-				currentPage = SecurityCraft.instance.manualPages.size() - 1;
-
-			updateRecipeAndIcons();
+		switch((int)Math.signum(Mouse.getEventDWheel()))
+		{
+			case 1: nextPage(); break;
+			case -1: previousPage(); break;
 		}
+	}
+
+	private void nextPage()
+	{
+		currentPage++;
+
+		if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
+			currentPage = -1;
+
+		updateRecipeAndIcons();
+	}
+
+	private void previousPage()
+	{
+		currentPage--;
+
+		if(currentPage < -1)
+			currentPage = SecurityCraft.instance.manualPages.size() - 1;
+
+		updateRecipeAndIcons();
 	}
 
 	private void updateRecipeAndIcons(){

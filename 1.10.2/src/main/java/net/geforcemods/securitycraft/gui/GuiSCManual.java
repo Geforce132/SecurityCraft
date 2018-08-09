@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -30,7 +31,6 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -172,42 +172,50 @@ public class GuiSCManual extends GuiScreen {
 	protected void keyTyped(char par1, int par2) throws IOException{
 		super.keyTyped(par1, par2);
 
-		if(par2 == Keyboard.KEY_LEFT){
-			currentPage--;
-
-			if(currentPage < -1)
-				currentPage = SecurityCraft.instance.manualPages.size() - 1;
-
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			updateRecipeAndIcons();
-		}else if(par2 == Keyboard.KEY_RIGHT){
-			currentPage++;
-
-			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
-				currentPage = -1;
-
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			updateRecipeAndIcons();
-		}
+		if(par2 == Keyboard.KEY_LEFT)
+			previousPage();
+		else if(par2 == Keyboard.KEY_RIGHT)
+			nextPage();
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton){
-		if(par1GuiButton.id == 1){
-			currentPage++;
+		if(par1GuiButton.id == 1)
+			previousPage();
+		else if(par1GuiButton.id == 2)
+			nextPage();
+	}
 
-			if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
-				currentPage = -1;
+	@Override
+	public void handleMouseInput() throws IOException
+	{
+		super.handleMouseInput();
 
-			updateRecipeAndIcons();
-		}else if(par1GuiButton.id == 2){
-			currentPage--;
-
-			if(currentPage < -1)
-				currentPage = SecurityCraft.instance.manualPages.size() - 1;
-
-			updateRecipeAndIcons();
+		switch((int)Math.signum(Mouse.getEventDWheel()))
+		{
+			case 1: nextPage(); break;
+			case -1: previousPage(); break;
 		}
+	}
+
+	private void nextPage()
+	{
+		currentPage++;
+
+		if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
+			currentPage = -1;
+
+		updateRecipeAndIcons();
+	}
+
+	private void previousPage()
+	{
+		currentPage--;
+
+		if(currentPage < -1)
+			currentPage = SecurityCraft.instance.manualPages.size() - 1;
+
+		updateRecipeAndIcons();
 	}
 
 	private void updateRecipeAndIcons(){
