@@ -62,8 +62,8 @@ public class GuiSCManual extends GuiScreen {
 
 		k = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
-		GuiSCManual.NextPageButton nextButton = new GuiSCManual.NextPageButton(1, k + 210, b0 + 158, true);
-		GuiSCManual.NextPageButton prevButton = new GuiSCManual.NextPageButton(2, k + 16, b0 + 158, false);
+		GuiSCManual.ChangePageButton nextButton = new GuiSCManual.ChangePageButton(1, k + 210, b0 + 158, true);
+		GuiSCManual.ChangePageButton prevButton = new GuiSCManual.ChangePageButton(2, k + 16, b0 + 158, false);
 
 		buttonList.add(nextButton);
 		buttonList.add(prevButton);
@@ -311,10 +311,10 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	@SideOnly(Side.CLIENT)
-	static class NextPageButton extends GuiButton {
+	static class ChangePageButton extends GuiButton {
 		private final boolean field_146151_o;
 
-		public NextPageButton(int par1, int par2, int par3, boolean par4){
+		public ChangePageButton(int par1, int par2, int par3, boolean par4){
 			super(par1, par2, par3, 23, 13, "");
 			field_146151_o = par4;
 		}
