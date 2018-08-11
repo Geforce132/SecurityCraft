@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
 - New: The SC Manual can now be navigated using the mouse's scroll wheel
+- New: The SC Manual now remembers the last page that was viewed and opens back up at that page
 - Fix: Taser doesn't respect PVP settings
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------

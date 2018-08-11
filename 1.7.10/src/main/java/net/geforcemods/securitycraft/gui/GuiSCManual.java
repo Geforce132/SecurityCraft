@@ -41,7 +41,8 @@ public class GuiSCManual extends GuiScreen {
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
 
 	private List<CustomHoverChecker> hoverCheckers = new ArrayList<CustomHoverChecker>();
-	private int currentPage = -1;
+	private static int lastPage = -1;
+	private int currentPage = lastPage;
 	private ItemStack[] recipe;
 	int startY = -1;
 	boolean update = false;
@@ -64,6 +65,7 @@ public class GuiSCManual extends GuiScreen {
 
 		buttonList.add(nextButton);
 		buttonList.add(prevButton);
+		updateRecipeAndIcons();
 	}
 
 	@Override
@@ -163,6 +165,7 @@ public class GuiSCManual extends GuiScreen {
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
+		lastPage = currentPage;
 		Keyboard.enableRepeatEvents(false);
 	}
 
