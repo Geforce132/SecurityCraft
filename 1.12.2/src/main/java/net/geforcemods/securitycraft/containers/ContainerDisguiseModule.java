@@ -84,11 +84,11 @@ public class ContainerDisguiseModule extends Container {
 		public boolean isItemValid(ItemStack par1ItemStack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = par1ItemStack.getUnlocalizedName().startsWith("tile.");
+			boolean isStackBlock = par1ItemStack.getTranslationKey().startsWith("tile.");
 
 			for(ItemStack stack : inventory.moduleInventory)
 				if(!stack.isEmpty() && stack.getItem() != null)
-					if(stack.getItem().getUnlocalizedName().startsWith("tile."))
+					if(stack.getItem().getTranslationKey().startsWith("tile."))
 						numberOfBlocks++;
 					else
 						numberOfItems++;

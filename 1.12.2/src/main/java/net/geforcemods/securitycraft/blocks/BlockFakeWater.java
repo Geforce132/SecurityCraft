@@ -37,7 +37,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	 */
 	private void placeStaticBlock(World par1World, BlockPos pos, IBlockState state)
 	{
-		par1World.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		par1World.setBlockState(pos, getStaticBlock(this.material).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 	}
 
 	public static BlockStaticLiquid getStaticBlock(Material materialIn)
@@ -56,7 +56,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 		int i = state.getValue(LEVEL).intValue();
 		byte b0 = 1;
 
-		if (blockMaterial == Material.LAVA && !worldIn.provider.doesWaterVaporize())
+		if (this.material == Material.LAVA && !worldIn.provider.doesWaterVaporize())
 			b0 = 2;
 
 		int j = tickRate(worldIn);
@@ -86,17 +86,17 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 					l = i1 + 8;
 			}
 
-			if (adjacentSourceBlocks >= 2 && blockMaterial == Material.WATER)
+			if (adjacentSourceBlocks >= 2 && this.material == Material.WATER)
 			{
 				IBlockState iblockstate2 = worldIn.getBlockState(pos.down());
 
 				if (iblockstate2.getMaterial().isSolid())
 					l = 0;
-				else if (iblockstate2.getMaterial() == blockMaterial && iblockstate2.getValue(LEVEL).intValue() == 0)
+				else if (iblockstate2.getMaterial() == this.material && iblockstate2.getValue(LEVEL).intValue() == 0)
 					l = 0;
 			}
 
-			if (blockMaterial == Material.LAVA && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
+			if (this.material == Material.LAVA && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
 				j *= 4;
 
 			if (l == i)
@@ -123,7 +123,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 
 		if (canFlowInto(worldIn, pos.down(), iblockstate1))
 		{
-			if (blockMaterial == Material.LAVA && worldIn.getBlockState(pos.down()).getBlock().getMaterial(worldIn.getBlockState(pos.down())) == Material.WATER)
+			if (this.material == Material.LAVA && worldIn.getBlockState(pos.down()).getBlock().getMaterial(worldIn.getBlockState(pos.down())) == Material.WATER)
 			{
 				worldIn.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
 				triggerMixEffects(worldIn, pos.down());
@@ -161,7 +161,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 		if (canFlowInto(worldIn, pos, state))
 		{
 			if (state.getBlock() != Blocks.AIR)
-				if (blockMaterial == Material.LAVA)
+				if (this.material == Material.LAVA)
 					triggerMixEffects(worldIn, pos);
 				else
 					state.getBlock().dropBlockAsItem(worldIn, pos, state, 0);
@@ -184,7 +184,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 				BlockPos blockpos1 = pos.offset(enumfacing1);
 				IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-				if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
+				if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
 				{
 					if (!isBlocked(worldIn, blockpos1.down(), iblockstate))
 						return distance;
@@ -215,7 +215,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 			BlockPos blockpos1 = pos.offset(enumfacing);
 			IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-			if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
+			if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial(iblockstate) != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
 			{
 				int j;
 
@@ -266,7 +266,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	private boolean canFlowInto(World worldIn, BlockPos pos, IBlockState state)
 	{
 		Material material = state.getBlock().getMaterial(state);
-		return material != blockMaterial && material != Material.LAVA && !isBlocked(worldIn, pos, state);
+		return material != this.material && material != Material.LAVA && !isBlocked(worldIn, pos, state);
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote)
 			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)

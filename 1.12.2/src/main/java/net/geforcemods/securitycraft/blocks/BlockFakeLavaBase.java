@@ -34,7 +34,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 
 	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
 	{
-		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
+		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.material);
 		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
 		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
 	}
@@ -53,7 +53,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity)
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote)
 			if(entity instanceof EntityPlayer){

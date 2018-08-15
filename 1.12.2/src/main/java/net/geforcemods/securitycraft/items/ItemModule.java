@@ -106,7 +106,7 @@ public class ItemModule extends Item{
 
 				par3List.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
 				for(Item item : getItemAddons(par1ItemStack.getTagCompound()))
-					par3List.add("- " + ClientUtils.localize(item.getUnlocalizedName() + ".name"));
+					par3List.add("- " + ClientUtils.localize(item.getTranslationKey() + ".name"));
 
 				for(Block block : getBlockAddons(par1ItemStack.getTagCompound()))
 					par3List.add("- " + ClientUtils.localize(block.getLocalizedName()));
@@ -148,7 +148,7 @@ public class ItemModule extends Item{
 			if(slot < numberOfItemAddons) {
 				ItemStack stack;
 
-				if((stack = new ItemStack(item)).getUnlocalizedName().startsWith("item."))
+				if((stack = new ItemStack(item)).getTranslationKey().startsWith("item."))
 					list.add(stack.getItem());
 			}
 		}
@@ -170,7 +170,7 @@ public class ItemModule extends Item{
 			if(slot < numberOfBlockAddons) {
 				ItemStack stack;
 
-				if((stack = new ItemStack(item)).getUnlocalizedName().startsWith("tile."))
+				if((stack = new ItemStack(item)).getTranslationKey().startsWith("tile."))
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}

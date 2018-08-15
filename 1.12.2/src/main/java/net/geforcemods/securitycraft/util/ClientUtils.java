@@ -59,7 +59,7 @@ public class ClientUtils{
 	@SideOnly(Side.CLIENT)
 	public static void takeScreenshot() {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().mcDataDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer()));
+			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().gameDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer()));
 	}
 
 	/**

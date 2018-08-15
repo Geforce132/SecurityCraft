@@ -27,7 +27,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 
 	@Override
 	public boolean canAttack() {
-		return world.isBlockIndirectlyGettingPowered(pos) > 0;
+		return world.getRedstonePowerFromNeighbors(pos) > 0;
 	}
 
 	public void logPlayers(){

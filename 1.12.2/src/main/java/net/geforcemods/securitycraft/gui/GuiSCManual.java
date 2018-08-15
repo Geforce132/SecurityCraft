@@ -96,7 +96,7 @@ public class GuiSCManual extends GuiScreen {
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), k + 39, 27, 0, false);
 			else
-				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), k + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey() + ".name"), k + 39, 27, 0, false);
 
 			fontRenderer.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), k + 18, 45, 225, 0);
 		}else{
@@ -288,7 +288,7 @@ public class GuiSCManual extends GuiScreen {
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
 		else
 		{
-			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getResourcePath();
+			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new CustomHoverChecker(144, 144 + (2 * 20) + 16, k + 100, (k + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}

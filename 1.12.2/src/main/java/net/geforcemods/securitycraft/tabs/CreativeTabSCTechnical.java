@@ -17,12 +17,12 @@ public class CreativeTabSCTechnical extends CreativeTabs{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getTabIconItem(){
+	public ItemStack createIcon(){
 		return new ItemStack(Item.getItemFromBlock(SCContent.usernameLogger));
 	}
 
 	@Override
-	public String getTranslatedTabLabel(){
+	public String getTabLabel(){
 		return "SecurityCraft: " + ClientUtils.localize("creativeTabTechnical");
 
 	}

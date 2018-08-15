@@ -40,7 +40,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	{
 		super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
 		tileEntity = par2TileEntity;
-		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().world, tileEntity.getPos()).getUnlocalizedName().substring(5);
+		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().world, tileEntity.getPos()).getTranslationKey().substring(5);
 	}
 
 	@Override
@@ -119,9 +119,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	private String getModuleDescription(int buttonID) {
-		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getUnlocalizedName().substring(5).replace("securitycraft:", "") + ".description";
+		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description";
 
-		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getUnlocalizedName() + ".name") + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
+		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey() + ".name") + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
 	}
 
 	private String getOptionDescription(int buttonID) {

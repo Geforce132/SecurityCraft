@@ -74,8 +74,8 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta){
-		return super.getUnlocalizedName() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getUnlocalizedName();
+	public String getTranslationKey(int meta){
+		return super.getTranslationKey() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getTranslationKey();
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			return name;
 		}
 
-		public String getUnlocalizedName(){
+		public String getTranslationKey(){
 			return unlocalizedName;
 		}
 

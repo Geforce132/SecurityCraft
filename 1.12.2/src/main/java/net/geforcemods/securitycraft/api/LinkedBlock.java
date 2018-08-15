@@ -20,12 +20,12 @@ public class LinkedBlock {
 	}
 
 	public LinkedBlock(CustomizableSCTE tileEntity) {
-		blockName = BlockUtils.getBlock(tileEntity.getWorld(), tileEntity.getPos()).getUnlocalizedName();
+		blockName = BlockUtils.getBlock(tileEntity.getWorld(), tileEntity.getPos()).getTranslationKey();
 		blockPos = tileEntity.getPos();
 	}
 
 	public boolean validate(World world) {
-		if(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getUnlocalizedName().matches(blockName))) return false;
+		if(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getTranslationKey().matches(blockName))) return false;
 
 		return true;
 	}

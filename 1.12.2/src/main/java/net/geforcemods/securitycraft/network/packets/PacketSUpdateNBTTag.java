@@ -21,7 +21,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 	public PacketSUpdateNBTTag(ItemStack par1ItemStack){
 		if(!par1ItemStack.isEmpty() && par1ItemStack.hasTagCompound()){
 			stack = par1ItemStack.getTagCompound();
-			itemName = par1ItemStack.getUnlocalizedName();
+			itemName = par1ItemStack.getTranslationKey();
 		}
 	}
 
@@ -42,7 +42,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 		@Override
 		public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
-				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getUnlocalizedName().matches(packet.itemName))
+				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getTranslationKey().matches(packet.itemName))
 					context.getServerHandler().player.inventory.getCurrentItem().setTagCompound(packet.stack);
 			});
 

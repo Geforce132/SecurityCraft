@@ -155,7 +155,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 			return name;
 		}
 
-		public String getUnlocalizedName()
+		public String getTranslationKey()
 		{
 			return unlocalizedName;
 		}

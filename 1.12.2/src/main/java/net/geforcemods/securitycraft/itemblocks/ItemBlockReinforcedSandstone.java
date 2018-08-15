@@ -17,15 +17,15 @@ public class ItemBlockReinforcedSandstone extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack){
+	public String getTranslationKey(ItemStack stack){
 		if(stack.getItemDamage() == 0)
-			return this.getUnlocalizedName() + "_normal";
+			return this.getTranslationKey() + "_normal";
 		else if(stack.getItemDamage() == 1)
-			return this.getUnlocalizedName() + "_chiseled";
+			return this.getTranslationKey() + "_chiseled";
 		else if(stack.getItemDamage() == 2)
-			return this.getUnlocalizedName() + "_smooth";
+			return this.getTranslationKey() + "_smooth";
 		else
-			return this.getUnlocalizedName();
+			return this.getTranslationKey();
 	}
 
 }

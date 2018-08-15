@@ -46,7 +46,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		x = par1;
 		y = par2;
 		z = par3;
-		sound = par4ResourceLocation.getResourcePath();
+		sound = par4ResourceLocation.getPath();
 		volume = par5;
 		category = cat;
 	}
@@ -55,7 +55,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		x = (int) par1;
 		y = (int) par2;
 		z = (int) par3;
-		sound = par4ResourceLocation.getResourcePath();
+		sound = par4ResourceLocation.getPath();
 		volume = par5;
 		category = cat;
 	}

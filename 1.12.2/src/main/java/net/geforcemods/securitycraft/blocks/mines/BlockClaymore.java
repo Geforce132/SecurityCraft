@@ -104,7 +104,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
 	{
 		if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
 		{

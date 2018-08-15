@@ -109,7 +109,7 @@ public class BlockMine extends BlockExplosive {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
+	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
 		if(worldIn.isRemote)
 			return;
 		else if(entityIn instanceof EntityCreeper || entityIn instanceof EntityOcelot || entityIn instanceof EntityEnderman || entityIn instanceof EntityItem)

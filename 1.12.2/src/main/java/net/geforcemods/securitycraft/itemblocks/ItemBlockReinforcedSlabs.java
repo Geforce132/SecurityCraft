@@ -39,23 +39,23 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack){
+	public String getTranslationKey(ItemStack stack){
 		if(stack.getItemDamage() == 0)
-			return this.getUnlocalizedName() + "_stone";
+			return this.getTranslationKey() + "_stone";
 		else if(stack.getItemDamage() == 1)
-			return this.getUnlocalizedName() + "_cobble";
+			return this.getTranslationKey() + "_cobble";
 		else if(stack.getItemDamage() == 2)
-			return this.getUnlocalizedName() + "_sandstone";
+			return this.getTranslationKey() + "_sandstone";
 		else if(stack.getItemDamage() == 3)
-			return this.getUnlocalizedName() + "_stonebrick";
+			return this.getTranslationKey() + "_stonebrick";
 		else if(stack.getItemDamage() == 4)
-			return this.getUnlocalizedName() + "_brick";
+			return this.getTranslationKey() + "_brick";
 		else if(stack.getItemDamage() == 5)
-			return this.getUnlocalizedName() + "_netherbrick";
+			return this.getTranslationKey() + "_netherbrick";
 		else if(stack.getItemDamage() == 6)
-			return this.getUnlocalizedName() + "_quartz";
+			return this.getTranslationKey() + "_quartz";
 		else
-			return this.getUnlocalizedName();
+			return this.getTranslationKey();
 	}
 
 	@Override
