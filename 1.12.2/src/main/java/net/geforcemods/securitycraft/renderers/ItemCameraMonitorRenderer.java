@@ -1,26 +1,13 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.lookingglass.api.view.IWorldView;
-
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.misc.CameraView;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
-
 /**
  * The custom IItemRenderer for the handheld camera monitors.
  *
  * @author Geforce
  */
-public class ItemCameraMonitorRenderer implements IItemRenderer {
+public class ItemCameraMonitorRenderer /*implements IItemRenderer*/ {
 
-	@Override
+	/*@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		return type == ItemRenderType.FIRST_PERSON_MAP;
 	}
@@ -79,5 +66,5 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 			}
 		}
 	}
-
+	 */
 }
