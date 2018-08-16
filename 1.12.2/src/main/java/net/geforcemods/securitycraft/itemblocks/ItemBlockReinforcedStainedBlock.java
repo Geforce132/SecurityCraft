@@ -17,41 +17,41 @@ public class ItemBlockReinforcedStainedBlock extends ItemBlock {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack){
+	public String getTranslationKey(ItemStack stack){
 		if(stack.getItemDamage() == 0)
-			return this.getUnlocalizedName() + "_white";
+			return this.getTranslationKey() + "_white";
 		else if(stack.getItemDamage() == 1)
-			return this.getUnlocalizedName() + "_orange";
+			return this.getTranslationKey() + "_orange";
 		else if(stack.getItemDamage() == 2)
-			return this.getUnlocalizedName() + "_magenta";
+			return this.getTranslationKey() + "_magenta";
 		else if(stack.getItemDamage() == 3)
-			return this.getUnlocalizedName() + "_light_blue";
+			return this.getTranslationKey() + "_light_blue";
 		else if(stack.getItemDamage() == 4)
-			return this.getUnlocalizedName() + "_yellow";
+			return this.getTranslationKey() + "_yellow";
 		else if(stack.getItemDamage() == 5)
-			return this.getUnlocalizedName() + "_lime";
+			return this.getTranslationKey() + "_lime";
 		else if(stack.getItemDamage() == 6)
-			return this.getUnlocalizedName() + "_pink";
+			return this.getTranslationKey() + "_pink";
 		else if(stack.getItemDamage() == 7)
-			return this.getUnlocalizedName() + "_gray";
+			return this.getTranslationKey() + "_gray";
 		else if(stack.getItemDamage() == 8)
-			return this.getUnlocalizedName() + "_silver";
+			return this.getTranslationKey() + "_silver";
 		else if(stack.getItemDamage() == 9)
-			return this.getUnlocalizedName() + "_cyan";
+			return this.getTranslationKey() + "_cyan";
 		else if(stack.getItemDamage() == 10)
-			return this.getUnlocalizedName() + "_purple";
+			return this.getTranslationKey() + "_purple";
 		else if(stack.getItemDamage() == 11)
-			return this.getUnlocalizedName() + "_blue";
+			return this.getTranslationKey() + "_blue";
 		else if(stack.getItemDamage() == 12)
-			return this.getUnlocalizedName() + "_brown";
+			return this.getTranslationKey() + "_brown";
 		else if(stack.getItemDamage() == 13)
-			return this.getUnlocalizedName() + "_green";
+			return this.getTranslationKey() + "_green";
 		else if(stack.getItemDamage() == 14)
-			return this.getUnlocalizedName() + "_red";
+			return this.getTranslationKey() + "_red";
 		else if(stack.getItemDamage() == 15)
-			return this.getUnlocalizedName() + "_black";
+			return this.getTranslationKey() + "_black";
 		else
-			return this.getUnlocalizedName();
+			return this.getTranslationKey();
 	}
 
 }

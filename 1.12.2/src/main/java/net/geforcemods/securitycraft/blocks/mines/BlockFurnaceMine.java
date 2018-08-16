@@ -38,13 +38,13 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 
 
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion) {
+	public void onExplosionDestroy(World par1World, BlockPos pos, Explosion par5Explosion) {
 		if (!par1World.isRemote)
 			explode(par1World, pos);
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
+	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
 			explode(par1World, pos);
 	}

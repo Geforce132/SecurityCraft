@@ -132,7 +132,7 @@ public class ItemCameraMonitor extends Item {
 			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera)
 				return EnumActionResult.SUCCESS;
 
-			if(stack.getTagCompound() == null || stack.getTagCompound().hasNoTags()) {
+			if(stack.getTagCompound() == null || stack.getTagCompound().isEmpty()) {
 				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.cameraMonitor.name"), ClientUtils.localize("messages.cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}

@@ -150,7 +150,7 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 			return name;
 		}
 
-		public String getUnlocalizedName()
+		public String getTranslationKey()
 		{
 			return unlocalizedName;
 		}

@@ -37,7 +37,7 @@ public enum EnumCustomModules {
 		return module;
 	}
 
-	public String getUnlocalizedName() {
+	public String getTranslationKey() {
 		return moduleUnlocalizedName;
 	}
 
@@ -57,7 +57,7 @@ public enum EnumCustomModules {
 
 	public static void refresh() {
 		for(EnumCustomModules module : values())
-			module.module = (ItemModule) Item.REGISTRY.getObject(new ResourceLocation("securitycraft" + ":" + module.getUnlocalizedName()));
+			module.module = (ItemModule) Item.REGISTRY.getObject(new ResourceLocation("securitycraft" + ":" + module.getTranslationKey()));
 	}
 
 }

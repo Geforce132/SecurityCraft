@@ -24,9 +24,9 @@ public class ItemBlockReinforcedLog extends ItemBlock
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
+	public String getTranslationKey(ItemStack stack)
 	{
-		String name = getUnlocalizedName();
+		String name = getTranslationKey();
 
 		switch(stack.getItemDamage())
 		{

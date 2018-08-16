@@ -31,8 +31,8 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs2.EnumType.class);
 
 	private final boolean isDouble;
-	public BlockReinforcedSlabs2(boolean isDouble, Material blockMaterial){
-		super(blockMaterial);
+	public BlockReinforcedSlabs2(boolean isDouble, Material material){
+		super(material);
 
 		this.isDouble = isDouble;
 		if(!isDouble())
@@ -72,8 +72,8 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	}
 
 	@Override
-	public String getUnlocalizedName(int meta){
-		return super.getUnlocalizedName() + "." + BlockReinforcedSlabs2.EnumType.byMetadata(meta).getUnlocalizedName();
+	public String getTranslationKey(int meta){
+		return super.getTranslationKey() + "." + BlockReinforcedSlabs2.EnumType.byMetadata(meta).getTranslationKey();
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 			return name;
 		}
 
-		public String getUnlocalizedName(){
+		public String getTranslationKey(){
 			return unlocalizedName;
 		}
 

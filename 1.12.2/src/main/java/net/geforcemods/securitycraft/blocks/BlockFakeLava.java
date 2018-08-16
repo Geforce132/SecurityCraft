@@ -41,7 +41,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 	 */
 	private void placeStaticBlock(World par1World, BlockPos pos, IBlockState state)
 	{
-		par1World.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		par1World.setBlockState(pos, getStaticBlock(this.material).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 	}
 
 	public static BlockStaticLiquid getStaticBlock(Material materialIn)
@@ -60,7 +60,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 		int i = state.getValue(LEVEL).intValue();
 		byte b0 = 1;
 
-		if (blockMaterial == Material.LAVA && !worldIn.provider.doesWaterVaporize())
+		if (this.material == Material.LAVA && !worldIn.provider.doesWaterVaporize())
 			b0 = 2;
 
 		int j = tickRate(worldIn);
@@ -90,17 +90,17 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 					l = i1 + 8;
 			}
 
-			if (adjacentSourceBlocks >= 2 && blockMaterial == Material.WATER)
+			if (adjacentSourceBlocks >= 2 && this.material == Material.WATER)
 			{
 				IBlockState iblockstate2 = worldIn.getBlockState(pos.down());
 
 				if (iblockstate2.getMaterial().isSolid())
 					l = 0;
-				else if (iblockstate2.getMaterial() == blockMaterial && iblockstate2.getValue(LEVEL).intValue() == 0)
+				else if (iblockstate2.getMaterial() == this.material && iblockstate2.getValue(LEVEL).intValue() == 0)
 					l = 0;
 			}
 
-			if (blockMaterial == Material.LAVA && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
+			if (this.material == Material.LAVA && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
 				j *= 4;
 
 			if (l == i)
@@ -127,7 +127,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 
 		if (canFlowInto(worldIn, pos.down(), iblockstate1))
 		{
-			if (blockMaterial == Material.LAVA && worldIn.getBlockState(pos.down()).getMaterial() == Material.WATER)
+			if (this.material == Material.LAVA && worldIn.getBlockState(pos.down()).getMaterial() == Material.WATER)
 			{
 				worldIn.setBlockState(pos.down(), Blocks.STONE.getDefaultState());
 				triggerMixEffects(worldIn, pos.down());
@@ -165,7 +165,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 		if (canFlowInto(worldIn, pos, state))
 		{
 			if (state.getBlock() != Blocks.AIR)
-				if (blockMaterial == Material.LAVA)
+				if (this.material == Material.LAVA)
 					triggerMixEffects(worldIn, pos);
 				else
 					state.getBlock().dropBlockAsItem(worldIn, pos, state, 0);
@@ -188,7 +188,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 				BlockPos blockpos1 = pos.offset(enumfacing1);
 				IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-				if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getMaterial() != blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
+				if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getMaterial() != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
 				{
 					if (!isBlocked(worldIn, blockpos1.down(), iblockstate))
 						return distance;
@@ -219,7 +219,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 			BlockPos blockpos1 = pos.offset(enumfacing);
 			IBlockState iblockstate = worldIn.getBlockState(blockpos1);
 
-			if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getMaterial() != blockMaterial || iblockstate.getValue(LEVEL).intValue() > 0))
+			if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getMaterial() != this.material || iblockstate.getValue(LEVEL).intValue() > 0))
 			{
 				int j;
 
@@ -270,7 +270,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements IIntersectable 
 	private boolean canFlowInto(World worldIn, BlockPos pos, IBlockState state)
 	{
 		Material material = state.getMaterial();
-		return material != blockMaterial && material != Material.LAVA && !isBlocked(worldIn, pos, state);
+		return material != this.material && material != Material.LAVA && !isBlocked(worldIn, pos, state);
 	}
 
 	@Override

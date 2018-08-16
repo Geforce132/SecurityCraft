@@ -36,7 +36,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 
 	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
 	{
-		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
+		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.material);
 		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
 		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
 	}

@@ -166,7 +166,7 @@ public class BlockAlarm extends BlockOwnable {
 	private void playSoundAndUpdate(World par1World, BlockPos pos){
 		if(!(par1World.getTileEntity(pos) instanceof TileEntityAlarm)) return;
 
-		if(par1World.isBlockIndirectlyGettingPowered(pos) > 0){
+		if(par1World.getRedstonePowerFromNeighbors(pos) > 0){
 			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
 
 			if(!isPowered){

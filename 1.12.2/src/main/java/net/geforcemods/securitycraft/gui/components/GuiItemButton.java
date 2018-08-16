@@ -22,7 +22,7 @@ public class GuiItemButton extends GuiButton{
 		super(id, xPos, yPos, width, height, displayString);
 		itemRenderer = par7;
 
-		if(!itemToRender.isEmpty() && itemToRender.getItem().getUnlocalizedName().startsWith("tile."))
+		if(!itemToRender.isEmpty() && itemToRender.getItem().getTranslationKey().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
 		else
 			this.itemToRender = itemToRender.getItem();
@@ -77,7 +77,7 @@ public class GuiItemButton extends GuiButton{
 		blockToRender = null;
 		itemToRender = null;
 
-		if(par1ItemStack.getUnlocalizedName().startsWith("tile."))
+		if(par1ItemStack.getTranslationKey().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(par1ItemStack.getItem());
 		else
 			itemToRender = par1ItemStack.getItem();

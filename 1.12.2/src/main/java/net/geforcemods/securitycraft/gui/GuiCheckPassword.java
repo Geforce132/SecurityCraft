@@ -36,7 +36,7 @@ public class GuiCheckPassword extends GuiContainer {
 	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getUnlocalizedName() + ".name");
+		blockName = ClientUtils.localize(block.getTranslationKey() + ".name");
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 
 	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
 	{
-		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
+		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.material);
 		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
 		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
 	}
@@ -52,7 +52,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements IIntersectab
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
+	public void onEntityCollision(World par1World, BlockPos pos, Entity par5Entity){
 		if(!par1World.isRemote)
 			if(par5Entity instanceof EntityPlayer){
 				((EntityPlayer) par5Entity).heal(4);

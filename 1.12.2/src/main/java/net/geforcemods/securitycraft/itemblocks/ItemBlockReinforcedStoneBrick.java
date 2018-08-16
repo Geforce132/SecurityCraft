@@ -18,17 +18,17 @@ public class ItemBlockReinforcedStoneBrick extends ItemBlock
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack)
+	public String getTranslationKey(ItemStack stack)
 	{
 		if(stack.getItemDamage() == 0)
-			return this.getUnlocalizedName() + "_default";
+			return this.getTranslationKey() + "_default";
 		else if(stack.getItemDamage() == 1)
-			return this.getUnlocalizedName() + "_mossy";
+			return this.getTranslationKey() + "_mossy";
 		else if(stack.getItemDamage() == 2)
-			return this.getUnlocalizedName() + "_cracked";
+			return this.getTranslationKey() + "_cracked";
 		else if(stack.getItemDamage() == 3)
-			return this.getUnlocalizedName() + "_chiseled";
+			return this.getTranslationKey() + "_chiseled";
 		else
-			return this.getUnlocalizedName();
+			return this.getTranslationKey();
 	}
 }

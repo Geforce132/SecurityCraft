@@ -30,13 +30,13 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		cameraMeta = securityCameraMeta;
 
 		if(securityCameraMeta == 1)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
 		else if(securityCameraMeta == 2)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
 		else if(securityCameraMeta == 3)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
 		else if(securityCameraMeta == 4)
-			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
+			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
 
 		if(securityCameraMeta == 1)
 			this.camera.setYaw(180F);

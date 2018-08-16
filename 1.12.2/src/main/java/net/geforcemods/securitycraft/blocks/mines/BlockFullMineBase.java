@@ -61,7 +61,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion){
+	public void onExplosionDestroy(World par1World, BlockPos pos, Explosion par5Explosion){
 		if (!par1World.isRemote)
 		{
 			Random random = new Random();
@@ -72,7 +72,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
+	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state){
 		if (!par1World.isRemote)
 			explode(par1World, pos);
 	}

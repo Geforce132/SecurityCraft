@@ -543,7 +543,7 @@ public class RegistrationHandler
 				if(block == SCContent.reinforcedStone)
 					SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.reinforced.info"));
 				else
-					SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
+					SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info"));
 	}
 
 	/**
@@ -552,7 +552,7 @@ public class RegistrationHandler
 	private static void registerItem(Item item)
 	{
 		GameData.register_impl(item);
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
+		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info"));
 	}
 
 	/**
@@ -562,7 +562,7 @@ public class RegistrationHandler
 	private static void registerItem(Item item, boolean configValue)
 	{
 		GameData.register_impl(item);
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", configValue));
+		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue));
 	}
 
 	/**
@@ -578,6 +578,6 @@ public class RegistrationHandler
 		for(int i = 0; i < recipeItems.size(); i++)
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", recipeItems));
+		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", recipeItems));
 	}
 }

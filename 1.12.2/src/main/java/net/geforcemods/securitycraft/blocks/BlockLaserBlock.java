@@ -162,7 +162,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
 	 */
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state) {
 		if(!par1World.isRemote)
 			destroyAdjacentLasers(par1World, pos.getX(), pos.getY(), pos.getZ());
 	}

@@ -49,7 +49,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer()
+	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
 	}
@@ -195,7 +195,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	 * Called right before the block is destroyed by a player.  Args: world, pos, state
 	 */
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state)
 	{
 		if(!par1World.isRemote){
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
