@@ -4,6 +4,7 @@
 - New: The SC Manual now remembers the last page that was viewed and opens back up at that page
 - Fix: Taser doesn't respect PVP settings
 - Fix: Blocks in the Manual aren't shaded correctly
+- Fix: [1.8+] Various tooltips aren't being translated
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
 

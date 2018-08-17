@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tabs;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,7 +22,6 @@ public class CreativeTabSCTechnical extends CreativeTabs{
 
 	@Override
 	public String getTabLabel(){
-		return "SecurityCraft: " + ClientUtils.localize("creativeTabTechnical");
-
+		return super.getTabLabel() + ".technical";
 	}
 }

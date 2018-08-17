@@ -490,9 +490,9 @@ tooltip.securitycraft:module.itemAddons.usage.blocksAndItems=Du kannst # Blöcke
 tooltip.securitycraft:module.itemAddons.added=Hinzugefügt
 tooltip.securitycraft:keycard.uses=Verbleibende Benutzungen:
 
-creativeTabDecoration=Dekoration
-creativeTabExplosives=Sprengstoffe
-creativeTabTechnical=Technisch
+itemGroup.tabSecurityCraft.decoration=SecurityCraft: Dekoration
+itemGroup.tabSecurityCraft.explosives=SecurityCraft: Sprengstoffe
+itemGroup.tabSecurityCraft.technical=SecurityCraft: Technisch
 
 module.securitycraft:ims.whitelistModule.description=Ein Whitelist Modul in einem I.M.S. erlaubt gewhitelistete Spieler sich innerhalb des Angriffsradius der Mine zu bewegen ohne angegriffen zu werden.
 module.securitycraft:inventoryScanner.whitelistModule.description=Ein Whitelist Modul in einem Inventar Scanner erlaubt gewhitelistete Spieler durch das Feld zu gehen ohne deren Inventar überprüft zu bekommen.

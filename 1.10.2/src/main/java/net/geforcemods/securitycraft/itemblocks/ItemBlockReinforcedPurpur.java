@@ -26,7 +26,6 @@ public class ItemBlockReinforcedPurpur extends ItemBlock
 
 		switch(stack.getItemDamage())
 		{
-			case 0: return name + "_default";
 			case 1: case 2: case 3: return name + "_pillar";
 			default: return name;
 		}
