@@ -25,6 +25,9 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer<TileEntit
 			lgView = SecurityCraft.instance.getViewFromCoords(te.getCameraView().toNBTString()).getView();
 		else return;
 
+		if(lgView.getTexture() == 0)
+			return;
+
 		int meta = te.hasWorld() ? te.getBlockMetadata() : te.getBlockMetadata();
 		float rotation = 0F;
 		Tessellator tessellator = Tessellator.getInstance();
@@ -32,21 +35,14 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer<TileEntit
 
 		if(te.hasWorld())
 		{
-			//			float brightness = te.getWorld().getLightBrightness(te.getPos());
 			int skyBrightness = te.getWorld().getLightFor(EnumSkyBlock.SKY, te.getPos());
 			int l1 = skyBrightness % 65536;
 			int l2 = skyBrightness / 65536;
-			//			tessellator.setColorOpaque_F(brightness, brightness, brightness);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5F, y + 1.5F, z + 0.5F);
-		GlStateManager.pushMatrix();
-
 		if(te.hasWorld())
 		{
-			System.out.println(meta);
 			if(meta == 2)
 				rotation = 0F;
 			else if(meta == 4)
@@ -59,34 +55,27 @@ public class TileEntityFrameRenderer extends TileEntitySpecialRenderer<TileEntit
 		else
 			rotation = -1F;
 
+		lgView.markDirty();
+
+		GlStateManager.disableAlpha();
+		GlStateManager.disableLighting();
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5F, y + 2.5F, z + 0.5F);
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
+		GlStateManager.translate(0.625F, 0.375F, -0.475F);
+		GlStateManager.rotate(180, 0, 1, 0);
+		GlStateManager.bindTexture(lgView.getTexture());
 
-		if(lgView != null)
-		{
-			if(lgView.getTexture() != 0)
-			{
-				GlStateManager.translate(0.625F, 0.375F, -0.475F);
-				GlStateManager.rotate(180, 0, 1, 0);
-				GlStateManager.disableAlpha();
-				GlStateManager.disableLighting();
-				GlStateManager.bindTexture(lgView.getTexture());
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferBuilder.pos(0.25, 1, 0).tex(1, 0).endVertex();
+		bufferBuilder.pos(0.25, 0.25, 0).tex(1, 1).endVertex();
+		bufferBuilder.pos(1, 0.25, 0).tex(0, 1).endVertex();
+		bufferBuilder.pos(1, 1, 0).tex(0, 0).endVertex();
+		tessellator.draw();
 
-				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferBuilder.pos(0.25, 1, 0).tex(1, 0).endVertex();
-				bufferBuilder.pos(0.25, 0.25, 0).tex(1, 1).endVertex();
-				bufferBuilder.pos(1, 0.25, 0).tex(0, 1).endVertex();
-				bufferBuilder.pos(1, 1, 0).tex(0, 0).endVertex();
-				tessellator.draw();
-
-				GlStateManager.bindTexture(0);
-				GlStateManager.enableAlpha();
-				GlStateManager.enableLighting();
-			}
-
-			lgView.markDirty();
-		}
-
-		GlStateManager.popMatrix();
+		GlStateManager.bindTexture(0);
+		GlStateManager.enableAlpha();
+		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 	}
 }
