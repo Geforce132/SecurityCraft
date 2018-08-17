@@ -66,7 +66,7 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProtecto.class, new TileEntityProtectoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMotionLight.class, new TileEntityMotionLightRenderer());
-		
+
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.keypadChest), new CustomModeledBlockRenderer(new TileEntityKeypadChest()));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.frame), new CustomModeledBlockRenderer(new TileEntityFrame(), new ModelFrame(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.keypadFurnace), new CustomModeledBlockRenderer(new TileEntityKeypadFurnace(), new ModelKeypadFurnaceDeactivated(), 0.0D, -0.1D, 0.0D, 0.0F));

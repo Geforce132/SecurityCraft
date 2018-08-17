@@ -128,6 +128,7 @@ public class GuiUtils{
 		if(fixLighting)
 			GL11.glEnable(GL11.GL_LIGHTING);
 
+		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		itemRender.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(item, 1, itemDamage), x, y);
 
@@ -137,15 +138,7 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		if(fixLighting)
-			GL11.glEnable(GL11.GL_LIGHTING);
-
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		itemRender.renderItemAndEffectIntoGUI(mc.fontRendererObj, mc.getTextureManager(), new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
-
-		GL11.glDisable(GL11.GL_LIGHTING);
-
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		drawItemStackToGui(mc, Item.getItemFromBlock(block), 0, x, y, fixLighting);
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){

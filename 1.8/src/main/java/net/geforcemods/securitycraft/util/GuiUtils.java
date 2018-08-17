@@ -134,6 +134,7 @@ public class GuiUtils{
 		if(fixLighting)
 			GlStateManager.enableLighting();
 
+		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.enableRescaleNormal();
 		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item, 1, itemDamage), x, y);
 
@@ -142,14 +143,7 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		if(fixLighting)
-			GlStateManager.enableLighting();
-
-		GlStateManager.enableRescaleNormal();
-		itemRender.renderItemAndEffectIntoGUI(new ItemStack(Item.getItemFromBlock(block), 1, 0), x, y);
-
-		GlStateManager.disableLighting();
-		GlStateManager.disableRescaleNormal();
+		drawItemStackToGui(mc, Item.getItemFromBlock(block), 0, x, y, fixLighting);
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
