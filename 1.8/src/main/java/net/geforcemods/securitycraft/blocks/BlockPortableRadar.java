@@ -1,17 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Iterator;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -19,14 +12,9 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -61,47 +49,7 @@ public class BlockPortableRadar extends BlockContainer {
 		return 3;
 	}
 
-	public static void searchForPlayers(World par1World, BlockPos pos, IBlockState state){
-		if(!par1World.isRemote){
-			double d0 = (SecurityCraft.config.portableRadarSearchRadius);
-
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0).addCoord(0.0D, par1World.getHeight(), 0.0D);
-			List<?> list = par1World.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-			Iterator<?> iterator = list.iterator();
-			EntityPlayer entityplayer;
-
-			if(list.isEmpty())
-				if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE) && ((Boolean) state.getValue(POWERED)).booleanValue()){
-					togglePowerOutput(par1World, pos, false);
-					return;
-				}
-
-			if(!((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
-				togglePowerOutput(par1World, pos, false);
-
-			while (iterator.hasNext()){
-				EntityPlayerMP entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUsername(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName());
-
-				entityplayer = (EntityPlayer)iterator.next();
-
-				if(entityplayermp != null && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(par1World, pos, EnumCustomModules.WHITELIST).contains(entityplayermp.getCommandSenderName().toLowerCase()))
-					continue;
-
-				if(PlayerUtils.isPlayerOnline(((TileEntityPortableRadar)par1World.getTileEntity(pos)).getOwner().getName())){
-					if(!((TileEntityPortableRadar) par1World.getTileEntity(pos)).shouldSendMessage(entityplayer))
-						continue;
-
-					PlayerUtils.sendMessageToPlayer(entityplayermp, StatCollector.translateToLocal("tile.securitycraft:portableRadar.name"), ((INameable)par1World.getTileEntity(pos)).hasCustomName() ? (StatCollector.translateToLocal("messages.securitycraft:portableRadar.withName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#n", EnumChatFormatting.ITALIC + ((INameable)par1World.getTileEntity(pos)).getCustomName() + EnumChatFormatting.RESET)) : (StatCollector.translateToLocal("messages.securitycraft:portableRadar.withoutName").replace("#p", EnumChatFormatting.ITALIC + entityplayer.getCommandSenderName() + EnumChatFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), EnumChatFormatting.BLUE);
-					((TileEntityPortableRadar) par1World.getTileEntity(pos)).setSentMessage();
-				}
-
-				if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityPortableRadar && ((CustomizableSCTE) par1World.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
-					togglePowerOutput(par1World, pos, true);
-			}
-		}
-	}
-
-	private static void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
+	public static void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
 		if(par5 && !((Boolean) par1World.getBlockState(pos).getValue(POWERED)).booleanValue()){
 			BlockUtils.setBlockProperty(par1World, pos, POWERED, true, true);
 			BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);

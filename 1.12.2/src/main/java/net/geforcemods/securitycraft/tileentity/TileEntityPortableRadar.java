@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -8,9 +10,16 @@ import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 
@@ -24,13 +33,41 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
 	@Override
-	public boolean attackEntity(Entity entity) {
-		if (entity instanceof EntityPlayer) {
-			BlockPortableRadar.searchForPlayers(world, pos, world.getBlockState(pos));
-			return false;
+	public boolean attackEntity(Entity attacked) {
+		if (attacked instanceof EntityPlayer)
+		{
+			AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
+			List<?> list = world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
+
+			if(list.isEmpty())
+			{
+				boolean redstoneModule = hasModule(EnumCustomModules.REDSTONE);
+
+				if(!redstoneModule || (redstoneModule && world.getBlockState(pos).getValue(BlockPortableRadar.POWERED).booleanValue()))
+				{
+					BlockPortableRadar.togglePowerOutput(world, pos, false);
+					return false;
+				}
+			}
+
+			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
+
+			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().toLowerCase()))
+				return false;
+
+
+			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((EntityPlayer)attacked))
+			{
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+				setSentMessage();
+			}
+
+			if(hasModule(EnumCustomModules.REDSTONE))
+				BlockPortableRadar.togglePowerOutput(world, pos, true);
+
+			return true;
 		}
-		else
-			return false;
+		else return false;
 	}
 
 	@Override
