@@ -195,8 +195,8 @@ public class GuiSCManual extends GuiScreen {
 
 		switch((int)Math.signum(Mouse.getEventDWheel()))
 		{
-			case 1: nextPage(); break;
-			case -1: previousPage(); break;
+			case -1: nextPage(); break;
+			case 1: previousPage(); break;
 		}
 	}
 
