@@ -15,7 +15,16 @@ public class SCWorldListener implements IWorldEventListener
 	@Override
 	public void notifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
 	{
+		//chunky code because of readability
 		if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS && (worldIn.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || worldIn.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+			worldIn.setBlockState(pos, oldState);
+		else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
+			worldIn.setBlockState(pos, oldState);
+		else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.FLOWING_LAVA)
+			worldIn.setBlockState(pos, oldState);
+		else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
+			worldIn.setBlockState(pos, oldState);
+		else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
 			worldIn.setBlockState(pos, oldState);
 	}
 
