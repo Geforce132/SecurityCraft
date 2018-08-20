@@ -114,7 +114,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			}
 
 			if (canAttack()) {
-				AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).expand(getAttackRange(), getAttackRange(), getAttackRange());
+				AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
 				List<?> list = world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
 				Iterator<?> iterator = list.iterator();
 
