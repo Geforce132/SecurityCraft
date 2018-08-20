@@ -6,6 +6,7 @@
 - Fix: Blocks in the Manual aren't shaded correctly
 - Fix: Portable Radar does not work
 - Fix: Portable Radar doesn't respect the whitelist module
+- Fix: Players mounted on cameras active the motion activated lights
 - Fix: [1.8+] Various tooltips aren't being translated
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
