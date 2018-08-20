@@ -576,7 +576,8 @@ option.securitycraft:cageTrap.captureMobs=Mobs einfangen: #
 option.securitycraft:cageTrap.captureMobs.description=Solle die Käfigfalle Mobs und Spieler einfangen, oder nur Spieler?
 config.securitycraft:laserBlockRange=Inventar Scanner Reichweite: 
 config.securitycraft:laserBlockRange.tooltip=Von wie vielen Blöcken maximal entfernt soll ein Inventar Scanner sich mit einem anderen verbinden können? 
-option.securitycraft:motionActivatedLight.searchRadius.description=Suchradius: #
+option.securitycraft:motionActivatedLight.searchRadius=Suchradius: #
+option.securitycraft:motionActivatedLight.searchRadius.description=Wie weit entfernt erkennt das Lich einen Mob/Spieler?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

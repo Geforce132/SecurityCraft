@@ -575,7 +575,8 @@ option.securitycraft:retinalScanner.activatedByEntities=NPC aktiviert: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Kann dieser Augenscanner von NPCs aktiviert werden?
 option.securitycraft:cageTrap.captureMobs=Mobs einfangen: #
 option.securitycraft:cageTrap.captureMobs.description=Solle die Käfigfalle Mobs und Spieler einfangen, oder nur Spieler?
-option.securitycraft:motionActivatedLight.searchRadius.description=Suchradius: #
+option.securitycraft:motionActivatedLight.searchRadius=Suchradius: #
+option.securitycraft:motionActivatedLight.searchRadius.description=Wie weit entfernt erkennt das Lich einen Mob/Spieler?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

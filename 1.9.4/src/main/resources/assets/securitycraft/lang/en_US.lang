@@ -568,7 +568,8 @@ option.securitycraft:retinalScanner.activatedByEntities=NPC-activated: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
 option.securitycraft:cageTrap.captureMobs=Capture mobs: #
 option.securitycraft:cageTrap.captureMobs.description=Should this cage trap capture hostile mobs and players, or only players?
-option.securitycraft:motionActivatedLight.searchRadius.description=Search radius: #
+option.securitycraft:motionActivatedLight.searchRadius=Search radius: #
+option.securitycraft:motionActivatedLight.searchRadius.description=How far will the light detect an entity?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

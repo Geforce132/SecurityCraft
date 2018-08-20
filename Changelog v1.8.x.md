@@ -7,7 +7,7 @@
 - Fix: Portable Radar does not work
 - Fix: Portable Radar doesn't respect the whitelist module
 - Fix: Players mounted on cameras active the motion activated lights
-- Fix: [1.8+] Various tooltips aren't being translated
+- Fix: Various strings aren't translated
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
