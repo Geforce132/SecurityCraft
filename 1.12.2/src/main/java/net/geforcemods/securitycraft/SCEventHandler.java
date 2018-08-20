@@ -64,6 +64,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -384,6 +385,12 @@ public class SCEventHandler {
 		if(event.getTarget() != null && event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
 			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
 				((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
+	}
+
+	@SubscribeEvent
+	public void onWorldLoad(WorldEvent.Load event)
+	{
+		event.getWorld().addEventListener(new SCWorldListener());
 	}
 
 	@SubscribeEvent
