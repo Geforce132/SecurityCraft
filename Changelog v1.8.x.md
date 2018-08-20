@@ -8,6 +8,7 @@
 - Fix: Portable Radar doesn't respect the whitelist module
 - Fix: Players mounted on cameras active the motion activated lights
 - Fix: Various strings aren't translated
+- Fix: Storage Module slots on the Inventory Scanner's texture are flipped
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
