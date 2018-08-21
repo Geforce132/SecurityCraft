@@ -1,18 +1,21 @@
---------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
+
+**!!WARNING!! Upgrading to this version of SecurityCraft will deny access to any items that are blacklisted in any Inventory Scanner**
 
 - New: The SC Manual can now be navigated using the mouse's scroll wheel
 - New: The SC Manual now remembers the last page that was viewed and opens back up at that page
+- Change: The Inventory Scanner's blacklist slots are now "ghost slots", which means that items can be put into and pulled out of them, but no physical item will actually be used
 - Fix: Taser doesn't respect PVP settings
 - Fix: Blocks in the Manual aren't shaded correctly
 - Fix: Portable Radar does not work
 - Fix: Portable Radar doesn't respect the whitelist module
-- Fix: Players mounted on cameras active the motion activated lights
+- Fix: Players mounted on cameras trigger motion activated lights
 - Fix: Various strings aren't translated
-- Fix: Storage Module slots on the Inventory Scanner's texture are flipped
+- Fix: Storage Module slots on the Inventory Scanner's GUI texture are flipped
 - Fix: Reinforced Doors cannot be opened from the top or bottom
-- Fix: [1.7.10] Reinforced Door cannot be opened by Inventory Scanners placed directly south of the door
-- Fix: [1.7.10-1.8.9] Torches, Doors, etc. cannot be placed on the Keypad
+- Fix: [1.7.10] Reinforced Doors cannot be opened by Inventory Scanners placed directly south of the door
 - Fix: [1.8] Reinforced Doors can be opened by anybody's Keypad/Scanner/etc.
+- Fix: [1.7.10-1.8.9] Torches, Doors, etc. cannot be placed on Keypads
 - Fix: [1.9.4+] Grass can grow under Fake Water (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.9.4+] Fake liquids turn back into their vanilla forms (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly

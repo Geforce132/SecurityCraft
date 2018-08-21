@@ -20,7 +20,7 @@ public class ContainerInventoryScanner extends Container {
 		inventoryScannerTE = par2TileEntityInventoryScanner;
 
 		for(int i = 0; i < 10; i++)
-			addSlotToContainer(new SlotOwnerRestricted(par2TileEntityInventoryScanner, par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16));
+			addSlotToContainer(new SlotOwnerRestricted(par2TileEntityInventoryScanner, par2TileEntityInventoryScanner, i, (4 + (i * 17)), 16, true));
 
 		if(((CustomizableSCTE) par2TileEntityInventoryScanner).hasModule(EnumCustomModules.STORAGE))
 			for(int i = 0; i < 9; i++)
@@ -82,4 +82,26 @@ public class ContainerInventoryScanner extends Container {
 		return true;
 	}
 
+	@Override
+	public ItemStack slotClick(int slotId, int dragType, int mode, EntityPlayer player)
+	{
+		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof SlotOwnerRestricted && ((SlotOwnerRestricted)getSlot(slotId)).isGhostSlot())
+		{
+			if(inventoryScannerTE.getOwner().isOwner(player))
+			{
+				ItemStack pickedUpStack = player.inventory.getItemStack();
+
+				if(pickedUpStack != null)
+				{
+					pickedUpStack = pickedUpStack.copy();
+					pickedUpStack.stackSize = 1;
+				}
+
+				inventoryScannerTE.getContents()[slotId] = pickedUpStack;
+			}
+
+			return null;
+		}
+		else return super.slotClick(slotId, dragType, mode, player);
+	}
 }
