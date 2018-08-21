@@ -9,6 +9,7 @@
 - Fix: Players mounted on cameras active the motion activated lights
 - Fix: Various strings aren't translated
 - Fix: Storage Module slots on the Inventory Scanner's texture are flipped
+- Fix: Reinforced Doors cannot be opened from the top or bottom
 - Fix: [1.7.10] Reinforced Door cannot be opened by Inventory Scanners placed directly south of the door
 - Fix: [1.7.10-1.8.9] Torches, Doors, etc. cannot be placed on the Keypad
 - Fix: [1.8] Reinforced Doors can be opened by anybody's Keypad/Scanner/etc.

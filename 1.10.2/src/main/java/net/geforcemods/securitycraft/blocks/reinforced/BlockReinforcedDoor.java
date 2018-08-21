@@ -277,6 +277,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockLaserBlock.POWERED)).booleanValue())
 			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.up()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.up(), BlockLaserBlock.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.up())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.down()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.down(), BlockLaserBlock.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.down())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
@@ -290,6 +294,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockRetinalScanner.POWERED)).booleanValue())
 			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.up()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.up(), BlockRetinalScanner.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.up())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.down()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.down(), BlockRetinalScanner.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.down())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
@@ -303,6 +311,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockKeypad.POWERED)).booleanValue())
 			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.up()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.up(), BlockKeypad.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.up())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.down()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.down(), BlockKeypad.POWERED)).booleanValue())
+			return ((IOwnable) par1World.getTileEntity(pos.down())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
@@ -316,6 +328,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockKeycardReader.POWERED))
 			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.up()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.up(), BlockKeycardReader.POWERED))
+			return ((IOwnable) par1World.getTileEntity(pos.up())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.down()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(par1World, pos.down(), BlockKeycardReader.POWERED))
+			return ((IOwnable) par1World.getTileEntity(pos.down())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
@@ -329,6 +345,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.north())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.north())).shouldProvidePower())
 			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.up())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.up())).shouldProvidePower())
+			return ((IOwnable) par1World.getTileEntity(pos.up())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
+		else if(BlockUtils.getBlock(par1World, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.down())).getType().matches("redstone") && ((TileEntityInventoryScanner) par1World.getTileEntity(pos.down())).shouldProvidePower())
+			return ((IOwnable) par1World.getTileEntity(pos.down())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
@@ -345,6 +365,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				return pos.south();
 			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue())
 				return pos.north();
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockLaserBlock.POWERED)).booleanValue())
+				return pos.up();
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockLaserBlock.POWERED)).booleanValue())
+				return pos.down();
 		}
 		else if(neighbor instanceof BlockRetinalScanner && hasActiveScannerNextTo(world, pos))
 		{
@@ -356,6 +380,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				return pos.south();
 			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockRetinalScanner.POWERED)).booleanValue())
 				return pos.north();
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockRetinalScanner.POWERED)).booleanValue())
+				return pos.up();
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockRetinalScanner.POWERED)).booleanValue())
+				return pos.down();
 		}
 		else if(neighbor instanceof BlockKeypad && hasActiveKeypadNextTo(world, pos))
 		{
@@ -367,6 +395,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				return pos.south();
 			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockKeypad.POWERED)).booleanValue())
 				return pos.north();
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockKeypad.POWERED)).booleanValue())
+				return pos.up();
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockKeypad.POWERED)).booleanValue())
+				return pos.down();
 		}
 		else if(neighbor instanceof BlockKeycardReader && hasActiveReaderNextTo(world, pos))
 		{
@@ -378,8 +410,13 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				return pos.south();
 			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockKeycardReader.POWERED)).booleanValue())
 				return pos.north();
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockKeycardReader.POWERED)).booleanValue())
+				return pos.up();
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.keycardReader && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockKeycardReader.POWERED)).booleanValue())
+				return pos.down();
 		}
 		else if(neighbor instanceof BlockInventoryScanner && hasActiveInventoryScannerNextTo(world, pos))
+		{
 			if(BlockUtils.getBlock(world, pos.east()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).shouldProvidePower())
 				return pos.east();
 			else if(BlockUtils.getBlock(world, pos.west()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).shouldProvidePower())
@@ -388,6 +425,11 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				return pos.south();
 			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).shouldProvidePower())
 				return pos.north();
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).shouldProvidePower())
+				return pos.up();
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).shouldProvidePower())
+				return pos.down();
+		}
 
 		return null;
 	}
