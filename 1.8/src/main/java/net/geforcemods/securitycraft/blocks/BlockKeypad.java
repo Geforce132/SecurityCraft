@@ -53,6 +53,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
+	public boolean isNormalCube(IBlockAccess world, BlockPos pos)
+	{
+		return true;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public EnumWorldBlockLayer getBlockLayer() {
 		return EnumWorldBlockLayer.CUTOUT;

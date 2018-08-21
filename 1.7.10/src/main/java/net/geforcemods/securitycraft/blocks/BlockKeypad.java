@@ -50,6 +50,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 		return false;
 	}
 
+	@Override
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
+	{
+		return true;
+	}
+
 	/**
 	 * Called when the block is placed in the world.
 	 */

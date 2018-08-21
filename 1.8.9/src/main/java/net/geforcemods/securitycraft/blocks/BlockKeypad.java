@@ -50,6 +50,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
+	@Override
+	public boolean isNormalCube(IBlockAccess world, BlockPos pos)
+	{
+		return true;
+	}
 	}
 
 	@Override
