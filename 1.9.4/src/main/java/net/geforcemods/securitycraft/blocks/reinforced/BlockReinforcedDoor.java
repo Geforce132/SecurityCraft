@@ -147,7 +147,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			}
 			else
 			{
-				boolean flag = hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up());
+				boolean hasActiveSCBlock = hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up());
 
 				//                if(flag && !(hasActiveKeypadNextTo(worldIn, pos) || hasActiveKeypadNextTo(worldIn, pos.up()) || hasActiveInventoryScannerNextTo(worldIn, pos) || hasActiveInventoryScannerNextTo(worldIn, pos.up()) || hasActiveReaderNextTo(worldIn, pos) || hasActiveReaderNextTo(worldIn, pos.up()) || hasActiveScannerNextTo(worldIn, pos) || hasActiveScannerNextTo(worldIn, pos.up()) || hasActiveLaserNextTo(worldIn, pos) || hasActiveLaserNextTo(worldIn, pos.up()) && neighborBlock != this)){
 				//                	System.out.println("Powered by vanilla block");
@@ -155,13 +155,13 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				//                	System.out.println("Powered by SC block");
 				//                }
 
-				if (((flag || neighborBlock.canProvidePower(iblockstate2))) && neighborBlock != this && flag != iblockstate2.getValue(POWERED).booleanValue())
-					if (flag != state.getValue(OPEN).booleanValue())
+				if (((hasActiveSCBlock || neighborBlock.canProvidePower(iblockstate2))) && neighborBlock != this && hasActiveSCBlock != iblockstate2.getValue(POWERED).booleanValue())
+					if (hasActiveSCBlock != state.getValue(OPEN).booleanValue())
 					{
-						worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(flag)).withProperty(POWERED, Boolean.valueOf(flag)), 2);
+						worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(hasActiveSCBlock)).withProperty(POWERED, Boolean.valueOf(hasActiveSCBlock)), 2);
 						worldIn.markBlockRangeForRenderUpdate(pos, pos);
-						checkAndChangeDoubleDoors(worldIn, pos, state, flag);
-						worldIn.playEvent((EntityPlayer)null, flag ? 1005 : 1011, pos, 0);
+						checkAndChangeDoubleDoors(worldIn, pos, state, hasActiveSCBlock);
+						worldIn.playEvent((EntityPlayer)null, hasActiveSCBlock ? 1005 : 1011, pos, 0);
 					}
 			}
 		}
@@ -413,6 +413,4 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityOwnable();
 	}
-
-
 }
