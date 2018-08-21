@@ -12,6 +12,7 @@
 - Fix: [1.9.4+] Grass can grow under Fake Water (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.9.4+] Fake liquids turn back into their vanilla forms (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly
+- Fix: [1.11.2] Reinforced Doors can be opened by anybody's Laser Block, if it was placed directly north of the door
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
 

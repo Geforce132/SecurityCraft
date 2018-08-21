@@ -222,7 +222,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		else if(BlockUtils.getBlock(par1World, pos.south()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.south(), BlockLaserBlock.POWERED)).booleanValue())
 			return ((IOwnable) par1World.getTileEntity(pos.south())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else if(BlockUtils.getBlock(par1World, pos.north()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(par1World, pos.north(), BlockLaserBlock.POWERED)).booleanValue())
-			return true;
+			return ((IOwnable) par1World.getTileEntity(pos.north())).getOwner().owns((IOwnable) par1World.getTileEntity(pos));
 		else
 			return false;
 	}
