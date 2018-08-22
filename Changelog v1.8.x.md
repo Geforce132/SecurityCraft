@@ -1,9 +1,10 @@
 --------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 
-**!!WARNING!! Upgrading to this version of SecurityCraft will deny access to any items that are blacklisted in any Inventory Scanner**
+**!!WARNING!! Upgrading to this version of SecurityCraft will deny access to any items that are placed in the blacklist slots of any Inventory Scanner**
 
 - New: The SC Manual can now be navigated using the mouse's scroll wheel
 - New: The SC Manual now remembers the last page that was viewed and opens back up at that page
+- New: [1.8+] Reinforced Obsidian can now be used for nether portals (Note that this cannot be implemented int 1.7.10 due to limitations in Forge)
 - Change: The Inventory Scanner's blacklist slots are now "ghost slots", which means that items can be put into and pulled out of them, but no physical item will actually be used
 - Fix: Taser doesn't respect PVP settings
 - Fix: Blocks in the Manual aren't shaded correctly
