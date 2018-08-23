@@ -26,6 +26,9 @@ public class ItemScannerDoor extends Item
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
+		if(worldIn.isRemote)
+			return EnumActionResult.FAIL;
+
 		ItemStack stack = playerIn.getHeldItem(hand);
 
 		if (facing != EnumFacing.UP)
@@ -47,9 +50,14 @@ public class ItemScannerDoor extends Item
 				placeDoor(worldIn, pos, enumfacing, SCContent.scannerDoor, flag);
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, playerIn);
 				worldIn.playSound(playerIn, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
-				((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
 				stack.shrink(1);
+
+				if(worldIn.getTileEntity(pos) != null)
+				{
+					((TileEntityOwnable) worldIn.getTileEntity(pos)).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
+					((TileEntityOwnable) worldIn.getTileEntity(pos.up())).getOwner().set(playerIn.getGameProfile().getId().toString(), playerIn.getName());
+				}
+
 				return EnumActionResult.SUCCESS;
 			}
 			else

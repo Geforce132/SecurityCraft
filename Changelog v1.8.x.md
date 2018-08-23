@@ -4,7 +4,7 @@
 
 - New: The SC Manual can now be navigated using the mouse's scroll wheel
 - New: The SC Manual now remembers the last page that was viewed and opens back up at that page
-- New: [1.8+] Reinforced Obsidian can now be used for nether portals (Note that this cannot be implemented int 1.7.10 due to limitations in Forge)
+- New: [1.8+] Reinforced Obsidian can now be used for nether portals (Note that this cannot be implemented in 1.7.10 due to limitations in Forge)
 - Change: The Inventory Scanner's blacklist slots are now "ghost slots", which means that items can be put into and pulled out of them, but no physical item will actually be used
 - Fix: Taser doesn't respect PVP settings
 - Fix: Blocks in the Manual aren't shaded correctly
@@ -21,6 +21,7 @@
 - Fix: [1.9.4+] Fake liquids turn back into their vanilla forms (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly
 - Fix: [1.11.2] Reinforced Doors can be opened by anybody's Laser Block, if it was placed directly north of the door
+- Fix: [1.12.2] Dupe bug involving Reinforced (Scanner) Doors (Thanks InsertCheerios!)
 
 --------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
 
@@ -33,7 +34,7 @@
 - Fix: Possible conflicting language strings with other mods
 - Fix: [1.8, 1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
 - Fix: [1.8-1.11.2] Information about the Admin Tool and SecurityCraft Manual don't show up in JEI
-- Fix: [1.8+] Crashes involving the Username Logger or Inventory Scanner Field
+- Fix: [1.8+] Crashes involving the Username Logger or Inventory Scanner Field (Thanks Kreezxil!)
 - Fix: [1.9.4, 1.12.2] Fix incorrect lighting in some GUIs
 - Fix: [1.12.2] Fix GUI tooltips rendering under JEI interface
 
