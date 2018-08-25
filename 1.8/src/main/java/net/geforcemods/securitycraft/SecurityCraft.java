@@ -86,6 +86,7 @@ public class SecurityCraft {
 		log("Finished loading mod content.");
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerContent();
+		serverProxy.registerResourceLocations();
 		RegistrationHandler.registerTileEntities();
 		RegistrationHandler.registerRecipes();
 		serverProxy.registerTextureFiles();
@@ -113,7 +114,6 @@ public class SecurityCraft {
 		}
 
 		log("Registering mod content... (PT 2/2)");
-		SecurityCraft.serverProxy.registerResourceLocations();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		RegistrationHandler.registerEntities();
 		EnumCustomModules.refresh();

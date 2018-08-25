@@ -17,6 +17,7 @@
 - Fix: [1.7.10] Reinforced Doors cannot be opened by Inventory Scanners placed directly south of the door
 - Fix: [1.8] Reinforced Doors can be opened by anybody's Keypad/Scanner/etc.
 - Fix: [1.7.10-1.8.9] Torches, Doors, etc. cannot be placed on Keypads
+- Fix: [1.8-1.8.9] NEI crashes when searching for specific strings due to incorrectly registered item models (Thanks Firmanator19!)
 - Fix: [1.9.4+] Grass can grow under Fake Water (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.9.4+] Fake liquids turn back into their vanilla forms (Note that this fix cannot be applied to 1.8.9 and below due to limitations in Forge)
 - Fix: [1.11.2] Some trigger ranges for SecurityCraft blocks were not calculated correctly
