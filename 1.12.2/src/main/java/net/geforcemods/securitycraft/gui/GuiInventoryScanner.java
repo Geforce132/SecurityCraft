@@ -77,6 +77,8 @@ public class GuiInventoryScanner extends GuiContainer {
 
 		}
 
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+			renderToolTip(getSlotUnderMouse().getStack(), par1, par2);
 	}
 
 	@Override

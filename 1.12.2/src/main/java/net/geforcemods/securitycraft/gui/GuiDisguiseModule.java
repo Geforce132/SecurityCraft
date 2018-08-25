@@ -20,6 +20,9 @@ public class GuiDisguiseModule extends GuiContainer {
 	{
 		drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override

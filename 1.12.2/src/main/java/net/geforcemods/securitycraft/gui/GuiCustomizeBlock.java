@@ -78,6 +78,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 		drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < tileEntity.getNumberOfCustomizableOptions())
