@@ -1,5 +1,6 @@
-package net.geforcemods.securitycraft;
+package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,9 @@ public class SCWorldListener implements IWorldEventListener
 
 	@Override
 	public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {}
+
+	@Override
+	public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) {}
 
 	@Override
 	public void onEntityAdded(Entity entityIn) {}
