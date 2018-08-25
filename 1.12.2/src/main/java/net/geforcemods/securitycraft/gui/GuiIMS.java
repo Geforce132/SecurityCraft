@@ -31,12 +31,6 @@ public class GuiIMS extends GuiContainer{
 		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players")));
 	}
 
-	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		drawDefaultBackground();
-		super.drawScreen(par1, par2, par3);
-	}
-
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
@@ -48,6 +42,7 @@ public class GuiIMS extends GuiContainer{
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;

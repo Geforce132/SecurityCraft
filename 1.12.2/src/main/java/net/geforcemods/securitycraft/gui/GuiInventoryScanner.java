@@ -55,7 +55,6 @@ public class GuiInventoryScanner extends GuiContainer {
 
 	@Override
 	public void drawScreen(int par1, int par2, float par3){
-		drawDefaultBackground();
 		super.drawScreen(par1, par2, par3);
 		GlStateManager.disableLighting();
 
@@ -137,6 +136,7 @@ public class GuiInventoryScanner extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule)
 			mc.getTextureManager().bindTexture(exhancedInventory);

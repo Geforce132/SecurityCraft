@@ -23,12 +23,6 @@ public class GuiLogger extends GuiContainer{
 		super.initGui();
 	}
 
-	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		drawDefaultBackground();
-		super.drawScreen(par1, par2, par3);
-	}
-
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
@@ -45,6 +39,7 @@ public class GuiLogger extends GuiContainer{
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;

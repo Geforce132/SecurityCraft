@@ -37,13 +37,6 @@ public class GuiKeycardSetup extends GuiContainer{
 		updateButtonText();
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
-		drawDefaultBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
-	}
-
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
@@ -61,6 +54,7 @@ public class GuiKeycardSetup extends GuiContainer{
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
 		int k = (width - xSize) / 2;
