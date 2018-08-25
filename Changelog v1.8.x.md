@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 
-**!!WARNING!! Upgrading to this version of SecurityCraft will deny access to any items that are placed in the blacklist slots of any Inventory Scanner**
+**!!WARNING!! Upgrading to this version of SecurityCraft will deny access to any items that are placed in the blacklist slots of any Inventory Scanner (they will *not* disappear, but you won't be able to get them back)**
 
 - New: The SC Manual can now be navigated using the mouse's scroll wheel
 - New: The SC Manual now remembers the last page that was viewed and opens back up at that page
@@ -24,12 +24,12 @@
 - Fix: [1.11.2] Reinforced Doors can be opened by anybody's Laser Block, if it was placed directly north of the door
 - Fix: [1.12.2] Dupe bug involving Reinforced (Scanner) Doors (Thanks InsertCheerios!)
 
---------------------------Changelog for v1.8.6.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 
 - Fix: [1.7.10-1.8.9] Reinforced Glass Panes cannot be created
 - Fix: [1.7.10-1.8.9] The Universal Block Reinforcer doesn't take damage when blocks are reinforced with its slot
 
---------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 
 - New: Right-clicking an activated Cage Trap with a Universal Block Remover will remove the complete cage, provided the trap and bars are owned by the same person
 - Fix: Possible conflicting language strings with other mods

@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.6",
-	"downloadURL": "https://minecraft.curseforge.com/projects/security-craft/files/2587785/download",
-	"fileName": "[1.12.x] SecurityCraft v1.8.6",
-	"changelog": "Several fixes."
+	"version": "v1.8.7",
+	"downloadURL": "https://minecraft.curseforge.com/projects/security-craft/files/2608304/download",
+	"fileName": "[1.12.x] SecurityCraft v1.8.7",
+	"changelog": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
 }
