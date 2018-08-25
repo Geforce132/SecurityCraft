@@ -188,9 +188,9 @@ public class GuiSCManual extends GuiScreen {
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton){
 		if(par1GuiButton.id == 1)
-			previousPage();
-		else if(par1GuiButton.id == 2)
 			nextPage();
+		else if(par1GuiButton.id == 2)
+			previousPage();
 	}
 
 	@Override
