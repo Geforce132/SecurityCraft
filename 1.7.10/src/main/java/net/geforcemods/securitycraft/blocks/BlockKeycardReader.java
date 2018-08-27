@@ -25,6 +25,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockKeycardReader extends BlockOwnable {
 
@@ -35,6 +36,12 @@ public class BlockKeycardReader extends BlockOwnable {
 
 	public BlockKeycardReader(Material material) {
 		super(material);
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
 	}
 
 	@Override

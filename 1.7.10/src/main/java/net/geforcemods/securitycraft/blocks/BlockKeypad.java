@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -29,6 +30,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
 
@@ -53,6 +55,21 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	@Override
 	public boolean isNormalCube(IBlockAccess world, int x, int y, int z)
 	{
+		return true;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		TileEntity te = world.getTileEntity(x, y, z);
+
+		if(te instanceof TileEntityKeypad && ((TileEntityKeypad)te).hasModule(EnumCustomModules.DISGUISE))
+		{
+			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
+
+			return ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).get(0).isSideSolid(world, x, y, z, side);
+		}
+
 		return true;
 	}
 

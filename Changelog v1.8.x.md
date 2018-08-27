@@ -1,6 +1,8 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
+- Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
+- Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as
 - Fix: [1.8+] Password-protected Furnace does not give off light when open and burning
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories

@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +35,12 @@ public class BlockFrame extends BlockOwnable {
 	@SideOnly(Side.CLIENT)
 	public IBlockState getStateForEntityRender(IBlockState state){
 		return getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return side != world.getBlockState(pos).getValue(FACING);
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -59,6 +60,21 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		TileEntity te = worldIn.getTileEntity(pos);
+
+		if(te instanceof TileEntityKeypad && ((TileEntityKeypad)te).hasModule(EnumCustomModules.DISGUISE))
+		{
+			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
+
+			return ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).get(0).getDefaultState().getBlockFaceShape(worldIn, pos, face);
+		}
+
+		return BlockFaceShape.SOLID;
 	}
 
 	@SideOnly(Side.CLIENT)

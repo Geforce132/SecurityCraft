@@ -21,7 +21,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCageTrap extends BlockOwnable {
 
@@ -45,6 +47,12 @@ public class BlockCageTrap extends BlockOwnable {
 	public boolean renderAsNormalBlock()
 	{
 		return false;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
 	}
 
 	@Override

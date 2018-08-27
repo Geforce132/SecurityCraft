@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockRetinalScanner extends BlockContainer {
 
@@ -29,6 +30,12 @@ public class BlockRetinalScanner extends BlockContainer {
 
 	public BlockRetinalScanner(Material material) {
 		super(material);
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
 	}
 
 	/**

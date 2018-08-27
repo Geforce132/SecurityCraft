@@ -46,13 +46,10 @@ public class BlockLaserBlock extends BlockOwnable {
 		return EnumBlockRenderType.MODEL;
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, pos
-	 */
 	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
-		super.onBlockAdded(par1World, pos, state);
+		return true;
 	}
 
 	/**

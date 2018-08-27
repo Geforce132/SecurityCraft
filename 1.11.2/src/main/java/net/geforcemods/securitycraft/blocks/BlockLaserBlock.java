@@ -46,6 +46,12 @@ public class BlockLaserBlock extends BlockOwnable {
 		return EnumBlockRenderType.MODEL;
 	}
 
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return true;
+	}
+
 	/**
 	 * Called whenever the block is added into the world. Args: world, pos
 	 */

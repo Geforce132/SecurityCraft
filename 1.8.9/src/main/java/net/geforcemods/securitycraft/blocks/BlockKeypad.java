@@ -65,6 +65,21 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
+	public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof TileEntityKeypad && ((TileEntityKeypad)te).hasModule(EnumCustomModules.DISGUISE))
+		{
+			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
+
+			return ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).get(0).getDefaultState().getBlock().isSideSolid(world, pos, side);
+		}
+
+		return true;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
 		BlockPos keypadPos = pos.offset(side.getOpposite());

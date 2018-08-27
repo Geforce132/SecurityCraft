@@ -12,7 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockFrame extends BlockOwnable {
 
@@ -38,6 +40,19 @@ public class BlockFrame extends BlockOwnable {
 	@Override
 	public int getRenderType(){
 		return -1;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		switch(world.getBlockMetadata(x, y, z))
+		{
+			case 2: return side != ForgeDirection.NORTH;
+			case 3: return side != ForgeDirection.SOUTH;
+			case 4: return side != ForgeDirection.EAST;
+			case 5: return side != ForgeDirection.WEST;
+			default: return true;
+		}
 	}
 
 	/**

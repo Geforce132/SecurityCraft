@@ -24,6 +24,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockInventoryScanner extends BlockContainer {
 
@@ -34,6 +35,12 @@ public class BlockInventoryScanner extends BlockContainer {
 
 	public BlockInventoryScanner(Material par1Material) {
 		super(par1Material);
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
+		return true;
 	}
 
 	/**

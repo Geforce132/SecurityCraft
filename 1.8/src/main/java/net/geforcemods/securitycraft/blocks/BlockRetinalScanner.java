@@ -36,6 +36,12 @@ public class BlockRetinalScanner extends BlockContainer {
 		return 3;
 	}
 
+	@Override
+	public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return true;
+	}
+
 	/**
 	 * Called when the block is placed in the world.
 	 */
