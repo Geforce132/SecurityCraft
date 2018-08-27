@@ -131,12 +131,14 @@ public class GuiMRAT extends GuiContainer
 		switch(action)
 		{
 			case DEFUSE:
+				((IExplosive)Minecraft.getMinecraft().thePlayer.worldObj.getBlock(coords[0], coords[1], coords[2])).defuseMine(Minecraft.getMinecraft().thePlayer.worldObj, coords[0], coords[1], coords[2]);
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
 				buttons[mine][DEFUSE].enabled = false;
 				buttons[mine][ACTIVATE].enabled = true;
 				buttons[mine][DETONATE].enabled = false;
 				break;
 			case ACTIVATE:
+				((IExplosive)Minecraft.getMinecraft().thePlayer.worldObj.getBlock(coords[0], coords[1], coords[2])).activateMine(Minecraft.getMinecraft().thePlayer.worldObj, coords[0], coords[1], coords[2]);
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
 				buttons[mine][DEFUSE].enabled = true;
 				buttons[mine][ACTIVATE].enabled = false;

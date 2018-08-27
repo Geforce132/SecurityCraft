@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
@@ -21,11 +21,14 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 	@Override
 	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos){
-		BlockUtils.destroyBlock(world, pos, false);
+		TileEntity te = world.getTileEntity(pos);
 
-		world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
-
-		cart.setDead();
+		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
+		{
+			BlockUtils.destroyBlock(world, pos, false);
+			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
+			cart.setDead();
+		}
 	}
 
 	@Override
@@ -36,29 +39,49 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		BlockUtils.destroyBlock(world, pos, false);
-		world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
+		{
+			BlockUtils.destroyBlock(world, pos, false);
+			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), SecurityCraft.config.smallerMineExplosion ? 4.0F : 8.0F, true);
+		}
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {}
+	public void activateMine(World world, BlockPos pos)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof TileEntityTrackMine && !((TileEntityTrackMine)te).isActive())
+			((TileEntityTrackMine)te).activate();
+	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {}
+	public void defuseMine(World world, BlockPos pos)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
+			((TileEntityTrackMine)te).deactivate();
+	}
 
 	@Override
-	public boolean isActive(World world, BlockPos pos) {
-		return true;
+	public boolean isActive(World world, BlockPos pos)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		return te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive() && ((TileEntityTrackMine)te).isActive();
 	}
 
 	@Override
 	public boolean isDefusable() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityOwnable();
+		return new TileEntityTrackMine();
 	}
 
 }

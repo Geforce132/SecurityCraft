@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
+- New: The Track Mine can now be controlled with the Mine Remote Access Tool
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
 - Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as

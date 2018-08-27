@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -53,7 +54,9 @@ public class GuiMRAT extends GuiContainer{
 			y += 30;
 			coords = getMineCoordinates(i);
 
-			boolean active = (mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock() instanceof IExplosive && ((IExplosive) mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isDefusable() && ((IExplosive) mc.theWorld.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).isActive(mc.theWorld, new BlockPos(coords[0], coords[1], coords[2]))) ? true : false;
+			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			Block block = mc.theWorld.getBlockState(minePos).getBlock();
+			boolean active = block instanceof IExplosive && ((IExplosive) block).isDefusable() && ((IExplosive) block).isActive(mc.theWorld, minePos);
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 			for(int j = 0; j < 4; j++)
@@ -131,12 +134,14 @@ public class GuiMRAT extends GuiContainer{
 		switch(action)
 		{
 			case DEFUSE:
+				((IExplosive)Minecraft.getMinecraft().thePlayer.worldObj.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getMinecraft().thePlayer.worldObj, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
 				buttons[mine][DEFUSE].enabled = false;
 				buttons[mine][ACTIVATE].enabled = true;
 				buttons[mine][DETONATE].enabled = false;
 				break;
 			case ACTIVATE:
+				((IExplosive)Minecraft.getMinecraft().thePlayer.worldObj.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getMinecraft().thePlayer.worldObj, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
 				buttons[mine][DEFUSE].enabled = true;
 				buttons[mine][ACTIVATE].enabled = false;

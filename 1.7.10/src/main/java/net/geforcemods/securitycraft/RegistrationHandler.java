@@ -68,6 +68,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
@@ -229,6 +230,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
 		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
 		GameRegistry.registerTileEntity(TileEntityMotionLight.class, "motionLight");
+		GameRegistry.registerTileEntity(TileEntityTrackMine.class, "trackMineSC");
 	}
 
 	public static void registerRecipes()
