@@ -85,6 +85,12 @@ public class GuiMRAT extends GuiContainer{
 				}
 
 				buttonList.add(buttons[i][j]);
+
+				if(!(block instanceof IExplosive))
+				{
+					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.thePlayer);
+					buttons[i][j].enabled = false;
+				}
 			}
 		}
 	}

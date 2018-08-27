@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -54,7 +55,8 @@ public class GuiMRAT extends GuiContainer
 			y += 30;
 			coords = getMineCoordinates(i);
 
-			boolean active = (mc.theWorld.getBlock(coords[0], coords[1], coords[2]) instanceof IExplosive && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isDefusable() && ((IExplosive) mc.theWorld.getBlock(coords[0], coords[1], coords[2])).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
+			Block block = mc.theWorld.getBlock(coords[0], coords[1], coords[2]);
+			boolean active = (block instanceof IExplosive && ((IExplosive) block).isDefusable() && ((IExplosive) block).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 			for(int j = 0; j < 4; j++)
@@ -83,6 +85,12 @@ public class GuiMRAT extends GuiContainer
 				}
 
 				buttonList.add(buttons[i][j]);
+
+				if(!(block instanceof IExplosive))
+				{
+					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.thePlayer);
+					buttons[i][j].enabled = false;
+				}
 			}
 		}
 	}
