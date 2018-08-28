@@ -6,6 +6,7 @@
 - Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
 - Fix: [1.8+] Password-protected Furnace does not give off light when open and burning
+- Fix: [1.8-1.10.2] Storage Module does not work
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 

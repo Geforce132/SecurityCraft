@@ -139,12 +139,20 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
 				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
 					if(((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && ItemStack.areItemStacksEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3) && ItemStack.areItemStackTagsEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3)){
+						if(par2TileEntity.hasModule(EnumCustomModules.STORAGE))
+							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
+
 						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
 						continue;
 					}
 
 					if(!((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem())
+					{
+						if(par2TileEntity.hasModule(EnumCustomModules.STORAGE))
+							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
+
 						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+					}
 				}
 	}
 
