@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -75,43 +76,91 @@ public class BlockInventoryScannerField extends Block{
 				for(int i = 0; i < 10; i++)
 				{
 					if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityItem)e).getEntityItem() != null)
-						checkEntity((EntityItem)e, connectedScanner.getStackInSlotCopy(i));
+						checkEntityItem((EntityItem)e, connectedScanner, connectedScanner.getStackInSlotCopy(i));
 				}
 			}
 		}
 	}
 
-	public void checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack){
-		if(te.getType().matches("redstone")){
-			for(int i = 1; i <= player.inventory.mainInventory.length; i++)
-				if(player.inventory.mainInventory[i - 1] != null)
-					if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem()){
-						if(!te.shouldProvidePower())
-							te.setShouldProvidePower(true);
-
-						te.setCooldown(60);
-						checkAndUpdateTEAppropriately(te);
-						BlockUtils.updateAndNotify(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, te.getWorld().getBlock(te.xCoord, te.yCoord, te.zCoord), 1, true);
+	public void checkInventory(EntityPlayer entity, TileEntityInventoryScanner te, ItemStack stack)
+	{
+		if(te.getType().matches("redstone"))
+		{
+			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
+			{
+				if(entity.inventory.mainInventory[i - 1] != null)
+				{
+					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory[i - 1], stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory[i - 1], stack))
+							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory[i - 1].getItem() == stack.getItem()))
+					{
+						updateInventoryScannerPower(te);
 					}
-		}else if(te.getType().matches("check"))
-			if(te.hasModule(EnumCustomModules.STORAGE)){
-				for(int i = 1; i <= player.inventory.mainInventory.length; i++)
-					if(player.inventory.mainInventory[i - 1] != null)
-						if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem()){
-							te.addItemToStorage(player.inventory.mainInventory[i - 1]);
-							player.inventory.mainInventory[i - 1] = null;
-						}
+				}
 			}
-			else
-				for(int i = 1; i <= player.inventory.mainInventory.length; i++)
-					if(player.inventory.mainInventory[i - 1] != null)
-						if(player.inventory.mainInventory[i - 1].getItem() == stack.getItem())
-							player.inventory.mainInventory[i - 1] = null;
+		}
+		else if(te.getType().matches("check"))
+		{
+			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
+			{
+				if(entity.inventory.mainInventory[i - 1] != null)
+				{
+					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory[i - 1], stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory[i - 1], stack))
+							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory[i - 1].getItem() == stack.getItem()))
+					{
+						if(te.hasModule(EnumCustomModules.STORAGE))
+							te.addItemToStorage(entity.inventory.mainInventory[i - 1]);
+
+						entity.inventory.mainInventory[i - 1] = null;
+					}
+				}
+			}
+		}
 	}
 
-	public void checkEntity(EntityItem entityItem, ItemStack stack){
-		if(entityItem.getEntityItem().getItem() == stack.getItem())
-			entityItem.setDead();
+	public void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
+	{
+		if(te.getType().matches("redstone"))
+		{
+			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
+					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))
+			{
+				updateInventoryScannerPower(te);
+			}
+		}
+		else if(te.getType().matches("check"))
+		{
+			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
+					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))
+			{
+				if(te.hasModule(EnumCustomModules.STORAGE))
+					te.addItemToStorage(entity.getEntityItem());
+
+				entity.setDead();
+			}
+		}
+	}
+
+	public void updateInventoryScannerPower(TileEntityInventoryScanner te)
+	{
+		if(!te.shouldProvidePower())
+			te.setShouldProvidePower(true);
+
+		te.setCooldown(60);
+		checkAndUpdateTEAppropriately(te);
+		BlockUtils.updateAndNotify(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, te.getWorld().getBlock(te.xCoord, te.yCoord, te.zCoord), 1, true);
+	}
+
+	/**
+	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
+	 */
+	public boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
+	{
+		ItemStack s1 = stack1.copy();
+		ItemStack s2 = stack2.copy();
+
+		s1.stackSize = 1;
+		s2.stackSize = 1;
+		return ItemStack.areItemStacksEqual(s1, s2);
 	}
 
 	private void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te) {

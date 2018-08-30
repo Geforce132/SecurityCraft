@@ -116,50 +116,92 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 			for(int i = 0; i < 10; i++)
 			{
 				if(connectedScanner.getStackInSlotCopy(i) != null && ((EntityItem)entity).getEntityItem() != null)
-					checkEntity((EntityItem)entity, connectedScanner.getStackInSlotCopy(i));
+					checkEntityItem((EntityItem)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
 			}
 		}
 	}
 
-	public static void checkInventory(EntityPlayer par1EntityPlayer, TileEntityInventoryScanner par2TileEntity, ItemStack par3){
-		if(par2TileEntity.getType().matches("redstone")){
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null)
-					if(par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem()){
-						if(!par2TileEntity.shouldProvidePower())
-							par2TileEntity.setShouldProvidePower(true);
-
-						SecurityCraft.log("Running te update");
-						par2TileEntity.setCooldown(60);
-						checkAndUpdateTEAppropriately(par2TileEntity);
-						BlockUtils.updateAndNotify(par2TileEntity.getWorld(), par2TileEntity.getPos(), par2TileEntity.getWorld().getBlockState(par2TileEntity.getPos()).getBlock(), 1, true);
-						SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: " + Utils.getFormattedCoordinates(par2TileEntity.getPos()));
-					}
-		}else if(par2TileEntity.getType().matches("check"))
-			for(int i = 1; i <= par1EntityPlayer.inventory.mainInventory.length; i++)
-				if(par1EntityPlayer.inventory.mainInventory[i - 1] != null){
-					if(((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && ItemStack.areItemStacksEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3) && ItemStack.areItemStackTagsEqual(par1EntityPlayer.inventory.mainInventory[i - 1], par3)){
-						if(par2TileEntity.hasModule(EnumCustomModules.STORAGE))
-							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
-
-						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
-						continue;
-					}
-
-					if(!((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.SMART) && par1EntityPlayer.inventory.mainInventory[i - 1].getItem() == par3.getItem())
+	public static void checkInventory(EntityPlayer entity, TileEntityInventoryScanner te, ItemStack stack)
+	{
+		if(te.getType().matches("redstone"))
+		{
+			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
+			{
+				if(entity.inventory.mainInventory[i - 1] != null)
+				{
+					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory[i - 1], stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory[i - 1], stack))
+							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory[i - 1].getItem() == stack.getItem()))
 					{
-						if(par2TileEntity.hasModule(EnumCustomModules.STORAGE))
-							par2TileEntity.addItemToStorage(par1EntityPlayer.inventory.mainInventory[i - 1]);
-
-						par1EntityPlayer.inventory.mainInventory[i - 1] = null;
+						updateInventoryScannerPower(te);
 					}
 				}
+			}
+		}
+		else if(te.getType().matches("check"))
+		{
+			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
+			{
+				if(entity.inventory.mainInventory[i - 1] != null)
+				{
+					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory[i - 1], stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory[i - 1], stack))
+							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory[i - 1].getItem() == stack.getItem()))
+					{
+						if(te.hasModule(EnumCustomModules.STORAGE))
+							te.addItemToStorage(entity.inventory.mainInventory[i - 1]);
+
+						entity.inventory.mainInventory[i - 1] = null;
+					}
+				}
+			}
+		}
 	}
 
-	public static void checkEntity(EntityItem par1EntityItem, ItemStack par2){
-		if(par1EntityItem.getEntityItem().getItem() == par2.getItem())
-			par1EntityItem.setDead();
+	public static void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
+	{
+		if(te.getType().matches("redstone"))
+		{
+			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
+					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))
+			{
+				updateInventoryScannerPower(te);
+			}
+		}
+		else if(te.getType().matches("check"))
+		{
+			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
+					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))
+			{
+				if(te.hasModule(EnumCustomModules.STORAGE))
+					te.addItemToStorage(entity.getEntityItem());
 
+				entity.setDead();
+			}
+		}
+	}
+
+	public static void updateInventoryScannerPower(TileEntityInventoryScanner te)
+	{
+		if(!te.shouldProvidePower())
+			te.setShouldProvidePower(true);
+
+		SecurityCraft.log("Running te update");
+		te.setCooldown(60);
+		checkAndUpdateTEAppropriately(te);
+		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
+		SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
+	}
+
+	/**
+	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
+	 */
+	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
+	{
+		ItemStack s1 = stack1.copy();
+		ItemStack s2 = stack2.copy();
+
+		s1.stackSize = 1;
+		s2.stackSize = 1;
+		return ItemStack.areItemStacksEqual(s1, s2);
 	}
 
 	private static void checkAndUpdateTEAppropriately(TileEntityInventoryScanner te)
