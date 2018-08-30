@@ -5,6 +5,7 @@
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
 - Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
+- Fix: Item duplication with Inventory Scanner and Storage Module
 - Fix: [1.8+] Taser reequips all the time when loading after a shot (Note that this cannot be implemented in 1.7.10 due to limitations in Forge)
 - Fix: [1.8+] Password-protected Furnace does not give off light when open and burning
 - Fix: [1.8-1.10.2] Storage Module does not work

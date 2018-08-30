@@ -148,20 +148,54 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		markDirty();
 	}
 
-	public void addItemToStorage(ItemStack par1ItemStack) {
-		for(int i = 10; i < inventoryContents.size(); i++)
-			if(inventoryContents.get(i).isEmpty()){
-				inventoryContents.set(i, par1ItemStack);
-				break;
-			}else if(!inventoryContents.get(i).isEmpty() && inventoryContents.get(i).getItem() != null && par1ItemStack.getItem() != null && inventoryContents.get(i).getItem() == par1ItemStack.getItem())
-				if(inventoryContents.get(i).getCount() + par1ItemStack.getCount() <= getInventoryStackLimit()){
-					inventoryContents.get(i).grow(par1ItemStack.getCount());
-					break;
-				}
-				else
-					inventoryContents.get(i).setCount(getInventoryStackLimit());
+	/**
+	 * Adds the given stack to the inventory. Will void any excess.
+	 * @param stack The stack to add
+	 */
+	public void addItemToStorage(ItemStack stack)
+	{
+		ItemStack remainder = stack;
 
-		markDirty();
+		for(int i = 10; i < getContents().size(); i++)
+		{
+			remainder = insertItem(i, remainder);
+
+			if(remainder.isEmpty())
+				break;
+		}
+	}
+
+	public ItemStack insertItem(int slot, ItemStack stackToInsert)
+	{
+		if(stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
+			return stackToInsert;
+
+		ItemStack slotStack = getStackInSlot(slot);
+		int limit = stackToInsert.getItem().getItemStackLimit(stackToInsert);
+
+		if(slotStack.isEmpty())
+		{
+			setInventorySlotContents(slot, stackToInsert);
+			return ItemStack.EMPTY;
+		}
+		else if(slotStack.getItem() == stackToInsert.getItem() && slotStack.getCount() < limit)
+		{
+			if(limit - slotStack.getCount() >= stackToInsert.getCount())
+			{
+				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
+				return ItemStack.EMPTY;
+			}
+			else
+			{
+				ItemStack toInsert = stackToInsert.copy();
+				ItemStack toReturn = toInsert.splitStack((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
+
+				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
+				return toReturn;
+			}
+		}
+
+		return stackToInsert;
 	}
 
 	public void clearStorage() {

@@ -147,20 +147,54 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		markDirty();
 	}
 
-	public void addItemToStorage(ItemStack par1ItemStack) {
-		for(int i = 10; i < inventoryContents.length; i++)
-			if(inventoryContents[i] == null){
-				inventoryContents[i] = par1ItemStack;
-				break;
-			}else if(inventoryContents[i] != null && inventoryContents[i].getItem() != null && par1ItemStack.getItem() != null && inventoryContents[i].getItem() == par1ItemStack.getItem())
-				if(inventoryContents[i].stackSize + par1ItemStack.stackSize <= getInventoryStackLimit()){
-					inventoryContents[i].stackSize += par1ItemStack.stackSize;
-					break;
-				}
-				else
-					inventoryContents[i].stackSize = getInventoryStackLimit();
+	/**
+	 * Adds the given stack to the inventory. Will void any excess.
+	 * @param stack The stack to add
+	 */
+	public void addItemToStorage(ItemStack stack)
+	{
+		ItemStack remainder = stack;
 
-		markDirty();
+		for(int i = 10; i < inventoryContents.length; i++)
+		{
+			remainder = insertItem(i, remainder);
+
+			if(remainder == null)
+				break;
+		}
+	}
+
+	private ItemStack insertItem(int slot, ItemStack stackToInsert)
+	{
+		if(stackToInsert == null || slot < 10 || slot >= inventoryContents.length)
+			return null;
+
+		ItemStack slotStack = getStackInSlot(slot);
+		int limit = stackToInsert.getItem().getItemStackLimit(stackToInsert);
+
+		if(slotStack == null)
+		{
+			setInventorySlotContents(slot, stackToInsert);
+			return null;
+		}
+		else if(slotStack.getItem() == stackToInsert.getItem() && slotStack.stackSize < limit)
+		{
+			if(limit - slotStack.stackSize >= stackToInsert.stackSize)
+			{
+				slotStack.stackSize += stackToInsert.stackSize;
+				return null;
+			}
+			else
+			{
+				ItemStack toInsert = stackToInsert.copy();
+				ItemStack toReturn = toInsert.splitStack((slotStack.stackSize + stackToInsert.stackSize) - limit); //this is the remaining stack that could not be inserted
+
+				slotStack.stackSize += toInsert.stackSize;
+				return toReturn;
+			}
+		}
+
+		return stackToInsert;
 	}
 
 	public void clearStorage() {
