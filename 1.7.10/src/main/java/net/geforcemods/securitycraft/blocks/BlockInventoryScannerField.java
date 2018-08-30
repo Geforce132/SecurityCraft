@@ -153,7 +153,7 @@ public class BlockInventoryScannerField extends Block{
 	/**
 	 * See {@link ItemStack#areItemStacksEqual(ItemStack, ItemStack)} but without size restriction
 	 */
-	public boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
+	public static boolean areItemStacksEqual(ItemStack stack1, ItemStack stack2)
 	{
 		ItemStack s1 = stack1.copy();
 		ItemStack s2 = stack2.copy();

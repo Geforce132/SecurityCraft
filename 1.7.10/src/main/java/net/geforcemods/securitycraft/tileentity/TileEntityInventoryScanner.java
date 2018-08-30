@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
+import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -182,7 +183,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			setInventorySlotContents(slot, stackToInsert);
 			return null;
 		}
-		else if(slotStack.getItem() == stackToInsert.getItem() && slotStack.stackSize < limit)
+		else if(BlockInventoryScannerField.areItemStacksEqual(slotStack, stackToInsert) && slotStack.stackSize < limit)
 		{
 			if(limit - slotStack.stackSize >= stackToInsert.stackSize)
 			{
