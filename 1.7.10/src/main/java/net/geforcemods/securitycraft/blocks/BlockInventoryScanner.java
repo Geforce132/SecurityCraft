@@ -225,7 +225,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			}
 		}
 
-		for(int i = 0; i < ((TileEntityInventoryScanner) world.getTileEntity(x, y, z)).getContents().length; i++)
+		for(int i = 10; i < ((TileEntityInventoryScanner) world.getTileEntity(x, y, z)).getContents().length; i++)
 		{
 			if(((TileEntityInventoryScanner) world.getTileEntity(x, y, z)).getContents()[i] != null)
 				world.spawnEntityInWorld(new EntityItem(world, x, y, z, ((TileEntityInventoryScanner) world.getTileEntity(x, y, z)).getContents()[i]));
