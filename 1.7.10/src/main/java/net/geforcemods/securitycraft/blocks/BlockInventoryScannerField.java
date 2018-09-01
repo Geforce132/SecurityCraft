@@ -285,5 +285,4 @@ public class BlockInventoryScannerField extends Block{
 	public void registerIcons(IIconRegister register){
 		blockIcon = register.registerIcon("securitycraft:aniLaser");
 	}
-
 }

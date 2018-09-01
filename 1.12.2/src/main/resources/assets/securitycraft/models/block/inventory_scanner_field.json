@@ -15,6 +15,12 @@
                 },
                 "south": {
                     "texture": "#laserTexture"
+                },
+                "up": {
+                    "texture": "#laserTexture"
+                },
+                "down": {
+                    "texture": "#laserTexture"
                 }
             }
         }
