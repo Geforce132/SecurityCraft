@@ -149,7 +149,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 						if(te.hasModule(EnumCustomModules.STORAGE))
 							te.addItemToStorage(entity.inventory.mainInventory.get(i - 1));
 
-						entity.inventory.mainInventory.get(i - 1).setCount(0);
+						entity.inventory.mainInventory.set(i - 1, ItemStack.EMPTY);
 					}
 				}
 			}
