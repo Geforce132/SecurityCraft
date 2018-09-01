@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -19,6 +21,19 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	public BlockIronTrapDoor(Material materialIn) {
 		super(materialIn);
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+	{
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(worldIn, pos);
+
+		if(hasActiveSCBlock != state.getValue(OPEN))
+		{
+			worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(worldIn, pos))), 2);
+			worldIn.markBlockRangeForRenderUpdate(pos, pos);
+			playSound((EntityPlayer)null, worldIn, pos, hasActiveSCBlock);
+		}
 	}
 
 	@Override

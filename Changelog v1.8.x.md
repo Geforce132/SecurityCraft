@@ -10,6 +10,7 @@
 - Fix: Items thrown through an Inventory Scanner Field don't respect the Smart and Storage Module
 - Fix: Inventory Scanner does not trigger on item stacks that have a size greater than one
 - Fix: When breaking an Inventory Scanner, items placed in the blacklist slot will drop
+- Fix: Iron/Reinforced Trapdoor can be opened by redstone
 - Fix: [1.7.10] Smart Module does not work
 - Fix: [1.7.10-1.9.4] Items shift-clicked in the Inventory Scanner end up in the blacklist slot if there was an item there already
 - Fix: [1.8+] Taser reequips all the time when loading after a shot (Note that this cannot be implemented in 1.7.10 due to limitations in Forge)

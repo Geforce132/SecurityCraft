@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -132,10 +133,10 @@ public class BlockIronTrapDoor extends Block {
 				this.dropBlockAsItem(world, x, y, z, meta, 0);
 			}
 
-			boolean powered = world.isBlockIndirectlyGettingPowered(x, y, z);
+			boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, x, y, z);
 
-			if (powered || block.canProvidePower())
-				changeOpenState(world, x, y, z, powered);
+			if ((hasActiveSCBlock || block.canProvidePower()) && (meta & 4) > 0 != hasActiveSCBlock)
+				changeOpenState(world, x, y, z, hasActiveSCBlock);
 		}
 	}
 

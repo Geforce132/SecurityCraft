@@ -5,9 +5,8 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -356,7 +355,7 @@ public class BlockReinforcedDoor extends BlockContainer{
 					this.dropBlockAsItem(world, x, y, z, meta, 0);
 			}
 			else if (block.canProvidePower() && block != this)
-				if(hasActiveKeypadNextTo(world, x, y, z) || hasActiveKeypadNextTo(world, x, y + 1, z) || hasActiveInventoryScannerNextTo(world, x, y, z) || hasActiveInventoryScannerNextTo(world, x, y + 1, z) || hasActiveReaderNextTo(world, x, y, z) || hasActiveReaderNextTo(world, x, y + 1, z) || hasActiveScannerNextTo(world, x, y, z) || hasActiveScannerNextTo(world, x, y + 1, z) || hasActiveLaserNextTo(world, x, y, z) || hasActiveLaserNextTo(world, x, y + 1, z))
+				if(BlockUtils.hasActiveSCBlockNextTo(world, x, y, z) || BlockUtils.hasActiveSCBlockNextTo(world, x, y + 1, z))
 					changeDoorState(world, x, y, z, true);
 				else
 					changeDoorState(world, x, y, z, false);
@@ -367,91 +366,6 @@ public class BlockReinforcedDoor extends BlockContainer{
 			if (block != this)
 				onNeighborBlockChange(world, x, y - 1, z, block);
 		}
-	}
-
-	private boolean hasActiveLaserNextTo(World world, int x, int y, int z) {
-		if(world.getBlock(x + 1, y, z) == SCContent.laserBlock && world.getBlockMetadata(x + 1, y, z) == 2)
-			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.laserBlock && world.getBlockMetadata(x - 1, y, z) == 2)
-			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.laserBlock && world.getBlockMetadata(x, y, z + 1) == 2)
-			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.laserBlock && world.getBlockMetadata(x, y, z - 1) == 2)
-			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.laserBlock && world.getBlockMetadata(x, y + 1, z) == 2)
-			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.laserBlock && world.getBlockMetadata(x, y - 1, z) == 2)
-			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else
-			return false;
-	}
-
-	private boolean hasActiveScannerNextTo(World world, int x, int y, int z) {
-		if(world.getBlock(x + 1, y, z) == SCContent.retinalScanner && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.retinalScanner && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.retinalScanner && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.retinalScanner && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.retinalScanner && world.getBlockMetadata(x, y + 1, z) > 6 && world.getBlockMetadata(x, y + 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.retinalScanner && world.getBlockMetadata(x, y - 1, z) > 6 && world.getBlockMetadata(x, y - 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else
-			return false;
-	}
-
-	private boolean hasActiveKeypadNextTo(World world, int x, int y, int z){
-		if(world.getBlock(x + 1, y, z) == SCContent.keypad && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.keypad && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.keypad && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.keypad && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.keypad && world.getBlockMetadata(x, y + 1, z) > 6 && world.getBlockMetadata(x, y + 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.keypad && world.getBlockMetadata(x, y - 1, z) > 6 && world.getBlockMetadata(x, y - 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else
-			return false;
-	}
-
-	private boolean hasActiveReaderNextTo(World world, int x, int y, int z){
-		if(world.getBlock(x + 1, y, z) == SCContent.keycardReader && world.getBlockMetadata(x + 1, y, z) > 6 && world.getBlockMetadata(x + 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.keycardReader && world.getBlockMetadata(x - 1, y, z) > 6 && world.getBlockMetadata(x - 1, y, z) < 11)
-			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.keycardReader && world.getBlockMetadata(x, y, z + 1) > 6 && world.getBlockMetadata(x, y, z + 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.keycardReader && world.getBlockMetadata(x, y, z - 1) > 6 && world.getBlockMetadata(x, y, z - 1) < 11)
-			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.keycardReader && world.getBlockMetadata(x, y + 1, z) > 6 && world.getBlockMetadata(x, y + 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.keycardReader && world.getBlockMetadata(x, y - 1, z) > 6 && world.getBlockMetadata(x, y - 1, z) < 11)
-			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else
-			return false;
-	}
-
-	private boolean hasActiveInventoryScannerNextTo(World world, int x, int y, int z){
-		if(world.getBlock(x + 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else
-			return false;
 	}
 
 	@Override
