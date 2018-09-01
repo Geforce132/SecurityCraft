@@ -135,36 +135,87 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(connectedScanner == null)
 			return;
 
+		boolean place = true;
+
 		if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
 		{
 			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
 			{
-				par1World.setBlockState(pos.west(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
+				if(par1World.getBlockState(pos.west(i)).getBlock() == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
+				{
+					par1World.setBlockState(pos.west(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
+				}
 			}
 		}
 		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
 		{
 			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
 			{
-				par1World.setBlockState(pos.east(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
+				if(par1World.getBlockState(pos.east(i)).getBlock() == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
+				{
+					par1World.setBlockState(pos.east(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
+				}
 			}
 		}
 		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
 		{
 			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
 			{
-				par1World.setBlockState(pos.north(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
+				if(par1World.getBlockState(pos.north(i)).getBlock() == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
+				{
+					par1World.setBlockState(pos.north(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
+				}
 			}
 		}
 		else if((EnumFacing) par1World.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
 		{
 			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
 			{
-				par1World.setBlockState(pos.south(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+				if(par1World.getBlockState(pos.south(i)).getBlock() == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
+				{
+					par1World.setBlockState(pos.south(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
+				}
 			}
 		}
 
-		CustomizableSCTE.link((CustomizableSCTE)par1World.getTileEntity(pos), connectedScanner);
+		if(place)
+			CustomizableSCTE.link((CustomizableSCTE)par1World.getTileEntity(pos), connectedScanner);
 	}
 
 	@Override
@@ -181,7 +232,9 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(BlockUtils.getBlock(par1World, pos.west(j)) == SCContent.inventoryScannerField)
+					IBlockState field = par1World.getBlockState(pos.west(j));
+
+					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST))
 						par1World.destroyBlock(pos.west(j), false);
 				}
 
@@ -196,7 +249,9 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(BlockUtils.getBlock(par1World, pos.east(j)) == SCContent.inventoryScannerField)
+					IBlockState field = par1World.getBlockState(pos.east(j));
+
+					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST))
 						par1World.destroyBlock(pos.east(j), false);
 				}
 
@@ -211,7 +266,9 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(BlockUtils.getBlock(par1World, pos.north(j)) == SCContent.inventoryScannerField)
+					IBlockState field = par1World.getBlockState(pos.north(j));
+
+					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH))
 						par1World.destroyBlock(pos.north(j), false);
 				}
 
@@ -226,7 +283,9 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(BlockUtils.getBlock(par1World, pos.south(j)) == SCContent.inventoryScannerField)
+					IBlockState field = par1World.getBlockState(pos.south(j));
+
+					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH))
 						par1World.destroyBlock(pos.south(j), false);
 				}
 

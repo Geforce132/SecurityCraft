@@ -125,36 +125,87 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(connectedScanner == null)
 			return;
 
+		boolean place = true;
+
 		if(world.getBlockMetadata(x, y, z) == 4)
 		{
 			for(int j = 1; j < Math.abs(x - connectedScanner.xCoord); j++)
 			{
-				world.setBlock(x - j, y, z, SCContent.inventoryScannerField, 1, 3);
+				if(world.getBlock(x - j, y, z) == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int j = 1; j < Math.abs(x - connectedScanner.xCoord); j++)
+				{
+					world.setBlock(x - j, y, z, SCContent.inventoryScannerField, 1, 3);
+				}
 			}
 		}
 		else if(world.getBlockMetadata(x, y, z) == 5)
 		{
 			for(int j = 1; j < Math.abs(x - connectedScanner.xCoord); j++)
 			{
-				world.setBlock(x + j, y, z, SCContent.inventoryScannerField, 1, 3);
+				if(world.getBlock(x + j, y, z) == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int j = 1; j < Math.abs(x - connectedScanner.xCoord); j++)
+				{
+					world.setBlock(x + j, y, z, SCContent.inventoryScannerField, 1, 3);
+				}
 			}
 		}
 		else if(world.getBlockMetadata(x, y, z) == 2)
 		{
 			for(int j = 1; j < Math.abs(z - connectedScanner.zCoord); j++)
 			{
-				world.setBlock(x, y, z - j, SCContent.inventoryScannerField, 2, 3);
+				if(world.getBlock(x, y, z - j) == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int j = 1; j < Math.abs(z - connectedScanner.zCoord); j++)
+				{
+					world.setBlock(x, y, z - j, SCContent.inventoryScannerField, 2, 3);
+				}
 			}
 		}
 		else if(world.getBlockMetadata(x, y, z) == 3)
 		{
 			for(int j = 1; j < Math.abs(z - connectedScanner.zCoord); j++)
 			{
-				world.setBlock(x, y, z + j, SCContent.inventoryScannerField, 2, 3);
+				if(world.getBlock(x, y, z + j) == SCContent.inventoryScannerField)
+				{
+					place = false;
+					break;
+				}
+			}
+
+			if(place)
+			{
+				for(int j = 1; j < Math.abs(z - connectedScanner.zCoord); j++)
+				{
+					world.setBlock(x, y, z + j, SCContent.inventoryScannerField, 2, 3);
+				}
 			}
 		}
 
-		CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(x, y, z), connectedScanner);
+		if(place)
+			CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(x, y, z), connectedScanner);
 	}
 
 	@Override
@@ -171,7 +222,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(world.getBlock(x - j, y, z) == SCContent.inventoryScannerField)
+					if(world.getBlock(x - j, y, z) == SCContent.inventoryScannerField && world.getBlockMetadata(x - j, y, z) == 1)
 						world.breakBlock(x - j, y, z, false);
 				}
 
@@ -186,7 +237,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(world.getBlock(x + j, y, z) == SCContent.inventoryScannerField)
+					if(world.getBlock(x + j, y, z) == SCContent.inventoryScannerField && world.getBlockMetadata(x + j, y, z) == 1)
 						world.breakBlock(x + j, y, z, false);
 				}
 
@@ -201,7 +252,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(world.getBlock(x, y, z - j) == SCContent.inventoryScannerField)
+					if(world.getBlock(x, y, z - j) == SCContent.inventoryScannerField && world.getBlockMetadata(x, y, z - j) == 2)
 						world.breakBlock(x, y, z - j, false);
 				}
 
@@ -216,7 +267,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			{
 				for(int j = 1; j < i; j++)
 				{
-					if(world.getBlock(x, y, z + j) == SCContent.inventoryScannerField)
+					if(world.getBlock(x, y, z + j) == SCContent.inventoryScannerField && world.getBlockMetadata(x, y, z + j) == 2)
 						world.breakBlock(x, y, z + j, false);
 				}
 
