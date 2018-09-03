@@ -14,10 +14,11 @@
 - Fix: Placing/breaking Inventory Scanners can break other Inventory Scanner's scanner fields
 - Fix: [1.7.10] Smart Module does not work
 - Fix: [1.7.10-1.9.4] Items shift-clicked in the Inventory Scanner end up in the blacklist slot if there was an item there already
+- Fix: [1.8-1.8.9] Taser bullet has incorrect velocity which leads to unexpected shooting behavior
 - Fix: [1.8+] Taser reequips all the time when loading after a shot (Note that this cannot be implemented in 1.7.10 due to limitations in Forge)
 - Fix: [1.8+] Password-protected Furnace does not give off light when open and burning
 - Fix: [1.8+] The Inventory Scanner Field is missing its top and bottom texture
-- Fix: [1.8-1.12.2] Storage Module does not work
+- Fix: [1.8+] Storage Module does not work
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 
@@ -92,10 +93,10 @@
 - Fix: [1.7.10] Security Cameras which emit a redstone signal don't break if the block they're placed on is broken
 - Fix: [1.7.10] Ownership data doesn't update correctly on the client side
 - Fix: [1.7.10] Password-protected Chest has incorrect breaking particles
-- Fix: [1.8.9] Reinforced Cobblestone is not tinted in inventory
 - Fix: [1.8+] Inconsistent Alarm model
 - Fix: [1.8+] Protecto does not work
 - Fix: [1.8+] Some trigger ranges for SecurityCraft blocks were not calculated correctly
+- Fix: [1.8.9] Reinforced Cobblestone is not tinted in inventory
 - Fix: [1.10.2+] Under certain circumstances, the Alarm doesn't break when the block it's placed on is removed
 - Potential Fix: StackOverflowException involving block mines
 - Sponge Fix: Keycard Reader cannot be configured

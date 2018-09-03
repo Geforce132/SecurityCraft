@@ -27,7 +27,8 @@ public class EntityTaserBullet extends EntityThrowable {
 		powered = isPowered;
 	}
 
-	protected float func_70182_d(){
+	@Override
+	protected float getVelocity(){
 		return 6F;
 	}
 
