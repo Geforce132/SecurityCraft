@@ -64,7 +64,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
-import net.geforcemods.securitycraft.util.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -199,8 +198,8 @@ public class RegistrationHandler
 		registerItem(SCContent.keycardLV5, SecurityCraft.config.ableToCraftKeycard5);
 		registerItem(SCContent.limitedUseKeycard, SecurityCraft.config.ableToCraftLUKeycard);
 		registerItem(SCContent.remoteAccessMine);
-		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ null, harmingPotions[0], null, null, ItemUtils.toItemStack(Items.WATER_BUCKET), null, null, null, null});
-		registerItemWithCustomRecipe(SCContent.fLavaBucket, new ItemStack[]{ null, healingPotions[0], null, null, ItemUtils.toItemStack(Items.LAVA_BUCKET), null, null, null, null});
+		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ null, harmingPotions[0], null, null, new ItemStack(Items.WATER_BUCKET, 1), null, null, null, null});
+		registerItemWithCustomRecipe(SCContent.fLavaBucket, new ItemStack[]{ null, healingPotions[0], null, null, new ItemStack(Items.LAVA_BUCKET, 1), null, null, null, null});
 		registerItem(SCContent.universalBlockModifier);
 		registerItem(SCContent.redstoneModule);
 		registerItem(SCContent.whitelistModule);

@@ -90,7 +90,7 @@ public class BlockKeycardReader extends BlockOwnable {
 		if(player.getCurrentEquippedItem() == null || (!(player.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase) && player.getCurrentEquippedItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) world.getTileEntity(x, y, z)).openPasswordGUI(player);
 		else if(player.getCurrentEquippedItem().getItem() == SCContent.adminTool)
-			((BlockKeycardReader) world.getBlock(x, y, z)).insertCard(world, x, y, z, ItemUtils.toItemStack(SCContent.keycards, 3), player);
+			((BlockKeycardReader) world.getBlock(x, y, z)).insertCard(world, x, y, z, new ItemStack(SCContent.keycards, 1, 3), player);
 		else if(BlockUtils.isMetadataBetween(world, x, y, z, 2, 5))
 			((BlockKeycardReader) world.getBlock(x, y, z)).insertCard(world, x, y, z, player.getCurrentEquippedItem(), player);
 

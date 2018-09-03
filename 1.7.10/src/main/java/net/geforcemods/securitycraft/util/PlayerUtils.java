@@ -19,16 +19,6 @@ import net.minecraftforge.common.ForgeHooks;
 public class PlayerUtils{
 
 	/**
-	 * Sets the given player's position and rotation. <p>
-	 *
-	 * Args: player, x, y, z, yaw, pitch.
-	 */
-	public static void setPlayerPosition(EntityPlayer player, double x, double y, double z, float yaw, float pitch){
-		player.setPositionAndRotation(x, y, z, yaw, pitch);
-		player.setPositionAndUpdate(x, y, z);
-	}
-
-	/**
 	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p>
 	 *
 	 * Args: playerName.
@@ -86,15 +76,6 @@ public class PlayerUtils{
 	 */
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, EnumChatFormatting color){
 		player.addChatComponentMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
-	}
-
-	/**
-	 * Sends the given {@link ICommandSender} a chat message. <p>
-	 *
-	 * Args: sender, prefix, text, color.
-	 */
-	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, EnumChatFormatting color){
-		sender.addChatMessage(new ChatComponentText("[" + color + prefix + EnumChatFormatting.WHITE + "] " + text));
 	}
 
 	/**

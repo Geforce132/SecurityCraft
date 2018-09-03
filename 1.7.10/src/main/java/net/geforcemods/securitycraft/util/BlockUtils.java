@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -84,35 +82,6 @@ public class BlockUtils{
 	 */
 	public static void destroyBlock(World world, int x, int y, int z, boolean shouldDropItem){
 		world.breakBlock(x, y, z, shouldDropItem);
-	}
-
-	/**
-	 * Checks if the block at the given coordinates is a beacon, and currently producing that light beam? <p>
-	 *
-	 * Args: World, x, y, z.
-	 */
-	public static boolean isActiveBeacon(World world, int beaconX, int beaconY, int beaconZ){
-		if(world.getBlock(beaconX, beaconY, beaconZ) == Blocks.beacon){
-			float f = ((TileEntityBeacon) world.getTileEntity(beaconX, beaconY, beaconZ)).shouldBeamRender();
-
-			return f > 0.0F ? true : false;
-		}
-		else
-			return false;
-	}
-
-	/**
-	 * Checks if the block at the given coordinates is touching the specified block on any side. <p>
-	 *
-	 * Args: world, x, y, z, blockToCheckFor, checkYAxis.
-	 */
-	public static boolean blockSurroundedBy(World world, int x, int y, int z, Block blockToCheckFor, boolean checkYAxis) {
-		if(!checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor))
-			return true;
-		else if(checkYAxis && (world.getBlock(x + 1, y, z) == blockToCheckFor || world.getBlock(x - 1, y, z) == blockToCheckFor || world.getBlock(x, y, z + 1) == blockToCheckFor || world.getBlock(x, y, z - 1) == blockToCheckFor || world.getBlock(x, y + 1, z) == blockToCheckFor || world.getBlock(x, y - 1, z) == blockToCheckFor))
-			return true;
-		else
-			return false;
 	}
 
 	/**

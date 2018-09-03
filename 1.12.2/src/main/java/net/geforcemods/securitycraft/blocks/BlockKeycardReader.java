@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.ItemUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.SoundType;
@@ -105,7 +104,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 		if(playerIn.inventory.getCurrentItem().isEmpty() || (!(playerIn.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && playerIn.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
 		else if(playerIn.inventory.getCurrentItem().getItem() == SCContent.adminTool)
-			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, ItemUtils.toItemStack(SCContent.limitedUseKeycard), playerIn);
+			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, new ItemStack(SCContent.limitedUseKeycard, 1), playerIn);
 		else
 			((BlockKeycardReader) BlockUtils.getBlock(worldIn, pos)).insertCard(worldIn, pos, playerIn.inventory.getCurrentItem(), playerIn);
 

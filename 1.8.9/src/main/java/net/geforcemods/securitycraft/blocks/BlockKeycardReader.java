@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ItemUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -111,7 +110,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 		if(par5EntityPlayer.getCurrentEquippedItem() == null || (!(par5EntityPlayer.getCurrentEquippedItem().getItem() instanceof ItemKeycardBase) && par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
 		else if(par5EntityPlayer.getCurrentEquippedItem().getItem() == SCContent.adminTool)
-			((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, ItemUtils.toItemStack(SCContent.limitedUseKeycard), par5EntityPlayer);
+			((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, new ItemStack(SCContent.limitedUseKeycard, 1), par5EntityPlayer);
 		else
 			((BlockKeycardReader) BlockUtils.getBlock(par1World, pos)).insertCard(par1World, pos, par5EntityPlayer.getCurrentEquippedItem(), par5EntityPlayer);
 

@@ -48,31 +48,6 @@ public class PlayerUtils{
 		}
 	}
 
-	public static EntityPlayer getPlayerByUUID(String uuid){
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List<?> players = Minecraft.getMinecraft().world.playerEntities;
-			Iterator<?> iterator = players.iterator();
-
-			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getGameProfile().getId().toString().matches(uuid))
-					return tempPlayer;
-			}
-
-			return null;
-		}else{
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
-			Iterator<?> iterator = players.iterator();
-
-			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getGameProfile().getId().toString().matches(uuid))
-					return tempPlayer;
-			}
-
-			return null;
-		}
-	}
 
 	/**
 	 * Returns true if a player with the given name is in the world.

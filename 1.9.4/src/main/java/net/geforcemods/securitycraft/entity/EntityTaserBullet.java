@@ -45,28 +45,28 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult par1RayTraceResult)
+	protected void onImpact(RayTraceResult rayTrace)
 	{
 		if(!worldObj.isRemote)
 		{
-			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
+			if(rayTrace.typeOfHit == Type.ENTITY)
 			{
-				if(par1RayTraceResult.entityHit instanceof EntityPlayer)
+				if(rayTrace.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1RayTraceResult.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)rayTrace.entityHit).capabilities.isCreativeMode || (EntityLivingBase)rayTrace.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
 						return;
 				}
 
-				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
+				if(rayTrace.entityHit instanceof EntityLivingBase)
 				{
-					if(((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.generic, 1F))
+					if(((EntityLivingBase) rayTrace.entityHit).attackEntityFrom(DamageSource.generic, 1F))
 					{
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
+						((EntityLivingBase) rayTrace.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+						((EntityLivingBase) rayTrace.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+						((EntityLivingBase) rayTrace.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
 					}
 
 					setDead();

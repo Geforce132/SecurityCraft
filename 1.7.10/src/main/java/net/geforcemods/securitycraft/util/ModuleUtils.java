@@ -20,15 +20,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 public class ModuleUtils{
-
-	/**
-	 * Insert a module into a customizable TileEntity. <p>
-	 *
-	 * Args: world, x, y, z, moduleType.
-	 */
-	public static void insertModule(World world, int x, int y, int z, EnumCustomModules module){
-		((CustomizableSCTE) world.getTileEntity(x, y, z)).insertModule(module);
-	}
+	//North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
 
 	/**
 	 * Used by the Laser Block to insert modules in all directions.

@@ -15,15 +15,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLever;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -94,24 +91,8 @@ public class BlockUtils{
 		par1World.destroyBlock(pos, par5);
 	}
 
-	public static void destroyBlock(World par1World, int par2, int par3, int par4, boolean par5){
-		par1World.destroyBlock(toPos(par2, par3, par4), par5);
-	}
-
-	public static boolean isAirBlock(World par1World, BlockPos pos){
-		return par1World.getBlockState(pos).getBlock() == Blocks.AIR;
-	}
-
-	public static boolean isAirBlock(World par1World, int par2, int par3, int par4){
-		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock() == Blocks.AIR;
-	}
-
 	public static int getBlockMeta(World par1World, BlockPos pos){
 		return par1World.getBlockState(pos).getBlock().getMetaFromState(par1World.getBlockState(pos));
-	}
-
-	public static int getBlockMeta(World par1World, int par2, int par3, int par4){
-		return par1World.getBlockState(toPos(par2, par3, par4)).getBlock().getMetaFromState(par1World.getBlockState(toPos(par2, par3, par4)));
 	}
 
 	public static void setBlock(World par1World, BlockPos pos, Block block){
@@ -207,19 +188,6 @@ public class BlockUtils{
 			par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 	}
 
-	public static void setBlockProperty(World par1World, int par2, int par3, int par4, PropertyBool property, boolean value) {
-		NonNullList<ItemStack> modules = null;
-		if(par1World.getTileEntity(new BlockPos(par2, par3, par4)) instanceof CustomizableSCTE)
-			modules = ((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).modules;
-
-		TileEntity tileEntity = par1World.getTileEntity(toPos(par2, par3, par4));
-		par1World.setBlockState(new BlockPos(par2, par3, par4), par1World.getBlockState(new BlockPos(par2, par3, par4)).withProperty(property, value));
-		par1World.setTileEntity(new BlockPos(par2, par3, par4), tileEntity);
-
-		if(modules != null)
-			((CustomizableSCTE) par1World.getTileEntity(toPos(par2, par3, par4))).modules = modules;
-	}
-
 	public static void setBlockProperty(World par1World, BlockPos pos, PropertyInteger property, int value) {
 		par1World.setBlockState(pos, par1World.getBlockState(pos).withProperty(property, value));
 	}
@@ -237,10 +205,6 @@ public class BlockUtils{
 		}
 	}
 
-	public static boolean hasBlockProperty(World par1World, int par2, int par3, int par4, IProperty<?> property){
-		return hasBlockProperty(par1World, toPos(par2, par3, par4), property);
-	}
-
 	public static boolean getBlockPropertyAsBoolean(World par1World, BlockPos pos, PropertyBool property){
 		return par1World.getBlockState(pos).getValue(property).booleanValue();
 	}
@@ -249,48 +213,20 @@ public class BlockUtils{
 		return access.getBlockState(pos).getValue(property).booleanValue();
 	}
 
-	public static boolean getBlockPropertyAsBoolean(World par1World, int par2, int par3, int par4, PropertyBool property){
-		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property).booleanValue();
-	}
-
 	public static int getBlockPropertyAsInteger(World par1World, BlockPos pos, PropertyInteger property){
 		return par1World.getBlockState(pos).getValue(property).intValue();
-	}
-
-	public static int getBlockPropertyAsInteger(World par1World, int par2, int par3, int par4, PropertyInteger property){
-		return par1World.getBlockState(toPos(par2, par3, par4)).getValue(property).intValue();
 	}
 
 	public static EnumFacing getBlockPropertyAsEnum(World par1World, BlockPos pos, PropertyEnum<?> property){
 		return ((EnumFacing) par1World.getBlockState(pos).getValue(property));
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(World par1World, int par2, int par3, int par4, PropertyEnum<?> property){
-		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
-	}
-
 	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess par1World, BlockPos pos, PropertyEnum<?> property){
 		return ((EnumFacing) par1World.getBlockState(pos).getValue(property));
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess par1World, int par2, int par3, int par4, PropertyEnum<?> property){
-		return ((EnumFacing) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
-	}
-
-	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, BlockPos pos, PropertyEnum<?> property){
-		return ((BlockLever.EnumOrientation) par1World.getBlockState(pos).getValue(property));
-	}
-
-	public static BlockLever.EnumOrientation getBlockPropertyAsOrientation(World par1World, int par2, int par3, int par4, PropertyEnum<?> property){
-		return ((BlockLever.EnumOrientation) par1World.getBlockState(toPos(par2, par3, par4)).getValue(property));
-	}
-
 	public static EnumFacing getBlockProperty(World par1World, BlockPos pos, PropertyDirection property) {
 		return par1World.getBlockState(pos).getValue(property);
-	}
-
-	public static EnumFacing getBlockProperty(World par1World, int par2, int par3, int par4, PropertyDirection property) {
-		return par1World.getBlockState(new BlockPos(par2, par3, par4)).getValue(property);
 	}
 
 	public static Material getBlockMaterial(World par1World, BlockPos pos){
@@ -309,27 +245,6 @@ public class BlockUtils{
 		double d10 = Math.max(y1, y2);
 		double d11 = Math.max(z1, z2);
 		return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
-	}
-
-	/**
-	 * Checks if the block at x, y, z is touching the specified block on any side.
-	 */
-	public static boolean blockSurroundedBy(World world, BlockPos pos, Block blockToCheckFor, boolean checkYAxis) {
-		if(!checkYAxis && (world.getBlockState(pos.east()).getBlock() == blockToCheckFor || world.getBlockState(pos.west()).getBlock() == blockToCheckFor || world.getBlockState(pos.south()).getBlock() == blockToCheckFor || world.getBlockState(pos.north()).getBlock() == blockToCheckFor))
-			return true;
-		else if(checkYAxis && (world.getBlockState(pos.east()).getBlock() == blockToCheckFor || world.getBlockState(pos.west()).getBlock() == blockToCheckFor || world.getBlockState(pos.south()).getBlock() == blockToCheckFor || world.getBlockState(pos.north()).getBlock() == blockToCheckFor || world.getBlockState(pos.up()).getBlock() == blockToCheckFor || world.getBlockState(pos.down()).getBlock() == blockToCheckFor))
-			return true;
-		else
-			return false;
-	}
-
-	public static ItemStack getItemInTileEntity(IInventory inventory, ItemStack item){
-		for(int i = 0; i < inventory.getSizeInventory(); i++)
-			if(!inventory.getStackInSlot(i).isEmpty())
-				if(inventory.getStackInSlot(i) == item)
-					return inventory.getStackInSlot(i);
-
-		return ItemStack.EMPTY;
 	}
 
 	public static BlockPos toPos(int x, int y, int z){

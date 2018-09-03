@@ -7,13 +7,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,32 +20,6 @@ public class ClientUtils{
 	@SideOnly(Side.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getMinecraft().thePlayer.closeScreen();
-	}
-
-	/**
-	 * Sets the "zoom" of the client's view.
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@SideOnly(Side.CLIENT)
-	public static void setCameraZoom(double zoom){
-		if(zoom == 0){
-			ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 1.0D, 48);
-			return;
-		}
-
-		double tempZoom = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48);
-		ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, tempZoom + zoom, 48);
-	}
-
-	/**
-	 * Gets the "zoom" of the client's view.
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@SideOnly(Side.CLIENT)
-	public static double getCameraZoom(){
-		return ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 48);
 	}
 
 	/**
@@ -97,16 +69,6 @@ public class ClientUtils{
 	@SideOnly(Side.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
-	}
-
-	/**
-	 * Returns true if the client is hosting a LAN world.
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@SideOnly(Side.CLIENT)
-	public static boolean isInLANWorld(){
-		return (Minecraft.getMinecraft().getIntegratedServer() != null && Minecraft.getMinecraft().getIntegratedServer().getPublic());
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})

@@ -20,13 +20,6 @@ import net.minecraft.world.World;
 
 public class ModuleUtils{
 	//North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
-	public static void insertModule(World par1World, BlockPos pos, EnumCustomModules module){
-		((CustomizableSCTE) par1World.getTileEntity(pos)).insertModule(module);
-	}
-
-	public static void removeModule(World par1World, BlockPos pos, EnumCustomModules module){
-		((CustomizableSCTE) par1World.getTileEntity(pos)).removeModule(module);
-	}
 
 	public static void checkForBlockAndInsertModule(World par1World, BlockPos pos, String dir, Block blockToCheckFor, int range, ItemStack module, boolean updateAdjacentBlocks){
 		for(int i = 1; i <= range; i++)
