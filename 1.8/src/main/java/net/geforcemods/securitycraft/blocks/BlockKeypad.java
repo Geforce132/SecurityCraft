@@ -43,8 +43,8 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockKeypad(Material par2Material) {
-		super(par2Material);
+	public BlockKeypad(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -81,11 +81,11 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		BlockPos keypadPos = pos.offset(side.getOpposite());
 
-		if(worldIn.getTileEntity(keypadPos) == null) return true;
-		CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(keypadPos);
+		if(world.getTileEntity(keypadPos) == null) return true;
+		CustomizableSCTE tileEntity = (CustomizableSCTE) world.getTileEntity(keypadPos);
 
 		if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
 		{
@@ -98,7 +98,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 				// If the keypad has a disguise module added with a transparent block inserted.
 				if(!blockToDisguiseAs.isOpaqueCube() || !blockToDisguiseAs.isFullCube())
-					return checkForSideTransparency(worldIn, keypadPos, worldIn.getBlockState(keypadPos.offset(side)).getBlock(), side);
+					return checkForSideTransparency(world, keypadPos, world.getBlockState(keypadPos.offset(side)).getBlock(), side);
 			}
 		}
 
@@ -124,63 +124,63 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(world.isRemote)
 			return true;
 		else {
 			if(((Boolean) state.getValue(POWERED)).booleanValue())
 				return false;
 
-			if(ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(par1World, pos, par5EntityPlayer, EnumCustomModules.BLACKLIST)){
-				activate(par1World, pos);
+			if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST)){
+				activate(world, pos);
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.keyPanel))
-				((IPasswordProtected) par1World.getTileEntity(pos)).openPasswordGUI(par5EntityPlayer);
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
+				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 
 			return true;
 		}
 	}
 
-	public static void activate(World par1World, BlockPos pos){
-		BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad);
-		par1World.scheduleUpdate(pos, SCContent.keypad, 60);
+	public static void activate(World world, BlockPos pos){
+		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+		world.scheduleUpdate(pos, SCContent.keypad, 60);
 	}
 
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		BlockUtils.setBlockProperty(world, pos, POWERED, false);
+		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 	}
 
 	/**
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		setDefaultFacing(par1World, pos, state);
+		setDefaultFacing(world, pos, state);
 	}
 
-	private void setDefaultFacing(World par1World, BlockPos pos, IBlockState state) {
-		Block block = par1World.getBlockState(pos.north()).getBlock();
-		Block block1 = par1World.getBlockState(pos.south()).getBlock();
-		Block block2 = par1World.getBlockState(pos.west()).getBlock();
-		Block block3 = par1World.getBlockState(pos.east()).getBlock();
-		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+	private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
+		Block north = world.getBlockState(pos.north()).getBlock();
+		Block south = world.getBlockState(pos.south()).getBlock();
+		Block west = world.getBlockState(pos.west()).getBlock();
+		Block east = world.getBlockState(pos.east()).getBlock();
+		EnumFacing facing = (EnumFacing)state.getValue(FACING);
 
-		if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-			enumfacing = EnumFacing.SOUTH;
-		else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-			enumfacing = EnumFacing.NORTH;
-		else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-			enumfacing = EnumFacing.EAST;
-		else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-			enumfacing = EnumFacing.WEST;
+		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+			facing = EnumFacing.SOUTH;
+		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+			facing = EnumFacing.NORTH;
+		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+			facing = EnumFacing.EAST;
+		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+			facing = EnumFacing.WEST;
 
-		par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
+	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side){
 		if(((Boolean) state.getValue(POWERED)).booleanValue())
 			return 15;
 		else
@@ -206,7 +206,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
+	public int isProvidingStrongPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side){
 		if(((Boolean) state.getValue(POWERED)).booleanValue())
 			return 15;
 		else
@@ -214,7 +214,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
 	}
@@ -296,7 +296,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World worldIn, BlockPos pos) {
+	public Item getItem(World world, BlockPos pos) {
 		return null;
 	}
 
@@ -310,7 +310,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityKeypad();
 	}
 

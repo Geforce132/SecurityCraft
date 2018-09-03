@@ -53,14 +53,14 @@ public class TileEntityIMS extends CustomizableSCTE {
 		if(bombsRemaining > 0){
 			double d0 = SecurityCraft.config.imsRange;
 
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
-			List<?> list1 = worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-			List<?> list2 = worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
-			Iterator<?> iterator1 = list1.iterator();
-			Iterator<?> iterator2 = list2.iterator();
+			AxisAlignedBB area = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
+			List<?> playersInArea = worldObj.getEntitiesWithinAABB(EntityPlayer.class, area);
+			List<?> mobsInArea = worldObj.getEntitiesWithinAABB(EntityMob.class, area);
+			Iterator<?> playerIterator = playersInArea.iterator();
+			Iterator<?> mobIterator = mobsInArea.iterator();
 
-			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && iterator2.hasNext()){
-				EntityLivingBase entity = (EntityLivingBase) iterator2.next();
+			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
+				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -71,11 +71,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName().toLowerCase()))
 					continue;
 
-				double d5 = entity.posX - (pos.getX() + 0.5D);
-				double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double d7 = entity.posZ - (pos.getZ() + 0.5D);
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(worldObj.isRemote)
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
@@ -91,8 +91,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 				break;
 			}
 
-			while(!launchedMine && iterator1.hasNext()){
-				EntityPlayer entity = (EntityPlayer) iterator1.next();
+			while(!launchedMine && playerIterator.hasNext()){
+				EntityPlayer entity = (EntityPlayer) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -102,11 +102,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, pos, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName()))
 					continue;
 
-				double d5 = entity.posX - (pos.getX() + 0.5D);
-				double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double d7 = entity.posZ - (pos.getZ() + 0.5D);
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(worldObj.isRemote)
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F));
@@ -180,29 +180,29 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
-		par1NBTTagCompound.setInteger("targetingOption", targetingOption.modeIndex);
-		par1NBTTagCompound.setBoolean("updateBombCount", updateBombCount);
+		tag.setInteger("bombsRemaining", bombsRemaining);
+		tag.setInteger("targetingOption", targetingOption.modeIndex);
+		tag.setBoolean("updateBombCount", updateBombCount);
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("bombsRemaining"))
-			bombsRemaining = par1NBTTagCompound.getInteger("bombsRemaining");
+		if (tag.hasKey("bombsRemaining"))
+			bombsRemaining = tag.getInteger("bombsRemaining");
 
-		if (par1NBTTagCompound.hasKey("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[par1NBTTagCompound.getInteger("targetingOption")];
+		if (tag.hasKey("targetingOption"))
+			targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
 
-		if (par1NBTTagCompound.hasKey("updateBombCount"))
-			updateBombCount = par1NBTTagCompound.getBoolean("updateBombCount");
+		if (tag.hasKey("updateBombCount"))
+			updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
 	public int getBombsRemaining() {

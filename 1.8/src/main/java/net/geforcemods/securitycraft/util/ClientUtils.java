@@ -67,8 +67,8 @@ public class ClientUtils{
 	 * Only works on the CLIENT side.
 	 */
 	@SideOnly(Side.CLIENT)
-	public static void syncItemNBT(ItemStack item){
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
+	public static void syncItemNBT(ItemStack stack){
+		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
 	}
 
 	@SuppressWarnings({"rawtypes"})
@@ -86,9 +86,9 @@ public class ClientUtils{
 		if(uri == null) return;
 
 		try {
-			Class oclass = Class.forName("java.awt.Desktop");
-			Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-			oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {uri});
+			Class desktopClass = Class.forName("java.awt.Desktop");
+			Object getDesktopResult = desktopClass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+			desktopClass.getMethod("browse", new Class[] {URI.class}).invoke(getDesktopResult, new Object[] {uri});
 		}
 
 		catch (Throwable throwable) {}

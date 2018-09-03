@@ -43,12 +43,12 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IRe
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
 		BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
 
 		for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
-			list.add(new ItemStack(itemIn, 1, var3.getMetadata()));
+			list.add(new ItemStack(item, 1, var3.getMetadata()));
 	}
 
 	/**

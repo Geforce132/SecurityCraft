@@ -20,7 +20,7 @@ public class ItemReinforcedDoor extends Item
 	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
 	 */
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float par8, float par9, float par10)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if(world.isRemote)
 			return true;
@@ -28,8 +28,8 @@ public class ItemReinforcedDoor extends Item
 			return false;
 		else
 		{
-			IBlockState iblockstate = world.getBlockState(pos);
-			Block block = iblockstate.getBlock();
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
 
 			if (!block.isReplaceable(world, pos))
 				pos = pos.offset(side);
@@ -40,7 +40,7 @@ public class ItemReinforcedDoor extends Item
 				return false;
 			else
 			{
-				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), SCContent.reinforcedDoor);                    //TERD.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				placeDoor(world, pos, EnumFacing.fromAngle(player.rotationYaw), SCContent.reinforcedDoor);
 				((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
 				((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getCommandSenderName());
 				--stack.stackSize;
@@ -49,24 +49,25 @@ public class ItemReinforcedDoor extends Item
 		}
 	}
 
-	public static void placeDoor(World worldIn, BlockPos pos, EnumFacing facing, Block door){
-		BlockPos blockpos1 = pos.offset(facing.rotateY());
-		BlockPos blockpos2 = pos.offset(facing.rotateYCCW());
-		int i = (worldIn.getBlockState(blockpos2).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos2.up()).getBlock().isNormalCube() ? 1 : 0);
-		int j = (worldIn.getBlockState(blockpos1).getBlock().isNormalCube() ? 1 : 0) + (worldIn.getBlockState(blockpos1.up()).getBlock().isNormalCube() ? 1 : 0);
-		boolean flag = worldIn.getBlockState(blockpos2).getBlock() == door || worldIn.getBlockState(blockpos2.up()).getBlock() == door;
-		boolean flag1 = worldIn.getBlockState(blockpos1).getBlock() == door || worldIn.getBlockState(blockpos1.up()).getBlock() == door;
-		boolean flag2 = false;
+	public static void placeDoor(World world, BlockPos pos, EnumFacing facing, Block door){ //naming might not be entirely correct, but it's giving a rough idea
+		BlockPos left = pos.offset(facing.rotateY());
+		BlockPos right = pos.offset(facing.rotateYCCW());
+		int rightNormalCubeAmount = (world.getBlockState(right).getBlock().isNormalCube() ? 1 : 0) + (world.getBlockState(right.up()).getBlock().isNormalCube() ? 1 : 0);
+		int leftNormalCubeAmount = (world.getBlockState(left).getBlock().isNormalCube() ? 1 : 0) + (world.getBlockState(left.up()).getBlock().isNormalCube() ? 1 : 0);
+		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.up()).getBlock() == door;
+		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.up()).getBlock() == door;
+		boolean hingeRight = false;
 
-		if (flag && !flag1 || j > i)
-			flag2 = true;
+		if (isRightDoor && !isLeftDoor || leftNormalCubeAmount > rightNormalCubeAmount)
+			hingeRight = true;
 
-		BlockPos blockpos3 = pos.up();
-		IBlockState iblockstate = SCContent.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, flag2 ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
-		worldIn.setBlockState(pos, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
-		worldIn.setBlockState(blockpos3, iblockstate.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
-		worldIn.notifyNeighborsOfStateChange(pos, door);
-		worldIn.notifyNeighborsOfStateChange(blockpos3, door);
+		BlockPos posAbove = pos.up();
+		IBlockState stateToSet = SCContent.reinforcedDoor.getDefaultState().withProperty(BlockReinforcedDoor.FACING, facing).withProperty(BlockReinforcedDoor.HINGE, hingeRight ? BlockReinforcedDoor.EnumHingePosition.RIGHT : BlockReinforcedDoor.EnumHingePosition.LEFT);
+
+		world.setBlockState(pos, stateToSet.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.LOWER), 2);
+		world.setBlockState(posAbove, stateToSet.withProperty(BlockDoor.HALF, BlockReinforcedDoor.EnumDoorHalf.UPPER), 2);
+		world.notifyNeighborsOfStateChange(pos, door);
+		world.notifyNeighborsOfStateChange(posAbove, door);
 	}
 
 }

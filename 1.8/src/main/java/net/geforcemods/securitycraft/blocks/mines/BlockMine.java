@@ -29,8 +29,8 @@ public class BlockMine extends BlockExplosive {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
-	public BlockMine(Material par1Material) {
-		super(par1Material);
+	public BlockMine(Material material) {
+		super(material);
 		float f = 0.2F;
 		float g = 0.1F;
 		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
@@ -65,19 +65,19 @@ public class BlockMine extends BlockExplosive {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5){
-		if (par1World.getBlockState(pos.down()).getBlock().getMaterial() != Material.air)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighbor){
+		if (world.getBlockState(pos.down()).getBlock().getMaterial() != Material.air)
 			return;
 		else
-			explode(par1World, pos);
+			explode(world, pos);
 	}
 
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.glass || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cactus || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.air || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.cake || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.plants)
+	public boolean canPlaceBlockAt(World world, BlockPos pos){
+		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.glass || BlockUtils.getBlockMaterial(world, pos.down()) == Material.cactus || BlockUtils.getBlockMaterial(world, pos.down()) == Material.air || BlockUtils.getBlockMaterial(world, pos.down()) == Material.cake || BlockUtils.getBlockMaterial(world, pos.down()) == Material.plants)
 			return false;
 		else
 			return true;
@@ -100,13 +100,13 @@ public class BlockMine extends BlockExplosive {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World par1World, BlockPos pos, Entity par5Entity){
-		if(par1World.isRemote)
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, Entity entity){
+		if(world.isRemote)
 			return;
-		else if(par5Entity instanceof EntityCreeper || par5Entity instanceof EntityOcelot || par5Entity instanceof EntityEnderman || par5Entity instanceof EntityItem)
+		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
 			return;
-		else if(par5Entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)par5Entity))
-			explode(par1World, pos);
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			explode(world, pos);
 	}
 
 	@Override
@@ -122,16 +122,16 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		if(par1World.isRemote)
+	public void explode(World world, BlockPos pos) {
+		if(world.isRemote)
 			return;
 
-		if(!((Boolean) par1World.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
-			par1World.destroyBlock(pos, false);
+		if(!((Boolean) world.getBlockState(pos).getValue(DEACTIVATED)).booleanValue()){
+			world.destroyBlock(pos, false);
 			if(SecurityCraft.config.smallerMineExplosion)
-				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
-				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
 		}
 	}
 
@@ -139,7 +139,7 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+	public Item getItemDropped(IBlockState state, Random random, int fortune){
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
@@ -147,7 +147,7 @@ public class BlockMine extends BlockExplosive {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public Item getItem(World par1World, BlockPos pos){
+	public Item getItem(World world, BlockPos pos){
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
@@ -180,7 +180,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

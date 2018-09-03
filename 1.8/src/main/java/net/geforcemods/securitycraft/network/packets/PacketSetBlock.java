@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketSetBlock implements IMessage{
 
 	private int x, y, z, meta;
-	private String blockID;
+	private String blockId;
 
 	public PacketSetBlock(){
 
@@ -34,38 +34,38 @@ public class PacketSetBlock implements IMessage{
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		blockID = id;
+		blockId = id;
 		this.meta = meta;
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, blockID);
-		par1ByteBuf.writeInt(meta);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, blockId);
+		buf.writeInt(meta);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		blockID = ByteBufUtils.readUTF8String(par1ByteBuf);
-		meta = par1ByteBuf.readInt();
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		blockId = ByteBufUtils.readUTF8String(buf);
+		meta = buf.readInt();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
 		//TODO
 		@Override
-		public IMessage onMessage(PacketSetBlock packet, MessageContext context) {
-			int x = packet.x;
-			int y = packet.y;
-			int z = packet.z;
+		public IMessage onMessage(PacketSetBlock message, MessageContext context) {
+			int x = message.x;
+			int y = message.y;
+			int z = message.z;
 			BlockPos pos = BlockUtils.toPos(x, y, z);
-			String blockID = packet.blockID;
-			int meta = packet.meta;
+			String blockId = message.blockId;
+			int meta = message.meta;
 			EntityPlayer player = context.getServerHandler().playerEntity;
 			World world = getWorld(player);
 			TileEntity te = world.getTileEntity(pos);
@@ -92,7 +92,7 @@ public class PacketSetBlock implements IMessage{
 			if(te instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) te).getPassword() != null)
 				password = ((TileEntityKeypadChest) te).getPassword();
 
-			Block block = (Block)Block.blockRegistry.getObject(blockID);
+			Block block = (Block)Block.blockRegistry.getObject(blockId);
 			getWorld(player).setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 
 			if(modules != null)

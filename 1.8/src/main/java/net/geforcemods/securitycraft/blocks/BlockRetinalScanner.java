@@ -27,8 +27,8 @@ public class BlockRetinalScanner extends BlockContainer {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockRetinalScanner(Material par1) {
-		super(par1);
+	public BlockRetinalScanner(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -46,23 +46,23 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		Block block = par1World.getBlockState(pos.north()).getBlock();
-		Block block1 = par1World.getBlockState(pos.south()).getBlock();
-		Block block2 = par1World.getBlockState(pos.west()).getBlock();
-		Block block3 = par1World.getBlockState(pos.east()).getBlock();
-		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		Block north = world.getBlockState(pos.north()).getBlock();
+		Block south = world.getBlockState(pos.south()).getBlock();
+		Block west = world.getBlockState(pos.west()).getBlock();
+		Block east = world.getBlockState(pos.east()).getBlock();
+		EnumFacing facing = (EnumFacing)state.getValue(FACING);
 
-		if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-			enumfacing = EnumFacing.SOUTH;
-		else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-			enumfacing = EnumFacing.NORTH;
-		else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-			enumfacing = EnumFacing.EAST;
-		else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-			enumfacing = EnumFacing.WEST;
+		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+			facing = EnumFacing.SOUTH;
+		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+			facing = EnumFacing.NORTH;
+		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+			facing = EnumFacing.EAST;
+		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+			facing = EnumFacing.WEST;
 
-		par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 
 	}
 
@@ -70,9 +70,9 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if (!par1World.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue())
-			BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		if (!world.isRemote && ((Boolean) state.getValue(POWERED)).booleanValue())
+			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side)
+	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side)
 	{
 		if(((Boolean) state.getValue(POWERED)).booleanValue())
 			return 15;
@@ -99,7 +99,7 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
 	}
@@ -136,7 +136,7 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

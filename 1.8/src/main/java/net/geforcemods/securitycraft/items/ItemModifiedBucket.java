@@ -27,45 +27,45 @@ public class ItemModifiedBucket extends ItemBucket {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		boolean flag = containedBlock == Blocks.air;
-		MovingObjectPosition movingobjectposition = getMovingObjectPositionFromPlayer(worldIn, playerIn, flag);
+		boolean isAir = containedBlock == Blocks.air;
+		MovingObjectPosition mop = getMovingObjectPositionFromPlayer(world, player, isAir);
 
-		if (movingobjectposition == null)
-			return itemStackIn;
+		if (mop == null)
+			return stack;
 		else
 		{
-			ItemStack ret = net.minecraftforge.event.ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, movingobjectposition);
-			if (ret != null) return ret;
+			ItemStack eventResult = net.minecraftforge.event.ForgeEventFactory.onBucketUse(player, world, stack, mop);
+			if (eventResult != null) return eventResult;
 
-			if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+			if (mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
 			{
-				BlockPos blockpos = movingobjectposition.getBlockPos();
+				BlockPos pos = mop.getBlockPos();
 
-				if (!worldIn.isBlockModifiable(playerIn, blockpos))
-					return itemStackIn;
+				if (!world.isBlockModifiable(player, pos))
+					return stack;
 
-				if (flag)
+				if (isAir)
 				{
-					if (!playerIn.canPlayerEdit(blockpos.offset(movingobjectposition.sideHit), movingobjectposition.sideHit, itemStackIn))
-						return itemStackIn;
+					if (!player.canPlayerEdit(pos.offset(mop.sideHit), mop.sideHit, stack))
+						return stack;
 
-					IBlockState iblockstate = worldIn.getBlockState(blockpos);
-					Material material = iblockstate.getBlock().getMaterial();
+					IBlockState state = world.getBlockState(pos);
+					Material material = state.getBlock().getMaterial();
 
-					if (material == Material.water && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+					if (material == Material.water && ((Integer)state.getValue(BlockLiquid.LEVEL)).intValue() == 0)
 					{
-						worldIn.setBlockToAir(blockpos);
-						playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-						return fillBucket(itemStackIn, playerIn, SCContent.fWaterBucket);
+						world.setBlockToAir(pos);
+						player.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+						return fillBucket(stack, player, SCContent.fWaterBucket);
 					}
 
-					if (material == Material.lava && ((Integer)iblockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0)
+					if (material == Material.lava && ((Integer)state.getValue(BlockLiquid.LEVEL)).intValue() == 0)
 					{
-						worldIn.setBlockToAir(blockpos);
-						playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
-						return fillBucket(itemStackIn, playerIn, SCContent.fLavaBucket);
+						world.setBlockToAir(pos);
+						player.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+						return fillBucket(stack, player, SCContent.fLavaBucket);
 					}
 				}
 				else
@@ -73,68 +73,68 @@ public class ItemModifiedBucket extends ItemBucket {
 					if (containedBlock == Blocks.air)
 						return new ItemStack(Items.bucket);
 
-					BlockPos blockpos1 = blockpos.offset(movingobjectposition.sideHit);
+					BlockPos posOffset = pos.offset(mop.sideHit);
 
-					if (!playerIn.canPlayerEdit(blockpos1, movingobjectposition.sideHit, itemStackIn))
-						return itemStackIn;
+					if (!player.canPlayerEdit(posOffset, mop.sideHit, stack))
+						return stack;
 
-					if (tryPlaceContainedLiquid(worldIn, blockpos1) && !playerIn.capabilities.isCreativeMode)
+					if (tryPlaceContainedLiquid(world, posOffset) && !player.capabilities.isCreativeMode)
 					{
-						playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
+						player.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
 						return new ItemStack(Items.bucket);
 					}
 				}
 			}
 
-			return itemStackIn;
+			return stack;
 		}
 	}
 
-	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket)
+	private ItemStack fillBucket(ItemStack emptyBucket, EntityPlayer player, Item fullBucket)
 	{
 		if (player.capabilities.isCreativeMode)
-			return emptyBuckets;
-		else if (--emptyBuckets.stackSize <= 0)
+			return emptyBucket;
+		else if (--emptyBucket.stackSize <= 0)
 			return new ItemStack(fullBucket);
 		else
 		{
 			if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket)))
 				player.dropPlayerItemWithRandomChoice(new ItemStack(fullBucket, 1, 0), false);
 
-			return emptyBuckets;
+			return emptyBucket;
 		}
 	}
 
 	@Override
-	public boolean tryPlaceContainedLiquid(World worldIn, BlockPos pos)
+	public boolean tryPlaceContainedLiquid(World world, BlockPos pos)
 	{
 		if (containedBlock == Blocks.air)
 			return false;
 		else
 		{
-			Material material = worldIn.getBlockState(pos).getBlock().getMaterial();
-			boolean flag = !material.isSolid();
+			Material material = world.getBlockState(pos).getBlock().getMaterial();
+			boolean isNotSolid = !material.isSolid();
 
-			if (!worldIn.isAirBlock(pos) && !flag)
+			if (!world.isAirBlock(pos) && !isNotSolid)
 				return false;
 			else
 			{
-				if (worldIn.provider.doesWaterVaporize() && containedBlock == Blocks.flowing_water)
+				if (world.provider.doesWaterVaporize() && containedBlock == Blocks.flowing_water)
 				{
-					int i = pos.getX();
-					int j = pos.getY();
-					int k = pos.getZ();
-					worldIn.playSoundEffect(i + 0.5F, j + 0.5F, k + 0.5F, "random.fizz", 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
+					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
 					for (int l = 0; l < 8; ++l)
-						worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, i + Math.random(), j + Math.random(), k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
 				}
 				else
 				{
-					if (!worldIn.isRemote && flag && !material.isLiquid())
-						worldIn.destroyBlock(pos, true);
+					if (!world.isRemote && isNotSolid && !material.isLiquid())
+						world.destroyBlock(pos, true);
 
-					worldIn.setBlockState(pos, containedBlock.getDefaultState(), 3);
+					world.setBlockState(pos, containedBlock.getDefaultState(), 3);
 				}
 
 				return true;

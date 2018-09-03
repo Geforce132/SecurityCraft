@@ -8,28 +8,28 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketGivePotionEffect implements IMessage{
 
-	private int potionID, duration, amplifier;
+	private int potionId, duration, amplifier;
 
 	public PacketGivePotionEffect(){
 
 	}
 
-	public PacketGivePotionEffect(int potionID, int duration, int amplifier){
-		this.potionID = potionID;
+	public PacketGivePotionEffect(int potionId, int duration, int amplifier){
+		this.potionId = potionId;
 		this.duration = duration;
 		this.amplifier = amplifier;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		potionID = buf.readInt();
+		potionId = buf.readInt();
 		duration = buf.readInt();
 		amplifier = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(potionID);
+		buf.writeInt(potionId);
 		buf.writeInt(duration);
 		buf.writeInt(amplifier);
 	}
@@ -37,8 +37,8 @@ public class PacketGivePotionEffect implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-			ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(packet.potionID, packet.duration, packet.amplifier, false, true));
+		public IMessage onMessage(PacketGivePotionEffect message, MessageContext ctx) {
+			ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(message.potionId, message.duration, message.amplifier, false, true));
 			return null;
 		}
 

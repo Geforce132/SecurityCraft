@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"rawtypes"})
 public class ItemKeycardBase extends Item{
 
 	private final int level;
@@ -22,7 +22,7 @@ public class ItemKeycardBase extends Item{
 		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
-	public int getKeycardLV(ItemStack par1ItemStack){
+	public int getKeycardLvl(ItemStack stack){
 		if(level == 0)
 			return 1;
 		else if(level == 1)
@@ -41,14 +41,14 @@ public class ItemKeycardBase extends Item{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		if(level == 3){
-			if(par1ItemStack.getTagCompound() == null){
-				par1ItemStack.setTagCompound(new NBTTagCompound());
-				par1ItemStack.getTagCompound().setInteger("Uses", 5);
+			if(stack.getTagCompound() == null){
+				stack.setTagCompound(new NBTTagCompound());
+				stack.getTagCompound().setInteger("Uses", 5);
 			}
 
-			par3List.add(StatCollector.translateToLocal("tooltip.securitycraft:keycard.uses") + " " + par1ItemStack.getTagCompound().getInteger("Uses"));
+			list.add(StatCollector.translateToLocal("tooltip.securitycraft:keycard.uses") + " " + stack.getTagCompound().getInteger("Uses"));
 
 		}
 	}

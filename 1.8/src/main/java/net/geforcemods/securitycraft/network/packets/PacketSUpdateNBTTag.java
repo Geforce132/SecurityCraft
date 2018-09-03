@@ -10,38 +10,38 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSUpdateNBTTag implements IMessage{
 
-	private NBTTagCompound stack;
+	private NBTTagCompound stackTag;
 	private String itemName;
 
 	public PacketSUpdateNBTTag(){
 
 	}
 
-	public PacketSUpdateNBTTag(ItemStack par1ItemStack){
-		if(par1ItemStack != null && par1ItemStack.hasTagCompound()){
-			stack = par1ItemStack.getTagCompound();
-			itemName = par1ItemStack.getUnlocalizedName();
+	public PacketSUpdateNBTTag(ItemStack stack){
+		if(stack != null && stack.hasTagCompound()){
+			stackTag = stack.getTagCompound();
+			itemName = stack.getUnlocalizedName();
 		}
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		stack = ByteBufUtils.readTag(buf);
+		stackTag = ByteBufUtils.readTag(buf);
 		itemName = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeTag(buf, stack);
+		ByteBufUtils.writeTag(buf, stackTag);
 		ByteBufUtils.writeUTF8String(buf, itemName);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateNBTTag, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
-			if(context.getServerHandler().playerEntity.getCurrentEquippedItem() != null && context.getServerHandler().playerEntity.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(packet.itemName))
-				context.getServerHandler().playerEntity.getCurrentEquippedItem().setTagCompound(packet.stack);
+		public IMessage onMessage(PacketSUpdateNBTTag message, MessageContext context) {
+			if(context.getServerHandler().playerEntity.getCurrentEquippedItem() != null && context.getServerHandler().playerEntity.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(message.itemName))
+				context.getServerHandler().playerEntity.getCurrentEquippedItem().setTagCompound(message.stackTag);
 
 			return null;
 		}

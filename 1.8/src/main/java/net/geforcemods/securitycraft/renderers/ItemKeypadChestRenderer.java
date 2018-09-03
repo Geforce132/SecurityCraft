@@ -10,13 +10,13 @@ import net.minecraft.item.ItemStack;
 public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 
 	@Override
-	public void renderByItem(ItemStack item) {
-		Block block = Block.getBlockFromItem(item.getItem());
+	public void renderByItem(ItemStack stack) {
+		Block block = Block.getBlockFromItem(stack.getItem());
 
 		if (block == SCContent.keypadChest)
 			TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
 		else
-			super.renderByItem(item);
+			super.renderByItem(stack);
 
 	}
 

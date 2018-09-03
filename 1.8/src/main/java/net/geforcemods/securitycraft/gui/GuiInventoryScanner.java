@@ -31,11 +31,11 @@ public class GuiInventoryScanner extends GuiContainer {
 	private EntityPlayer playerObj;
 	private boolean hasStorageModule = false;
 
-	public GuiInventoryScanner(IInventory par1IInventory, TileEntityInventoryScanner par2TileEntity, EntityPlayer par3EntityPlayer){
-		super(new ContainerInventoryScanner(par1IInventory, par2TileEntity));
-		tileEntity = par2TileEntity;
-		playerObj = par3EntityPlayer;
-		hasStorageModule = ((CustomizableSCTE) par2TileEntity).hasModule(EnumCustomModules.STORAGE);
+	public GuiInventoryScanner(IInventory inventory, TileEntityInventoryScanner te, EntityPlayer player){
+		super(new ContainerInventoryScanner(inventory, te));
+		tileEntity = te;
+		playerObj = player;
+		hasStorageModule = ((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;
@@ -55,8 +55,8 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3){
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
 		if(!buttonList.isEmpty()){
@@ -86,26 +86,26 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char par1, int par2) throws IOException{
-		super.keyTyped(par1, par2);
+	protected void keyTyped(char typedChar, int keyCode) throws IOException{
+		super.keyTyped(typedChar, keyCode);
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) throws IOException{
-		super.mouseClicked(par1, par2, par3);
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
+		super.mouseClicked(mouseX, mouseY, mouseButton);
 
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button){
+		switch(button.id){
 			case 0:
-				if(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
-					guibutton.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone");
-				else if(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
-					guibutton.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv");
+				if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
+					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone");
+				else if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
+					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv");
 
-				saveType(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
+				saveType(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}
@@ -122,7 +122,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRendererObj.drawString("Prohibited Items", 8, 6, 4210752);
 		fontRendererObj.drawString(tileEntity.getOwner().isOwner(playerObj) ? (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.securitycraft:invScan.mode.admin")) : (EnumChatFormatting.UNDERLINE + StatCollector.translateToLocal("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
@@ -134,14 +134,14 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule)
 			mc.getTextureManager().bindTexture(exhancedInventory);
 		else
 			mc.getTextureManager().bindTexture(regularInventory);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize + 30);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize + 30);
 	}
 }

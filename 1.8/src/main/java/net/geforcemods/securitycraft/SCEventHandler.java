@@ -598,15 +598,15 @@ public class SCEventHandler {
 	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
 	{
 		double z = 200;
-		double f = 1F / (double) textureWidth;
-		double f1 = 1F / (double) textureHeight;
+		double widthFactor = 1F / (double) textureWidth;
+		double heightFactor = 1F / (double) textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertexWithUV(x, y + height, z, u * f, (v + height) * f1);
-		worldrenderer.addVertexWithUV(x + width, y + height, z, (u + width) * f, (v + height) * f1);
-		worldrenderer.addVertexWithUV(x + width, y, z, (u + width) * f, v * f1);
-		worldrenderer.addVertexWithUV(x, y, z, u * f, v * f1);
+		worldrenderer.addVertexWithUV(x, y + height, z, u * widthFactor, (v + height) * heightFactor);
+		worldrenderer.addVertexWithUV(x + width, y + height, z, (u + width) * widthFactor, (v + height) * heightFactor);
+		worldrenderer.addVertexWithUV(x + width, y, z, (u + width) * widthFactor, v * heightFactor);
+		worldrenderer.addVertexWithUV(x, y, z, u * widthFactor, v * heightFactor);
 		tessellator.draw();
 	}
 

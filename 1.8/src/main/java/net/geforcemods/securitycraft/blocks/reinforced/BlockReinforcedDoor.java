@@ -31,140 +31,140 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock){
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock){
 		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
-			BlockPos blockpos1 = pos.down();
-			IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+			BlockPos blockBelow = pos.down();
+			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if (iblockstate1.getBlock() != this)
-				worldIn.setBlockToAir(pos);
+			if (stateBelow.getBlock() != this)
+				world.setBlockToAir(pos);
 			else if (neighborBlock != this)
-				onNeighborBlockChange(worldIn, blockpos1, iblockstate1, neighborBlock);
+				onNeighborBlockChange(world, blockBelow, stateBelow, neighborBlock);
 		}
 		else
 		{
-			boolean flag1 = false;
-			BlockPos blockpos2 = pos.up();
-			IBlockState iblockstate2 = worldIn.getBlockState(blockpos2);
+			boolean isNotDoor = false;
+			BlockPos blockAbove = pos.up();
+			IBlockState stateAbove = world.getBlockState(blockAbove);
 
-			if (iblockstate2.getBlock() != this)
+			if (stateAbove.getBlock() != this)
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				isNotDoor = true;
 			}
 
-			if (!World.doesBlockHaveSolidTopSurface(worldIn, pos.down()))
+			if (!World.doesBlockHaveSolidTopSurface(world, pos.down()))
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				isNotDoor = true;
 
-				if (iblockstate2.getBlock() == this)
-					worldIn.setBlockToAir(blockpos2);
+				if (stateAbove.getBlock() == this)
+					world.setBlockToAir(blockAbove);
 			}
 
-			if (flag1)
+			if (isNotDoor)
 			{
-				if (!worldIn.isRemote)
-					dropBlockAsItem(worldIn, pos, state, 0);
+				if (!world.isRemote)
+					dropBlockAsItem(world, pos, state, 0);
 			}
 			else
 			{
-				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(worldIn, pos) || BlockUtils.hasActiveSCBlockNextTo(worldIn, pos.up());
+				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.up());
 
-				if (((hasActiveSCBlock || neighborBlock.canProvidePower())) && neighborBlock != this && hasActiveSCBlock != ((Boolean)iblockstate2.getValue(POWERED)).booleanValue())
+				if (((hasActiveSCBlock || neighborBlock.canProvidePower())) && neighborBlock != this && hasActiveSCBlock != ((Boolean)stateAbove.getValue(POWERED)).booleanValue())
 				{
-					worldIn.setBlockState(blockpos2, iblockstate2.withProperty(POWERED, hasActiveSCBlock), 2);
+					world.setBlockState(blockAbove, stateAbove.withProperty(POWERED, hasActiveSCBlock), 2);
 
 					if (hasActiveSCBlock != ((Boolean)state.getValue(OPEN)).booleanValue())
 					{
-						worldIn.setBlockState(pos, state.withProperty(OPEN, hasActiveSCBlock), 2);
-						worldIn.markBlockRangeForRenderUpdate(pos, pos);
+						world.setBlockState(pos, state.withProperty(OPEN, hasActiveSCBlock), 2);
+						world.markBlockRangeForRenderUpdate(pos, pos);
 
 						IBlockState secondDoorState;
 
 						if(state.getValue(FACING) == EnumFacing.WEST)
 						{
-							secondDoorState = worldIn.getBlockState(pos.north());
+							secondDoorState = world.getBlockState(pos.north());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 							{
-								worldIn.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								worldIn.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+								world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+								world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
 							}
 							else
 							{
-								secondDoorState = worldIn.getBlockState(pos.south());
+								secondDoorState = world.getBlockState(pos.south());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 								{
-									worldIn.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									worldIn.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+									world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+									world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
 								}
 							}
 						}
 						else if(state.getValue(FACING) == EnumFacing.NORTH)
 						{
-							secondDoorState = worldIn.getBlockState(pos.east());
+							secondDoorState = world.getBlockState(pos.east());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 							{
-								worldIn.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								worldIn.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+								world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+								world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
 							}
 							else
 							{
-								secondDoorState = worldIn.getBlockState(pos.west());
+								secondDoorState = world.getBlockState(pos.west());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 								{
-									worldIn.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									worldIn.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+									world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+									world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
 								}
 							}
 						}
 						else if(state.getValue(FACING) == EnumFacing.EAST)
 						{
-							secondDoorState = worldIn.getBlockState(pos.south());
+							secondDoorState = world.getBlockState(pos.south());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 							{
-								worldIn.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								worldIn.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+								world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+								world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
 							}
 							else
 							{
-								secondDoorState = worldIn.getBlockState(pos.north());
+								secondDoorState = world.getBlockState(pos.north());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 								{
-									worldIn.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									worldIn.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+									world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+									world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
 								}
 							}
 						}
 						else if(state.getValue(FACING) == EnumFacing.SOUTH)
 						{
-							secondDoorState = worldIn.getBlockState(pos.west());
+							secondDoorState = world.getBlockState(pos.west());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 							{
-								worldIn.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-								worldIn.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+								world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+								world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
 							}
 							else
 							{
-								secondDoorState = worldIn.getBlockState(pos.east());
+								secondDoorState = world.getBlockState(pos.east());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && ((Boolean)secondDoorState.getValue(OPEN)).booleanValue() != hasActiveSCBlock)
 								{
-									worldIn.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
-									worldIn.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+									world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
+									world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
 								}
 							}
 						}
 
-						worldIn.playAuxSFXAtEntity((EntityPlayer)null, hasActiveSCBlock ? 1003 : 1006, pos, 0);
+						world.playAuxSFXAtEntity((EntityPlayer)null, hasActiveSCBlock ? 1003 : 1006, pos, 0);
 					}
 				}
 			}
@@ -172,17 +172,17 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam)
 	{
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
@@ -198,7 +198,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 }

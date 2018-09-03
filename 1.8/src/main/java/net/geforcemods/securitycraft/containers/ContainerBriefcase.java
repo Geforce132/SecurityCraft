@@ -11,7 +11,7 @@ public class ContainerBriefcase extends Container {
 
 	private BriefcaseInventory inventory;
 
-	public ContainerBriefcase(EntityPlayer par1Player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
+	public ContainerBriefcase(EntityPlayer player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
 		inventory = briefcaseInventory;
 
 		for(int i = 0; i < 3; i++)
@@ -27,36 +27,36 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
-		ItemStack itemstack = null;
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+		ItemStack slotStackCopy = null;
 		Slot slot = (Slot) inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
 
 			if(index < BriefcaseInventory.SIZE) {
-				if(!mergeItemStack(itemstack1, BriefcaseInventory.SIZE, 48, true))
+				if(!mergeItemStack(slotStack, BriefcaseInventory.SIZE, 48, true))
 					return null;
 
-				slot.onSlotChange(itemstack1, itemstack);
+				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(index >= BriefcaseInventory.SIZE)
-				if(!mergeItemStack(itemstack1, 0, BriefcaseInventory.SIZE, false))
+				if(!mergeItemStack(slotStack, 0, BriefcaseInventory.SIZE, false))
 					return null;
 
-			if(itemstack1.stackSize == 0)
+			if(slotStack.stackSize == 0)
 				slot.putStack((ItemStack) null);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.stackSize == itemstack.stackSize)
+			if(slotStack.stackSize == slotStackCopy.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override

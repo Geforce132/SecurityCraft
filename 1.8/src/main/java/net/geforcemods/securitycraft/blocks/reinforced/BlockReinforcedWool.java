@@ -27,14 +27,14 @@ public class BlockReinforcedWool extends BlockColored implements ITileEntityProv
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}

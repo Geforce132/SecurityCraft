@@ -11,20 +11,20 @@ public class Utils {
 	/**
 	 * Removes the last character in the given String. <p>
 	 */
-	public static String removeLastChar(String par1){
-		if(par1 == null || par1.isEmpty())
+	public static String removeLastChar(String string){
+		if(string == null || string.isEmpty())
 			return "";
 
-		return par1.substring(0, par1.length() - 1);
+		return string.substring(0, string.length() - 1);
 	}
 
 	public static String getFormattedCoordinates(BlockPos pos){
 		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
 	}
 
-	public static void setISinTEAppropriately(World par1World, BlockPos pos, ItemStack[] contents, String type)
+	public static void setISinTEAppropriately(World world, BlockPos pos, ItemStack[] contents, String type)
 	{
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(par1World, pos);
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner == null)
 			return;

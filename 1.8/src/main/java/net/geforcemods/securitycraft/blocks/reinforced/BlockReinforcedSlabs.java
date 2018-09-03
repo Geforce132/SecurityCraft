@@ -48,9 +48,9 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -60,26 +60,26 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list){
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
 		if(slabMaterial != Material.ground){
-			BlockReinforcedSlabs.EnumType[] aenumtype = BlockReinforcedSlabs.EnumType.values();
+			BlockReinforcedSlabs.EnumType[] values = BlockReinforcedSlabs.EnumType.values();
 
-			for(int i = 0; i < aenumtype.length; i++){
-				BlockReinforcedSlabs.EnumType enumtype = aenumtype[i];
+			for(int i = 0; i < values.length; i++){
+				BlockReinforcedSlabs.EnumType type = values[i];
 
-				if(enumtype.getMetadata() == 3) //skip dirt slab
+				if(type.getMetadata() == 3) //skip dirt slab
 					continue;
 
-				list.add(new ItemStack(itemIn, 1, enumtype.getMetadata()));
+				list.add(new ItemStack(item, 1, type.getMetadata()));
 			}
 		}
 		else
-			list.add(new ItemStack(itemIn, 1, BlockReinforcedSlabs.EnumType.DIRT.getMetadata()));
+			list.add(new ItemStack(item, 1, BlockReinforcedSlabs.EnumType.DIRT.getMetadata()));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World worldIn, BlockPos pos){
+	public Item getItem(World world, BlockPos pos){
 		return slabMaterial == Material.ground ? Item.getItemFromBlock(SCContent.reinforcedDirtSlab) : Item.getItemFromBlock(SCContent.reinforcedStoneSlabs);
 	}
 
@@ -105,22 +105,22 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState iblockstate = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
+		IBlockState state = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
 
-		iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
-		return iblockstate;
+		return state;
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state){
 		byte b0 = 0;
-		int i = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
+		int meta = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
 
 		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
-			i |= 8;
+			meta |= 8;
 
-		return i;
+		return meta;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -190,19 +190,18 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		}
 
 		static {
-			BlockReinforcedSlabs.EnumType[] var0 = values();
-			int var1 = var0.length;
+			BlockReinforcedSlabs.EnumType[] values = values();
 
-			for(int var2 = 0; var2 < var1; ++var2){
-				BlockReinforcedSlabs.EnumType var3 = var0[var2];
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for(int i = 0; i < values.length; ++i){
+				BlockReinforcedSlabs.EnumType type = values[i];
+				META_LOOKUP[type.getMetadata()] = type;
 			}
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}

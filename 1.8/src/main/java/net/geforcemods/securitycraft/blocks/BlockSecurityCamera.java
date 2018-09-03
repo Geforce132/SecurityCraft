@@ -35,12 +35,12 @@ public class BlockSecurityCamera extends BlockContainer{
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockSecurityCamera(Material par2Material) {
-		super(par2Material);
+	public BlockSecurityCamera(Material material) {
+		super(material);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state){
+	public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state){
 		return null;
 	}
 
@@ -76,7 +76,7 @@ public class BlockSecurityCamera extends BlockContainer{
 			return;
 
 		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum((World) world, pos, FACING);
-		float px = 1.0F/16.0F; //one sixteenth of a block
+		float px = 1.0F / 16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
 			setBlockBounds(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -91,67 +91,67 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-		IBlockState iblockstate = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+		IBlockState state = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
 
-		if(worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing))
-			return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
+		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
+			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		else{
 			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 			EnumFacing enumfacing1;
 
 			do{
 				if(!iterator.hasNext())
-					return iblockstate;
+					return state;
 
 				enumfacing1 = (EnumFacing)iterator.next();
-			}while (!worldIn.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
+			}while (!world.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
 
-			return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
+			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		}
 	}
 
 	@Override
-	public void onNeighborBlockChange(World par1World, BlockPos pos, IBlockState state, Block par5Block){
-		if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.NORTH)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighbor){
+		if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.NORTH)
 		{
-			if(!par1World.isSideSolid(pos.south(), EnumFacing.NORTH))
-				BlockUtils.destroyBlock(par1World, pos, true);
+			if(!world.isSideSolid(pos.south(), EnumFacing.NORTH))
+				BlockUtils.destroyBlock(world, pos, true);
 		}
-		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.SOUTH)
+		else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.SOUTH)
 		{
-			if(!par1World.isSideSolid(pos.north(), EnumFacing.SOUTH))
-				BlockUtils.destroyBlock(par1World, pos, true);
+			if(!world.isSideSolid(pos.north(), EnumFacing.SOUTH))
+				BlockUtils.destroyBlock(world, pos, true);
 		}
-		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.EAST)
+		else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.EAST)
 		{
-			if(!par1World.isSideSolid(pos.west(), EnumFacing.EAST))
-				BlockUtils.destroyBlock(par1World, pos, true);
+			if(!world.isSideSolid(pos.west(), EnumFacing.EAST))
+				BlockUtils.destroyBlock(world, pos, true);
 		}
-		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.WEST)
+		else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.WEST)
 		{
-			if(!par1World.isSideSolid(pos.east(), EnumFacing.WEST))
-				BlockUtils.destroyBlock(par1World, pos, true);
+			if(!world.isSideSolid(pos.east(), EnumFacing.WEST))
+				BlockUtils.destroyBlock(world, pos, true);
 		}
-		else if(BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING) == EnumFacing.DOWN)
+		else if(BlockUtils.getBlockPropertyAsEnum(world, pos, FACING) == EnumFacing.DOWN)
 		{
-			if(!par1World.isSideSolid(pos.up(), EnumFacing.DOWN))
-				BlockUtils.destroyBlock(par1World, pos, true);
+			if(!world.isSideSolid(pos.up(), EnumFacing.DOWN))
+				BlockUtils.destroyBlock(world, pos, true);
 		}
 	}
 
-	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
+	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
 		if(!world.isRemote && player.ridingEntity == null)
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:securityCamera.name"), StatCollector.translateToLocal("messages.securitycraft:securityCamera.mounted"), EnumChatFormatting.GREEN);
 
 		if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera){
-			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.ridingEntity);
+			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.ridingEntity);
 			world.spawnEntityInWorld(dummyEntity);
 			player.mountEntity(dummyEntity);
 			return;
 		}
 
-		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
+		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
 		world.spawnEntityInWorld(dummyEntity);
 		player.mountEntity(dummyEntity);
 
@@ -162,8 +162,8 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-		return (side != EnumFacing.UP) ? (side == EnumFacing.DOWN ? true : super.canPlaceBlockOnSide(worldIn, pos, side)) : false;
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
+		return (side != EnumFacing.UP) ? (side == EnumFacing.DOWN ? true : super.canPlaceBlockOnSide(world, pos, side)) : false;
 	}
 
 	@Override
@@ -182,16 +182,16 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-		if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+	public int isProvidingWeakPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side){
+		if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, BlockPos pos, IBlockState state, EnumFacing side){
-		if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) par1IBlockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+	public int isProvidingStrongPower(IBlockAccess world, BlockPos pos, IBlockState state, EnumFacing side){
+		if(((Boolean) state.getValue(POWERED)).booleanValue() && ((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -229,7 +229,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntitySecurityCamera().nameable();
 	}
 

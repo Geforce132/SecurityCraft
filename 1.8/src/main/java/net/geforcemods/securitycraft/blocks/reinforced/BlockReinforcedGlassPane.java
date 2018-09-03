@@ -21,28 +21,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedGlassPane(Material par1Material, boolean par2) {
-		super(par1Material, par2);
+	public BlockReinforcedGlassPane(Material material, boolean canDrop) {
+		super(material, canDrop);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 26);
 	}
 
 	@Override
-	public void breakBlock(World p_149749_1_, BlockPos pos, IBlockState state){
-		super.breakBlock(p_149749_1_, pos, state);
-		p_149749_1_.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World p_149696_1_, BlockPos pos, IBlockState state, int p_149696_5_, int p_149696_6_){
-		super.onBlockEventReceived(p_149696_1_, pos, state, p_149696_5_, p_149696_6_);
-		TileEntity tileentity = p_149696_1_.getTileEntity(pos);
-		return tileentity != null ? tileentity.receiveClientEvent(p_149696_5_, p_149696_6_) : false;
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam){
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
+		TileEntity tileentity = world.getTileEntity(pos);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, eventParam) : false;
 	}
 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, BlockPos pos){
+	public Item getItem(World world, BlockPos pos){
 		return Item.getItemFromBlock(this);
 	}
 
@@ -51,12 +51,12 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+	public Item getItemDropped(IBlockState state, Random random, int fortune){
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

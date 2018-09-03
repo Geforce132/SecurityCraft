@@ -84,7 +84,7 @@ public class GuiSlider extends GuiButtonExt
 	 * this button.
 	 */
 	@Override
-	public int getHoverState(boolean par1)
+	public int getHoverState(boolean mouseOver)
 	{
 		return 0;
 	}
@@ -96,13 +96,13 @@ public class GuiSlider extends GuiButtonExt
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
 	 */
 	@Override
-	protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3)
+	protected void mouseDragged(Minecraft mc, int mouseX, int mouseY)
 	{
 		if (visible)
 		{
 			if (dragging)
 			{
-				sliderValue = (par2 - (xPosition + 4)) / (double)(width - 8);
+				sliderValue = (mouseX - (xPosition + 4)) / (double)(width - 8);
 				updateSlider();
 			}
 
@@ -121,11 +121,11 @@ public class GuiSlider extends GuiButtonExt
 	 * e).
 	 */
 	@Override
-	public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
+	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
 	{
-		if (super.mousePressed(par1Minecraft, par2, par3))
+		if (super.mousePressed(mc, mouseX, mouseY))
 		{
-			sliderValue = (double)(par2 - (xPosition + 4)) / (double)(width - 8);
+			sliderValue = (double)(mouseX - (xPosition + 4)) / (double)(width - 8);
 			updateSlider();
 			dragging = true;
 			return true;
@@ -173,7 +173,7 @@ public class GuiSlider extends GuiButtonExt
 	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
 	 */
 	@Override
-	public void mouseReleased(int par1, int par2)
+	public void mouseReleased(int mouseX, int mouseY)
 	{
 		dragging = false;
 	}

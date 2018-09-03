@@ -14,16 +14,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockOwnable extends BlockContainer {
 
 	//if the color should be darkened, only used for reinforced blocks
-	private boolean flag;
+	private boolean darkenBlock;
 
-	public BlockOwnable(Material par1) {
-		this(par1, false);
+	public BlockOwnable(Material material) {
+		this(material, false);
 	}
 
-	public BlockOwnable(Material mat, boolean f)
+	public BlockOwnable(Material mat, boolean darkenBlock)
 	{
 		super(mat);
-		flag = f;
+		this.darkenBlock = darkenBlock;
 	}
 
 	@Override
@@ -33,28 +33,28 @@ public class BlockOwnable extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
 	{
-		return !flag ? super.colorMultiplier(worldIn, pos, renderPass) : 0x999999;
+		return !darkenBlock ? super.colorMultiplier(world, pos, renderPass) : 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(IBlockState state)
 	{
-		return !flag ? super.getRenderColor(state) : 0x999999;
+		return !darkenBlock ? super.getRenderColor(state) : 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
-		return !flag ? super.getBlockColor() : 0x999999;
+		return !darkenBlock ? super.getBlockColor() : 0x999999;
 	}
 }

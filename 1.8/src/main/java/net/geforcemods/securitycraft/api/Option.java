@@ -84,26 +84,26 @@ public class Option<T> {
 		return (Float) value;
 	}
 
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(NBTTagCompound tag) {
 		if(value instanceof Boolean)
-			value = (T) ((Boolean) compound.getBoolean(name));
+			value = (T) ((Boolean) tag.getBoolean(name));
 		else if(value instanceof Integer)
-			value = (T) ((Integer) compound.getInteger(name));
+			value = (T) ((Integer) tag.getInteger(name));
 		else if(value instanceof Double)
-			value = (T) ((Double) compound.getDouble(name));
+			value = (T) ((Double) tag.getDouble(name));
 		else if(value instanceof Float)
-			value = (T) ((Float) compound.getFloat(name));
+			value = (T) ((Float) tag.getFloat(name));
 	}
 
-	public void writeToNBT(NBTTagCompound compound) {
+	public void writeToNBT(NBTTagCompound tag) {
 		if(value instanceof Boolean)
-			compound.setBoolean(name, asBoolean());
+			tag.setBoolean(name, asBoolean());
 		else if(value instanceof Integer)
-			compound.setInteger(name, asInteger());
+			tag.setInteger(name, asInteger());
 		else if(value instanceof Double)
-			compound.setDouble(name, asDouble());
+			tag.setDouble(name, asDouble());
 		else if(value instanceof Float)
-			compound.setFloat(name, asFloat());
+			tag.setFloat(name, asFloat());
 	}
 
 	/**

@@ -26,34 +26,34 @@ public class PacketSetExplosiveState implements IMessage{
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		state = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		state = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, state);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, state);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetExplosiveState, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSetExplosiveState packet, MessageContext context) {
+		public IMessage onMessage(PacketSetExplosiveState message, MessageContext context) {
 			EntityPlayer player = context.getServerHandler().playerEntity;
 
-			if(BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) != null && BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z) instanceof IExplosive)
-				if(packet.state.equalsIgnoreCase("activate"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).activateMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
-				else if(packet.state.equalsIgnoreCase("defuse"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).defuseMine(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
-				else if(packet.state.equalsIgnoreCase("detonate"))
-					((IExplosive) BlockUtils.getBlock(getWorld(player), packet.x, packet.y, packet.z)).explode(getWorld(player), BlockUtils.toPos(packet.x, packet.y, packet.z));
+			if(BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z) != null && BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z) instanceof IExplosive)
+				if(message.state.equalsIgnoreCase("activate"))
+					((IExplosive) BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z)).activateMine(getWorld(player), BlockUtils.toPos(message.x, message.y, message.z));
+				else if(message.state.equalsIgnoreCase("defuse"))
+					((IExplosive) BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z)).defuseMine(getWorld(player), BlockUtils.toPos(message.x, message.y, message.z));
+				else if(message.state.equalsIgnoreCase("detonate"))
+					((IExplosive) BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z)).explode(getWorld(player), BlockUtils.toPos(message.x, message.y, message.z));
 
 			return null;
 		}

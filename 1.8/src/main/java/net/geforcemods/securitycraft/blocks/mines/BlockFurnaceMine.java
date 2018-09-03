@@ -26,37 +26,37 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockFurnaceMine(Material par1Material) {
-		super(par1Material);
+	public BlockFurnaceMine(Material material) {
+		super(material);
 	}
 
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion)
+	public void onBlockDestroyedByExplosion(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!par1World.isRemote)
+		if (!world.isRemote)
 		{
-			if(pos.equals(new BlockPos(par5Explosion.getPosition())))
+			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			explode(par1World, pos);
+			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote)
-			explode(par1World, pos);
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state){
+		if (!world.isRemote)
+			explode(world, pos);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(par1World.isRemote)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(world.isRemote)
 			return true;
-		else if(par5EntityPlayer.getCurrentEquippedItem().getItem() != SCContent.remoteAccessMine){
-			explode(par1World, pos);
+		else if(player.getCurrentEquippedItem().getItem() != SCContent.remoteAccessMine){
+			explode(world, pos);
 			return true;
 		}
 		else
@@ -64,7 +64,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
@@ -75,13 +75,13 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	public void defuseMine(World world, BlockPos pos) {}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		par1World.destroyBlock(pos, false);
+	public void explode(World world, BlockPos pos) {
+		world.destroyBlock(pos, false);
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
 		else
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
 
 	}
 
@@ -89,7 +89,7 @@ public class BlockFurnaceMine extends BlockOwnable implements IExplosive, ICusto
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion par1Explosion)
+	public boolean canDropFromExplosion(Explosion explosion)
 	{
 		return false;
 	}

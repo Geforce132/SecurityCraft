@@ -43,12 +43,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
 		BlockReinforcedMetals.EnumType[] aenumtype = BlockReinforcedMetals.EnumType.values();
 
 		for (BlockReinforcedMetals.EnumType enumtype : aenumtype)
-			list.add(new ItemStack(itemIn, 1, enumtype.getMetadata()));
+			list.add(new ItemStack(item, 1, enumtype.getMetadata()));
 	}
 
 	/**

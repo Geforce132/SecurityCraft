@@ -9,10 +9,10 @@ import net.minecraft.potion.PotionEffect;
 public class EntityUtils{
 
 	public static boolean doesMobHavePotionEffect(EntityLivingBase mob, Potion potion){
-		Iterator<?> iterator = mob.getActivePotionEffects().iterator();
+		Iterator<?> activeEffects = mob.getActivePotionEffects().iterator();
 
-		while(iterator.hasNext()){
-			PotionEffect effect = (PotionEffect) iterator.next();
+		while(activeEffects.hasNext()){
+			PotionEffect effect = (PotionEffect) activeEffects.next();
 			String eName = effect.getEffectName();
 
 			if(eName.matches(potion.getName()))

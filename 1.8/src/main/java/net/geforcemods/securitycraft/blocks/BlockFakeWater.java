@@ -27,48 +27,48 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 
 	int adjacentSourceBlocks;
 
-	public BlockFakeWater(Material par2Material)
+	public BlockFakeWater(Material material)
 	{
-		super(par2Material);
+		super(material);
 	}
 
 	/**
 	 * Updates the flow for the BlockFlowing object.
 	 */
-	private void placeStaticBlock(World par1World, BlockPos pos, IBlockState state)
+	private void placeStaticBlock(World world, BlockPos pos, IBlockState state)
 	{
-		par1World.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		world.setBlockState(pos, getStaticBlock(blockMaterial).getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
 	}
 
-	public static BlockStaticLiquid getStaticBlock(Material materialIn)
+	public static BlockStaticLiquid getStaticBlock(Material material)
 	{
-		if (materialIn == Material.water)
+		if (material == Material.water)
 			return SCContent.bogusWater;
-		else if (materialIn == Material.lava)
+		else if (material == Material.lava)
 			return SCContent.bogusLava;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
-		int i = ((Integer)state.getValue(LEVEL)).intValue();
+		int level = ((Integer)state.getValue(LEVEL)).intValue();
 		byte b0 = 1;
 
-		if (blockMaterial == Material.lava && !worldIn.provider.doesWaterVaporize())
+		if (blockMaterial == Material.lava && !world.provider.doesWaterVaporize())
 			b0 = 2;
 
-		int j = tickRate(worldIn);
+		int tickRate = tickRate(world);
 		int i1;
 
-		if (i > 0)
+		if (level > 0)
 		{
 			int k = -100;
 			adjacentSourceBlocks = 0;
 			EnumFacing enumfacing;
 
-			for (Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator(); iterator.hasNext(); k = checkAdjacentBlock(worldIn, pos.offset(enumfacing), k))
+			for (Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator(); iterator.hasNext(); k = checkAdjacentBlock(world, pos.offset(enumfacing), k))
 				enumfacing = (EnumFacing)iterator.next();
 
 			int l = k + b0;
@@ -76,9 +76,9 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 			if (l >= 8 || k < 0)
 				l = -1;
 
-			if (getLevel(worldIn, pos.up()) >= 0)
+			if (getLevel(world, pos.up()) >= 0)
 			{
-				i1 = getLevel(worldIn, pos.up());
+				i1 = getLevel(world, pos.up());
 
 				if (i1 >= 8)
 					l = i1;
@@ -88,178 +88,178 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 
 			if (adjacentSourceBlocks >= 2 && blockMaterial == Material.water)
 			{
-				IBlockState iblockstate2 = worldIn.getBlockState(pos.down());
+				IBlockState blockBelow = world.getBlockState(pos.down());
 
-				if (iblockstate2.getBlock().getMaterial().isSolid())
+				if (blockBelow.getBlock().getMaterial().isSolid())
 					l = 0;
-				else if (iblockstate2.getBlock().getMaterial() == blockMaterial && ((Integer)iblockstate2.getValue(LEVEL)).intValue() == 0)
+				else if (blockBelow.getBlock().getMaterial() == blockMaterial && ((Integer)blockBelow.getValue(LEVEL)).intValue() == 0)
 					l = 0;
 			}
 
-			if (blockMaterial == Material.lava && i < 8 && l < 8 && l > i && rand.nextInt(4) != 0)
-				j *= 4;
+			if (blockMaterial == Material.lava && level < 8 && l < 8 && l > level && rand.nextInt(4) != 0)
+				tickRate *= 4;
 
-			if (l == i)
-				placeStaticBlock(worldIn, pos, state);
+			if (l == level)
+				placeStaticBlock(world, pos, state);
 			else
 			{
-				i = l;
+				level = l;
 
 				if (l < 0)
-					worldIn.setBlockToAir(pos);
+					world.setBlockToAir(pos);
 				else
 				{
 					state = state.withProperty(LEVEL, Integer.valueOf(l));
-					worldIn.setBlockState(pos, state, 2);
-					worldIn.scheduleUpdate(pos, this, j);
-					worldIn.notifyNeighborsOfStateChange(pos, this);
+					world.setBlockState(pos, state, 2);
+					world.scheduleUpdate(pos, this, tickRate);
+					world.notifyNeighborsOfStateChange(pos, this);
 				}
 			}
 		}
 		else
-			placeStaticBlock(worldIn, pos, state);
+			placeStaticBlock(world, pos, state);
 
-		IBlockState iblockstate1 = worldIn.getBlockState(pos.down());
+		IBlockState blockBelow = world.getBlockState(pos.down());
 
-		if (canFlowInto(worldIn, pos.down(), iblockstate1))
+		if (canFlowInto(world, pos.down(), blockBelow))
 		{
-			if (blockMaterial == Material.lava && worldIn.getBlockState(pos.down()).getBlock().getMaterial() == Material.water)
+			if (blockMaterial == Material.lava && world.getBlockState(pos.down()).getBlock().getMaterial() == Material.water)
 			{
-				worldIn.setBlockState(pos.down(), Blocks.stone.getDefaultState());
-				triggerMixEffects(worldIn, pos.down());
+				world.setBlockState(pos.down(), Blocks.stone.getDefaultState());
+				triggerMixEffects(world, pos.down());
 				return;
 			}
 
-			if (i >= 8)
-				tryFlowInto(worldIn, pos.down(), iblockstate1, i);
+			if (level >= 8)
+				tryFlowInto(world, pos.down(), blockBelow, level);
 			else
-				tryFlowInto(worldIn, pos.down(), iblockstate1, i + 8);
+				tryFlowInto(world, pos.down(), blockBelow, level + 8);
 		}
-		else if (i >= 0 && (i == 0 || isBlocked(worldIn, pos.down(), iblockstate1)))
+		else if (level >= 0 && (level == 0 || isBlocked(world, pos.down(), blockBelow)))
 		{
-			Set<?> set = getPossibleFlowDirections(worldIn, pos);
-			i1 = i + b0;
+			Set<?> flowDirections = getPossibleFlowDirections(world, pos);
+			i1 = level + b0;
 
-			if (i >= 8)
+			if (level >= 8)
 				i1 = 1;
 
 			if (i1 >= 8)
 				return;
 
-			Iterator<?> iterator1 = set.iterator();
+			Iterator<?> flowDirectionsIterator = flowDirections.iterator();
 
-			while (iterator1.hasNext())
+			while (flowDirectionsIterator.hasNext())
 			{
-				EnumFacing enumfacing1 = (EnumFacing)iterator1.next();
-				tryFlowInto(worldIn, pos.offset(enumfacing1), worldIn.getBlockState(pos.offset(enumfacing1)), i1);
+				EnumFacing facing = (EnumFacing)flowDirectionsIterator.next();
+				tryFlowInto(world, pos.offset(facing), world.getBlockState(pos.offset(facing)), i1);
 			}
 		}
 	}
 
-	private void tryFlowInto(World worldIn, BlockPos pos, IBlockState state, int level)
+	private void tryFlowInto(World world, BlockPos pos, IBlockState state, int level)
 	{
-		if (canFlowInto(worldIn, pos, state))
+		if (canFlowInto(world, pos, state))
 		{
 			if (state.getBlock() != Blocks.air)
 				if (blockMaterial == Material.lava)
-					triggerMixEffects(worldIn, pos);
+					triggerMixEffects(world, pos);
 				else
-					state.getBlock().dropBlockAsItem(worldIn, pos, state, 0);
+					state.getBlock().dropBlockAsItem(world, pos, state, 0);
 
-			worldIn.setBlockState(pos, getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
+			world.setBlockState(pos, getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
 		}
 	}
 
-	private int func_176374_a(World worldIn, BlockPos pos, int distance, EnumFacing calculateFlowCost)
+	private int calculateFlowCost(World world, BlockPos pos, int distance, EnumFacing previousDirection)
 	{
-		int j = 1000;
+		int cost = 1000;
 		Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 
 		while (iterator.hasNext())
 		{
-			EnumFacing enumfacing1 = (EnumFacing)iterator.next();
+			EnumFacing facing = (EnumFacing)iterator.next();
 
-			if (enumfacing1 != calculateFlowCost)
+			if (facing != previousDirection)
 			{
-				BlockPos blockpos1 = pos.offset(enumfacing1);
-				IBlockState iblockstate = worldIn.getBlockState(blockpos1);
+				BlockPos blockpos1 = pos.offset(facing);
+				IBlockState iblockstate = world.getBlockState(blockpos1);
 
-				if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+				if (!isBlocked(world, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
 				{
-					if (!isBlocked(worldIn, blockpos1.down(), iblockstate))
+					if (!isBlocked(world, blockpos1.down(), iblockstate))
 						return distance;
 
 					if (distance < 4)
 					{
-						int k = func_176374_a(worldIn, blockpos1, distance + 1, enumfacing1.getOpposite());
+						int oppositeCost = calculateFlowCost(world, blockpos1, distance + 1, facing.getOpposite());
 
-						if (k < j)
-							j = k;
+						if (oppositeCost < cost)
+							cost = oppositeCost;
 					}
 				}
 			}
 		}
 
-		return j;
+		return cost;
 	}
 
-	private Set<?> getPossibleFlowDirections(World worldIn, BlockPos pos)
+	private Set<?> getPossibleFlowDirections(World world, BlockPos pos)
 	{
-		int i = 1000;
-		EnumSet<EnumFacing> enumset = EnumSet.noneOf(EnumFacing.class);
+		int cost = 1000;
+		EnumSet<EnumFacing> facings = EnumSet.noneOf(EnumFacing.class);
 		Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 
 		while (iterator.hasNext())
 		{
-			EnumFacing enumfacing = (EnumFacing)iterator.next();
-			BlockPos blockpos1 = pos.offset(enumfacing);
-			IBlockState iblockstate = worldIn.getBlockState(blockpos1);
+			EnumFacing facing = (EnumFacing)iterator.next();
+			BlockPos blockpos1 = pos.offset(facing);
+			IBlockState iblockstate = world.getBlockState(blockpos1);
 
-			if (!isBlocked(worldIn, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
+			if (!isBlocked(world, blockpos1, iblockstate) && (iblockstate.getBlock().getMaterial() != blockMaterial || ((Integer)iblockstate.getValue(LEVEL)).intValue() > 0))
 			{
-				int j;
+				int oppositeCost;
 
-				if (isBlocked(worldIn, blockpos1.down(), worldIn.getBlockState(blockpos1.down())))
-					j = func_176374_a(worldIn, blockpos1, 1, enumfacing.getOpposite());
+				if (isBlocked(world, blockpos1.down(), world.getBlockState(blockpos1.down())))
+					oppositeCost = calculateFlowCost(world, blockpos1, 1, facing.getOpposite());
 				else
-					j = 0;
+					oppositeCost = 0;
 
-				if (j < i)
-					enumset.clear();
+				if (oppositeCost < cost)
+					facings.clear();
 
-				if (j <= i)
+				if (oppositeCost <= cost)
 				{
-					enumset.add(enumfacing);
-					i = j;
+					facings.add(facing);
+					cost = oppositeCost;
 				}
 			}
 		}
 
-		return enumset;
+		return facings;
 	}
 
-	private boolean isBlocked(World worldIn, BlockPos pos, IBlockState state)
+	private boolean isBlocked(World world, BlockPos pos, IBlockState state)
 	{
-		Block block = worldIn.getBlockState(pos).getBlock();
+		Block block = world.getBlockState(pos).getBlock();
 		return !(block instanceof BlockDoor) && block != Blocks.standing_sign && block != Blocks.ladder && block != Blocks.reeds ? (block.getMaterial() == Material.portal ? true : block.getMaterial().blocksMovement()) : true;
 	}
 
 	@Override
-	protected int checkAdjacentBlock(World worldIn, BlockPos pos, int currentMinLevel)
+	protected int checkAdjacentBlock(World world, BlockPos pos, int currentMinLevel)
 	{
-		int j = getLevel(worldIn, pos);
+		int level = getLevel(world, pos);
 
-		if (j < 0)
+		if (level < 0)
 			return currentMinLevel;
 		else
 		{
-			if (j == 0)
+			if (level == 0)
 				++adjacentSourceBlocks;
 
-			if (j >= 8)
-				j = 0;
+			if (level >= 8)
+				level = 0;
 
-			return currentMinLevel >= 0 && j >= currentMinLevel ? currentMinLevel : j;
+			return currentMinLevel >= 0 && level >= currentMinLevel ? currentMinLevel : level;
 		}
 	}
 
@@ -273,17 +273,17 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 	}
 
-	private boolean canFlowInto(World worldIn, BlockPos pos, IBlockState state)
+	private boolean canFlowInto(World world, BlockPos pos, IBlockState state)
 	{
 		Material material = state.getBlock().getMaterial();
-		return material != blockMaterial && material != Material.lava && !isBlocked(worldIn, pos, state);
+		return material != blockMaterial && material != Material.lava && !isBlocked(world, pos, state);
 	}
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		if (!checkForMixing(worldIn, pos, state))
-			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
+		if (!checkForMixing(world, pos, state))
+			world.scheduleUpdate(pos, this, tickRate(world));
 	}
 
 	/**
@@ -291,7 +291,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, BlockPos pos)
+	public Item getItem(World world, BlockPos pos)
 	{
 		return null;
 	}

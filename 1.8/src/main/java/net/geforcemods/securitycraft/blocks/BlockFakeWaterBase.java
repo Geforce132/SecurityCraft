@@ -23,30 +23,30 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
 
-	public BlockFakeWaterBase(Material par2Material)
+	public BlockFakeWaterBase(Material material)
 	{
-		super(par2Material);
+		super(material);
 	}
 
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
-		if (!checkForMixing(worldIn, pos, state))
-			updateLiquid(worldIn, pos, state);
+		if (!checkForMixing(world, pos, state))
+			updateLiquid(world, pos, state);
 	}
 
-	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
+	private void updateLiquid(World world, BlockPos pos, IBlockState state)
 	{
 		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
-		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
-		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
+		world.setBlockState(pos, blockdynamicliquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		world.scheduleUpdate(pos, blockdynamicliquid, tickRate(world));
 	}
 
-	public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
+	public static BlockDynamicLiquid getFlowingBlock(Material material)
 	{
-		if (materialIn == Material.water)
+		if (material == Material.water)
 			return (BlockDynamicLiquid) SCContent.bogusWaterFlowing;
-		else if (materialIn == Material.lava)
+		else if (material == Material.lava)
 			return (BlockDynamicLiquid) SCContent.bogusLavaFlowing;
 		else
 			throw new IllegalArgumentException("Invalid material");
@@ -57,7 +57,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItem(World p_149694_1_, BlockPos pos)
+	public Item getItem(World world, BlockPos pos)
 	{
 		return null;
 	}
@@ -73,7 +73,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySCTE();
 	}
 

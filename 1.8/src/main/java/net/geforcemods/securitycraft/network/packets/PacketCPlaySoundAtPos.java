@@ -19,20 +19,16 @@ public class PacketCPlaySoundAtPos implements IMessage{
 
 	}
 
-	public PacketCPlaySoundAtPos(int par1, int par2, int par3, String par4String, double par5){
-		x = par1;
-		y = par2;
-		z = par3;
-		sound = par4String;
-		volume = par5;
+	public PacketCPlaySoundAtPos(int x, int y, int z, String sound, double volume){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.sound = sound;
+		this.volume = volume;
 	}
 
-	public PacketCPlaySoundAtPos(double par1, double par2, double par3, String par4String, double par5){
-		x = (int) par1;
-		y = (int) par2;
-		z = (int) par3;
-		sound = par4String;
-		volume = par5;
+	public PacketCPlaySoundAtPos(double x, double y, double z, String sound, double volume){
+		this((int)x, (int)y, (int)z, sound, volume);
 	}
 
 	@Override

@@ -25,11 +25,11 @@ public class TileEntityAlarm extends TileEntityOwnable {
 			}
 
 			if(isPowered && cooldown == 0){
-				TileEntityAlarm TEA = (TileEntityAlarm) worldObj.getTileEntity(pos);
+				TileEntityAlarm alarm = (TileEntityAlarm) worldObj.getTileEntity(pos);
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), SCSounds.ALARM.path, SecurityCraft.config.alarmSoundVolume));
-				TEA.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
+				alarm.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
 				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
-				worldObj.setTileEntity(pos, TEA);
+				worldObj.setTileEntity(pos, alarm);
 			}
 		}
 	}
@@ -38,26 +38,26 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setBoolean("isPowered", isPowered);
+		super.writeToNBT(tag);
+		tag.setInteger("cooldown", cooldown);
+		tag.setBoolean("isPowered", isPowered);
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("isPowered"))
-			isPowered = par1NBTTagCompound.getBoolean("isPowered");
+		if (tag.hasKey("isPowered"))
+			isPowered = tag.getBoolean("isPowered");
 
 	}
 
@@ -65,9 +65,9 @@ public class TileEntityAlarm extends TileEntityOwnable {
 		return cooldown;
 	}
 
-	public void setCooldown(int par1){
-		SecurityCraft.log("Setting cooldown to " + par1 + " | " + FMLCommonHandler.instance().getEffectiveSide());
-		cooldown = par1;
+	public void setCooldown(int value){
+		SecurityCraft.log("Setting cooldown to " + value + " | " + FMLCommonHandler.instance().getEffectiveSide());
+		cooldown = value;
 	}
 
 	public boolean isPowered() {

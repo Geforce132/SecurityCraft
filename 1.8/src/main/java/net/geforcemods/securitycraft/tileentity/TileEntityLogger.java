@@ -30,11 +30,11 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	public void logPlayers(){
-		double d0 = SecurityCraft.config.usernameLoggerSearchRadius;
+		double radius = SecurityCraft.config.usernameLoggerSearchRadius;
 
-		AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(d0, d0, d0);
-		List<?> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-		Iterator<?> iterator = list.iterator();
+		AxisAlignedBB area = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(radius, radius, radius);
+		List<?> playersInArea = worldObj.getEntitiesWithinAABB(EntityPlayer.class, area);
+		Iterator<?> iterator = playersInArea.iterator();
 
 		while(iterator.hasNext())
 			addPlayerName(((EntityPlayer)iterator.next()).getCommandSenderName());
@@ -64,27 +64,26 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public void writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				par1NBTTagCompound.setString("player" + i, players[i]);
+				tag.setString("player" + i, players[i]);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (par1NBTTagCompound.hasKey("player" + i))
-				players[i] = par1NBTTagCompound.getString("player" + i);
+			if (tag.hasKey("player" + i))
+				players[i] = tag.getString("player" + i);
 	}
 
 	public void sendChangeToClient(){
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				//TODO
 				SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
 	}
 

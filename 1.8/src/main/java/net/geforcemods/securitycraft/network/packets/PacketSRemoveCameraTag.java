@@ -11,37 +11,37 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketSRemoveCameraTag implements IMessage
 {
 	private ItemStack heldItem;
-	private int camID;
+	private int camId;
 
 	public PacketSRemoveCameraTag(){}
 
-	public PacketSRemoveCameraTag(ItemStack stack, int cid)
+	public PacketSRemoveCameraTag(ItemStack stack, int cId)
 	{
 		heldItem = stack;
-		camID = cid;
+		camId = cId;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		ByteBufUtils.writeItemStack(buf, heldItem);
-		buf.writeInt(camID);
+		buf.writeInt(camId);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
 		heldItem = ByteBufUtils.readItemStack(buf);
-		camID = buf.readInt();
+		camId = buf.readInt();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSRemoveCameraTag, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSRemoveCameraTag packet, MessageContext context)
+		public IMessage onMessage(PacketSRemoveCameraTag message, MessageContext context)
 		{
 			ItemStack monitor = context.getServerHandler().playerEntity.inventory.getCurrentItem();
-			int id = packet.camID;
+			int id = message.camId;
 
 			monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));
 			return null;

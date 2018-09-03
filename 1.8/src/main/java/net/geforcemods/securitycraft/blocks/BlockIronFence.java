@@ -29,15 +29,15 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canConnectTo(IBlockAccess par1IBlockAccess, BlockPos pos)
+	public boolean canConnectTo(IBlockAccess world, BlockPos pos)
 	{
-		Block block = par1IBlockAccess.getBlockState(pos).getBlock();
+		Block block = world.getBlockState(pos).getBlock();
 
 		//split up oneliner to be more readable
 		if(block != this && !(block instanceof BlockFenceGate) && block != SCContent.reinforcedFencegate)
@@ -77,22 +77,22 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState par3IBlockState)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		super.breakBlock(par1World, pos, par3IBlockState);
-		par1World.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam)
 	{
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable().intersectsEntities();
 	}

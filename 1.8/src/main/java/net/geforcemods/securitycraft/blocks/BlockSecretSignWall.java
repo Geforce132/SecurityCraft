@@ -22,42 +22,42 @@ public class BlockSecretSignWall extends BlockSecretSign
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
 	{
-		EnumFacing enumfacing = (EnumFacing)worldIn.getBlockState(pos).getValue(FACING);
-		float f = 0.28125F;
-		float f1 = 0.78125F;
-		float f2 = 0.0F;
-		float f3 = 1.0F;
-		float f4 = 0.125F;
+		EnumFacing facing = (EnumFacing)worldIn.getBlockState(pos).getValue(FACING);
+		float fourthAndHalf = 0.28125F;
+		float twelfthAndHalf = 0.78125F;
+		float nothing = 0.0F;
+		float full = 1.0F;
+		float eigth = 0.125F;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-		switch (BlockSecretSignWall.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
+		switch (BlockSecretSignWall.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()])
 		{
 			case 1:
-				setBlockBounds(f2, f, 1.0F - f4, f3, f1, 1.0F);
+				setBlockBounds(nothing, fourthAndHalf, 1.0F - eigth, full, twelfthAndHalf, 1.0F);
 				break;
 			case 2:
-				setBlockBounds(f2, f, 0.0F, f3, f1, f4);
+				setBlockBounds(nothing, fourthAndHalf, 0.0F, full, twelfthAndHalf, eigth);
 				break;
 			case 3:
-				setBlockBounds(1.0F - f4, f, f2, 1.0F, f1, f3);
+				setBlockBounds(1.0F - eigth, fourthAndHalf, nothing, 1.0F, twelfthAndHalf, full);
 				break;
 			case 4:
-				setBlockBounds(0.0F, f, f2, f4, f1, f3);
+				setBlockBounds(0.0F, fourthAndHalf, nothing, eigth, twelfthAndHalf, full);
 		}
 	}
 
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
 		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
 
-		if (!worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock().getMaterial().isSolid())
+		if (!world.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock().getMaterial().isSolid())
 		{
-			dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
 		}
 
-		super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+		super.onNeighborBlockChange(world, pos, state, neighborBlock);
 	}
 
 	@Override
