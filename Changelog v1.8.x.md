@@ -21,6 +21,7 @@
 - Fix: [1.8+] Storage Module does not work
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
+- Misc.: Possibly improved render performance a bit
 
 --------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 

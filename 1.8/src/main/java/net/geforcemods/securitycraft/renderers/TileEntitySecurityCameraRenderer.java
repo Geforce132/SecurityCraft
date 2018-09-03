@@ -18,12 +18,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
 
-	private ModelSecurityCamera modelSecurityCamera;
-	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
+	private static final ModelSecurityCamera model = new ModelSecurityCamera();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
 
-	public TileEntitySecurityCameraRenderer() {
-		modelSecurityCamera = new ModelSecurityCamera();
-	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity par1TileEntity, double x, double y, double z, float par5, int par6) {
@@ -46,7 +43,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
 		GlStateManager.pushMatrix();
 
@@ -74,6 +71,4 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}
-
-
 }

@@ -12,13 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntityMotionLightRenderer extends TileEntitySpecialRenderer {
-	
-	private ModelMotionSensoredLight lightModel;
-	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/motion_activated_light.png");
 
-	public TileEntityMotionLightRenderer(){
-		lightModel = new ModelMotionSensoredLight();
-	}
+	private static final ModelMotionSensoredLight MODEL = new ModelMotionSensoredLight();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/motion_activated_light.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
@@ -38,7 +34,7 @@ public class TileEntityMotionLightRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
 		GL11.glPushMatrix();
 
@@ -62,7 +58,7 @@ public class TileEntityMotionLightRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
 
-		lightModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		MODEL.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();

@@ -10,13 +10,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderIMSBomb extends Render {
 
-	private static final ResourceLocation imsTexture = new ResourceLocation("securitycraft:textures/entity/imsBomb.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/imsBomb.png");
 
 	/** instance of ModelIMSBomb for rendering */
-	protected ModelIMSBomb modelBomb;
+	protected static final ModelIMSBomb modelBomb = new ModelIMSBomb();
 
-	public RenderIMSBomb(){
-		modelBomb = new ModelIMSBomb();
+	@Override
+	public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
 	}
 
 	public void doRender(EntityIMSBomb ims, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
@@ -32,7 +32,7 @@ public class RenderIMSBomb extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return imsTexture;
+		return TEXTURE;
 	}
 
 	@Override

@@ -12,11 +12,10 @@ public class RenderIMSBomb extends Render<EntityIMSBomb> {
 	private static final ResourceLocation imsTexture = new ResourceLocation("securitycraft:textures/entity/imsBomb.png");
 
 	/** instance of ModelIMSBomb for rendering */
-	protected ModelIMSBomb modelBomb;
+	protected static final ModelIMSBomb modelBomb = new ModelIMSBomb();
 
 	public RenderIMSBomb(RenderManager renderManager){
 		super(renderManager);
-		modelBomb = new ModelIMSBomb();
 	}
 
 	@Override

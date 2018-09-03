@@ -22,8 +22,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 	private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chest_unactive.png");
 	private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chest_active.png");
-	private ModelChest field_147510_h = new ModelChest();
-	private ModelChest field_147511_i = new ModelLargeChest();
+	private static final ModelChest field_147510_h = new ModelChest();
+	private static final ModelChest field_147511_i = new ModelLargeChest();
 	private boolean field_147509_j;
 
 	public TileEntityKeypadChestRenderer()

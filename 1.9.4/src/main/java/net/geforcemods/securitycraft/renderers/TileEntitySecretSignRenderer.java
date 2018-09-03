@@ -21,7 +21,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 {
 	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
 	/** The ModelSign instance for use in this renderer */
-	private final ModelSign model = new ModelSign();
+	private static final ModelSign model = new ModelSign();
 
 	@Override
 	public void renderTileEntityAt(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)

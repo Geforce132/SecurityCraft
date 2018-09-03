@@ -23,9 +23,9 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 	private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
 	private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
-	private ModelChest field_147510_h = new ModelChest();
-	private ModelChest field_147511_i = new ModelLargeChest();
-	private boolean field_147509_j;
+	private static final ModelChest smallModel = new ModelChest();
+	private static final ModelChest largeModel = new ModelLargeChest();
+	private boolean isChristmas;
 
 	public TileEntityKeypadChestRenderer()
 	{
@@ -61,7 +61,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 
 			if (p_180538_1_.adjacentChestXPos == null && p_180538_1_.adjacentChestZPos == null)
 			{
-				modelchest = field_147510_h;
+				model = smallModel;
 
 				if (p_180538_9_ >= 0)
 				{
@@ -81,7 +81,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			}
 			else
 			{
-				modelchest = field_147511_i;
+				model = largeModel;
 
 				if (p_180538_9_ >= 0)
 				{
@@ -152,8 +152,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 
 			f1 = 1.0F - f1;
 			f1 = 1.0F - f1 * f1 * f1;
-			modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
-			modelchest.renderAll();
+			model.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
+			model.renderAll();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

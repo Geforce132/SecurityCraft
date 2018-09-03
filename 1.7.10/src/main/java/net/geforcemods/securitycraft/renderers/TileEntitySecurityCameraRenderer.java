@@ -16,15 +16,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer {
 
-	private ModelSecurityCamera modelSecurityCamera;
-	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera.png");
-	private ModelSecurityCameraCeiling modelSecurityCameraCeiling;
-	private ResourceLocation cameraTextureCeiling = new ResourceLocation("securitycraft:textures/blocks/securityCameraCeiling.png");
-
-	public TileEntitySecurityCameraRenderer() {
-		modelSecurityCamera = new ModelSecurityCamera();
-		modelSecurityCameraCeiling = new ModelSecurityCameraCeiling();
-	}
+	private static final ModelSecurityCamera modelSecurityCamera = new ModelSecurityCamera();
+	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera.png");
+	private static final ModelSecurityCameraCeiling modelSecurityCameraCeiling = new ModelSecurityCameraCeiling();
+	private static final ResourceLocation cameraTextureCeiling = new ResourceLocation("securitycraft:textures/blocks/securityCameraCeiling.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {

@@ -14,20 +14,15 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityKeypadFurnaceRenderer extends TileEntitySpecialRenderer {
 
-	private ResourceLocation activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
-	private ResourceLocation deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
-
-	public TileEntityKeypadFurnaceRenderer(){
-		activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
-		deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
-	}
+	private static final ResourceLocation activeFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceActive.png");
+	private static final ResourceLocation deactivatedFurnaceTexture = new ResourceLocation("securitycraft:textures/blocks/keypadFurnaceDeactivated.png");
+	private static final ModelKeypadFurnaceDeactivated modelDeactivated = new ModelKeypadFurnaceDeactivated();
+	private static final ModelKeypadFurnaceActive modelActive = new ModelKeypadFurnaceActive();
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
 
 		boolean isActive = false;
-		ModelKeypadFurnaceDeactivated modelDeactivated = new ModelKeypadFurnaceDeactivated();
-		ModelKeypadFurnaceActive modelActive = new ModelKeypadFurnaceActive();
 
 		if(te.hasWorldObj() && te.getBlockMetadata() >= 5)
 			isActive = true;

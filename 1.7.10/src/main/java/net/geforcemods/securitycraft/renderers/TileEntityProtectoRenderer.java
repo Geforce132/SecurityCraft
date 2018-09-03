@@ -14,13 +14,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityProtectoRenderer extends TileEntitySpecialRenderer {
 
-	private ModelProtecto protectoModel;
-	private ResourceLocation activeTexture = new ResourceLocation("securitycraft:textures/blocks/protectoActive.png");
-	private ResourceLocation deactivatedTexture = new ResourceLocation("securitycraft:textures/blocks/protectoDeactivated.png");
-
-	public TileEntityProtectoRenderer() {
-		protectoModel = new ModelProtecto();
-	}
+	private static final ModelProtecto protectoModel = new ModelProtecto();
+	private static final ResourceLocation activeTexture = new ResourceLocation("securitycraft:textures/blocks/protectoActive.png");
+	private static final ResourceLocation deactivatedTexture = new ResourceLocation("securitycraft:textures/blocks/protectoDeactivated.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {

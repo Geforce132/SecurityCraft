@@ -17,9 +17,9 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer
 {
-	private static final ResourceLocation field_147513_b = new ResourceLocation("textures/entity/sign.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/sign.png");
 	/** The ModelSign instance for use in this renderer */
-	private final ModelSign model = new ModelSign();
+	private static final ModelSign model = new ModelSign();
 
 	public void renderTileEntityAt(TileEntitySecretSign te, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
 	{
@@ -61,7 +61,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer
 			model.signStick.showModel = false;
 		}
 
-		bindTexture(field_147513_b);
+		bindTexture(TEXTURE);
 		GL11.glPushMatrix();
 		GL11.glScalef(f1, -f1, -f1);
 		model.renderSign();

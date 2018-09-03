@@ -14,12 +14,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityIMSRenderer extends TileEntitySpecialRenderer {
 
-	private ModelIMS imsModel;
-	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/ims.png");
-
-	public TileEntityIMSRenderer(){
-		imsModel = new ModelIMS();
-	}
+	private static final ModelIMS model = new ModelIMS();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/ims.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
@@ -41,13 +37,13 @@ public class TileEntityIMSRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
 		GL11.glPushMatrix();
 
 		GL11.glRotatef(180F, rotationX, rotationY, rotationZ);
 
-		imsModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, bombsRemaining);
+		model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, bombsRemaining);
 
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();

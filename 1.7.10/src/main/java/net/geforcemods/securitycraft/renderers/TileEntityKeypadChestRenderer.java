@@ -26,8 +26,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 	private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
 	private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
-	private ModelChest smallModel = new ModelChest();
-	private ModelChest largeModel = new ModelLargeChest();
+	private static final ModelChest smallModel = new ModelChest();
+	private static final ModelChest largeModel = new ModelLargeChest();
 	private boolean isChristmas;
 
 	public TileEntityKeypadChestRenderer()
@@ -67,11 +67,11 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 
 		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null)
 		{
-			ModelChest modelchest;
+			ModelChest model;
 
 			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
 			{
-				modelchest = smallModel;
+				model = smallModel;
 
 				if (isChristmas)
 					bindTexture(christmasNormal);
@@ -82,7 +82,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			}
 			else
 			{
-				modelchest = largeModel;
+				model = largeModel;
 
 				if (isChristmas)
 					bindTexture(christmasDouble);
@@ -141,8 +141,8 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 
 			angle = 1.0F - angle;
 			angle = 1.0F - angle * angle * angle;
-			modelchest.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
-			modelchest.renderAll();
+			model.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
+			model.renderAll();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

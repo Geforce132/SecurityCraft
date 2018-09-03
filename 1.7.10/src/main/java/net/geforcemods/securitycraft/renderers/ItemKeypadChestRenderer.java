@@ -8,11 +8,11 @@ import net.minecraftforge.client.IItemRenderer;
 
 public class ItemKeypadChestRenderer implements IItemRenderer {
 
-	protected ModelChest chestModel;
+	protected ModelChest model;
 
 	public ItemKeypadChestRenderer(){
 
-		chestModel = new ModelChest();
+		model = new ModelChest();
 
 	}
 

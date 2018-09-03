@@ -13,12 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 
-	private ModelAlarm alarmModel;
-	private ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
-
-	public TileEntityAlarmRenderer(){
-		alarmModel = new ModelAlarm();
-	}
+	private static final ModelAlarm alarmModel = new ModelAlarm();
+	private static final ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {

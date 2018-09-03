@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<TileEntitySecretSign>
 {
 	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
-	private final ModelSign model = new ModelSign();
+	private static final ModelSign model = new ModelSign();
 
 	@Override
 	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
