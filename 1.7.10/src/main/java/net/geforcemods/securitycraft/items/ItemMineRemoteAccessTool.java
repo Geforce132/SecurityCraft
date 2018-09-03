@@ -74,7 +74,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		if(stack.stackTagCompound == null)
 			return;
 

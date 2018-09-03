@@ -62,12 +62,12 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 				return;
 			}
 
-			int i = xCoord;
-			int j = yCoord;
-			int k = zCoord;
-			AxisAlignedBB area = AxisAlignedBB.getBoundingBox(i, j, k, i, j, k).expand(5, 5, 5);
-			List<?> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, area);
-			Iterator<?> iterator = list.iterator();
+			int x = xCoord;
+			int y = yCoord;
+			int z = zCoord;
+			AxisAlignedBB area = AxisAlignedBB.getBoundingBox(x, y, z, x, y, z).expand(5, 5, 5);
+			List<?> entities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, area);
+			Iterator<?> iterator = entities.iterator();
 			EntityLivingBase entity;
 
 			while (iterator.hasNext())
@@ -95,12 +95,12 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 			}
 
 			if (canAttack()) {
-				int i = xCoord;
-				int j = yCoord;
-				int k = zCoord;
-				AxisAlignedBB area = AxisAlignedBB.getBoundingBox(i, j, k, i + 1, j + 1, k + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> list = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), area);
-				Iterator<?> iterator = list.iterator();
+				int x = xCoord;
+				int y = yCoord;
+				int z = zCoord;
+				AxisAlignedBB area = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
+				List<?> entities = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), area);
+				Iterator<?> iterator = entities.iterator();
 
 				if(!worldObj.isRemote){
 					boolean attacked = false;
@@ -146,7 +146,7 @@ public class TileEntitySCTE extends TileEntity implements INameable{
 
 	/**
 	 * Is called when a {@link TileEntitySCTE} is ready to attack, but cannot for some reason. <p>
-	 * 
+	 *
 	 * These reasons may include: <p>
 	 * - There are no Entities in this block's attack range. <p>
 	 * - Only EntityItems are in the attack range. <p>

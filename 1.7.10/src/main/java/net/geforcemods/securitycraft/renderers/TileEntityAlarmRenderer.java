@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 
-	private static final ModelAlarm alarmModel = new ModelAlarm();
-	private static final ResourceLocation texture = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
+	private static final ModelAlarm model = new ModelAlarm();
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/blocks/alarm.png");
 
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks) {
@@ -27,16 +27,16 @@ public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 			Tessellator tessellator = Tessellator.instance;
 			float brightness = te.getWorld().getLightBrightness(te.xCoord, te.yCoord, te.zCoord);
 			int skyBrightness = te.getWorld().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
-			int l1 = skyBrightness % 65536;
-			int l2 = skyBrightness / 65536;
+			int lightmapX = skyBrightness % 65536;
+			int lightmapY = skyBrightness / 65536;
 			tessellator.setColorOpaque_F(brightness, brightness, brightness);
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 
 		GL11.glPushMatrix();
 
@@ -69,7 +69,7 @@ public class TileEntityAlarmRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glRotatef(180F, rotationX, rotationY, rotationZ);
 
-		alarmModel.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();

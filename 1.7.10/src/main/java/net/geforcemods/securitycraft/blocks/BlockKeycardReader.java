@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ItemUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
@@ -67,7 +66,7 @@ public class BlockKeycardReader extends BlockOwnable {
 		if(ModuleUtils.checkForModule(world, x, y, z, player, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(world, x, y, z, player, EnumCustomModules.BLACKLIST))
 			return;
 
-		if((((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword() != null) && (!((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) <= ((ItemKeycardBase) stack.getItem()).getKeycardLV(stack) || ((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) == ((ItemKeycardBase) stack.getItem()).getKeycardLV(stack))){
+		if((((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword() != null) && (!((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) <= ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack) || ((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) == ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack))){
 			if(stack.getMetadata() == 3 && stack.stackTagCompound != null && !player.capabilities.isCreativeMode){
 				stack.stackTagCompound.setInteger("Uses", stack.stackTagCompound.getInteger("Uses") - 1);
 
@@ -78,7 +77,7 @@ public class BlockKeycardReader extends BlockOwnable {
 			activate(world, x, y, z);
 		}
 		else if(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword() != null)
-			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()).replace("#c", "" + ((ItemKeycardBase) stack.getItem()).getKeycardLV(stack)), EnumChatFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()).replace("#c", "" + ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack)), EnumChatFormatting.RED);
 		else
 			PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.notSet"), EnumChatFormatting.RED);
 	}
@@ -116,8 +115,8 @@ public class BlockKeycardReader extends BlockOwnable {
 	}
 
 	@Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int x, int y, int z, int side){
-		if(par1IBlockAccess.getBlockMetadata(x, y, z) > 6 && par1IBlockAccess.getBlockMetadata(x, y, z) < 11)
+	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side){
+		if(world.getBlockMetadata(x, y, z) > 6 && world.getBlockMetadata(x, y, z) < 11)
 			return 15;
 		else
 			return 0;
@@ -129,17 +128,17 @@ public class BlockKeycardReader extends BlockOwnable {
 		int meta = world.getBlockMetadata(x, y, z);
 
 		if(meta > 6 && meta < 11){
-			double d0 = x + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
-			double d1 = y + 0.7F + (random.nextFloat() - 0.5F) * 0.2D;
-			double d2 = z + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
-			double d3 = 0.2199999988079071D;
-			double d4 = 0.27000001072883606D;
+			double spawnX = x + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double spawnY = y + 0.7F + (random.nextFloat() - 0.5F) * 0.2D;
+			double spawnZ = z + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double magicNumber1 = 0.2199999988079071D;
+			double magicNumber2 = 0.27000001072883606D;
 
-			world.spawnParticle("reddust", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle("reddust", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle("reddust", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle("reddust", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle("reddust", d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", spawnX - magicNumber2, spawnY + magicNumber1, spawnZ, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", spawnX + magicNumber2, spawnY + magicNumber1, spawnZ, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", spawnX, spawnY + magicNumber1, spawnZ - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", spawnX, spawnY + magicNumber1, spawnZ + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle("reddust", spawnX, spawnY, spawnZ, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

@@ -170,39 +170,39 @@ public class BlockFakeLava extends BlockDynamicLiquid{
 	 * flow indicated. Each necessary horizontal flow adds to the flow cost.
 	 */
 	private int calculateFlowCost(World world, int x, int y, int z, int accumulatedCost, int previousDirectionOfFlow){
-		int j1 = 1000;
+		int cost = 1000;
 
-		for (int k1 = 0; k1 < 4; ++k1)
-			if ((k1 != 0 || previousDirectionOfFlow != 1) && (k1 != 1 || previousDirectionOfFlow != 0) && (k1 != 2 || previousDirectionOfFlow != 3) && (k1 != 3 || previousDirectionOfFlow != 2)){
-				int l1 = x;
-				int i2 = z;
+		for (int direction = 0; direction < 4; ++direction)
+			if ((direction != 0 || previousDirectionOfFlow != 1) && (direction != 1 || previousDirectionOfFlow != 0) && (direction != 2 || previousDirectionOfFlow != 3) && (direction != 3 || previousDirectionOfFlow != 2)){
+				int newX = x;
+				int newZ = z;
 
-				if (k1 == 0)
-					l1 = x - 1;
+				if (direction == 0)
+					newX = x - 1;
 
-				if (k1 == 1)
-					++l1;
+				if (direction == 1)
+					++newX;
 
-				if (k1 == 2)
-					i2 = z - 1;
+				if (direction == 2)
+					newZ = z - 1;
 
-				if (k1 == 3)
-					++i2;
+				if (direction == 3)
+					++newZ;
 
-				if (!blockedBy(world, l1, y, i2) && (world.getBlock(l1, y, i2).getMaterial() != blockMaterial || world.getBlockMetadata(l1, y, i2) != 0)){
-					if (!blockedBy(world, l1, y - 1, i2))
+				if (!blockedBy(world, newX, y, newZ) && (world.getBlock(newX, y, newZ).getMaterial() != blockMaterial || world.getBlockMetadata(newX, y, newZ) != 0)){
+					if (!blockedBy(world, newX, y - 1, newZ))
 						return accumulatedCost;
 
 					if (accumulatedCost < 4){
-						int j2 = calculateFlowCost(world, l1, y, i2, accumulatedCost + 1, k1);
+						int oppositeCost = calculateFlowCost(world, newX, y, newZ, accumulatedCost + 1, direction);
 
-						if (j2 < j1)
-							j1 = j2;
+						if (oppositeCost < cost)
+							cost = oppositeCost;
 					}
 				}
 			}
 
-		return j1;
+		return cost;
 	}
 
 	@Override
@@ -220,41 +220,41 @@ public class BlockFakeLava extends BlockDynamicLiquid{
 	 * direction is optimal.
 	 */
 	private boolean[] getOptimalFlowDirections(World world, int x, int y, int z){
-		int l;
-		int i1;
+		int direction;
+		int newX;
 
-		for (l = 0; l < 4; ++l){
-			flowCost[l] = 1000;
-			i1 = x;
-			int j1 = z;
+		for (direction = 0; direction < 4; ++direction){
+			flowCost[direction] = 1000;
+			newX = x;
+			int newZ = z;
 
-			if (l == 0)
-				i1 = x - 1;
+			if (direction == 0)
+				newX = x - 1;
 
-			if (l == 1)
-				++i1;
+			if (direction == 1)
+				++newX;
 
-			if (l == 2)
-				j1 = z - 1;
+			if (direction == 2)
+				newZ = z - 1;
 
-			if (l == 3)
-				++j1;
+			if (direction == 3)
+				++newZ;
 
-			if (!blockedBy(world, i1, y, j1) && (world.getBlock(i1, y, j1).getMaterial() != blockMaterial || world.getBlockMetadata(i1, y, j1) != 0))
-				if (blockedBy(world, i1, y - 1, j1))
-					flowCost[l] = calculateFlowCost(world, i1, y, j1, 1, l);
+			if (!blockedBy(world, newX, y, newZ) && (world.getBlock(newX, y, newZ).getMaterial() != blockMaterial || world.getBlockMetadata(newX, y, newZ) != 0))
+				if (blockedBy(world, newX, y - 1, newZ))
+					flowCost[direction] = calculateFlowCost(world, newX, y, newZ, 1, direction);
 				else
-					flowCost[l] = 0;
+					flowCost[direction] = 0;
 		}
 
-		l = flowCost[0];
+		direction = flowCost[0];
 
-		for (i1 = 1; i1 < 4; ++i1)
-			if (flowCost[i1] < l)
-				l = flowCost[i1];
+		for (newX = 1; newX < 4; ++newX)
+			if (flowCost[newX] < direction)
+				direction = flowCost[newX];
 
-		for (i1 = 0; i1 < 4; ++i1)
-			isOptimalFlowDirection[i1] = flowCost[i1] == l;
+		for (newX = 0; newX < 4; ++newX)
+			isOptimalFlowDirection[newX] = flowCost[newX] == direction;
 
 		return isOptimalFlowDirection;
 	}

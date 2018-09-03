@@ -105,9 +105,8 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		else{
 			Block block = world.getBlock(x, y, z);
 			int meta = world.getBlockMetadata(x, y, z);
-			int j1 = meta & 7;
+			int blockType = meta & 7;
 			boolean flag = (meta & 8) != 0;
-
 			Owner owner = null;
 
 			if(world.getTileEntity(x, y, z) instanceof IOwnable){
@@ -121,8 +120,8 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 				}
 			}
 
-			if((side == 1 && !flag || side == 0 && flag) && isBlock(block) && j1 == stack.getMetadata()){
-				if(world.checkNoEntityCollision(this.getBlockVariant(meta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(block, meta), (block == SCContent.reinforcedStoneSlabs && meta == 2 ? 2 : j1), 3)){
+			if((side == 1 && !flag || side == 0 && flag) && isBlock(block) && blockType == stack.getMetadata()){
+				if(world.checkNoEntityCollision(this.getBlockVariant(meta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(block, meta), (block == SCContent.reinforcedStoneSlabs && meta == 2 ? 2 : blockType), 3)){
 					world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, this.getBlockVariant(block, meta).stepSound.getPlaceSound(), (this.getBlockVariant(block, meta).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(block, meta).stepSound.getFrequency() * 0.8F);
 					--stack.stackSize;
 
@@ -142,10 +141,10 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	public boolean func_150936_a(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack stack){
 		Block block = world.getBlock(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		int i2 = meta & 7;
+		int blockType = meta & 7;
 		boolean flag = (meta & 8) != 0;
 
-		if((side == 1 && !flag || side == 0 && flag) && block == singleSlab && i2 == stack.getMetadata())
+		if((side == 1 && !flag || side == 0 && flag) && block == singleSlab && blockType == stack.getMetadata())
 			return true;
 		else{
 			if(side == 0)
@@ -168,8 +167,8 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
 			Block block1 = world.getBlock(x, y, z);
 			int block1Meta = world.getBlockMetadata(x, y, z);
-			i2 = block1Meta & 7;
-			return block1 == singleSlab && i2 == stack.getMetadata() ? true : super.func_150936_a(world, x, y, z, side, player, stack);
+			blockType = block1Meta & 7;
+			return block1 == singleSlab && blockType == stack.getMetadata() ? true : super.func_150936_a(world, x, y, z, side, player, stack);
 		}
 	}
 
@@ -194,15 +193,15 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
 		Block block = world.getBlock(x, y, z);
 		int blockMeta = world.getBlockMetadata(x, y, z);
-		int j1 = blockMeta & 7;
+		int blockType = blockMeta & 7;
 
 		Owner owner = null;
 
 		if(world.getTileEntity(x, y, z) instanceof IOwnable)
 			owner = ((IOwnable) world.getTileEntity(x, y, z)).getOwner();
 
-		if(block == singleSlab && j1 == stack.getMetadata()){
-			if(world.checkNoEntityCollision(this.getBlockVariant(blockMeta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(blockMeta), j1, 3)){
+		if(block == singleSlab && blockType == stack.getMetadata()){
+			if(world.checkNoEntityCollision(this.getBlockVariant(blockMeta).getCollisionBoundingBoxFromPool(world, x, y, z)) && world.setBlock(x, y, z, this.getBlockVariant(blockMeta), blockType, 3)){
 				world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, this.getBlockVariant(blockMeta).stepSound.getPlaceSound(), (this.getBlockVariant(blockMeta).stepSound.getVolume() + 1.0F) / 2.0F, this.getBlockVariant(blockMeta).stepSound.getFrequency() * 0.8F);
 				--stack.stackSize;
 

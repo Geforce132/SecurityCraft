@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"rawtypes"})
 public class ItemKeycardBase extends Item{
 
 	@SideOnly(Side.CLIENT)
@@ -41,7 +41,7 @@ public class ItemKeycardBase extends Item{
 		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
-	public int getKeycardLV(ItemStack stack){
+	public int getKeycardLvl(ItemStack stack){
 		if(stack.getMetadata() == 0)
 			return 1;
 		else if(stack.getMetadata() == 1)

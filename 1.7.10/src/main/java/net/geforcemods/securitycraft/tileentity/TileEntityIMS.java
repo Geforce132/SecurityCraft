@@ -58,11 +58,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName().toLowerCase()))
 					continue;
 
-				double d5 = entity.posX - (xCoord + 0.5D);
-				double d6 = entity.boundingBox.minY + entity.height / 2.0F - (yCoord + 1.25D);
-				double d7 = entity.posZ - (zCoord + 0.5D);
+				double targetX = entity.posX - (xCoord + 0.5D);
+				double targetY = entity.boundingBox.minY + entity.height / 2.0F - (yCoord + 1.25D);
+				double targetZ = entity.posZ - (zCoord + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(worldObj.isRemote)
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
@@ -85,11 +85,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(worldObj, xCoord, yCoord, zCoord, EnumCustomModules.WHITELIST).contains(entity.getCommandSenderName()))
 					continue;
 
-				double d5 = entity.posX - (xCoord + 0.5D);
-				double d6 = entity.boundingBox.minY + entity.height / 2.0F - (yCoord + 1.25D);
-				double d7 = entity.posZ - (zCoord + 0.5D);
+				double targetX = entity.posX - (xCoord + 0.5D);
+				double targetY = entity.boundingBox.minY + entity.height / 2.0F - (yCoord + 1.25D);
+				double targetZ = entity.posZ - (zCoord + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(worldObj.isRemote)
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));

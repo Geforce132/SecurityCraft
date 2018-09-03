@@ -33,7 +33,7 @@ public class ContainerBlockReinforcer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer p_75145_1_)
+	public boolean canInteractWith(EntityPlayer player)
 	{
 		return true;
 	}
@@ -84,28 +84,28 @@ public class ContainerBlockReinforcer extends Container
 
 		if(slot != null && slot.getHasStack())
 		{
-			ItemStack stack1 = slot.getStack();
+			ItemStack slotStack = slot.getStack();
 
-			stack = stack1.copy();
+			stack = slotStack.copy();
 
 			if(id < 1)
 			{
-				if(!mergeItemStack(stack1, 1, 37, true))
+				if(!mergeItemStack(slotStack, 1, 37, true))
 					return null;
-				slot.onSlotChange(stack1, stack);
+				slot.onSlotChange(slotStack, stack);
 			}
 			else if(id >= 1)
-				if(!mergeItemStack(stack1, 0, 1, false))
+				if(!mergeItemStack(slotStack, 0, 1, false))
 					return null;
 
-			if(stack1.stackSize == 0)
+			if(slotStack.stackSize == 0)
 				slot.putStack((ItemStack) null);
 			else
 				slot.onSlotChanged();
 
-			if(stack1.stackSize == stack.stackSize)
+			if(slotStack.stackSize == stack.stackSize)
 				return null;
-			slot.onPickupFromSlot(player, stack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
 		return stack;
@@ -122,13 +122,13 @@ public class ContainerBlockReinforcer extends Container
 			currentSlot = max - 1;
 
 		Slot slot;
-		ItemStack itemstack1;
+		ItemStack slotStack;
 
 		if(stack.isStackable())
 			while(stack.stackSize > 0 && (!negativeDirection && currentSlot < max || negativeDirection && currentSlot >= min))
 			{
 				slot = (Slot)inventorySlots.get(currentSlot);
-				itemstack1 = slot.getStack();
+				slotStack = slot.getStack();
 
 				if(!slot.isItemValid(stack))
 				{
@@ -136,21 +136,21 @@ public class ContainerBlockReinforcer extends Container
 					break;
 				}
 
-				if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+				if(slotStack != null && slotStack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == slotStack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, slotStack))
 				{
-					int combinedStackSize = itemstack1.stackSize + stack.stackSize;
+					int combinedStackSize = slotStack.stackSize + stack.stackSize;
 
 					if(combinedStackSize <= stack.getMaxStackSize())
 					{
 						stack.stackSize = 0;
-						itemstack1.stackSize = combinedStackSize;
+						slotStack.stackSize = combinedStackSize;
 						slot.onSlotChanged();
 						merged = true;
 					}
-					else if(itemstack1.stackSize < stack.getMaxStackSize())
+					else if(slotStack.stackSize < stack.getMaxStackSize())
 					{
-						stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
-						itemstack1.stackSize = stack.getMaxStackSize();
+						stack.stackSize -= stack.getMaxStackSize() - slotStack.stackSize;
+						slotStack.stackSize = stack.getMaxStackSize();
 						slot.onSlotChanged();
 						merged = true;
 					}
@@ -172,7 +172,7 @@ public class ContainerBlockReinforcer extends Container
 			while(!negativeDirection && currentSlot < max || negativeDirection && currentSlot >= min)
 			{
 				slot = (Slot)inventorySlots.get(currentSlot);
-				itemstack1 = slot.getStack();
+				slotStack = slot.getStack();
 
 				if(!slot.isItemValid(stack))
 				{
@@ -180,7 +180,7 @@ public class ContainerBlockReinforcer extends Container
 					break;
 				}
 
-				if(itemstack1 == null)
+				if(slotStack == null)
 				{
 					slot.putStack(stack.copy());
 					slot.onSlotChanged();

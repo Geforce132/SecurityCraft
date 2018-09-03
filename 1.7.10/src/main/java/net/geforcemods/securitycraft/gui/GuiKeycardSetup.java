@@ -57,9 +57,9 @@ public class GuiKeycardSetup extends GuiContainer{
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	private void updateButtonText(){
@@ -74,8 +74,8 @@ public class GuiKeycardSetup extends GuiContainer{
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button){
+		switch(button.id){
 			case 0:
 				updateButtonText();
 				break;

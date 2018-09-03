@@ -45,8 +45,8 @@ public class ModuleInventory implements IInventory {
 		return moduleInventory[index];
 	}
 
-	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+	public void readFromNBT(NBTTagCompound taf) {
+		NBTTagList items = taf.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
@@ -57,7 +57,7 @@ public class ModuleInventory implements IInventory {
 		}
 	}
 
-	public void writeToNBT(NBTTagCompound tagcompound) {
+	public void writeToNBT(NBTTagCompound tag) {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++)
@@ -69,7 +69,7 @@ public class ModuleInventory implements IInventory {
 				items.appendTag(item);
 			}
 
-		tagcompound.setTag("ItemInventory", items);
+		tag.setTag("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 
@@ -96,11 +96,11 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		moduleInventory[index] = itemstack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		moduleInventory[index] = stack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-			itemstack.stackSize = getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit())
+			stack.stackSize = getInventoryStackLimit();
 
 		markDirty();
 	}
@@ -141,7 +141,7 @@ public class ModuleInventory implements IInventory {
 	public void closeChest() {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
 	}
 

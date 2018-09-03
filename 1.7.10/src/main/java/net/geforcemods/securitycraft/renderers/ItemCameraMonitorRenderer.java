@@ -44,7 +44,7 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 			tessellator.addVertexWithUV(128 + 7, 0 - 7, 0.0D, 1.0D, 0.0D);
 			tessellator.addVertexWithUV(0 - 7, 0 - 7, 0.0D, 0.0D, 0.0D);
 			tessellator.draw();
-			//
+			//end drawing
 
 			if(item != null && item.getItem() instanceof ItemCameraMonitor && ((ItemCameraMonitor) item.getItem()).hasCameraAdded(item.getTagCompound())){
 				CameraView view = ((ItemCameraMonitor) item.getItem()).getCameraView(item.getTagCompound());
@@ -71,7 +71,7 @@ public class ItemCameraMonitorRenderer implements IItemRenderer {
 
 						GL11.glEnable(3008);
 						GL11.glEnable(2896);
-						//
+						//end binding and drawing
 					}
 
 					worldView.markDirty(); //Update the camera.

@@ -22,31 +22,43 @@ public class RenderBouncingBetty extends Render
 		shadowSize = 0.5F;
 	}
 
-	public void renderBouncingBetty(EntityBouncingBetty bouncingBetty, double par2, double par4, double par6, float par8, float par9) // i don't actually know
+	/**
+	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
+	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+	 */
+	@Override
+	public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks)
+	{
+		renderBouncingBetty((EntityBouncingBetty)entity, x, y, z, entityYaw, partialTicks);
+	}
+
+	public void renderBouncingBetty(EntityBouncingBetty bouncingBetty, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-		float f2;
+		GL11.glTranslatef((float)x, (float)y, (float)z);
+		float alpha;
 
-		if (bouncingBetty.fuse - par9 + 1.0F < 10.0F)
+		if (bouncingBetty.fuse - partialTicks + 1.0F < 10.0F)
 		{
-			f2 = 1.0F - (bouncingBetty.fuse - par9 + 1.0F) / 10.0F;
+			alpha = 1.0F - (bouncingBetty.fuse - partialTicks + 1.0F) / 10.0F;
 
-			if (f2 < 0.0F)
-				f2 = 0.0F;
+			if (alpha < 0.0F)
+				alpha = 0.0F;
 
-			if (f2 > 1.0F)
-				f2 = 1.0F;
+			if (alpha > 1.0F)
+				alpha = 1.0F;
 
-			f2 *= f2;
-			f2 *= f2;
-			float f3 = 1.0F + f2 * 0.3F;
-			GL11.glScalef(f3, f3, f3);
+			alpha *= alpha;
+			alpha *= alpha;
+			float scaleFactor = 1.0F + alpha * 0.3F;
+			GL11.glScalef(scaleFactor, scaleFactor, scaleFactor);
 		}
 
-		f2 = (1.0F - (bouncingBetty.fuse - par9 + 1.0F) / 100.0F) * 0.8F;
+		alpha = (1.0F - (bouncingBetty.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(bouncingBetty);
-		blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, bouncingBetty.getBrightness(par9));
+		blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, bouncingBetty.getBrightness(partialTicks));
 
 		if (bouncingBetty.fuse / 5 % 2 == 0)
 		{
@@ -54,7 +66,7 @@ public class RenderBouncingBetty extends Render
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, f2);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
 			blockRenderer.renderBlockAsItem(SCContent.bouncingBetty, 0, 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_BLEND);
@@ -72,17 +84,5 @@ public class RenderBouncingBetty extends Render
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{
 		return TextureMap.locationBlocksTexture;
-	}
-
-	/**
-	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-	 */
-	@Override
-	public void doRender(Entity entity, double par2, double par4, double par6, float par8, float par9)
-	{
-		renderBouncingBetty((EntityBouncingBetty)entity, par2, par4, par6, par8, par9);
 	}
 }

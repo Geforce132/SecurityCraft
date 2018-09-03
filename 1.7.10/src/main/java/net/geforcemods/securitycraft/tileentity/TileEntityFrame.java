@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityFrame extends TileEntityOwnable {
 
-	//private int[] boundCameraLocation = new int[3];
 	private CameraView cameraView;
 	private boolean shouldShowView = false;
 	private boolean createdView = false;

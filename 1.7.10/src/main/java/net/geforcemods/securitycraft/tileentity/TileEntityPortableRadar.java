@@ -38,10 +38,10 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public boolean attackEntity(Entity attacked) {
 		if (attacked instanceof EntityPlayer)
 		{
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
-			List<?> list = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
+			AxisAlignedBB area = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(getAttackRange(), getAttackRange(), getAttackRange());
+			List<?> entities = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), area);
 
-			if(list.isEmpty())
+			if(entities.isEmpty())
 			{
 				boolean redstoneModule = hasModule(EnumCustomModules.REDSTONE);
 

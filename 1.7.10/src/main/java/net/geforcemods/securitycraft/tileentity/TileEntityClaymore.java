@@ -51,19 +51,19 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			else if(meta == 4)
 				area = area.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
 
-			List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
-			Iterator<?> iterator = list.iterator();
-			EntityLivingBase entityliving;
+			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+			Iterator<?> iterator = entities.iterator();
+			EntityLivingBase entity;
 
 			while(iterator.hasNext()){
-				entityliving = (EntityLivingBase) iterator.next();
+				entity = (EntityLivingBase) iterator.next();
 
-				if(PlayerUtils.isPlayerMountedOnCamera(entityliving))
+				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 
-				entityX = entityliving.posX;
-				entityY = entityliving.posY;
-				entityZ = entityliving.posZ;
+				entityX = entity.posX;
+				entityY = entity.posY;
+				entityZ = entity.posZ;
 				cooldown = 20;
 
 				getWorld().playSoundEffect(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D, "random.click", 0.3F, 0.6F);

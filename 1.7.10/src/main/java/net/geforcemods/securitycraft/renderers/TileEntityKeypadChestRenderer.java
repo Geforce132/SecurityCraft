@@ -98,19 +98,19 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			GL11.glTranslatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
 			GL11.glScalef(1.0F, -1.0F, -1.0F);
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			short short1 = 0;
+			short rotation = 0;
 
 			if (meta == 2)
-				short1 = 180;
+				rotation = 180;
 
 			if (meta == 3)
-				short1 = 0;
+				rotation = 0;
 
 			if (meta == 4)
-				short1 = 90;
+				rotation = 90;
 
 			if (meta == 5)
-				short1 = -90;
+				rotation = -90;
 
 			if (meta == 2 && te.adjacentChestXPos != null)
 				GL11.glTranslatef(1.0F, 0.0F, 0.0F);
@@ -118,7 +118,7 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer
 			if (meta == 5 && te.adjacentChestZPos != null)
 				GL11.glTranslatef(0.0F, 0.0F, -1.0F);
 
-			GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
 			float adjacentAngle;

@@ -55,11 +55,11 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			byte b0 = nbttagcompound1.getByte("ModuleSlot");
+			NBTTagCompound moduleTag = nbttaglist.getCompoundTagAt(i);
+			byte b0 = moduleTag.getByte("ModuleSlot");
 
 			if (b0 >= 0 && b0 < itemStacks.length)
-				itemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+				itemStacks[b0] = ItemStack.loadItemStackFromNBT(moduleTag);
 		}
 
 		if(customOptions() != null)
@@ -90,10 +90,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		for(int i = 0; i < itemStacks.length; i++)
 			if (itemStacks[i] != null)
 			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("ModuleSlot", (byte)i);
-				itemStacks[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
+				NBTTagCompound moduleTag = new NBTTagCompound();
+				moduleTag.setByte("ModuleSlot", (byte)i);
+				itemStacks[i].writeToNBT(moduleTag);
+				nbttaglist.appendTag(moduleTag);
 			}
 
 		tag.setTag("Modules", nbttaglist);

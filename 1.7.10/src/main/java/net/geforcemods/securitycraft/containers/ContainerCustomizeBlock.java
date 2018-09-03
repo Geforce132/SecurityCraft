@@ -39,42 +39,42 @@ public class ContainerCustomizeBlock extends Container{
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int index)
 	{
-		ItemStack itemstack = null;
+		ItemStack slotStackCopy = null;
 		Slot slot = (Slot)inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack())
 		{
-			ItemStack itemstack1 = slot.getStack();
+			ItemStack slotStack = slot.getStack();
 
-			if(!(itemstack1.getItem() instanceof ItemModule))
+			if(!(slotStack.getItem() instanceof ItemModule))
 				return null;
 
-			itemstack = itemstack1.copy();
+			slotStackCopy = slotStack.copy();
 
 			if (index < tileEntity.getSizeInventory())
 			{
-				if (!mergeItemStack(itemstack1, 0, 35, true))
+				if (!mergeItemStack(slotStack, 0, 35, true))
 					return null;
 				else{
-					tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
-					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack1, EnumCustomModules.getModuleFromStack(itemstack1) }, tileEntity);
+					tileEntity.onModuleRemoved(slotStack, EnumCustomModules.getModuleFromStack(slotStack));
+					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ slotStack, EnumCustomModules.getModuleFromStack(slotStack) }, tileEntity);
 				}
 			}
-			else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !mergeItemStack(itemstack1, 0, tileEntity.getSizeInventory(), false))
+			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
 				return null;
 
-			if (itemstack1.stackSize == 0)
+			if (slotStack.stackSize == 0)
 				slot.putStack((ItemStack)null);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.stackSize == itemstack.stackSize)
+			if(slotStack.stackSize == slotStackCopy.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(player, itemstack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override

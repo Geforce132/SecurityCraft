@@ -149,21 +149,21 @@ public class ItemCameraMonitor extends ItemMap {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int p_77663_4_, boolean update) {}
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean update) {}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		if(stack.getTagCompound() == null)
 			return;
 
 		list.add(StatCollector.translateToLocal("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
-	public CameraView getCameraView(NBTTagCompound nbt){
+	public CameraView getCameraView(NBTTagCompound tag){
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)) {
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)) {
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				return new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0));
 			}
@@ -171,20 +171,20 @@ public class ItemCameraMonitor extends ItemMap {
 		return null;
 	}
 
-	public boolean hasCameraAdded(NBTTagCompound nbt){
-		if(nbt == null) return false;
+	public boolean hasCameraAdded(NBTTagCompound tag){
+		if(tag == null) return false;
 
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i))
+			if(tag.hasKey("Camera" + i))
 				return true;
 
 		return false;
 	}
 
-	public int getSlotFromPosition(NBTTagCompound nbt, CameraView view) {
+	public int getSlotFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return i;
@@ -193,10 +193,10 @@ public class ItemCameraMonitor extends ItemMap {
 		return -1;
 	}
 
-	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return "Camera" + i;
@@ -205,10 +205,10 @@ public class ItemCameraMonitor extends ItemMap {
 		return "";
 	}
 
-	public boolean isCameraAdded(NBTTagCompound nbt, CameraView view){
+	public boolean isCameraAdded(NBTTagCompound tag, CameraView view){
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return true;
@@ -217,12 +217,12 @@ public class ItemCameraMonitor extends ItemMap {
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(NBTTagCompound nbt){
+	public ArrayList<CameraView> getCameraPositions(NBTTagCompound tag){
 		ArrayList<CameraView> list = new ArrayList<CameraView>();
 
 		for(int i = 1; i <= 30; i++)
-			if(nbt != null && nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag != null && tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
 			}
@@ -232,11 +232,11 @@ public class ItemCameraMonitor extends ItemMap {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(NBTTagCompound nbt) {
-		if(nbt == null) return 0;
+	public int getNumberOfCamerasBound(NBTTagCompound tag) {
+		if(tag == null) return 0;
 
 		for(int i = 1; i <= 31; i++)
-			if(nbt.hasKey("Camera" + i))
+			if(tag.hasKey("Camera" + i))
 				continue;
 			else
 				return i - 1;

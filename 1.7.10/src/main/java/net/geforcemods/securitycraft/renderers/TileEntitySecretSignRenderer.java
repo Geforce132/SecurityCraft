@@ -21,74 +21,80 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer
 	/** The ModelSign instance for use in this renderer */
 	private static final ModelSign model = new ModelSign();
 
-	public void renderTileEntityAt(TileEntitySecretSign te, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
+	@Override
+	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks)
+	{
+		renderTileEntityAt((TileEntitySecretSign)te, x, y, z, partialTicks);
+	}
+
+	public void renderTileEntityAt(TileEntitySecretSign te, double x, double y, double z, float partialTicks)
 	{
 		Block block = te.getBlockType();
 		GL11.glPushMatrix();
-		float f1 = 0.6666667F;
-		float f3;
+		float magicNumber1 = 0.6666667F;
+		float rotation;
 
 		if (block == SCContent.secretSignStanding)
 		{
-			GL11.glTranslatef((float)p_147500_2_ + 0.5F, (float)p_147500_4_ + 0.75F * f1, (float)p_147500_6_ + 0.5F);
-			float f2 = te.getBlockMetadata() * 360 / 16.0F;
-			GL11.glRotatef(-f2, 0.0F, 1.0F, 0.0F);
+			GL11.glTranslatef((float)x + 0.5F, (float)y + 0.75F * magicNumber1, (float)z + 0.5F);
+			float localRotation = te.getBlockMetadata() * 360 / 16.0F;
+			GL11.glRotatef(-localRotation, 0.0F, 1.0F, 0.0F);
 			model.signStick.showModel = true;
 		}
 		else
 		{
-			int j = te.getBlockMetadata();
-			f3 = 0.0F;
+			int meta = te.getBlockMetadata();
+			rotation = 0.0F;
 
-			if (j == 2)
+			if (meta == 2)
 			{
-				f3 = 180.0F;
+				rotation = 180.0F;
 			}
 
-			if (j == 4)
+			if (meta == 4)
 			{
-				f3 = 90.0F;
+				rotation = 90.0F;
 			}
 
-			if (j == 5)
+			if (meta == 5)
 			{
-				f3 = -90.0F;
+				rotation = -90.0F;
 			}
 
-			GL11.glTranslatef((float)p_147500_2_ + 0.5F, (float)p_147500_4_ + 0.75F * f1, (float)p_147500_6_ + 0.5F);
-			GL11.glRotatef(-f3, 0.0F, 1.0F, 0.0F);
+			GL11.glTranslatef((float)x + 0.5F, (float)y + 0.75F * magicNumber1, (float)z + 0.5F);
+			GL11.glRotatef(-rotation, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -0.3125F, -0.4375F);
 			model.signStick.showModel = false;
 		}
 
 		bindTexture(TEXTURE);
 		GL11.glPushMatrix();
-		GL11.glScalef(f1, -f1, -f1);
+		GL11.glScalef(magicNumber1, -magicNumber1, -magicNumber1);
 		model.renderSign();
 		GL11.glPopMatrix();
 
 		if(te.getOwner().isOwner(Minecraft.getMinecraft().thePlayer))
 		{
-			FontRenderer fontrenderer = func_147498_b();
-			f3 = 0.016666668F * f1;
-			GL11.glTranslatef(0.0F, 0.5F * f1, 0.07F * f1);
-			GL11.glScalef(f3, -f3, f3);
-			GL11.glNormal3f(0.0F, 0.0F, -1.0F * f3);
+			FontRenderer fontRenderer = func_147498_b();
+			rotation = 0.016666668F * magicNumber1;
+			GL11.glTranslatef(0.0F, 0.5F * magicNumber1, 0.07F * magicNumber1);
+			GL11.glScalef(rotation, -rotation, rotation);
+			GL11.glNormal3f(0.0F, 0.0F, -1.0F * rotation);
 			GL11.glDepthMask(false);
-			byte b0 = 0;
+			byte magicNumber2 = 0;
 
 			for (int i = 0; i < te.signText.length; ++i)
 			{
-				String s = te.signText[i];
+				String lineText = te.signText[i];
 
 				if (i == te.lineBeingEdited)
 				{
-					s = "> " + s + " <";
-					fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, b0);
+					lineText = "> " + lineText + " <";
+					fontRenderer.drawString(lineText, -fontRenderer.getStringWidth(lineText) / 2, i * 10 - te.signText.length * 5, magicNumber2);
 				}
 				else
 				{
-					fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, b0);
+					fontRenderer.drawString(lineText, -fontRenderer.getStringWidth(lineText) / 2, i * 10 - te.signText.length * 5, magicNumber2);
 				}
 			}
 
@@ -97,10 +103,5 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer
 		}
 
 		GL11.glPopMatrix();
-	}
-
-	public void renderTileEntityAt(TileEntity p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
-	{
-		renderTileEntityAt((TileEntitySecretSign)p_147500_1_, p_147500_2_, p_147500_4_, p_147500_6_, p_147500_8_);
 	}
 }

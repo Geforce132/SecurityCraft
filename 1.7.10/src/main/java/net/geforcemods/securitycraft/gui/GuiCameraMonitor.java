@@ -145,13 +145,13 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if(guibutton.id == -1)
+	protected void actionPerformed(GuiButton button) {
+		if(button.id == -1)
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
-		else if(guibutton.id == 0)
+		else if(button.id == 0)
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
-		else if (guibutton.id < 11){
-			int camID = guibutton.id + ((page - 1) * 10);
+		else if (button.id < 11){
+			int camID = button.id + ((page - 1) * 10);
 
 			CameraView view = cameraMonitor.getCameraPositions(nbtTag).get(camID - 1);
 
@@ -161,15 +161,15 @@ public class GuiCameraMonitor extends GuiContainer {
 				Minecraft.getMinecraft().thePlayer.closeScreen();
 			}
 			else
-				guibutton.enabled = false;
+				button.enabled = false;
 		}
 		else
 		{
-			int camID = (guibutton.id - 10) + ((page - 1) * 10);
+			int camID = (button.id - 10) + ((page - 1) * 10);
 
 			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
 			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
-			guibutton.enabled = false;
+			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;
 		}
 	}
@@ -183,9 +183,9 @@ public class GuiCameraMonitor extends GuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

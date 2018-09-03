@@ -33,8 +33,8 @@ public class BlockInventoryScanner extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	private IIcon furnaceIconFront;
 
-	public BlockInventoryScanner(Material par1Material) {
-		super(par1Material);
+	public BlockInventoryScanner(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -57,22 +57,22 @@ public class BlockInventoryScanner extends BlockContainer {
 	 */
 	private void setDefaultDirection(World world, int x, int y, int z){
 		if(!world.isRemote){
-			Block block = world.getBlock(x, y, z - 1);
-			Block block1 = world.getBlock(x, y, z + 1);
-			Block block2 = world.getBlock(x - 1, y, z);
-			Block block3 = world.getBlock(x + 1, y, z);
+			Block north = world.getBlock(x, y, z - 1);
+			Block south = world.getBlock(x, y, z + 1);
+			Block west = world.getBlock(x - 1, y, z);
+			Block east = world.getBlock(x + 1, y, z);
 			byte b0 = 3;
 
-			if (block.isFullBlock() && !block1.isFullBlock())
+			if (north.isFullBlock() && !south.isFullBlock())
 				b0 = 3;
 
-			if (block1.isFullBlock() && !block.isFullBlock())
+			if (south.isFullBlock() && !north.isFullBlock())
 				b0 = 2;
 
-			if (block2.isFullBlock() && !block3.isFullBlock())
+			if (west.isFullBlock() && !east.isFullBlock())
 				b0 = 5;
 
-			if (block3.isFullBlock() && !block2.isFullBlock())
+			if (east.isFullBlock() && !west.isFullBlock())
 				b0 = 4;
 
 			world.setBlockMetadataWithNotify(x, y, z, b0, 2);

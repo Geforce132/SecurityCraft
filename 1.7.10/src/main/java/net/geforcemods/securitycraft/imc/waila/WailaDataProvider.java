@@ -42,12 +42,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	@Override
-	public List<String> getWailaHead(ItemStack itemstack, List<String> head, IWailaDataAccessor data, IWailaConfigHandler config) {
+	public List<String> getWailaHead(ItemStack stack, List<String> head, IWailaDataAccessor data, IWailaConfigHandler config) {
 		return head;
 	}
 
 	@Override
-	public List<String> getWailaBody(ItemStack itemstack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
+	public List<String> getWailaBody(ItemStack stack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
 		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getPosition().blockX, data.getPosition().blockY, data.getPosition().blockZ)) return body;
 
 		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable)
@@ -77,12 +77,12 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	@Override
-	public List<String> getWailaTail(ItemStack itemstack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
+	public List<String> getWailaTail(ItemStack stack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
 		return tail;
 	}
 
 	@Override
-	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tagCompound, World world, int arg4, int arg5, int arg6) {
+	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tagCompound, World world, int x, int y, int z) {
 		return tagCompound;
 	}
 

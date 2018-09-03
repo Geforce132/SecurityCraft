@@ -17,12 +17,13 @@ public class RenderIMSBomb extends Render {
 
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		this.doRender((EntityIMSBomb) entity, x, y, z, entityYaw, partialTicks);
 	}
 
-	public void doRender(EntityIMSBomb ims, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
+	public void doRender(EntityIMSBomb ims, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 
-		GL11.glTranslatef((float)p_76986_2_ - 0.1F, (float)p_76986_4_, (float)p_76986_6_ - 0.1F);
+		GL11.glTranslatef((float)x - 0.1F, (float)y, (float)z - 0.1F);
 		bindEntityTexture(ims);
 		GL11.glScalef(1.4F, 1.4F, 1.4F);
 		modelBomb.render(ims, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
@@ -34,10 +35,4 @@ public class RenderIMSBomb extends Render {
 	protected ResourceLocation getEntityTexture(Entity entity) {
 		return TEXTURE;
 	}
-
-	@Override
-	public void doRender(Entity entity, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
-		this.doRender((EntityIMSBomb) entity, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
-	}
-
 }

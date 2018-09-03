@@ -95,16 +95,16 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
+	protected void actionPerformed(GuiButton button){
 
-		switch(guibutton.id){
+		switch(button.id){
 			case 0:
-				if(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
-					guibutton.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone");
-				else if(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
-					guibutton.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv");
+				if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
+					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone");
+				else if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
+					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv");
 
-				saveType(guibutton.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
+				saveType(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}

@@ -42,34 +42,34 @@ public class ItemReinforcedDoor extends Item {
 		}
 	}
 
-	public static void placeDoorBlock(World world, int x, int y, int z, int rotation, Block block){ //wtf is this code
-		byte b0 = 0;
-		byte b1 = 0;
+	public static void placeDoorBlock(World world, int x, int y, int z, int rotation, Block door){ //naming might not be entirely correct, but it's giving a rough idea
+		byte left = 0;
+		byte right = 0;
 
 		if(rotation == 0)
-			b1 = 1;
+			right = 1;
 		else if(rotation == 1)
-			b0 = -1;
+			left = -1;
 		else if(rotation == 2)
-			b1 = -1;
+			right = -1;
 		else if(rotation == 3)
-			b0 = 1;
+			left = 1;
 
-		int i1 = (world.getBlock(x - b0, y, z - b1).isNormalCube() ? 1 : 0) + (world.getBlock(x - b0, y + 1, z - b1).isNormalCube() ? 1 : 0);
-		int j1 = (world.getBlock(x + b0, y, z + b1).isNormalCube() ? 1 : 0) + (world.getBlock(x + b0, y + 1, z + b1).isNormalCube() ? 1 : 0);
-		boolean flag = world.getBlock(x - b0, y, z - b1) == block || world.getBlock(x - b0, y + 1, z - b1) == block;
-		boolean flag1 = world.getBlock(x + b0, y, z + b1) == block || world.getBlock(x + b0, y + 1, z + b1) == block;
-		boolean flag2 = false;
+		int rightNormalCubeAmount = (world.getBlock(x - left, y, z - right).isNormalCube() ? 1 : 0) + (world.getBlock(x - left, y + 1, z - right).isNormalCube() ? 1 : 0);
+		int leftNormalCubeAmount = (world.getBlock(x + left, y, z + right).isNormalCube() ? 1 : 0) + (world.getBlock(x + left, y + 1, z + right).isNormalCube() ? 1 : 0);
+		boolean isRightDoor = world.getBlock(x - left, y, z - right) == door || world.getBlock(x - left, y + 1, z - right) == door;
+		boolean isLeftDoor = world.getBlock(x + left, y, z + right) == door || world.getBlock(x + left, y + 1, z + right) == door;
+		boolean hingeRight = false;
 
-		if (flag && !flag1)
-			flag2 = true;
-		else if (j1 > i1)
-			flag2 = true;
+		if (isRightDoor && !isLeftDoor)
+			hingeRight = true;
+		else if (leftNormalCubeAmount > rightNormalCubeAmount)
+			hingeRight = true;
 
-		world.setBlock(x, y, z, block, rotation, 2);
-		world.setBlock(x, y + 1, z, block, 8 | (flag2 ? 1 : 0), 2);
-		world.notifyBlocksOfNeighborChange(x, y, z, block);
-		world.notifyBlocksOfNeighborChange(x, y + 1, z, block);
+		world.setBlock(x, y, z, door, rotation, 2);
+		world.setBlock(x, y + 1, z, door, 8 | (hingeRight ? 1 : 0), 2);
+		world.notifyBlocksOfNeighborChange(x, y, z, door);
+		world.notifyBlocksOfNeighborChange(x, y + 1, z, door);
 	}
 
 }

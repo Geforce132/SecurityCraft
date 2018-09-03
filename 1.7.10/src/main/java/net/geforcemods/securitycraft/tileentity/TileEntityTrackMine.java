@@ -30,16 +30,16 @@ public class TileEntityTrackMine extends TileEntityOwnable
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1nbtTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		par1nbtTagCompound.setBoolean("TrackMineEnabled", active);
-		super.writeToNBT(par1nbtTagCompound);
+		tag.setBoolean("TrackMineEnabled", active);
+		super.writeToNBT(tag);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1nbtTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1nbtTagCompound);
-		active = par1nbtTagCompound.getBoolean("TrackMineEnabled");
+		super.readFromNBT(tag);
+		active = tag.getBoolean("TrackMineEnabled");
 	}
 }

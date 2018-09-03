@@ -24,35 +24,35 @@ public class ContainerDisguiseModule extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-		ItemStack itemstack = null;
+		ItemStack slotStackCopy = null;
 		Slot slot = (Slot) inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
 
 			if(index < inventory.SIZE) {
-				if(!mergeItemStack(itemstack1, inventory.SIZE, 37, true))
+				if(!mergeItemStack(slotStack, inventory.SIZE, 37, true))
 					return null;
 
-				slot.onSlotChange(itemstack1, itemstack);
+				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(index >= inventory.SIZE)
-				if(!mergeItemStack(itemstack1, 0, inventory.SIZE, false))
+				if(!mergeItemStack(slotStack, 0, inventory.SIZE, false))
 					return null;
 
-			if(itemstack1.stackSize == 0)
+			if(slotStack.stackSize == 0)
 				slot.putStack((ItemStack) null);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.stackSize == itemstack.stackSize)
+			if(slotStack.stackSize == slotStackCopy.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(player, itemstack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override

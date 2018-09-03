@@ -92,7 +92,7 @@ public class ItemTaser extends Item {
 		{
 			ItemStack itemstack = inventory.mainInventory[i];
 
-			if (inventory.mainInventory[i] != null && stackEqualExact(stack, inventory.mainInventory[i]) && !inventory.mainInventory[i].isItemDamaged() && !itemstack.isItemEnchanted() && !itemstack.hasDisplayName())
+			if (itemstack != null && stackEqualExact(stack, itemstack) && !itemstack.isItemDamaged() && !itemstack.isItemEnchanted() && !itemstack.hasDisplayName())
 			{
 				return i;
 			}

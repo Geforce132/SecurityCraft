@@ -29,7 +29,7 @@ public class GuiSetPassword extends GuiContainer {
 	private String blockName;
 
 	private GuiTextField keycodeTextbox;
-	private boolean codeEntered = false;
+	private boolean invalid = false;
 	private GuiButton saveAndContinueButton;
 
 	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
@@ -42,7 +42,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !codeEntered ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode")));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !invalid ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(fontRendererObj, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -57,7 +57,7 @@ public class GuiSetPassword extends GuiContainer {
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		codeEntered = false;
+		invalid = false;
 		Keyboard.enableRepeatEvents(false);
 	}
 
@@ -114,15 +114,15 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
 	private void updateButtonText(){
-		saveAndContinueButton.displayString = !codeEntered ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode");
+		saveAndContinueButton.displayString = !invalid ? StatCollector.translateToLocal("gui.securitycraft:keycardSetup.save") : StatCollector.translateToLocal("gui.securitycraft:password.invalidCode");
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button){
+		switch(button.id){
 			case 0:
 				if(keycodeTextbox.getText().isEmpty()){
-					codeEntered  = true;
+					invalid  = true;
 					updateButtonText();
 					return;
 				}

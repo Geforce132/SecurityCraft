@@ -85,14 +85,14 @@ public class GuiPictureButton extends GuiButton{
 
 			mouseDragged(mc, mouseX, mouseY);
 
-			int var6 = 14737632;
+			int color = 14737632;
 
 			if (!enabled)
-				var6 = 10526880;
+				color = 10526880;
 			else if (hovered)
-				var6 = 16777120;
+				color = 16777120;
 
-			drawCenteredString(fontRenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, var6);
+			drawCenteredString(fontRenderer, displayString, xPosition + width / 2, yPosition + (height - 8) / 2, color);
 		}
 	}
 

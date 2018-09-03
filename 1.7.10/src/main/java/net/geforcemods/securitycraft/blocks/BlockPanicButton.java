@@ -74,28 +74,28 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	private void updateBlockBounds(int meta) {
 		boolean isOn = (meta == 6 || meta == 7 || meta == 8 || meta == 9);
-		float f2 = (isOn ? 1 : 2) / 16.0F;
+		float height = (isOn ? 1 : 2) / 16.0F;
 
 		if(meta == 0)
 			setBlockBounds(0.1800F, 0.300F, 0.95F, 0.8150F, 0.700F, 1.0F);
 		else if (meta == 1)
-			setBlockBounds(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
+			setBlockBounds(0.0F, 0.30F, 0.18F, height, 0.70F, 0.82F);
 		else if (meta == 2)
-			setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
+			setBlockBounds(1.0F - height, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
 		else if (meta == 3)
-			setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
+			setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, height);
 		else if (meta == 4)
-			setBlockBounds(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
+			setBlockBounds(0.1800F, 0.300F, 1.0F - height, 0.8150F, 0.700F, 1.0F);
 		else if (meta == 5)
-			setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
+			setBlockBounds(1.0F - height, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
 		else if (meta == 6)
-			setBlockBounds(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
+			setBlockBounds(0.0F, 0.30F, 0.18F, height, 0.70F, 0.82F);
 		else if (meta == 7)
-			setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
+			setBlockBounds(1.0F - height, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
 		else if (meta == 8)
-			setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
+			setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, height);
 		else if (meta == 9)
-			setBlockBounds(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
+			setBlockBounds(0.1800F, 0.300F, 1.0F - height, 0.8150F, 0.700F, 1.0F);
 	}
 
 	@Override

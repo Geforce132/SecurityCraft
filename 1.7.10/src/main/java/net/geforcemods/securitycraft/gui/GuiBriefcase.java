@@ -86,10 +86,10 @@ public class GuiBriefcase extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
+	protected void actionPerformed(GuiButton button) {
 		int[] keys = new int[]{Integer.parseInt(keycodeTextboxes[0].getText()), Integer.parseInt(keycodeTextboxes[1].getText()), Integer.parseInt(keycodeTextboxes[2].getText()), Integer.parseInt(keycodeTextboxes[3].getText())};
 
-		switch(guibutton.id) {
+		switch(button.id) {
 			case 0:
 				if(keys[0] == 9)
 					keys[0] = 0;

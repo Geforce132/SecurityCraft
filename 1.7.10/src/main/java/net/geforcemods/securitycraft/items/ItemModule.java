@@ -68,7 +68,7 @@ public class ItemModule extends Item{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
 		if(nbtCanBeModified || canBeCustomized())
 			list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.modifiable"));
 		else

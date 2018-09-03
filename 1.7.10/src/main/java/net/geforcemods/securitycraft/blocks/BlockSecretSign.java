@@ -23,13 +23,13 @@ public class BlockSecretSign extends BlockContainer
 {
 	private boolean isStanding;
 
-	public BlockSecretSign(boolean p_i45426_2_)
+	public BlockSecretSign(boolean isStanding)
 	{
 		super(Material.wood);
-		isStanding = p_i45426_2_;
-		float f = 0.25F;
-		float f1 = 1.0F;
-		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+		this.isStanding = isStanding;
+		float fourth = 0.25F;
+		float full = 1.0F;
+		setBlockBounds(0.5F - fourth, 0.0F, 0.5F - fourth, 0.5F + fourth, full, 0.5F + fourth);
 		setStepSound(soundTypeWood);
 	}
 
@@ -52,52 +52,52 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World worldIn, int x, int y, int z)
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		return null;
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, int x, int y, int z)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
 		if (!isStanding)
 		{
-			int l = worldIn.getBlockMetadata(x, y, z);
-			float f = 0.28125F;
-			float f1 = 0.78125F;
-			float f2 = 0.0F;
-			float f3 = 1.0F;
-			float f4 = 0.125F;
+			int meta = world.getBlockMetadata(x, y, z);
+			float fourthAndHalf = 0.28125F;
+			float twelfthAndHalf = 0.78125F;
+			float nothing = 0.0F;
+			float full = 1.0F;
+			float eigth = 0.125F;
 			setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
-			if (l == 2)
+			if (meta == 2)
 			{
-				setBlockBounds(f2, f, 1.0F - f4, f3, f1, 1.0F);
+				setBlockBounds(nothing, fourthAndHalf, 1.0F - eigth, full, twelfthAndHalf, 1.0F);
 			}
 
-			if (l == 3)
+			if (meta == 3)
 			{
-				setBlockBounds(f2, f, 0.0F, f3, f1, f4);
+				setBlockBounds(nothing, fourthAndHalf, 0.0F, full, twelfthAndHalf, eigth);
 			}
 
-			if (l == 4)
+			if (meta == 4)
 			{
-				setBlockBounds(1.0F - f4, f, f2, 1.0F, f1, f3);
+				setBlockBounds(1.0F - eigth, fourthAndHalf, nothing, 1.0F, twelfthAndHalf, full);
 			}
 
-			if (l == 5)
+			if (meta == 5)
 			{
-				setBlockBounds(0.0F, f, f2, f4, f1, f3);
+				setBlockBounds(0.0F, fourthAndHalf, nothing, eigth, twelfthAndHalf, full);
 			}
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World worldIn, int x, int y, int z)
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
 	{
-		setBlockBoundsBasedOnState(worldIn, x, y, z);
-		return super.getSelectedBoundingBoxFromPool(worldIn, x, y, z);
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.getSelectedBoundingBoxFromPool(world, x, y, z);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, int x, int y, int z)
+	public boolean isPassable(IBlockAccess world, int x, int y, int z)
 	{
 		return true;
 	}
@@ -125,7 +125,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntitySecretSign();
 	}
@@ -137,38 +137,38 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block neighbor)
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor)
 	{
 		boolean flag = false;
 
 		if (isStanding)
 		{
-			if (!worldIn.getBlock(x, y - 1, z).getMaterial().isSolid())
+			if (!world.getBlock(x, y - 1, z).getMaterial().isSolid())
 			{
 				flag = true;
 			}
 		}
 		else
 		{
-			int l = worldIn.getBlockMetadata(x, y, z);
+			int meta = world.getBlockMetadata(x, y, z);
 			flag = true;
 
-			if (l == 2 && worldIn.getBlock(x, y, z + 1).getMaterial().isSolid())
+			if (meta == 2 && world.getBlock(x, y, z + 1).getMaterial().isSolid())
 			{
 				flag = false;
 			}
 
-			if (l == 3 && worldIn.getBlock(x, y, z - 1).getMaterial().isSolid())
+			if (meta == 3 && world.getBlock(x, y, z - 1).getMaterial().isSolid())
 			{
 				flag = false;
 			}
 
-			if (l == 4 && worldIn.getBlock(x + 1, y, z).getMaterial().isSolid())
+			if (meta == 4 && world.getBlock(x + 1, y, z).getMaterial().isSolid())
 			{
 				flag = false;
 			}
 
-			if (l == 5 && worldIn.getBlock(x - 1, y, z).getMaterial().isSolid())
+			if (meta == 5 && world.getBlock(x - 1, y, z).getMaterial().isSolid())
 			{
 				flag = false;
 			}
@@ -176,16 +176,16 @@ public class BlockSecretSign extends BlockContainer
 
 		if (flag)
 		{
-			dropBlockAsItem(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
-			worldIn.setBlockToAir(x, y, z);
+			dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			world.setBlockToAir(x, y, z);
 		}
 
-		super.onNeighborBlockChange(worldIn, x, y, z, neighbor);
+		super.onNeighborBlockChange(world, x, y, z, neighbor);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Item getItem(World worldIn, int x, int y, int z)
+	public Item getItem(World world, int x, int y, int z)
 	{
 		return SCContent.secretSignItem;
 	}

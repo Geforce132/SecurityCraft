@@ -33,10 +33,10 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer 
 			Tessellator tessellator = Tessellator.instance;
 			float brightness = te.getWorld().getLightBrightness(te.xCoord, te.yCoord, te.zCoord);
 			int skyBrightness = te.getWorld().getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
-			int l1 = skyBrightness % 65536;
-			int l2 = skyBrightness / 65536;
+			int lightmapX = skyBrightness % 65536;
+			int lightmapY = skyBrightness / 65536;
 			tessellator.setColorOpaque_F(brightness, brightness, brightness);
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
 
 		GL11.glPushMatrix();

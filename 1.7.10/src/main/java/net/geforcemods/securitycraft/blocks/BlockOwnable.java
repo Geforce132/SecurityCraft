@@ -16,7 +16,7 @@ public class BlockOwnable extends BlockContainer {
 	//only used for reinforced blocks
 	private Block type;
 	//only true if it's a reinforced block
-	private boolean flag = false;
+	private boolean darkenBlock = false;
 
 	public BlockOwnable(Material material) {
 		super(material);
@@ -28,7 +28,7 @@ public class BlockOwnable extends BlockContainer {
 		super(mat);
 
 		type = t;
-		flag = true;
+		darkenBlock = true;
 	}
 
 	/**
@@ -37,34 +37,34 @@ public class BlockOwnable extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta){
-		return !flag ? super.getIcon(side, meta) : type.getIcon(side, meta);
+		return !darkenBlock ? super.getIcon(side, meta) : type.getIcon(side, meta);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess access, int x, int y, int z, int side)
 	{
-		return !flag ? super.getIcon(access, x, y, z, side) : type.getIcon(side, access.getBlockMetadata(x, y, z));
+		return !darkenBlock ? super.getIcon(access, x, y, z, side) : type.getIcon(side, access.getBlockMetadata(x, y, z));
 	}
 
 	@Override
 	public int colorMultiplier(IBlockAccess access, int x, int y, int z)
 	{
-		return !flag ? super.colorMultiplier(access, x, y, z) : 0x999999;
+		return !darkenBlock ? super.colorMultiplier(access, x, y, z) : 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderColor(int meta)
 	{
-		return !flag ? super.getRenderColor(meta) : 0x999999;
+		return !darkenBlock ? super.getRenderColor(meta) : 0x999999;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor()
 	{
-		return !flag ? super.getBlockColor() : 0x999999;
+		return !darkenBlock ? super.getBlockColor() : 0x999999;
 	}
 
 	@Override

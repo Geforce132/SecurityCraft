@@ -133,8 +133,8 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button){
+		switch(button.id){
 			case 0:
 				((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, textboxNewPasscode.getText()));
