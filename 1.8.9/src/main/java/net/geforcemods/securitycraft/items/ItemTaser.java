@@ -37,61 +37,61 @@ public class ItemTaser extends Item {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(!par2World.isRemote)
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+		if(!world.isRemote)
 		{
-			if(!par1ItemStack.isItemDamaged()){
-				if(par3EntityPlayer.isSneaking() && (par3EntityPlayer.capabilities.isCreativeMode || !powered))
+			if(!stack.isItemDamaged()){
+				if(player.isSneaking() && (player.capabilities.isCreativeMode || !powered))
 				{
 					ItemStack oneRedstone = new ItemStack(Items.redstone, 1);
 
-					if(par3EntityPlayer.capabilities.isCreativeMode)
+					if(player.capabilities.isCreativeMode)
 					{
-						if(par3EntityPlayer.inventory.getCurrentItem().getItem() == SCContent.taser)
-							par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						if(player.inventory.getCurrentItem().getItem() == SCContent.taser)
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
 						else
-							par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(SCContent.taser, 1));
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taser, 1));
 					}
-					else if(par3EntityPlayer.inventory.hasItemStack(oneRedstone))
+					else if(player.inventory.hasItemStack(oneRedstone))
 					{
-						int redstoneSlot = findSlotMatchingUnusedItem(par3EntityPlayer.inventory, oneRedstone);
-						ItemStack redstoneStack = par3EntityPlayer.inventory.getStackInSlot(redstoneSlot);
+						int redstoneSlot = findSlotMatchingUnusedItem(player.inventory, oneRedstone);
+						ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
 
 						redstoneStack.stackSize -= 1;
-						par3EntityPlayer.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
-						SecurityCraft.network.sendTo(new PacketCChangeStackSize(redstoneSlot, -1), (EntityPlayerMP)par3EntityPlayer);
-						par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+						SecurityCraft.network.sendTo(new PacketCChangeStackSize(redstoneSlot, -1), (EntityPlayerMP)player);
+						player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
 					}
 
-					return par1ItemStack;
+					return stack;
 				}
 
-				par2World.spawnEntityInWorld(new EntityTaserBullet(par2World, par3EntityPlayer, powered));
-				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par3EntityPlayer.posX, par3EntityPlayer.posY, par3EntityPlayer.posZ, SCSounds.TASERFIRED.path, 1.0F));
+				world.spawnEntityInWorld(new EntityTaserBullet(world, player, powered));
+				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F));
 
-				if(!par3EntityPlayer.capabilities.isCreativeMode)
+				if(!player.capabilities.isCreativeMode)
 				{
 					if(powered)
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
-						taser.damageItem(150, par3EntityPlayer);
-						par3EntityPlayer.inventory.setInventorySlotContents(par3EntityPlayer.inventory.currentItem, taser);
+						taser.damageItem(150, player);
+						player.inventory.setInventorySlotContents(player.inventory.currentItem, taser);
 					}
 					else
-						par1ItemStack.damageItem(150, par3EntityPlayer);
+						stack.damageItem(150, player);
 				}
 			}
 		}
 
-		return par1ItemStack;
+		return stack;
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(!par2World.isRemote)
-			if(par1ItemStack.getItemDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected){
+		if(!world.isRemote)
+			if(stack.getItemDamage() >= 1)
+				stack.setItemDamage(stack.getItemDamage() - 1);
 	}
 
 	public int findSlotMatchingUnusedItem(InventoryPlayer inventory, ItemStack stack)
@@ -100,7 +100,7 @@ public class ItemTaser extends Item {
 		{
 			ItemStack itemstack = inventory.mainInventory[i];
 
-			if (inventory.mainInventory[i] != null && stackEqualExact(stack, inventory.mainInventory[i]) && !inventory.mainInventory[i].isItemDamaged() && !itemstack.isItemEnchanted() && !itemstack.hasDisplayName())
+			if (itemstack != null && stackEqualExact(stack, itemstack) && !itemstack.isItemDamaged() && !itemstack.isItemEnchanted() && !itemstack.hasDisplayName())
 			{
 				return i;
 			}

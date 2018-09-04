@@ -16,8 +16,8 @@ public class BlockProtecto extends BlockOwnable {
 
 	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 
-	public BlockProtecto(Material par1) {
-		super(par1);
+	public BlockProtecto(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -26,12 +26,12 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		return par1World.isSideSolid(pos.down(), EnumFacing.UP);
+	public boolean canPlaceBlockAt(World world, BlockPos pos){
+		return world.isSideSolid(pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(ACTIVATED, false);
 	}
@@ -55,7 +55,7 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 

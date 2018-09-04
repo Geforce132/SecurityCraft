@@ -17,18 +17,18 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedGlass(Material par1Material) {
-		super(par1Material, false);
+	public BlockReinforcedGlass(Material material) {
+		super(material, false);
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

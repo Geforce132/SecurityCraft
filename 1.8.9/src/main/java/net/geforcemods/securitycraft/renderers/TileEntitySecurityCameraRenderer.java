@@ -20,17 +20,17 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/securityCamera1.png");
 
 	@Override
-	public void renderTileEntityAt(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
-		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().thePlayer.ridingEntity.getPosition().equals(par1TileEntity.getPos()))
+	public void renderTileEntityAt(TileEntitySecurityCamera te, double x, double y, double z, float partialTicks, int destroyStage) {
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().thePlayer) && Minecraft.getMinecraft().thePlayer.ridingEntity.getPosition().equals(te.getPos()))
 			return;
 
 		float rotation = 0F;
 
-		if(par1TileEntity.hasWorldObj()){
-			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
-			int l1 = l % 65536;
-			int l2 = l / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+		if(te.hasWorldObj()){
+			int brightness = te.getWorld().getCombinedLight(te.getPos(), 0);
+			int lightmapX = brightness % 65536;
+			int lightmapY = brightness / 65536;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
 
 		GlStateManager.pushMatrix();
@@ -40,8 +40,8 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GlStateManager.pushMatrix();
 
-		if(par1TileEntity.hasWorldObj() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
+		if(te.hasWorldObj() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
+			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), te.getPos(), BlockSecurityCamera.FACING);
 
 			if(side == EnumFacing.EAST)
 				rotation = -1F;
@@ -57,7 +57,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
 
 		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 

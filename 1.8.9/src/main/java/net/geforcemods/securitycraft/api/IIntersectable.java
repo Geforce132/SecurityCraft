@@ -23,5 +23,5 @@ public interface IIntersectable extends ITileEntityProvider {
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity);
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta);
+	public TileEntity createNewTileEntity(World world, int meta);
 }

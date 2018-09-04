@@ -152,13 +152,13 @@ public class SecurityCraft {
 	/**
 	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
 	 */
-	public static void log(String par1){
-		log(par1, false);
+	public static void log(String line){
+		log(line, false);
 	}
 
-	public static void log(String par1, boolean isSevereError){
+	public static void log(String line, boolean isSevereError){
 		if(SecurityCraft.debuggingMode)
-			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + par1 : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + par1);
+			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + line);
 	}
 
 	public static String getVersion(){

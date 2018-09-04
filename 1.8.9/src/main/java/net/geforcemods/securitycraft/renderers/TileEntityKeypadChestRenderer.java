@@ -22,79 +22,79 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 	private static final ResourceLocation christmasNormal = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation normalSingleUnactive = new ResourceLocation("securitycraft:textures/entity/chest/chestUnactive.png");
 	private static final ResourceLocation normalSingleActive = new ResourceLocation("securitycraft:textures/entity/chest/chestActive.png");
-	private static final ModelChest field_147510_h = new ModelChest();
-	private static final ModelChest field_147511_i = new ModelLargeChest();
-	private boolean field_147509_j;
+	private static final ModelChest smallModel = new ModelChest();
+	private static final ModelChest largeModel = new ModelLargeChest();
+	private boolean isChristmas;
 
 	public TileEntityKeypadChestRenderer()
 	{
 		Calendar calendar = Calendar.getInstance();
 
 		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
-			field_147509_j = true;
+			isChristmas = true;
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityKeypadChest p_180538_1_, double p_180538_2_, double p_180538_4_, double p_180538_6_, float p_180538_8_, int p_180538_9_)
+	public void renderTileEntityAt(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		int j;
+		int meta;
 
-		if (!p_180538_1_.hasWorldObj())
-			j = 0;
+		if (!te.hasWorldObj())
+			meta = 0;
 		else
 		{
-			Block block = p_180538_1_.getBlockType();
-			j = p_180538_1_.getBlockMetadata();
+			Block block = te.getBlockType();
+			meta = te.getBlockMetadata();
 
-			if (block instanceof BlockChest && j == 0)
+			if (block instanceof BlockChest && meta == 0)
 			{
-				((BlockChest)block).checkForSurroundingChests(p_180538_1_.getWorld(), p_180538_1_.getPos(), p_180538_1_.getWorld().getBlockState(p_180538_1_.getPos()));
-				j = p_180538_1_.getBlockMetadata();
+				((BlockChest)block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+				meta = te.getBlockMetadata();
 			}
 
-			p_180538_1_.checkForAdjacentChests();
+			te.checkForAdjacentChests();
 		}
 
-		if (p_180538_1_.adjacentChestZNeg == null && p_180538_1_.adjacentChestXNeg == null)
+		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null)
 		{
-			ModelChest modelchest;
+			ModelChest model;
 
-			if (p_180538_1_.adjacentChestXPos == null && p_180538_1_.adjacentChestZPos == null)
+			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null)
 			{
-				modelchest = field_147510_h;
+				model = smallModel;
 
-				if (p_180538_9_ >= 0)
+				if (destroyStage >= 0)
 				{
-					bindTexture(DESTROY_STAGES[p_180538_9_]);
+					bindTexture(DESTROY_STAGES[destroyStage]);
 					GlStateManager.matrixMode(5890);
 					GlStateManager.pushMatrix();
 					GlStateManager.scale(4.0F, 4.0F, 1.0F);
 					GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
 					GlStateManager.matrixMode(5888);
 				}
-				else if (field_147509_j)
+				else if (isChristmas)
 					bindTexture(christmasNormal);
-				else if(p_180538_1_.lidAngle >= 0.9)
+				else if(te.lidAngle >= 0.9)
 					bindTexture(normalSingleActive);
 				else
 					bindTexture(normalSingleUnactive);
 			}
 			else
 			{
-				modelchest = field_147511_i;
+				model = largeModel;
 
-				if (p_180538_9_ >= 0)
+				if (destroyStage >= 0)
 				{
-					bindTexture(DESTROY_STAGES[p_180538_9_]);
+					bindTexture(DESTROY_STAGES[destroyStage]);
 					GlStateManager.matrixMode(5890);
 					GlStateManager.pushMatrix();
 					GlStateManager.scale(8.0F, 4.0F, 1.0F);
 					GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
 					GlStateManager.matrixMode(5888);
 				}
-				else if (field_147509_j)
+				else if (isChristmas)
 					bindTexture(christmasDouble);
-				else if(p_180538_1_.lidAngle >= 0.9)
+				else if(te.lidAngle >= 0.9)
 					bindTexture(normalDoubleActive);
 				else
 					bindTexture(normalDoubleUnactive);
@@ -103,62 +103,62 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 			GlStateManager.pushMatrix();
 			GlStateManager.enableRescaleNormal();
 
-			if (p_180538_9_ < 0)
+			if (destroyStage < 0)
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			GlStateManager.translate((float)p_180538_2_, (float)p_180538_4_ + 1.0F, (float)p_180538_6_ + 1.0F);
+			GlStateManager.translate((float)x, (float)y + 1.0F, (float)z + 1.0F);
 			GlStateManager.scale(1.0F, -1.0F, -1.0F);
 			GlStateManager.translate(0.5F, 0.5F, 0.5F);
 			short short1 = 0;
 
-			if (j == 2)
+			if (meta == 2)
 				short1 = 180;
 
-			if (j == 3)
+			if (meta == 3)
 				short1 = 0;
 
-			if (j == 4)
+			if (meta == 4)
 				short1 = 90;
 
-			if (j == 5)
+			if (meta == 5)
 				short1 = -90;
 
-			if (j == 2 && p_180538_1_.adjacentChestXPos != null)
+			if (meta == 2 && te.adjacentChestXPos != null)
 				GlStateManager.translate(1.0F, 0.0F, 0.0F);
 
-			if (j == 5 && p_180538_1_.adjacentChestZPos != null)
+			if (meta == 5 && te.adjacentChestZPos != null)
 				GlStateManager.translate(0.0F, 0.0F, -1.0F);
 
 			GlStateManager.rotate(short1, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-			float f1 = p_180538_1_.prevLidAngle + (p_180538_1_.lidAngle - p_180538_1_.prevLidAngle) * p_180538_8_;
-			float f2;
+			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+			float adjacentAngle;
 
-			if (p_180538_1_.adjacentChestZNeg != null)
+			if (te.adjacentChestZNeg != null)
 			{
-				f2 = p_180538_1_.adjacentChestZNeg.prevLidAngle + (p_180538_1_.adjacentChestZNeg.lidAngle - p_180538_1_.adjacentChestZNeg.prevLidAngle) * p_180538_8_;
+				adjacentAngle = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
 
-				if (f2 > f1)
-					f1 = f2;
+				if (adjacentAngle > angle)
+					angle = adjacentAngle;
 			}
 
-			if (p_180538_1_.adjacentChestXNeg != null)
+			if (te.adjacentChestXNeg != null)
 			{
-				f2 = p_180538_1_.adjacentChestXNeg.prevLidAngle + (p_180538_1_.adjacentChestXNeg.lidAngle - p_180538_1_.adjacentChestXNeg.prevLidAngle) * p_180538_8_;
+				adjacentAngle = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
 
-				if (f2 > f1)
-					f1 = f2;
+				if (adjacentAngle > angle)
+					angle = adjacentAngle;
 			}
 
-			f1 = 1.0F - f1;
-			f1 = 1.0F - f1 * f1 * f1;
-			modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
-			modelchest.renderAll();
+			angle = 1.0F - angle;
+			angle = 1.0F - angle * angle * angle;
+			model.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
+			model.renderAll();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			if (p_180538_9_ >= 0)
+			if (destroyStage >= 0)
 			{
 				GlStateManager.matrixMode(5890);
 				GlStateManager.popMatrix();
@@ -166,9 +166,4 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 			}
 		}
 	}
-
-	//    public void renderTileEntityAt(TileEntityKeypadChest par1TileEntity, double par2, double par3, double par4, float par5, int par6){
-	//    	this.func_180538_a((TileEntityChest) par1TileEntity, par2, par3, par4, par5, par6);
-	//    }
-
 }

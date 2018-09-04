@@ -19,25 +19,25 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider {
 
-	public BlockReinforcedStainedGlass(Material par1Material) {
-		super(par1Material);
+	public BlockReinforcedStainedGlass(Material material) {
+		super(material);
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item par1Item, CreativeTabs par2CreativeTabs, List par3List){
+	public void getSubBlocks(Item item, CreativeTabs tab, List list){
 		for(int i = 0; i < 16; i++)
-			par3List.add(new ItemStack(par1Item, 1, i));
+			list.add(new ItemStack(item, 1, i));
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

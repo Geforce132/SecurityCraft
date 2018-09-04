@@ -22,7 +22,7 @@ import net.minecraft.util.StatCollector;
 
 public class GuiBriefcaseSetup extends GuiContainer {
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 
 	private GuiTextField keycodeTextbox;
@@ -57,38 +57,38 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3) {
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 		drawString(fontRendererObj, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - fontRendererObj.getStringWidth(StatCollector.translateToLocal("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	protected void keyTyped(char par1, int par2) throws IOException {
-		if(keycodeTextbox.isFocused() && isValidChar(par1))
-			keycodeTextbox.textboxKeyTyped(par1, par2);
+	protected void keyTyped(char charTyped, int keyCode) throws IOException {
+		if(keycodeTextbox.isFocused() && isValidChar(charTyped))
+			keycodeTextbox.textboxKeyTyped(charTyped, keyCode);
 		else
-			super.keyTyped(par1, par2);
+			super.keyTyped(charTyped, keyCode);
 	}
 
-	private boolean isValidChar(char par1) {
+	private boolean isValidChar(char c) {
 		for(int x = 1; x <= allowedChars.length; x++)
-			if(par1 == allowedChars[x - 1])
+			if(c == allowedChars[x - 1])
 				return true;
 			else
 				continue;
@@ -97,9 +97,9 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
-		super.mouseClicked(par1, par2, par3);
-		keycodeTextbox.mouseClicked(par1, par2, par3);
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		keycodeTextbox.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	private void updateButtonText() {
@@ -107,8 +107,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button) {
+		switch(button.id){
 			case 0:
 				if(keycodeTextbox.getText().length() < 4) {
 					flag  = true;

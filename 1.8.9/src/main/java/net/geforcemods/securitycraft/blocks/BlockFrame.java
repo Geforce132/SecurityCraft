@@ -17,8 +17,8 @@ public class BlockFrame extends BlockOwnable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockFrame(Material par1Material){
-		super(par1Material);
+	public BlockFrame(Material material){
+		super(material);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class BlockFrame extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
@@ -45,12 +45,12 @@ public class BlockFrame extends BlockOwnable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		EnumFacing facing = EnumFacing.getFront(meta);
 
-		if(enumfacing.getAxis() == EnumFacing.Axis.Y)
-			enumfacing = EnumFacing.NORTH;
+		if(facing.getAxis() == EnumFacing.Axis.Y)
+			facing = EnumFacing.NORTH;
 
-		return getDefaultState().withProperty(FACING, enumfacing);
+		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override

@@ -25,25 +25,25 @@ public class BlockReinforcedSandstone extends BlockSandStone implements ITileEnt
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(TYPE, BlockSandStone.EnumType.byMetadata(meta));
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPass)
+	public int colorMultiplier(IBlockAccess world, BlockPos pos, int renderPass)
 	{
 		return 0x999999;
 	}

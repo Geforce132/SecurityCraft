@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedLog extends BlockOwnable
 {
-	public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
+	public static final PropertyEnum<BlockLog.EnumAxis> LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
 
 	protected BlockReinforcedLog()
 	{
@@ -20,10 +21,10 @@ public class BlockReinforcedLog extends BlockOwnable
 	}
 
 	@Override
-	public boolean rotateBlock(net.minecraft.world.World world, net.minecraft.util.BlockPos pos, EnumFacing axis)
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
-		for (net.minecraft.block.properties.IProperty prop : (java.util.Set<net.minecraft.block.properties.IProperty>)state.getProperties().keySet())
+		for (IProperty prop : (java.util.Set<IProperty>)state.getProperties().keySet())
 			if (prop.getName().equals("axis"))
 			{
 				world.setBlockState(pos, state.cycleProperty(prop));
@@ -33,8 +34,8 @@ public class BlockReinforcedLog extends BlockOwnable
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
+		return super.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
 }

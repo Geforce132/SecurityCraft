@@ -16,13 +16,13 @@ public class EntityTaserBullet extends EntityThrowable {
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
 	private boolean powered;
 
-	public EntityTaserBullet(World worldIn){
-		super(worldIn);
+	public EntityTaserBullet(World world){
+		super(world);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, EntityLivingBase shooter, boolean isPowered){
-		super(worldIn, shooter);
+	public EntityTaserBullet(World world, EntityLivingBase shooter, boolean isPowered){
+		super(world, shooter);
 		setSize(0.01F, 0.01F);
 		powered = isPowered;
 	}
@@ -49,28 +49,28 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
+	protected void onImpact(MovingObjectPosition mop)
 	{
 		if(!worldObj.isRemote)
 		{
-			if(par1MovingObjectPosition.typeOfHit == MovingObjectType.ENTITY)
+			if(mop.typeOfHit == MovingObjectType.ENTITY)
 			{
-				if(par1MovingObjectPosition.entityHit instanceof EntityPlayer)
+				if(mop.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1MovingObjectPosition.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1MovingObjectPosition.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)mop.entityHit).capabilities.isCreativeMode || (EntityLivingBase)mop.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
 						return;
 				}
 
-				if(par1MovingObjectPosition.entityHit instanceof EntityLivingBase)
+				if(mop.entityHit instanceof EntityLivingBase)
 				{
-					if(((EntityLivingBase) par1MovingObjectPosition.entityHit).attackEntityFrom(DamageSource.generic, 1F))
+					if(((EntityLivingBase) mop.entityHit).attackEntityFrom(DamageSource.generic, 1F))
 					{
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, length, strength));
-						((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, length, strength));
-						((EntityLivingBase) par1MovingObjectPosition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, length, strength));
+						((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, length, strength));
+						((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.confusion.id, length, strength));
+						((EntityLivingBase) mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, length, strength));
 					}
 
 					setDead();

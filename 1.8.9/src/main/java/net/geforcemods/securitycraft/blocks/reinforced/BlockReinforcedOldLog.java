@@ -21,16 +21,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate()
+	public static final PropertyEnum<BlockPlanks.EnumType> VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate<BlockPlanks.EnumType>()
 	{
+		@Override
 		public boolean apply(BlockPlanks.EnumType type)
 		{
 			return type.getMetadata() < 4;
-		}
-		@Override
-		public boolean apply(Object p_apply_1_)
-		{
-			return this.apply((BlockPlanks.EnumType)p_apply_1_);
 		}
 	});
 
@@ -44,12 +40,12 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		list.add(new ItemStack(itemIn, 1, BlockPlanks.EnumType.OAK.getMetadata()));
-		list.add(new ItemStack(itemIn, 1, BlockPlanks.EnumType.SPRUCE.getMetadata()));
-		list.add(new ItemStack(itemIn, 1, BlockPlanks.EnumType.BIRCH.getMetadata()));
-		list.add(new ItemStack(itemIn, 1, BlockPlanks.EnumType.JUNGLE.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockPlanks.EnumType.OAK.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockPlanks.EnumType.SPRUCE.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockPlanks.EnumType.BIRCH.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockPlanks.EnumType.JUNGLE.getMetadata()));
 	}
 
 	/**
@@ -58,24 +54,24 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		IBlockState iblockstate = getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata((meta & 3) % 4));
+		IBlockState state = getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata((meta & 3) % 4));
 
 		switch (meta & 12)
 		{
 			case 0:
-				iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
+				state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
 				break;
 			case 4:
-				iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+				state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
 				break;
 			case 8:
-				iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+				state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
 				break;
 			default:
-				iblockstate = iblockstate.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				state = state.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 		}
 
-		return iblockstate;
+		return state;
 	}
 
 	/**
@@ -85,21 +81,21 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	public int getMetaFromState(IBlockState state)
 	{
 		byte b0 = 0;
-		int i = b0 | ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+		int meta = b0 | state.getValue(VARIANT).getMetadata();
 
-		switch (BlockReinforcedOldLog.SwitchEnumAxis.AXIS_LOOKUP[((BlockLog.EnumAxis)state.getValue(LOG_AXIS)).ordinal()])
+		switch (BlockReinforcedOldLog.SwitchEnumAxis.AXIS_LOOKUP[state.getValue(LOG_AXIS).ordinal()])
 		{
 			case 1:
-				i |= 4;
+				meta |= 4;
 				break;
 			case 2:
-				i |= 8;
+				meta |= 8;
 				break;
 			case 3:
-				i |= 12;
+				meta |= 12;
 		}
 
-		return i;
+		return meta;
 	}
 
 	@Override
@@ -111,7 +107,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	protected ItemStack createStackedBlock(IBlockState state)
 	{
-		return new ItemStack(Item.getItemFromBlock(this), 1, ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata());
+		return new ItemStack(Item.getItemFromBlock(this), 1, state.getValue(VARIANT).getMetadata());
 	}
 
 	/**
@@ -121,7 +117,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
@@ -148,7 +144,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.X.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError var3)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -157,7 +153,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.Z.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError var2)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -166,7 +162,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.NONE.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError var1)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}

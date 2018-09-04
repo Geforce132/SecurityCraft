@@ -28,77 +28,77 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(state.getValue(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(worldIn, pos, POWERED, false, true);
-			worldIn.markBlockRangeForRenderUpdate(pos, pos);
-			worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
-			notifyNeighbors(worldIn, pos, state.getValue(FACING));
+			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.4D, "random.click", 0.3F, 0.5F);
+			notifyNeighbors(world, pos, state.getValue(FACING));
 			return true;
 		}else{
-			BlockUtils.setBlockProperty(worldIn, pos, POWERED, true, true);
-			worldIn.markBlockRangeForRenderUpdate(pos, pos);
-			worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
-			notifyNeighbors(worldIn, pos, state.getValue(FACING));
+			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
+			notifyNeighbors(world, pos, state.getValue(FACING));
 			return true;
 		}
 	}
 
-	private void notifyNeighbors(World worldIn, BlockPos pos, EnumFacing facing)
+	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing)
 	{
-		worldIn.notifyNeighborsOfStateChange(pos, this);
-		worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
+		world.notifyNeighborsOfStateChange(pos, this);
+		world.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam){
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam){
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 	{
-		updateBlockBounds(worldIn.getBlockState(pos));
+		updateBlockBounds(world.getBlockState(pos));
 	}
 
 	private void updateBlockBounds(IBlockState state)
 	{
-		EnumFacing enumfacing = state.getValue(FACING);
-		boolean flag = state.getValue(POWERED).booleanValue();
-		float f2 = (flag ? 1 : 2) / 16.0F;
+		EnumFacing facing = state.getValue(FACING);
+		boolean isPowered = state.getValue(POWERED).booleanValue();
+		float height = (isPowered ? 1 : 2) / 16.0F;
 
-		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()])
+		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()])
 		{
 			case 1:
-				setBlockBounds(0.0F, 0.30F, 0.18F, f2, 0.70F, 0.82F);
+				setBlockBounds(0.0F, 0.30F, 0.18F, height, 0.70F, 0.82F);
 				break;
 			case 2:
-				setBlockBounds(1.0F - f2, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
+				setBlockBounds(1.0F - height, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
 				break;
 			case 3:
-				setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, f2);
+				setBlockBounds(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, height);
 				break;
 			case 4:
-				setBlockBounds(0.1800F, 0.300F, 1.0F - f2, 0.8150F, 0.700F, 1.0F);
+				setBlockBounds(0.1800F, 0.300F, 1.0F - height, 0.8150F, 0.700F, 1.0F);
 				break;
 			case 5:
-				setBlockBounds(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + f2, 0.700F);
+				setBlockBounds(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + height, 0.700F);
 				break;
 			case 6:
-				setBlockBounds(0.175F, 1.0F - f2, 0.300F, 0.8225F, 1.0F, 0.700F);
+				setBlockBounds(0.175F, 1.0F - height, 0.300F, 0.8225F, 1.0F, 0.700F);
 		}
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -112,7 +112,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError var6)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -121,7 +121,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError var5)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -130,7 +130,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError var4)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -139,7 +139,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}
-			catch (NoSuchFieldError var3)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -148,7 +148,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}
-			catch (NoSuchFieldError var2)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -157,7 +157,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}
-			catch (NoSuchFieldError var1)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}

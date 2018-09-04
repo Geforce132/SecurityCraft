@@ -48,11 +48,11 @@ public class PacketSSetOwner implements IMessage {
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetOwner, IMessage>{
 
 		@Override
-		public IMessage onMessage(PacketSSetOwner packet, MessageContext ctx) {
-			BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+		public IMessage onMessage(PacketSSetOwner message, MessageContext ctx) {
+			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			EntityPlayer player = ctx.getServerHandler().playerEntity;
 			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IOwnable)
-				((IOwnable) getWorld(player).getTileEntity(pos)).getOwner().set(packet.uuid, packet.name);
+				((IOwnable) getWorld(player).getTileEntity(pos)).getOwner().set(message.uuid, message.name);
 
 			return null;
 		}

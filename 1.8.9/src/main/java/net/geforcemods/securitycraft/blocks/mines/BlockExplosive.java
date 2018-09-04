@@ -14,34 +14,34 @@ import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
-	public BlockExplosive(Material par1) {
-		super(par1);
+	public BlockExplosive(Material material) {
+		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9) {
-		if(!par1World.isRemote){
-			if(par5EntityPlayer.getCurrentEquippedItem() == null && explodesWhenInteractedWith() && isActive(par1World, pos)) {
-				explode(par1World, pos);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote){
+			if(player.getCurrentEquippedItem() == null && explodesWhenInteractedWith() && isActive(world, pos)) {
+				explode(world, pos);
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(par1World, pos) && isDefusable() && PlayerUtils.isHoldingItem(par5EntityPlayer, SCContent.wireCutters)) {
-				defuseMine(par1World, pos);
-				par5EntityPlayer.getCurrentEquippedItem().damageItem(1, par5EntityPlayer);
-				return false;
-			}
-
-			if(!isActive(par1World, pos) && PlayerUtils.isHoldingItem(par5EntityPlayer, Items.flint_and_steel)) {
-				activateMine(par1World, pos);
+			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+				defuseMine(world, pos);
+				player.getCurrentEquippedItem().damageItem(1, player);
 				return false;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(par1World, pos))
-				explode(par1World, pos);
+			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.flint_and_steel)) {
+				activateMine(world, pos);
+				return false;
+			}
+
+			if(explodesWhenInteractedWith() && isActive(world, pos))
+				explode(world, pos);
 
 			return false;
 		}

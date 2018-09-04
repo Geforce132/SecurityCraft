@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
+	public static final PropertyEnum<BlockReinforcedMetals.EnumType> VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
 
 	public BlockReinforcedMetals()
 	{
@@ -35,7 +35,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	/**
@@ -43,12 +43,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		BlockReinforcedMetals.EnumType[] aenumtype = BlockReinforcedMetals.EnumType.values();
+		BlockReinforcedMetals.EnumType[] values = BlockReinforcedMetals.EnumType.values();
 
-		for (BlockReinforcedMetals.EnumType enumtype : aenumtype)
-			list.add(new ItemStack(itemIn, 1, enumtype.getMetadata()));
+		for (BlockReinforcedMetals.EnumType type : values)
+			list.add(new ItemStack(item, 1, type.getMetadata()));
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
@@ -142,10 +142,8 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 
 		static
 		{
-			BlockReinforcedMetals.EnumType[] var0 = values();
-
-			for (BlockReinforcedMetals.EnumType var3 : var0)
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for (BlockReinforcedMetals.EnumType type : values())
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }

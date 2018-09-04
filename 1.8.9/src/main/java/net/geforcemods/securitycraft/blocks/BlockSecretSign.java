@@ -25,9 +25,9 @@ public class BlockSecretSign extends BlockContainer
 	protected BlockSecretSign()
 	{
 		super(Material.wood);
-		float f = 0.25F;
-		float f1 = 1.0F;
-		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
+		float fourth = 0.25F;
+		float full = 1.0F;
+		setBlockBounds(0.5F - fourth, 0.0F, 0.5F - fourth, 0.5F + fourth, full, 0.5F + fourth);
 		setStepSound(soundTypeWood);
 	}
 
@@ -43,17 +43,17 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+	public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state)
 	{
 		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+	public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos)
 	{
-		setBlockBoundsBasedOnState(worldIn, pos);
-		return super.getSelectedBoundingBox(worldIn, pos);
+		setBlockBoundsBasedOnState(world, pos);
+		return super.getSelectedBoundingBox(world, pos);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
@@ -81,7 +81,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntitySecretSign();
 	}
@@ -93,29 +93,29 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (worldIn.isRemote)
+		if (world.isRemote)
 		{
 			return true;
 		}
 		else
 		{
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(playerIn) : false;
+			TileEntity tileentity = world.getTileEntity(pos);
+			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public Item getItem(World worldIn, BlockPos pos)
+	public Item getItem(World world, BlockPos pos)
 	{
 		return SCContent.secretSignItem;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		return !hasInvalidNeighbor(worldIn, pos) && super.canPlaceBlockAt(worldIn, pos);
+		return !hasInvalidNeighbor(world, pos) && super.canPlaceBlockAt(world, pos);
 	}
 }

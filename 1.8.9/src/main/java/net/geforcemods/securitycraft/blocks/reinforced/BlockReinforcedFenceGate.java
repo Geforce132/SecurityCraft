@@ -37,14 +37,14 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World p_149727_1_, BlockPos pos, IBlockState state, EntityPlayer p_149727_5_, EnumFacing facing, float p_149727_7_, float p_149727_8_, float p_149727_9_){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -74,21 +74,21 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-		if(!worldIn.isRemote) {
-			boolean flag = isSCBlock(neighborBlock) && worldIn.isBlockPowered(pos);
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+		if(!world.isRemote) {
+			boolean isPoweredSCBlock = isSCBlock(neighborBlock) && world.isBlockPowered(pos);
 
-			if (flag || neighborBlock.canProvidePower())
-				if (flag && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
-					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
-					worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1003, pos, 0);
+			if (isPoweredSCBlock || neighborBlock.canProvidePower())
+				if (isPoweredSCBlock && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
+					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
+					world.playAuxSFXAtEntity((EntityPlayer)null, 1003, pos, 0);
 				}
-				else if (!flag && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
-					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
-					worldIn.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
+				else if (!isPoweredSCBlock && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
+					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
+					world.playAuxSFXAtEntity((EntityPlayer)null, 1006, pos, 0);
 				}
-				else if (flag != state.getValue(POWERED).booleanValue())
-					worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+				else if (isPoweredSCBlock != state.getValue(POWERED).booleanValue())
+					world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
 		}
 	}
 
@@ -98,14 +98,14 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World par1World, BlockPos pos, IBlockState state, int par5, int par6){
-		super.onBlockEventReceived(par1World, pos, state, par5, par6);
-		TileEntity tileentity = par1World.getTileEntity(pos);
-		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam){
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
+		TileEntity tileentity = world.getTileEntity(pos);
+		return tileentity != null ? tileentity.receiveClientEvent(eventID, eventParam) : false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 

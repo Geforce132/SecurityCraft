@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
-	
+
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
@@ -36,7 +36,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	public boolean isOpaqueCube(){
 		return false;
 	}
-	
+
 	@Override
 	public boolean isFullCube(){
 		return false;
@@ -51,7 +51,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	public int getRenderType(){
 		return 3;
 	}
-	
+
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos){
 		float px = 1.0F / 16.0F;
@@ -72,7 +72,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public int getLightValue(IBlockAccess world, BlockPos pos) {
-		return ((Boolean) world.getBlockState(pos).getValue(LIT)).booleanValue() ? 15 : 0;
+		return world.getBlockState(pos).getValue(LIT).booleanValue() ? 15 : 0;
 	}
 
 	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
@@ -81,19 +81,19 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			if(isLit)
 			{
 				BlockUtils.setBlockProperty(world, pos, LIT, true);
-				
+
 				if(((IOwnable) world.getTileEntity(pos)) != null)
 					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
-				
+
 				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
 			}
 			else
 			{
 				BlockUtils.setBlockProperty(world, pos, LIT, false);
-				
+
 				if(((IOwnable) world.getTileEntity(pos)) != null)
 					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
-				
+
 				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
 			}
 		}
@@ -107,15 +107,15 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-		return worldIn.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
+		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
 		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
 
-		return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+		return world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
@@ -140,15 +140,15 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(LIT) && ((Boolean) state.getValue(LIT)).booleanValue())
-			return (((EnumFacing) state.getValue(FACING)).getIndex() + 6);
+		if(state.getProperties().containsKey(LIT) && state.getValue(LIT).booleanValue())
+			return (state.getValue(FACING).getIndex() + 6);
 		else{
 			if(!state.getProperties().containsKey(FACING)) return 15;
 
-			return ((EnumFacing) state.getValue(FACING)).getIndex();
+			return state.getValue(FACING).getIndex();
 		}
 	}
-	
+
 	@Override
 	protected BlockState createBlockState()
 	{
@@ -159,5 +159,5 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityMotionLight().attacks(EntityPlayer.class, SecurityCraft.config.motionActivatedLightSearchRadius, 1);
 	}
-	
+
 }

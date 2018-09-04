@@ -30,16 +30,16 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
+		super.writeToNBT(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			par1NBTTagCompound.setString("passcode", passcode);
+			tag.setString("passcode", passcode);
 
 		if(owner != null){
-			par1NBTTagCompound.setString("owner", getOwner().getName());
-			par1NBTTagCompound.setString("ownerUUID", getOwner().getUUID());
+			tag.setString("owner", getOwner().getName());
+			tag.setString("ownerUUID", getOwner().getUUID());
 		}
 	}
 
@@ -47,21 +47,21 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("passcode"))
-			if(par1NBTTagCompound.getInteger("passcode") != 0)
-				passcode = String.valueOf(par1NBTTagCompound.getInteger("passcode"));
+		if (tag.hasKey("passcode"))
+			if(tag.getInteger("passcode") != 0)
+				passcode = String.valueOf(tag.getInteger("passcode"));
 			else
-				passcode = par1NBTTagCompound.getString("passcode");
+				passcode = tag.getString("passcode");
 
-		if (par1NBTTagCompound.hasKey("owner"))
-			getOwner().setOwnerName(par1NBTTagCompound.getString("owner"));
+		if (tag.hasKey("owner"))
+			getOwner().setOwnerName(tag.getString("owner"));
 
-		if (par1NBTTagCompound.hasKey("ownerUUID"))
-			getOwner().setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
+		if (tag.hasKey("ownerUUID"))
+			getOwner().setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	/**

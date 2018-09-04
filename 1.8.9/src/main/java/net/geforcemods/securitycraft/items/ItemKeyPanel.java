@@ -19,14 +19,14 @@ public class ItemKeyPanel extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par5EnumFacing, float hitX, float hitY, float hitZ){
-		if(!par3World.isRemote){
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!world.isRemote){
 			IPasswordConvertible.BLOCKS.forEach((pc) -> {
-				if(BlockUtils.getBlock(par3World, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
+				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
 				{
-					if(((IPasswordConvertible)pc).convert(par2EntityPlayer, par3World, pos) && !par2EntityPlayer.capabilities.isCreativeMode)
-						par1ItemStack.stackSize--;
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(par2EntityPlayer.posX, par2EntityPlayer.posY, par2EntityPlayer.posZ, SCSounds.LOCK.path, 1.0F));
+					if(((IPasswordConvertible)pc).convert(player, world, pos) && !player.capabilities.isCreativeMode)
+						stack.stackSize--;
+					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.LOCK.path, 1.0F));
 				}
 			});
 			return true;

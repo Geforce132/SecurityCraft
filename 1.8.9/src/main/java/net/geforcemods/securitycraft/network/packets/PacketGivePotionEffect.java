@@ -37,8 +37,8 @@ public class PacketGivePotionEffect implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketGivePotionEffect, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketGivePotionEffect packet, MessageContext ctx) {
-			ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(packet.potionID, packet.duration, packet.amplifier, false, true));
+		public IMessage onMessage(PacketGivePotionEffect message, MessageContext ctx) {
+			ctx.getServerHandler().playerEntity.addPotionEffect(new PotionEffect(message.potionID, message.duration, message.amplifier, false, true));
 			return null;
 		}
 

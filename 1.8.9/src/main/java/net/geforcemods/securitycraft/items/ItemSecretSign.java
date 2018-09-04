@@ -22,13 +22,13 @@ public class ItemSecretSign extends Item
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (side == EnumFacing.DOWN)
 		{
 			return false;
 		}
-		else if (!worldIn.getBlockState(pos).getBlock().getMaterial().isSolid())
+		else if (!world.getBlockState(pos).getBlock().getMaterial().isSolid())
 		{
 			return false;
 		}
@@ -36,15 +36,15 @@ public class ItemSecretSign extends Item
 		{
 			pos = pos.offset(side);
 
-			if (!playerIn.canPlayerEdit(pos, side, stack))
+			if (!player.canPlayerEdit(pos, side, stack))
 			{
 				return false;
 			}
-			else if (!SCContent.secretSignStanding.canPlaceBlockAt(worldIn, pos))
+			else if (!SCContent.secretSignStanding.canPlaceBlockAt(world, pos))
 			{
 				return false;
 			}
-			else if (worldIn.isRemote)
+			else if (world.isRemote)
 			{
 				return true;
 			}
@@ -52,20 +52,20 @@ public class ItemSecretSign extends Item
 			{
 				if (side == EnumFacing.UP)
 				{
-					int i = MathHelper.floor_double((playerIn.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
-					worldIn.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, Integer.valueOf(i)), 3);
+					int rotation = MathHelper.floor_double((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
+					world.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, Integer.valueOf(rotation)), 3);
 				}
 				else
 				{
-					worldIn.setBlockState(pos, SCContent.secretSignWall.getDefaultState().withProperty(BlockSecretSignWall.FACING, side), 3);
+					world.setBlockState(pos, SCContent.secretSignWall.getDefaultState().withProperty(BlockSecretSignWall.FACING, side), 3);
 				}
 
 				--stack.stackSize;
-				TileEntity tileentity = worldIn.getTileEntity(pos);
+				TileEntity tileentity = world.getTileEntity(pos);
 
-				if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(worldIn, playerIn, pos, stack))
+				if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(world, player, pos, stack))
 				{
-					playerIn.openEditSign((TileEntitySecretSign)tileentity);
+					player.openEditSign((TileEntitySecretSign)tileentity);
 				}
 
 				return true;

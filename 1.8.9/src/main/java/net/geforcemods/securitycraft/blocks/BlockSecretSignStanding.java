@@ -18,15 +18,15 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
-		if (!worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid())
+		if (!world.getBlockState(pos.down()).getBlock().getMaterial().isSolid())
 		{
-			dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
 		}
 
-		super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+		super.onNeighborBlockChange(world, pos, state, neighborBlock);
 	}
 
 	@Override

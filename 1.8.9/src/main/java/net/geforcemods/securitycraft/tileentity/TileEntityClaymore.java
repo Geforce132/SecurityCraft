@@ -41,29 +41,29 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 
 			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
-			AxisAlignedBB axisalignedbb = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+			AxisAlignedBB area = AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, -SecurityCraft.config.claymoreRange);
+				area = area.addCoord(0, 0, -SecurityCraft.config.claymoreRange);
 			else if(dir == EnumFacing.SOUTH)
-				axisalignedbb = axisalignedbb.addCoord(0, 0, SecurityCraft.config.claymoreRange);if(dir == EnumFacing.EAST)
-					axisalignedbb = axisalignedbb.addCoord(SecurityCraft.config.claymoreRange, 0, 0);
+				area = area.addCoord(0, 0, SecurityCraft.config.claymoreRange);if(dir == EnumFacing.EAST)
+					area = area.addCoord(SecurityCraft.config.claymoreRange, 0, 0);
 				else if(dir == EnumFacing.WEST)
-					axisalignedbb = axisalignedbb.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
+					area = area.addCoord(-SecurityCraft.config.claymoreRange, 0, 0);
 
-				List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-				Iterator<?> iterator = list.iterator();
-				EntityLivingBase entityliving;
+				List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+				Iterator<?> iterator = entities.iterator();
+				EntityLivingBase entity;
 
 				while(iterator.hasNext()){
-					entityliving = (EntityLivingBase) iterator.next();
+					entity = (EntityLivingBase) iterator.next();
 
-					if(PlayerUtils.isPlayerMountedOnCamera(entityliving))
+					if(PlayerUtils.isPlayerMountedOnCamera(entity))
 						continue;
 
-					entityX = entityliving.posX;
-					entityY = entityliving.posY;
-					entityZ = entityliving.posZ;
+					entityX = entity.posX;
+					entityY = entity.posY;
+					entityZ = entity.posZ;
 					cooldown = 20;
 
 					getWorld().playSoundEffect(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, "random.click", 0.3F, 0.6F);
@@ -77,13 +77,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setDouble("entityX", entityX);
-		par1NBTTagCompound.setDouble("entityY", entityY);
-		par1NBTTagCompound.setDouble("entityZ", entityZ);
+		super.writeToNBT(tag);
+		tag.setInteger("cooldown", cooldown);
+		tag.setDouble("entityX", entityX);
+		tag.setDouble("entityY", entityY);
+		tag.setDouble("entityZ", entityZ);
 
 	}
 
@@ -91,21 +91,21 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("entityX"))
-			entityX = par1NBTTagCompound.getDouble("entityX");
+		if (tag.hasKey("entityX"))
+			entityX = tag.getDouble("entityX");
 
-		if (par1NBTTagCompound.hasKey("entityY"))
-			entityY = par1NBTTagCompound.getDouble("entityY");
+		if (tag.hasKey("entityY"))
+			entityY = tag.getDouble("entityY");
 
-		if (par1NBTTagCompound.hasKey("entityZ"))
-			entityZ = par1NBTTagCompound.getDouble("entityZ");
+		if (tag.hasKey("entityZ"))
+			entityZ = tag.getDouble("entityZ");
 	}
 
 }

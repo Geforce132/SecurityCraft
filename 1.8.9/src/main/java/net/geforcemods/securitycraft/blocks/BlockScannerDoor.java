@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 {
-	public BlockScannerDoor(Material materialIn)
+	public BlockScannerDoor(Material material)
 	{
-		super(materialIn);
+		super(material);
 		isBlockContainer = true;
 	}
 
@@ -29,58 +29,58 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
 		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
-			BlockPos blockpos1 = pos.down();
-			IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+			BlockPos blockBelow = pos.down();
+			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if(iblockstate1.getBlock() != this)
-				worldIn.setBlockToAir(pos);
+			if(stateBelow.getBlock() != this)
+				world.setBlockToAir(pos);
 			else if (neighborBlock != this)
-				onNeighborBlockChange(worldIn, blockpos1, iblockstate1, neighborBlock);
+				onNeighborBlockChange(world, blockBelow, stateBelow, neighborBlock);
 		}
 		else
 		{
-			boolean flag1 = false;
-			BlockPos blockpos2 = pos.up();
-			IBlockState iblockstate2 = worldIn.getBlockState(blockpos2);
+			boolean isNotDoor = false;
+			BlockPos blockAbove = pos.up();
+			IBlockState stateAbove = world.getBlockState(blockAbove);
 
-			if(iblockstate2.getBlock() != this)
+			if(stateAbove.getBlock() != this)
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				isNotDoor = true;
 			}
 
-			if(!World.doesBlockHaveSolidTopSurface(worldIn, pos.down()))
+			if(!World.doesBlockHaveSolidTopSurface(world, pos.down()))
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				isNotDoor = true;
 
-				if(iblockstate2.getBlock() == this)
-					worldIn.setBlockToAir(blockpos2);
+				if(stateAbove.getBlock() == this)
+					world.setBlockToAir(blockAbove);
 			}
 
-			if(flag1)
-				if(!worldIn.isRemote)
-					dropBlockAsItem(worldIn, pos, state, 0);
+			if(isNotDoor)
+				if(!world.isRemote)
+					dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+	public boolean onBlockEventReceived(World world, BlockPos pos, IBlockState state, int eventID, int eventParam)
 	{
-		super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+		super.onBlockEventReceived(world, pos, state, eventID, eventParam);
 
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = world.getTileEntity(pos);
 
 		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
 	}
@@ -99,7 +99,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityScannerDoor().activatedByView();
 	}

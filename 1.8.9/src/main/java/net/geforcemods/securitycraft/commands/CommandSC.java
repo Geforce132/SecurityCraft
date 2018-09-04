@@ -32,7 +32,7 @@ public class CommandSC extends CommandBase implements ICommand{
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
+	public String getCommandUsage(ICommandSender sender) {
 		return StatCollector.translateToLocal("messages.securitycraft:command.sc.usage");
 	}
 
@@ -59,18 +59,4 @@ public class CommandSC extends CommandBase implements ICommand{
 		else
 			throw new WrongUsageException(StatCollector.translateToLocal("messages.securitycraft:command.sc.usage"));
 	}
-
-	//	private static String getMessageFromArray(String[] par1String, int index) {
-	//		String startingString = "";
-	//		for(int i = index; i < par1String.length; i++){
-	//			startingString += (i == index ? "" : " ") + par1String[i];
-	//		}
-	//
-	//		return startingString;
-	//	}
-	//
-	//	private void sendMessageToPlayer(String par1, ICommandSender par2) throws PlayerNotFoundException{
-	//		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-	//		getPlayer(par2, par2.getName()).addChatComponentMessage(chatcomponenttext);
-	//	}
 }

@@ -30,8 +30,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
-	public BlockClaymore(Material materialIn) {
-		super(materialIn);
+	public BlockClaymore(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -61,31 +61,31 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(World par1World, BlockPos pos, IBlockState state)
+	public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state)
 	{
 		return null;
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn, pos.down(), EnumFacing.UP);
+		return world.getBlockState(pos.down()).getBlock().isSideSolid(world, pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public boolean onBlockActivated(World par1World, BlockPos pos, IBlockState state, EntityPlayer par5EntityPlayer, EnumFacing side, float par7, float par8, float par9){
-		if(!par1World.isRemote)
-			if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == SCContent.wireCutters){
-				par1World.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote)
+			if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == SCContent.wireCutters){
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
-			}else if(par5EntityPlayer.getCurrentEquippedItem() != null && par5EntityPlayer.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
-				par1World.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
+			}else if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Items.flint_and_steel){
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
 
@@ -104,20 +104,20 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onBlockDestroyedByExplosion(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
 		{
-			if(pos.equals(new BlockPos(explosionIn.getPosition())))
+			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			BlockUtils.destroyBlock(worldIn, pos, false);
-			worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			BlockUtils.destroyBlock(world, pos, false);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(DEACTIVATED, false);
 	}
@@ -143,13 +143,13 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, BlockPos pos)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 	{
-		if (par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+		if (world.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
 			setBlockBounds(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-		else if (par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+		else if (world.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
 			setBlockBounds(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-		else if (par1IBlockAccess.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+		else if (world.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
 			setBlockBounds(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
 		else
 			setBlockBounds(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
@@ -198,7 +198,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityClaymore();
 	}
 

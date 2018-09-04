@@ -32,81 +32,81 @@ public class ItemMineRemoteAccessTool extends Item {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(par2World.isRemote)
-			return par1ItemStack;
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+		if(world.isRemote)
+			return stack;
 		else{
-			par3EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par2World, (int)par3EntityPlayer.posX, (int)par3EntityPlayer.posY, (int)par3EntityPlayer.posZ);
-			return par1ItemStack;
+			player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+			return stack;
 		}
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, BlockPos pos, EnumFacing par5EnumFacing, float hitX, float hitY, float hitZ){
-		if(!par3World.isRemote)
-			if(BlockUtils.getBlock(par3World, pos) instanceof IExplosive){
-				if(!isMineAdded(par1ItemStack, par3World, pos)){
-					int availSlot = getNextAvaliableSlot(par1ItemStack);
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
+			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+				if(!isMineAdded(stack, world, pos)){
+					int availSlot = getNextAvaliableSlot(stack);
 
 					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.noSlots"), EnumChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.noSlots"), EnumChatFormatting.RED);
 						return false;
 					}
 
-					if(par3World.getTileEntity(pos) instanceof IOwnable && !((IOwnable) par3World.getTileEntity(pos)).getOwner().isOwner(par2EntityPlayer)){
-						PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.cantBind"), EnumChatFormatting.RED);
+					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.cantBind"), EnumChatFormatting.RED);
 						return false;
 					}
 
-					if(par1ItemStack.getTagCompound() == null)
-						par1ItemStack.setTagCompound(new NBTTagCompound());
+					if(stack.getTagCompound() == null)
+						stack.setTagCompound(new NBTTagCompound());
 
-					par1ItemStack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par2EntityPlayer);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.GREEN);
+					stack.getTagCompound().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.GREEN);
 				}else{
-					removeTagFromItemAndUpdate(par1ItemStack, pos, par2EntityPlayer);
-					PlayerUtils.sendMessageToPlayer(par2EntityPlayer, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.RED);
+					removeTagFromItemAndUpdate(stack, pos, player);
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:remoteAccessMine.name"), StatCollector.translateToLocal("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), EnumChatFormatting.RED);
 				}
 			}
 			else
-				par2EntityPlayer.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, par3World, (int) par2EntityPlayer.posX, (int) par2EntityPlayer.posY, (int) par2EntityPlayer.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
-		if(par1ItemStack.getTagCompound() == null)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+		if(stack.getTagCompound() == null)
 			return;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTagCompound().getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.getTagCompound().getIntArray("mine" + i);
+			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
-					par3List.add("---");
+					list.add("---");
 					continue;
 				}
 				else
-					par3List.add(StatCollector.translateToLocal("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
+					list.add(StatCollector.translateToLocal("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
 			}
 			else
-				par3List.add("---");
+				list.add("---");
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack par1ItemStack, BlockPos pos, EntityPlayer par5EntityPlayer) {
-		if(par1ItemStack.getTagCompound() == null)
+	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, EntityPlayer player) {
+		if(stack.getTagCompound() == null)
 			return;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTagCompound().getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.getTagCompound().getIntArray("mine" + i);
+			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
-					par1ItemStack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(par1ItemStack), (EntityPlayerMP) par5EntityPlayer);
+					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
 					return;
 				}
 			}
@@ -117,13 +117,13 @@ public class ItemMineRemoteAccessTool extends Item {
 		return;
 	}
 
-	private boolean isMineAdded(ItemStack par1ItemStack, World par2World, BlockPos pos) {
-		if(par1ItemStack.getTagCompound() == null)
+	private boolean isMineAdded(ItemStack stack, World world, BlockPos pos) {
+		if(stack.getTagCompound() == null)
 			return false;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTagCompound().getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.getTagCompound().getIntArray("mine" + i);
+			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ())
 					return true;
@@ -135,11 +135,11 @@ public class ItemMineRemoteAccessTool extends Item {
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack par1ItemStack){
+	private int getNextAvaliableSlot(ItemStack stack){
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTagCompound() == null)
+			if(stack.getTagCompound() == null)
 				return 1;
-			else if(par1ItemStack.getTagCompound().getIntArray("mine" + i).length == 0 || (par1ItemStack.getTagCompound().getIntArray("mine" + i)[0] == 0 && par1ItemStack.getTagCompound().getIntArray("mine" + i)[1] == 0 && par1ItemStack.getTagCompound().getIntArray("mine" + i)[2] == 0))
+			else if(stack.getTagCompound().getIntArray("mine" + i).length == 0 || (stack.getTagCompound().getIntArray("mine" + i)[0] == 0 && stack.getTagCompound().getIntArray("mine" + i)[1] == 0 && stack.getTagCompound().getIntArray("mine" + i)[2] == 0))
 				return i;
 			else
 				continue;
