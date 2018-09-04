@@ -106,38 +106,20 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
-		if(bombsRemaining == 4){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 1.2D, yCoord, zCoord + 1.2D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 3){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 1.2D, yCoord, zCoord + 0.6D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 2){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 0.55D, yCoord, zCoord + 1.2D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 1){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 0.55D, yCoord, zCoord + 0.6D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}
+		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+
+		worldObj.spawnEntityInWorld(new EntityIMSBomb(worldObj, target, xCoord + addToX, yCoord, zCoord + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
-		if(bombsRemaining == 4){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 1.2D, yCoord, zCoord + 1.2D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 3){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 1.2D, yCoord, zCoord + 0.6D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 2){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 0.55D, yCoord, zCoord + 1.2D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}else if(bombsRemaining == 1){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(worldObj, target, xCoord + 0.55D, yCoord, zCoord + 0.6D, x, y, z, launchHeight);
-			worldObj.spawnEntityInWorld(entitylargefireball);
-		}
+		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+
+		worldObj.spawnEntityInWorld(new EntityIMSBomb(worldObj, target, xCoord + addToX, yCoord, zCoord + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
