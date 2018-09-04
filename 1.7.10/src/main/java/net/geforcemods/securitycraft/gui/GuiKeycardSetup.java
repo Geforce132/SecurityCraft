@@ -86,12 +86,12 @@ public class GuiKeycardSetup extends GuiContainer{
 				break;
 
 			case 2:
-				saveLVs();
+				saveLvls();
 				break;
 		}
 	}
 
-	private void saveLVs() {
+	private void saveLvls() {
 		keypadInventory.setPassword(String.valueOf(lvlOfSecurity));
 		keypadInventory.setRequiresExactKeycard(requiresExactCard);
 
