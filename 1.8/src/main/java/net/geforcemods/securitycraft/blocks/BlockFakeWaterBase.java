@@ -37,9 +37,9 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 
 	private void updateLiquid(World world, BlockPos pos, IBlockState state)
 	{
-		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(blockMaterial);
-		world.setBlockState(pos, blockdynamicliquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
-		world.scheduleUpdate(pos, blockdynamicliquid, tickRate(world));
+		BlockDynamicLiquid liquid = getFlowingBlock(blockMaterial);
+		world.setBlockState(pos, liquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		world.scheduleUpdate(pos, liquid, tickRate(world));
 	}
 
 	public static BlockDynamicLiquid getFlowingBlock(Material material)

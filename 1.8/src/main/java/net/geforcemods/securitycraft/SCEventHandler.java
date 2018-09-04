@@ -601,12 +601,12 @@ public class SCEventHandler {
 		double widthFactor = 1F / (double) textureWidth;
 		double heightFactor = 1F / (double) textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertexWithUV(x, y + height, z, u * widthFactor, (v + height) * heightFactor);
-		worldrenderer.addVertexWithUV(x + width, y + height, z, (u + width) * widthFactor, (v + height) * heightFactor);
-		worldrenderer.addVertexWithUV(x + width, y, z, (u + width) * widthFactor, v * heightFactor);
-		worldrenderer.addVertexWithUV(x, y, z, u * widthFactor, v * heightFactor);
+		WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+		worldRenderer.startDrawingQuads();
+		worldRenderer.addVertexWithUV(x, y + height, z, u * widthFactor, (v + height) * heightFactor);
+		worldRenderer.addVertexWithUV(x + width, y + height, z, (u + width) * widthFactor, (v + height) * heightFactor);
+		worldRenderer.addVertexWithUV(x + width, y, z, (u + width) * widthFactor, v * heightFactor);
+		worldRenderer.addVertexWithUV(x, y, z, u * widthFactor, v * heightFactor);
 		tessellator.draw();
 	}
 

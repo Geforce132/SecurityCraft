@@ -49,9 +49,9 @@ public class BlockSecretSignWall extends BlockSecretSign
 	@Override
 	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
 	{
-		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+		EnumFacing facing = (EnumFacing)state.getValue(FACING);
 
-		if (!world.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock().getMaterial().isSolid())
+		if (!world.getBlockState(pos.offset(facing.getOpposite())).getBlock().getMaterial().isSolid())
 		{
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
@@ -63,14 +63,14 @@ public class BlockSecretSignWall extends BlockSecretSign
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		EnumFacing facing = EnumFacing.getFront(meta);
 
-		if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+		if (facing.getAxis() == EnumFacing.Axis.Y)
 		{
-			enumfacing = EnumFacing.NORTH;
+			facing = EnumFacing.NORTH;
 		}
 
-		return getDefaultState().withProperty(FACING, enumfacing);
+		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override

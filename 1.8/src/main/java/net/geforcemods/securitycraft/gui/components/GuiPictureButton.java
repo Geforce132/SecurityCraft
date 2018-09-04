@@ -24,9 +24,9 @@ public class GuiPictureButton extends GuiButton{
 	private int texWidth;
 	private int texHeight;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender) {
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem renderItem, ItemStack itemToRender) {
 		super(id, xPos, yPos, width, height, "");
-		itemRenderer = par7;
+		itemRenderer = renderItem;
 
 		if(itemToRender != null && itemToRender.getItem().getUnlocalizedName().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());

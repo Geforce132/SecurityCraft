@@ -98,14 +98,14 @@ public class BlockSecurityCamera extends BlockContainer{
 			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		else{
 			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-			EnumFacing enumfacing1;
+			EnumFacing iFacing;
 
 			do{
 				if(!iterator.hasNext())
 					return state;
 
-				enumfacing1 = (EnumFacing)iterator.next();
-			}while (!world.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
+				iFacing = (EnumFacing)iterator.next();
+			}while (!world.isSideSolid(pos.offset(iFacing.getOpposite()), iFacing));
 
 			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		}

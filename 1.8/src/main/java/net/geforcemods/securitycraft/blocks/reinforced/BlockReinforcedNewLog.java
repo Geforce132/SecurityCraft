@@ -21,16 +21,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate()
+	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate<BlockPlanks.EnumType>()
 	{
+		@Override
 		public boolean apply(BlockPlanks.EnumType type)
 		{
 			return type.getMetadata() >= 4;
-		}
-		@Override
-		public boolean apply(Object p_apply_1_)
-		{
-			return this.apply((BlockPlanks.EnumType)p_apply_1_);
 		}
 	});
 
@@ -146,7 +142,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.X.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError var3)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -155,7 +151,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.Z.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError var2)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -164,7 +160,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			{
 				AXIS_LOOKUP[BlockLog.EnumAxis.NONE.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError var1)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}

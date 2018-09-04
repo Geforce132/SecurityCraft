@@ -31,9 +31,9 @@ public class BlockMine extends BlockExplosive {
 
 	public BlockMine(Material material) {
 		super(material);
-		float f = 0.2F;
-		float g = 0.1F;
-		setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, (g * 2.0F) / 2 + 0.1F, 0.5F + f);
+		float fifth = 0.2F;
+		float tenth = 0.1F;
+		setBlockBounds(0.5F - fifth, 0.0F, 0.5F - fifth, 0.5F + fifth, (tenth * 2.0F) / 2 + 0.1F, 0.5F + fifth);
 	}
 
 	/**

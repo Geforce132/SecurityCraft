@@ -114,9 +114,9 @@ public class BlockAlarm extends BlockOwnable {
 		else
 			playSoundAndUpdate(world, pos);
 
-		EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+		EnumFacing facing = (EnumFacing)state.getValue(FACING);
 
-		if (!world.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+		if (!world.isSideSolid(pos.offset(facing.getOpposite()), facing, true))
 		{
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
@@ -206,58 +206,58 @@ public class BlockAlarm extends BlockOwnable {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		EnumFacing enumfacing;
+		EnumFacing facing;
 
 		switch (meta & 7){
 			case 0:
-				enumfacing = EnumFacing.DOWN;
+				facing = EnumFacing.DOWN;
 				break;
 			case 1:
-				enumfacing = EnumFacing.EAST;
+				facing = EnumFacing.EAST;
 				break;
 			case 2:
-				enumfacing = EnumFacing.WEST;
+				facing = EnumFacing.WEST;
 				break;
 			case 3:
-				enumfacing = EnumFacing.SOUTH;
+				facing = EnumFacing.SOUTH;
 				break;
 			case 4:
-				enumfacing = EnumFacing.NORTH;
+				facing = EnumFacing.NORTH;
 				break;
 			case 5:
 			default:
-				enumfacing = EnumFacing.UP;
+				facing = EnumFacing.UP;
 		}
 
-		return getDefaultState().withProperty(FACING, enumfacing);
+		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state){
-		int i;
+		int meta;
 
 		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[((EnumFacing)state.getValue(FACING)).ordinal()]){
 			case 1:
-				i = 1;
+				meta = 1;
 				break;
 			case 2:
-				i = 2;
+				meta = 2;
 				break;
 			case 3:
-				i = 3;
+				meta = 3;
 				break;
 			case 4:
-				i = 4;
+				meta = 4;
 				break;
 			case 5:
 			default:
-				i = 5;
+				meta = 5;
 				break;
 			case 6:
-				i = 0;
+				meta = 0;
 		}
 
-		return i;
+		return meta;
 	}
 
 	@Override
@@ -276,37 +276,37 @@ public class BlockAlarm extends BlockOwnable {
 		static{
 			try{
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
-			}catch (NoSuchFieldError var6){
+			}catch (NoSuchFieldError e){
 				;
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
-			}catch (NoSuchFieldError var5){
+			}catch (NoSuchFieldError e){
 				;
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
-			}catch (NoSuchFieldError var4){
+			}catch (NoSuchFieldError e){
 				;
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
-			}catch (NoSuchFieldError var3){
+			}catch (NoSuchFieldError e){
 				;
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
-			}catch (NoSuchFieldError var2){
+			}catch (NoSuchFieldError e){
 				;
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
-			}catch (NoSuchFieldError var1){
+			}catch (NoSuchFieldError e){
 				;
 			}
 		}

@@ -98,11 +98,11 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		moduleInventory[index] = itemstack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		moduleInventory[index] = stack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-			itemstack.stackSize = getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit())
+			stack.stackSize = getInventoryStackLimit();
 
 		markDirty();
 	}

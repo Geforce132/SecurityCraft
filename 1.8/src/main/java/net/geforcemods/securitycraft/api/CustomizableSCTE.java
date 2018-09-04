@@ -51,16 +51,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	{
 		super.readFromNBT(tag);
 
-		NBTTagList nbttaglist = tag.getTagList("Modules", 10);
+		NBTTagList list = tag.getTagList("Modules", 10);
 		itemStacks = new ItemStack[getNumberOfCustomizableOptions()];
 
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		for (int i = 0; i < list.tagCount(); ++i)
 		{
-			NBTTagCompound moduleTag = nbttaglist.getCompoundTagAt(i);
-			byte b0 = moduleTag.getByte("ModuleSlot");
+			NBTTagCompound moduleTag = list.getCompoundTagAt(i);
+			byte slot = moduleTag.getByte("ModuleSlot");
 
-			if (b0 >= 0 && b0 < itemStacks.length)
-				itemStacks[b0] = ItemStack.loadItemStackFromNBT(moduleTag);
+			if (slot >= 0 && slot < itemStacks.length)
+				itemStacks[slot] = ItemStack.loadItemStackFromNBT(moduleTag);
 		}
 
 		if(customOptions() != null)
@@ -86,7 +86,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	{
 		super.writeToNBT(tag);
 
-		NBTTagList nbttaglist = new NBTTagList();
+		NBTTagList list = new NBTTagList();
 
 		for(int i = 0; i < itemStacks.length; i++)
 			if (itemStacks[i] != null)
@@ -94,10 +94,10 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				NBTTagCompound moduleTag = new NBTTagCompound();
 				moduleTag.setByte("ModuleSlot", (byte)i);
 				itemStacks[i].writeToNBT(moduleTag);
-				nbttaglist.appendTag(moduleTag);
+				list.appendTag(moduleTag);
 			}
 
-		tag.setTag("Modules", nbttaglist);
+		tag.setTag("Modules", list);
 
 		if(customOptions() != null)
 			for(Option<?> option : customOptions())
@@ -328,8 +328,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() instanceof ItemModule ? true : false;
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		return stack.getItem() instanceof ItemModule ? true : false;
 	}
 
 	@Override

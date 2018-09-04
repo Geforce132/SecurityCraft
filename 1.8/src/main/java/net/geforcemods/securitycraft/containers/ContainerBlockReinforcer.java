@@ -132,12 +132,12 @@ public class ContainerBlockReinforcer extends Container
 
 				if(slotStack != null && slotStack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == slotStack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, slotStack))
 				{
-					int l = slotStack.stackSize + stack.stackSize;
+					int combinedStackSize = slotStack.stackSize + stack.stackSize;
 
-					if(l <= stack.getMaxStackSize())
+					if(combinedStackSize <= stack.getMaxStackSize())
 					{
 						stack.stackSize = 0;
-						slotStack.stackSize = l;
+						slotStack.stackSize = combinedStackSize;
 						slot.onSlotChanged();
 						merged = true;
 					}

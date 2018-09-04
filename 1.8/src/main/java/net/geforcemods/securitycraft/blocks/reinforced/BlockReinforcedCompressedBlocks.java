@@ -45,10 +45,10 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IRe
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
-		BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
+		BlockReinforcedCompressedBlocks.EnumType[] values = BlockReinforcedCompressedBlocks.EnumType.values();
 
-		for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
-			list.add(new ItemStack(item, 1, var3.getMetadata()));
+		for (BlockReinforcedCompressedBlocks.EnumType type : values)
+			list.add(new ItemStack(item, 1, type.getMetadata()));
 	}
 
 	/**
@@ -139,8 +139,8 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IRe
 
 		static
 		{
-			for(BlockReinforcedCompressedBlocks.EnumType var3 : values())
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for(BlockReinforcedCompressedBlocks.EnumType type : values())
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }

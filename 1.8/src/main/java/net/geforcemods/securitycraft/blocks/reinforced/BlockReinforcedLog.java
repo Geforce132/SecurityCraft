@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,7 +24,7 @@ public class BlockReinforcedLog extends BlockOwnable
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
-		for (net.minecraft.block.properties.IProperty prop : (java.util.Set<net.minecraft.block.properties.IProperty>)state.getProperties().keySet())
+		for (IProperty prop : (java.util.Set<IProperty>)state.getProperties().keySet())
 			if (prop.getName().equals("axis"))
 			{
 				world.setBlockState(pos, state.cycleProperty(prop));

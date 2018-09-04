@@ -112,7 +112,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}
-			catch (NoSuchFieldError var6)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -121,7 +121,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}
-			catch (NoSuchFieldError var5)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -130,7 +130,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}
-			catch (NoSuchFieldError var4)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -139,7 +139,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}
-			catch (NoSuchFieldError var3)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -148,7 +148,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}
-			catch (NoSuchFieldError var2)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}
@@ -157,7 +157,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			{
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}
-			catch (NoSuchFieldError var1)
+			catch (NoSuchFieldError e)
 			{
 				;
 			}

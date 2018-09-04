@@ -89,12 +89,12 @@ public class EntityBouncingBetty extends Entity {
 
 	private void explode()
 	{
-		float f = 6.0F;
+		float strength = 6.0F;
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			worldObj.createExplosion(this, posX, posY, posZ, (f / 2), true);
+			worldObj.createExplosion(this, posX, posY, posZ, (strength / 2), true);
 		else
-			worldObj.createExplosion(this, posX, posY, posZ, f, true);
+			worldObj.createExplosion(this, posX, posY, posZ, strength, true);
 	}
 
 	/**

@@ -20,16 +20,7 @@ public class ModelIMSBomb extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		shape1.render(f5);
-	}
-
-	/**
-	 * This is a helper function from Tabula to set the rotation of model parts
-	 */
-	public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		shape1.render(scale);
 	}
 }
