@@ -25,7 +25,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 	@Override
 	public void doRender(EntityBouncingBetty entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
-		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+		BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
 		float alpha;
@@ -43,7 +43,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 		alpha = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(entity);
 		GlStateManager.translate(-0.5F, -0.5F, 0.5F);
-		blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
+		renderer.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
 		GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
 		if (entity.fuse / 5 % 2 == 0)
@@ -55,7 +55,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 			GlStateManager.doPolygonOffset(-3.0F, -3.0F);
 			GlStateManager.enablePolygonOffset();
-			blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), 1.0F);
+			renderer.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), 1.0F);
 			GlStateManager.doPolygonOffset(0.0F, 0.0F);
 			GlStateManager.disablePolygonOffset();
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
