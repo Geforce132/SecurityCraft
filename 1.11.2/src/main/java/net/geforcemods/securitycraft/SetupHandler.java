@@ -246,11 +246,11 @@ public class SetupHandler
 	{
 		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("codebreaker").setUnlocalizedName("securitycraft:codebreaker");
 
-		SCContent.keycardLV1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setUnlocalizedName("securitycraft:keycardLV1");
-		SCContent.keycardLV2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setUnlocalizedName("securitycraft:keycardLV2");
-		SCContent.keycardLV3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setUnlocalizedName("securitycraft:keycardLV3");
-		SCContent.keycardLV4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setUnlocalizedName("securitycraft:keycardLV4");
-		SCContent.keycardLV5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setUnlocalizedName("securitycraft:keycardLV5");
+		SCContent.keycardLvl1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setUnlocalizedName("securitycraft:keycardLV1");
+		SCContent.keycardLvl2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setUnlocalizedName("securitycraft:keycardLV2");
+		SCContent.keycardLvl3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setUnlocalizedName("securitycraft:keycardLV3");
+		SCContent.keycardLvl4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setUnlocalizedName("securitycraft:keycardLV4");
+		SCContent.keycardLvl5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setUnlocalizedName("securitycraft:keycardLV5");
 		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard").setUnlocalizedName("securitycraft:limitedUseKeycard");
 
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setUnlocalizedName("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);

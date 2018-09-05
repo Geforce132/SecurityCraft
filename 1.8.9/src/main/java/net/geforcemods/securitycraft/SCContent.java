@@ -109,11 +109,11 @@ public class SCContent
 	public static Item codebreaker;
 	public static Item fLavaBucket;
 	public static Item fWaterBucket;
-	public static Item keycardLV1;
-	public static Item keycardLV2;
-	public static Item keycardLV3;
-	public static Item keycardLV4;
-	public static Item keycardLV5;
+	public static Item keycardLvl1;
+	public static Item keycardLvl2;
+	public static Item keycardLvl3;
+	public static Item keycardLvl4;
+	public static Item keycardLvl5;
 	public static Item keyPanel;
 	public static Item limitedUseKeycard;
 	public static Item reinforcedDoorItem;
