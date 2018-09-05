@@ -36,13 +36,13 @@ public class PacketSSetCameraRotation implements IMessage {
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetCameraRotation, IMessage>{
 
 		@Override
-		public IMessage onMessage(PacketSSetCameraRotation packet, MessageContext ctx) {
+		public IMessage onMessage(PacketSSetCameraRotation message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().playerEntity), () -> {
 				EntityPlayer player = ctx.getServerHandler().playerEntity;
 
 				if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
-					player.getRidingEntity().rotationYaw = packet.rotationYaw;
-					player.getRidingEntity().rotationPitch = packet.rotationPitch;
+					player.getRidingEntity().rotationYaw = message.rotationYaw;
+					player.getRidingEntity().rotationPitch = message.rotationPitch;
 				}
 			});
 

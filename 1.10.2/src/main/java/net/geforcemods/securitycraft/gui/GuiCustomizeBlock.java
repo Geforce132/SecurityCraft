@@ -36,10 +36,10 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	private final String blockName;
 
-	public GuiCustomizeBlock(InventoryPlayer par1InventoryPlayer, CustomizableSCTE par2TileEntity)
+	public GuiCustomizeBlock(InventoryPlayer inventory, CustomizableSCTE te)
 	{
-		super(new ContainerCustomizeBlock(par1InventoryPlayer, par2TileEntity));
-		tileEntity = par2TileEntity;
+		super(new ContainerCustomizeBlock(inventory, te));
+		tileEntity = te;
 		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().world, tileEntity.getPos()).getUnlocalizedName().substring(5);
 	}
 
@@ -89,7 +89,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String s = tileEntity.hasCustomName() ? tileEntity.getName() : ClientUtils.localize(tileEntity.getName(), new Object[0]);
 		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
@@ -97,23 +97,23 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton) {
-		if(!(guibutton instanceof GuiPictureButton)) {
-			Option<?> tempOption = tileEntity.customOptions()[guibutton.id];
+	protected void actionPerformed(GuiButton button) {
+		if(!(button instanceof GuiPictureButton)) {
+			Option<?> tempOption = tileEntity.customOptions()[button.id];
 			tempOption.toggle();
-			guibutton.packedFGColour = tempOption.toString().matches(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
-			guibutton.displayString = getOptionButtonTitle(tempOption);
-			SecurityCraft.network.sendToServer(new PacketSToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), guibutton.id));
+			button.packedFGColour = tempOption.toString().matches(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
+			button.displayString = getOptionButtonTitle(tempOption);
+			SecurityCraft.network.sendToServer(new PacketSToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
 		}
 	}
 

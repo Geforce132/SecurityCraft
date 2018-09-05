@@ -11,7 +11,7 @@ public class ContainerDisguiseModule extends Container {
 
 	private ModuleInventory inventory;
 
-	public ContainerDisguiseModule(EntityPlayer par1Player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(EntityPlayer player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
 		inventory = moduleInventory;
 		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 
@@ -24,45 +24,45 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
-		ItemStack itemstack = null;
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+		ItemStack slotStackCopy = null;
 		Slot slot = inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
 
 			if(index < inventory.SIZE) {
-				if(!mergeItemStack(itemstack1, inventory.SIZE, 37, true))
+				if(!mergeItemStack(slotStack, inventory.SIZE, 37, true))
 					return null;
 
-				slot.onSlotChange(itemstack1, itemstack);
+				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(index >= inventory.SIZE)
-				if(!mergeItemStack(itemstack1, 0, inventory.SIZE, false))
+				if(!mergeItemStack(slotStack, 0, inventory.SIZE, false))
 					return null;
 
-			if(itemstack1.stackSize == 0)
+			if(slotStack.stackSize == 0)
 				slot.putStack((ItemStack) null);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.stackSize == itemstack.stackSize)
+			if(slotStack.stackSize == slotStackCopy.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player)
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((player.getHeldItemMainhand() != null && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (player.getHeldItemOffhand() != null && getSlot(slot).getStack() == player.getHeldItemOffhand())))
 			return null;
 
-		return super.slotClick(slot, dragType, clickTypeIn, player);
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	@Override
@@ -75,16 +75,16 @@ public class ContainerDisguiseModule extends Container {
 
 		private ModuleInventory inventory;
 
-		public AddonSlot(ModuleInventory par1IInventory, int par2, int par3, int par4) {
-			super(par1IInventory, par2, par3, par4);
-			inventory = par1IInventory;
+		public AddonSlot(ModuleInventory inventory, int index, int xPos, int yPos) {
+			super(inventory, index, xPos, yPos);
+			this.inventory = inventory;
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack par1ItemStack) {
+		public boolean isItemValid(ItemStack itemStack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = par1ItemStack.getUnlocalizedName().startsWith("tile.");
+			boolean isStackBlock = itemStack.getUnlocalizedName().startsWith("tile.");
 
 			for(ItemStack stack : inventory.moduleInventory)
 				if(stack != null && stack.getItem() != null)

@@ -18,46 +18,46 @@ import net.minecraft.world.World;
 
 public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider {
 
-	public BlockIronTrapDoor(Material materialIn) {
-		super(materialIn);
+	public BlockIronTrapDoor(Material material) {
+		super(material);
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
 	{
-		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(worldIn, pos);
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
 		if(hasActiveSCBlock != state.getValue(OPEN))
 		{
-			worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(worldIn, pos))), 2);
-			worldIn.markBlockRangeForRenderUpdate(pos, pos);
-			playSound((EntityPlayer)null, worldIn, pos, hasActiveSCBlock);
+			world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(world, pos))), 2);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+			playSound((EntityPlayer)null, world, pos, hasActiveSCBlock);
 		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ){
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param)
 	{
-		super.eventReceived(state, worldIn, pos, id, param);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		super.eventReceived(state, world, pos, id, param);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 }

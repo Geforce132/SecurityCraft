@@ -32,42 +32,42 @@ public class PacketSAddModules implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		par1ByteBuf.writeInt(arrayLength);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(arrayLength);
 		for(ItemStack stack : modules)
-			ByteBufUtils.writeItemStack(par1ByteBuf, stack);
+			ByteBufUtils.writeItemStack(buf, stack);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		arrayLength = par1ByteBuf.readInt();
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		arrayLength = buf.readInt();
 		for(int i = 0; i < arrayLength; i++){
 			if(modules == null)
 				modules = new ItemStack[arrayLength];
 
-			modules[i] = ByteBufUtils.readItemStack(par1ByteBuf);
+			modules[i] = ByteBufUtils.readItemStack(buf);
 		}
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSAddModules, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSAddModules packet, MessageContext context) {
+		public IMessage onMessage(PacketSAddModules message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-				ItemStack[] modules = packet.modules;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				ItemStack[] modules = message.modules;
+				EntityPlayer player = context.getServerHandler().playerEntity;
 
-				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE)
+				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE)
 					for(ItemStack module : modules)
-						if(!((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).hasModule(EnumCustomModules.getModuleFromStack(module)))
-							((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).insertModule(module);
+						if(!((CustomizableSCTE) getWorld(player).getTileEntity(pos)).hasModule(EnumCustomModules.getModuleFromStack(module)))
+							((CustomizableSCTE) getWorld(player).getTileEntity(pos)).insertModule(module);
 			});
 
 			return null;

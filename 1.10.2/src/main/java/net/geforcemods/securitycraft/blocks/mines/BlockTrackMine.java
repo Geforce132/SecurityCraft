@@ -34,9 +34,9 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityTrackMine();
 	}
 

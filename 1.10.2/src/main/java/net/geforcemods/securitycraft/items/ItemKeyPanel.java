@@ -21,14 +21,14 @@ public class ItemKeyPanel extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		if(!worldIn.isRemote){
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!world.isRemote){
 			IPasswordConvertible.BLOCKS.forEach((pc) -> {
-				if(BlockUtils.getBlock(worldIn, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
+				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
 				{
-					if(((IPasswordConvertible)pc).convert(playerIn, worldIn, pos) && !playerIn.capabilities.isCreativeMode)
+					if(((IPasswordConvertible)pc).convert(player, world, pos) && !player.capabilities.isCreativeMode)
 						stack.stackSize--;
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.LOCK.path, 1.0F, "block"));
+					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.LOCK.path, 1.0F, "block"));
 				}
 			});
 			return EnumActionResult.SUCCESS;

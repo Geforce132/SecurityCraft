@@ -191,11 +191,11 @@ public class RegistrationHandler
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
 		registerItem(SCContent.scannerDoorItem, SCContent.scannerDoorItem.getUnlocalizedName().substring(5));
 		registerItem(SCContent.universalBlockRemover);
-		registerItem(SCContent.keycardLV1, SecurityCraft.config.ableToCraftKeycard1);
-		registerItem(SCContent.keycardLV2, SecurityCraft.config.ableToCraftKeycard2);
-		registerItem(SCContent.keycardLV3, SecurityCraft.config.ableToCraftKeycard3);
-		registerItem(SCContent.keycardLV4, SecurityCraft.config.ableToCraftKeycard4);
-		registerItem(SCContent.keycardLV5, SecurityCraft.config.ableToCraftKeycard5);
+		registerItem(SCContent.keycardLvl1, SecurityCraft.config.ableToCraftKeycard1);
+		registerItem(SCContent.keycardLvl2, SecurityCraft.config.ableToCraftKeycard2);
+		registerItem(SCContent.keycardLvl3, SecurityCraft.config.ableToCraftKeycard3);
+		registerItem(SCContent.keycardLvl4, SecurityCraft.config.ableToCraftKeycard4);
+		registerItem(SCContent.keycardLvl5, SecurityCraft.config.ableToCraftKeycard5);
 		registerItem(SCContent.limitedUseKeycard, SecurityCraft.config.ableToCraftLUKeycard);
 		registerItem(SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ null, harmingPotions[0], null, null, new ItemStack(Items.WATER_BUCKET, 1), null, null, null, null});
@@ -299,27 +299,27 @@ public class RegistrationHandler
 		});
 
 		if(SecurityCraft.config.ableToCraftKeycard1)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV1, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl1, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.GOLD_INGOT
 			});
 
 		if(SecurityCraft.config.ableToCraftKeycard2)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV2, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl2, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.BRICK
 			});
 
 		if(SecurityCraft.config.ableToCraftKeycard3)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV3, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl3, 1), new Object[]{
 					"III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.NETHERBRICK
 			});
 
 		if(SecurityCraft.config.ableToCraftKeycard4)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV4, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl4, 1), new Object[]{
 					"III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 13)
 			});
 
 		if(SecurityCraft.config.ableToCraftKeycard5)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLV5, 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl5, 1), new Object[]{
 					"III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 5)
 			});
 
@@ -816,11 +816,11 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.reinforcedDoorItem, 0, new ModelResourceLocation("securitycraft:doorIndestructibleIronItem", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.fWaterBucket, 0, new ModelResourceLocation("securitycraft:bucketFWater", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.fLavaBucket, 0, new ModelResourceLocation("securitycraft:bucketFLava", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLV1, 0, new ModelResourceLocation("securitycraft:keycardLV1", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLV2, 0, new ModelResourceLocation("securitycraft:keycardLV2", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLV3, 0, new ModelResourceLocation("securitycraft:keycardLV3", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLV4, 0, new ModelResourceLocation("securitycraft:keycardLV4", "inventory"));
-		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLV5, 0, new ModelResourceLocation("securitycraft:keycardLV5", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLvl1, 0, new ModelResourceLocation("securitycraft:keycardLV1", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLvl2, 0, new ModelResourceLocation("securitycraft:keycardLV2", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLvl3, 0, new ModelResourceLocation("securitycraft:keycardLV3", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLvl4, 0, new ModelResourceLocation("securitycraft:keycardLV4", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keycardLvl5, 0, new ModelResourceLocation("securitycraft:keycardLV5", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.limitedUseKeycard, 0, new ModelResourceLocation("securitycraft:limitedUseKeycard", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.universalBlockRemover, 0, new ModelResourceLocation("securitycraft:universalBlockRemover", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.universalBlockModifier, 0, new ModelResourceLocation("securitycraft:universalBlockModifier", "inventory"));

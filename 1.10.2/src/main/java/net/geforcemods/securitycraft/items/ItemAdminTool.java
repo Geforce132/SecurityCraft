@@ -30,20 +30,20 @@ public class ItemAdminTool extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!worldIn.isRemote) {
-			if(worldIn.getTileEntity(pos) != null) {
-				TileEntity te = worldIn.getTileEntity(pos);
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote) {
+			if(world.getTileEntity(pos) != null) {
+				TileEntity te = world.getTileEntity(pos);
 				boolean hasInfo = false;
 
 				if(te instanceof IOwnable) {
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
 				if(te instanceof IPasswordProtected) {
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
@@ -51,22 +51,22 @@ public class ItemAdminTool extends Item {
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 
 					if(!modules.isEmpty()) {
-						PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(EnumCustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), "-" + module.getName(), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "-" + module.getName(), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
 				}
 
 				if(!hasInfo)
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
 				return EnumActionResult.FAIL;
 			}
 
-			PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
 
 		return EnumActionResult.FAIL;

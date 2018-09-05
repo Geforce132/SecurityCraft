@@ -29,33 +29,33 @@ public class PacketSetISType implements IMessage{
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		type = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		type = ByteBufUtils.readUTF8String(buf);
 
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, type);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, type);
 
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetISType, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSetISType packet, MessageContext context) {
+		public IMessage onMessage(PacketSetISType message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 
-				((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).setType(packet.type);
+				((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).setType(message.type);
 
-				SecurityCraft.log("Setting type to " + packet.type);
+				SecurityCraft.log("Setting type to " + message.type);
 				getWorld(context.getServerHandler().playerEntity).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().playerEntity), pos), 1);
 
 				Utils.setISinTEAppropriately(getWorld(context.getServerHandler().playerEntity), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().playerEntity).getTileEntity(pos)).getType());

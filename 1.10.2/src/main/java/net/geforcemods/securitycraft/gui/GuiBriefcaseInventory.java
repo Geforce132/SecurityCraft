@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcaseInventory extends GuiContainer {
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/briefcaseInventory.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcaseInventory.png");
 
 	public GuiBriefcaseInventory(EntityPlayer player, InventoryPlayer inventory) {
 		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
@@ -25,7 +25,7 @@ public class GuiBriefcaseInventory extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
+		mc.getTextureManager().bindTexture(TEXTURE);
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;
 		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);

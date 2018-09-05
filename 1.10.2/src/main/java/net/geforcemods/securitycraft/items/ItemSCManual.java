@@ -20,15 +20,15 @@ public class ItemSCManual extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		if(worldIn.isRemote)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+		if(world.isRemote)
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int itemSlot, boolean isSelected){
 		if(par1ItemStack.getTagCompound() == null){
 			NBTTagList bookPages = new NBTTagList();
 

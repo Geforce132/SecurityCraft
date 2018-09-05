@@ -43,7 +43,7 @@ public class CommandModule extends CommandBase implements ICommand {
 	}
 
 	@Override
-	public String getUsage(ICommandSender p_71518_1_) {
+	public String getUsage(ICommandSender sender) {
 		return ClientUtils.localize("messages.securitycraft:command.module.usage");
 	}
 
@@ -125,9 +125,9 @@ public class CommandModule extends CommandBase implements ICommand {
 		throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.module.usage"));
 	}
 
-	private int getNextSlot(NBTTagCompound stackTagCompound) {
+	private int getNextSlot(NBTTagCompound tag) {
 		for(int i = 1; i <= 10; i++)
-			if(stackTagCompound.getString("Player" + i) != null && !stackTagCompound.getString("Player" + i).isEmpty())
+			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;
 			else
 				return i;

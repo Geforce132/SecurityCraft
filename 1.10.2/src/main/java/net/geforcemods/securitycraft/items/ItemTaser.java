@@ -39,60 +39,60 @@ public class ItemTaser extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
-		if(!worldIn.isRemote)
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand){
+		if(!world.isRemote)
 		{
-			if(!itemStackIn.isItemDamaged()){
-				if(playerIn.isSneaking() && (playerIn.isCreative() || !powered))
+			if(!stack.isItemDamaged()){
+				if(player.isSneaking() && (player.isCreative() || !powered))
 				{
 					ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
 
-					if(playerIn.isCreative())
+					if(player.isCreative())
 					{
-						if(playerIn.inventory.getCurrentItem().getItem() == SCContent.taser)
-							playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						if(player.inventory.getCurrentItem().getItem() == SCContent.taser)
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
 						else
-							playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, new ItemStack(SCContent.taser, 1));
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taser, 1));
 					}
-					else if(playerIn.inventory.hasItemStack(oneRedstone))
+					else if(player.inventory.hasItemStack(oneRedstone))
 					{
-						int redstoneSlot = findSlotMatchingUnusedItem(playerIn.inventory, oneRedstone);
-						ItemStack redstoneStack = playerIn.inventory.getStackInSlot(redstoneSlot);
+						int redstoneSlot = findSlotMatchingUnusedItem(player.inventory, oneRedstone);
+						ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
 
 						redstoneStack.stackSize -= 1;
-						playerIn.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
-						playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+						player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
 					}
 
-					return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+					return ActionResult.newResult(EnumActionResult.PASS, stack);
 				}
 
-				WorldUtils.addScheduledTask(worldIn, () -> worldIn.spawnEntity(new EntityTaserBullet(worldIn, playerIn, powered)));
-				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(playerIn.posX, playerIn.posY, playerIn.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
+				WorldUtils.addScheduledTask(world, () -> world.spawnEntity(new EntityTaserBullet(world, player, powered)));
+				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
-				if(!playerIn.capabilities.isCreativeMode)
+				if(!player.capabilities.isCreativeMode)
 				{
 					if(powered)
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
-						taser.damageItem(150, playerIn);
-						playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, taser);
+						taser.damageItem(150, player);
+						player.inventory.setInventorySlotContents(player.inventory.currentItem, taser);
 					}
 					else
-						itemStackIn.damageItem(150, playerIn);
+						stack.damageItem(150, player);
 				}
 			}
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
-		if(!par2World.isRemote)
-			if(par1ItemStack.getItemDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected){
+		if(!world.isRemote)
+			if(stack.getItemDamage() >= 1)
+				stack.setItemDamage(stack.getItemDamage() - 1);
 	}
 
 	public int findSlotMatchingUnusedItem(InventoryPlayer inventory, ItemStack stack)

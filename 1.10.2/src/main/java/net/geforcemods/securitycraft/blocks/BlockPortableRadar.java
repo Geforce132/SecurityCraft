@@ -24,8 +24,8 @@ public class BlockPortableRadar extends BlockContainer {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockPortableRadar(Material par2Material) {
-		super(par2Material);
+	public BlockPortableRadar(Material material) {
+		super(material);
 	}
 
 	/**
@@ -56,13 +56,13 @@ public class BlockPortableRadar extends BlockContainer {
 		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
 	}
 
-	public static void togglePowerOutput(World par1World, BlockPos pos, boolean par5) {
-		if(par5 && !par1World.getBlockState(pos).getValue(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(par1World, pos, POWERED, true, true);
-			BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
-		}else if(!par5 && par1World.getBlockState(pos).getValue(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(par1World, pos, POWERED, false, true);
-			BlockUtils.updateAndNotify(par1World, pos, BlockUtils.getBlock(par1World, pos), 1, false);
+	public static void togglePowerOutput(World world, BlockPos pos, boolean toggleOn) {
+		if(toggleOn && !world.getBlockState(pos).getValue(POWERED).booleanValue()){
+			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
+			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
+		}else if(!toggleOn && world.getBlockState(pos).getValue(POWERED).booleanValue()){
+			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
+			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
 		}
 	}
 
@@ -99,7 +99,7 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityPortableRadar().attacks(EntityPlayer.class, SecurityCraft.config.portableRadarSearchRadius, SecurityCraft.config.portableRadarDelay).nameable();
 	}
 

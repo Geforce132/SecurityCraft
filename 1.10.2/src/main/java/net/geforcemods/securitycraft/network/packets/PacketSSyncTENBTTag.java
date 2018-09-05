@@ -20,11 +20,11 @@ public class PacketSSyncTENBTTag implements IMessage{
 
 	}
 
-	public PacketSSyncTENBTTag(int par1, int par2, int par3, NBTTagCompound par4NBTTagCompound){
-		x = par1;
-		y = par2;
-		z = par3;
-		tag = par4NBTTagCompound;
+	public PacketSSyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.tag = tag;
 	}
 
 	@Override
@@ -46,10 +46,10 @@ public class PacketSSyncTENBTTag implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncTENBTTag, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSSyncTENBTTag packet, MessageContext ctx) {
+		public IMessage onMessage(PacketSSyncTENBTTag message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().playerEntity), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-				NBTTagCompound tag = packet.tag;
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				NBTTagCompound tag = message.tag;
 				EntityPlayer player = ctx.getServerHandler().playerEntity;
 
 				if(getWorld(player).getTileEntity(pos) != null)

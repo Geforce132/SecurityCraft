@@ -246,11 +246,11 @@ public class SetupHandler
 	{
 		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:codebreaker");
 
-		SCContent.keycardLV1 = new ItemKeycardBase(0).setUnlocalizedName("securitycraft:keycardLV1");
-		SCContent.keycardLV2 = new ItemKeycardBase(1).setUnlocalizedName("securitycraft:keycardLV2");
-		SCContent.keycardLV3 = new ItemKeycardBase(2).setUnlocalizedName("securitycraft:keycardLV3");
-		SCContent.keycardLV4 = new ItemKeycardBase(4).setUnlocalizedName("securitycraft:keycardLV4");
-		SCContent.keycardLV5 = new ItemKeycardBase(5).setUnlocalizedName("securitycraft:keycardLV5");
+		SCContent.keycardLvl1 = new ItemKeycardBase(0).setUnlocalizedName("securitycraft:keycardLV1");
+		SCContent.keycardLvl2 = new ItemKeycardBase(1).setUnlocalizedName("securitycraft:keycardLV2");
+		SCContent.keycardLvl3 = new ItemKeycardBase(2).setUnlocalizedName("securitycraft:keycardLV3");
+		SCContent.keycardLvl4 = new ItemKeycardBase(4).setUnlocalizedName("securitycraft:keycardLV4");
+		SCContent.keycardLvl5 = new ItemKeycardBase(5).setUnlocalizedName("securitycraft:keycardLV5");
 		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setUnlocalizedName("securitycraft:limitedUseKeycard");
 
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setUnlocalizedName("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);

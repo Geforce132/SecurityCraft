@@ -47,12 +47,12 @@ public class CommandSC extends CommandBase implements ICommand{
 	}
 
 	@Override
-	public String getUsage(ICommandSender icommandsender) {
+	public String getUsage(ICommandSender sender) {
 		return ClientUtils.localize("messages.securitycraft:command.sc.usage");
 	}
 
 	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender icommandsender) {
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
 		return true;
 	}
 
@@ -78,18 +78,4 @@ public class CommandSC extends CommandBase implements ICommand{
 		else
 			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 	}
-
-	//	private static String getMessageFromArray(String[] par1String, int index) {
-	//		String startingString = "";
-	//		for(int i = index; i < par1String.length; i++){
-	//			startingString += (i == index ? "" : " ") + par1String[i];
-	//		}
-	//
-	//		return startingString;
-	//	}
-	//
-	//	private void sendMessageToPlayer(String par1, ICommandSender par2) throws PlayerNotFoundException{
-	//		ChatComponentText chatcomponenttext = new ChatComponentText(par1);
-	//		getPlayer(par2, par2.getName()).sendMessage(chatcomponenttext);
-	//	}
 }

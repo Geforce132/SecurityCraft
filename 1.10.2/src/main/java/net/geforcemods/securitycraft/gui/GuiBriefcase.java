@@ -21,7 +21,7 @@ public class GuiBriefcase extends GuiContainer {
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
 	private GuiButton[] keycodeTopButtons = new GuiButton[4];
 	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
@@ -61,8 +61,8 @@ public class GuiBriefcase extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int par1, int par2, float par3) {
-		super.drawScreen(par1, par2, par3);
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
 		for(GuiTextField textfield : keycodeTextboxes)
@@ -70,17 +70,17 @@ public class GuiBriefcase extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

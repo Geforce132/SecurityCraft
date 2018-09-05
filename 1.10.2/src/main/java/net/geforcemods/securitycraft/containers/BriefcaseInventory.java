@@ -37,8 +37,8 @@ public class BriefcaseInventory implements IInventory {
 		return briefcaseInventory[index];
 	}
 
-	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+	public void readFromNBT(NBTTagCompound tag) {
+		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
@@ -49,7 +49,7 @@ public class BriefcaseInventory implements IInventory {
 		}
 	}
 
-	public void writeToNBT(NBTTagCompound tagcompound) {
+	public void writeToNBT(NBTTagCompound tag) {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++)
@@ -61,7 +61,7 @@ public class BriefcaseInventory implements IInventory {
 				items.appendTag(item);
 			}
 
-		tagcompound.setTag("ItemInventory", items);
+		tag.setTag("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
 	}
 
@@ -88,11 +88,11 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		briefcaseInventory[index] = itemstack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		briefcaseInventory[index] = stack;
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-			itemstack.stackSize = getInventoryStackLimit();
+		if(stack != null && stack.stackSize > getInventoryStackLimit())
+			stack.stackSize = getInventoryStackLimit();
 
 		markDirty();
 	}
@@ -133,7 +133,7 @@ public class BriefcaseInventory implements IInventory {
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
 	}
 

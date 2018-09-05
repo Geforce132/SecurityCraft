@@ -52,7 +52,7 @@ public class BlockSecretSign extends BlockContainer
 
 	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World world, BlockPos pos)
 	{
 		return NULL_AABB;
 	}
@@ -64,7 +64,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
@@ -82,7 +82,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntitySecretSign();
 	}
@@ -95,28 +95,28 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return new ItemStack(SCContent.secretSignItem);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if (worldIn.isRemote)
+		if (world.isRemote)
 		{
 			return true;
 		}
 		else
 		{
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(playerIn) : false;
+			TileEntity tileentity = world.getTileEntity(pos);
+			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
 		}
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		return !hasInvalidNeighbor(worldIn, pos) && super.canPlaceBlockAt(worldIn, pos);
+		return !hasInvalidNeighbor(world, pos) && super.canPlaceBlockAt(world, pos);
 	}
 }
