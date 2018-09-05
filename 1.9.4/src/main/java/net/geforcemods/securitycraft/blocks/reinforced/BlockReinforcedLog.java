@@ -28,7 +28,7 @@ public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisp
 	}
 
 	@Override
-	public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
 		for (IProperty prop : state.getProperties().keySet())
@@ -41,9 +41,9 @@ public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisp
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
+		return super.onBlockPlaced(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
 	}
 
 	@Override

@@ -367,49 +367,49 @@ public class EntitySecurityCamera extends Entity{
 	protected void entityInit(){}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tagCompound){
-		tagCompound.setInteger("CameraID", id);
+	public void writeEntityToNBT(NBTTagCompound tag){
+		tag.setInteger("CameraID", id);
 
 		if(playerViewingName != null)
-			tagCompound.setString("playerName", playerViewingName);
+			tag.setString("playerName", playerViewingName);
 
 		if(cameraUseX != 0.0D)
-			tagCompound.setDouble("cameraUseX", cameraUseX);
+			tag.setDouble("cameraUseX", cameraUseX);
 
 		if(cameraUseY != 0.0D)
-			tagCompound.setDouble("cameraUseY", cameraUseY);
+			tag.setDouble("cameraUseY", cameraUseY);
 
 		if(cameraUseZ != 0.0D)
-			tagCompound.setDouble("cameraUseZ", cameraUseZ);
+			tag.setDouble("cameraUseZ", cameraUseZ);
 
 		if(cameraUseYaw != 0.0D)
-			tagCompound.setDouble("cameraUseYaw", cameraUseYaw);
+			tag.setDouble("cameraUseYaw", cameraUseYaw);
 
 		if(cameraUsePitch != 0.0D)
-			tagCompound.setDouble("cameraUsePitch", cameraUsePitch);
+			tag.setDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tagCompound){
-		id = tagCompound.getInteger("CameraID");
+	public void readEntityFromNBT(NBTTagCompound tag){
+		id = tag.getInteger("CameraID");
 
-		if(tagCompound.hasKey("playerName"))
-			playerViewingName = tagCompound.getString("playerName");
+		if(tag.hasKey("playerName"))
+			playerViewingName = tag.getString("playerName");
 
-		if(tagCompound.hasKey("cameraUseX"))
-			cameraUseX = tagCompound.getDouble("cameraUseX");
+		if(tag.hasKey("cameraUseX"))
+			cameraUseX = tag.getDouble("cameraUseX");
 
-		if(tagCompound.hasKey("cameraUseY"))
-			cameraUseY = tagCompound.getDouble("cameraUseY");
+		if(tag.hasKey("cameraUseY"))
+			cameraUseY = tag.getDouble("cameraUseY");
 
-		if(tagCompound.hasKey("cameraUseZ"))
-			cameraUseZ = tagCompound.getDouble("cameraUseZ");
+		if(tag.hasKey("cameraUseZ"))
+			cameraUseZ = tag.getDouble("cameraUseZ");
 
-		if(tagCompound.hasKey("cameraUseYaw"))
-			cameraUseYaw = tagCompound.getFloat("cameraUseYaw");
+		if(tag.hasKey("cameraUseYaw"))
+			cameraUseYaw = tag.getFloat("cameraUseYaw");
 
-		if(tagCompound.hasKey("cameraUsePitch"))
-			cameraUsePitch = tagCompound.getFloat("cameraUsePitch");
+		if(tag.hasKey("cameraUsePitch"))
+			cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 
 }

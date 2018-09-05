@@ -28,35 +28,35 @@ public class PacketSetKeycardLevel implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		par1ByteBuf.writeInt(level);
-		par1ByteBuf.writeBoolean(exactCard);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		buf.writeInt(level);
+		buf.writeBoolean(exactCard);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		level = par1ByteBuf.readInt();
-		exactCard = par1ByteBuf.readBoolean();
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		level = buf.readInt();
+		exactCard = buf.readBoolean();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetKeycardLevel, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSetKeycardLevel packet, MessageContext context) {
+		public IMessage onMessage(PacketSetKeycardLevel message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().playerEntity), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-				int level = packet.level;
-				boolean exactCard = packet.exactCard;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				int level = message.level;
+				boolean exactCard = message.exactCard;
+				EntityPlayer player = context.getServerHandler().playerEntity;
 
-				((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setPassword(String.valueOf(level));
-				((TileEntityKeycardReader) getWorld(par1EntityPlayer).getTileEntity(pos)).setRequiresExactKeycard(exactCard);
+				((TileEntityKeycardReader) getWorld(player).getTileEntity(pos)).setPassword(String.valueOf(level));
+				((TileEntityKeycardReader) getWorld(player).getTileEntity(pos)).setRequiresExactKeycard(exactCard);
 			});
 
 			return null;

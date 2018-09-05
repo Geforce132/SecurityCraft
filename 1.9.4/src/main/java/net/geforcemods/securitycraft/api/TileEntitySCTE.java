@@ -55,12 +55,12 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	@Override
 	public void update() {
 		if(intersectsEntities){
-			int i = pos.getX();
-			int j = pos.getY();
-			int k = pos.getZ();
-			AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, i + 1, j + 1, k + 1));
-			List<?> list = worldObj.getEntitiesWithinAABB(Entity.class, axisalignedbb);
-			Iterator<?> iterator = list.iterator();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
+			List<?> entites = worldObj.getEntitiesWithinAABB(Entity.class, area);
+			Iterator<?> iterator = entites.iterator();
 			Entity entity;
 
 			while (iterator.hasNext())
@@ -81,12 +81,12 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 				return;
 			}
 
-			int i = pos.getX();
-			int j = pos.getY();
-			int k = pos.getZ();
-			AxisAlignedBB axisalignedbb = (new AxisAlignedBB(i, j, k, (i), (j), (k)).expand(5, 5, 5));
-			List<?> list = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-			Iterator<?> iterator = list.iterator();
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).expand(5, 5, 5));
+			List<?> entites = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, area);
+			Iterator<?> iterator = entites.iterator();
 			EntityLivingBase entity;
 
 			while (iterator.hasNext())
@@ -94,10 +94,9 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 				entity = (EntityLivingBase)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
 				boolean isPlayer = (entity instanceof EntityPlayer);
-
 				Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().xCoord * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().yCoord * 5)), (entity.posZ + (entity.getLookVec().zCoord * 5)));
-
 				RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
+
 				if(mop != null && mop.typeOfHit == Type.BLOCK)
 					if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
@@ -114,9 +113,9 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			}
 
 			if (canAttack()) {
-				AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).expand(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> list = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
-				Iterator<?> iterator = list.iterator();
+				AxisAlignedBB area = new AxisAlignedBB(pos).expand(getAttackRange(), getAttackRange(), getAttackRange());
+				List<?> entites = worldObj.getEntitiesWithinAABB(entityTypeToAttack(), area);
+				Iterator<?> iterator = entites.iterator();
 
 				if(!worldObj.isRemote){
 					boolean attacked = false;
@@ -195,52 +194,52 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setBoolean("intersectsEntities", intersectsEntities);
-		par1NBTTagCompound.setBoolean("viewActivated", viewActivated);
-		par1NBTTagCompound.setBoolean("attacks", attacks);
-		par1NBTTagCompound.setBoolean("canBeNamed", canBeNamed);
-		par1NBTTagCompound.setDouble("attackRange", attackRange);
-		par1NBTTagCompound.setInteger("attackCooldown", attackCooldown);
-		par1NBTTagCompound.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
-		par1NBTTagCompound.setString("customName", customName);
-		return par1NBTTagCompound;
+		tag.setBoolean("intersectsEntities", intersectsEntities);
+		tag.setBoolean("viewActivated", viewActivated);
+		tag.setBoolean("attacks", attacks);
+		tag.setBoolean("canBeNamed", canBeNamed);
+		tag.setDouble("attackRange", attackRange);
+		tag.setInteger("attackCooldown", attackCooldown);
+		tag.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
+		tag.setString("customName", customName);
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("intersectsEntities"))
-			intersectsEntities = par1NBTTagCompound.getBoolean("intersectsEntities");
+		if (tag.hasKey("intersectsEntities"))
+			intersectsEntities = tag.getBoolean("intersectsEntities");
 
-		if (par1NBTTagCompound.hasKey("viewActivated"))
-			viewActivated = par1NBTTagCompound.getBoolean("viewActivated");
+		if (tag.hasKey("viewActivated"))
+			viewActivated = tag.getBoolean("viewActivated");
 
-		if (par1NBTTagCompound.hasKey("attacks"))
-			attacks = par1NBTTagCompound.getBoolean("attacks");
+		if (tag.hasKey("attacks"))
+			attacks = tag.getBoolean("attacks");
 
-		if (par1NBTTagCompound.hasKey("canBeNamed"))
-			canBeNamed = par1NBTTagCompound.getBoolean("canBeNamed");
+		if (tag.hasKey("canBeNamed"))
+			canBeNamed = tag.getBoolean("canBeNamed");
 
-		if (par1NBTTagCompound.hasKey("attackRange"))
-			attackRange = par1NBTTagCompound.getDouble("attackRange");
+		if (tag.hasKey("attackRange"))
+			attackRange = tag.getDouble("attackRange");
 
-		if (par1NBTTagCompound.hasKey("attackCooldown"))
-			attackCooldown = par1NBTTagCompound.getInteger("attackCooldown");
+		if (tag.hasKey("attackCooldown"))
+			attackCooldown = tag.getInteger("attackCooldown");
 
-		if (par1NBTTagCompound.hasKey("ticksBetweenAttacks"))
-			ticksBetweenAttacks = par1NBTTagCompound.getInteger("ticksBetweenAttacks");
+		if (tag.hasKey("ticksBetweenAttacks"))
+			ticksBetweenAttacks = tag.getInteger("ticksBetweenAttacks");
 
-		if (par1NBTTagCompound.hasKey("customName"))
-			customName = par1NBTTagCompound.getString("customName");
+		if (tag.hasKey("customName"))
+			customName = tag.getString("customName");
 	}
 
 	@Override

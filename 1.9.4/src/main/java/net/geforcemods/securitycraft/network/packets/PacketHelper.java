@@ -8,16 +8,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketHelper {
 
-	public World getWorld(EntityPlayer par1EntityPlayer){
-		return par1EntityPlayer.getEntityWorld().getMinecraftServer().worldServerForDimension(par1EntityPlayer.dimension);
+	public World getWorld(EntityPlayer player){
+		return player.getEntityWorld().getMinecraftServer().worldServerForDimension(player.dimension);
 	}
 
-	public World getWorld(EntityPlayer par1EntityPlayer, Side side){
-		return par1EntityPlayer.getEntityWorld().getMinecraftServer().worldServerForDimension(par1EntityPlayer.dimension);
+	public World getWorld(EntityPlayer player, Side side){
+		return player.getEntityWorld().getMinecraftServer().worldServerForDimension(player.dimension);
 	}
 
 	@SideOnly(Side.CLIENT)
-	public World getClientWorld(EntityPlayer par1EntityPlayer){
+	public World getClientWorld(EntityPlayer player){
 		return Minecraft.getMinecraft().theWorld;
 	}
 

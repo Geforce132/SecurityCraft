@@ -32,8 +32,8 @@ public class BlockMine extends BlockExplosive {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
-	public BlockMine(Material par1Material) {
-		super(par1Material);
+	public BlockMine(Material material) {
+		super(material);
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class BlockMine extends BlockExplosive {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(par1World, pos.down()) == Material.PLANTS)
+	public boolean canPlaceBlockAt(World world, BlockPos pos){
+		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(world, pos.down()) == Material.PLANTS)
 			return false;
 		else
 			return true;
@@ -109,13 +109,13 @@ public class BlockMine extends BlockExplosive {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn){
-		if(worldIn.isRemote)
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity){
+		if(world.isRemote)
 			return;
-		else if(entityIn instanceof EntityCreeper || entityIn instanceof EntityOcelot || entityIn instanceof EntityEnderman || entityIn instanceof EntityItem)
+		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
 			return;
-		else if(entityIn instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entityIn))
-			explode(worldIn, pos);
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			explode(world, pos);
 	}
 
 	@Override
@@ -131,16 +131,16 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		if(par1World.isRemote)
+	public void explode(World world, BlockPos pos) {
+		if(world.isRemote)
 			return;
 
-		if(!par1World.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
-			par1World.destroyBlock(pos, false);
+		if(!world.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
+			world.destroyBlock(pos, false);
 			if(SecurityCraft.config.smallerMineExplosion)
-				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
-				par1World.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+	public Item getItemDropped(IBlockState state, Random random, int meta){
 		return Item.getItemFromBlock(SCContent.mine);
 	}
 
@@ -156,7 +156,7 @@ public class BlockMine extends BlockExplosive {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
 	}
 
@@ -189,7 +189,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

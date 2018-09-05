@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiKeycardSetup extends GuiContainer{
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntityKeycardReader keypadInventory;
 	private GuiButton lvlOfSecurityButton;
 	private GuiButton requiresExactCardButton;
@@ -41,7 +41,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1")) / 2, 6, 4210752);
 		fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2"), xSize / 2 - fontRendererObj.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
@@ -53,12 +53,12 @@ public class GuiKeycardSetup extends GuiContainer{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	private void updateButtonText(){
@@ -73,8 +73,8 @@ public class GuiKeycardSetup extends GuiContainer{
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton guibutton){
-		switch(guibutton.id){
+	protected void actionPerformed(GuiButton button){
+		switch(button.id){
 			case 0:
 				updateButtonText();
 				break;

@@ -22,14 +22,14 @@ public class PlayerUtils{
 	 *
 	 * Args: playerName.
 	 */
-	public static EntityPlayer getPlayerFromName(String par1){
+	public static EntityPlayer getPlayerFromName(String name){
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			List<?> players = Minecraft.getMinecraft().theWorld.playerEntities;
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getName().matches(par1))
+				if(tempPlayer.getName().matches(name))
 					return tempPlayer;
 			}
 
@@ -40,7 +40,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getName().matches(par1))
+				if(tempPlayer.getName().matches(name))
 					return tempPlayer;
 			}
 
@@ -53,19 +53,19 @@ public class PlayerUtils{
 	 *
 	 * Args: playerName.
 	 */
-	public static boolean isPlayerOnline(String par1) {
+	public static boolean isPlayerOnline(String name) {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
 				EntityPlayer player = Minecraft.getMinecraft().theWorld.playerEntities.get(i);
 
-				if(player != null && player.getName().matches(par1))
+				if(player != null && player.getName().matches(name))
 					return true;
 			}
 
 			return false;
 		}
 		else
-			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(par1) != null);
+			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){

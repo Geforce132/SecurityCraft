@@ -25,8 +25,8 @@ public class BlockLogger extends BlockContainer {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockLogger(Material par1Material) {
-		super(par1Material);
+	public BlockLogger(Material material) {
+		super(material);
 		setSoundType(SoundType.STONE);
 	}
 
@@ -36,11 +36,11 @@ public class BlockLogger extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(world.isRemote)
 			return true;
 		else{
-			playerIn.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 	}
@@ -50,15 +50,15 @@ public class BlockLogger extends BlockContainer {
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
 	{
-		if (!worldIn.isRemote)
-			if(worldIn.isBlockPowered(pos))
-				((TileEntityLogger)worldIn.getTileEntity(pos)).logPlayers();
+		if (!world.isRemote)
+			if(world.isBlockPowered(pos))
+				((TileEntityLogger)world.getTileEntity(pos)).logPlayers();
 	}
 
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
@@ -82,7 +82,7 @@ public class BlockLogger extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par1) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
 	}
 }

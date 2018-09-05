@@ -30,49 +30,49 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
+		NBTTagList list = tag.getTagList("Items", 10);
 		inventoryContents = new ItemStack[getSizeInventory()];
 
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		for (int i = 0; i < list.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			int j = nbttagcompound1.getByte("Slot") & 255;
+			NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			int slot = stackTag.getByte("Slot") & 255;
 
-			if (j >= 0 && j < inventoryContents.length)
-				inventoryContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			if (slot >= 0 && slot < inventoryContents.length)
+				inventoryContents[slot] = ItemStack.loadItemStackFromNBT(stackTag);
 		}
 
 
-		if(par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if(tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if(par1NBTTagCompound.hasKey("type"))
-			type = par1NBTTagCompound.getString("type");
+		if(tag.hasKey("type"))
+			type = tag.getString("type");
 
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
-		NBTTagList nbttaglist = new NBTTagList();
+		NBTTagList list = new NBTTagList();
 
 		for (int i = 0; i < inventoryContents.length; ++i)
 			if (inventoryContents[i] != null)
 			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte)i);
-				inventoryContents[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
+				NBTTagCompound stackTag = new NBTTagCompound();
+				stackTag.setByte("Slot", (byte)i);
+				inventoryContents[i].writeToNBT(stackTag);
+				list.appendTag(stackTag);
 			}
 
-		par1NBTTagCompound.setTag("Items", nbttaglist);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setString("type", type);
-		return par1NBTTagCompound;
+		tag.setTag("Items", list);
+		tag.setInteger("cooldown", cooldown);
+		tag.setString("type", type);
+		return tag;
 	}
 
 	@Override
@@ -81,28 +81,28 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public ItemStack decrStackSize(int par1, int par2)
+	public ItemStack decrStackSize(int index, int count)
 	{
-		if (inventoryContents[par1] != null)
+		if (inventoryContents[index] != null)
 		{
-			ItemStack itemstack;
+			ItemStack stack;
 
-			if (inventoryContents[par1].stackSize <= par2)
+			if (inventoryContents[index].stackSize <= count)
 			{
-				itemstack = inventoryContents[par1];
-				inventoryContents[par1] = null;
+				stack = inventoryContents[index];
+				inventoryContents[index] = null;
 				markDirty();
-				return itemstack;
+				return stack;
 			}
 			else
 			{
-				itemstack = inventoryContents[par1].splitStack(par2);
+				stack = inventoryContents[index].splitStack(count);
 
-				if (inventoryContents[par1].stackSize == 0)
-					inventoryContents[par1] = null;
+				if (inventoryContents[index].stackSize == 0)
+					inventoryContents[index] = null;
 
 				markDirty();
-				return itemstack;
+				return stack;
 			}
 		}
 		else
@@ -113,37 +113,37 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
 	 * like when you close a workbench GUI.
 	 */
-	public ItemStack getStackInSlotOnClosing(int par1)
+	public ItemStack getStackInSlotOnClosing(int index)
 	{
-		if (inventoryContents[par1] != null)
+		if (inventoryContents[index] != null)
 		{
-			ItemStack itemstack = inventoryContents[par1];
-			inventoryContents[par1] = null;
-			return itemstack;
+			ItemStack stack = inventoryContents[index];
+			inventoryContents[index] = null;
+			return stack;
 		}
 		else
 			return null;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1) {
-		return inventoryContents[var1];
+	public ItemStack getStackInSlot(int index) {
+		return inventoryContents[index];
 	}
 
 	/**
 	 * Copy of getStackInSlot which doesn't get overrided by CustomizableSCTE.
 	 */
 
-	public ItemStack getStackInSlotCopy(int var1) {
-		return inventoryContents[var1];
+	public ItemStack getStackInSlotCopy(int index) {
+		return inventoryContents[index];
 	}
 
 	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
-		inventoryContents[par1] = par2ItemStack;
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		inventoryContents[index] = stack;
 
-		if (par2ItemStack != null && par2ItemStack.stackSize > getInventoryStackLimit())
-			par2ItemStack.stackSize = getInventoryStackLimit();
+		if (stack != null && stack.stackSize > getInventoryStackLimit())
+			stack.stackSize = getInventoryStackLimit();
 
 		markDirty();
 	}
@@ -219,7 +219,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
@@ -230,7 +230,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int var1, ItemStack var2) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
 	}
 

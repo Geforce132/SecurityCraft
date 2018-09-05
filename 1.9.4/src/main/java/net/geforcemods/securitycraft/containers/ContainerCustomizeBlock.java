@@ -39,69 +39,69 @@ public class ContainerCustomizeBlock extends Container{
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
+	public ItemStack transferStackInSlot(EntityPlayer player, int index)
 	{
-		ItemStack itemstack = null;
-		Slot slot = inventorySlots.get(par2);
+		ItemStack slotStackCopy = null;
+		Slot slot = inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack())
 		{
-			ItemStack itemstack1 = slot.getStack();
+			ItemStack slotStack = slot.getStack();
 
-			if(!(itemstack1.getItem() instanceof ItemModule))
+			if(!(slotStack.getItem() instanceof ItemModule))
 				return null;
 
-			itemstack = itemstack1.copy();
+			slotStackCopy = slotStack.copy();
 
-			if (par2 < tileEntity.getSizeInventory())
+			if (index < tileEntity.getSizeInventory())
 			{
-				if (!mergeItemStack(itemstack1, 0, 35, true))
+				if (!mergeItemStack(slotStack, 0, 35, true))
 					return null;
 				else{
-					tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
-					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack1, EnumCustomModules.getModuleFromStack(itemstack1) }, tileEntity);
+					tileEntity.onModuleRemoved(slotStack, EnumCustomModules.getModuleFromStack(slotStack));
+					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ slotStack, EnumCustomModules.getModuleFromStack(slotStack) }, tileEntity);
 
 					if(tileEntity instanceof TileEntitySecurityCamera)
 						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).getValue(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock());
 				}
 			}
-			else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !mergeItemStack(itemstack1, 0, tileEntity.getSizeInventory(), false))
+			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
 				return null;
 
-			if (itemstack1.stackSize == 0)
+			if (slotStack.stackSize == 0)
 				slot.putStack((ItemStack)null);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.stackSize == itemstack.stackSize)
+			if(slotStack.stackSize == slotStackCopy.stackSize)
 				return null;
 
-			slot.onPickupFromSlot(par1, itemstack1);
+			slot.onPickupFromSlot(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 
 
 	public static class ModuleSlot extends Slot{
 		private CustomizableSCTE tileEntity;
-		public ModuleSlot(CustomizableSCTE par1IInventory, int par2, int par3, int par4) {
-			super(par1IInventory, par2, par3, par4);
-			tileEntity = par1IInventory;
+		public ModuleSlot(CustomizableSCTE te, int index, int xPos, int yPos) {
+			super(te, index, xPos, yPos);
+			tileEntity = te;
 		}
 
 		/**
 		 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 		 */
 		@Override
-		public boolean isItemValid(ItemStack par1ItemStack)
+		public boolean isItemValid(ItemStack stack)
 		{
-			if(par1ItemStack != null && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule()))
+			if(stack != null && stack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) stack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) stack.getItem()).getModule()))
 				return true;
 			else
 				return false;
@@ -113,9 +113,9 @@ public class ContainerCustomizeBlock extends Container{
 		}
 
 		@Override
-		public void putStack(ItemStack p_75215_1_)
+		public void putStack(ItemStack stack)
 		{
-			tileEntity.safeSetInventorySlotContents(getSlotIndex(), p_75215_1_);
+			tileEntity.safeSetInventorySlotContents(getSlotIndex(), stack);
 			onSlotChanged();
 		}
 
@@ -124,9 +124,9 @@ public class ContainerCustomizeBlock extends Container{
 		 * stack.
 		 */
 		@Override
-		public ItemStack decrStackSize(int p_75209_1_)
+		public ItemStack decrStackSize(int index)
 		{
-			return tileEntity.safeDecrStackSize(getSlotIndex(), p_75209_1_);
+			return tileEntity.safeDecrStackSize(getSlotIndex(), index);
 		}
 
 		/**

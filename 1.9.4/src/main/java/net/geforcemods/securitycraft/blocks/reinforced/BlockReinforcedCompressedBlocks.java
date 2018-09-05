@@ -50,10 +50,10 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item itemIn, CreativeTabs tab, List list)
 	{
-		BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
+		BlockReinforcedCompressedBlocks.EnumType[] values = BlockReinforcedCompressedBlocks.EnumType.values();
 
-		for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
-			list.add(new ItemStack(itemIn, 1, var3.getMetadata()));
+		for (BlockReinforcedCompressedBlocks.EnumType type : values)
+			list.add(new ItemStack(itemIn, 1, type.getMetadata()));
 	}
 
 	/**
@@ -156,8 +156,8 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 
 		static
 		{
-			for(BlockReinforcedCompressedBlocks.EnumType var3 : values())
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for(BlockReinforcedCompressedBlocks.EnumType values : values())
+				META_LOOKUP[values.getMetadata()] = values;
 		}
 	}
 }

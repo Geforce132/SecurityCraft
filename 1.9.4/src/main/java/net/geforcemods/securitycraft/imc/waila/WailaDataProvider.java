@@ -43,48 +43,48 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	@Override
-	public List<String> getWailaHead(ItemStack itemStack, List<String> tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
-		return tipList;
+	public List<String> getWailaHead(ItemStack stack, List<String> head, IWailaDataAccessor data, IWailaConfigHandler config) {
+		return head;
 	}
 
 	@Override
-	public List<String> getWailaBody(ItemStack itemStack, List<String> tipList, IWailaDataAccessor iDataAccessor, IWailaConfigHandler iConfigHandler) {
-		if(iDataAccessor.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) iDataAccessor.getBlock()).shouldShowSCInfo(iDataAccessor.getWorld(), iDataAccessor.getBlockState(), iDataAccessor.getPosition())) return tipList;
+	public List<String> getWailaBody(ItemStack stack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
+		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return body;
 
-		if(iConfigHandler.getConfig("securitycraft.showowner") && iDataAccessor.getTileEntity() instanceof IOwnable)
-			tipList.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) iDataAccessor.getTileEntity()).getOwner().getName());
+		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable)
+			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());
 
-		if(iConfigHandler.getConfig("securitycraft.showmodules") && iDataAccessor.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
-			if(!((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules().isEmpty())
-				tipList.add(ClientUtils.localize("waila.securitycraft:equipped"));
+		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
+			if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty())
+				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
-			for(EnumCustomModules module : ((CustomizableSCTE) iDataAccessor.getTileEntity()).getModules())
-				tipList.add("- " + module.getName());
+			for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules())
+				body.add("- " + module.getName());
 		}
 
-		if(iConfigHandler.getConfig("securitycraft.showpasswords") && iDataAccessor.getTileEntity() instanceof IPasswordProtected && !(iDataAccessor.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) iDataAccessor.getTileEntity()).getOwner().isOwner(iDataAccessor.getPlayer())){
-			String password = ((IPasswordProtected) iDataAccessor.getTileEntity()).getPassword();
+		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
+			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 
-			tipList.add(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
+			body.add(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
 		}
 
-		if(iConfigHandler.getConfig("securitycraft.showcustomname") && iDataAccessor.getTileEntity() instanceof INameable && ((INameable) iDataAccessor.getTileEntity()).canBeNamed()){
-			String name = ((INameable) iDataAccessor.getTileEntity()).getCustomName();
+		if(config.getConfig("securitycraft.showcustomname") && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
+			String name = ((INameable) data.getTileEntity()).getCustomName();
 
-			tipList.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) iDataAccessor.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+			body.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
 		}
 
-		return tipList;
+		return body;
 	}
 
 	@Override
-	public List<String> getWailaTail(ItemStack itemstack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
+	public List<String> getWailaTail(ItemStack stack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
 		return tail;
 	}
 
 	@Override
-	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tagCompound, World world, BlockPos pos) {
-		return tagCompound;
+	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tag, World world, BlockPos pos) {
+		return tag;
 	}
 
 }

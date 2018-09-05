@@ -56,92 +56,90 @@ public class ItemBlockReinforcedWoodSlabs extends ItemBlock {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(stack.stackSize == 0)
 			return EnumActionResult.FAIL;
-		else if (!playerIn.canPlayerEdit(pos.offset(side), side, stack))
+		else if (!player.canPlayerEdit(pos.offset(side), side, stack))
 			return EnumActionResult.FAIL;
 		else{
-			Object object = singleSlab.getTypeForItem(stack);
-			IBlockState iblockstate = worldIn.getBlockState(pos);
+			Object type = singleSlab.getTypeForItem(stack);
+			IBlockState state = world.getBlockState(pos);
 
-			if(iblockstate.getBlock() == singleSlab){
-				IProperty<?> iproperty = singleSlab.getVariantProperty();
-				Comparable<?> comparable = iblockstate.getValue(iproperty);
-				BlockSlab.EnumBlockHalf enumblockhalf = iblockstate.getValue(BlockSlab.HALF);
-
+			if(state.getBlock() == singleSlab){
+				IProperty<?> variantProperty = singleSlab.getVariantProperty();
+				Comparable<?> value = state.getValue(variantProperty);
+				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
 				Owner owner = null;
 
-				if(worldIn.getTileEntity(pos) instanceof IOwnable){
-					owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
+				if(world.getTileEntity(pos) instanceof IOwnable){
+					owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
-					if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-						if(!worldIn.isRemote)
-							PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+					if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+						if(!world.isRemote)
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 						return EnumActionResult.FAIL;
 					}
 				}
 
-				if((side == EnumFacing.UP && enumblockhalf == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && enumblockhalf == BlockSlab.EnumBlockHalf.TOP) && comparable == object){
-					IBlockState iblockstate1 = makeState(iproperty, comparable);
+				if((side == EnumFacing.UP && half == BlockSlab.EnumBlockHalf.BOTTOM || side == EnumFacing.DOWN && half == BlockSlab.EnumBlockHalf.TOP) && value == type){
+					IBlockState mewState = makeState(variantProperty, value);
 
-					if(worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-						worldIn.playSound(playerIn, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
+					if(world.checkNoEntityCollision(mewState.getCollisionBoundingBox(world, pos)) && world.setBlockState(pos, mewState, 3)){
+						world.playSound(player, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
 						--stack.stackSize;
 
 						if(owner != null)
-							((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+							((IOwnable) world.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
 					}
 
 					return EnumActionResult.SUCCESS;
 				}
 			}
 
-			return tryPlace(stack, worldIn, playerIn, pos.offset(side), object) ? EnumActionResult.SUCCESS : super.onItemUse(stack, playerIn, worldIn, pos, hand, side, hitX, hitY, hitZ);
+			return tryPlace(stack, world, player, pos.offset(side), type) ? EnumActionResult.SUCCESS : super.onItemUse(stack, player, world, pos, hand, side, hitX, hitY, hitZ);
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
-		BlockPos blockpos1 = pos;
-		IProperty<?> iproperty = singleSlab.getVariantProperty();
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
+		BlockPos originalPos = pos;
+		IProperty<?> variantProperty = singleSlab.getVariantProperty();
 		Object object = singleSlab.getTypeForItem(stack);
-		IBlockState iblockstate = worldIn.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 
-		if(iblockstate.getBlock() == singleSlab){
-			boolean flag = iblockstate.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
+		if(state.getBlock() == singleSlab){
+			boolean isTop = state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-			if((side == EnumFacing.UP && !flag || side == EnumFacing.DOWN && flag) && object == iblockstate.getValue(iproperty))
+			if((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop) && object == state.getValue(variantProperty))
 				return true;
 		}
 
 		pos = pos.offset(side);
-		IBlockState iblockstate1 = worldIn.getBlockState(pos);
-		return iblockstate1.getBlock() == singleSlab && object == iblockstate1.getValue(iproperty) ? true : super.canPlaceBlockOnSide(worldIn, blockpos1, side, player, stack);
+		IBlockState updatedState = world.getBlockState(pos);
+		return updatedState.getBlock() == singleSlab && object == updatedState.getValue(variantProperty) ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
-	private boolean tryPlace(ItemStack stack, World worldIn, EntityPlayer player, BlockPos pos, Object variantInStack){
-		IBlockState iblockstate = worldIn.getBlockState(pos);
-
+	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos, Object variantInStack){
+		IBlockState state = world.getBlockState(pos);
 		Owner owner = null;
 
-		if(worldIn.getTileEntity(pos) instanceof IOwnable)
-			owner = ((IOwnable) worldIn.getTileEntity(pos)).getOwner();
+		if(world.getTileEntity(pos) instanceof IOwnable)
+			owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
 
-		if(iblockstate.getBlock() == singleSlab){
-			Comparable<?> comparable = iblockstate.getValue(singleSlab.getVariantProperty());
+		if(state.getBlock() == singleSlab){
+			Comparable<?> value = state.getValue(singleSlab.getVariantProperty());
 
-			if(comparable == variantInStack){
-				IBlockState iblockstate1 = this.makeState(singleSlab.getVariantProperty(), comparable);
+			if(value == variantInStack){
+				IBlockState newState = this.makeState(singleSlab.getVariantProperty(), value);
 
-				if (worldIn.checkNoEntityCollision(iblockstate1.getCollisionBoundingBox(worldIn, pos)) && worldIn.setBlockState(pos, iblockstate1, 3)){
-					worldIn.playSound(player, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
+				if (world.checkNoEntityCollision(newState.getCollisionBoundingBox(world, pos)) && world.setBlockState(pos, newState, 3)){
+					world.playSound(player, pos, doubleSlab.getSoundType().getPlaceSound(), SoundCategory.BLOCKS, (doubleSlab.getSoundType().getVolume() + 1.0F) / 2.0F, doubleSlab.getSoundType().getPitch() * 0.8F);
 					--stack.stackSize;
 
 					if(owner != null)
-						((IOwnable) worldIn.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+						((IOwnable) world.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
 				}
 
 				return true;

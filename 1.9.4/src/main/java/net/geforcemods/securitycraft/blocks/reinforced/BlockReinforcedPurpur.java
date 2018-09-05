@@ -42,7 +42,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	 * IBlockstate
 	 */
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		if (meta == BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata())
 			switch (facing.getAxis())
@@ -65,15 +65,15 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		BlockReinforcedPurpur.EnumType blockquartz$enumtype = state.getValue(VARIANT);
-		return blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_X && blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_Z ? blockquartz$enumtype.getMetadata() : BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata();
+		BlockReinforcedPurpur.EnumType type = state.getValue(VARIANT);
+		return type != BlockReinforcedPurpur.EnumType.LINES_X && type != BlockReinforcedPurpur.EnumType.LINES_Z ? type.getMetadata() : BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata();
 	}
 
 	@Override
 	protected ItemStack createStackedBlock(IBlockState state)
 	{
-		BlockReinforcedPurpur.EnumType blockquartz$enumtype = state.getValue(VARIANT);
-		return blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_X && blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_Z ? super.createStackedBlock(state) : new ItemStack(Item.getItemFromBlock(this), 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata());
+		BlockReinforcedPurpur.EnumType type = state.getValue(VARIANT);
+		return type != BlockReinforcedPurpur.EnumType.LINES_X && type != BlockReinforcedPurpur.EnumType.LINES_Z ? super.createStackedBlock(state) : new ItemStack(Item.getItemFromBlock(this), 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata());
 	}
 
 	/**
@@ -81,10 +81,10 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list)
 	{
-		list.add(new ItemStack(itemIn, 1, BlockReinforcedPurpur.EnumType.DEFAULT.getMetadata()));
-		list.add(new ItemStack(itemIn, 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockReinforcedPurpur.EnumType.DEFAULT.getMetadata()));
+		list.add(new ItemStack(item, 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata()));
 	}
 
 	/**
@@ -239,8 +239,8 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 
 		static
 		{
-			for (BlockReinforcedPurpur.EnumType blockquartz$enumtype : values())
-				META_LOOKUP[blockquartz$enumtype.getMetadata()] = blockquartz$enumtype;
+			for (BlockReinforcedPurpur.EnumType value : values())
+				META_LOOKUP[value.getMetadata()] = value;
 		}
 	}
 }
