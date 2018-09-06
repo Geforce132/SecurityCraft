@@ -16,13 +16,13 @@ public class EntityTaserBullet extends EntityThrowable {
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
 	private boolean powered;
 
-	public EntityTaserBullet(World worldIn){
-		super(worldIn);
+	public EntityTaserBullet(World world){
+		super(world);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, EntityLivingBase shooter, boolean isPowered){
-		super(worldIn, shooter);
+	public EntityTaserBullet(World world, EntityLivingBase shooter, boolean isPowered){
+		super(world, shooter);
 		setSize(0.01F, 0.01F);
 		setHeadingFromThrower(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
 		powered = isPowered;
@@ -45,28 +45,28 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult par1RayTraceResult)
+	protected void onImpact(RayTraceResult result)
 	{
 		if(!world.isRemote)
 		{
-			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
+			if(result.typeOfHit == Type.ENTITY)
 			{
-				if(par1RayTraceResult.entityHit instanceof EntityPlayer)
+				if(result.entityHit instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1RayTraceResult.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)result.entityHit).capabilities.isCreativeMode || (EntityLivingBase)result.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
 						return;
 				}
 
-				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
+				if(result.entityHit instanceof EntityLivingBase)
 				{
-					if(((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F))
+					if(((EntityLivingBase) result.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F))
 					{
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
-						((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
 					}
 
 					setDead();

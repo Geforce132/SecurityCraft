@@ -25,13 +25,13 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material par1Material, Block disguisedBlock) {
-		super(par1Material);
+	public BlockFullMineBase(Material material, Block disguisedBlock) {
+		super(material);
 		blockDisguisedAs = disguisedBlock;
 
-		if(par1Material == Material.SAND)
+		if(material == Material.SAND)
 			setSoundType(SoundType.SAND);
-		else if(par1Material == Material.GROUND)
+		else if(material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
 		else
 			setSoundType(SoundType.STONE);
@@ -59,20 +59,20 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onBlockDestroyedByExplosion(World par1World, BlockPos pos, Explosion par5Explosion){
-		if (!par1World.isRemote)
+	public void onBlockDestroyedByExplosion(World world, BlockPos pos, Explosion explosion){
+		if (!world.isRemote)
 		{
-			if(pos.equals(new BlockPos(par5Explosion.getPosition())))
+			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			explode(par1World, pos);
+			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote)
-			explode(par1World, pos);
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state){
+		if (!world.isRemote)
+			explode(world, pos);
 	}
 
 	@Override
@@ -82,13 +82,13 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void defuseMine(World world, BlockPos pos) {}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		par1World.destroyBlock(pos, false);
+	public void explode(World world, BlockPos pos) {
+		world.destroyBlock(pos, false);
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
 		else
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 

@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 public class BlockReinforcedStone extends BlockStone implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
 {
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
 	}

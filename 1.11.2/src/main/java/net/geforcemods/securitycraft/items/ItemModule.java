@@ -50,65 +50,65 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 
 		try
 		{
-			if(!worldIn.isRemote) {
-				if(!itemStackIn.hasTagCompound()) {
-					itemStackIn.setTagCompound(new NBTTagCompound());
-					ClientUtils.syncItemNBT(itemStackIn);
+			if(!world.isRemote) {
+				if(!stack.hasTagCompound()) {
+					stack.setTagCompound(new NBTTagCompound());
+					ClientUtils.syncItemNBT(stack);
 				}
 
 				if(canBeCustomized())
-					playerIn.openGui(SecurityCraft.instance, guiToOpen, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+					player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}
 
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> par3List, boolean par4) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
 		if(nbtCanBeModified || canBeCustomized())
-			par3List.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable"));
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable"));
 		else
-			par3List.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
 
 		if(nbtCanBeModified) {
-			par3List.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.usage"));
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.usage"));
 
-			par3List.add(" ");
-			par3List.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
+			list.add(" ");
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
 
-			if(par1ItemStack.getTagCompound() != null)
+			if(stack.getTagCompound() != null)
 				for(int i = 1; i <= 10; i++)
-					if(!par1ItemStack.getTagCompound().getString("Player" + i).isEmpty())
-						par3List.add(par1ItemStack.getTagCompound().getString("Player" + i));
+					if(!stack.getTagCompound().getString("Player" + i).isEmpty())
+						list.add(stack.getTagCompound().getString("Player" + i));
 		}
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				par3List.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				par3List.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				par3List.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
 
 			if(getNumberOfAddons() > 0) {
-				par3List.add(" ");
+				list.add(" ");
 
-				par3List.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
-				for(Item item : getItemAddons(par1ItemStack.getTagCompound()))
-					par3List.add("- " + ClientUtils.localize(item.getUnlocalizedName() + ".name"));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
+				for(Item item : getItemAddons(stack.getTagCompound()))
+					list.add("- " + ClientUtils.localize(item.getUnlocalizedName() + ".name"));
 
-				for(Block block : getBlockAddons(par1ItemStack.getTagCompound()))
-					par3List.add("- " + ClientUtils.localize(block.getLocalizedName()));
+				for(Block block : getBlockAddons(stack.getTagCompound()))
+					list.add("- " + ClientUtils.localize(block.getLocalizedName()));
 			}
 		}
 	}

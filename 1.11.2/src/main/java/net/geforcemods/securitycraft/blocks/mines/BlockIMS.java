@@ -32,8 +32,8 @@ public class BlockIMS extends BlockOwnable {
 
 	public static final PropertyInteger MINES = PropertyInteger.create("mines", 0, 4);
 
-	public BlockIMS(Material par1) {
-		super(par1);
+	public BlockIMS(Material material) {
+		super(material);
 		setSoundType(SoundType.METAL);
 	}
 
@@ -59,11 +59,11 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(!worldIn.isRemote)
-			if(((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-				playerIn.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+		if(!world.isRemote)
+			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+				player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 
@@ -71,31 +71,31 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if(!par1World.isRemote)
-			BlockUtils.destroyBlock(par1World, pos, false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		if(!world.isRemote)
+			BlockUtils.destroyBlock(world, pos, false);
 	}
 
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if(par1World.getTileEntity(pos) != null && par1World.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) par1World.getTileEntity(pos)).getBombsRemaining() == 0){
-			double d0 = pos.getX() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d1 = pos.getY() + 0.4F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d2 = pos.getZ() + 0.5F + (par5Random.nextFloat() - 0.5F) * 0.2D;
-			double d3 = 0.2199999988079071D;
-			double d4 = 0.27000001072883606D;
+	public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random random){
+		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0){
+			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
+			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
+			double magicNumber1 = 0.2199999988079071D;
+			double magicNumber2 = 0.27000001072883606D;
 
-			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
 
-			par1World.spawnParticle(EnumParticleTypes.FLAME, d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			par1World.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.FLAME, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(EnumParticleTypes.FLAME, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityIMS();
 	}
 

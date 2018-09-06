@@ -9,12 +9,12 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 public class SecurityCraftGuiFactory implements IModGuiFactory{
 
 	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement arg0) {
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
 		return null;
 	}
 
 	@Override
-	public void initialize(Minecraft arg0) {
+	public void initialize(Minecraft mc) {
 
 	}
 

@@ -29,28 +29,28 @@ public class PacketSSetPassword implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, password);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, password);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		password = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		password = ByteBufUtils.readUTF8String(buf);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetPassword, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
+		public IMessage onMessage(PacketSSetPassword message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-				String password = packet.password;
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
 
 				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){

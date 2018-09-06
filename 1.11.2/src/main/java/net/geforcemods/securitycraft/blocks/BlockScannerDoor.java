@@ -22,17 +22,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 {
-	public BlockScannerDoor(Material materialIn)
+	public BlockScannerDoor(Material material)
 	{
-		super(materialIn);
+		super(material);
 		isBlockContainer = true;
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		onNeighborChanged(worldIn, pos, fromPos);
+		onNeighborChanged(world, pos, fromPos);
 	}
 
 	/**
@@ -41,62 +41,62 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(IBlockAccess world, BlockPos pos, BlockPos neighbor)
+	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor)
 	{
-		World worldIn = (World)world;
-		IBlockState state = worldIn.getBlockState(pos);
-		Block neighborBlock = worldIn.getBlockState(neighbor).getBlock();
+		World world = (World)access;
+		IBlockState state = world.getBlockState(pos);
+		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
 		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
 		{
-			BlockPos blockpos1 = pos.down();
-			IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
+			BlockPos blockBelow = pos.down();
+			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if(iblockstate1.getBlock() != this)
-				worldIn.setBlockToAir(pos);
+			if(stateBelow.getBlock() != this)
+				world.setBlockToAir(pos);
 			else if (neighborBlock != this)
-				onNeighborChanged(world, blockpos1, neighbor);
+				onNeighborChanged(world, blockBelow, neighbor);
 		}
 		else
 		{
-			boolean flag1 = false;
-			BlockPos blockpos2 = pos.up();
-			IBlockState iblockstate2 = worldIn.getBlockState(blockpos2);
+			boolean drop = false;
+			BlockPos blockAbove = pos.up();
+			IBlockState stateAbove = world.getBlockState(blockAbove);
 
-			if(iblockstate2.getBlock() != this)
+			if(stateAbove.getBlock() != this)
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				drop = true;
 			}
 
-			if(!worldIn.isSideSolid(pos.down(), EnumFacing.UP))
+			if(!world.isSideSolid(pos.down(), EnumFacing.UP))
 			{
-				worldIn.setBlockToAir(pos);
-				flag1 = true;
+				world.setBlockToAir(pos);
+				drop = true;
 
-				if(iblockstate2.getBlock() == this)
-					worldIn.setBlockToAir(blockpos2);
+				if(stateAbove.getBlock() == this)
+					world.setBlockToAir(blockAbove);
 			}
 
-			if(flag1)
-				if(!worldIn.isRemote)
-					dropBlockAsItem(worldIn, pos, state, 0);
+			if(drop)
+				if(!world.isRemote)
+					dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		super.breakBlock(worldIn, pos, state);
-		worldIn.removeTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param)
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param)
 	{
-		super.eventReceived(state, worldIn, pos, id, param);
+		super.eventReceived(state, world, pos, id, param);
 
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = world.getTileEntity(pos);
 
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
@@ -115,7 +115,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityScannerDoor().activatedByView();
 	}

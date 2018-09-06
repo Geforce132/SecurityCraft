@@ -68,22 +68,22 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		if (!furnaceItemStacks.get(index).isEmpty())
 		{
-			ItemStack itemstack;
+			ItemStack stack;
 
 			if (furnaceItemStacks.get(index).getCount() <= count)
 			{
-				itemstack = furnaceItemStacks.get(index);
+				stack = furnaceItemStacks.get(index);
 				furnaceItemStacks.set(index, ItemStack.EMPTY);
-				return itemstack;
+				return stack;
 			}
 			else
 			{
-				itemstack = furnaceItemStacks.get(index).splitStack(count);
+				stack = furnaceItemStacks.get(index).splitStack(count);
 
 				if (furnaceItemStacks.get(index).getCount() == 0)
 					furnaceItemStacks.set(index, ItemStack.EMPTY);
 
-				return itemstack;
+				return stack;
 			}
 		}
 		else
@@ -95,9 +95,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		if (!furnaceItemStacks.get(index).isEmpty())
 		{
-			ItemStack itemstack = furnaceItemStacks.get(index);
+			ItemStack stack = furnaceItemStacks.get(index);
 			furnaceItemStacks.set(index, ItemStack.EMPTY);
-			return itemstack;
+			return stack;
 		}
 		else
 			return ItemStack.EMPTY;
@@ -106,15 +106,15 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack)
 	{
-		boolean flag = !stack.isEmpty() && stack.isItemEqual(furnaceItemStacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, furnaceItemStacks.get(index));
+		boolean areStacksEqual = !stack.isEmpty() && stack.isItemEqual(furnaceItemStacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, furnaceItemStacks.get(index));
 		furnaceItemStacks.set(index, stack);
 
 		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack.setCount(getInventoryStackLimit());
 
-		if (index == 0 && !flag)
+		if (index == 0 && !areStacksEqual)
 		{
-			totalCookTime = func_174904_a(stack);
+			totalCookTime = getTotalCookTime(stack);
 			cookTime = 0;
 			markDirty();
 		}
@@ -132,64 +132,64 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return furnaceCustomName != null && furnaceCustomName.length() > 0;
 	}
 
-	public void setCustomInventoryName(String p_145951_1_)
+	public void setCustomInventoryName(String name)
 	{
-		furnaceCustomName = p_145951_1_;
+		furnaceCustomName = name;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(compound);
-		NBTTagList nbttaglist = compound.getTagList("Items", 10);
+		super.readFromNBT(tag);
+		NBTTagList list = tag.getTagList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		for (int i = 0; i < list.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			byte b0 = nbttagcompound1.getByte("Slot");
+			NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			byte slot = stackTag.getByte("Slot");
 
-			if (b0 >= 0 && b0 < furnaceItemStacks.size())
-				furnaceItemStacks.set(b0, new ItemStack(nbttagcompound1));
+			if (slot >= 0 && slot < furnaceItemStacks.size())
+				furnaceItemStacks.set(slot, new ItemStack(stackTag));
 		}
 
-		furnaceBurnTime = compound.getShort("BurnTime");
-		cookTime = compound.getShort("CookTime");
-		totalCookTime = compound.getShort("CookTimeTotal");
+		furnaceBurnTime = tag.getShort("BurnTime");
+		cookTime = tag.getShort("CookTime");
+		totalCookTime = tag.getShort("CookTimeTotal");
 		currentItemBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
-		passcode = compound.getString("passcode");
+		passcode = tag.getString("passcode");
 
-		if (compound.hasKey("CustomName", 8))
-			furnaceCustomName = compound.getString("CustomName");
+		if (tag.hasKey("CustomName", 8))
+			furnaceCustomName = tag.getString("CustomName");
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(compound);
-		compound.setShort("BurnTime", (short)furnaceBurnTime);
-		compound.setShort("CookTime", (short)cookTime);
-		compound.setShort("CookTimeTotal", (short)totalCookTime);
-		NBTTagList nbttaglist = new NBTTagList();
+		super.writeToNBT(tag);
+		tag.setShort("BurnTime", (short)furnaceBurnTime);
+		tag.setShort("CookTime", (short)cookTime);
+		tag.setShort("CookTimeTotal", (short)totalCookTime);
+		NBTTagList list = new NBTTagList();
 
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			if (!furnaceItemStacks.get(i).isEmpty())
 			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte)i);
-				furnaceItemStacks.get(i).writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
+				NBTTagCompound stackTag = new NBTTagCompound();
+				stackTag.setByte("Slot", (byte)i);
+				furnaceItemStacks.get(i).writeToNBT(stackTag);
+				list.appendTag(stackTag);
 			}
 
-		compound.setTag("Items", nbttaglist);
+		tag.setTag("Items", list);
 
 		if(passcode != null && !passcode.isEmpty())
-			compound.setString("passcode", passcode);
+			tag.setString("passcode", passcode);
 
 		if (hasCustomName())
-			compound.setString("CustomName", furnaceCustomName);
+			tag.setString("CustomName", furnaceCustomName);
 
-		return compound;
+		return tag;
 	}
 
 	@Override
@@ -203,9 +203,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * cooked
 	 */
 	@SideOnly(Side.CLIENT)
-	public int getCookProgressScaled(int p_145953_1_)
+	public int getCookProgressScaled(int scaleFactor)
 	{
-		return cookTime * p_145953_1_ / 200;
+		return cookTime * scaleFactor / 200;
 	}
 
 	/**
@@ -213,12 +213,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
 	 */
 	@SideOnly(Side.CLIENT)
-	public int getBurnTimeRemainingScaled(int p_145955_1_)
+	public int getBurnTimeRemainingScaled(int scaleFactor)
 	{
 		if (currentItemBurnTime == 0)
 			currentItemBurnTime = 200;
 
-		return furnaceBurnTime * p_145955_1_ / currentItemBurnTime;
+		return furnaceBurnTime * scaleFactor / currentItemBurnTime;
 	}
 
 	public boolean isBurning()
@@ -227,22 +227,16 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static boolean isBurning(IInventory p_174903_0_)
+	public static boolean isBurning(IInventory inventory)
 	{
-		return p_174903_0_.getField(0) > 0;
+		return inventory.getField(0) > 0;
 	}
 
 	@Override
 	public void update()
 	{
-		boolean flag = this.isBurning();
-		boolean flag1 = false;
-
-		//        if(this.isBurning() && !((Boolean) Utils.getBlockProperty(getWorld(), getPos(), BlockKeypadFurnace.COOKING)).booleanValue()){
-		//        	Utils.setBlockProperty(getWorld(), getPos(), BlockKeypadFurnace.COOKING, true);
-		//        }else if(!this.isBurning() && ((Boolean) Utils.getBlockProperty(getWorld(), getPos(), BlockKeypadFurnace.COOKING)).booleanValue()){
-		//        	Utils.setBlockProperty(getWorld(), getPos(), BlockKeypadFurnace.COOKING, false);
-		//        }
+		boolean isBurning = this.isBurning();
+		boolean shouldMarkDirty = false;
 
 		if (this.isBurning())
 			--furnaceBurnTime;
@@ -262,7 +256,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 					if (this.isBurning())
 					{
-						flag1 = true;
+						shouldMarkDirty = true;
 
 						if (!furnaceItemStacks.get(1).isEmpty())
 						{
@@ -281,24 +275,24 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 					if (cookTime == totalCookTime)
 					{
 						cookTime = 0;
-						totalCookTime = func_174904_a(furnaceItemStacks.get(0));
+						totalCookTime = getTotalCookTime(furnaceItemStacks.get(0));
 						smeltItem();
-						flag1 = true;
+						shouldMarkDirty = true;
 					}
 				}
 				else
 					cookTime = 0;
 			}
 
-			if (flag != this.isBurning())
-				flag1 = true;
+			if (isBurning != this.isBurning())
+				shouldMarkDirty = true;
 		}
 
-		if (flag1)
+		if (shouldMarkDirty)
 			markDirty();
 	}
 
-	public int func_174904_a(ItemStack p_174904_1_)
+	public int getTotalCookTime(ItemStack stack)
 	{
 		return 200;
 	}
@@ -309,11 +303,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			return false;
 		else
 		{
-			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
-			if (itemstack.isEmpty()) return false;
+			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
+			if (smeltResult.isEmpty()) return false;
 			if (furnaceItemStacks.get(2).isEmpty()) return true;
-			if (!furnaceItemStacks.get(2).isItemEqual(itemstack)) return false;
-			int result = furnaceItemStacks.get(2).getCount() + itemstack.getCount();
+			if (!furnaceItemStacks.get(2).isItemEqual(smeltResult)) return false;
+			int result = furnaceItemStacks.get(2).getCount() + smeltResult.getCount();
 			return result <= getInventoryStackLimit() && result <= furnaceItemStacks.get(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
 		}
 	}
@@ -322,12 +316,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		if (canSmelt())
 		{
-			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
+			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
 
 			if (furnaceItemStacks.get(2).isEmpty())
-				furnaceItemStacks.set(2, itemstack.copy());
-			else if (furnaceItemStacks.get(2).getItem() == itemstack.getItem())
-				furnaceItemStacks.get(2).grow(itemstack.getCount()); // Forge BugFix: Results may have multiple items
+				furnaceItemStacks.set(2, smeltResult.copy());
+			else if (furnaceItemStacks.get(2).getItem() == smeltResult.getItem())
+				furnaceItemStacks.get(2).grow(smeltResult.getCount()); // Forge BugFix: Results may have multiple items
 
 			if (furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && furnaceItemStacks.get(0).getMetadata() == 1 && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
 				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
@@ -339,13 +333,13 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		}
 	}
 
-	public static int getItemBurnTime(ItemStack p_145952_0_)
+	public static int getItemBurnTime(ItemStack stack)
 	{
-		if (p_145952_0_.isEmpty())
+		if (stack.isEmpty())
 			return 0;
 		else
 		{
-			Item item = p_145952_0_.getItem();
+			Item item = stack.getItem();
 
 			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
 			{
@@ -369,13 +363,13 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			if (item == Items.LAVA_BUCKET) return 20000;
 			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
 			if (item == Items.BLAZE_ROD) return 2400;
-			return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(p_145952_0_);
+			return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(stack);
 		}
 	}
 
-	public static boolean isItemFuel(ItemStack p_145954_0_)
+	public static boolean isItemFuel(ItemStack stack)
 	{
-		return getItemBurnTime(p_145954_0_) > 0;
+		return getItemBurnTime(stack) > 0;
 	}
 
 	@Override
@@ -413,9 +407,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction)
 	{
-		return isItemValidForSlot(index, itemStackIn);
+		return isItemValidForSlot(index, stack);
 	}
 
 	@Override
@@ -437,7 +431,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return "minecraft:furnace";
 	}
 
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
+	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer player)
 	{
 		return new ContainerFurnace(playerInventory, this);
 	}

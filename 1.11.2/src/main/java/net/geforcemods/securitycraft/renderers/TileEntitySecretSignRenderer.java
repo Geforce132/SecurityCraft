@@ -31,32 +31,32 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 		if (block == SCContent.secretSignStanding)
 		{
 			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			float f1 = te.getBlockMetadata() * 360 / 16.0F;
-			GlStateManager.rotate(-f1, 0.0F, 1.0F, 0.0F);
+			float rotation = te.getBlockMetadata() * 360 / 16.0F;
+			GlStateManager.rotate(-rotation, 0.0F, 1.0F, 0.0F);
 			model.signStick.showModel = true;
 		}
 		else
 		{
-			int k = te.getBlockMetadata();
-			float f2 = 0.0F;
+			int meta = te.getBlockMetadata();
+			float rotation = 0.0F;
 
-			if (k == 2)
+			if (meta == 2)
 			{
-				f2 = 180.0F;
+				rotation = 180.0F;
 			}
 
-			if (k == 4)
+			if (meta == 4)
 			{
-				f2 = 90.0F;
+				rotation = 90.0F;
 			}
 
-			if (k == 5)
+			if (meta == 5)
 			{
-				f2 = -90.0F;
+				rotation = -90.0F;
 			}
 
 			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			GlStateManager.rotate(-f2, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(-rotation, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(0.0F, -0.3125F, -0.4375F);
 			model.signStick.showModel = false;
 		}
@@ -83,7 +83,7 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 
 		if(te.getOwner().isOwner(Minecraft.getMinecraft().player))
 		{
-			FontRenderer fontrenderer = getFontRenderer();
+			FontRenderer fontRenderer = getFontRenderer();
 			GlStateManager.translate(0.0F, 0.33333334F, 0.046666667F);
 			GlStateManager.scale(0.010416667F, -0.010416667F, 0.010416667F);
 			GlStateManager.glNormal3f(0.0F, 0.0F, -0.010416667F);
@@ -96,17 +96,17 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 					if (te.signText[j] != null)
 					{
 						ITextComponent itextcomponent = te.signText[j];
-						List<ITextComponent> list = GuiUtilRenderComponents.splitText(itextcomponent, 90, fontrenderer, false, true);
+						List<ITextComponent> list = GuiUtilRenderComponents.splitText(itextcomponent, 90, fontRenderer, false, true);
 						String s = list != null && !list.isEmpty() ? list.get(0).getFormattedText() : "";
 
 						if (j == te.lineBeingEdited)
 						{
 							s = "> " + s + " <";
-							fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 						else
 						{
-							fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 					}
 				}

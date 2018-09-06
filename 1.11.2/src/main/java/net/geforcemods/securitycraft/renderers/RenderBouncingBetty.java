@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 
-	public RenderBouncingBetty(RenderManager p_i46134_1_)
+	public RenderBouncingBetty(RenderManager renderManager)
 	{
-		super(p_i46134_1_);
+		super(renderManager);
 		shadowSize = 0.5F;
 	}
 
@@ -28,19 +28,19 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float)x, (float)y + 0.5F, (float)z);
-		float f2;
+		float alpha;
 
 		if (entity.fuse - partialTicks + 1.0F < 10.0F)
 		{
-			f2 = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
-			f2 = MathHelper.clamp(f2, 0.0F, 1.0F);
-			f2 *= f2;
-			f2 *= f2;
-			float f3 = 1.0F + f2 * 0.3F;
-			GlStateManager.scale(f3, f3, f3);
+			alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
+			alpha = MathHelper.clamp(alpha, 0.0F, 1.0F);
+			alpha *= alpha;
+			alpha *= alpha;
+			float scale = 1.0F + alpha * 0.3F;
+			GlStateManager.scale(scale, scale, scale);
 		}
 
-		f2 = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
+		alpha = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(entity);
 		GlStateManager.translate(-0.5F, -0.5F, 0.5F);
 		blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness(partialTicks));
@@ -52,7 +52,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 			GlStateManager.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(770, 772);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 			GlStateManager.doPolygonOffset(-3.0F, -3.0F);
 			GlStateManager.enablePolygonOffset();
 			blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), 1.0F);

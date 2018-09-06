@@ -24,40 +24,25 @@ public class PacketCPlaySoundAtPos implements IMessage{
 
 	}
 
-	public PacketCPlaySoundAtPos(int par1, int par2, int par3, String par4String, double par5, String cat){
-		x = par1;
-		y = par2;
-		z = par3;
-		sound = par4String;
-		volume = par5;
+	public PacketCPlaySoundAtPos(int x, int y, int z, String sound, double volume, String cat){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.sound = sound;
+		this.volume = volume;
 		category = cat;
 	}
 
-	public PacketCPlaySoundAtPos(double par1, double par2, double par3, String par4String, double par5, String cat){
-		x = (int) par1;
-		y = (int) par2;
-		z = (int) par3;
-		sound = par4String;
-		volume = par5;
-		category = cat;
+	public PacketCPlaySoundAtPos(double x, double y, double z, String sound, double volume, String cat){
+		this((int)x, (int)y, (int)z, sound, volume, cat);
 	}
 
-	public PacketCPlaySoundAtPos(int par1, int par2, int par3, ResourceLocation par4ResourceLocation, double par5, String cat){
-		x = par1;
-		y = par2;
-		z = par3;
-		sound = par4ResourceLocation.getResourcePath();
-		volume = par5;
-		category = cat;
+	public PacketCPlaySoundAtPos(int x, int y, int z, ResourceLocation resourceLocation, double volume, String cat){
+		this(x, y, z, resourceLocation.getResourcePath(), volume, cat);
 	}
 
-	public PacketCPlaySoundAtPos(double par1, double par2, double par3, ResourceLocation par4ResourceLocation, double par5, String cat){
-		x = (int) par1;
-		y = (int) par2;
-		z = (int) par3;
-		sound = par4ResourceLocation.getResourcePath();
-		volume = par5;
-		category = cat;
+	public PacketCPlaySoundAtPos(double x, double y, double z, ResourceLocation resourceLocation, double volume, String cat){
+		this((int)x, (int)y, (int)z, resourceLocation.getResourcePath(), volume, cat);
 	}
 
 	@Override

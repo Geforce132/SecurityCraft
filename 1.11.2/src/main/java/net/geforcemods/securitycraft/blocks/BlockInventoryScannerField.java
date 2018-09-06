@@ -36,12 +36,12 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockInventoryScannerField(Material par2Material) {
-		super(par2Material);
+	public BlockInventoryScannerField(Material material) {
+		super(material);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{
 		return null;
 	}
@@ -79,7 +79,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
@@ -220,17 +220,17 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state)
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
 	{
-		if(!worldIn.isRemote)
+		if(!world.isRemote)
 		{
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(BlockUtils.getBlock(worldIn, pos.west(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						worldIn.destroyBlock(pos.west(j), false);
+						world.destroyBlock(pos.west(j), false);
 					}
 
 					break;
@@ -239,11 +239,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(BlockUtils.getBlock(worldIn, pos.east(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						worldIn.destroyBlock(pos.east(j), false);
+						world.destroyBlock(pos.east(j), false);
 					}
 
 					break;
@@ -252,11 +252,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(BlockUtils.getBlock(worldIn, pos.north(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						worldIn.destroyBlock(pos.north(j), false);
+						world.destroyBlock(pos.north(j), false);
 					}
 
 					break;
@@ -265,11 +265,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				if(BlockUtils.getBlock(worldIn, pos.south(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
-						worldIn.destroyBlock(pos.south(j), false);
+						world.destroyBlock(pos.south(j), false);
 					}
 
 					break;
@@ -315,13 +315,13 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 

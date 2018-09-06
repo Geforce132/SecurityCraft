@@ -17,12 +17,12 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 
 	}
 
-	public PacketCSetPlayerPositionAndRotation(double par1, double par2, double par3, float par4, float par5){
-		x = par1;
-		y = par2;
-		z = par3;
-		rotationYaw = par4;
-		rotationPitch = par5;
+	public PacketCSetPlayerPositionAndRotation(double x, double y, double z, float yaw, float pitch){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		rotationYaw = yaw;
+		rotationPitch = pitch;
 	}
 
 	@Override

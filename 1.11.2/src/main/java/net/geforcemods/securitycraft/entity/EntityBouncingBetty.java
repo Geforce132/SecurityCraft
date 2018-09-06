@@ -14,23 +14,23 @@ public class EntityBouncingBetty extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public EntityBouncingBetty(World par1World){
-		super(par1World);
+	public EntityBouncingBetty(World world){
+		super(world);
 		preventEntitySpawning = true;
 		setSize(0.500F, 0.200F);
 	}
 
-	public EntityBouncingBetty(World par1World, double par2, double par4, double par6){
-		this(par1World);
-		setPosition(par2, par4, par6);
+	public EntityBouncingBetty(World world, double x, double y, double z){
+		this(world);
+		setPosition(x, y, z);
 		float f = (float)(Math.random() * Math.PI * 2.0D);
 		motionX = -((float)Math.sin(f)) * 0.02F;
 		motionY = 0.20000000298023224D;
 		motionZ = -((float)Math.cos(f)) * 0.02F;
 		fuse = 80;
-		prevPosX = par2;
-		prevPosY = par4;
-		prevPosZ = par6;
+		prevPosX = x;
+		prevPosY = y;
+		prevPosZ = z;
 	}
 
 	@Override
@@ -90,30 +90,30 @@ public class EntityBouncingBetty extends Entity {
 
 	private void explode()
 	{
-		float f = 6.0F;
+		float strength = 6.0F;
 
 		if(SecurityCraft.config.smallerMineExplosion)
-			world.createExplosion(this, posX, posY, posZ, (f / 2), true);
+			world.createExplosion(this, posX, posY, posZ, (strength / 2), true);
 		else
-			world.createExplosion(this, posX, posY, posZ, f, true);
+			world.createExplosion(this, posX, posY, posZ, strength, true);
 	}
 
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+	protected void writeEntityToNBT(NBTTagCompound tag)
 	{
-		par1NBTTagCompound.setByte("Fuse", (byte)fuse);
+		tag.setByte("Fuse", (byte)fuse);
 	}
 
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+	protected void readEntityFromNBT(NBTTagCompound tag)
 	{
-		fuse = par1NBTTagCompound.getByte("Fuse");
+		fuse = tag.getByte("Fuse");
 	}
 
 	@SideOnly(Side.CLIENT)

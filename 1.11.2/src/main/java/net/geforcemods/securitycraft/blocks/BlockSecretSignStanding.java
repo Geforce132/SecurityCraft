@@ -20,15 +20,15 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!worldIn.getBlockState(pos.down()).getMaterial().isSolid())
+		if (!world.getBlockState(pos.down()).getMaterial().isSolid())
 		{
-			dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
 		}
 
-		super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+		super.neighborChanged(state, world, pos, block, fromPos);
 	}
 
 	@Override
@@ -50,9 +50,9 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
+	public IBlockState withMirror(IBlockState state, Mirror mirror)
 	{
-		return state.withProperty(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(state.getValue(ROTATION).intValue(), 16)));
+		return state.withProperty(ROTATION, Integer.valueOf(mirror.mirrorRotation(state.getValue(ROTATION).intValue(), 16)));
 	}
 
 	@Override

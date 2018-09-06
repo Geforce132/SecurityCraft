@@ -30,7 +30,7 @@ public class BlockReinforcedWool extends BlockColored implements ITileEntityProv
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
 	}

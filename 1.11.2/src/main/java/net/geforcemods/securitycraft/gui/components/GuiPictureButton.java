@@ -24,9 +24,9 @@ public class GuiPictureButton extends GuiButton{
 	private int texWidth;
 	private int texHeight;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender) {
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem renderItem, ItemStack itemToRender) {
 		super(id, xPos, yPos, width, height, "");
-		itemRenderer = par7;
+		itemRenderer = renderItem;
 
 		if(!itemToRender.isEmpty() && itemToRender.getItem().getUnlocalizedName().startsWith("tile."))
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
@@ -50,61 +50,60 @@ public class GuiPictureButton extends GuiButton{
 	 * Draws this button to the screen.
 	 */
 	@Override
-	public void drawButton(Minecraft par1, int par2, int par3)
+	public void drawButton(Minecraft mc, int mouseX, int mouseY)
 	{
 		if (visible)
 		{
-			FontRenderer var4 = par1.fontRenderer;
-			par1.getTextureManager().bindTexture(BUTTON_TEXTURES);
+			FontRenderer fontRenderer = mc.fontRenderer;
+			mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			hovered = par2 >= x && par3 >= y && par2 < x + width && par3 < y + height;
-			int var5 = getHoverState(hovered);
+			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+			int hoverState = getHoverState(hovered);
 			GlStateManager.enableBlend();
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.drawTexturedModalRect(x, y, 0, 46 + var5 * 20, width / 2, height);
-			this.drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + var5 * 20, width / 2, height);
+			this.drawTexturedModalRect(x, y, 0, 46 + hoverState * 20, width / 2, height);
+			this.drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
 
 			if(blockToRender != null){
 				GlStateManager.enableRescaleNormal(); //(this.width / 2) - 8
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(blockToRender), x + 2, y + 3, "");
+				itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
 				GlStateManager.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), x + 2, y + 2);
-				itemRenderer.renderItemOverlayIntoGUI(par1.fontRenderer, new ItemStack(itemToRender), x + 2, y + 2, "");
+				itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, new ItemStack(itemToRender), x + 2, y + 2, "");
 				GlStateManager.disableLighting();
 			}
 			else if(textureLocation != null)
 			{
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				par1.getTextureManager().bindTexture(textureLocation);
+				mc.getTextureManager().bindTexture(textureLocation);
 				drawTexturedModalRect(x, y + 1, u, v, texWidth, texHeight);
 			}
 
-			mouseDragged(par1, par2, par3);
+			mouseDragged(mc, mouseX, mouseY);
 
-			int var6 = 14737632;
-
+			int color = 14737632;
 
 			if (!enabled)
-				var6 = 10526880;
+				color = 10526880;
 			else if (hovered)
-				var6 = 16777120;
+				color = 16777120;
 
-			drawCenteredString(var4, displayString, x + width / 2, y + (height - 8) / 2, var6);
+			drawCenteredString(fontRenderer, displayString, x + width / 2, y + (height - 8) / 2, color);
 
 		}
 	}
 
-	public void setDisplayItem(ItemStack par1ItemStack){
+	public void setDisplayItem(ItemStack stack){
 		blockToRender = null;
 		itemToRender = null;
 
-		if(par1ItemStack.getUnlocalizedName().startsWith("tile."))
-			blockToRender = Block.getBlockFromItem(par1ItemStack.getItem());
+		if(stack.getUnlocalizedName().startsWith("tile."))
+			blockToRender = Block.getBlockFromItem(stack.getItem());
 		else
-			itemToRender = par1ItemStack.getItem();
+			itemToRender = stack.getItem();
 
 	}
 

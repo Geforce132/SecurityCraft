@@ -24,10 +24,10 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	}
 
 	@Override
-	public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
-		net.minecraft.block.state.IBlockState state = world.getBlockState(pos);
-		for (net.minecraft.block.properties.IProperty<?> prop : state.getProperties().keySet())
+		IBlockState state = world.getBlockState(pos);
+		for (IProperty<?> prop : state.getProperties().keySet())
 		{
 			if (prop.getName().equals("axis"))
 			{
@@ -69,19 +69,19 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	 */
 	public IBlockState getStateFromMeta(int meta)
 	{
-		EnumFacing.Axis enumfacing$axis = EnumFacing.Axis.Y;
-		int i = meta & 12;
+		EnumFacing.Axis axis = EnumFacing.Axis.Y;
+		int axisMeta = meta & 12;
 
-		if (i == 4)
+		if (axisMeta == 4)
 		{
-			enumfacing$axis = EnumFacing.Axis.X;
+			axis = EnumFacing.Axis.X;
 		}
-		else if (i == 8)
+		else if (axisMeta == 8)
 		{
-			enumfacing$axis = EnumFacing.Axis.Z;
+			axis = EnumFacing.Axis.Z;
 		}
 
-		return this.getDefaultState().withProperty(AXIS, enumfacing$axis);
+		return this.getDefaultState().withProperty(AXIS, axis);
 	}
 
 	/**
@@ -89,19 +89,19 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	 */
 	public int getMetaFromState(IBlockState state)
 	{
-		int i = 0;
-		EnumFacing.Axis enumfacing$axis = state.getValue(AXIS);
+		int meta = 0;
+		EnumFacing.Axis axis = state.getValue(AXIS);
 
-		if (enumfacing$axis == EnumFacing.Axis.X)
+		if (axis == EnumFacing.Axis.X)
 		{
-			i |= 4;
+			meta |= 4;
 		}
-		else if (enumfacing$axis == EnumFacing.Axis.Z)
+		else if (axis == EnumFacing.Axis.Z)
 		{
-			i |= 8;
+			meta |= 8;
 		}
 
-		return i;
+		return meta;
 	}
 
 	protected BlockStateContainer createBlockState()
@@ -118,8 +118,8 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
 	 */
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(AXIS, facing.getAxis());
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(AXIS, facing.getAxis());
 	}
 }

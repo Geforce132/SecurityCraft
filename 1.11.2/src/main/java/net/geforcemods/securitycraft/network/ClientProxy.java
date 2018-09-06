@@ -288,7 +288,7 @@ public class ClientProxy extends ServerProxy{
 				SCContent.reinforcedWool
 		};
 		//registering reinforced blocks color overlay for world
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x999999, blocksToTint);
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> 0x999999, blocksToTint);
 		//same thing for inventory
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> 0x999999, blocksToTint);
 	}
