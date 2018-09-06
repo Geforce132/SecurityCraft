@@ -28,49 +28,49 @@ public class ItemSecretSign extends Item
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		IBlockState iblockstate = worldIn.getBlockState(pos);
-		boolean flag = iblockstate.getBlock().isReplaceable(worldIn, pos);
+		IBlockState state = world.getBlockState(pos);
+		boolean isReplaceable = state.getBlock().isReplaceable(world, pos);
 
-		if (facing != EnumFacing.DOWN && (iblockstate.getMaterial().isSolid() || flag) && (!flag || facing == EnumFacing.UP))
+		if (facing != EnumFacing.DOWN && (state.getMaterial().isSolid() || isReplaceable) && (!isReplaceable || facing == EnumFacing.UP))
 		{
 			pos = pos.offset(facing);
-			ItemStack itemstack = player.getHeldItem(hand);
+			ItemStack stack = player.getHeldItem(hand);
 
-			if (player.canPlayerEdit(pos, facing, itemstack) && SCContent.secretSignStanding.canPlaceBlockAt(worldIn, pos))
+			if (player.canPlayerEdit(pos, facing, stack) && SCContent.secretSignStanding.canPlaceBlockAt(world, pos))
 			{
-				if (worldIn.isRemote)
+				if (world.isRemote)
 				{
 					return EnumActionResult.SUCCESS;
 				}
 				else
 				{
-					pos = flag ? pos.down() : pos;
+					pos = isReplaceable ? pos.down() : pos;
 
 					if (facing == EnumFacing.UP)
 					{
 						int i = MathHelper.floor((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
-						worldIn.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, Integer.valueOf(i)), 11);
+						world.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, Integer.valueOf(i)), 11);
 					}
 					else
 					{
-						worldIn.setBlockState(pos, SCContent.secretSignWall.getDefaultState().withProperty(BlockSecretSignWall.FACING, facing), 11);
+						world.setBlockState(pos, SCContent.secretSignWall.getDefaultState().withProperty(BlockSecretSignWall.FACING, facing), 11);
 					}
 
-					TileEntity tileentity = worldIn.getTileEntity(pos);
+					TileEntity tileentity = world.getTileEntity(pos);
 
-					if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(worldIn, player, pos, itemstack))
+					if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(world, player, pos, stack))
 					{
 						player.openEditSign((TileEntitySign)tileentity);
 					}
 
 					if (player instanceof EntityPlayerMP)
 					{
-						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos, stack);
 					}
 
-					itemstack.shrink(1);
+					stack.shrink(1);
 					return EnumActionResult.SUCCESS;
 				}
 			}

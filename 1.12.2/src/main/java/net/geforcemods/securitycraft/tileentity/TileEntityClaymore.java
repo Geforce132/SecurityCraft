@@ -45,18 +45,18 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 
 			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
-			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)
-				axisalignedbb = axisalignedbb.contract(-0, -0, SecurityCraft.config.claymoreRange);
+				area = area.contract(-0, -0, SecurityCraft.config.claymoreRange);
 			else if(dir == EnumFacing.SOUTH)
-				axisalignedbb = axisalignedbb.contract(-0, -0, -SecurityCraft.config.claymoreRange);if(dir == EnumFacing.EAST)
-					axisalignedbb = axisalignedbb.contract(-SecurityCraft.config.claymoreRange, -0, -0);
+				area = area.contract(-0, -0, -SecurityCraft.config.claymoreRange);if(dir == EnumFacing.EAST)
+					area = area.contract(-SecurityCraft.config.claymoreRange, -0, -0);
 				else if(dir == EnumFacing.WEST)
-					axisalignedbb = axisalignedbb.contract(SecurityCraft.config.claymoreRange, -0, -0);
+					area = area.contract(SecurityCraft.config.claymoreRange, -0, -0);
 
-				List<?> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-				Iterator<?> iterator = list.iterator();
+				List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+				Iterator<?> iterator = entities.iterator();
 				EntityLivingBase entityliving;
 
 				while(iterator.hasNext()){
@@ -84,35 +84,35 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setDouble("entityX", entityX);
-		par1NBTTagCompound.setDouble("entityY", entityY);
-		par1NBTTagCompound.setDouble("entityZ", entityZ);
-		return par1NBTTagCompound;
+		super.writeToNBT(tag);
+		tag.setInteger("cooldown", cooldown);
+		tag.setDouble("entityX", entityX);
+		tag.setDouble("entityY", entityY);
+		tag.setDouble("entityZ", entityZ);
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("entityX"))
-			entityX = par1NBTTagCompound.getDouble("entityX");
+		if (tag.hasKey("entityX"))
+			entityX = tag.getDouble("entityX");
 
-		if (par1NBTTagCompound.hasKey("entityY"))
-			entityY = par1NBTTagCompound.getDouble("entityY");
+		if (tag.hasKey("entityY"))
+			entityY = tag.getDouble("entityY");
 
-		if (par1NBTTagCompound.hasKey("entityZ"))
-			entityZ = par1NBTTagCompound.getDouble("entityZ");
+		if (tag.hasKey("entityZ"))
+			entityZ = tag.getDouble("entityZ");
 	}
 
 }

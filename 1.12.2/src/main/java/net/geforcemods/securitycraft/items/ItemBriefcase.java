@@ -24,41 +24,41 @@ public class ItemBriefcase extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
 
-		if(worldIn.isRemote) {
+		if(world.isRemote) {
 			if(!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
 				ClientUtils.syncItemNBT(stack);
 			}
 
 			if(!stack.getTagCompound().hasKey("passcode"))
-				playerIn.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
-				playerIn.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
 		return EnumActionResult.FAIL;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 
-		if(worldIn.isRemote) {
-			if(!itemStackIn.hasTagCompound()) {
-				itemStackIn.setTagCompound(new NBTTagCompound());
-				ClientUtils.syncItemNBT(itemStackIn);
+		if(world.isRemote) {
+			if(!stack.hasTagCompound()) {
+				stack.setTagCompound(new NBTTagCompound());
+				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!itemStackIn.getTagCompound().hasKey("passcode"))
-				playerIn.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			if(!stack.getTagCompound().hasKey("passcode"))
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
-				playerIn.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override

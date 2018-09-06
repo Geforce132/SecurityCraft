@@ -42,8 +42,8 @@ public class ItemReinforcedDoor extends Item
 			{
 				EnumFacing angleFacing = EnumFacing.fromAngle(player.rotationYaw);
 				int offsetX = angleFacing.getFrontOffsetX();
-				int offsetY = angleFacing.getFrontOffsetZ();
-				boolean isRightHinge = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetY < 0 && hitX > 0.5F || offsetY > 0 && hitX < 0.5F;
+				int offsetZ = angleFacing.getFrontOffsetZ();
+				boolean isRightHinge = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 				placeDoor(world, pos, angleFacing, SCContent.reinforcedDoor, isRightHinge);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);

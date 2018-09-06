@@ -36,10 +36,10 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public boolean attackEntity(Entity attacked) {
 		if (attacked instanceof EntityPlayer)
 		{
-			AxisAlignedBB axisalignedbb = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
-			List<?> list = world.getEntitiesWithinAABB(entityTypeToAttack(), axisalignedbb);
+			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
+			List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
 
-			if(list.isEmpty())
+			if(entities.isEmpty())
 			{
 				boolean redstoneModule = hasModule(EnumCustomModules.REDSTONE);
 
@@ -71,25 +71,25 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		par1NBTTagCompound.setString("lastPlayerName", lastPlayerName);
-		return par1NBTTagCompound;
+		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
+		tag.setString("lastPlayerName", lastPlayerName);
+		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("shouldSendNewMessage"))
-			shouldSendNewMessage = par1NBTTagCompound.getBoolean("shouldSendNewMessage");
+		if (tag.hasKey("shouldSendNewMessage"))
+			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 
-		if (par1NBTTagCompound.hasKey("lastPlayerName"))
-			lastPlayerName = par1NBTTagCompound.getString("lastPlayerName");
+		if (tag.hasKey("lastPlayerName"))
+			lastPlayerName = tag.getString("lastPlayerName");
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {

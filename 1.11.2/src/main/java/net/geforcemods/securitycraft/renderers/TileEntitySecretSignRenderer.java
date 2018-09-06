@@ -95,18 +95,18 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 				{
 					if (te.signText[j] != null)
 					{
-						ITextComponent itextcomponent = te.signText[j];
-						List<ITextComponent> list = GuiUtilRenderComponents.splitText(itextcomponent, 90, fontRenderer, false, true);
-						String s = list != null && !list.isEmpty() ? list.get(0).getFormattedText() : "";
+						ITextComponent text = te.signText[j];
+						List<ITextComponent> textList = GuiUtilRenderComponents.splitText(text, 90, fontRenderer, false, true);
+						String line = textList != null && !textList.isEmpty() ? textList.get(0).getFormattedText() : "";
 
 						if (j == te.lineBeingEdited)
 						{
-							s = "> " + s + " <";
-							fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							line = "> " + line + " <";
+							fontRenderer.drawString(line, -fontRenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 						else
 						{
-							fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							fontRenderer.drawString(line, -fontRenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 					}
 				}

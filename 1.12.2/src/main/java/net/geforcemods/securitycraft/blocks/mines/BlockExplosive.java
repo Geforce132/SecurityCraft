@@ -15,34 +15,34 @@ import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
-	public BlockExplosive(Material par1) {
-		super(par1);
+	public BlockExplosive(Material material) {
+		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(!worldIn.isRemote){
-			if(playerIn.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(worldIn, pos)) {
-				explode(worldIn, pos);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote){
+			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
+				explode(world, pos);
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(playerIn, SCContent.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(worldIn, pos) && isDefusable() && PlayerUtils.isHoldingItem(playerIn, SCContent.wireCutters)) {
-				defuseMine(worldIn, pos);
-				playerIn.inventory.getCurrentItem().damageItem(1, playerIn);
-				return false;
-			}
-
-			if(!isActive(worldIn, pos) && PlayerUtils.isHoldingItem(playerIn, Items.FLINT_AND_STEEL)) {
-				activateMine(worldIn, pos);
+			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+				defuseMine(world, pos);
+				player.inventory.getCurrentItem().damageItem(1, player);
 				return false;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(worldIn, pos))
-				explode(worldIn, pos);
+			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
+				activateMine(world, pos);
+				return false;
+			}
+
+			if(explodesWhenInteractedWith() && isActive(world, pos))
+				explode(world, pos);
 
 			return false;
 		}

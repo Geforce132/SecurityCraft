@@ -31,32 +31,32 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 		if (block == SCContent.secretSignStanding)
 		{
 			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			float f1 = te.getBlockMetadata() * 360 / 16.0F;
-			GlStateManager.rotate(-f1, 0.0F, 1.0F, 0.0F);
+			float rotation = te.getBlockMetadata() * 360 / 16.0F;
+			GlStateManager.rotate(-rotation, 0.0F, 1.0F, 0.0F);
 			model.signStick.showModel = true;
 		}
 		else
 		{
-			int k = te.getBlockMetadata();
-			float f2 = 0.0F;
+			int meta = te.getBlockMetadata();
+			float roation = 0.0F;
 
-			if (k == 2)
+			if (meta == 2)
 			{
-				f2 = 180.0F;
+				roation = 180.0F;
 			}
 
-			if (k == 4)
+			if (meta == 4)
 			{
-				f2 = 90.0F;
+				roation = 90.0F;
 			}
 
-			if (k == 5)
+			if (meta == 5)
 			{
-				f2 = -90.0F;
+				roation = -90.0F;
 			}
 
 			GlStateManager.translate((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			GlStateManager.rotate(-f2, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(-roation, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(0.0F, -0.3125F, -0.4375F);
 			model.signStick.showModel = false;
 		}
@@ -95,18 +95,18 @@ public class TileEntitySecretSignRenderer extends TileEntitySpecialRenderer<Tile
 				{
 					if (te.signText[j] != null)
 					{
-						ITextComponent itextcomponent = te.signText[j];
-						List<ITextComponent> list = GuiUtilRenderComponents.splitText(itextcomponent, 90, fontrenderer, false, true);
-						String s = list != null && !list.isEmpty() ? list.get(0).getFormattedText() : "";
+						ITextComponent text = te.signText[j];
+						List<ITextComponent> textList = GuiUtilRenderComponents.splitText(text, 90, fontrenderer, false, true);
+						String line = textList != null && !textList.isEmpty() ? textList.get(0).getFormattedText() : "";
 
 						if (j == te.lineBeingEdited)
 						{
-							s = "> " + s + " <";
-							fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							line = "> " + line + " <";
+							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 						else
 						{
-							fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, 0);
+							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
 						}
 					}
 				}

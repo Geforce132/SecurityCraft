@@ -11,8 +11,8 @@ public class SlotOwnerRestricted extends Slot {
 	private final IOwnable tileEntity;
 	private final boolean isGhostSlot;
 
-	public SlotOwnerRestricted(IInventory par1iInventory, IOwnable tileEntity, int par2, int par3, int par4, boolean ghostSlot) {
-		super(par1iInventory, par2, par3, par4);
+	public SlotOwnerRestricted(IInventory inventory, IOwnable tileEntity, int index, int xPos, int yPos, boolean ghostSlot) {
+		super(inventory, index, xPos, yPos);
 		this.tileEntity = tileEntity;
 		isGhostSlot = ghostSlot;
 	}
@@ -21,8 +21,8 @@ public class SlotOwnerRestricted extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(EntityPlayer par1EntityPlayer){
-		return tileEntity.getOwner().isOwner(par1EntityPlayer) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
+	public boolean canTakeStack(EntityPlayer player){
+		return tileEntity.getOwner().isOwner(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 
 	@Override
@@ -32,11 +32,11 @@ public class SlotOwnerRestricted extends Slot {
 	}
 
 	@Override
-	public void putStack(ItemStack p_75215_1_)
+	public void putStack(ItemStack stack)
 	{
-		if(isItemValid(p_75215_1_))
+		if(isItemValid(stack))
 		{
-			inventory.setInventorySlotContents(getSlotIndex(), p_75215_1_);
+			inventory.setInventorySlotContents(getSlotIndex(), stack);
 			onSlotChanged();
 		}
 	}

@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiBriefcaseInventory extends GuiContainer {
 
-	private static final ResourceLocation field_110410_t = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 
 	public GuiBriefcaseInventory(EntityPlayer player, InventoryPlayer inventory) {
 		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
@@ -27,18 +27,18 @@ public class GuiBriefcaseInventory extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:briefcase.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:briefcase.name")) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(field_110410_t);
-		int k = (width - xSize) / 2;
-		int l = (height - ySize) / 2;
-		this.drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		mc.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
 }

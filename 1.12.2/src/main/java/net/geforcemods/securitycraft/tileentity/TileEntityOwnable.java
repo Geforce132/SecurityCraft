@@ -18,31 +18,31 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
+		super.writeToNBT(tag);
 
 		if(owner != null){
-			par1NBTTagCompound.setString("owner", owner.getName());
-			par1NBTTagCompound.setString("ownerUUID", owner.getUUID());
+			tag.setString("owner", owner.getName());
+			tag.setString("ownerUUID", owner.getUUID());
 		}
 
-		return par1NBTTagCompound;
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("owner"))
-			owner.setOwnerName(par1NBTTagCompound.getString("owner"));
+		if (tag.hasKey("owner"))
+			owner.setOwnerName(tag.getString("owner"));
 
-		if (par1NBTTagCompound.hasKey("ownerUUID"))
-			owner.setOwnerUUID(par1NBTTagCompound.getString("ownerUUID"));
+		if (tag.hasKey("ownerUUID"))
+			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override

@@ -13,29 +13,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketCUpdateNBTTag implements IMessage{
 
-	private NBTTagCompound stack;
+	private NBTTagCompound stackTag;
 	private String itemName;
 
 	public PacketCUpdateNBTTag(){
 
 	}
 
-	public PacketCUpdateNBTTag(ItemStack par1ItemStack){
-		if(!par1ItemStack.isEmpty() && par1ItemStack.hasTagCompound()){
-			stack = par1ItemStack.getTagCompound();
-			itemName = par1ItemStack.getTranslationKey();
+	public PacketCUpdateNBTTag(ItemStack stack){
+		if(!stack.isEmpty() && stack.hasTagCompound()){
+			stackTag = stack.getTagCompound();
+			itemName = stack.getTranslationKey();
 		}
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		stack = ByteBufUtils.readTag(buf);
+		stackTag = ByteBufUtils.readTag(buf);
 		itemName = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeTag(buf, stack);
+		ByteBufUtils.writeTag(buf, stackTag);
 		ByteBufUtils.writeUTF8String(buf, itemName);
 	}
 
@@ -43,9 +43,9 @@ public class PacketCUpdateNBTTag implements IMessage{
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCUpdateNBTTag packet, MessageContext ctx) {
-			if(!Minecraft.getMinecraft().player.inventory.getCurrentItem().isEmpty() && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getTranslationKey().matches(packet.itemName)){
-				Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(packet.stack);;
+		public IMessage onMessage(PacketCUpdateNBTTag message, MessageContext ctx) {
+			if(!Minecraft.getMinecraft().player.inventory.getCurrentItem().isEmpty() && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getTranslationKey().matches(message.itemName)){
+				Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(message.stackTag);;
 			}
 
 			return null;

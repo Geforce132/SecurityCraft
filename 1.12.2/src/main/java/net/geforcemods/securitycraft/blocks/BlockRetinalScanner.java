@@ -41,23 +41,23 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		IBlockState block = par1World.getBlockState(pos.north());
-		IBlockState block1 = par1World.getBlockState(pos.south());
-		IBlockState block2 = par1World.getBlockState(pos.west());
-		IBlockState block3 = par1World.getBlockState(pos.east());
-		EnumFacing enumfacing = state.getValue(FACING);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		IBlockState north = world.getBlockState(pos.north());
+		IBlockState south = world.getBlockState(pos.south());
+		IBlockState west = world.getBlockState(pos.west());
+		IBlockState east = world.getBlockState(pos.east());
+		EnumFacing facing = state.getValue(FACING);
 
-		if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-			enumfacing = EnumFacing.SOUTH;
-		else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-			enumfacing = EnumFacing.NORTH;
-		else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-			enumfacing = EnumFacing.EAST;
-		else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-			enumfacing = EnumFacing.WEST;
+		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+			facing = EnumFacing.SOUTH;
+		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+			facing = EnumFacing.NORTH;
+		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+			facing = EnumFacing.EAST;
+		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+			facing = EnumFacing.WEST;
 
-		par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 
 	}
 
@@ -65,9 +65,9 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if (!par1World.isRemote && state.getValue(POWERED).booleanValue())
-			BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		if (!world.isRemote && state.getValue(POWERED).booleanValue())
+			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

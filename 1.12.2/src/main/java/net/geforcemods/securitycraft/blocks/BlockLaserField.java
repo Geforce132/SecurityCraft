@@ -42,7 +42,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{
 		return null;
 	}
@@ -80,7 +80,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
@@ -195,49 +195,49 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	 * Called right before the block is destroyed by a player.  Args: world, pos, state
 	 */
 	@Override
-	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
 	{
-		if(!par1World.isRemote){
+		if(!world.isRemote){
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.east(i));
+				Block id = BlockUtils.getBlock(world, pos.east(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.east(j), false);
+						world.destroyBlock(pos.east(j), false);
 			}
 
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.west(i));
+				Block id = BlockUtils.getBlock(world, pos.west(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.west(j), false);
+						world.destroyBlock(pos.west(j), false);
 			}
 
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.south(i));
+				Block id = BlockUtils.getBlock(world, pos.south(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.south(j), false);
+						world.destroyBlock(pos.south(j), false);
 			}
 
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.north(i));
+				Block id = BlockUtils.getBlock(world, pos.north(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.north(j), false);
+						world.destroyBlock(pos.north(j), false);
 			}
 
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.up(i));
+				Block id = BlockUtils.getBlock(world, pos.up(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.up(j), false);
+						world.destroyBlock(pos.up(j), false);
 			}
 
 			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.down(i));
+				Block id = BlockUtils.getBlock(world, pos.down(i));
 				if(id == SCContent.laserBlock)
 					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.down(j), false);
+						world.destroyBlock(pos.down(j), false);
 			}
 		}
 	}
@@ -284,13 +284,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 

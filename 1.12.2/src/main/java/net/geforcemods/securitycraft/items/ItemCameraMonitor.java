@@ -33,48 +33,48 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemCameraMonitor extends Item {
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		ItemStack stack = playerIn.getHeldItem(hand);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+		ItemStack stack = player.getHeldItem(hand);
 
-		if(!worldIn.isRemote){
-			if(BlockUtils.getBlock(worldIn, pos) == SCContent.securityCamera){
-				if(!((IOwnable) worldIn.getTileEntity(pos)).getOwner().isOwner(playerIn)){
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
+		if(!world.isRemote){
+			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera){
+				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
-				if(playerIn.inventory.getCurrentItem().getTagCompound() == null)
-					playerIn.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+				if(player.inventory.getCurrentItem().getTagCompound() == null)
+					player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 
-				CameraView view = new CameraView(pos, playerIn.dimension);
+				CameraView view = new CameraView(pos, player.dimension);
 
-				if(isCameraAdded(playerIn.inventory.getCurrentItem().getTagCompound(), view)){
-					playerIn.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(playerIn.inventory.getCurrentItem().getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+				if(isCameraAdded(player.inventory.getCurrentItem().getTagCompound(), view)){
+					player.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(player.inventory.getCurrentItem().getTagCompound(), view));
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
-					if (!playerIn.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
-						playerIn.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+					if (!player.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
+						player.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 
-				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)playerIn);
+				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)player);
 
 				return EnumActionResult.SUCCESS;
 			}
-		}else if(worldIn.isRemote && BlockUtils.getBlock(worldIn, pos) != SCContent.securityCamera){
-			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera)
+		}else if(world.isRemote && BlockUtils.getBlock(world, pos) != SCContent.securityCamera){
+			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera)
 				return EnumActionResult.SUCCESS;
 
 			if(stack.getTagCompound() == null || stack.getTagCompound().isEmpty()) {
-				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
-			playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			return EnumActionResult.SUCCESS;
 		}
 
@@ -83,37 +83,37 @@ public class ItemCameraMonitor extends Item {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 
-		if (worldIn.isRemote) {
-			if(playerIn.getRidingEntity() != null && playerIn.getRidingEntity() instanceof EntitySecurityCamera)
-				return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		if (world.isRemote) {
+			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera)
+				return ActionResult.newResult(EnumActionResult.PASS, stack);
 
-			if(!itemStackIn.hasTagCompound() || !hasCameraAdded(itemStackIn.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(playerIn, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+			if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			}
 
-			playerIn.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, itemStackIn);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
 		if(stack.getTagCompound() == null)
 			return;
 
 		tooltip.add(ClientUtils.localize("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
-	public static String getTagNameFromPosition(NBTTagCompound nbt, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return "Camera" + i;
@@ -122,10 +122,10 @@ public class ItemCameraMonitor extends Item {
 		return "";
 	}
 
-	public int getSlotFromPosition(NBTTagCompound nbt, CameraView view) {
+	public int getSlotFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return i;
@@ -134,20 +134,20 @@ public class ItemCameraMonitor extends Item {
 		return -1;
 	}
 
-	public boolean hasCameraAdded(NBTTagCompound nbt){
-		if(nbt == null) return false;
+	public boolean hasCameraAdded(NBTTagCompound tag){
+		if(tag == null) return false;
 
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i))
+			if(tag.hasKey("Camera" + i))
 				return true;
 
 		return false;
 	}
 
-	public boolean isCameraAdded(NBTTagCompound nbt, CameraView view){
+	public boolean isCameraAdded(NBTTagCompound tag, CameraView view){
 		for(int i = 1; i <= 30; i++)
-			if(nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
 					return true;
@@ -156,12 +156,12 @@ public class ItemCameraMonitor extends Item {
 		return false;
 	}
 
-	public ArrayList<CameraView> getCameraPositions(NBTTagCompound nbt){
+	public ArrayList<CameraView> getCameraPositions(NBTTagCompound tag){
 		ArrayList<CameraView> list = new ArrayList<CameraView>();
 
 		for(int i = 1; i <= 30; i++)
-			if(nbt != null && nbt.hasKey("Camera" + i)){
-				String[] coords = nbt.getString("Camera" + i).split(" ");
+			if(tag != null && tag.hasKey("Camera" + i)){
+				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
 			}
@@ -171,11 +171,11 @@ public class ItemCameraMonitor extends Item {
 		return list;
 	}
 
-	public int getNumberOfCamerasBound(NBTTagCompound nbt) {
-		if(nbt == null) return 0;
+	public int getNumberOfCamerasBound(NBTTagCompound tag) {
+		if(tag == null) return 0;
 
 		for(int i = 1; i <= 31; i++)
-			if(nbt.hasKey("Camera" + i))
+			if(tag.hasKey("Camera" + i))
 				continue;
 			else
 				return i - 1;

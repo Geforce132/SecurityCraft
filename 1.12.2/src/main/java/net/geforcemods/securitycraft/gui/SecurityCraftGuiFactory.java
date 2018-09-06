@@ -9,7 +9,7 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 public class SecurityCraftGuiFactory implements IModGuiFactory{
 
 	@Override
-	public void initialize(Minecraft arg0) {
+	public void initialize(Minecraft mc) {
 
 	}
 

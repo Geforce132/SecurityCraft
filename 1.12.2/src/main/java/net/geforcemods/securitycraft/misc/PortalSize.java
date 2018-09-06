@@ -24,12 +24,12 @@ public class PortalSize
 	private int height;
 	private int width;
 
-	public PortalSize(World worldIn, BlockPos p_i45694_2_, EnumFacing.Axis p_i45694_3_)
+	public PortalSize(World world, BlockPos pos, EnumFacing.Axis axis)
 	{
-		this.world = worldIn;
-		this.axis = p_i45694_3_;
+		this.world = world;
+		this.axis = axis;
 
-		if (p_i45694_3_ == EnumFacing.Axis.X)
+		if (axis == EnumFacing.Axis.X)
 		{
 			this.leftDir = EnumFacing.EAST;
 			this.rightDir = EnumFacing.WEST;
@@ -40,16 +40,16 @@ public class PortalSize
 			this.rightDir = EnumFacing.SOUTH;
 		}
 
-		for (BlockPos blockpos = p_i45694_2_; p_i45694_2_.getY() > blockpos.getY() - 21 && p_i45694_2_.getY() > 0 && this.isEmptyBlock(worldIn.getBlockState(p_i45694_2_.down()).getBlock()); p_i45694_2_ = p_i45694_2_.down())
+		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down())
 		{
 			;
 		}
 
-		int i = this.getDistanceUntilEdge(p_i45694_2_, this.leftDir) - 1;
+		int distanceToEdge = this.getDistanceUntilEdge(pos, this.leftDir) - 1;
 
-		if (i >= 0)
+		if (distanceToEdge >= 0)
 		{
-			this.bottomLeft = p_i45694_2_.offset(this.leftDir, i);
+			this.bottomLeft = pos.offset(this.leftDir, distanceToEdge);
 			this.width = this.getDistanceUntilEdge(this.bottomLeft, this.rightDir);
 
 			if (this.width < 2 || this.width > 21)
@@ -65,22 +65,22 @@ public class PortalSize
 		}
 	}
 
-	protected int getDistanceUntilEdge(BlockPos p_180120_1_, EnumFacing p_180120_2_)
+	protected int getDistanceUntilEdge(BlockPos pos, EnumFacing facing)
 	{
-		int i;
+		int distance;
 
-		for (i = 0; i < 22; ++i)
+		for (distance = 0; distance < 22; ++distance)
 		{
-			BlockPos blockpos = p_180120_1_.offset(p_180120_2_, i);
+			BlockPos blockPos = pos.offset(facing, distance);
 
-			if (!this.isEmptyBlock(this.world.getBlockState(blockpos).getBlock()) || this.world.getBlockState(blockpos.down()).getBlock() != SCContent.reinforcedObsidian)
+			if (!this.isEmptyBlock(this.world.getBlockState(blockPos).getBlock()) || this.world.getBlockState(blockPos.down()).getBlock() != SCContent.reinforcedObsidian)
 			{
 				break;
 			}
 		}
 
-		Block block = this.world.getBlockState(p_180120_1_.offset(p_180120_2_, i)).getBlock();
-		return block == SCContent.reinforcedObsidian ? i : 0;
+		Block block = this.world.getBlockState(pos.offset(facing, distance)).getBlock();
+		return block == SCContent.reinforcedObsidian ? distance : 0;
 	}
 
 	public int getHeight()
@@ -101,8 +101,8 @@ public class PortalSize
 			{
 				for (int i = 0; i < this.width; ++i)
 				{
-					BlockPos blockpos = this.bottomLeft.offset(this.rightDir, i).up(this.height);
-					Block block = this.world.getBlockState(blockpos).getBlock();
+					BlockPos pos = this.bottomLeft.offset(this.rightDir, i).up(this.height);
+					Block block = this.world.getBlockState(pos).getBlock();
 
 					if (!this.isEmptyBlock(block))
 					{
@@ -116,7 +116,7 @@ public class PortalSize
 
 					if (i == 0)
 					{
-						block = this.world.getBlockState(blockpos.offset(this.leftDir)).getBlock();
+						block = this.world.getBlockState(pos.offset(this.leftDir)).getBlock();
 
 						if (block != SCContent.reinforcedObsidian)
 						{
@@ -125,7 +125,7 @@ public class PortalSize
 					}
 					else if (i == this.width - 1)
 					{
-						block = this.world.getBlockState(blockpos.offset(this.rightDir)).getBlock();
+						block = this.world.getBlockState(pos.offset(this.rightDir)).getBlock();
 
 						if (block != SCContent.reinforcedObsidian)
 						{
@@ -155,11 +155,11 @@ public class PortalSize
 		this.height = 0;
 		return 0;
 	}
-	}
+	} //end method
 
-	protected boolean isEmptyBlock(Block blockIn)
+	protected boolean isEmptyBlock(Block block)
 	{
-		return blockIn.getMaterial(blockIn.getDefaultState()) == Material.AIR || blockIn == Blocks.FIRE || blockIn == Blocks.PORTAL;
+		return block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.FIRE || block == Blocks.PORTAL;
 	}
 
 	public boolean isValid()
@@ -171,11 +171,11 @@ public class PortalSize
 	{
 		for (int i = 0; i < this.width; ++i)
 		{
-			BlockPos blockpos = this.bottomLeft.offset(this.rightDir, i);
+			BlockPos pos = this.bottomLeft.offset(this.rightDir, i);
 
 			for (int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(blockpos.up(j), Blocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
+				this.world.setBlockState(pos.up(j), Blocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
 			}
 		}
 	}

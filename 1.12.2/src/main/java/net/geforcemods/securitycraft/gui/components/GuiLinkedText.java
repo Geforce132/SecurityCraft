@@ -39,10 +39,10 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float f) {
 		if (visible) {
-			FontRenderer fontrenderer = mc.fontRenderer;
+			FontRenderer fontRenderer = mc.fontRenderer;
 			mouseDragged(mc, mouseX, mouseY);
 
-			drawCenteredString(fontrenderer, TextFormatting.UNDERLINE + displayString, x + width / 2, y + (height - 8) / 2, textColor);
+			drawCenteredString(fontRenderer, TextFormatting.UNDERLINE + displayString, x + width / 2, y + (height - 8) / 2, textColor);
 		}
 	}
 

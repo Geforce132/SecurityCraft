@@ -53,10 +53,10 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		BlockReinforcedMetals.EnumType[] aenumtype = BlockReinforcedMetals.EnumType.values();
+		BlockReinforcedMetals.EnumType[] values = BlockReinforcedMetals.EnumType.values();
 
-		for (BlockReinforcedMetals.EnumType enumtype : aenumtype)
-			list.add(new ItemStack(this, 1, enumtype.getMetadata()));
+		for (BlockReinforcedMetals.EnumType type : values)
+			list.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
 	/**
@@ -162,10 +162,10 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 
 		static
 		{
-			BlockReinforcedMetals.EnumType[] var0 = values();
+			BlockReinforcedMetals.EnumType[] values = values();
 
-			for (BlockReinforcedMetals.EnumType var3 : var0)
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for (BlockReinforcedMetals.EnumType type : values)
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }
