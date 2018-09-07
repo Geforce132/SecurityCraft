@@ -17,7 +17,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -135,87 +134,21 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(connectedScanner == null)
 			return;
 
-		boolean place = true;
+		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		int loopBoundary = facing == EnumFacing.WEST || facing == EnumFacing.EAST ? Math.abs(pos.getX() - connectedScanner.getPos().getX()) : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getPos().getZ()) : 0);
 
-		if(world.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
+		for(int i = 1; i < loopBoundary; i++)
 		{
-			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
-			{
-				if(world.getBlockState(pos.west(i)).getBlock() == SCContent.inventoryScannerField)
-				{
-					place = false;
-					break;
-				}
-			}
-
-			if(place)
-			{
-				for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
-				{
-					world.setBlockState(pos.west(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.WEST));
-				}
-			}
-		}
-		else if(world.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
-		{
-			for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
-			{
-				if(world.getBlockState(pos.east(i)).getBlock() == SCContent.inventoryScannerField)
-				{
-					place = false;
-					break;
-				}
-			}
-
-			if(place)
-			{
-				for(int i = 1; i < Math.abs(pos.getX() - connectedScanner.getPos().getX()); i++)
-				{
-					world.setBlockState(pos.east(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.EAST));
-				}
-			}
-		}
-		else if(world.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
-		{
-			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
-			{
-				if(world.getBlockState(pos.north(i)).getBlock() == SCContent.inventoryScannerField)
-				{
-					place = false;
-					break;
-				}
-			}
-
-			if(place)
-			{
-				for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
-				{
-					world.setBlockState(pos.north(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.NORTH));
-				}
-			}
-		}
-		else if(world.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-		{
-			for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
-			{
-				if(world.getBlockState(pos.south(i)).getBlock() == SCContent.inventoryScannerField)
-				{
-					place = false;
-					break;
-				}
-			}
-
-			if(place)
-			{
-				for(int i = 1; i < Math.abs(pos.getZ() - connectedScanner.getPos().getZ()); i++)
-				{
-					world.setBlockState(pos.south(i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, EnumFacing.SOUTH));
-				}
-			}
+			if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.inventoryScannerField)
+				return;
 		}
 
-		if(place)
-			CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), connectedScanner);
+		for(int i = 1; i < loopBoundary; i++)
+		{
+			world.setBlockState(pos.offset(facing, i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, facing));
+		}
+
+		CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), connectedScanner);
 	}
 
 	@Override
@@ -226,78 +159,39 @@ public class BlockInventoryScanner extends BlockContainer {
 
 		TileEntityInventoryScanner connectedScanner = null;
 
-		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
+		for(EnumFacing facing : EnumFacing.HORIZONTALS)
 		{
-			if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.inventoryScanner)
+			for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
 			{
-				for(int j = 1; j < i; j++)
+				BlockPos offsetIPos = pos.offset(facing, i);
+
+				if(BlockUtils.getBlock(world, offsetIPos) == SCContent.inventoryScanner)
 				{
-					IBlockState field = world.getBlockState(pos.west(j));
+					for(int j = 1; j < i; j++)
+					{
+						BlockPos offsetJPos = pos.offset(facing, j);
+						IBlockState field = world.getBlockState(offsetJPos);
 
-					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST))
-						world.destroyBlock(pos.west(j), false);
+						//checking if the field is oriented correctly
+						if(field.getBlock() == SCContent.inventoryScannerField)
+						{
+							if(facing == EnumFacing.WEST || facing == EnumFacing.EAST)
+							{
+								if(field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST)
+									world.destroyBlock(offsetJPos, false);
+							}
+							else if(facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
+							{
+								if(field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH)
+									world.destroyBlock(offsetJPos, false);
+							}
+						}
+					}
+
+					connectedScanner = (TileEntityInventoryScanner)world.getTileEntity(offsetIPos);
+					break;
 				}
-
-				connectedScanner = (TileEntityInventoryScanner)world.getTileEntity(pos.west(i));
-				break;
 			}
-		}
-
-		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
-		{
-			if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.inventoryScanner)
-			{
-				for(int j = 1; j < i; j++)
-				{
-					IBlockState field = world.getBlockState(pos.east(j));
-
-					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.EAST || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.WEST))
-						world.destroyBlock(pos.east(j), false);
-				}
-
-				connectedScanner = (TileEntityInventoryScanner)world.getTileEntity(pos.east(i));
-				break;
-			}
-		}
-
-		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
-		{
-			if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.inventoryScanner)
-			{
-				for(int j = 1; j < i; j++)
-				{
-					IBlockState field = world.getBlockState(pos.north(j));
-
-					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH))
-						world.destroyBlock(pos.north(j), false);
-				}
-
-				connectedScanner = (TileEntityInventoryScanner)world.getTileEntity(pos.north(i));
-				break;
-			}
-		}
-
-		for(int i = 1; i <= SecurityCraft.config.inventoryScannerRange; i++)
-		{
-			if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.inventoryScanner)
-			{
-				for(int j = 1; j < i; j++)
-				{
-					IBlockState field = world.getBlockState(pos.south(j));
-
-					if(field.getBlock() == SCContent.inventoryScannerField && (field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.NORTH || field.getValue(BlockInventoryScannerField.FACING) == EnumFacing.SOUTH))
-						world.destroyBlock(pos.south(j), false);
-				}
-
-				connectedScanner = (TileEntityInventoryScanner)world.getTileEntity(pos.south(i));
-				break;
-			}
-		}
-
-		for(int i = 10; i < ((TileEntityInventoryScanner) world.getTileEntity(pos)).getContents().size(); i++)
-		{
-			if(((TileEntityInventoryScanner) world.getTileEntity(pos)).getContents().size() != 0)
-				world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityInventoryScanner) world.getTileEntity(pos)).getContents().get(i)));
 		}
 
 		if(connectedScanner != null)
@@ -318,63 +212,22 @@ public class BlockInventoryScanner extends BlockContainer {
 
 	public static TileEntityInventoryScanner getConnectedInventoryScanner(World world, BlockPos pos)
 	{
-		switch(world.getBlockState(pos).getValue(FACING))
+		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+
+		for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
 		{
-			case WEST:
-				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
-				{
-					Block b = BlockUtils.getBlock(world, pos.west(i));
-					IBlockState s = world.getBlockState(pos.west(i));
+			BlockPos offsetPos = pos.offset(facing, i);
+			Block block = BlockUtils.getBlock(world, offsetPos);
+			IBlockState state = world.getBlockState(offsetPos);
 
-					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
-						return null;
-
-					if(b == SCContent.inventoryScanner && s.getValue(FACING) == EnumFacing.EAST)
-						return (TileEntityInventoryScanner)world.getTileEntity(pos.west(i));
-				}
-
+			if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
 				return null;
-			case EAST:
-				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
-				{
-					Block b = BlockUtils.getBlock(world, pos.east(i));
 
-					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
-						return null;
-
-					if(b == SCContent.inventoryScanner && world.getBlockState(pos.east(i)).getValue(FACING) == EnumFacing.WEST)
-						return (TileEntityInventoryScanner)world.getTileEntity(pos.east(i));
-				}
-
-				return null;
-			case NORTH:
-				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
-				{
-					Block b = BlockUtils.getBlock(world, pos.north(i));
-
-					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
-						return null;
-
-					if(b == SCContent.inventoryScanner && world.getBlockState(pos.north(i)).getValue(FACING) == EnumFacing.SOUTH)
-						return (TileEntityInventoryScanner)world.getTileEntity(pos.north(i));
-				}
-
-				return null;
-			case SOUTH:
-				for(int i = 0; i <= SecurityCraft.config.inventoryScannerRange; i++)
-				{
-					Block b = BlockUtils.getBlock(world, pos.south(i));
-
-					if(b != Blocks.AIR && b != SCContent.inventoryScannerField && b != SCContent.inventoryScanner)
-						return null;
-
-					if(b == SCContent.inventoryScanner && world.getBlockState(pos.south(i)).getValue(FACING) == EnumFacing.NORTH)
-						return (TileEntityInventoryScanner)world.getTileEntity(pos.south(i));
-				}
-
-				return null;
-			default: return null;
+			if(block == SCContent.inventoryScanner && state.getValue(FACING) == facing.getOpposite())
+				return (TileEntityInventoryScanner)world.getTileEntity(offsetPos);
 		}
+
+		return null;
 	}
 
 	/**

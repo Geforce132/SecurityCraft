@@ -187,7 +187,7 @@ public class SCEventHandler {
 
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
-						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
 						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
 					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).getValue(BlockCageTrap.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();

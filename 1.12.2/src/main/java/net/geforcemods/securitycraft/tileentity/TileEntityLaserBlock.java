@@ -29,7 +29,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		if(option.getValue())
 			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
 		else
-			BlockLaserBlock.destroyAdjacentLasers(world, pos.getX(), pos.getY(), pos.getZ());
+			BlockLaserBlock.destroyAdjacentLasers(world, pos);
 	}
 
 	@Override
