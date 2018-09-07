@@ -128,7 +128,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 						toAppend.setInteger("blockZ", block.getZ());
 					}
 
-					tagList.appendTag(tag);
+					tagList.appendTag(toAppend);
 				}
 
 				tag.setTag("linkedBlocks", tagList);
