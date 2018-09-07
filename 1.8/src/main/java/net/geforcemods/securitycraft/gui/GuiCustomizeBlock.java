@@ -20,6 +20,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.client.config.HoverChecker;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,6 +31,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private boolean jei = Loader.isModLoaded("JEI");
 
 	private final String blockName;
 
@@ -45,7 +47,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 		super.initGui();
 
 		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new GuiPictureButton(i, jei ? guiLeft + 16 : guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
 			buttonList.add(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
@@ -53,15 +55,16 @@ public class GuiCustomizeBlock extends GuiContainer{
 		if(tileEntity.customOptions() != null)
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
 				Option option = tileEntity.customOptions()[i];
+				int buttonX = jei ? guiLeft - 122 : guiLeft + 178;
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
-					optionButtons[i] = new GuiSlider((StatCollector.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (Double)option.getMin(), (Double)option.getMax(), (Double)option.getValue(), true, true, (OptionDouble)option);
+					optionButtons[i] = new GuiSlider((StatCollector.translateToLocal("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, buttonX, (guiTop + 10) + (i * 25), 120, 20, "", "", (Double)option.getMin(), (Double)option.getMax(), (Double)option.getValue(), true, true, (OptionDouble)option);
 					optionButtons[i].packedFGColour = 14737632;
 				}
 				else
 				{
-					optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
+					optionButtons[i] = new GuiButton(i, buttonX, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
 					optionButtons[i].packedFGColour = option.toString().matches(option.getDefaultValue().toString()) ? 16777120 : 14737632;
 				}
 
@@ -89,8 +92,10 @@ public class GuiCustomizeBlock extends GuiContainer{
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String name = tileEntity.hasCustomName() ? tileEntity.getName() : I18n.format(tileEntity.getName(), new Object[0]);
+		String inventory = I18n.format("container.inventory");
+
 		fontRendererObj.drawString(name, xSize / 2 - fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
-		fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
+		fontRendererObj.drawString(inventory, jei && tileEntity.acceptedModules().length == 3 ? xSize / 2 - fontRendererObj.getStringWidth(inventory) / 2 : 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
