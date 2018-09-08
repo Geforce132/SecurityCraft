@@ -27,6 +27,8 @@ public interface IReinforcedBlock
 			SCContent.reinforcedOldLogs,
 			SCContent.reinforcedQuartz,
 			SCContent.reinforcedSandstone,
+			SCContent.reinforcedStainedGlass,
+			SCContent.reinforcedStainedGlassPanes,
 			SCContent.reinforcedStainedHardenedClay,
 			SCContent.reinforcedStone,
 			SCContent.reinforcedStoneBrick,

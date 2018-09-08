@@ -13,14 +13,16 @@ import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
 
-public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane implements ITileEntityProvider {
+public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane implements ITileEntityProvider, IReinforcedBlock {
 
 	private static final IIcon[] paneTextures = new IIcon[16];
 	private static final IIcon[] topPaneTextures = new IIcon[16];
@@ -85,5 +87,19 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	public Item getItemDropped(int meta, Random random, int fortune)
 	{
 		return Item.getItemFromBlock(this);
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.stained_glass_pane
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 16;
 	}
 }

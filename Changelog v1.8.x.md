@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.8 of SecurityCraft--------------------------
 
 - New: The Track Mine can now be controlled with the Mine Remote Access Tool
+- New: Reinforced Stained Glass and Reinforced Stained Glass Panes can now be created using the Universal Block Reinforcer (alongside the already existing recipes)
 - New: [1.9.4+] Reinforced Stained Glass Panes are back!
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass

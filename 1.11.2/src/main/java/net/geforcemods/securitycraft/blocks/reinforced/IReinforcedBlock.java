@@ -34,6 +34,8 @@ public interface IReinforcedBlock
 			SCContent.reinforcedRedSandstone,
 			SCContent.reinforcedSandstone,
 			SCContent.reinforcedSeaLantern,
+			SCContent.reinforcedStainedGlass,
+			SCContent.reinforcedStainedGlassPanes,
 			SCContent.reinforcedStainedHardenedClay,
 			SCContent.reinforcedStone,
 			SCContent.reinforcedStoneBrick,

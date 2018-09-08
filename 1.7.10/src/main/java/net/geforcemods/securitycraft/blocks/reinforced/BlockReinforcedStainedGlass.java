@@ -12,14 +12,16 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
 
-public class BlockReinforcedStainedGlass extends BlockBreakable implements ITileEntityProvider {
+public class BlockReinforcedStainedGlass extends BlockBreakable implements ITileEntityProvider, IReinforcedBlock {
 
 	private static final IIcon[] iicons = new IIcon[16];
 
@@ -89,4 +91,17 @@ public class BlockReinforcedStainedGlass extends BlockBreakable implements ITile
 		return new TileEntityOwnable();
 	}
 
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.stained_glass
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 16;
+	}
 }

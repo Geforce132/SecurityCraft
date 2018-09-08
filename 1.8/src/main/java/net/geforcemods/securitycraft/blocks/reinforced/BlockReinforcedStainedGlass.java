@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,8 +18,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.actors.threadpool.Arrays;
 
-public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider {
+public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedStainedGlass(Material material) {
 		super(material);
@@ -45,5 +48,19 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	public int quantityDropped(Random random)
 	{
 		return 1;
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(new Block[] {
+				Blocks.stained_glass
+		});
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 16;
 	}
 }
