@@ -7,7 +7,7 @@
   ],
   "key": {
     "G": {
-      "item": "minecraft:glass"
+      "item": "securitycraft:reinforced_glass_block"
     },
     "N": {
       "item": "minecraft:noteblock"

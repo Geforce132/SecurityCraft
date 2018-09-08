@@ -365,7 +365,7 @@ public class RegistrationHandler
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.alarm, 1), new Object[]{
-				"GGG", "GNG", "GRG", 'G', Blocks.GLASS, 'R', Items.REDSTONE, 'N', Blocks.NOTEBLOCK
+				"GGG", "GNG", "GRG", 'G', SCContent.reinforcedGlass, 'R', Items.REDSTONE, 'N', Blocks.NOTEBLOCK
 		});
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
