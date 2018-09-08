@@ -510,7 +510,7 @@ public class RegistrationHandler
 					"###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i)
 			});
 
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlassPanes, 16, i - 1), new Object[]{
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlassPanes, 16, i), new Object[]{
 					"###", "###", '#', new ItemStack(SCContent.reinforcedStainedGlass, 1, i)
 			});
 
