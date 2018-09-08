@@ -24,10 +24,10 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	}
 
 	@Override
-	public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
-		net.minecraft.block.state.IBlockState state = world.getBlockState(pos);
-		for (net.minecraft.block.properties.IProperty<?> prop : state.getProperties().keySet())
+		IBlockState state = world.getBlockState(pos);
+		for (IProperty<?> prop : state.getProperties().keySet())
 		{
 			if (prop.getName().equals("axis"))
 			{

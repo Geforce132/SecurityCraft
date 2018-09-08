@@ -24,8 +24,8 @@ public class BlockOwnable extends BlockContainer {
 			setSoundType(SoundType.STONE);
 	}
 
-	public BlockOwnable(Material par1, EnumBlockRenderType renderType) {
-		this(par1);
+	public BlockOwnable(Material material, EnumBlockRenderType renderType) {
+		this(material);
 		this.renderType = renderType;
 	}
 
