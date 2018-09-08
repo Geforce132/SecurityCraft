@@ -44,7 +44,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	{
 		//sponge fix
 		if(world.isRemote)
-			return EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(BlockUtils.getBlockMeta(world, pos)));
+			return state.getValue(COLOR).getColorComponentValues();
 		else
 			return new float[] {0.0F, 0.0F, 0.0F};
 	}
