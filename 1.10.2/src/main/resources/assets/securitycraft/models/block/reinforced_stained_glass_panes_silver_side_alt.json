@@ -1,0 +1,7 @@
+{
+    "parent": "block/pane_side_alt",
+    "textures": {
+        "edge": "securitycraft:blocks/glass_reinforced_pane_top_silver",
+        "pane": "securitycraft:blocks/glass_reinforced_silver"
+    }
+}

@@ -1,6 +1,7 @@
---------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.8 of SecurityCraft--------------------------
 
 - New: The Track Mine can now be controlled with the Mine Remote Access Tool
+- New: [1.9.4+] Reinforced Stained Glass Panes are back!
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
@@ -13,9 +14,11 @@
 - Fix: When breaking an Inventory Scanner, items placed in the blacklist slot will drop
 - Fix: Iron/Reinforced Trapdoor can be opened by redstone
 - Fix: Placing/breaking Inventory Scanners can break other Inventory Scanner's scanner fields
+- Fix: Name inconsistencies with vanilla
 - Fix: [1.7.10] Smart Module does not work
 - Fix: [1.7.10-1.9.4] Items shift-clicked in the Inventory Scanner end up in the blacklist slot if there was an item there already
 - Fix: [1.8-1.8.9] Taser bullet has incorrect velocity which leads to unexpected shooting behavior
+- Fix: [1.8-1.8.9] Incorrect Reinforced Stained Glass Pane recipes
 - Fix: [1.8+] Taser reequips all the time when loading after a shot (Note that this cannot be implemented in 1.7.10 due to limitations in Forge)
 - Fix: [1.8+] Password-protected Furnace does not give off light when open and burning
 - Fix: [1.8+] The Inventory Scanner Field is missing its top and bottom texture

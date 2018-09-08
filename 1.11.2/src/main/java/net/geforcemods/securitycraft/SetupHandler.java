@@ -40,6 +40,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressed
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
@@ -52,6 +53,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs2;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPanes;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedHardenedClay;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStairs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStone;
@@ -219,6 +221,9 @@ public class SetupHandler
 		SCContent.reinforcedSeaLantern = new BlockReinforcedBase(Material.GLASS, 1, Blocks.SEA_LANTERN).setBlockUnbreakable().setResistance(1000).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sea_lantern").setUnlocalizedName("securitycraft:reinforcedSeaLantern");
 
 		SCContent.reinforcedBoneBlock = new BlockReinforcedBoneBlock(Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bone_block").setUnlocalizedName("securitycraft:reinforcedBoneBlock");
+
+		SCContent.reinforcedGlassPane = new BlockReinforcedGlassPane().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glass_pane").setUnlocalizedName("securitycraft:reinforcedGlassPane");
+		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_panes").setUnlocalizedName("securitycraft:reinforcedStainedGlassPanes");
 	}
 
 	public static void setupMines()

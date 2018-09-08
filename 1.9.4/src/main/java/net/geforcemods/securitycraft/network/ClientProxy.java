@@ -16,10 +16,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -163,6 +165,23 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforcedStone_smooth_diorite"),
 				new ResourceLocation("securitycraft:reinforcedStone_andesite"),
 				new ResourceLocation("securitycraft:reinforcedStone_smooth_andesite"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_stained_panes"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_white"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_orange"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_magenta"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_light_blue"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_yellow"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_lime"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_pink"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_gray"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_silver"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_cyan"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_purple"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_blue"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_brown"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_green"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_red"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_black"));
 
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogusWater");
 		ModelBakery.registerItemVariants(fakeWater);
@@ -211,6 +230,8 @@ public class ClientProxy extends ServerProxy{
 				return new ModelResourceLocation("securitycraft:fakeLiquids", "lava_flowing");
 			}
 		});
+
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedStainedGlassPanes, new StateMap.Builder().withName(BlockColored.COLOR).withSuffix("_reinforced_stained_glass_panes").build());
 	}
 
 	private Item findItem(String modid, String resourceName)
