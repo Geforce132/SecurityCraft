@@ -30,8 +30,9 @@ public class SCContent
 	public static Block keypad;
 	public static Block keypadChest;
 	public static Block keypadFurnace;
-	public static Block laserField;
 	public static Block laserBlock;
+	public static Block laserField;
+	public static Block motionActivatedLight;
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block protecto;
@@ -90,17 +91,16 @@ public class SCContent
 	public static Block retinalScanner;
 	public static Block sandMine;
 	public static Block scannerDoor;
+	public static Block secretSignStanding;
+	public static Block secretSignWall;
 	public static Block securityCamera;
 	public static Block stoneMine;
 	public static Block trackMine;
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;
-	public static Block motionActivatedLight;
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
-	public static Block secretSignWall;
-	public static Block secretSignStanding;
 
 	//Items
 	public static Item adminTool;
@@ -133,11 +133,11 @@ public class SCContent
 	public static Item secretSignItem;
 
 	//Modules
-	public static ItemModule redstoneModule;
-	public static ItemModule whitelistModule;
 	public static ItemModule blacklistModule;
+	public static ItemModule disguiseModule;
 	public static ItemModule harmingModule;
+	public static ItemModule redstoneModule;
 	public static ItemModule smartModule;
 	public static ItemModule storageModule;
-	public static ItemModule disguiseModule;
+	public static ItemModule whitelistModule;
 }
