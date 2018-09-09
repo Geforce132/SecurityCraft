@@ -25,6 +25,12 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	}
 
 	@Override
+	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block block)
+	{
+		//needed so reinforced carpets do not drop when the block below them is broken
+	}
+
+	@Override
 	public List<Block> getVanillaBlocks()
 	{
 		return Arrays.asList(new Block[] {

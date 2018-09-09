@@ -28,6 +28,12 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	}
 
 	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block)
+	{
+		//needed so reinforced carpets do not drop when the block below them is broken
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
