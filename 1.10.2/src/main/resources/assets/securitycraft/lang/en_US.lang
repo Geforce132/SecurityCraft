@@ -285,7 +285,7 @@ help.securitycraft:reinforcedStairsQuartz.info=Reinforced quartz stairs are the 
 help.securitycraft:reinforcedStairsRedSandstone.info=Reinforced red sandstone stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.securitycraft:reinforcedStairsPurpur.info=Reinforced purpur stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.securitycraft:motionActivatedLight.info=The motion-activated light will emit a light, similar to a redstone lamp, when a player is within a certain range of the block (configurable).
-help.securitycraft:reinforcedStainedHardenedClay.info=Reinforced stained hardened clay is the same as vanilla stained hardened clay, except only the person who placed it down can destroy it using the universal block remover.
+help.securitycraft:reinforcedStainedHardenedClay.info=Reinforced stained clay is the same as vanilla stained clay, except only the person who placed it down can destroy it using the universal block remover.
 
 help.securitycraft:codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. The owner of the door can use the universal block remover to break it down.
