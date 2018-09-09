@@ -11,6 +11,7 @@ public interface IReinforcedBlock
 	public static final List<Block> BLOCKS = Arrays.asList(new Block[] {
 			SCContent.reinforcedBoneBlock,
 			SCContent.reinforcedBrick,
+			SCContent.reinforcedCarpet,
 			SCContent.reinforcedCobblestone,
 			SCContent.reinforcedCompressedBlocks,
 			SCContent.reinforcedDirt,

@@ -173,6 +173,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedObsidian);
 		registerReinforcedBlock(SCContent.reinforcedNetherrack);
 		registerReinforcedBlock(SCContent.reinforcedEndStone);
+		registerReinforcedBlock(SCContent.reinforcedCarpet, ItemBlockReinforcedColoredBlock.class);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -488,6 +489,10 @@ public class RegistrationHandler
 
 			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedHardenedClay, 8, BlockColored.func_150031_c(i)), new Object[]{
 					"###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedHardenedClay), 'X', new ItemStack(Items.dye, 1, i)
+			});
+
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedCarpet, 3, i), new Object[]{
+					"##", '#', new ItemStack(SCContent.reinforcedWool, 1, i)
 			});
 		}
 

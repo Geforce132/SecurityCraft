@@ -38,6 +38,7 @@ public class SCContent
 	public static Block protecto;
 	public static Block reinforcedBoneBlock;
 	public static Block reinforcedBrick;
+	public static Block reinforcedCarpet;
 	public static Block reinforcedCobblestone;
 	public static Block reinforcedCompressedBlocks;
 	public static Block reinforcedConcrete;

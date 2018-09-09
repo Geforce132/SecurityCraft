@@ -199,6 +199,23 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_green"),
 				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_red"),
 				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_black"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_carpet"),
+				new ResourceLocation("securitycraft:reinforced_carpet_white"),
+				new ResourceLocation("securitycraft:reinforced_carpet_orange"),
+				new ResourceLocation("securitycraft:reinforced_carpet_magenta"),
+				new ResourceLocation("securitycraft:reinforced_carpet_light_blue"),
+				new ResourceLocation("securitycraft:reinforced_carpet_yellow"),
+				new ResourceLocation("securitycraft:reinforced_carpet_lime"),
+				new ResourceLocation("securitycraft:reinforced_carpet_pink"),
+				new ResourceLocation("securitycraft:reinforced_carpet_gray"),
+				new ResourceLocation("securitycraft:reinforced_carpet_silver"),
+				new ResourceLocation("securitycraft:reinforced_carpet_cyan"),
+				new ResourceLocation("securitycraft:reinforced_carpet_purple"),
+				new ResourceLocation("securitycraft:reinforced_carpet_blue"),
+				new ResourceLocation("securitycraft:reinforced_carpet_brown"),
+				new ResourceLocation("securitycraft:reinforced_carpet_green"),
+				new ResourceLocation("securitycraft:reinforced_carpet_red"),
+				new ResourceLocation("securitycraft:reinforced_carpet_black"));
 
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
@@ -278,6 +295,7 @@ public class ClientProxy extends ServerProxy{
 		Block[] blocksToTint = {
 				SCContent.reinforcedBoneBlock,
 				SCContent.reinforcedBrick,
+				SCContent.reinforcedCarpet,
 				SCContent.reinforcedCobblestone,
 				SCContent.reinforcedCompressedBlocks,
 				SCContent.reinforcedConcrete,

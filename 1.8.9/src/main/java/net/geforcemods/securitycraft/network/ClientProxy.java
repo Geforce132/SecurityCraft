@@ -175,6 +175,23 @@ public class ClientProxy extends ServerProxy{
 				"securitycraft:reinforcedStone_smooth_diorite",
 				"securitycraft:reinforcedStone_andesite",
 				"securitycraft:reinforcedStone_smooth_andesite");
+		registerItemVariants(GameRegistry.findItem(SecurityCraft.MODID, "reinforcedCarpet"),
+				"securitycraft:reinforcedCarpet_white",
+				"securitycraft:reinforcedCarpet_orange",
+				"securitycraft:reinforcedCarpet_magenta",
+				"securitycraft:reinforcedCarpet_light_blue",
+				"securitycraft:reinforcedCarpet_yellow",
+				"securitycraft:reinforcedCarpet_lime",
+				"securitycraft:reinforcedCarpet_pink",
+				"securitycraft:reinforcedCarpet_gray",
+				"securitycraft:reinforcedCarpet_silver",
+				"securitycraft:reinforcedCarpet_cyan",
+				"securitycraft:reinforcedCarpet_purple",
+				"securitycraft:reinforcedCarpet_blue",
+				"securitycraft:reinforcedCarpet_brown",
+				"securitycraft:reinforcedCarpet_green",
+				"securitycraft:reinforcedCarpet_red",
+				"securitycraft:reinforcedCarpet_black");
 
 		Item fakeWater = GameRegistry.findItem(SecurityCraft.MODID, "bogusWater");
 		registerItemVariants(fakeWater);
