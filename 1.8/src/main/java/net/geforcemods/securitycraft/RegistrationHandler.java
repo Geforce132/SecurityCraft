@@ -594,6 +594,22 @@ public class RegistrationHandler
 				"L", "R", "S", 'L', Blocks.redstone_lamp, 'R', SCContent.portableRadar, 'S', Items.stick
 		});
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 2, 3), new Object[]{
+				"CQ", "QC", 'C', SCContent.reinforcedCobblestone, 'Q', Items.quartz
+		});
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 2), new Object[]{
+				"GG", "GG", 'G', new ItemStack(SCContent.reinforcedStone, 1, 1)
+		});
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 4), new Object[]{
+				"DD", "DD", 'D', new ItemStack(SCContent.reinforcedStone, 1, 3)
+		});
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 6), new Object[]{
+				"AA", "AA", 'A', new ItemStack(SCContent.reinforcedStone, 1, 5)
+		});
+
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.dirt, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.stone, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.cobblestoneMine, 1), new Object[] {Blocks.cobblestone, SCContent.mine});
@@ -605,6 +621,8 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.secretSignItem, 3), new Object[]{Items.sign, Items.sign, Items.sign, SCContent.retinalScanner});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.universalKeyChanger), new Object[]{SCContent.briefcase, SCContent.universalKeyChanger});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedMossyCobblestone), new Object[]{SCContent.reinforcedCobblestone, Blocks.vine});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedStone, 1, 1), new Object[]{new ItemStack(SCContent.reinforcedStone, 1, 3), Items.quartz});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedStone, 2, 5), new Object[]{new ItemStack(SCContent.reinforcedStone, 1, 3), Blocks.cobblestone});
 	}
 
 	public static void registerEntities()

@@ -1,11 +1,13 @@
 --------------------------Changelog for v1.8.8 of SecurityCraft--------------------------
 
-- New: The Track Mine can now be controlled with the Mine Remote Access Tool
+- New: Reinforced Blocks
+		- Carpet
+		- [1.9.4+] Stained Glass Panes are back!
 - New: Reinforced Stained Glass and Reinforced Stained Glass Panes can now be created using the Universal Block Reinforcer (alongside the already existing recipes)
-- New: Reinforced Carpet
+- New: The Track Mine can now be controlled with the Mine Remote Access Tool
 - New: The Briefcase's code can now be reset by crafting it together with a Universal Key Changer
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
-- New: [1.9.4+] Reinforced Stained Glass Panes are back!
+- New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AA",
+    "AA"
+  ],
+  "key": {
+    "A": {
+      "item": "securitycraft:reinforced_stone",
+      "data": 5
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stone",
+    "count": 4,
+    "data": 6
+  }
+}
