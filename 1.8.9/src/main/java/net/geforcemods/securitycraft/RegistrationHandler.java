@@ -604,6 +604,7 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scannerDoorItem, 1), new Object[]{SCContent.reinforcedDoorItem, SCContent.retinalScanner});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.secretSignItem, 3), new Object[]{Items.sign, Items.sign, Items.sign, SCContent.retinalScanner});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.universalKeyChanger), new Object[]{SCContent.briefcase, SCContent.universalKeyChanger});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedMossyCobblestone), new Object[]{SCContent.reinforcedCobblestone, Blocks.vine});
 	}
 
 	public static void registerEntities()

@@ -4,6 +4,7 @@
 - New: Reinforced Stained Glass and Reinforced Stained Glass Panes can now be created using the Universal Block Reinforcer (alongside the already existing recipes)
 - New: Reinforced Carpet
 - New: The Briefcase's code can now be reset by crafting it together with a Universal Key Changer
+- New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.9.4+] Reinforced Stained Glass Panes are back!
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass
