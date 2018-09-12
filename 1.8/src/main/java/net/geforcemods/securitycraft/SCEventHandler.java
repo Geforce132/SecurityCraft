@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -36,6 +37,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -62,6 +64,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -502,6 +505,26 @@ public class SCEventHandler {
 		if(event.target != null && event.target instanceof EntityPlayer && event.target != event.entityLiving.func_94060_bK())
 			if(PlayerUtils.isPlayerMountedOnCamera(event.target))
 				((EntityLiving)event.entityLiving).setAttackTarget(null);
+	}
+
+	@SubscribeEvent
+	public void onBreakSpeed(BreakSpeed event)
+	{
+		if(event.entityPlayer != null)
+		{
+			Item held = event.entityPlayer.getHeldItem().getItem();
+
+			for(Block rb : IReinforcedBlock.BLOCKS)
+			{
+				IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
+
+				if(reinforcedBlock.getVanillaBlocks().contains(event.state.getBlock()))
+				{
+					if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+						event.newSpeed = 10000.0F;
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent
