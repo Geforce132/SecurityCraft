@@ -33,6 +33,7 @@
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 - Fix: [1.12.2] Beacon color with Reinforced Stained Glass is slightly incorrect
+- Removed: [1.7.10-1.11.2] Configuration option to use the old Keypad recipe
 - Misc.: Possibly improved render performance a bit
 - Internal: Removed unused code
 

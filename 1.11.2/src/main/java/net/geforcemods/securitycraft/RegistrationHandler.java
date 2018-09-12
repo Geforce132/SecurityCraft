@@ -258,13 +258,8 @@ public class RegistrationHandler
 
 	public static void registerRecipes()
 	{
-		if(SecurityCraft.config.useOldKeypadRecipe)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keypad, 1), "III", "III", "III", 'I', Blocks.STONE_BUTTON);
-		else {
-			GameRegistry.addRecipe(new ItemStack(SCContent.keyPanel, 1), "III", "IBI", "III", 'I', Blocks.STONE_BUTTON, 'B', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
-			GameRegistry.addRecipe(new ItemStack(SCContent.frame, 1), "III", "IBI", "I I", 'I', Items.IRON_INGOT, 'B', Items.REDSTONE);
-		}
-
+		GameRegistry.addRecipe(new ItemStack(SCContent.keyPanel, 1), "III", "IBI", "III", 'I', Blocks.STONE_BUTTON, 'B', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+		GameRegistry.addRecipe(new ItemStack(SCContent.frame, 1), "III", "IBI", "I I", 'I', Items.IRON_INGOT, 'B', Items.REDSTONE);
 		GameRegistry.addRecipe(new ItemStack(SCContent.laserBlock, 1), "III", "IBI", "IPI", 'I', Blocks.STONE, 'B', Blocks.REDSTONE_BLOCK, 'P', Blocks.GLASS_PANE);
 		GameRegistry.addRecipe(new ItemStack(SCContent.mine, 3), " I ", "IBI", 'I', Items.IRON_INGOT, 'B', Items.GUNPOWDER);
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedDoorItem, 1), "III", "IDI", "III", 'I', Items.IRON_INGOT, 'D', Items.IRON_DOOR);

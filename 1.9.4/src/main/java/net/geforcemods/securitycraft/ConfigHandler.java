@@ -17,7 +17,6 @@ public class ConfigHandler
 	public boolean smallerMineExplosion;
 	public boolean mineExplodesWhenInCreative;
 	public boolean sayThanksMessage;
-	public boolean useOldKeypadRecipe;
 	public boolean checkForUpdates;
 	public double portableRadarSearchRadius;
 	public int usernameLoggerSearchRadius;
@@ -126,10 +125,6 @@ public class ConfigHandler
 		dummyProp = SecurityCraft.configFile.get("options", "Is debug mode? (not recommended!)", false);
 		dummyProp.setLanguageKey("config.securitycraft:debuggingMode");
 		SecurityCraft.debug = dummyProp.getBoolean(false);
-
-		dummyProp = SecurityCraft.configFile.get("options", "Use old keypad recipe (9 buttons)?", false);
-		dummyProp.setLanguageKey("config.securitycraft:useOldKeypadRecipe");
-		useOldKeypadRecipe = dummyProp.getBoolean(false);
 
 		dummyProp = SecurityCraft.configFile.get("options", "Camera Speed when not using LookingGlass:", 2);
 		dummyProp.setLanguageKey("config.securitycraft:cameraSpeed");
