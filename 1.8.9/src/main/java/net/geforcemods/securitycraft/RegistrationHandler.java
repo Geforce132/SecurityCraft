@@ -246,368 +246,132 @@ public class RegistrationHandler
 	public static void registerRecipes()
 	{
 		if(SecurityCraft.config.useOldKeypadRecipe)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keypad, 1), new Object[]{
-					"III", "III", "III", 'I', Blocks.stone_button
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keypad, 1), "III", "III", "III", 'I', Blocks.stone_button);
 		else{
-			GameRegistry.addRecipe(new ItemStack(SCContent.keyPanel, 1), new Object[]{
-					"III", "IBI", "III", 'I', Blocks.stone_button, 'B', Blocks.heavy_weighted_pressure_plate
-			});
-
-			GameRegistry.addRecipe(new ItemStack(SCContent.frame, 1), new Object[]{
-					"III", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.redstone
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keyPanel, 1), "III", "IBI", "III", 'I', Blocks.stone_button, 'B', Blocks.heavy_weighted_pressure_plate);
+			GameRegistry.addRecipe(new ItemStack(SCContent.frame, 1), "III", "IBI", "I I", 'I', Items.iron_ingot, 'B', Items.redstone);
 		}
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.laserBlock, 1), new Object[]{
-				"III", "IBI", "IPI", 'I', Blocks.stone, 'B', Blocks.redstone_block, 'P', Blocks.glass_pane
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.mine, 3), new Object[]{
-				" I ", "IBI", 'I', Items.iron_ingot, 'B', Items.gunpowder
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedDoorItem, 1), new Object[]{
-				"III", "IDI", "III", 'I', Items.iron_ingot, 'D', Items.iron_door
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockRemover, 1), new Object[]{
-				"SII",'I', Items.iron_ingot, 'S', Items.shears
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.ironTrapdoor, 1), new Object[]{
-				"###", "#P#", "###", '#', Items.iron_ingot, 'P', Blocks.trapdoor
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.keycardReader, 1), new Object[]{
-				"SSS", "SHS", "SSS", 'S', Blocks.stone, 'H', Blocks.hopper
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.bouncingBetty, 1), new Object[]{
-				" P ", "IBI", 'I', Items.iron_ingot, 'B', Items.gunpowder, 'P', Blocks.heavy_weighted_pressure_plate
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.codebreaker, 1), new Object[]{
-				"DTD", "GSG", "RER", 'D', Items.diamond, 'T', Blocks.redstone_torch, 'G', Items.gold_ingot, 'S', Items.nether_star, 'R', Items.redstone, 'E', Items.emerald
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.laserBlock, 1), "III", "IBI", "IPI", 'I', Blocks.stone, 'B', Blocks.redstone_block, 'P', Blocks.glass_pane);
+		GameRegistry.addRecipe(new ItemStack(SCContent.mine, 3), " I ", "IBI", 'I', Items.iron_ingot, 'B', Items.gunpowder);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedDoorItem, 1), "III", "IDI", "III", 'I', Items.iron_ingot, 'D', Items.iron_door);
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockRemover, 1), "SII",'I', Items.iron_ingot, 'S', Items.shears);
+		GameRegistry.addRecipe(new ItemStack(SCContent.ironTrapdoor, 1), "###", "#P#", "###", '#', Items.iron_ingot, 'P', Blocks.trapdoor);
+		GameRegistry.addRecipe(new ItemStack(SCContent.keycardReader, 1), "SSS", "SHS", "SSS", 'S', Blocks.stone, 'H', Blocks.hopper);
+		GameRegistry.addRecipe(new ItemStack(SCContent.bouncingBetty, 1), " P ", "IBI", 'I', Items.iron_ingot, 'B', Items.gunpowder, 'P', Blocks.heavy_weighted_pressure_plate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.codebreaker, 1), "DTD", "GSG", "RER", 'D', Items.diamond, 'T', Blocks.redstone_torch, 'G', Items.gold_ingot, 'S', Items.nether_star, 'R', Items.redstone, 'E', Items.emerald);
 
 		if(SecurityCraft.config.ableToCraftKeycard1)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl1, 1), new Object[]{
-					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl1, 1), "III", "YYY", 'I', Items.iron_ingot, 'Y', Items.gold_ingot);
 
 		if(SecurityCraft.config.ableToCraftKeycard2)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl2, 1), new Object[]{
-					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.brick
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl2, 1), "III", "YYY", 'I', Items.iron_ingot, 'Y', Items.brick);
 
 		if(SecurityCraft.config.ableToCraftKeycard3)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl3, 1), new Object[]{
-					"III", "YYY", 'I', Items.iron_ingot, 'Y', Items.netherbrick
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl3, 1), "III", "YYY", 'I', Items.iron_ingot, 'Y', Items.netherbrick);
 
 		if(SecurityCraft.config.ableToCraftKeycard4)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl4, 1), new Object[]{
-					"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13)
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl4, 1), "III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 13));
 
 		if(SecurityCraft.config.ableToCraftKeycard5)
-			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl5, 1), new Object[]{
-					"III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5)
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl5, 1), "III", "DDD", 'I', Items.iron_ingot, 'D', new ItemStack(Items.dye, 1, 5));
 
 		if(SecurityCraft.config.ableToCraftLUKeycard)
-			GameRegistry.addRecipe(new ItemStack(SCContent.limitedUseKeycard, 1), new Object[]{
-					"III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, 4)
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.limitedUseKeycard, 1), "III", "LLL", 'I', Items.iron_ingot, 'L', new ItemStack(Items.dye, 1, 4));
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.trackMine, 4), new Object[]{
-				"X X", "X#X", "XGX", 'X', Items.iron_ingot, '#', Items.stick, 'G', Items.gunpowder
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.portableRadar, 1), new Object[]{
-				"III", "ITI", "IRI", 'I', Items.iron_ingot, 'T', Blocks.redstone_torch, 'R', Items.redstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.remoteAccessMine, 1), new Object[]{
-				" R ", " DG", "S  ", 'R', Blocks.redstone_torch, 'D', Items.diamond, 'G', Items.gold_ingot, 'S', Items.stick
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.trackMine, 4), "X X", "X#X", "XGX", 'X', Items.iron_ingot, '#', Items.stick, 'G', Items.gunpowder);
+		GameRegistry.addRecipe(new ItemStack(SCContent.portableRadar, 1), "III", "ITI", "IRI", 'I', Items.iron_ingot, 'T', Blocks.redstone_torch, 'R', Items.redstone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.remoteAccessMine, 1), " R ", " DG", "S  ", 'R', Blocks.redstone_torch, 'D', Items.diamond, 'G', Items.gold_ingot, 'S', Items.stick);
 
 		for(int i = 0; i < 4; i++)
-			GameRegistry.addRecipe(new ItemStack(SCContent.fWaterBucket, 1), new Object[]{
-					"P", "B", 'P', new ItemStack(Items.potionitem, 1, HARMING_POTIONS[i]), 'B', Items.water_bucket
-			});
-
-		for(int i = 0; i < 4; i++)
-			GameRegistry.addRecipe(new ItemStack(SCContent.fLavaBucket, 1), new Object[]{
-					"P", "B", 'P', new ItemStack(Items.potionitem, 1, HEALING_POTIONS[i]), 'B', Items.lava_bucket
-			});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.retinalScanner, 1), new Object[]{
-				"SSS", "SES", "SSS", 'S', Blocks.stone, 'E', Items.ender_eye
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.inventoryScanner, 1), new Object[]{
-				"SSS", "SLS", "SCS", 'S', Blocks.stone, 'L', SCContent.laserBlock, 'C', Blocks.ender_chest
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.cageTrap, 1), new Object[]{
-				"BBB", "GRG", "III", 'B', SCContent.reinforcedIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.alarm, 1), new Object[]{
-				"GGG", "GNG", "GRG", 'G', SCContent.reinforcedGlass, 'R', Items.redstone, 'N', Blocks.noteblock
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.acacia_fence_gate
-		});
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.birch_fence_gate
-		});
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.dark_oak_fence_gate
-		});
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.jungle_fence_gate
-		});
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence_gate
-		});
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.spruce_fence_gate
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.wireCutters, 1), new Object[]{
-				"SI ", "I I", " I ", 'I', Items.iron_ingot, 'S', Items.shears
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.panicButton, 1), new Object[]{
-				" I ", "IBI", " R ", 'I', Items.iron_ingot, 'B', Blocks.stone_button, 'R', Items.redstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.whitelistModule, 1), new Object[]{
-				"III", "IPI", "IPI", 'I', Items.iron_ingot, 'P', Items.paper
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.blacklistModule, 1), new Object[]{
-				"III", "IPI", "IDI", 'I', Items.iron_ingot, 'P', Items.paper, 'D', new ItemStack(Items.dye, 1, 0)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.redstoneModule, 1), new Object[]{
-				"III", "IPI", "IRI", 'I', Items.iron_ingot, 'P', Items.paper, 'R', Items.redstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.harmingModule, 1), new Object[]{
-				"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.arrow
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.smartModule, 1), new Object[]{
-				"III", "IPI", "IEI", 'I', Items.iron_ingot, 'P', Items.paper, 'E', Items.ender_pearl
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.storageModule, 1), new Object[]{
-				"III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', SCContent.keypadChest
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.disguiseModule, 1), new Object[]{
-				"III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.painting
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockModifier, 1), new Object[]{
-				"ER ", "RI ", "  I", 'E', Items.emerald, 'R', Items.redstone, 'I', Items.iron_ingot
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockModifier, 1), new Object[]{
-				" RE", " IR", "I  ", 'E', Items.emerald, 'R', Items.redstone, 'I', Items.iron_ingot
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.usernameLogger, 1), new Object[]{
-				"SPS", "SRS", "SSS", 'S', Blocks.stone, 'P', SCContent.portableRadar, 'R', Items.redstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.claymore, 1), new Object[]{
-				"HSH", "SBS", "RGR", 'H', Blocks.tripwire_hook, 'S', Items.string, 'B', SCContent.bouncingBetty, 'R', Items.redstone, 'G', Items.gunpowder
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.ironFence, 1), new Object[]{
-				" I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsStone, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.reinforcedStone, 1, 0)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsCobblestone, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedCobblestone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsSandstone, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedSandstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsOak, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 0)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsSpruce, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 1)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsBirch, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 2)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsJungle, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 3)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsAcacia, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 4)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsDarkoak, 4), new Object[]{
-				"W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 5)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsStoneBrick, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedStoneBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsBrick, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsNetherBrick, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedNetherBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsQuartz, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedQuartz
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsRedSandstone, 4), new Object[]{
-				"S  ", "SS ", "SSS", 'S', SCContent.reinforcedRedSandstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.ims, 1), new Object[]{
-				"BPB", " I ", "B B", 'B', SCContent.bouncingBetty, 'P', SCContent.portableRadar, 'I', Blocks.iron_block
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.cameraMonitor, 1), new Object[]{
-				"III", "IGI", "III", 'I', Items.iron_ingot, 'G', Blocks.glass_pane
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.taser, 1), new Object[]{
-				"BGI", "RSG", "  S", 'B', Items.bow, 'G', Items.gold_ingot, 'I', Items.iron_ingot, 'R', Items.redstone, 'S', Items.stick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.securityCamera, 1), new Object[]{
-				"III", "GRI", "IIS", 'I', Items.iron_ingot, 'G', SCContent.reinforcedGlassPane, 'R', Blocks.redstone_block, 'S', Items.stick
-		});
-
-		for(int i = 0; i < 16; i++){
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlass, 8, 15 - i), new Object[]{
-					"###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i)
-			});
-
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlassPanes, 16, i), new Object[]{
-					"###", "###", '#', new ItemStack(SCContent.reinforcedStainedGlass, 1, i)
-			});
-
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedHardenedClay, 8, ~i & 15), new Object[]{
-					"###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedHardenedClay), 'X', new ItemStack(Items.dye, 1, i)
-			});
-
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedCarpet, 3, i), new Object[]{
-					"##", '#', new ItemStack(SCContent.reinforcedWool, 1, i)
-			});
+		{
+			GameRegistry.addRecipe(new ItemStack(SCContent.fWaterBucket, 1), "P", "B", 'P', new ItemStack(Items.potionitem, 1, HARMING_POTIONS[i]), 'B', Items.water_bucket);
+			GameRegistry.addRecipe(new ItemStack(SCContent.fLavaBucket, 1), "P", "B", 'P', new ItemStack(Items.potionitem, 1, HEALING_POTIONS[i]), 'B', Items.lava_bucket);
 		}
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL1, 1), new Object[]{
-				" DG", "RLD", "SR ", 'G', Blocks .glass, 'D', Items.diamond, 'L', SCContent.laserBlock, 'R', Items.redstone, 'S', Items.stick
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.retinalScanner, 1), "SSS", "SES", "SSS", 'S', Blocks.stone, 'E', Items.ender_eye);
+		GameRegistry.addRecipe(new ItemStack(SCContent.inventoryScanner, 1), "SSS", "SLS", "SCS", 'S', Blocks.stone, 'L', SCContent.laserBlock, 'C', Blocks.ender_chest);
+		GameRegistry.addRecipe(new ItemStack(SCContent.cageTrap, 1), "BBB", "GRG", "III", 'B', SCContent.reinforcedIronBars, 'G', Items.gold_ingot, 'R', Items.redstone, 'I', Blocks.iron_block);
+		GameRegistry.addRecipe(new ItemStack(SCContent.alarm, 1), "GGG", "GNG", "GRG", 'G', SCContent.reinforcedGlass, 'R', Items.redstone, 'N', Blocks.noteblock);
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL2, 1), new Object[]{
-				" DG", "RLD", "SR ", 'G', new ItemStack(SCContent.reinforcedStainedGlass, 1, 15), 'D', Blocks.diamond_block, 'L', SCContent.laserBlock, 'R', Items.redstone, 'S', Items.stick
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.acacia_fence_gate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.birch_fence_gate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.dark_oak_fence_gate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.jungle_fence_gate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence_gate);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedFencegate, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.spruce_fence_gate);
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL3, 1), new Object[]{
-				" EG", "RNE", "SR ", 'G', new ItemStack(SCContent.reinforcedStainedGlass, 1, 6), 'E', Blocks.emerald_block, 'N', Items.nether_star, 'R', Blocks.redstone_block, 'S', Items.stick
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.wireCutters, 1), "SI ", "I I", " I ", 'I', Items.iron_ingot, 'S', Items.shears);
+		GameRegistry.addRecipe(new ItemStack(SCContent.panicButton, 1), " I ", "IBI", " R ", 'I', Items.iron_ingot, 'B', Blocks.stone_button, 'R', Items.redstone);
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.whitelistModule, 1), "III", "IPI", "IPI", 'I', Items.iron_ingot, 'P', Items.paper);
+		GameRegistry.addRecipe(new ItemStack(SCContent.blacklistModule, 1), "III", "IPI", "IDI", 'I', Items.iron_ingot, 'P', Items.paper, 'D', new ItemStack(Items.dye, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.redstoneModule, 1), "III", "IPI", "IRI", 'I', Items.iron_ingot, 'P', Items.paper, 'R', Items.redstone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.harmingModule, 1), "III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.arrow);
+		GameRegistry.addRecipe(new ItemStack(SCContent.smartModule, 1), "III", "IPI", "IEI", 'I', Items.iron_ingot, 'P', Items.paper, 'E', Items.ender_pearl);
+		GameRegistry.addRecipe(new ItemStack(SCContent.storageModule, 1), "III", "IPI", "ICI", 'I', Items.iron_ingot, 'P', Items.paper, 'C', SCContent.keypadChest);
+		GameRegistry.addRecipe(new ItemStack(SCContent.disguiseModule, 1), "III", "IPI", "IAI", 'I', Items.iron_ingot, 'P', Items.paper, 'A', Items.painting);
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockModifier, 1), "ER ", "RI ", "  I", 'E', Items.emerald, 'R', Items.redstone, 'I', Items.iron_ingot);
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockModifier, 1), " RE", " IR", "I  ", 'E', Items.emerald, 'R', Items.redstone, 'I', Items.iron_ingot);
+		GameRegistry.addRecipe(new ItemStack(SCContent.usernameLogger, 1), "SPS", "SRS", "SSS", 'S', Blocks.stone, 'P', SCContent.portableRadar, 'R', Items.redstone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.claymore, 1), "HSH", "SBS", "RGR", 'H', Blocks.tripwire_hook, 'S', Items.string, 'B', SCContent.bouncingBetty, 'R', Items.redstone, 'G', Items.gunpowder);
+		GameRegistry.addRecipe(new ItemStack(SCContent.ironFence, 1), " I ", "IFI", " I ", 'I', Items.iron_ingot, 'F', Blocks.oak_fence);
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsStone, 4), "S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.reinforcedStone, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsCobblestone, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedCobblestone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsSandstone, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedSandstone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsOak, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsSpruce, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 1));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsBirch, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 2));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsJungle, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 3));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsAcacia, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 4));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsDarkoak, 4), "W  ", "WW ", "WWW", 'W', new ItemStack(SCContent.reinforcedWoodPlanks, 1, 5));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsStoneBrick, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedStoneBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsBrick, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsNetherBrick, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedNetherBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsQuartz, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedQuartz);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsRedSandstone, 4), "S  ", "SS ", "SSS", 'S', SCContent.reinforcedRedSandstone);
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.ims, 1), "BPB", " I ", "B B", 'B', SCContent.bouncingBetty, 'P', SCContent.portableRadar, 'I', Blocks.iron_block);
+		GameRegistry.addRecipe(new ItemStack(SCContent.cameraMonitor, 1), "III", "IGI", "III", 'I', Items.iron_ingot, 'G', Blocks.glass_pane);
+		GameRegistry.addRecipe(new ItemStack(SCContent.taser, 1), "BGI", "RSG", "  S", 'B', Items.bow, 'G', Items.gold_ingot, 'I', Items.iron_ingot, 'R', Items.redstone, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.securityCamera, 1), "III", "GRI", "IIS", 'I', Items.iron_ingot, 'G', SCContent.reinforcedGlassPane, 'R', Blocks.redstone_block, 'S', Items.stick);
+
+		for(int i = 0; i < 16; i++)
+		{
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlass, 8, 15 - i), "###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedGlass), 'X', new ItemStack(Items.dye, 1, i));
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedGlassPanes, 16, i), "###", "###", '#', new ItemStack(SCContent.reinforcedStainedGlass, 1, i));
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStainedHardenedClay, 8, ~i & 15), "###", "#X#", "###", '#', new ItemStack(SCContent.reinforcedHardenedClay), 'X', new ItemStack(Items.dye, 1, i));
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedCarpet, 3, i), "##", '#', new ItemStack(SCContent.reinforcedWool, 1, i));
+		}
+
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL1, 1), " DG", "RLD", "SR ", 'G', Blocks .glass, 'D', Items.diamond, 'L', SCContent.laserBlock, 'R', Items.redstone, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL2, 1), " DG", "RLD", "SR ", 'G', new ItemStack(SCContent.reinforcedStainedGlass, 1, 15), 'D', Blocks.diamond_block, 'L', SCContent.laserBlock, 'R', Items.redstone, 'S', Items.stick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalBlockReinforcerLvL3, 1), " EG", "RNE", "SR ", 'G', new ItemStack(SCContent.reinforcedStainedGlass, 1, 6), 'E', Blocks.emerald_block, 'N', Items.nether_star, 'R', Blocks.redstone_block, 'S', Items.stick);
 
 		for(int i = 0; i < 6; i++)
-			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedWoodSlabs, 6, i), new Object[]{
-					"MMM", 'M', new ItemStack(SCContent.reinforcedWoodPlanks, 1, i)
-			});
+			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedWoodSlabs, 6, i), "MMM", 'M', new ItemStack(SCContent.reinforcedWoodPlanks, 1, i));
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 0), new Object[]{
-				"MMM", 'M', new ItemStack(SCContent.reinforcedStone, 1, 0)
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 0), "MMM", 'M', new ItemStack(SCContent.reinforcedStone, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 1), "MMM", 'M', SCContent.reinforcedCobblestone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 2), "MMM", 'M', SCContent.reinforcedSandstone);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedDirtSlab, 6, 3), "MMM", 'M', SCContent.reinforcedDirt);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 4), "MMM", 'M', SCContent.reinforcedStoneBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 5), "MMM", 'M', SCContent.reinforcedBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 6), "MMM", 'M', SCContent.reinforcedNetherBrick);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 7), "MMM", 'M', SCContent.reinforcedQuartz);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs2, 6, 0),"MMM", 'M', SCContent.reinforcedRedSandstone);
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 1), new Object[]{
-				"MMM", 'M', SCContent.reinforcedCobblestone
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.protecto, 1), "ODO", "OEO", "OOO", 'O', Blocks.obsidian, 'D', Blocks.daylight_detector, 'E', Items.ender_eye);
+		GameRegistry.addRecipe(new ItemStack(SCContent.briefcase, 1), "SSS", "ICI", "III", 'S', Items.stick, 'I', Items.iron_ingot, 'C', SCContent.keypadChest);
+		GameRegistry.addRecipe(new ItemStack(SCContent.universalKeyChanger, 1), " RL", " IR", "I  ", 'R', Items.redstone, 'L', SCContent.laserBlock, 'I', Items.iron_ingot);
+		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLight, 1), "L", "R", "S", 'L', Blocks.redstone_lamp, 'R', SCContent.portableRadar, 'S', Items.stick);
 
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 2), new Object[]{
-				"MMM", 'M', SCContent.reinforcedSandstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedDirtSlab, 6, 3), new Object[]{
-				"MMM", 'M', SCContent.reinforcedDirt
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 4), new Object[]{
-				"MMM", 'M', SCContent.reinforcedStoneBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 5), new Object[]{
-				"MMM", 'M', SCContent.reinforcedBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 6), new Object[]{
-				"MMM", 'M', SCContent.reinforcedNetherBrick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 7), new Object[]{
-				"MMM", 'M', SCContent.reinforcedQuartz
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs2, 6, 0), new Object[]{
-				"MMM", 'M', SCContent.reinforcedRedSandstone
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.protecto, 1), new Object[]{
-				"ODO", "OEO", "OOO", 'O', Blocks.obsidian, 'D', Blocks.daylight_detector, 'E', Items.ender_eye
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.briefcase, 1), new Object[]{
-				"SSS", "ICI", "III", 'S', Items.stick, 'I', Items.iron_ingot, 'C', SCContent.keypadChest
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.universalKeyChanger, 1), new Object[]{
-				" RL", " IR", "I  ", 'R', Items.redstone, 'L', SCContent.laserBlock, 'I', Items.iron_ingot
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLight, 1), new Object[]{
-				"L", "R", "S", 'L', Blocks.redstone_lamp, 'R', SCContent.portableRadar, 'S', Items.stick
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 2, 3), new Object[]{
-				"CQ", "QC", 'C', SCContent.reinforcedCobblestone, 'Q', Items.quartz
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 2), new Object[]{
-				"GG", "GG", 'G', new ItemStack(SCContent.reinforcedStone, 1, 1)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 4), new Object[]{
-				"DD", "DD", 'D', new ItemStack(SCContent.reinforcedStone, 1, 3)
-		});
-
-		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 6), new Object[]{
-				"AA", "AA", 'A', new ItemStack(SCContent.reinforcedStone, 1, 5)
-		});
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 2, 3), "CQ", "QC", 'C', SCContent.reinforcedCobblestone, 'Q', Items.quartz);
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 2), "GG", "GG", 'G', new ItemStack(SCContent.reinforcedStone, 1, 1));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 4), "DD", "DD", 'D', new ItemStack(SCContent.reinforcedStone, 1, 3));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 6), "AA", "AA", 'A', new ItemStack(SCContent.reinforcedStone, 1, 5));
 
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.dirt, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.stone, SCContent.mine});
