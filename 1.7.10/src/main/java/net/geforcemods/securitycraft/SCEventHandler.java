@@ -398,14 +398,17 @@ public class SCEventHandler {
 		{
 			Item held = event.entityPlayer.getHeldItem().getItem();
 
-			for(Block rb : IReinforcedBlock.BLOCKS)
+			if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
 			{
-				IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
-
-				if(reinforcedBlock.getVanillaBlocks().contains(event.block))
+				for(Block rb : IReinforcedBlock.BLOCKS)
 				{
-					if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
+
+					if(reinforcedBlock.getVanillaBlocks().contains(event.block))
+					{
 						event.newSpeed = 10000.0F;
+						return;
+					}
 				}
 			}
 		}
