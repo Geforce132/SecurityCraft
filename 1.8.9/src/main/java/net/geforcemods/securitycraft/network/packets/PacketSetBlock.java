@@ -57,7 +57,6 @@ public class PacketSetBlock implements IMessage{
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
-		//TODO
 		@Override
 		public IMessage onMessage(PacketSetBlock message, MessageContext context) {
 			int x = message.x;

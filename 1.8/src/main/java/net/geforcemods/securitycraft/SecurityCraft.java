@@ -37,7 +37,7 @@ public class SecurityCraft {
 	public static boolean debug;
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
-	//TODO ********************************* This is v1.8.7 for MC 1.8!
+	//********************************* This is v1.8.7 for MC 1.8!
 	protected static final String VERSION = "v1.8.7";
 	protected static final String DEPENDENCIES = "required-after:Forge@[11.14.3.1556,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";

@@ -28,7 +28,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 				TileEntityAlarm TEA = (TileEntityAlarm) worldObj.getTileEntity(pos);
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), SCSounds.ALARM.path, SecurityCraft.config.alarmSoundVolume));
 				TEA.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
-				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
+				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockAlarm.FACING, worldObj.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
 				worldObj.setTileEntity(pos, TEA);
 			}
 		}

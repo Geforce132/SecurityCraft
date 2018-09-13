@@ -59,7 +59,6 @@ public class PacketSetBlock implements IMessage{
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetBlock, IMessage> {
-		//TODO
 		@Override
 		public IMessage onMessage(PacketSetBlock message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
