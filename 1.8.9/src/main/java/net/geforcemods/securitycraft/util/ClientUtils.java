@@ -71,7 +71,6 @@ public class ClientUtils{
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
 	}
 
-	@SuppressWarnings({"rawtypes"})
 	@SideOnly(Side.CLIENT)
 	public static void openURL(String url) {
 		URI uri = null;

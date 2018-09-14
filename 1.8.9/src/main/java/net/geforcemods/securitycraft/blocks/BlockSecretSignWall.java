@@ -19,7 +19,6 @@ public class BlockSecretSignWall extends BlockSecretSign
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 	{
@@ -44,6 +43,8 @@ public class BlockSecretSignWall extends BlockSecretSign
 				break;
 			case EAST:
 				setBlockBounds(0.0F, fourthAndHalf, nothing, eigth, twelfthAndHalf, full);
+				break;
+			case UP: case DOWN: break;
 		}
 	}
 

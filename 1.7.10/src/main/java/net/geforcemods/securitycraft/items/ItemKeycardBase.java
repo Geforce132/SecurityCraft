@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
-@SuppressWarnings({"rawtypes"})
 public class ItemKeycardBase extends Item{
 
 	@SideOnly(Side.CLIENT)
