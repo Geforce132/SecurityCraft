@@ -32,6 +32,7 @@
 - Fix: [1.8+] The Inventory Scanner Field is missing its top and bottom texture
 - Fix: [1.8+] Storage Module does not work
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
+- Fix: [1.9.4+] Reinforced Iron Bars model is not the same as the vanilla Iron Bars model
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 - Fix: [1.12.2] Beacon color with Reinforced Stained Glass is slightly incorrect
 - Removed: [1.7.10-1.11.2] Configuration option to use the old Keypad recipe

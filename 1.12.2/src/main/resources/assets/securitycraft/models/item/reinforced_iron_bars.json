@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
-	"textures": {
+    "textures": {
         "layer0": "securitycraft:blocks/reinforced_iron_bars"
-    }
+	}
 }
