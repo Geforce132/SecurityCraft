@@ -511,7 +511,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onBreakSpeed(BreakSpeed event)
 	{
-		if(event.entityPlayer != null)
+		if(event.entityPlayer != null && event.entityPlayer.getHeldItem() != null)
 		{
 			Item held = event.entityPlayer.getHeldItem().getItem();
 
