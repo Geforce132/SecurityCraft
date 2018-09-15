@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity;
 
 import org.lwjgl.input.Mouse;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -34,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySecurityCamera extends Entity{
 
-	private final float CAMERA_SPEED = SecurityCraft.config.cameraSpeed;
+	private final float CAMERA_SPEED = ConfigHandler.cameraSpeed;
 
 	public int blockPosX;
 	public int blockPosY;

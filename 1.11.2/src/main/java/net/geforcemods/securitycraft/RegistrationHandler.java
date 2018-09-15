@@ -197,12 +197,12 @@ public class RegistrationHandler
 		registerItem(SCContent.reinforcedDoorItem);
 		registerItem(SCContent.scannerDoorItem);
 		registerItem(SCContent.universalBlockRemover);
-		registerItem(SCContent.keycardLvl1, SecurityCraft.config.ableToCraftKeycard1);
-		registerItem(SCContent.keycardLvl2, SecurityCraft.config.ableToCraftKeycard2);
-		registerItem(SCContent.keycardLvl3, SecurityCraft.config.ableToCraftKeycard3);
-		registerItem(SCContent.keycardLvl4, SecurityCraft.config.ableToCraftKeycard4);
-		registerItem(SCContent.keycardLvl5, SecurityCraft.config.ableToCraftKeycard5);
-		registerItem(SCContent.limitedUseKeycard, SecurityCraft.config.ableToCraftLUKeycard);
+		registerItem(SCContent.keycardLvl1, ConfigHandler.ableToCraftKeycard1);
+		registerItem(SCContent.keycardLvl2, ConfigHandler.ableToCraftKeycard2);
+		registerItem(SCContent.keycardLvl3, ConfigHandler.ableToCraftKeycard3);
+		registerItem(SCContent.keycardLvl4, ConfigHandler.ableToCraftKeycard4);
+		registerItem(SCContent.keycardLvl5, ConfigHandler.ableToCraftKeycard5);
+		registerItem(SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
@@ -269,22 +269,22 @@ public class RegistrationHandler
 		GameRegistry.addRecipe(new ItemStack(SCContent.bouncingBetty, 1), " P ", "IBI", 'I', Items.IRON_INGOT, 'B', Items.GUNPOWDER, 'P', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
 		GameRegistry.addRecipe(new ItemStack(SCContent.codebreaker, 1), "DTD", "GSG", "RER", 'D', Items.DIAMOND, 'T', Blocks.REDSTONE_TORCH, 'G', Items.GOLD_INGOT, 'S', Items.NETHER_STAR, 'R', Items.REDSTONE, 'E', Items.EMERALD);
 
-		if(SecurityCraft.config.ableToCraftKeycard1)
+		if(ConfigHandler.ableToCraftKeycard1)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl1, 1), "III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.GOLD_INGOT);
 
-		if(SecurityCraft.config.ableToCraftKeycard2)
+		if(ConfigHandler.ableToCraftKeycard2)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl2, 1), "III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.BRICK);
 
-		if(SecurityCraft.config.ableToCraftKeycard3)
+		if(ConfigHandler.ableToCraftKeycard3)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl3, 1), "III", "YYY", 'I', Items.IRON_INGOT, 'Y', Items.NETHERBRICK);
 
-		if(SecurityCraft.config.ableToCraftKeycard4)
+		if(ConfigHandler.ableToCraftKeycard4)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl4, 1), "III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 13));
 
-		if(SecurityCraft.config.ableToCraftKeycard5)
+		if(ConfigHandler.ableToCraftKeycard5)
 			GameRegistry.addRecipe(new ItemStack(SCContent.keycardLvl5, 1), "III", "DDD", 'I', Items.IRON_INGOT, 'D', new ItemStack(Items.DYE, 1, 5));
 
-		if(SecurityCraft.config.ableToCraftLUKeycard)
+		if(ConfigHandler.ableToCraftLUKeycard)
 			GameRegistry.addRecipe(new ItemStack(SCContent.limitedUseKeycard, 1), "III", "LLL", 'I', Items.IRON_INGOT, 'L', new ItemStack(Items.DYE, 1, 4));
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.trackMine, 4), "X X", "X#X", "XGX", 'X', Items.IRON_INGOT, '#', Items.STICK, 'G', Items.GUNPOWDER);

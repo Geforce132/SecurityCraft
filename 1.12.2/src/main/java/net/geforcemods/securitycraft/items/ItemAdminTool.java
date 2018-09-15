@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -24,7 +25,7 @@ public class ItemAdminTool extends Item {
 	public ItemAdminTool() {
 		super();
 
-		if(SecurityCraft.config.allowAdminTool)
+		if(ConfigHandler.allowAdminTool)
 			setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 

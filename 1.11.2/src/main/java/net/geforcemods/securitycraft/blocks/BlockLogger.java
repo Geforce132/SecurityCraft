@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
@@ -85,6 +86,6 @@ public class BlockLogger extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
+		return new TileEntityLogger().attacks(EntityPlayer.class, ConfigHandler.usernameLoggerSearchRadius, 80);
 	}
 }

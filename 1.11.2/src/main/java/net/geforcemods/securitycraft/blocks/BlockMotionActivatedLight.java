@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
@@ -163,7 +163,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityMotionLight().attacks(EntityPlayer.class, SecurityCraft.config.motionActivatedLightSearchRadius, 1);
+		return new TileEntityMotionLight().attacks(EntityPlayer.class, ConfigHandler.motionActivatedLightSearchRadius, 1);
 	}
 
 }

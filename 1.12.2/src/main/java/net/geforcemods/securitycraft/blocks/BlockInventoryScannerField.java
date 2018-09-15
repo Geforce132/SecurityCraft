@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -224,7 +225,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	{
 		if(!world.isRemote)
 		{
-			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
 			{
 				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.inventoryScanner)
 				{
@@ -237,7 +238,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				}
 			}
 
-			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
 			{
 				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.inventoryScanner)
 				{
@@ -250,7 +251,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				}
 			}
 
-			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
 			{
 				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.inventoryScanner)
 				{
@@ -263,7 +264,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				}
 			}
 
-			for(int i = 0; i < SecurityCraft.config.inventoryScannerRange; i++)
+			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
 			{
 				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.inventoryScanner)
 				{

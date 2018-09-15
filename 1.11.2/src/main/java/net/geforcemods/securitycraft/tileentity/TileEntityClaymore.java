@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -48,12 +48,12 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)
-				area = area.expand(0, 0, -SecurityCraft.config.claymoreRange);
+				area = area.expand(0, 0, -ConfigHandler.claymoreRange);
 			else if(dir == EnumFacing.SOUTH)
-				area = area.expand(0, 0, SecurityCraft.config.claymoreRange);if(dir == EnumFacing.EAST)
-					area = area.expand(SecurityCraft.config.claymoreRange, 0, 0);
+				area = area.expand(0, 0, ConfigHandler.claymoreRange);if(dir == EnumFacing.EAST)
+					area = area.expand(ConfigHandler.claymoreRange, 0, 0);
 				else if(dir == EnumFacing.WEST)
-					area = area.expand(-SecurityCraft.config.claymoreRange, 0, 0);
+					area = area.expand(-ConfigHandler.claymoreRange, 0, 0);
 
 				List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
 				Iterator<?> iterator = entities.iterator();

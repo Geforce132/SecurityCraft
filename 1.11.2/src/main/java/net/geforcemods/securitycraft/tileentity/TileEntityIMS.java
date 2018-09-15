@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -51,7 +52,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = SecurityCraft.config.imsRange;
+			double range = ConfigHandler.imsRange;
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area);

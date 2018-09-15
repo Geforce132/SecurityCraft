@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -34,9 +33,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.registries.GameData;
 
-@Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", version = SecurityCraft.VERSION, guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory", dependencies = SecurityCraft.DEPENDENCIES, updateJSON = SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", version = SecurityCraft.VERSION, /*guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory",*/ dependencies = SecurityCraft.DEPENDENCIES, updateJSON = SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12]")
 public class SecurityCraft {
-	public static boolean debug;
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
 	//********************************* This is v1.8.7 for MC 1.12.2!
@@ -47,14 +45,12 @@ public class SecurityCraft {
 	public static ServerProxy serverProxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
-	public static ConfigHandler config = new ConfigHandler();
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 	private NBTTagCompound savedModule;
-	public static Configuration configFile;
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
@@ -70,8 +66,6 @@ public class SecurityCraft {
 		log("Starting to load....");
 		log("Loading config file....");
 		log(SecurityCraft.VERSION + " of SecurityCraft is for a post MC-1.6.4 version! Configuration files are useless for setting anything besides options.");
-		SecurityCraft.configFile = new Configuration(event.getSuggestedConfigurationFile());
-		SecurityCraft.config.setupConfiguration();
 		log("Config file loaded.");
 		log("Setting up network....");
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
@@ -111,7 +105,7 @@ public class SecurityCraft {
 		log("Setting up inter-mod stuff...");
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
 
-		if(config.checkForUpdates) {
+		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
 			if(vcUpdateTag != null)
 				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
@@ -162,7 +156,7 @@ public class SecurityCraft {
 	}
 
 	public static void log(String line, boolean isSevereError) {
-		if(SecurityCraft.debug)
+		if(ConfigHandler.debug)
 			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + line);
 	}
 

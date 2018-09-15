@@ -198,12 +198,12 @@ public class RegistrationHandler
 		registerItem(SCContent.reinforcedDoorItem);
 		registerItem(SCContent.scannerDoorItem);
 		registerItem(SCContent.universalBlockRemover);
-		registerItem(SCContent.keycardLvl1, SecurityCraft.config.ableToCraftKeycard1);
-		registerItem(SCContent.keycardLvl2, SecurityCraft.config.ableToCraftKeycard2);
-		registerItem(SCContent.keycardLvl3, SecurityCraft.config.ableToCraftKeycard3);
-		registerItem(SCContent.keycardLvl4, SecurityCraft.config.ableToCraftKeycard4);
-		registerItem(SCContent.keycardLvl5, SecurityCraft.config.ableToCraftKeycard5);
-		registerItem(SCContent.limitedUseKeycard, SecurityCraft.config.ableToCraftLUKeycard);
+		registerItem(SCContent.keycardLvl1, ConfigHandler.ableToCraftKeycard1);
+		registerItem(SCContent.keycardLvl2, ConfigHandler.ableToCraftKeycard2);
+		registerItem(SCContent.keycardLvl3, ConfigHandler.ableToCraftKeycard3);
+		registerItem(SCContent.keycardLvl4, ConfigHandler.ableToCraftKeycard4);
+		registerItem(SCContent.keycardLvl5, ConfigHandler.ableToCraftKeycard5);
+		registerItem(SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});

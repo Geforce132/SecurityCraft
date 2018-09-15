@@ -64,6 +64,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -95,7 +97,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!SecurityCraft.config.sayThanksMessage || !event.player.getEntityWorld().isRemote)
+		if(!ConfigHandler.sayThanksMessage || !event.player.getEntityWorld().isRemote)
 			return;
 
 		String tipKey = getRandomTip();
@@ -355,12 +357,10 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onConfigChanged(OnConfigChangedEvent event) {
-		if(event.getModID().equals("securitycraft")){
-			SecurityCraft.configFile.save();
-
-			SecurityCraft.config.setupConfiguration();
-		}
+	public void onConfigChanged(OnConfigChangedEvent event)
+	{
+		if(event.getModID().equals(SecurityCraft.MODID))
+			ConfigManager.sync(SecurityCraft.MODID, Config.Type.INSTANCE);
 	}
 
 	@SubscribeEvent
@@ -679,11 +679,11 @@ public class SCEventHandler {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-		if(SecurityCraft.config.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
+		if(ConfigHandler.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
 			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !SecurityCraft.config.allowCodebreakerItem);
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
 
 		return false;
 	}
