@@ -27,7 +27,7 @@ public class ItemAdminTool extends Item {
 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote) {
+		if(!world.isRemote && SecurityCraft.config.allowAdminTool) {
 			if(world.getTileEntity(x, y, z) != null) {
 				TileEntity te = world.getTileEntity(x, y, z);
 				boolean hasInfo = false;
