@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
 @Config(modid=SecurityCraft.MODID, category="options")
 public class ConfigHandler
@@ -21,30 +22,37 @@ public class ConfigHandler
 
 	@Name("Are mines unbreakable?")
 	@LangKey("config.securitycraft:ableToBreakMines")
+	@RequiresMcRestart
 	public static boolean ableToBreakMines = true;
 
 	@Name("Craftable level 1 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard1")
+	@RequiresMcRestart
 	public static boolean ableToCraftKeycard1 = true;
 
 	@Name("Craftable level 2 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard2")
+	@RequiresMcRestart
 	public static boolean ableToCraftKeycard2 = true;
 
 	@Name("Craftable level 3 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard3")
+	@RequiresMcRestart
 	public static boolean ableToCraftKeycard3 = true;
 
 	@Name("Craftable level 4 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard4")
+	@RequiresMcRestart
 	public static boolean ableToCraftKeycard4 = true;
 
 	@Name("Craftable level 5 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard5")
+	@RequiresMcRestart
 	public static boolean ableToCraftKeycard5 = true;
 
 	@Name("Craftable Limited Use keycard?")
 	@LangKey("config.securitycraft:ableToCraftLUKeycard")
+	@RequiresMcRestart
 	public static boolean ableToCraftLUKeycard = true;
 
 	@Name("Mines use a smaller explosion?")
@@ -89,6 +97,7 @@ public class ConfigHandler
 
 	@Name("Claymore range:")
 	@LangKey("config.securitycraft:claymoreRange")
+	@RequiresMcRestart
 	public static int claymoreRange = 5;
 
 	@Name("IMS range:")
