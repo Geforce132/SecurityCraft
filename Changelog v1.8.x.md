@@ -23,6 +23,7 @@
 - Fix: Iron/Reinforced Trapdoor can be opened by redstone
 - Fix: Placing/breaking Inventory Scanners can break other Inventory Scanner's scanner fields
 - Fix: Name inconsistencies with vanilla
+- Fix: Admin Tool doesn't get properly disabled when it is disabled in the config
 - Fix: [1.7.10] Smart Module does not work
 - Fix: [1.7.10-1.9.4] Items shift-clicked in the Inventory Scanner end up in the blacklist slot if there was an item there already
 - Fix: [1.8-1.8.9] Taser bullet has incorrect velocity which leads to unexpected shooting behavior
@@ -35,6 +36,7 @@
 - Fix: [1.9.4+] Reinforced Iron Bars model is not the same as the vanilla Iron Bars model
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 - Fix: [1.12.2] Beacon color with Reinforced Stained Glass is slightly incorrect
+- Fix: [1.12.2] TileEntity IDs are not registered to SecurityCraft's domain
 - Removed: [1.7.10-1.11.2] Configuration option to use the old Keypad recipe
 - Misc.: Possibly improved render performance a bit
 - Internal: Removed unused code

@@ -233,28 +233,28 @@ public class RegistrationHandler
 
 	public static void registerTileEntities()
 	{
-		GameRegistry.registerTileEntity(TileEntityOwnable.class, "abstractOwnable");
-		GameRegistry.registerTileEntity(TileEntitySCTE.class, "abstractSC");
-		GameRegistry.registerTileEntity(TileEntityKeypad.class, "keypad");
-		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, "laserBlock");
-		GameRegistry.registerTileEntity(TileEntityCageTrap.class, "cageTrap");
-		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, "keycardReader");
-		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, "inventoryScanner");
-		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, "portableRadar");
-		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, "securityCamera");
-		GameRegistry.registerTileEntity(TileEntityLogger.class, "usernameLogger");
-		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, "retinalScanner");
-		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, "keypadChest");
-		GameRegistry.registerTileEntity(TileEntityAlarm.class, "alarm");
-		GameRegistry.registerTileEntity(TileEntityClaymore.class, "claymore");
-		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, "keypadFurnace");
-		GameRegistry.registerTileEntity(TileEntityIMS.class, "ims");
-		GameRegistry.registerTileEntity(TileEntityProtecto.class, "protecto");
-		GameRegistry.registerTileEntity(CustomizableSCTE.class, "customizableSCTE");
-		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, "scannerDoor");
-		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
-		GameRegistry.registerTileEntity(TileEntityMotionLight.class, "motionLight");
-		GameRegistry.registerTileEntity(TileEntityTrackMine.class, "trackMineSC");
+		GameRegistry.registerTileEntity(TileEntityOwnable.class, new ResourceLocation("securitycraft:ownable"));
+		GameRegistry.registerTileEntity(TileEntitySCTE.class, new ResourceLocation("securitycraft:abstract"));
+		GameRegistry.registerTileEntity(TileEntityKeypad.class, new ResourceLocation("securitycraft:keypad"));
+		GameRegistry.registerTileEntity(TileEntityLaserBlock.class, new ResourceLocation("securitycraft:laser_block"));
+		GameRegistry.registerTileEntity(TileEntityCageTrap.class, new ResourceLocation("securitycraft:cage_trap"));
+		GameRegistry.registerTileEntity(TileEntityKeycardReader.class, new ResourceLocation("securitycraft:keycard_reader"));
+		GameRegistry.registerTileEntity(TileEntityInventoryScanner.class, new ResourceLocation("securitycraft:inventory_scanner"));
+		GameRegistry.registerTileEntity(TileEntityPortableRadar.class, new ResourceLocation("securitycraft:portable_radar"));
+		GameRegistry.registerTileEntity(TileEntitySecurityCamera.class, new ResourceLocation("securitycraft:security_camera"));
+		GameRegistry.registerTileEntity(TileEntityLogger.class, new ResourceLocation("securitycraft:username_logger"));
+		GameRegistry.registerTileEntity(TileEntityRetinalScanner.class, new ResourceLocation("securitycraft:retinal_scanner"));
+		GameRegistry.registerTileEntity(TileEntityKeypadChest.class, new ResourceLocation("securitycraft:keypad_chest"));
+		GameRegistry.registerTileEntity(TileEntityAlarm.class, new ResourceLocation("securitycraft:alarm"));
+		GameRegistry.registerTileEntity(TileEntityClaymore.class, new ResourceLocation("securitycraft:claymore"));
+		GameRegistry.registerTileEntity(TileEntityKeypadFurnace.class, new ResourceLocation("securitycraft:keypad_furnace"));
+		GameRegistry.registerTileEntity(TileEntityIMS.class, new ResourceLocation("securitycraft:ims"));
+		GameRegistry.registerTileEntity(TileEntityProtecto.class, new ResourceLocation("securitycraft:protecto"));
+		GameRegistry.registerTileEntity(CustomizableSCTE.class, new ResourceLocation("securitycraft:customizable"));
+		GameRegistry.registerTileEntity(TileEntityScannerDoor.class, new ResourceLocation("securitycraft:scanner_door"));
+		GameRegistry.registerTileEntity(TileEntitySecretSign.class, new ResourceLocation("securitycraft:secret_sign"));
+		GameRegistry.registerTileEntity(TileEntityMotionLight.class, new ResourceLocation("securitycraft:motion_light"));
+		GameRegistry.registerTileEntity(TileEntityTrackMine.class, new ResourceLocation("securitycraft:track_mine"));
 	}
 
 	public static void registerEntities()
