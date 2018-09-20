@@ -1,5 +1,6 @@
 {
     "variants": {
+        "inventory": { "model": "cube" },
         "half=bottom,variant=oak": { "model": "securitycraft:reinforcedPlanks_Oak" },
         "half=bottom,variant=spruce": { "model": "securitycraft:reinforcedPlanks_Spruce" },
         "half=bottom,variant=birch": { "model": "securitycraft:reinforcedPlanks_Birch" },

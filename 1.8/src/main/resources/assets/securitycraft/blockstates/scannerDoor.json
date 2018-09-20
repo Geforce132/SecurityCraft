@@ -1,5 +1,6 @@
 {
     "variants": {
+        "inventory": { "model": "securitycraft:scannerDoor_bottom" },
         "facing=east,half=lower,hinge=left,open=false,powered=false":  { "model": "securitycraft:scannerDoor_bottom" },
         "facing=south,half=lower,hinge=left,open=false,powered=false": { "model": "securitycraft:scannerDoor_bottom", "y": 90 },
         "facing=west,half=lower,hinge=left,open=false,powered=false":  { "model": "securitycraft:scannerDoor_bottom", "y": 180 },

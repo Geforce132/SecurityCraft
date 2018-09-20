@@ -1,5 +1,6 @@
 {
     "variants": {
+        "inventory": { "model": "cube" },
         "half=bottom,variant=dirt": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
         "half=top,variant=dirt": { "model": "securitycraft:reinforcedTopSlab_dirt" },
         "half=bottom,variant=stone": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
@@ -13,6 +14,8 @@
         "half=bottom,variant=brick": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
         "half=top,variant=brick": { "model": "securitycraft:reinforcedTopSlab_dirt" },
         "half=bottom,variant=netherbrick": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
-        "half=top,variant=netherbrick": { "model": "securitycraft:reinforcedTopSlab_dirt" }
+        "half=top,variant=netherbrick": { "model": "securitycraft:reinforcedTopSlab_dirt" },
+        "half=bottom,variant=quartz": { "model": "securitycraft:reinforcedHalfSlab_dirt" },  
+        "half=top,variant=quartz": { "model": "securitycraft:reinforcedTopSlab_dirt" }
     }
 }

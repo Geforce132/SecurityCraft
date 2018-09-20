@@ -1,5 +1,6 @@
 {
     "variants": {
+        "inventory": { "model": "cube" },
         "half=bottom,variant=stone": { "model": "securitycraft:reinforcedDoubleStoneSlab" },
         "half=bottom,variant=cobblestone": { "model": "securitycraft:reinforcedCobblestone" },
         "half=bottom,variant=sandstone": { "model": "securitycraft:reinforcedSandstone_normal" },
