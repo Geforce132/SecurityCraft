@@ -87,27 +87,27 @@ public class RegistrationHandler
 	public static void registerContent()
 	{
 		registerBlock(SCContent.laserBlock);
-		GameRegistry.registerBlock(SCContent.laserField, SCContent.laserField.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.laserField, SCContent.laserField.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.keypad);
 		registerBlock(SCContent.mine);
-		GameRegistry.registerBlock(SCContent.mineCut,SCContent.mineCut.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.mineCut,SCContent.mineCut.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.dirtMine);
-		GameRegistry.registerBlock(SCContent.stoneMine, SCContent.stoneMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.cobblestoneMine, SCContent.cobblestoneMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.diamondOreMine, SCContent.diamondOreMine.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.sandMine, SCContent.sandMine.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.stoneMine, SCContent.stoneMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.cobblestoneMine, SCContent.cobblestoneMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.diamondOreMine, SCContent.diamondOreMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.sandMine, SCContent.sandMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.furnaceMine);
 		registerBlock(SCContent.retinalScanner);
-		GameRegistry.registerBlock(SCContent.reinforcedDoor, SCContent.reinforcedDoor.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.bogusLava, SCContent.bogusLava.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.bogusLavaFlowing, SCContent.bogusLavaFlowing.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.bogusWater, SCContent.bogusWater.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.bogusWaterFlowing, SCContent.bogusWaterFlowing.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.reinforcedDoor, SCContent.reinforcedDoor.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.bogusLava, SCContent.bogusLava.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.bogusLavaFlowing, SCContent.bogusLavaFlowing.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.bogusWater, SCContent.bogusWater.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.bogusWaterFlowing, SCContent.bogusWaterFlowing.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.keycardReader);
 		registerBlock(SCContent.ironTrapdoor);
 		registerBlock(SCContent.bouncingBetty);
 		registerBlock(SCContent.inventoryScanner);
-		GameRegistry.registerBlock(SCContent.inventoryScannerField, SCContent.inventoryScannerField.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.inventoryScannerField, SCContent.inventoryScannerField.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.trackMine);
 		registerBlock(SCContent.cageTrap);
 		registerBlock(SCContent.portableRadar);
@@ -116,7 +116,7 @@ public class RegistrationHandler
 		registerBlock(SCContent.usernameLogger);
 		registerReinforcedBlock(SCContent.reinforcedGlassPane);
 		registerBlock(SCContent.alarm);
-		GameRegistry.registerBlock(SCContent.alarmLit, SCContent.alarmLit.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.alarmLit, SCContent.alarmLit.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerReinforcedBlock(SCContent.reinforcedIronBars);
 		registerReinforcedBlock(SCContent.reinforcedSandstone, ItemBlockReinforcedSandstone.class);
 		registerReinforcedBlock(SCContent.reinforcedDirt, ItemBlockTinted.class);
@@ -128,14 +128,14 @@ public class RegistrationHandler
 		registerBlock(SCContent.claymore);
 		registerBlock(SCContent.keypadFurnace);
 		registerBlock(SCContent.securityCamera);
-		GameRegistry.registerBlock(SCContent.reinforcedStairsOak, ItemBlockTinted.class, SCContent.reinforcedStairsOak.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsSpruce, ItemBlockTinted.class, SCContent.reinforcedStairsSpruce.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsCobblestone, ItemBlockTinted.class, SCContent.reinforcedStairsCobblestone.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsSandstone, ItemBlockTinted.class, SCContent.reinforcedStairsSandstone.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsBirch, ItemBlockTinted.class, SCContent.reinforcedStairsBirch.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsJungle, ItemBlockTinted.class, SCContent.reinforcedStairsJungle.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsAcacia, ItemBlockTinted.class, SCContent.reinforcedStairsAcacia.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedStairsDarkoak, ItemBlockTinted.class, SCContent.reinforcedStairsDarkoak.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsOak, ItemBlockTinted.class, SCContent.reinforcedStairsOak.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsSpruce, ItemBlockTinted.class, SCContent.reinforcedStairsSpruce.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsCobblestone, ItemBlockTinted.class, SCContent.reinforcedStairsCobblestone.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsSandstone, ItemBlockTinted.class, SCContent.reinforcedStairsSandstone.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsBirch, ItemBlockTinted.class, SCContent.reinforcedStairsBirch.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsJungle, ItemBlockTinted.class, SCContent.reinforcedStairsJungle.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsAcacia, ItemBlockTinted.class, SCContent.reinforcedStairsAcacia.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsDarkoak, ItemBlockTinted.class, SCContent.reinforcedStairsDarkoak.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.reinforcedStairsStone, ItemBlockTinted.class);
 		registerBlock(SCContent.ironFence);
 		registerBlock(SCContent.ims);
@@ -143,13 +143,13 @@ public class RegistrationHandler
 		registerBlock(SCContent.reinforcedStainedGlass, ItemBlockReinforcedStainedGlass.class);
 		registerBlock(SCContent.reinforcedStainedGlassPanes, ItemBlockReinforcedStainedGlassPanes.class);
 		registerBlock(SCContent.reinforcedWoodSlabs, ItemBlockReinforcedWoodSlabs.class);
-		GameRegistry.registerBlock(SCContent.reinforcedDoubleWoodSlabs, ItemBlockTinted.class, SCContent.reinforcedDoubleWoodSlabs.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.reinforcedDoubleWoodSlabs, ItemBlockTinted.class, SCContent.reinforcedDoubleWoodSlabs.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.reinforcedStoneSlabs, ItemBlockReinforcedSlabs.class);
-		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedDirtSlab, ItemBlockReinforcedSlabs.class, SCContent.reinforcedDirtSlab.getUnlocalizedName().substring(5));
-		GameRegistry.registerBlock(SCContent.reinforcedDoubleDirtSlab, ItemBlockTinted.class, SCContent.reinforcedDoubleDirtSlab.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedDirtSlab, ItemBlockReinforcedSlabs.class, SCContent.reinforcedDirtSlab.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedDoubleDirtSlab, ItemBlockTinted.class, SCContent.reinforcedDoubleDirtSlab.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.protecto);
-		GameRegistry.registerBlock(SCContent.scannerDoor, SCContent.scannerDoor.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.scannerDoor, SCContent.scannerDoor.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerReinforcedBlock(SCContent.reinforcedStoneBrick, ItemBlockReinforcedStoneBrick.class);
 		registerBlock(SCContent.reinforcedStairsStoneBrick, ItemBlockTinted.class);
 		registerReinforcedBlock(SCContent.reinforcedMossyCobblestone, ItemBlockTinted.class);
@@ -170,7 +170,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedRedSandstone, ItemBlockReinforcedSandstone.class);
 		registerReinforcedBlock(SCContent.reinforcedStairsRedSandstone, ItemBlockTinted.class);
 		registerReinforcedBlock(SCContent.reinforcedStoneSlabs2, ItemBlockReinforcedSlabs2.class); //technically not a reinforced block, but doesn't need a page
-		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs2, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs2.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(SCContent.reinforcedDoubleStoneSlabs2, ItemBlockTinted.class, SCContent.reinforcedDoubleStoneSlabs2.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
 		registerBlock(SCContent.motionActivatedLight);
@@ -181,8 +181,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedCarpet, ItemBlockReinforcedStainedBlock.class);
 
 		registerItem(SCContent.codebreaker);
-		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
-		registerItem(SCContent.scannerDoorItem, SCContent.scannerDoorItem.getUnlocalizedName().substring(5));
+		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerItem(SCContent.scannerDoorItem, SCContent.scannerDoorItem.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerItem(SCContent.universalBlockRemover);
 		registerItem(SCContent.keycardLvl1, SecurityCraft.config.ableToCraftKeycard1);
 		registerItem(SCContent.keycardLvl2, SecurityCraft.config.ableToCraftKeycard2);
@@ -669,14 +669,14 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(Block block)
 	{
-		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 
 		SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 
 	private static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
 	{
-		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 
 		SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
@@ -685,7 +685,7 @@ public class RegistrationHandler
 
 	private static void registerReinforcedBlock(Block block)
 	{
-		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 
 		if(!hasReinforcedPage)
 		{
@@ -696,7 +696,7 @@ public class RegistrationHandler
 
 	private static void registerReinforcedBlock(Block block, Class<? extends ItemBlock> itemClass)
 	{
-		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5));
+		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 
 		if(!hasReinforcedPage)
 		{
@@ -710,7 +710,7 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(Item item)
 	{
-		registerItem(item, item.getUnlocalizedName().substring(5));
+		registerItem(item, item.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 	}
 
 	/**
@@ -719,7 +719,7 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(Item item, boolean configValue)
 	{
-		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", configValue));
 	}
 
