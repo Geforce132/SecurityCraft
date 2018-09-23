@@ -11,9 +11,9 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -43,18 +43,26 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
-			if(((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player)){
-				player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, x, y, z);
+		{
+			if(((IOwnable) world.getTileEntity(x, y, z)).getOwner().isOwner(player))
+			{
+				ItemStack held = player.getHeldItem();
+				int mines = ((TileEntityIMS)world.getTileEntity(x, y, z)).getBombsRemaining();
+
+				if(held != null && held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4)
+				{
+					if(!player.capabilities.isCreativeMode)
+						held.stackSize--;
+
+					((TileEntityIMS)world.getTileEntity(x, y, z)).setBombsRemaining(mines + 1);
+				}
+				else
+					player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, x, y, z);
 				return true;
 			}
+		}
 
-		return false;
-	}
-
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random random){
-		if(!world.isRemote)
-			BlockUtils.destroyBlock(world, x, y, z, false);
+		return true;
 	}
 
 	/**

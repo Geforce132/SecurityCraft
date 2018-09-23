@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -19,6 +18,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -66,18 +66,27 @@ public class BlockIMS extends BlockOwnable {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if(!world.isRemote)
-			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
-				player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		{
+			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+			{
+				ItemStack held = player.getHeldItem(hand);
+				int mines = state.getValue(MINES);
+
+				if(held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4)
+				{
+					if(!player.capabilities.isCreativeMode)
+						held.shrink(1);
+
+					world.setBlockState(pos, state.withProperty(MINES, mines + 1));
+					((TileEntityIMS)world.getTileEntity(pos)).setBombsRemaining(mines + 1);
+				}
+				else
+					player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
+		}
 
-		return false;
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if(!world.isRemote)
-			BlockUtils.destroyBlock(world, pos, false);
+		return true;
 	}
 
 	/**

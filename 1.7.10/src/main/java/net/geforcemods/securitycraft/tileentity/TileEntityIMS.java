@@ -68,10 +68,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
 
 				bombsRemaining--;
-
-				if(bombsRemaining == 0)
-					worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord), 140);
-
 				return;
 			}
 
@@ -95,9 +91,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(xCoord, yCoord, zCoord, "random.bow", 1.0F));
 
 				bombsRemaining--;
-
-				if(bombsRemaining == 0)
-					worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord), 140);
 			}
 		}
 	}
@@ -168,6 +161,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	public void setBombsRemaining(int bombsRemaining) {
 		this.bombsRemaining = bombsRemaining;
+		sync();
 	}
 
 	public int getTargetingOption() {

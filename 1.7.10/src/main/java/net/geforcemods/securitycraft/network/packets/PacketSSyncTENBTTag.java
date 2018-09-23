@@ -17,11 +17,11 @@ public class PacketSSyncTENBTTag implements IMessage{
 
 	}
 
-	public PacketSSyncTENBTTag(int par1, int par2, int par3, NBTTagCompound par4NBTTagCompound){
-		x = par1;
-		y = par2;
-		z = par3;
-		tag = par4NBTTagCompound;
+	public PacketSSyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.tag = tag;
 	}
 
 	@Override
