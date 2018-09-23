@@ -14,13 +14,12 @@
 - Change: The Universal Block Reinforcer will now reinforce placed down blocks instantly
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
-- Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
 - Fix: Item duplication with Inventory Scanner and Storage Module
 - Fix: Inventory Scanner's redstone mode doesn't respect Smart Module
 - Fix: Items thrown through an Inventory Scanner Field don't respect the Smart and Storage Module
 - Fix: Inventory Scanner does not trigger on item stacks that have a size greater than one
-- Fix: When breaking an Inventory Scanner, items placed in the blacklist slot will drop
+- Fix: When breaking an Inventory Scanner, items placed in the blacklist slots will drop
 - Fix: Iron/Reinforced Trapdoor can be opened by redstone
 - Fix: Placing/breaking Inventory Scanners can break other Inventory Scanner's scanner fields
 - Fix: Name inconsistencies with vanilla
