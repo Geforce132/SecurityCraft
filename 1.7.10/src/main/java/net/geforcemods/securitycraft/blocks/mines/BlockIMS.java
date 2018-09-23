@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -12,6 +14,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -76,6 +79,18 @@ public class BlockIMS extends BlockOwnable {
 			world.spawnParticle("flame", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
 			world.spawnParticle("flame", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
 		}
+	}
+
+	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+	{
+		int mines = ((TileEntityIMS)world.getTileEntity(x, y, z)).getBombsRemaining();
+		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+
+		if(mines != 0)
+			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
+
+		return drops;
 	}
 
 	@Override

@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -15,10 +18,12 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -89,9 +94,21 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	{
+		int mines = (Integer)state.getValue(MINES);
+		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+
+		if(mines != 0)
+			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
+
+		return drops;
+	}
+
+	@Override
 	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		return getDefaultState().withProperty(MINES, 4);
+		return getDefaultState().withProperty(MINES, 0);
 	}
 
 	@Override

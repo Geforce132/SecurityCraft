@@ -12,6 +12,7 @@
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass
 - Change: The Universal Block Reinforcer will now reinforce placed down blocks instantly
+- Change: When broken, the I.M.S. will now drop any charges left
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
