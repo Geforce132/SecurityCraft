@@ -11,8 +11,8 @@
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass
+- Change: The Universal Block Reinforcer will now reinforce placed down blocks instantly
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right
-- Change: The Universal Block Reinforcer will no reinforce placed down blocks instantly
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
 - Fix: Torch/door/etc. placement on a disguised Keypad does not work the same as with the block it's disguised as
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
