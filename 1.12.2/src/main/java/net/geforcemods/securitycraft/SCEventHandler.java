@@ -545,7 +545,6 @@ public class SCEventHandler {
 		}
 	}
 
-
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event) {

@@ -88,7 +88,7 @@ public class BlockSecretSign extends BlockContainer
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 		{
@@ -96,8 +96,11 @@ public class BlockSecretSign extends BlockContainer
 		}
 		else
 		{
+			if(player.getHeldItem().getItem() == SCContent.adminTool)
+				SCContent.adminTool.onItemUse(player.getHeldItem(), player, world, pos, side, hitX, hitY, hitZ);
+
 			TileEntity tileentity = world.getTileEntity(pos);
-			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(playerIn) : false;
+			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
 		}
 	}
 

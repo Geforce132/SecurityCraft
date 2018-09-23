@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -56,6 +57,18 @@ public class ItemAdminTool extends Item {
 
 						hasInfo = true;
 					}
+				}
+
+				if(te instanceof TileEntitySecretSign)
+				{
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), "", EnumChatFormatting.DARK_PURPLE);
+
+					for(int i = 0; i < 4; i++)
+					{
+						PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:adminTool.name"), ((TileEntitySecretSign)te).signText[i].getUnformattedText(), EnumChatFormatting.DARK_PURPLE);
+					}
+
+					hasInfo = true;
 				}
 
 				if(!hasInfo)

@@ -101,6 +101,9 @@ public class BlockSecretSign extends BlockContainer
 		}
 		else
 		{
+			if(player.getHeldItem().getItem() == SCContent.adminTool)
+				SCContent.adminTool.onItemUse(player.getHeldItem(), player, world, pos, side, hitX, hitY, hitZ);
+
 			TileEntity tileentity = world.getTileEntity(pos);
 			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
 		}

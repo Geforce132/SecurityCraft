@@ -6,6 +6,7 @@
 - New: Reinforced Stained Glass and Reinforced Stained Glass Panes can now be created using the Universal Block Reinforcer (alongside the already existing recipes)
 - New: The Track Mine can now be controlled with the Mine Remote Access Tool
 - New: The Briefcase's code can now be reset by crafting it together with a Universal Key Changer
+- New: The Admin Tool now shows the text on Secret Signs
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
