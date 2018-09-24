@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.network.packets.PacketSUpdateTEOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -21,6 +24,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -59,6 +64,13 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public boolean isFullCube(IBlockState state){
 		return false;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	{
+		if(!world.isRemote && placer instanceof EntityPlayerMP)
+			SecurityCraft.network.sendTo(new PacketSUpdateTEOwnable((TileEntityOwnable)world.getTileEntity(pos)), (EntityPlayerMP)placer);
 	}
 
 	@Override

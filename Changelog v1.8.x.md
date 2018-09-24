@@ -36,6 +36,7 @@
 - Fix: [1.8+] The Inventory Scanner Field is missing its top and bottom texture
 - Fix: [1.8+] Storage Module does not work
 - Fix: [1.8+] Model loading errors
+- Fix: [1.9.4-1.10.2] Security Camera gets rendered incorrectly when placed on the ceiling
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.9.4+] Reinforced Iron Bars model is not the same as the vanilla Iron Bars model
 - Fix: [1.9.4+] Password-protected Chest does not synchronize owner correctly when loading world
