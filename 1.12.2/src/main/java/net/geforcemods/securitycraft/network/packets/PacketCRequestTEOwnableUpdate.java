@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -56,9 +59,11 @@ public class PacketCRequestTEOwnableUpdate implements IMessage
 		public PacketSUpdateTEOwnable onMessage(PacketCRequestTEOwnableUpdate message, MessageContext ctx)
 		{
 			TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
+			boolean customizable = te instanceof CustomizableSCTE;
+			NBTTagCompound tag = customizable ? ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound()) : null;
 
-			if(te != null && te instanceof TileEntityOwnable)
-				return new PacketSUpdateTEOwnable((TileEntityOwnable)te);
+			if(te != null && te instanceof IOwnable)
+				return new PacketSUpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag);
 			else
 				return null;
 		}

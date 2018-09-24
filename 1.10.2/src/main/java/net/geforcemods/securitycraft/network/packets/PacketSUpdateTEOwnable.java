@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -22,7 +23,7 @@ public class PacketSUpdateTEOwnable implements IMessage
 	private String uuid;
 	private boolean customizable;
 	private byte cameraDown;
-	NBTTagCompound tag;
+	private NBTTagCompound tag;
 
 	public PacketSUpdateTEOwnable() {}
 
@@ -32,23 +33,19 @@ public class PacketSUpdateTEOwnable implements IMessage
 	 */
 	public PacketSUpdateTEOwnable(TileEntityOwnable te)
 	{
-		pos = te.getPos();
-		name = te.getOwner().getName();
-		uuid = te.getOwner().getUUID();
-		customizable = te instanceof CustomizableSCTE;
+		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID(), te instanceof CustomizableSCTE,
+				te instanceof CustomizableSCTE ? ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound()) : null,
+						(byte)(te instanceof TileEntitySecurityCamera ? (te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN ? 2 : 1) : 0));
+	}
 
-		if(customizable)
-			tag = ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound());
-
-		if(te instanceof TileEntitySecurityCamera)
-		{
-			if(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN)
-				cameraDown = 2;
-			else
-				cameraDown = 1;
-		}
-		else
-			cameraDown = 0;
+	public PacketSUpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, NBTTagCompound tag, byte cameraDown)
+	{
+		this.pos = pos;
+		this.name = name;
+		this.uuid = uuid;
+		this.customizable = customizable;
+		this.tag = tag;
+		this.cameraDown = cameraDown;
 	}
 
 	@Override
@@ -87,10 +84,10 @@ public class PacketSUpdateTEOwnable implements IMessage
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
-				if(!(te instanceof TileEntityOwnable))
+				if(te == null || !(te instanceof IOwnable))
 					return;
 
-				((TileEntityOwnable)te).setOwner(message.uuid, message.name);
+				((IOwnable)te).setOwner(message.uuid, message.name);
 
 				if(message.customizable)
 					((CustomizableSCTE)te).readFromNBT(message.tag);

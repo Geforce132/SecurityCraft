@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,13 +29,16 @@ public class PacketSUpdateTEOwnable implements IMessage
 	 */
 	public PacketSUpdateTEOwnable(TileEntityOwnable te)
 	{
-		pos = te.getPos();
-		name = te.getOwner().getName();
-		uuid = te.getOwner().getUUID();
-		customizable = te instanceof CustomizableSCTE;
+		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID(), te instanceof CustomizableSCTE, te instanceof CustomizableSCTE ? ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound()) : null);
+	}
 
-		if(customizable)
-			tag = ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound());
+	public PacketSUpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, NBTTagCompound tag)
+	{
+		this.pos = pos;
+		this.name = name;
+		this.uuid = uuid;
+		this.customizable = customizable;
+		this.tag = tag;
 	}
 
 	@Override
@@ -69,10 +73,10 @@ public class PacketSUpdateTEOwnable implements IMessage
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
-				if(!(te instanceof TileEntityOwnable))
+				if(te == null || !(te instanceof IOwnable))
 					return;
 
-				((TileEntityOwnable)te).setOwner(message.uuid, message.name);
+				((IOwnable)te).setOwner(message.uuid, message.name);
 
 				if(message.customizable)
 					((CustomizableSCTE)te).readFromNBT(message.tag);

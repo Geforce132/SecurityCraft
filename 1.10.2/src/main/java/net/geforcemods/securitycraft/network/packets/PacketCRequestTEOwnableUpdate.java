@@ -1,8 +1,14 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -56,9 +62,12 @@ public class PacketCRequestTEOwnableUpdate implements IMessage
 		public PacketSUpdateTEOwnable onMessage(PacketCRequestTEOwnableUpdate message, MessageContext ctx)
 		{
 			TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(message.dimension).getTileEntity(message.pos);
+			boolean customizable = te instanceof CustomizableSCTE;
+			NBTTagCompound tag = customizable ? ((CustomizableSCTE)te).writeToNBT(new NBTTagCompound()) : null;
+			byte cameraDown = (byte)(te instanceof TileEntitySecurityCamera ? (te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN ? 2 : 1) : 0);
 
-			if(te != null && te instanceof TileEntityOwnable)
-				return new PacketSUpdateTEOwnable((TileEntityOwnable)te);
+			if(te != null && te instanceof IOwnable)
+				return new PacketSUpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag, cameraDown);
 			else
 				return null;
 		}
