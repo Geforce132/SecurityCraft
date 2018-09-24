@@ -54,7 +54,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		if(bombsRemaining > 0){
 			double range = ConfigHandler.imsRange;
 
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).expand(range, range, range);
+			AxisAlignedBB area = new AxisAlignedBB(pos).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area);
 			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area);
 			Iterator<?> playerIterator = players.iterator();

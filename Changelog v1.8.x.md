@@ -38,6 +38,7 @@
 - Fix: [1.8+] Model loading errors
 - Fix: [1.9.4-1.11.2] SC Manual buttons are switched around
 - Fix: [1.9.4+] Reinforced Iron Bars model is not the same as the vanilla Iron Bars model
+- Fix: [1.11.2] I.M.S. doesn't detect targets correctly
 - Fix: [1.12.2] Item Stack tooltips don't get rendered in SecurityCraft inventories
 - Fix: [1.12.2] Beacon color with Reinforced Stained Glass is slightly incorrect
 - Fix: [1.12.2] TileEntity IDs are not registered to SecurityCraft's domain
