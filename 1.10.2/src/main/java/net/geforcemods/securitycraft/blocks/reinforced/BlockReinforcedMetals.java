@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -80,6 +81,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] {VARIANT});
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
+	{
+		return true;
 	}
 
 	@Override

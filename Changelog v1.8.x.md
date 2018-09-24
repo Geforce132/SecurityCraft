@@ -8,6 +8,7 @@
 - New: The Briefcase's code can now be reset by crafting it together with a Universal Key Changer
 - New: The Admin Tool now shows the text on Secret Signs
 - New: The I.M.S. can now be reloaded by right-clicking it with Bouncing Betties
+- New: Reinforced Blocks of Iron, Gold, Diamond, and Emerald can now be used as a Beacon base
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name

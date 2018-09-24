@@ -14,7 +14,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -73,6 +75,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements IReinforcedBl
 	protected BlockState createBlockState()
 	{
 		return new BlockState(this, new IProperty[] {VARIANT});
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
+	{
+		return true;
 	}
 
 	@Override

@@ -37,6 +37,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	}
 
 	@Override
+	public boolean isBeaconBase(IBlockAccess world, int x, int y, int z, int beaconX, int beaconY, int beaconZ)
+	{
+		return true;
+	}
+
+	@Override
 	public IIcon getIcon(int side, int meta)
 	{
 		switch(meta)
