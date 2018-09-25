@@ -38,10 +38,6 @@ public class EntitySecurityCamera extends Entity {
 
 	private final float CAMERA_SPEED = SecurityCraft.config.cameraSpeed;
 
-	public int blockPosX;
-	public int blockPosY;
-	public int blockPosZ;
-
 	private double cameraUseX;
 	private double cameraUseY;
 	private double cameraUseZ;
@@ -67,9 +63,9 @@ public class EntitySecurityCamera extends Entity {
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntityPlayer player){
 		this(world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
+		dataWatcher.updateObject(16, (int)x);
+		dataWatcher.updateObject(17, (int)y);
+		dataWatcher.updateObject(18, (int)z);
 		cameraUseX = player.posX;
 		cameraUseY = player.posY;
 		cameraUseZ = player.posZ;
@@ -97,9 +93,9 @@ public class EntitySecurityCamera extends Entity {
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
 		this(world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
+		dataWatcher.updateObject(16, (int)x);
+		dataWatcher.updateObject(17, (int)y);
+		dataWatcher.updateObject(18, (int)z);
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
 		cameraUseZ = camera.cameraUseZ;
@@ -179,7 +175,7 @@ public class EntitySecurityCamera extends Entity {
 		}
 
 		if(!worldObj.isRemote)
-			if(riddenByEntity == null | worldObj.getBlock(blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
+			if(riddenByEntity == null | worldObj.getBlock(dataWatcher.getWatchableObjectInt(16), dataWatcher.getWatchableObjectInt(17), dataWatcher.getWatchableObjectInt(18)) != SCContent.securityCamera){
 				setDead();
 				return;
 			}
@@ -382,6 +378,10 @@ public class EntitySecurityCamera extends Entity {
 
 	private boolean isCameraDown()
 	{
+		int blockPosX = dataWatcher.getWatchableObjectInt(16);
+		int blockPosY = dataWatcher.getWatchableObjectInt(17);
+		int blockPosZ = dataWatcher.getWatchableObjectInt(18);
+
 		return worldObj.getBlockMetadata(blockPosX, blockPosY, blockPosZ) == 0 || worldObj.getBlockMetadata(blockPosX, blockPosY, blockPosZ) == 9;
 	}
 
@@ -401,7 +401,12 @@ public class EntitySecurityCamera extends Entity {
 	}
 
 	@Override
-	protected void entityInit() {}
+	protected void entityInit()
+	{
+		dataWatcher.addObject(16, 0); //blockPosX
+		dataWatcher.addObject(17, -1); //blockPosY
+		dataWatcher.addObject(18, 0); //blockPosZ
+	}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag){
