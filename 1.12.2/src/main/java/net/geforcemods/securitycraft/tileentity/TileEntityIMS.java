@@ -54,7 +54,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		if(bombsRemaining > 0){
 			double range = ConfigHandler.imsRange;
 
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range).setMaxY(world.getHeight());
+			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area);
 			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area);
 			Iterator<?> playerIterator = players.iterator();
@@ -62,7 +62,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
 				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
-				int launchHeight = getLaunchHeight((int)entity.posY);
+				int launchHeight = getLaunchHeight();
 
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
@@ -89,7 +89,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 			while(!launchedMine && playerIterator.hasNext()){
 				EntityPlayer entity = (EntityPlayer) playerIterator.next();
-				int launchHeight = getLaunchHeight((int)entity.posY);
+				int launchHeight = getLaunchHeight();
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
@@ -137,10 +137,10 @@ public class TileEntityIMS extends CustomizableSCTE {
 	/**
 	 * Returns the amount of ticks the {@link EntityIMSBomb} should float in the air before firing at an entity.
 	 */
-	private int getLaunchHeight(int mobY) {
+	private int getLaunchHeight() {
 		int height;
 
-		for(height = 1; height <= mobY + 9; height++)
+		for(height = 1; height <= 9; height++)
 			if(BlockUtils.getBlock(getWorld(), getPos().up(height)) == null || BlockUtils.getBlock(getWorld(), getPos().up(height)) == Blocks.AIR)
 				continue;
 			else
