@@ -6,8 +6,8 @@ import java.util.HashMap;
 
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.imc.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -105,7 +105,7 @@ public class SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 
-		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
+		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();

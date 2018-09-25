@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
+import net.geforcemods.securitycraft.compat.lookingglass.LookingGlassAPIProvider;
 import net.geforcemods.securitycraft.misc.CameraShutoffTimer;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.minecraft.nbt.NBTTagCompound;

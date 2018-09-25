@@ -22,10 +22,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.compat.lookingglass.IWorldViewHelper;
+import net.geforcemods.securitycraft.compat.lookingglass.LookingGlassPanelRenderer;
+import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
-import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassPanelRenderer;
-import net.geforcemods.securitycraft.imc.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -116,8 +116,8 @@ public class SecurityCraft
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 
-		FMLInterModComms.sendMessage("Waila", "register", "net.geforcemods.securitycraft.imc.waila.WailaDataProvider.callbackRegister");
-		FMLInterModComms.sendMessage("LookingGlass", "API", "net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider.register");
+		FMLInterModComms.sendMessage("Waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
+		FMLInterModComms.sendMessage("LookingGlass", "API", "net.geforcemods.securitycraft.compat.lookingglass.LookingGlassAPIProvider.register");
 
 		if(config.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
