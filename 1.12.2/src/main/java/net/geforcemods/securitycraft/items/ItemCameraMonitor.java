@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -37,7 +36,7 @@ public class ItemCameraMonitor extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!world.isRemote){
-			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera){
+			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
 				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
@@ -65,10 +64,7 @@ public class ItemCameraMonitor extends Item {
 
 				return EnumActionResult.SUCCESS;
 			}
-		}else if(world.isRemote && BlockUtils.getBlock(world, pos) != SCContent.securityCamera){
-			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera)
-				return EnumActionResult.SUCCESS;
-
+		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.securityCamera || PlayerUtils.isPlayerMountedOnCamera(player))){
 			if(stack.getTagCompound() == null || stack.getTagCompound().isEmpty()) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
@@ -87,9 +83,6 @@ public class ItemCameraMonitor extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (world.isRemote) {
-			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera)
-				return ActionResult.newResult(EnumActionResult.PASS, stack);
-
 			if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return ActionResult.newResult(EnumActionResult.PASS, stack);

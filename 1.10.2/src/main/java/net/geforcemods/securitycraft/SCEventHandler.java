@@ -630,8 +630,10 @@ public class SCEventHandler {
 	@SideOnly(Side.CLIENT)
 	public void onMouseClicked(MouseEvent event) {
 		if(Minecraft.getMinecraft().world != null)
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
+		{
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && event.getButton() != 1) //anything other than rightclick
 				event.setCanceled(true);
+		}
 	}
 
 	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)

@@ -11,6 +11,7 @@
 - New: Reinforced Blocks of Iron, Gold, Diamond, and Emerald can now be used as a Beacon base
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
+- New: [1.8+] Security Cameras can now be switched when already viewing a camera
 - Change: Item tooltips in the SecurityCraft Manual now show the complete tooltip instead of just the name
 - Change: The Alarm recipe now needs Reinforced Glass instead of vanilla glass
 - Change: The Universal Block Reinforcer will now reinforce placed down blocks instantly

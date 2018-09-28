@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -31,7 +30,7 @@ public class ItemCameraMonitor extends Item {
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote){
-			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera){
+			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
 				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
 					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:cameraMonitor.name"), StatCollector.translateToLocal("messages.securitycraft:cameraMonitor.cannotView"), EnumChatFormatting.RED);
 					return true;
@@ -59,9 +58,7 @@ public class ItemCameraMonitor extends Item {
 
 				return true;
 			}
-		}else if(world.isRemote && BlockUtils.getBlock(world, pos) != SCContent.securityCamera){
-			if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera) return true;
-
+		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.securityCamera || PlayerUtils.isPlayerMountedOnCamera(player))){
 			if(stack.getTagCompound() == null || stack.getTagCompound().hasNoTags()) {
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:cameraMonitor.name"), StatCollector.translateToLocal("messages.securitycraft:cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
 				return true;
@@ -78,8 +75,6 @@ public class ItemCameraMonitor extends Item {
 	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 		if (world.isRemote) {
-			if(player.ridingEntity != null && player.ridingEntity instanceof EntitySecurityCamera) return stack;
-
 			if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:cameraMonitor.name"), StatCollector.translateToLocal("messages.securitycraft:cameraMonitor.rightclickToView"), EnumChatFormatting.RED);
 				return stack;
