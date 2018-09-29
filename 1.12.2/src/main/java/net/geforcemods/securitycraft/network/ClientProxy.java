@@ -305,6 +305,7 @@ public class ClientProxy extends ServerProxy{
 				SCContent.reinforcedDoubleWoodSlabs,
 				SCContent.reinforcedEndStone,
 				SCContent.reinforcedEndStoneBricks,
+				SCContent.reinforcedGlowstone,
 				SCContent.reinforcedHardenedClay,
 				SCContent.reinforcedMetals,
 				SCContent.reinforcedMossyCobblestone,

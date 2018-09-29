@@ -189,6 +189,7 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.reinforcedGlassPane, "securitycraft:reinforced_glass_pane");
 		registerBlock(SCContent.reinforcedStainedGlassPanes, "securitycraft:reinforced_stained_panes", ItemBlockReinforcedStainedBlock.class);
 		registerReinforcedBlock(SCContent.reinforcedCarpet, ItemBlockReinforcedStainedBlock.class);
+		registerReinforcedBlock(SCContent.reinforcedGlowstone);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
@@ -630,6 +631,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCarpet), 13, new ModelResourceLocation("securitycraft:reinforcedCarpet_green", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCarpet), 14, new ModelResourceLocation("securitycraft:reinforcedCarpet_red", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCarpet), 15, new ModelResourceLocation("securitycraft:reinforcedCarpet_black", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGlowstone), 0, new ModelResourceLocation("securitycraft:reinforcedGlowstone", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

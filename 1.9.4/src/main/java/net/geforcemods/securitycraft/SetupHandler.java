@@ -222,6 +222,8 @@ public class SetupHandler
 		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_panes").setUnlocalizedName("securitycraft:reinforcedStainedGlassPanes");
 
 		SCContent.reinforcedCarpet = new BlockReinforcedCarpet().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCarpet");
+
+		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.GLASS, 1, Blocks.GLOWSTONE).setBlockUnbreakable().setResistance(1000).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforcedGlowstone").setUnlocalizedName("securitycraft:reinforcedGlowstone");
 	}
 
 	public static void setupMines()

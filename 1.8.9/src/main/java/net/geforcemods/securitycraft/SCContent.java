@@ -51,6 +51,7 @@ public class SCContent
 	public static Block reinforcedFencegate;
 	public static Block reinforcedGlass;
 	public static Block reinforcedGlassPane;
+	public static Block reinforcedGlowstone;
 	public static Block reinforcedHardenedClay;
 	public static Block reinforcedIronBars;
 	public static Block reinforcedMetals;

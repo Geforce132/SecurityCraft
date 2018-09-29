@@ -2,6 +2,7 @@
 
 - New: Reinforced Blocks
 		- Carpet
+		- Glowstone
 		- [1.9.4+] Stained Glass Panes are back!
 - New: Reinforced Stained Glass and Reinforced Stained Glass Panes can now be created using the Universal Block Reinforcer (alongside the already existing recipes)
 - New: The Track Mine can now be controlled with the Mine Remote Access Tool

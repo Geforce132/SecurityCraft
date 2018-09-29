@@ -174,6 +174,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedNetherrack);
 		registerReinforcedBlock(SCContent.reinforcedEndStone);
 		registerReinforcedBlock(SCContent.reinforcedCarpet, ItemBlockReinforcedColoredBlock.class);
+		registerReinforcedBlock(SCContent.reinforcedGlowstone);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));

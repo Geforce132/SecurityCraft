@@ -205,6 +205,8 @@ public class SetupHandler
 		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.rock, 1, Blocks.end_stone).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedEndStone");
 
 		SCContent.reinforcedCarpet = new BlockReinforcedCarpet().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeCloth).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCarpet");
+
+		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.glass, 1, Blocks.glowstone).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGlass).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlowstone");
 	}
 
 	public static void setupMines()
