@@ -1,8 +1,4 @@
-IRC bedeutet Internet Relay Chat und ist im Grunde genommen ein Server mit verschiedenen Chaträumen mit verschiedenen Themen.
-SecurityCraft verbindet sich mit so einem Chatraum sobald du '/sc connect' eingibts und sendet alle Nachrichten die du bei '/sc contact' eingibts dort hin.
-Jeder, der in dem Raum ist, kann dich anschreiben, indem er deinen Namen als Präfix vor die Nachricht setzt.
+Hallo, IRC Support ist nicht mehr verfügbar.
 
-Bitte beachte, dass folgende Dinge nicht möglich sind:
-- Zu deiner Welt verbinden um mit dir zu spielen
-- Dein Minecraft in irgendeiner Weise kontrollieren
-- Sehen, was du gerade machst
+Bitte nutze ab sofort unseren Discord (Englisch):
+https://discord.gg/U8DvBAW
