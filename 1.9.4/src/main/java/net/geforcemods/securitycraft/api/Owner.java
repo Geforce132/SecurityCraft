@@ -1,6 +1,12 @@
 package net.geforcemods.securitycraft.api;
 
+import java.io.IOException;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block.
@@ -9,6 +15,30 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author Geforce
  */
 public class Owner {
+	public static final DataSerializer<Owner> SERIALIZER = new DataSerializer<Owner>()
+	{
+		@Override
+		public void write(PacketBuffer buf, Owner value)
+		{
+			ByteBufUtils.writeUTF8String(buf, value.getName());
+			ByteBufUtils.writeUTF8String(buf, value.getUUID());
+		}
+
+		@Override
+		public Owner read(PacketBuffer buf) throws IOException
+		{
+			String name = ByteBufUtils.readUTF8String(buf);
+			String uuid = ByteBufUtils.readUTF8String(buf);
+
+			return new Owner(name, uuid);
+		}
+
+		@Override
+		public DataParameter<Owner> createKey(int id)
+		{
+			return new DataParameter<Owner>(id, this);
+		}
+	};
 
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";

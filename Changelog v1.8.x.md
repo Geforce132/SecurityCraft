@@ -10,6 +10,7 @@
 - New: The Admin Tool now shows the text on Secret Signs
 - New: The I.M.S. can now be reloaded by right-clicking it with Bouncing Betties
 - New: Reinforced Blocks of Iron, Gold, Diamond, and Emerald can now be used as a Beacon base
+- New: Sand Mines now fall like normal sand
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - New: [1.8+] Security Cameras can now be switched when already viewing a camera
@@ -18,6 +19,7 @@
 - Change: The Universal Block Reinforcer will now reinforce placed down blocks instantly
 - Change: When broken, the I.M.S. will now drop any charges left
 - Change: [1.8] If JustEnoughItems is installed, buttons from the Universal Block Modifier's menu will appear on the left instead of the right
+- API: [1.9.4+] Added a data serializer to the Owner class
 - Fix: Torch/door/etc. placement on several SecurityCraft blocks does not work as expected
 - Fix: Mines that don't exist in the world anymore do not disappear from a Mine Remote Access Tool, if bound
 - Fix: Item duplication with Inventory Scanner and Storage Module
