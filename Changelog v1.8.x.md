@@ -29,6 +29,7 @@
 - Fix: Placing/breaking Inventory Scanners can break other Inventory Scanner's scanner fields
 - Fix: Name inconsistencies with vanilla
 - Fix: Admin Tool doesn't get properly disabled when it is disabled in the config
+- Fix: Existing translations do not work
 - Fix: [1.7.10] Smart Module does not work
 - Fix: [1.7.10] When mounted to a Security Camera, the view cannot be moved up
 - Fix: [1.7.10-1.9.4] Items shift-clicked in the Inventory Scanner end up in the blacklist slot if there was an item there already
