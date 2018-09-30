@@ -4,7 +4,7 @@ public class ServerProxy
 {
 	public void registerRenderThings() {}
 
-	public void registerTextureFiles() {}
+	public void registerVariants() {}
 
 	public void registerResourceLocations() {}
 }

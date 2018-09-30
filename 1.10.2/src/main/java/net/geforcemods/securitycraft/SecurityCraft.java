@@ -95,7 +95,7 @@ public class SecurityCraft {
 
 		RegistrationHandler.registerRecipes();
 		SecurityCraft.serverProxy.registerResourceLocations();
-		serverProxy.registerTextureFiles();
+		serverProxy.registerVariants();
 		ModMetadata modMeta = event.getModMetadata();
 		modMeta.authorList = Arrays.asList(new String[] {
 				"Geforce", "bl4ckscor3"

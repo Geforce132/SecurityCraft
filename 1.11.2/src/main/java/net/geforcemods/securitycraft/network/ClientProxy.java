@@ -40,7 +40,7 @@ public class ClientProxy extends ServerProxy{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerTextureFiles() {
+	public void registerVariants() {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_planks"),
 				new ResourceLocation("securitycraft:reinforced_planks_oak"),
 				new ResourceLocation("securitycraft:reinforced_planks_spruce"),

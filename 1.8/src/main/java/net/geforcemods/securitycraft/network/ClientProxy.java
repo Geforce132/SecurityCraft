@@ -36,7 +36,7 @@ public class ClientProxy extends ServerProxy{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerTextureFiles() {
+	public void registerVariants() {
 		ModelBakery.addVariantName(GameRegistry.findItem(SecurityCraft.MODID, "reinforcedPlanks"),
 				"securitycraft:reinforcedPlanks_Oak",
 				"securitycraft:reinforcedPlanks_Spruce",
