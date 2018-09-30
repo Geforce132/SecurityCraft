@@ -10,7 +10,8 @@
 - New: The Admin Tool now shows the text on Secret Signs
 - New: The I.M.S. can now be reloaded by right-clicking it with Bouncing Betties
 - New: Reinforced Blocks of Iron, Gold, Diamond, and Emerald can now be used as a Beacon base
-- New: Sand Mines now fall like normal sand
+- New: Gravel Mine
+- New: Sand and Gravel Mines now fall like normal sand/gravel
 - New: [1.8+] Reinforced Moss Stone can now be crafted with a Reinforced Cobblestone and a Vine
 - New: [1.8+] The several Reinforced Stone variants (Reinforced Granite, Reinforced Diorite, Reinforced Andesite) can now be crafted analogous to their vanilla counterparts
 - New: [1.8+] Security Cameras can now be switched when already viewing a camera

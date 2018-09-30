@@ -232,6 +232,7 @@ tile.securitycraft:reinforcedCarpet_green.name=Verstärkter grüner Teppich
 tile.securitycraft:reinforcedCarpet_red.name=Verstärkter roter Teppich
 tile.securitycraft:reinforcedCarpet_black.name=Verstärkter schwarzer Teppich
 tile.securitycraft:reinforcedGlowstone.name=Verstärkter Glowstone
+tile.securitycraft:gravelMine.name=Kiesmine
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür

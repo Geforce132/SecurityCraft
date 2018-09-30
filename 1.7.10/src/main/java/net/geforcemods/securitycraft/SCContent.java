@@ -24,6 +24,7 @@ public class SCContent
 	public static Block dirtMine;
 	public static Block frame;
 	public static Block furnaceMine;
+	public static Block gravelMine;
 	public static Block ims;
 	public static Block inventoryScanner;
 	public static Block inventoryScannerField;

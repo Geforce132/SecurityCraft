@@ -195,6 +195,7 @@ tile.securitycraft:reinforcedCarpet_green.name=Reinforced Green Carpet
 tile.securitycraft:reinforcedCarpet_red.name=Reinforced Red Carpet
 tile.securitycraft:reinforcedCarpet_black.name=Reinforced Black Carpet
 tile.securitycraft:reinforcedGlowstone.name=Reinforced Glowstone
+tile.securitycraft:gravelMine.name=Gravel Mine
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
