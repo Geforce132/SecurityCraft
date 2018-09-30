@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
@@ -32,7 +31,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.registries.GameData;
 
 @Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", version = SecurityCraft.VERSION, /*guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory",*/ dependencies = SecurityCraft.DEPENDENCIES, updateJSON = SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12]")
 public class SecurityCraft {
@@ -79,16 +77,6 @@ public class SecurityCraft {
 		SetupHandler.setupItems();
 		log("Finished loading mod content.");
 		log("Regisering mod content... (PT 1/2)");
-		RegistrationHandler.registerContent();
-		RegistrationHandler.registerTileEntities();
-		SecurityCraft.serverProxy.registerResourceLocations();
-		serverProxy.registerTextureFiles();
-
-		for(int i = 0; i < SCSounds.values().length; i++)
-		{
-			SCSounds.values()[i].event.setRegistryName(SCSounds.values()[i].path);
-			GameData.register_impl(SCSounds.values()[i].event);
-		}
 
 		ModMetadata modMeta = event.getModMetadata();
 		modMeta.authorList = Arrays.asList(new String[] {
@@ -114,7 +102,6 @@ public class SecurityCraft {
 
 		log("Registering mod content... (PT 2/2)");
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
-		RegistrationHandler.registerEntities();
 		EnumCustomModules.refresh();
 		serverProxy.registerRenderThings();
 		FMLCommonHandler.instance().getDataFixer().init(SecurityCraft.MODID, TileEntityIDDataFixer.VERSION).registerFix(FixTypes.BLOCK_ENTITY, new TileEntityIDDataFixer());

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.network;
 
-import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -40,7 +39,7 @@ public class ClientProxy extends ServerProxy{
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerTextureFiles() {
+	public void registerVariants() {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_planks"),
 				new ResourceLocation("securitycraft:reinforced_planks_oak"),
 				new ResourceLocation("securitycraft:reinforced_planks_spruce"),
@@ -271,12 +270,6 @@ public class ClientProxy extends ServerProxy{
 	private Item findItem(String modid, String resourceName)
 	{
 		return Item.REGISTRY.getObject(new ResourceLocation(modid + ":" + resourceName));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerResourceLocations() {
-		RegistrationHandler.registerResourceLocations();
 	}
 
 	@Override

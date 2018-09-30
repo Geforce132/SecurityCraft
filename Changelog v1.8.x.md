@@ -51,6 +51,8 @@
 - Removed: [1.7.10-1.11.2] Configuration option to use the old Keypad recipe
 - Misc.: Possibly improved render performance a bit
 - Internal: Removed unused code
+- Internal: Refactored to make code more readable
+- Internal: [1.12.2] Use recommended way of registering content
 
 --------------------------Changelog for v1.8.7 of SecurityCraft--------------------------
 
