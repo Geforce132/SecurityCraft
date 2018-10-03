@@ -1,55 +1,55 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/security-craft/",
   "promos": {
-    "1.7.10-latest": "v1.8.7",
-    "1.7.10-recommended": "v1.8.7",
-    "1.8-latest": "v1.8.7",
-    "1.8-recommended": "v1.8.7",
-    "1.8.8-latest": "v1.8.7",
-    "1.8.8-recommended": "v1.8.7",
-    "1.8.9-latest": "v1.8.7",
-    "1.8.9-recommended": "v1.8.7",
-	"1.9.4-latest": "v1.8.7",
-	"1.9.4-recommended": "v1.8.7",
-    "1.10.2-latest": "v1.8.7",
-    "1.10.2-recommended": "v1.8.7",
-    "1.11.2-latest": "v1.8.7",
-    "1.11.2-recommended": "v1.8.7",
-    "1.12-latest": "v1.8.7",
-    "1.12-recommended": "v1.8.7",
-    "1.12.1-latest": "v1.8.7",
-    "1.12.1-recommended": "v1.8.7",
-    "1.12.2-latest": "v1.8.7",
-    "1.12.2-recommended": "v1.8.7"
+    "1.7.10-latest": "v1.8.8",
+    "1.7.10-recommended": "v1.8.8",
+    "1.8-latest": "v1.8.8",
+    "1.8-recommended": "v1.8.8",
+    "1.8.8-latest": "v1.8.8",
+    "1.8.8-recommended": "v1.8.8",
+    "1.8.9-latest": "v1.8.8",
+    "1.8.9-recommended": "v1.8.8",
+	"1.9.4-latest": "v1.8.8",
+	"1.9.4-recommended": "v1.8.8",
+    "1.10.2-latest": "v1.8.8",
+    "1.10.2-recommended": "v1.8.8",
+    "1.11.2-latest": "v1.8.8",
+    "1.11.2-recommended": "v1.8.8",
+    "1.12-latest": "v1.8.8",
+    "1.12-recommended": "v1.8.8",
+    "1.12.1-latest": "v1.8.8",
+    "1.12.1-recommended": "v1.8.8",
+    "1.12.2-latest": "v1.8.8",
+    "1.12.2-recommended": "v1.8.8"
   },
   "1.7.10": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.8": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.8.8": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.8.9": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.9.4": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.10.2": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.11.2": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.12": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.12.1": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.12.2": {
-    "v1.8.7": "SC Manual and Inventory Scanner improvements as well as a bunch of fixes."
+    "v1.8.8": "Several new reinforced blocks, dozens of fixes and some small new features."
   }  
 }
