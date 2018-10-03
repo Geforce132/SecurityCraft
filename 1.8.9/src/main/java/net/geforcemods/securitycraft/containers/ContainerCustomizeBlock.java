@@ -83,7 +83,7 @@ public class ContainerCustomizeBlock extends Container{
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer üöayer) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 
