@@ -71,9 +71,6 @@ public class SecurityCraft {
 		SecurityCraft.configFile = new Configuration(event.getSuggestedConfigurationFile());
 		SecurityCraft.config.setupConfiguration();
 		log("Config file loaded.");
-		log("Setting up handlers!");
-		MinecraftForge.EVENT_BUS.register(eventHandler);
-		log("Handlers registered.");
 		log("Setting up network....");
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
 		RegistrationHandler.registerPackets(SecurityCraft.network);
