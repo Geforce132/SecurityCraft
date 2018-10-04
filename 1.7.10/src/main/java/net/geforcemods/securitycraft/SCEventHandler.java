@@ -9,6 +9,7 @@ import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -101,6 +102,13 @@ public class SCEventHandler {
 			message = new ChatComponentText("[" + EnumChatFormatting.GOLD + "SecurityCraft" + EnumChatFormatting.WHITE + "] " + StatCollector.translateToLocal("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + StatCollector.translateToLocal("messages.securitycraft:tip") + " " + StatCollector.translateToLocal(tipKey));
 
 		event.player.addChatComponentMessage(message);
+	}
+
+	@SubscribeEvent
+	public void onPlayerLoggedOut(PlayerLoggedOutEvent event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(event.player) && event.player.ridingEntity instanceof EntitySecurityCamera)
+			event.player.ridingEntity.setDead();
 	}
 
 	@SubscribeEvent

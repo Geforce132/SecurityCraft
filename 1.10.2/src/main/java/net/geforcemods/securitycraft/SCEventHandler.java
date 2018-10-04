@@ -79,6 +79,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -107,6 +108,13 @@ public class SCEventHandler {
 			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
 		event.player.sendMessage(message);
+	}
+
+	@SubscribeEvent
+	public void onPlayerLoggedOut(PlayerLoggedOutEvent event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(event.player) && event.player.getRidingEntity() instanceof EntitySecurityCamera)
+			event.player.getRidingEntity().setDead();
 	}
 
 	@SubscribeEvent
