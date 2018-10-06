@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, IReinforcedBlock
 {

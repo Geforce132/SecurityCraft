@@ -15,7 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 public class BlockReinforcedStainedGlass extends BlockStainedGlass implements ITileEntityProvider, IReinforcedBlock {
 

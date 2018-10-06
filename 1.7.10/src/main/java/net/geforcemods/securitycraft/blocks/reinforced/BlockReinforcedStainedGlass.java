@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
+import java.util.Arrays;
 
 public class BlockReinforcedStainedGlass extends BlockBreakable implements ITileEntityProvider, IReinforcedBlock {
 

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
@@ -12,7 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, IReinforcedBlock
 {

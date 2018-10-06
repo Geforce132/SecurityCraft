@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
 - Fix: Players can teleport to a Security Camera's position when logging out while viewing one
+- Fix: Crash when reinforcing reinforced blocks added in v1.8.8
 
 --------------------------Changelog for v1.8.8 of SecurityCraft--------------------------
 
