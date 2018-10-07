@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
 - New: Whitelist and Blacklist Modules can now be rightclicked to manage the players
+- New: The SC Manual now has a recipe (Book + Iron Bars)
 
 --------------------------Changelog for v1.8.8.1 of SecurityCraft--------------------------
 

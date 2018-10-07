@@ -397,6 +397,7 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedMossyCobblestone), new Object[]{SCContent.reinforcedCobblestone, Blocks.VINE});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedStone, 1, 1), new Object[]{new ItemStack(SCContent.reinforcedStone, 1, 3), Items.QUARTZ});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedStone, 2, 5), new Object[]{new ItemStack(SCContent.reinforcedStone, 1, 3), Blocks.COBBLESTONE});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scManual, 1), new Object[]{Items.BOOK, Blocks.IRON_BARS});
 	}
 
 	public static void registerEntities()

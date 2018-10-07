@@ -18,7 +18,6 @@ public class SCJEIPlugin implements IModPlugin
 	public void register(IModRegistry registry)
 	{
 		registry.addDescription(new ItemStack(SCContent.adminTool), "gui.securitycraft:scManual.recipe.adminTool");
-		registry.addDescription(new ItemStack(SCContent.scManual), "gui.securitycraft:scManual.recipe.scManual");
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
 			registry.addDescription(new ItemStack(pc), "gui.securitycraft:scManual.recipe." + pc.getUnlocalizedName().substring(5));
 		});
