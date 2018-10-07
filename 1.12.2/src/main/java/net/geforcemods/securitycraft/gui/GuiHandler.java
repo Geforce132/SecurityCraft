@@ -43,6 +43,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
+	public static final int MODULES = 104;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -94,6 +95,8 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
+			case MODULES:
+				return new ContainerGeneric(player.inventory, tile_entity);
 			default:
 				return null;
 		}
@@ -151,6 +154,10 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiDisguiseModule(player, player.inventory);
 			case BLOCK_REINFORCER:
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
+			case MODULES:
+				if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule)
+					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), tile_entity);
+				return null;
 			default:
 				return null;
 		}

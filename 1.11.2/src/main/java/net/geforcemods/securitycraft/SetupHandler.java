@@ -278,8 +278,8 @@ public class SetupHandler
 		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setUnlocalizedName("securitycraft:universalBlockModifier");
 
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module").setUnlocalizedName("securitycraft:redstoneModule");
-		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setRegistryName("whitelist_module").setUnlocalizedName("securitycraft:whitelistModule");
-		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true).setRegistryName("blacklist_module").setUnlocalizedName("securitycraft:blacklistModule");
+		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module").setUnlocalizedName("securitycraft:whitelistModule");
+		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module").setUnlocalizedName("securitycraft:blacklistModule");
 		SCContent.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setRegistryName("harming_module").setUnlocalizedName("securitycraft:harmingModule");
 		SCContent.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setRegistryName("smart_module").setUnlocalizedName("securitycraft:smartModule");
 		SCContent.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setRegistryName("storage_module").setUnlocalizedName("securitycraft:storageModule");

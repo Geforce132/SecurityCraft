@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+
+- New: Whitelist and Blacklist Modules can now be rightclicked to manage the players
+
 --------------------------Changelog for v1.8.8.1 of SecurityCraft--------------------------
 
 - Fix: Players can teleport to a Security Camera's position when logging out while viewing one

@@ -402,6 +402,12 @@ gui.securitycraft:universalKeyChanger.enterNewPasscode=Gib ein neues Passwort ei
 gui.securitycraft:universalKeyChanger.confirmNewPasscode=Gib es erneut ein:
 gui.securitycraft:universalKeyChanger.confirm=Bestätigen
 gui.securitycraft:blockReinforcer.title=Universeller Block Verstärker
+gui.securitycraft:editModule=Modul editieren
+gui.securitycraft:editModule.add=Hinzufügen
+gui.securitycraft:editModule.remove=Entfernen
+gui.securitycraft:editModule.copy=Liste kopieren
+gui.securitycraft:editModule.paste=Liste einfügen
+gui.securitycraft:editModule.clear=Liste leeren
 
 messages.securitycraft:bugReport=Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden
 messages.securitycraft:securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.
