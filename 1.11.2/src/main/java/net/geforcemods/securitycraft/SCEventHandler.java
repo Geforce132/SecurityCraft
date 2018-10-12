@@ -137,7 +137,7 @@ public class SCEventHandler {
 			return;
 
 		ItemStack result = fillBucket(event.getWorld(), event.getTarget().getBlockPos());
-		if(result == ItemStack.EMPTY)
+		if(result.isEmpty())
 			return;
 		event.setFilledBucket(result);
 		event.setResult(Result.ALLOW);

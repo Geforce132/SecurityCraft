@@ -319,7 +319,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	{
 		ItemStack stack = getDisguisedStack(world, pos);
 
-		return stack == ItemStack.EMPTY ? new ItemStack(this) : stack;
+		return stack.isEmpty() ? new ItemStack(this) : stack;
 	}
 
 	@Override
