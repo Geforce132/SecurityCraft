@@ -39,7 +39,7 @@ public class SecurityCraft {
 	private static final String MOTU = "Finally! Cameras!";
 	//********************************* This is v1.8.8.1 for MC 1.8!
 	protected static final String VERSION = "v1.8.8.1";
-	protected static final String DEPENDENCIES = "required-after:Forge@[11.14.3.1556,)";
+	protected static final String DEPENDENCIES = "required-after:Forge@[11.14.4.1563,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static ServerProxy serverProxy;

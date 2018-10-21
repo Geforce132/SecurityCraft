@@ -27,7 +27,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.8-11.14.3.1556"
+    version = "1.8-11.14.4.1563"
     runDir = "run"
     mappings = "stable_18"
 }
