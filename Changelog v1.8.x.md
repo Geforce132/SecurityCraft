@@ -1,7 +1,10 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
+**This version no longer supports 1.12 and 1.12.1**
+
 - New: Whitelist and Blacklist Modules can now be rightclicked to manage the players
 - New: The SC Manual now has a recipe (Book + Iron Bars)
+- Fix: [1.12.2] Crash when using a Forge version that is too old. Instead, the game will now notify the user to update their Forge version
 - Misc.: [1.7.10-1.8, 1.9.4-1.11.2]Using the recommended Forge build at minimum is now required
 
 --------------------------Changelog for v1.8.8.1 of SecurityCraft--------------------------
