@@ -103,6 +103,7 @@ public class RegistrationHandler
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
 	private static ArrayList<Item> itemBlocks = new ArrayList<Item>();
+	private static ArrayList<Block> blockPages = new ArrayList<Block>();
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -217,6 +218,15 @@ public class RegistrationHandler
 			event.getRegistry().register(item);
 		}
 
+		//init block sc manual pages
+		for(Block block : blockPages)
+		{
+			if(block == SCContent.reinforcedStone)
+				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
+			else
+				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info"));
+		}
+
 		registerItem(event, SCContent.codebreaker);
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
@@ -254,6 +264,9 @@ public class RegistrationHandler
 		registerItem(event, SCContent.secretSignItem);
 
 		SecurityCraft.serverProxy.registerVariants();
+		//clear unused memmory
+		itemBlocks.clear();
+		blockPages.clear();
 	}
 
 	@SubscribeEvent
@@ -650,10 +663,7 @@ public class RegistrationHandler
 			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
 		if(initPage)
-			if(block == SCContent.reinforcedStone)
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
-			else
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info"));
+			blockPages.add(block);
 	}
 
 	/**
