@@ -6,7 +6,10 @@
 - New: The SC Manual now has a recipe (Book + Iron Bars)
 - Fix: [1.12.2] Crash when using a Forge version that is too old. Instead, the game will now notify the user to update their Forge version
 - Fix: [1.12.2] Blocks do not show up correctly in the SC Manual (Thanks supercat95!)
-- Misc.: [1.7.10-1.8, 1.9.4-1.11.2] Using the recommended Forge build at minimum is now required
+- Misc.: [1.7.10,1.8,1.11.2] Using the recommended Forge build at minimum is now required
+- Misc.: [1.8.8/9] The minimum required Forge build is 11.15.0.1655
+- Misc.: [1.9.4] The minimum required Forge build is now 12.17.0.2051
+- Misc.: [1.12.2] The minimum required Forge build is now 14.23.3.2694
 
 --------------------------Changelog for v1.8.8.1 of SecurityCraft--------------------------
 
