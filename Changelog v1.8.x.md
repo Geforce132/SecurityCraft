@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
+- Fix: SecurityCraft blocks can be destroyed by the Wither
 - Fix: [1.8+] Right-clicking another player's chest with a Universal Block Remover/Modifier does not show a message
 
 --------------------------Changelog for v1.8.9 of SecurityCraft--------------------------

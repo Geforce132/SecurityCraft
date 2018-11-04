@@ -84,136 +84,136 @@ public class SetupHandler
 {
 	public static void setupBlocks()
 	{
-		SCContent.laserBlock = new BlockLaserBlock(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:laserBlock").setTextureName("securitycraft:laserBlock");
-		SCContent.laserField = new BlockLaserField(Material.rock).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:laser");
+		SCContent.laserBlock = new BlockLaserBlock(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:laserBlock").setTextureName("securitycraft:laserBlock");
+		SCContent.laserField = new BlockLaserField(Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:laser");
 
-		SCContent.keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypad");
+		SCContent.keypad = new BlockKeypad(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypad");
 
-		SCContent.retinalScanner = new BlockRetinalScanner(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:retinalScanner");
+		SCContent.retinalScanner = new BlockRetinalScanner(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:retinalScanner");
 
-		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:ironDoorReinforced");
+		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:ironDoorReinforced");
 
 		SCContent.bogusLava = new BlockFakeLavaBase(Material.lava).setHardness(100.0F).setLightLevel(1.0F).setUnlocalizedName("securitycraft:bogusLava").setTextureName("lava_still");
 		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.lava).setHardness(0.0F).setLightLevel(1.0F).setUnlocalizedName("securitycraft:bogusLavaFlowing").setTextureName("lava_flow");
 		SCContent.bogusWater = new BlockFakeWaterBase(Material.water).setHardness(100.0F).setUnlocalizedName("securitycraft:bogusWater").setTextureName("water_still");
 		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.water).setHardness(0.0F).setUnlocalizedName("securitycraft:bogusWaterFlowing").setTextureName("water_flow");
 
-		SCContent.keycardReader = new BlockKeycardReader(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keycardReader").setTextureName("securitycraft:keycardReader");
+		SCContent.keycardReader = new BlockKeycardReader(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keycardReader").setTextureName("securitycraft:keycardReader");
 
-		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:ironTrapdoor").setTextureName("securitycraft:ironTrapdoor");
+		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:ironTrapdoor").setTextureName("securitycraft:ironTrapdoor");
 
-		SCContent.inventoryScanner = new BlockInventoryScanner(Material.rock).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeStone).setUnlocalizedName("securitycraft:inventoryScanner");
-		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:inventoryScannerField");
+		SCContent.inventoryScanner = new BlockInventoryScanner(Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeStone).setUnlocalizedName("securitycraft:inventoryScanner");
+		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.glass).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:inventoryScannerField");
 
-		SCContent.cageTrap = new BlockCageTrap(Material.rock, false).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:cageTrap").setTextureName("securitycraft:reinforcedIronBars");
-		SCContent.deactivatedCageTrap = new BlockCageTrap(Material.rock, true).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:deactivatedCageTrap").setTextureName("iron_bars");
+		SCContent.cageTrap = new BlockCageTrap(Material.rock, false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:cageTrap").setTextureName("securitycraft:reinforcedIronBars");
+		SCContent.deactivatedCageTrap = new BlockCageTrap(Material.rock, true).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:deactivatedCageTrap").setTextureName("iron_bars");
 
-		SCContent.portableRadar = new BlockPortableRadar(Material.circuits).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:portableRadar");
+		SCContent.portableRadar = new BlockPortableRadar(Material.circuits).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:portableRadar");
 
-		SCContent.reinforcedIronBars = new BlockReinforcedIronBars("securitycraft:reinforcedIronBars", "securitycraft:reinforcedIronBars", Material.iron, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:reinforcedIronBars");
+		SCContent.reinforcedIronBars = new BlockReinforcedIronBars("securitycraft:reinforcedIronBars", "securitycraft:reinforcedIronBars", Material.iron, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:reinforcedIronBars");
 
-		SCContent.keypadChest = new BlockKeypadChest(0).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypadChest");
+		SCContent.keypadChest = new BlockKeypadChest(0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypadChest");
 
-		SCContent.usernameLogger = new BlockLogger(Material.rock).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:usernameLogger").setTextureName("securitycraft:usernameLogger");
+		SCContent.usernameLogger = new BlockLogger(Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:usernameLogger").setTextureName("securitycraft:usernameLogger");
 
-		SCContent.reinforcedGlassPane = new BlockReinforcedGlassPane("securitycraft:glass_reinforced", "glass_pane_top", Material.iron, true).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlass");
+		SCContent.reinforcedGlassPane = new BlockReinforcedGlassPane("securitycraft:glass_reinforced", "glass_pane_top", Material.iron, true).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlass");
 
-		SCContent.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:alarm").setTextureName("securitycraft:alarmParticleTexture");
-		SCContent.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setUnlocalizedName("securitycraft:alarmLit");
+		SCContent.alarm = new BlockAlarm(Material.iron, false).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:alarm").setTextureName("securitycraft:alarmParticleTexture");
+		SCContent.alarmLit = new BlockAlarm(Material.iron, true).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setUnlocalizedName("securitycraft:alarmLit");
 
-		SCContent.reinforcedStone = new BlockReinforcedBase(Material.rock, 1, Blocks.stone).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStone").setTextureName("securitycraft:reinforcedStone");
+		SCContent.reinforcedStone = new BlockReinforcedBase(Material.rock, 1, Blocks.stone).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStone").setTextureName("securitycraft:reinforcedStone");
 
-		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedFenceGate");
+		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedFenceGate");
 
-		SCContent.reinforcedWoodPlanks = new BlockReinforcedWood(Material.wood).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedPlanks").setTextureName("securitycraft:reinforcedPlanks");
+		SCContent.reinforcedWoodPlanks = new BlockReinforcedWood(Material.wood).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedPlanks").setTextureName("securitycraft:reinforcedPlanks");
 
-		SCContent.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:panicButton");
+		SCContent.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:panicButton");
 
-		SCContent.frame = new BlockFrame(Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypadFrame").setTextureName("iron_block");
+		SCContent.frame = new BlockFrame(Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:keypadFrame").setTextureName("iron_block");
 
-		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:keypadFurnace").setTextureName("securitycraft:keypadUnactive");
+		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:keypadFurnace").setTextureName("securitycraft:keypadUnactive");
 
-		SCContent.securityCamera = new BlockSecurityCamera(Material.iron).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:securityCamera").setTextureName("securitycraft:securityCameraParticleTexture");
+		SCContent.securityCamera = new BlockSecurityCamera(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:securityCamera").setTextureName("securitycraft:securityCameraParticleTexture");
 
-		SCContent.reinforcedStairsOak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsOak");
-		SCContent.reinforcedStairsSpruce = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsSpruce");
-		SCContent.reinforcedStairsBirch = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsBirch");
-		SCContent.reinforcedStairsJungle = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsJungle");
-		SCContent.reinforcedStairsAcacia = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsAcacia");
-		SCContent.reinforcedStairsDarkoak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsDarkoak");
-		SCContent.reinforcedStairsStone = new BlockReinforcedStairs(SCContent.reinforcedStone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsStone");
+		SCContent.reinforcedStairsOak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsOak");
+		SCContent.reinforcedStairsSpruce = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsSpruce");
+		SCContent.reinforcedStairsBirch = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsBirch");
+		SCContent.reinforcedStairsJungle = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsJungle");
+		SCContent.reinforcedStairsAcacia = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsAcacia");
+		SCContent.reinforcedStairsDarkoak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsDarkoak");
+		SCContent.reinforcedStairsStone = new BlockReinforcedStairs(SCContent.reinforcedStone, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsStone");
 
-		SCContent.ironFence = new BlockIronFence("securitycraft:reinforcedDoorLower", Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:scIronFence");
+		SCContent.ironFence = new BlockIronFence("securitycraft:reinforcedDoorLower", Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:scIronFence");
 
-		SCContent.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlassBlock");
-		SCContent.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedGlass").setTextureName("securitycraft:glass_reinforced");
-		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedGlassPanes").setTextureName("securitycraft:glass_reinforced");
+		SCContent.reinforcedGlass = new BlockReinforcedGlass(Material.glass).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlassBlock");
+		SCContent.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.glass).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedGlass").setTextureName("securitycraft:glass_reinforced");
+		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedGlassPanes").setTextureName("securitycraft:glass_reinforced");
 
-		SCContent.reinforcedDirt = new BlockReinforcedBase(Material.ground, 1, Blocks.dirt).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeGravel).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedDirt").setTextureName("securitycraft:reinforcedDirt");
+		SCContent.reinforcedDirt = new BlockReinforcedBase(Material.ground, 1, Blocks.dirt).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGravel).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedDirt").setTextureName("securitycraft:reinforcedDirt");
 
-		SCContent.reinforcedCobblestone = new BlockReinforcedBase(Material.rock, 1, Blocks.cobblestone).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCobblestone").setTextureName("securitycraft:reinforcedCobblestone");
-		SCContent.reinforcedStairsCobblestone = new BlockReinforcedStairs(SCContent.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsCobblestone");
+		SCContent.reinforcedCobblestone = new BlockReinforcedBase(Material.rock, 1, Blocks.cobblestone).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCobblestone").setTextureName("securitycraft:reinforcedCobblestone");
+		SCContent.reinforcedStairsCobblestone = new BlockReinforcedStairs(SCContent.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsCobblestone");
 
-		SCContent.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedSandstone").setTextureName("securitycraft:reinforcedSandstone");
-		SCContent.reinforcedStairsSandstone = new BlockReinforcedStairs(SCContent.reinforcedSandstone, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsSandstone");
+		SCContent.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedSandstone").setTextureName("securitycraft:reinforcedSandstone");
+		SCContent.reinforcedStairsSandstone = new BlockReinforcedStairs(SCContent.reinforcedSandstone, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsSandstone");
 
-		SCContent.reinforcedWoodSlabs = new BlockReinforcedWoodSlabs(false).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedWoodSlabs");
-		SCContent.reinforcedDoubleWoodSlabs = new BlockReinforcedWoodSlabs(true).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeWood).setUnlocalizedName("securitycraft:reinforcedDoubleWoodSlabs");
-		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStoneSlabs");
-		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.rock).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setUnlocalizedName("securitycraft:reinforcedDoubleStoneSlabs");
-		SCContent.reinforcedDirtSlab = new BlockReinforcedSlabs(false, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedDirtSlab");
-		SCContent.reinforcedDoubleDirtSlab = new BlockReinforcedSlabs(true, Material.ground).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGravel).setUnlocalizedName("securitycraft:reinforcedDoubleDirtSlab");
+		SCContent.reinforcedWoodSlabs = new BlockReinforcedWoodSlabs(false).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedWoodSlabs");
+		SCContent.reinforcedDoubleWoodSlabs = new BlockReinforcedWoodSlabs(true).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setUnlocalizedName("securitycraft:reinforcedDoubleWoodSlabs");
+		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStoneSlabs");
+		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setUnlocalizedName("securitycraft:reinforcedDoubleStoneSlabs");
+		SCContent.reinforcedDirtSlab = new BlockReinforcedSlabs(false, Material.ground).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGravel).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedDirtSlab");
+		SCContent.reinforcedDoubleDirtSlab = new BlockReinforcedSlabs(true, Material.ground).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("securitycraft:reinforcedDoubleDirtSlab");
 
-		SCContent.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:protecto").setTextureName("securitycraft:protectoParticleTexture");
+		SCContent.protecto = new BlockProtecto(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:protecto").setTextureName("securitycraft:protectoParticleTexture");
 
-		SCContent.scannerDoor = new BlockScannerDoor(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:scannerDoor");
+		SCContent.scannerDoor = new BlockScannerDoor(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setUnlocalizedName("securitycraft:scannerDoor");
 
-		SCContent.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStoneBrick").setTextureName("securitycraft:reinforcedStoneBrick");
-		SCContent.reinforcedStairsStoneBrick = new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsStoneBrick");
+		SCContent.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStoneBrick").setTextureName("securitycraft:reinforcedStoneBrick");
+		SCContent.reinforcedStairsStoneBrick = new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsStoneBrick");
 
-		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.rock, 1, Blocks.mossy_cobblestone).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedMossyCobblestone").setTextureName("securitycraft:reinforcedMossyCobblestone");
+		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.rock, 1, Blocks.mossy_cobblestone).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedMossyCobblestone").setTextureName("securitycraft:reinforcedMossyCobblestone");
 
-		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.rock, 1, Blocks.brick_block).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedBrick").setTextureName("securitycraft:reinforcedBrick");
-		SCContent.reinforcedStairsBrick = new BlockReinforcedStairs(SCContent.reinforcedBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsBrick");
+		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.rock, 1, Blocks.brick_block).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedBrick").setTextureName("securitycraft:reinforcedBrick");
+		SCContent.reinforcedStairsBrick = new BlockReinforcedStairs(SCContent.reinforcedBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsBrick");
 
-		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.rock, 1, Blocks.nether_brick).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedNetherBrick").setTextureName("securitycraft:reinforcedNetherBrick");
-		SCContent.reinforcedStairsNetherBrick = new BlockReinforcedStairs(SCContent.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsNetherBrick");
+		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.rock, 1, Blocks.nether_brick).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedNetherBrick").setTextureName("securitycraft:reinforcedNetherBrick");
+		SCContent.reinforcedStairsNetherBrick = new BlockReinforcedStairs(SCContent.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsNetherBrick");
 
-		SCContent.reinforcedHardenedClay = new BlockReinforcedBase(Material.rock, 1, Blocks.hardened_clay).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedHardenedClay").setTextureName("securitycraft:reinforcedHardenedClay");
-		SCContent.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedHardenedClay").setTextureName("securitycraft:reinforcedStainedHardenedClay");
+		SCContent.reinforcedHardenedClay = new BlockReinforcedBase(Material.rock, 1, Blocks.hardened_clay).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedHardenedClay").setTextureName("securitycraft:reinforcedHardenedClay");
+		SCContent.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStainedHardenedClay").setTextureName("securitycraft:reinforcedStainedHardenedClay");
 
-		SCContent.reinforcedOldLogs = new BlockReinforcedOldLog().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedLogs").setTextureName("securitycraft:reinforcedLogs");
-		SCContent.reinforcedNewLogs = new BlockReinforcedNewLog().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedLogs2").setTextureName("securitycraft:reinforcedLogs2");
+		SCContent.reinforcedOldLogs = new BlockReinforcedOldLog().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedLogs").setTextureName("securitycraft:reinforcedLogs");
+		SCContent.reinforcedNewLogs = new BlockReinforcedNewLog().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeWood).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedLogs2").setTextureName("securitycraft:reinforcedLogs2");
 
-		SCContent.reinforcedMetals = new BlockReinforcedMetals().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedMetals").setTextureName("securitycraft:reinforcedMetals");
-		SCContent.reinforcedCompressedBlocks = new BlockReinforcedCompressedBlocks().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCompressedBlocks").setTextureName("securitycraft:reinforcedCompressedBlocks");
+		SCContent.reinforcedMetals = new BlockReinforcedMetals().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedMetals").setTextureName("securitycraft:reinforcedMetals");
+		SCContent.reinforcedCompressedBlocks = new BlockReinforcedCompressedBlocks().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCompressedBlocks").setTextureName("securitycraft:reinforcedCompressedBlocks");
 
-		SCContent.reinforcedWool = new BlockReinforcedWool().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeCloth).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedWool").setTextureName("securitycraft:reinforcedWool");
+		SCContent.reinforcedWool = new BlockReinforcedWool().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeCloth).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedWool").setTextureName("securitycraft:reinforcedWool");
 
-		SCContent.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypePiston/*?!?!?!?*/).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedQuartz").setTextureName("securitycraft:reinforcedQuartz");
-		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsQuartz");
+		SCContent.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypePiston/*?!?!?!?*/).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedQuartz").setTextureName("securitycraft:reinforcedQuartz");
+		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypePiston).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsQuartz");
 
-		SCContent.secretSignStanding = new BlockSecretSign(true).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:secretSign");
-		SCContent.secretSignWall = new BlockSecretSign(false).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:secretSign");
+		SCContent.secretSignStanding = new BlockSecretSign(true).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:secretSign");
+		SCContent.secretSignWall = new BlockSecretSign(false).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:secretSign");
 
-		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setUnlocalizedName("securitycraft:motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical).setTextureName("securitycraft:motion_activated_light_particles");
-		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(1000F).setLightLevel(1.0F).setUnlocalizedName("securitycraft:motionActivatedLightOn").setStepSound(Block.soundTypeGlass).setTextureName("securitycraft:motion_activated_light_particles");
+		SCContent.motionActivatedLightOff = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:motionActivatedLightOff").setStepSound(Block.soundTypeGlass).setCreativeTab(SecurityCraft.tabSCTechnical).setTextureName("securitycraft:motion_activated_light_particles");
+		SCContent.motionActivatedLightOn = new BlockMotionActivatedLight(Material.glass).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(1.0F).setUnlocalizedName("securitycraft:motionActivatedLightOn").setStepSound(Block.soundTypeGlass).setTextureName("securitycraft:motion_activated_light_particles");
 
-		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.rock, 1, Blocks.obsidian).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedObsidian");
+		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.rock, 1, Blocks.obsidian).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedObsidian");
 
-		SCContent.reinforcedNetherrack = new BlockReinforcedBase(Material.rock, 1, Blocks.netherrack).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedNetherrack");
+		SCContent.reinforcedNetherrack = new BlockReinforcedBase(Material.rock, 1, Blocks.netherrack).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedNetherrack");
 
-		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.rock, 1, Blocks.end_stone).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedEndStone");
+		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.rock, 1, Blocks.end_stone).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeStone).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedEndStone");
 
-		SCContent.reinforcedCarpet = new BlockReinforcedCarpet().setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeCloth).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCarpet");
+		SCContent.reinforcedCarpet = new BlockReinforcedCarpet().setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeCloth).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCarpet");
 
-		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.glass, 1, Blocks.glowstone).setBlockUnbreakable().setResistance(1000).setStepSound(Block.soundTypeGlass).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlowstone");
+		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.glass, 1, Blocks.glowstone).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeGlass).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedGlowstone");
 	}
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.circuits, false).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:mine");
-		SCContent.mineCut = (BlockMine) new BlockMine(Material.circuits, true).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setUnlocalizedName("securitycraft:mineCut");
+		SCContent.mine = (BlockMine) new BlockMine(Material.circuits, false).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:mine");
+		SCContent.mineCut = (BlockMine) new BlockMine(Material.circuits, true).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setUnlocalizedName("securitycraft:mineCut");
 
 		SCContent.dirtMine = new BlockFullMineBase(Material.ground, Blocks.dirt).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1.25F).setStepSound(Block.soundTypeGravel).setUnlocalizedName("securitycraft:dirtMine").setTextureName("dirt");
 		SCContent.stoneMine = new BlockFullMineBase(Material.rock, Blocks.stone).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 2.5F).setStepSound(Block.soundTypeStone).setUnlocalizedName("securitycraft:stoneMine").setTextureName("stone");
@@ -225,12 +225,12 @@ public class SetupHandler
 
 		SCContent.trackMine = new BlockTrackMine().setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 0.7F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:trackMine").setTextureName("securitycraft:rail_mine");
 
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.circuits).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:bouncingBetty");
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.circuits).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:bouncingBetty");
 
-		SCContent.claymoreActive = new BlockClaymore(Material.circuits, true).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:claymoreActive").setTextureName("securitycraft:claymore");
-		SCContent.claymoreDefused = new BlockClaymore(Material.circuits, false).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(3F).setUnlocalizedName("securitycraft:claymoreDefused").setTextureName("securitycraft:claymore");
+		SCContent.claymoreActive = new BlockClaymore(Material.circuits, true).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:claymoreActive").setTextureName("securitycraft:claymore");
+		SCContent.claymoreDefused = new BlockClaymore(Material.circuits, false).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setUnlocalizedName("securitycraft:claymoreDefused").setTextureName("securitycraft:claymore");
 
-		SCContent.ims = new BlockIMS(Material.iron).setBlockUnbreakable().setResistance(1000F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:ims").setTextureName("securitycraft:ims");
+		SCContent.ims = new BlockIMS(Material.iron).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(Block.soundTypeMetal).setCreativeTab(SecurityCraft.tabSCMine).setUnlocalizedName("securitycraft:ims").setTextureName("securitycraft:ims");
 	}
 
 	public static void setupItems()
