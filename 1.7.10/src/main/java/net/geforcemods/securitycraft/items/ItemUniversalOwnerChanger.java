@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -49,22 +52,36 @@ public class ItemUniversalOwnerChanger extends Item
 
 		if(!world.isRemote)
 		{
-			if(!stack.hasDisplayName())
-			{
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:universalOwnerChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalOwnerChanger.noName"), EnumChatFormatting.RED);
-				return false;
-			}
-
 			if(!(te instanceof IOwnable))
 			{
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:universalOwnerChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalOwnerChanger.cantChange"), EnumChatFormatting.RED);
 				return false;
 			}
 
-			if(!((IOwnable)te).getOwner().isOwner(player))
+			Owner owner = ((IOwnable)te).getOwner();
+			boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+
+			if(!owner.isOwner(player) && !isDefault)
 			{
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:universalOwnerChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalOwnerChanger.notOwned"), EnumChatFormatting.RED);
 				return false;
+			}
+
+			if(!stack.hasDisplayName() && !isDefault)
+			{
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:universalOwnerChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalOwnerChanger.noName"), EnumChatFormatting.RED);
+				return false;
+			}
+
+			if(isDefault)
+			{
+				if(SecurityCraft.config.allowBlockClaim)
+					newOwner = player.getCommandSenderName();
+				else
+				{
+					PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("item.securitycraft:universalOwnerChanger.name"), StatCollector.translateToLocal("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), EnumChatFormatting.RED);
+					return false;
+				}
 			}
 
 			boolean door = false;

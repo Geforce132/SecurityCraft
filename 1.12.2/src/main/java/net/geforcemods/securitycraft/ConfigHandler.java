@@ -119,4 +119,8 @@ public class ConfigHandler
 	@Name("Is debug mode? (not recommended!)")
 	@LangKey("config.securitycraft:debuggingMode")
 	public static boolean debug = false;
+
+	@Name("Allow claiming unowned blocks?")
+	@LangKey("config.securitycraft:allowBlockClaim")
+	public static boolean allowBlockClaim = false;
 }

@@ -32,6 +32,7 @@ public class ConfigHandler
 	public float cameraSpeed;
 	public int inventoryScannerRange;
 	public double motionActivatedLightSearchRadius;
+	public boolean allowBlockClaim;
 
 	public void setupConfiguration()
 	{
@@ -154,6 +155,10 @@ public class ConfigHandler
 		dummyProp = SecurityCraft.configFile.get("options", "Motion-activated light range:", 5);
 		dummyProp.setLanguageKey("config.securitycraft:motionLightSearchRadius");
 		motionActivatedLightSearchRadius = dummyProp.getDouble(5.0D);
+
+		dummyProp = SecurityCraft.configFile.get("options", "Allow claiming unowned blocks?", false);
+		dummyProp.setLanguageKey("config.securitycraft:allowBlockClaim");
+		allowBlockClaim = dummyProp.getBoolean(false);
 
 		if(SecurityCraft.configFile.hasChanged())
 			SecurityCraft.configFile.save();

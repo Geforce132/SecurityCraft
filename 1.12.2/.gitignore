@@ -19,3 +19,5 @@
 /run/
 /out/
 gradle.properties
+
+/src/
