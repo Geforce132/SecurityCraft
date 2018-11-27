@@ -251,10 +251,10 @@ death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
 death.attack.securitycraft.electricity=%s was electrocuted.
 
 key.categories.securitycraft=SecurityCraft
-key.securitycraft:cameraActivateNightVision=Toggle Night Vision
-key.securitycraft:cameraEmitRedstone=Toggle Redstone Output
-key.securitycraft:cameraZoomIn=Zoom In
-key.securitycraft:cameraZoomOut=Zoom Out
+key.cameraActivateNightVision=Toggle Night Vision
+key.cameraEmitRedstone=Toggle Redstone Output
+key.cameraZoomIn=Zoom In
+key.cameraZoomOut=Zoom Out
 
 help.securitycraft:laserBlock.info=The laser block is used by putting two of them within five blocks of each other. When the blocks are placed correctly, a laser should form between them. Whenever a player walks through the laser, both the laser blocks will emit a 15-block redstone signal.
 help.securitycraft:keypad.info=The keypad is used by placing the keypad, rightclicking it, and setting a numerical passcode. Once the keycode is set, rightclicking the keypad will allow you to enter the code. If it's correct, the keypad will emit redstone power for three seconds.

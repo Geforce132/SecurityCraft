@@ -251,10 +251,10 @@ death.attack.securitycraft.fakeWater=%s fiel in giftiges Wasser...?
 death.attack.securitycraft.electricity=%s erlitt einen Stromschlag.
 
 key.categories.securitycraft=SecurityCraft
-key.securitycraft:cameraActivateNightVision=Nachtsicht
-key.securitycraft:cameraEmitRedstone=Redstone Output
-key.securitycraft:cameraZoomIn=Reinzoomen
-key.securitycraft:cameraZoomOut=Rauszoomen
+key.cameraActivateNightVision=Nachtsicht
+key.cameraEmitRedstone=Redstone Output
+key.cameraZoomIn=Reinzoomen
+key.cameraZoomOut=Rauszoomen
 
 help.securitycraft:laserBlock.info=Der Laser wird aktiviert in dem man 2 Laserblöcke innerhalb 5 Blöcke Abstand hinsetzt. Ein Laser sollte nun erscheinen. Sobald ein Spieler durchläuft, geben beide Blöcke ein 15 Block langes Redstonesignal ab.
 help.securitycraft:keypad.info=Das Nummernschloss wird verwendet, in dem man es durch Rechtsklicken aktiviert und einen numerischen Code eingibt. Sobald dies getan wurde fragt das Nummernschloss durch erneutes Rechtsklicken nach dem Code. Wenn er korrekt ist, gibt es ein 3 sekündiges Redstonesignal ab.

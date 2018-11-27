@@ -3,6 +3,8 @@
 - New: There is now a config option to allow players to claim blocks that do not have an owner. Only block with the owner "owner" and uuid "ownerUUID" will work (check with the Admin Tool)
 - Fix: SecurityCraft blocks can be destroyed by the Wither
 - Fix: Typo in German localization
+- Fix: Keybind localization does not work
+- Fix: [1.7.10] "Illegal extra prefix" errors
 - Fix: [1.8+] Right-clicking another player's chest with a Universal Block Remover/Modifier does not show a message
 
 --------------------------Changelog for v1.8.9 of SecurityCraft--------------------------
