@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -25,7 +23,7 @@ public class Owner {
 		}
 
 		@Override
-		public Owner read(PacketBuffer buf) throws IOException
+		public Owner read(PacketBuffer buf)
 		{
 			String name = ByteBufUtils.readUTF8String(buf);
 			String uuid = ByteBufUtils.readUTF8String(buf);
