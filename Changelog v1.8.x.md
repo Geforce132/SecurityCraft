@@ -1,6 +1,6 @@
---------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
 
-- New: There is now a config option to allow players to claim blocks that do not have an owner. Only block with the owner "owner" and uuid "ownerUUID" will work (check with the Admin Tool)
+- New: Config option to allow players to claim blocks that do not have an owner. Only blocks with the owner "owner" and uuid "ownerUUID" will work (check with the Admin Tool)
 - Fix: SecurityCraft blocks can be destroyed by the Wither
 - Fix: Typo in German localization
 - Fix: Keybind localization does not work

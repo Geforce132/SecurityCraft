@@ -45,8 +45,8 @@ public class SecurityCraft
 	public static boolean debug;
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
-	//********************************* This is v1.8.9 for MC 1.7.10!
-	protected static final String VERSION = "v1.8.9";
+	//********************************* This is v1.8.10 for MC 1.7.10!
+	protected static final String VERSION = "v1.8.10";
 	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.4.1558,);after:LookingGlass@[0.2.0.01,);";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static ServerProxy serverProxy;
