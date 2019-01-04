@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.lookingglass.IWorldViewHelper;
@@ -33,6 +35,8 @@ import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
+import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -135,6 +139,20 @@ public class SecurityCraft
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
+
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		log("Mod finished loading correctly! :D");
 	}
 

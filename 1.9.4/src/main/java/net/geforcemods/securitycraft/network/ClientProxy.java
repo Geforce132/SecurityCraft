@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.network;
 
+import java.lang.reflect.Field;
+
 import net.geforcemods.securitycraft.RegistrationHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -15,6 +17,7 @@ import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
@@ -275,61 +278,24 @@ public class ClientProxy extends ServerProxy{
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
 
-		Block[] blocksToTint = {
-				SCContent.reinforcedBrick,
-				SCContent.reinforcedCarpet,
-				SCContent.reinforcedCobblestone,
-				SCContent.reinforcedCompressedBlocks,
-				SCContent.reinforcedDirt,
-				SCContent.reinforcedDoubleStoneSlabs,
-				SCContent.reinforcedDoubleStoneSlabs2,
-				SCContent.reinforcedDoubleWoodSlabs,
-				SCContent.reinforcedEndStone,
-				SCContent.reinforcedEndStoneBricks,
-				SCContent.reinforcedGlowstone,
-				SCContent.reinforcedGravel,
-				SCContent.reinforcedHardenedClay,
-				SCContent.reinforcedMetals,
-				SCContent.reinforcedMossyCobblestone,
-				SCContent.reinforcedNetherBrick,
-				SCContent.reinforcedNetherrack,
-				SCContent.reinforcedNewLogs,
-				SCContent.reinforcedObsidian,
-				SCContent.reinforcedOldLogs,
-				SCContent.reinforcedPrismarine,
-				SCContent.reinforcedPurpur,
-				SCContent.reinforcedQuartz,
-				SCContent.reinforcedRedSandstone,
-				SCContent.reinforcedSand,
-				SCContent.reinforcedSandstone,
-				SCContent.reinforcedSeaLantern,
-				SCContent.reinforcedStainedHardenedClay,
-				SCContent.reinforcedStairsAcacia,
-				SCContent.reinforcedStairsBirch,
-				SCContent.reinforcedStairsBrick,
-				SCContent.reinforcedStairsCobblestone,
-				SCContent.reinforcedStairsDarkoak,
-				SCContent.reinforcedStairsJungle,
-				SCContent.reinforcedStairsNetherBrick,
-				SCContent.reinforcedStairsOak,
-				SCContent.reinforcedStairsPurpur,
-				SCContent.reinforcedStairsQuartz,
-				SCContent.reinforcedStairsRedSandstone,
-				SCContent.reinforcedStairsSandstone,
-				SCContent.reinforcedStairsSpruce,
-				SCContent.reinforcedStairsStone,
-				SCContent.reinforcedStairsStoneBrick,
-				SCContent.reinforcedStone,
-				SCContent.reinforcedStoneBrick,
-				SCContent.reinforcedStoneSlabs,
-				SCContent.reinforcedStoneSlabs2,
-				SCContent.reinforcedWoodPlanks,
-				SCContent.reinforcedWoodSlabs,
-				SCContent.reinforcedWool
-		};
-		//registering reinforced blocks color overlay for world
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x999999, blocksToTint);
-		//same thing for inventory
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> 0x999999, blocksToTint);
+		for(Field field : SCContent.class.getFields())
+		{
+			if(field.isAnnotationPresent(Tinted.class))
+			{
+				int tint = field.getAnnotation(Tinted.class).tint();
+
+				try
+				{
+					//registering reinforced blocks color overlay for world
+					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
+					//same thing for inventory
+					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> tint, (Block)field.get(null));
+				}
+				catch(IllegalArgumentException | IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }

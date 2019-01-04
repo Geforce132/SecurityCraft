@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
@@ -14,6 +16,8 @@ import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
+import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
@@ -119,6 +123,20 @@ public class SecurityCraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
+
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		log("Mod finished loading correctly! :D");
 	}
 
