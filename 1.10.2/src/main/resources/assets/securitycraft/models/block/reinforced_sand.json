@@ -1,0 +1,6 @@
+{
+    "parent": "securitycraft:block/reinforcedBlock_all",
+    "textures": {
+        "all": "blocks/sand"
+    }
+}

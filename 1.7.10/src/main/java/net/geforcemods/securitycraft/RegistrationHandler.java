@@ -176,6 +176,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedCarpet, ItemBlockReinforcedColoredBlock.class);
 		registerReinforcedBlock(SCContent.reinforcedGlowstone);
 		GameRegistry.registerBlock(SCContent.gravelMine, SCContent.gravelMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerReinforcedBlock(SCContent.reinforcedSand);
+		registerReinforcedBlock(SCContent.reinforcedGravel);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5).replace("securitycraft:", ""));

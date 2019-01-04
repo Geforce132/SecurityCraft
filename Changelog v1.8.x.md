@@ -1,5 +1,10 @@
 --------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
 
+- New: Reinforced Gravel
+- New: Reinforced Sand
+
+--------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
+
 - New: Config option to allow players to claim blocks that do not have an owner. Only blocks with the owner "owner" and uuid "ownerUUID" will work (check with the Admin Tool)
 - Fix: SecurityCraft blocks can be destroyed by the Wither
 - Fix: Typo in German localization

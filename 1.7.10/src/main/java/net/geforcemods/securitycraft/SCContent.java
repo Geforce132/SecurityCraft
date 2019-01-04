@@ -56,6 +56,7 @@ public class SCContent
 	public static Block reinforcedGlass;
 	public static Block reinforcedGlassPane;
 	public static Block reinforcedGlowstone;
+	public static Block reinforcedGravel;
 	public static Block reinforcedHardenedClay;
 	public static Block reinforcedIronBars;
 	public static Block reinforcedMetals;
@@ -66,6 +67,7 @@ public class SCContent
 	public static Block reinforcedObsidian;
 	public static Block reinforcedOldLogs;
 	public static Block reinforcedQuartz;
+	public static Block reinforcedSand;
 	public static Block reinforcedSandstone;
 	public static Block reinforcedStainedGlass;
 	public static Block reinforcedStainedGlassPanes;
