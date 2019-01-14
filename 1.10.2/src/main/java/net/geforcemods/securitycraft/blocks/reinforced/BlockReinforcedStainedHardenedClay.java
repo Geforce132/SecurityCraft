@@ -13,11 +13,14 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedStainedHardenedClay extends BlockColored implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
@@ -25,6 +28,12 @@ public class BlockReinforcedStainedHardenedClay extends BlockColored implements 
 	public BlockReinforcedStainedHardenedClay()
 	{
 		super(Material.ROCK);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

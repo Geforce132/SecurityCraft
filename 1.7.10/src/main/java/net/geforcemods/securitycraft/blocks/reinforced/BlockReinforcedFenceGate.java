@@ -16,12 +16,14 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider {
@@ -29,6 +31,12 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	public BlockReinforcedFenceGate(){
 		super();
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.iron, 34);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	/**

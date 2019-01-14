@@ -9,6 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,12 @@ public class BlockReinforcedQuartz extends BlockQuartz implements ITileEntityPro
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

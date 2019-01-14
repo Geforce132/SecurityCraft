@@ -12,13 +12,16 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock {
@@ -26,6 +29,12 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	public BlockReinforcedWood(){
 		super();
 		setSoundType(SoundType.WOOD);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

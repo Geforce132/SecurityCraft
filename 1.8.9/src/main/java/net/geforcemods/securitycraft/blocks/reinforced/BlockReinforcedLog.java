@@ -6,9 +6,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedLog extends BlockOwnable
@@ -18,6 +21,12 @@ public class BlockReinforcedLog extends BlockOwnable
 	protected BlockReinforcedLog()
 	{
 		super(Material.wood, true);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

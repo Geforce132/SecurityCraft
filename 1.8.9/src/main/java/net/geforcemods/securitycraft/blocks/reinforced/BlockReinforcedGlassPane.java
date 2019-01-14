@@ -10,10 +10,13 @@ import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,6 +27,12 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	public BlockReinforcedGlassPane(Material material, boolean canDrop) {
 		super(material, canDrop);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 26);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

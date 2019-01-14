@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -11,13 +12,15 @@ import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import java.util.Arrays;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
 {
@@ -25,6 +28,12 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	{
 		super();
 		setSoundType(SoundType.CLOTH);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

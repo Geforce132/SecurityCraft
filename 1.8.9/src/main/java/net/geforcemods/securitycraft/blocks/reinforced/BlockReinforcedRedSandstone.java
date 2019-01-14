@@ -8,7 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -22,6 +24,12 @@ public class BlockReinforcedRedSandstone extends BlockRedSandstone implements IT
 
 	public BlockReinforcedRedSandstone(){
 		super();
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

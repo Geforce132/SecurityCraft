@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +28,12 @@ public class BlockReinforcedStone extends BlockStone implements ITileEntityProvi
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityOwnable();
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

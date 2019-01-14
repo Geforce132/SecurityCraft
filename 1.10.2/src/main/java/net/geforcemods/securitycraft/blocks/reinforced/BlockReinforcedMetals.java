@@ -15,6 +15,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,6 +36,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.GOLD));
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	/**

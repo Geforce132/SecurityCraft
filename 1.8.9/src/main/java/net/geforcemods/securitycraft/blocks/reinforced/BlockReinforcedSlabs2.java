@@ -13,6 +13,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,6 +40,12 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 			useNeighborBrightness = true;
 
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs2.EnumType.RED_SANDSTONE));
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

@@ -12,9 +12,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
@@ -22,6 +25,12 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	public BlockReinforcedGlassPane(String frontIcon, String sideIcon, Material material, boolean drop) {
 		super(frontIcon, sideIcon, material, drop);
 		ReflectionHelper.setPrivateValue(Block.class, this, true, 25);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	/**

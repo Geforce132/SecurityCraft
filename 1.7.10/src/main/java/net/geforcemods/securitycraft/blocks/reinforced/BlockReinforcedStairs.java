@@ -6,6 +6,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -15,6 +17,12 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 	public BlockReinforcedStairs(Block block, int meta) {
 		super(block, meta);
 		useNeighborBrightness = true;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

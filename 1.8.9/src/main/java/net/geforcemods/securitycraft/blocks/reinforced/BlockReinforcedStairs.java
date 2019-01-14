@@ -5,6 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +19,12 @@ public class BlockReinforcedStairs extends BlockStairs implements ITileEntityPro
 	public BlockReinforcedStairs(Block baseBlock, int meta) {
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
 		useNeighborBrightness = true;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

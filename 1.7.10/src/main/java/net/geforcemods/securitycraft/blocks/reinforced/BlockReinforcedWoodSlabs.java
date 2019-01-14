@@ -12,6 +12,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,6 +30,12 @@ public class BlockReinforcedWoodSlabs extends BlockSlab implements ITileEntityPr
 
 		if(!isDouble)
 			useNeighborBrightness = true;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	/**

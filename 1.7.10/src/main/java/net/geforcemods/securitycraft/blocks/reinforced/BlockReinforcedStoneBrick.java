@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +22,12 @@ public class BlockReinforcedStoneBrick extends BlockOwnable implements IReinforc
 	public BlockReinforcedStoneBrick()
 	{
 		super(Material.rock);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

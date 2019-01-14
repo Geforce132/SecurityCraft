@@ -12,9 +12,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
@@ -22,6 +25,12 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	public BlockReinforcedIronBars(String frontIcon, String sideIcon, Material material, boolean drop) {
 		super(frontIcon, sideIcon, material, drop);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Block.soundTypeMetal, 32);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

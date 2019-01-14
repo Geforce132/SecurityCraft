@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,14 +13,16 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import java.util.Arrays;
 
 public class BlockReinforcedStainedGlass extends BlockBreakable implements ITileEntityProvider, IReinforcedBlock {
 
@@ -27,6 +30,12 @@ public class BlockReinforcedStainedGlass extends BlockBreakable implements ITile
 
 	public BlockReinforcedStainedGlass(Material material) {
 		super("glass", material, false);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

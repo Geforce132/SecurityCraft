@@ -10,6 +10,8 @@ import net.minecraft.block.BlockColored;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -24,6 +26,12 @@ public class BlockReinforcedWool extends BlockColored implements ITileEntityProv
 	public BlockReinforcedWool()
 	{
 		super(Material.cloth);
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

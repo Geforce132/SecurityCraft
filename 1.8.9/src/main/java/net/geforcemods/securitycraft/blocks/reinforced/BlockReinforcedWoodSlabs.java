@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -27,6 +29,12 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 
 		if(!isDouble())
 			useNeighborBrightness = true;
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

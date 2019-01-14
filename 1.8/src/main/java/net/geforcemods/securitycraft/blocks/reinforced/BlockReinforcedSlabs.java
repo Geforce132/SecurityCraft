@@ -13,6 +13,8 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -45,6 +47,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			setStepSound(soundTypeStone);
 
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override

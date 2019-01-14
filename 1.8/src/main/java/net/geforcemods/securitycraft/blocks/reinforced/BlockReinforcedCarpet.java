@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -7,6 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -14,7 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import java.util.Arrays;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, IReinforcedBlock
 {
@@ -22,6 +24,12 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	public TileEntity createNewTileEntity(World worldIn, int meta)
 	{
 		return new TileEntityOwnable();
+	}
+
+	@Override
+	public boolean canEntityDestroy(IBlockAccess world, BlockPos pos, Entity entity)
+	{
+		return !(entity instanceof EntityWither);
 	}
 
 	@Override
