@@ -2,7 +2,8 @@
 
 - New: Reinforced Gravel
 - New: Reinforced Sand
-- Fix for real: SecurityCraft blocks can be destroyed by the Wither
+- Fix for real: Reinforced blocks can be destroyed by the Wither
+- Fix: [1.10.2] Reinforced Iron Bars do not show up in the inventory
 
 --------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
 
