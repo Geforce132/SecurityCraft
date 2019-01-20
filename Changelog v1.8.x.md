@@ -6,6 +6,7 @@
 - Fix: The Mine Remote Access Tool's GUI displays incorrectly for mines that cannot be defused 
 - Fix: [1.7.10-1.10.2] Crash when rightclicking a Furnace Mine with an empty hand
 - Fix: [1.10.2] Reinforced Iron Bars do not show up in the inventory
+- Misc.: Small adjustments in english translation
 
 --------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
 
@@ -14,7 +15,7 @@
 - Fix: Typo in German localization
 - Fix: Keybind localization does not work
 - Fix: [1.7.10] "Illegal extra prefix" errors
-- Fix: [1.8+] Right-clicking another player's chest with a Universal Block Remover/Modifier does not show a message
+- Fix: [1.8+] Rightclicking another player's chest with a Universal Block Remover/Modifier does not show a message
 
 --------------------------Changelog for v1.8.9 of SecurityCraft--------------------------
 
@@ -44,7 +45,7 @@
 - New: The Track Mine can now be controlled with the Mine Remote Access Tool
 - New: The Briefcase's code can now be reset by crafting it together with a Universal Key Changer
 - New: The Admin Tool now shows the text on Secret Signs
-- New: The I.M.S. can now be reloaded by right-clicking it with Bouncing Betties
+- New: The I.M.S. can now be reloaded by rightclicking it with Bouncing Betties
 - New: Reinforced Blocks of Iron, Gold, Diamond, and Emerald can now be used as a Beacon base
 - New: Gravel Mine
 - New: Sand and Gravel Mines now fall like normal sand/gravel
@@ -127,7 +128,7 @@
 
 --------------------------Changelog for v1.8.6 of SecurityCraft--------------------------
 
-- New: Right-clicking an activated Cage Trap with a Universal Block Remover will remove the complete cage, provided the trap and bars are owned by the same person
+- New: Rightclicking an activated Cage Trap with a Universal Block Remover will remove the complete cage, provided the trap and bars are owned by the same person
 - Fix: Possible conflicting language strings with other mods
 - Fix: [1.8, 1.9.4-1.11.2] Reinforced Stained Hardened Clay doesn't show up/shows up incorrectly in SecurityCraft Manual
 - Fix: [1.8-1.11.2] Information about the Admin Tool and SecurityCraft Manual don't show up in JEI
@@ -357,7 +358,7 @@
 --------------------------Changelog for v1.8.2 of SecurityCraft--------------------------
 
 - New: Added config option to disable SecurityCraft's built-in version checking feature
-- New: The admin tool can automatically open keycard readers by right-clicking on it
+- New: The admin tool can automatically open keycard readers by rightclicking on it
 - New: A GUI displaying IRC information opens after typing "/sc connect"
 - New: Security cameras can now have a custom name which is displayed in the monitor GUI
 - New: Laser blocks can now be enabled/disabled
@@ -407,7 +408,7 @@
 - New: 1.8.8 port using Forge v11.15.0.1596
 - New: GoogleDocs form to report crashes/bugs (see /sc bug)
 - New: Clickable links in the Trello and Patreon SecurityCraft tips, and for the new GoogleDocs form link in /sc bug
-- New: The admin tool now shows a "no info" message when right-clicking a block with no owner, password, or module inserted
+- New: The admin tool now shows a "no info" message when rightclicking a block with no owner, password, or module inserted
 - New: Custom options for keypads, portable radars, and security cameras
 - New: Spam detection while using /sc contact will not allow users to send the same message more than two times consecutively
 - New: [1.8] Added support for Forge v11.14.3.1556+'s built-in update checker
@@ -434,7 +435,7 @@
 - Fix: Unbinding first bound Camera from Monitor denies access to all cameras bound afterwards
 - Fix: Waila shows "\<ERROR\>" while looking at a newly placed password-protected chest
 - Fix: [1.7.10] Cameras don't emit a redstone signal
-- Fix: [1.7.10] Monitors require a second right-click to display a camera's view (when using LookingGlass)
+- Fix: [1.7.10] Monitors require a second rightclick to display a camera's view (when using LookingGlass)
 - Fix: [1.8] Tasers are held incorrectly in 3rd person mode
 - Fix: [1.8] Security cameras and fake water/lava cause "Model definition for location securitycraft:X#Y not found" errors
 - Fix: [1.8] Inventory scanners don't accept storage modules
