@@ -56,7 +56,8 @@ public class GuiMRAT extends GuiContainer
 			coords = getMineCoordinates(i);
 
 			Block block = mc.theWorld.getBlock(coords[0], coords[1], coords[2]);
-			boolean active = (block instanceof IExplosive && ((IExplosive) block).isDefusable() && ((IExplosive) block).isActive(mc.theWorld, coords[0], coords[1], coords[2])) ? true : false;
+			boolean active = (block instanceof IExplosive && ((IExplosive) block).isActive(mc.theWorld, coords[0], coords[1], coords[2]));
+			boolean defusable = (block instanceof IExplosive && ((IExplosive) block).isDefusable());
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 			for(int j = 0; j < 4; j++)
@@ -68,11 +69,11 @@ public class GuiMRAT extends GuiContainer
 				{
 					case DEFUSE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters));
-						buttons[i][j].enabled = active && bound;
+						buttons[i][j].enabled = active && bound && defusable;
 						break;
 					case ACTIVATE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.flint_and_steel));
-						buttons[i][j].enabled = !active && bound;
+						buttons[i][j].enabled = !active && bound && defusable;
 						break;
 					case DETONATE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18);
