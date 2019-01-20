@@ -3,6 +3,7 @@
 - New: Reinforced Gravel
 - New: Reinforced Sand
 - Fix for real: Reinforced blocks can be destroyed by the Wither
+- Fix: [1.7.10-1.10.2] Crash when rightclicking a Furnace Mine with an empty hand
 - Fix: [1.10.2] Reinforced Iron Bars do not show up in the inventory
 
 --------------------------Changelog for v1.8.10 of SecurityCraft--------------------------
