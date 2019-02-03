@@ -3,7 +3,8 @@
 - New: Reinforced Gravel
 - New: Reinforced Sand
 - Fix for real: Reinforced blocks can be destroyed by the Wither
-- Fix: The Mine Remote Access Tool's GUI displays incorrectly for mines that cannot be defused 
+- Fix: The Mine Remote Access Tool's GUI displays incorrectly for mines that cannot be defused
+- Fix: Two messages appear instead of one when using the Keycard Reader with an insufficient security level
 - Fix: [1.7.10-1.10.2] Crash when rightclicking a Furnace Mine with an empty hand
 - Fix: [1.10.2] Reinforced Iron Bars do not show up in the inventory
 - Misc.: Small adjustments in english translation
