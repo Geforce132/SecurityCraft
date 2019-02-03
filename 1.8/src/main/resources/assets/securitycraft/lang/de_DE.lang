@@ -1,4 +1,4 @@
-﻿tile.securitycraft:laserBlock.name=Laser Block
+tile.securitycraft:laserBlock.name=Laser Block
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
 tile.securitycraft:keypad.name=Nummernschloss
@@ -351,6 +351,7 @@ gui.securitycraft:scManual.recipe.reinforced=Jeder verstärkte Block kann wie fo
 gui.securitycraft:scManual.recipe.securitycraft:adminTool=Das Admin Tool ist nur durch das Kreativinventar erhältlich, falls es in der Konfigurationsdatei aktiviert ist.
 gui.securitycraft:scManual.recipe.securitycraft:scManual=Die SecurityCraft Anleitung ist nur durch das Kreativinventar oder via "/sc help" (ohne Anführungszeichen) erhältlich.
 gui.securitycraft:scManual.reinforced=Verstärkte Blöcke
+gui.securitycraft:scManual.designedBy=Entworfen von: %s
 gui.securitycraft:ims.hostileAndPlayers=Böse Mobs & Spieler
 gui.securitycraft:ims.target=Ziel:
 gui.securitycraft:invScan.emitRedstone=Redstonesignal abgeben

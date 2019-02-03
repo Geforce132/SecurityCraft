@@ -266,7 +266,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.secretSignItem);
 
 		SecurityCraft.serverProxy.registerVariants();
-		//clear unused memmory
+		//clear unused memory
 		itemBlocks.clear();
 		blockPages.clear();
 	}
@@ -302,25 +302,25 @@ public class RegistrationHandler
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
 	{
 		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation("securitycraft", "bouncingbetty"), 0)
+				.id(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty"), 0)
 				.entity(EntityBouncingBetty.class)
 				.name("BBetty")
 				.tracker(128, 1, true).build());
 
 		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation("securitycraft", "taserbullet"), 2)
+				.id(new ResourceLocation(SecurityCraft.MODID, "taserbullet"), 2)
 				.entity(EntityTaserBullet.class)
 				.name("TazerBullet")
 				.tracker(256, 1, true).build());
 
 		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation("securitycraft", "imsbomb"), 3)
+				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
 				.entity(EntityIMSBomb.class)
 				.name("IMSBomb")
 				.tracker(256, 1, true).build());
 
 		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation("securitycraft", "securitycamera"), 4)
+				.id(new ResourceLocation(SecurityCraft.MODID, "securitycamera"), 4)
 				.entity(EntitySecurityCamera.class)
 				.name("SecurityCamera")
 				.tracker(256, 20, true).build());
@@ -675,8 +675,7 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item)
 	{
-		event.getRegistry().register(item);
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info"));
+		registerItem(event, item, "");
 	}
 
 	/**
@@ -685,8 +684,32 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue)
 	{
+		registerItem(event, item, configValue, "");
+	}
+
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 */
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy)
+	{
+		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
+
 		event.getRegistry().register(item);
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue));
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
+	}
+
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 */
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy)
+	{
+		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
+
+		event.getRegistry().register(item);
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
 	}
 
 	/**

@@ -180,8 +180,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedGravel);
 
 		registerItem(SCContent.codebreaker);
-		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
-		registerItem(SCContent.scannerDoorItem, SCContent.scannerDoorItem.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerItem(SCContent.reinforcedDoorItem);
+		registerItem(SCContent.scannerDoorItem);
 		registerItem(SCContent.universalBlockRemover);
 		registerItem(SCContent.keycards);
 		registerItem(SCContent.remoteAccessMine);
@@ -458,16 +458,15 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(Item item)
 	{
-		registerItem(item, item.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerItem(item, "");
 	}
 
-	/**
-	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 */
-	private static void registerItem(Item item, String customName)
+	private static void registerItem(Item item, String designedBy)
 	{
-		GameRegistry.registerItem(item, customName);
+		SCManualPage page = new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info");
 
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
 	}
 }

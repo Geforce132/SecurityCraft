@@ -8,6 +8,7 @@ public class SCManualPage {
 	private Item item;
 	private String helpInfo;
 	private ItemStack[] customRecipe;
+	private String designedBy = "";
 
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
@@ -41,4 +42,13 @@ public class SCManualPage {
 		return (customRecipe != null);
 	}
 
+	public void designedBy(String designedBy)
+	{
+		this.designedBy = designedBy;
+	}
+
+	public String designedBy()
+	{
+		return designedBy;
+	}
 }

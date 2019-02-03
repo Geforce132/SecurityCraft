@@ -195,8 +195,8 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedGravel);
 
 		registerItem(SCContent.codebreaker);
-		registerItem(SCContent.reinforcedDoorItem, SCContent.reinforcedDoorItem.getUnlocalizedName().substring(5));
-		registerItem(SCContent.scannerDoorItem, SCContent.scannerDoorItem.getUnlocalizedName().substring(5));
+		registerItem(SCContent.reinforcedDoorItem);
+		registerItem(SCContent.scannerDoorItem);
 		registerItem(SCContent.universalBlockRemover);
 		registerItem(SCContent.keycardLvl1, SecurityCraft.config.ableToCraftKeycard1);
 		registerItem(SCContent.keycardLvl2, SecurityCraft.config.ableToCraftKeycard2);
@@ -743,7 +743,7 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(Item item)
 	{
-		registerItem(item, item.getUnlocalizedName().substring(5));
+		registerItem(item, "");
 	}
 
 	/**
@@ -752,18 +752,32 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(Item item, boolean configValue)
 	{
-		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", configValue));
+		registerItem(item, configValue, "");
 	}
 
 	/**
 	 * Registers the given item with GameRegistry.registerItem(), and adds the help info for the item to the SecurityCraft manual item.
 	 */
-	private static void registerItem(Item item, String customName)
+	private static void registerItem(Item item, String designedBy)
 	{
-		GameRegistry.registerItem(item, customName);
+		SCManualPage page = new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info");
 
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info"));
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
+	}
+
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 */
+	private static void registerItem(Item item, boolean configValue, String designedBy)
+	{
+		SCManualPage page = new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", configValue);
+
+		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
 	}
 
 	/**
@@ -773,7 +787,6 @@ public class RegistrationHandler
 	private static void registerItemWithCustomRecipe(Item item, ItemStack... customRecipe)
 	{
 		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
-
 		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info", customRecipe));
 	}
 }

@@ -10,6 +10,7 @@ public class SCManualPage {
 	private String helpInfo;
 	private NonNullList<ItemStack> customRecipe;
 	private boolean configValue = true;
+	private String designedBy = "";
 
 	public SCManualPage(Item item, String helpInfo){
 		this.item = item;
@@ -52,5 +53,15 @@ public class SCManualPage {
 	public boolean isRecipeDisabled()
 	{
 		return !configValue;
+	}
+
+	public void designedBy(String designedBy)
+	{
+		this.designedBy = designedBy;
+	}
+
+	public String designedBy()
+	{
+		return designedBy;
 	}
 }

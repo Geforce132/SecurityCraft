@@ -349,6 +349,7 @@ gui.securitycraft:scManual.recipe.reinforced=Any reinforced block can be crafted
 gui.securitycraft:scManual.recipe.adminTool=The Admin Tool is only available via the creative inventory, if it is enabled via the config file.
 gui.securitycraft:scManual.recipe.scManual=The SecurityCraft Manual is only available via the creative inventory or by typing "/sc help" (without quotes).
 gui.securitycraft:scManual.reinforced=Reinforced Blocks
+gui.securitycraft:scManual.designedBy=Designed by: %s
 gui.securitycraft:ims.hostileAndPlayers=Hostile mobs & players
 gui.securitycraft:ims.target=Target:
 gui.securitycraft:invScan.emitRedstone=Emit redstone

@@ -98,6 +98,11 @@ public class GuiSCManual extends GuiScreen {
 				fontRendererObj.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getUnlocalizedName() + ".name"), startX + 39, 27, 0, false);
 
 			fontRendererObj.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), startX + 18, 45, 225, 0);
+
+			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).designedBy();
+
+			if(designedBy != null && !designedBy.isEmpty())
+				fontRendererObj.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
 			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0, false);
 			fontRendererObj.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0, false);
