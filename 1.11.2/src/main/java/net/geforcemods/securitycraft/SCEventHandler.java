@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -14,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -49,6 +51,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -75,6 +78,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
@@ -148,8 +152,10 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onRightClickBlock(RightClickBlock event){
 		if(event.getHand() == EnumHand.MAIN_HAND)
-			if(!event.getWorld().isRemote){
-				World world = event.getWorld();
+		{
+			World world = event.getWorld();
+
+			if(!world.isRemote){
 				TileEntity tileEntity = world.getTileEntity(event.getPos());
 				Block block = world.getBlockState(event.getPos()).getBlock();
 
@@ -360,8 +366,37 @@ public class SCEventHandler {
 						world.removeTileEntity(event.getPos());
 						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
 					}
+
+					return;
 				}
 			}
+
+			//outside !world.isRemote for properly checking the interaction
+			//all the sentry functionality for when the sentry is diguised
+			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+				event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+		}
+	}
+
+	@SubscribeEvent
+	public void onBlockEventBreak(BlockEvent.BreakEvent event)
+	{
+		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+		//don't let people break the disguise block
+		if(!sentries.isEmpty())
+		{
+			event.setCanceled(true);
+			return;
+		}
+
+		sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos().up()));
+
+		//remove sentry if block below is broken
+		if(!sentries.isEmpty())
+			sentries.get(0).remove();
 	}
 
 	@SubscribeEvent
@@ -519,9 +554,13 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.getTarget() != null && event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
+		if(event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
+		{
 			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
 				((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
+		}
+		else if(event.getTarget() instanceof EntitySentry && event.getEntityLiving() instanceof EntityLiving)
+			((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
 	}
 
 	@SubscribeEvent

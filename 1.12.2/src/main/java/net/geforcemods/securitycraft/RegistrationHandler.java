@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
+import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
@@ -24,6 +26,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
@@ -264,6 +267,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
+		registerItem(event, SCContent.sentry, "Henzoid");
 
 		SecurityCraft.serverProxy.registerVariants();
 		//clear unused memory
@@ -324,6 +328,18 @@ public class RegistrationHandler
 				.entity(EntitySecurityCamera.class)
 				.name("SecurityCamera")
 				.tracker(256, 20, true).build());
+
+		event.getRegistry().register(EntityEntryBuilder.create()
+				.id(new ResourceLocation(SecurityCraft.MODID, "sentry"), 5)
+				.entity(EntitySentry.class)
+				.name(SecurityCraft.MODID + ":sentry")
+				.tracker(256, 1, true).build());
+
+		event.getRegistry().register(EntityEntryBuilder.create()
+				.id(new ResourceLocation(SecurityCraft.MODID, "bullet"), 6)
+				.entity(EntityBullet.class)
+				.name(SecurityCraft.MODID + ":bullet")
+				.tracker(256, 1, true).build());
 	}
 
 	public static void registerPackets(SimpleNetworkWrapper network)
@@ -351,6 +367,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Side.CLIENT);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 23, Side.SERVER);
+		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 24, Side.CLIENT);
 	}
 
 	@SubscribeEvent
@@ -618,6 +635,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universal_key_changer", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scanner_door_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secret_sign_item", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
 
 		//Mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

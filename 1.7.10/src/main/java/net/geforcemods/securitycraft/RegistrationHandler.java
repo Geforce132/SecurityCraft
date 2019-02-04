@@ -7,8 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
+import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedColoredBlock;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
@@ -22,6 +24,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.packets.PacketCChangeStackSize;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
+import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
@@ -209,6 +212,7 @@ public class RegistrationHandler
 		registerItem(SCContent.universalKeyChanger);
 		GameRegistry.registerItem(SCContent.taserPowered, "taserPowered");
 		registerItem(SCContent.secretSignItem);
+		registerItem(SCContent.sentry, "Henzoid");
 	}
 
 	public static void registerTileEntities()
@@ -351,6 +355,8 @@ public class RegistrationHandler
 		GameRegistry.addRecipe(new ItemStack(SCContent.universalKeyChanger, 1), " RL", " IR", "I  ", 'R', Items.redstone, 'L', SCContent.laserBlock, 'I', Items.iron_ingot);
 		GameRegistry.addRecipe(new ItemStack(SCContent.motionActivatedLightOff, 1), "L", "R", "S", 'L', Blocks.redstone_lamp, 'R', SCContent.portableRadar, 'S', Items.stick);
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.sentry, 1), "RDR", "IPI", "BBB", 'R', Items.redstone, 'D', Blocks.dispenser, 'I', Items.iron_ingot, 'P', SCContent.portableRadar, 'B', Blocks.iron_block);
+
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.dirt, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.stone, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.cobblestoneMine, 1), new Object[] {Blocks.cobblestone, SCContent.mine});
@@ -371,6 +377,8 @@ public class RegistrationHandler
 		EntityRegistry.registerModEntity(EntityTaserBullet.class, "TazerBullet", 2, SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntityIMSBomb.class, "IMSBomb", 3, SecurityCraft.instance, 256, 1, true);
 		EntityRegistry.registerModEntity(EntitySecurityCamera.class, "SecurityCamera", 4, SecurityCraft.instance, 256, 20, false);
+		EntityRegistry.registerModEntity(EntitySentry.class, "sentry", 5, SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(EntityBullet.class, "bullet", 6, SecurityCraft.instance, 256, 1, true);
 	}
 
 	public static void registerPackets(SimpleNetworkWrapper network)
@@ -403,6 +411,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 26, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 27, Side.SERVER);
 		network.registerMessage(PacketCChangeStackSize.Handler.class, PacketCChangeStackSize.class, 28, Side.CLIENT);
+		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 29, Side.CLIENT);
 	}
 
 	/**

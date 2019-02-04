@@ -1,4 +1,4 @@
-tile.securitycraft:laserBlock.name=Laser Block
+﻿tile.securitycraft:laserBlock.name=Laser Block
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
 tile.securitycraft:keypad.name=Nummernschloss
@@ -254,6 +254,10 @@ item.securitycraft:briefcase.name=Aktenkoffer
 item.securitycraft:universalKeyChanger.name=Universeller Passwort Wechsler
 item.securitycraft:scannerDoorItem.name=Scannertür
 item.securitycraft:secretSignItem.name=Geheimes Schild
+item.securitycraft:sentry.name=Geschütz
+
+entity.securitycraft:sentry.name=Geschütz
+entity.securitycraft:bullet.name=Kugel
 
 death.attack.securitycraft.laser=%s wurde von einem Laser zerschnitten.
 death.attack.securitycraft.fakeWater=%s fiel in giftiges Wasser...?
@@ -342,6 +346,7 @@ help.securitycraft:universalBlockReinforcerLvL3.info=Der Universelle Block Verst
 help.securitycraft:briefcase.info=Der Aktenkoffer ist ein einfaches, Passwort gesichertes Item, welches bis zu zwölf Items aufnehmen kann. Nach dem Craften, rechtsklicke es um den vierstelligen Code einzugeben, der den Aktenkoffer öffnet. Ein erneuter Rechtsklick öffnet den Aktenkoffer und du musst den richtigen Code eingeben um an die Items zu kommen.
 help.securitycraft:universalKeyChanger.info=Der Universelle Passwort Wechsler erlaubt dir, das Passwort deiner Passwort gesicherten Blöcke zu ändern. Rechtsklicke einen Passwort gesicherten Block um das GUI zu öffnen, dann gib das neue Passwort ein. Crafte ihn zusammen mit einer Brieftasche um ihren Code zu entfernen.
 help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla Schild, mit dem Unterschied, dass nur der Besitzer den Text lesen kann. Stelle sicher, dass keiner den Block an dem das Schild ist zerstören kann!
+help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen) und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es. 
 
 gui.securitycraft:scManual.disabled=Deaktiviert
 gui.securitycraft:scManual.intro.1=Anfangen mit SecurityCraft
@@ -473,6 +478,11 @@ messages.securitycraft:tip.scserver=Der offizielle SecurityCraft Server ist zur�
 messages.securitycraft:universalKeyChanger.notKeypad=Rechtsklicke ein Nummernschloss mit dem Universellen Passwort Wechsler um das Passwort zu ändern.
 messages.securitycraft:universalKeyChanger.passcodeChanged=Das Passwort wurde verändert.
 messages.securitycraft:passwordProtected.notSetUp=Dieser Block hat noch kein Passwort. Du kannst nicht auf ihn zugreifen.
+messages.securitycraft:sentry.needsBlockBelow=Du musst dein Geschütz auf einen Block drauf setzen!
+messages.securitycraft:sentry.needsBlocksAround=Stelle sicher, dass dein Geschütz an allen vier Seiten von einem Block umrundet ist!
+messages.securitycraft:sentry.mode1=Aktueller Modus: Aggressiv (Immer aktiv, attackiert Monster und Spieler)
+messages.securitycraft:sentry.mode2=Aktueller Modus: Tarnen (Aktiv wenn ein Spieler nahe ist, attackiert Spieler)
+messages.securitycraft:sentry.mode3=Aktueller Modus: Untätig (Nie aktiv, attackiert nichts)
 
 jei.securitycraft:reinforcedBlock.info=Rechtsklicke einen Universellen Block Entferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Block Entferner zerbrechen.
 

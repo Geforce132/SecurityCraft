@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
+import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
@@ -21,6 +23,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
@@ -232,6 +235,7 @@ public class RegistrationHandler
 		registerItem(SCContent.universalKeyChanger);
 		GameRegistry.register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(SCContent.secretSignItem);
+		registerItem(SCContent.sentry, "Henzoid");
 	}
 
 	public static void registerTileEntities()
@@ -388,6 +392,8 @@ public class RegistrationHandler
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 4), "DD", "DD", 'D', new ItemStack(SCContent.reinforcedStone, 1, 3));
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStone, 4, 6), "AA", "AA", 'A', new ItemStack(SCContent.reinforcedStone, 1, 5));
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.sentry, 1), "RDR", "IPI", "BBB", 'R', Items.REDSTONE, 'D', Blocks.DISPENSER, 'I', Items.IRON_INGOT, 'P', SCContent.portableRadar, 'B', Blocks.IRON_BLOCK);
+
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.DIRT, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.STONE, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.cobblestoneMine, 1), new Object[] {Blocks.COBBLESTONE, SCContent.mine});
@@ -407,10 +413,12 @@ public class RegistrationHandler
 
 	public static void registerEntities()
 	{
-		EntityRegistry.registerModEntity(new ResourceLocation("securitycraft", "bouncingbetty"), EntityBouncingBetty.class, "BBetty", 0, SecurityCraft.instance, 128, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation("securitycraft", "taserbullet"), EntityTaserBullet.class, "TazerBullet", 2, SecurityCraft.instance, 256, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation("securitycraft", "imsbomb"), EntityIMSBomb.class, "IMSBomb", 3, SecurityCraft.instance, 256, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation("securitycraft", "securitycamera"), EntitySecurityCamera.class, "SecurityCamera", 4, SecurityCraft.instance, 256, 20, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty"), EntityBouncingBetty.class, "BBetty", 0, SecurityCraft.instance, 128, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "taserbullet"), EntityTaserBullet.class, "TazerBullet", 2, SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), EntityIMSBomb.class, "IMSBomb", 3, SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "securitycamera"), EntitySecurityCamera.class, "SecurityCamera", 4, SecurityCraft.instance, 256, 20, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "sentry"), EntitySentry.class, SecurityCraft.MODID + ":sentry", 5, SecurityCraft.instance, 256, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(SecurityCraft.MODID, "bullet"), EntityBullet.class, SecurityCraft.MODID + ":bullet", 6, SecurityCraft.instance, 256, 1, true);
 	}
 
 	public static void registerPackets(SimpleNetworkWrapper network)
@@ -438,6 +446,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Side.CLIENT);
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 23, Side.SERVER);
+		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 24, Side.CLIENT);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -679,6 +688,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.universalKeyChanger, 0, new ModelResourceLocation("securitycraft:universal_key_changer", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scanner_door_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secret_sign_item", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
 
 		//Mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));

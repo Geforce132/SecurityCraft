@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,9 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,6 +68,23 @@ public class SecurityCraft {
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
+	public static final DataSerializer<NBTTagCompound> COMPOUND_TAG = new DataSerializer<NBTTagCompound>() {
+		@Override
+		public void write(PacketBuffer buf, NBTTagCompound value)
+		{
+			buf.writeCompoundTag(value);
+		}
+		@Override
+		public NBTTagCompound read(PacketBuffer buf) throws IOException
+		{
+			return buf.readCompoundTag();
+		}
+		@Override
+		public DataParameter<NBTTagCompound> createKey(int id)
+		{
+			return new DataParameter<NBTTagCompound>(id, this);
+		}
+	};
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
@@ -136,6 +157,7 @@ public class SecurityCraft {
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
 		DataSerializers.registerSerializer(Owner.SERIALIZER);
+		DataSerializers.registerSerializer(COMPOUND_TAG);
 
 		for(Field field : SCContent.class.getFields())
 		{

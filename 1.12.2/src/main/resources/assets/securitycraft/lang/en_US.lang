@@ -270,6 +270,10 @@ item.securitycraft:briefcase.name=Briefcase
 item.securitycraft:universalKeyChanger.name=Universal Key Changer
 item.securitycraft:scannerDoorItem.name=Scanner Door
 item.securitycraft:secretSignItem.name=Secret Sign
+item.securitycraft:sentry.name=Sentry
+
+entity.securitycraft:sentry.name=Sentry
+entity.securitycraft:bullet.name=Bullet
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.fakeWater=%s fell into poisonous water...?
@@ -359,6 +363,7 @@ help.securitycraft:universalBlockReinforcerLvL3.info=The Universal Block Reinfor
 help.securitycraft:briefcase.info=The briefcase is a simple keypad-locked item that allows you to store up to twelve additional items in it. After crafting it, rightclick it to setup the 4-digit passcode to use from then on. Rightclick it again and insert the code to view the items.
 help.securitycraft:universalKeyChanger.info=The universal key changer allows you to change the passcode of passcode-protected blocks you own. Rightclick a passcode-protected block to open a GUI, then type in the new passcode you want. Craft it together with a Briefcase to remove the code of it.
 help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign can view the text on it. Make sure noone can break the block it's placed on!
+help.securitycraft:sentry.info=The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the  
 
 gui.securitycraft:scManual.disabled=Disabled
 gui.securitycraft:scManual.intro.1=Getting started with SecurityCraft
@@ -489,6 +494,11 @@ messages.securitycraft:tip.scserver=The official SecurityCraft server is back! J
 messages.securitycraft:universalKeyChanger.notKeypad=Rightclick a keypad with the universal key changer to change its passcode.
 messages.securitycraft:universalKeyChanger.passcodeChanged=The passcode has been changed.
 messages.securitycraft:passwordProtected.notSetUp=This block doesn't have a password yet. You cannot interact with it.
+messages.securitycraft:sentry.needsBlockBelow=You have to place the Sentry on top of a block!
+messages.securitycraft:sentry.needsBlocksAround=Make sure, that your Sentry is surrounded with blocks on all of its four sides!
+messages.securitycraft:sentry.mode1=Current mode: Aggressive (Always active, attacks hostile mobs and players)
+messages.securitycraft:sentry.mode2=Current mode: Camouflage (Active when a player comes near, attacks players)
+messages.securitycraft:sentry.mode3=Current mode: Idle (Never active, doesn't attack anything)
 
 jei.securitycraft:reinforcedBlock.info=Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.
 

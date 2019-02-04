@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
@@ -23,6 +24,7 @@ import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -47,6 +49,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -70,6 +73,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.WorldEvent.Unload;
@@ -140,19 +144,20 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerInteracted(PlayerInteractEvent event){
-		if(!event.entityPlayer.worldObj.isRemote){
-			World world = event.entityPlayer.worldObj;
+		if(event.action != Action.RIGHT_CLICK_BLOCK) return;
+
+		World world = event.entityPlayer.worldObj;
+
+		if(!world.isRemote){
 			TileEntity tileEntity = event.entityPlayer.worldObj.getTileEntity(event.x, event.y, event.z);
 			Block block = event.entityPlayer.worldObj.getBlock(event.x, event.y, event.z);
 
-			if(event.action != Action.RIGHT_CLICK_BLOCK) return;
-
-			if(event.action == Action.RIGHT_CLICK_BLOCK && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.codebreaker) && handleCodebreaking(event)) {
+			if(PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.codebreaker) && handleCodebreaking(event)) {
 				event.setCanceled(true);
 				return;
 			}
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockModifier)){
+			if(tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockModifier)){
 				event.setCanceled(true);
 
 				if(!(((IOwnable) tileEntity)).getOwner().isOwner(event.entityPlayer)){
@@ -164,7 +169,7 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
+			if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.entityPlayer, Items.name_tag) && event.entityPlayer.getCurrentEquippedItem().hasDisplayName()){
 				event.setCanceled(true);
 
 				for(String character : new String[]{"(", ")"})
@@ -185,7 +190,7 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(event.action == Action.RIGHT_CLICK_BLOCK && tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockRemover)){
+			if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.entityPlayer, SCContent.universalBlockRemover)){
 				event.setCanceled(true);
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.entityPlayer)){
@@ -355,8 +360,36 @@ public class SCEventHandler {
 					world.removeTileEntity(event.x, event.y, event.z);
 					event.entityPlayer.getCurrentEquippedItem().damageItem(1, event.entityPlayer);
 				}
+
+				return;
 			}
 		}
+
+		//outside !world.isRemote for properly checking the interaction
+		//all the sentry functionality for when the sentry is diguised
+		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 1, event.z + 1));
+
+		if(!sentries.isEmpty())
+			event.setCanceled(sentries.get(0).interact(event.entityPlayer)); //cancel if an action was taken
+	}
+
+	@SubscribeEvent
+	public void onBlockEventBreak(BlockEvent.BreakEvent event)
+	{
+		List<EntitySentry> sentries = event.world.getEntitiesWithinAABB(EntitySentry.class, AxisAlignedBB.getBoundingBox(event.x, event.y, event.z, event.x + 1, event.y + 1, event.z + 1));
+
+		//don't let people break the disguise block
+		if(!sentries.isEmpty())
+		{
+			event.setCanceled(true);
+			return;
+		}
+
+		sentries = event.world.getEntitiesWithinAABB(EntitySentry.class, AxisAlignedBB.getBoundingBox(event.x, event.y + 1, event.z, event.x + 1, event.y + 2, event.z + 1));
+
+		//remove sentry if block below is broken
+		if(!sentries.isEmpty())
+			sentries.get(0).remove();
 	}
 
 	@SubscribeEvent
@@ -394,9 +427,13 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.target != null && event.target instanceof EntityPlayer && event.target != event.entityLiving.func_94060_bK())
+		if(event.target instanceof EntityPlayer && event.target != event.entityLiving.func_94060_bK())
+		{
 			if(PlayerUtils.isPlayerMountedOnCamera(event.target))
 				((EntityLiving)event.entityLiving).setAttackTarget(null);
+		}
+		else if(event.target instanceof EntitySentry && event.entityLiving instanceof EntityLiving)
+			((EntityLiving)event.entityLiving).setAttackTarget(null);
 	}
 
 	@SubscribeEvent

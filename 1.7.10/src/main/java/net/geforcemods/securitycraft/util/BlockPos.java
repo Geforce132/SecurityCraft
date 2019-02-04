@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.util;
 
-/*
+/**
  * Because I was lazy
  *
- * 19. July 2018
+ * @since 19. July 2018
  *
  * @author bl4ckscor3
  */

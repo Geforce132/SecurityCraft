@@ -79,6 +79,7 @@ import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemSecretSign;
+import net.geforcemods.securitycraft.items.ItemSentry;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
@@ -318,5 +319,7 @@ public class SetupHandler
 		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 
 		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+
+		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 }

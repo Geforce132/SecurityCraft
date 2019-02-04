@@ -129,6 +129,7 @@ public class SCContent
 	public static Item scannerDoorItem;
 	public static Item scManual;
 	public static Item secretSignItem;
+	public static Item sentry;
 	public static Item taser;
 	public static Item taserPowered;
 	public static Item universalBlockModifier;
