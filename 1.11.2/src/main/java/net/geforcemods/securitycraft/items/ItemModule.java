@@ -104,11 +104,9 @@ public class ItemModule extends Item{
 				list.add(" ");
 
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
-				for(Item item : getItemAddons(stack.getTagCompound()))
-					list.add("- " + ClientUtils.localize(item.getUnlocalizedName() + ".name"));
 
-				for(Block block : getBlockAddons(stack.getTagCompound()))
-					list.add("- " + ClientUtils.localize(block.getLocalizedName()));
+				for(ItemStack addon : getAddons(stack.getTagCompound()))
+					list.add("- " + ClientUtils.localize(addon.getUnlocalizedName() + ".name"));
 			}
 		}
 	}

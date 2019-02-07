@@ -100,11 +100,9 @@ public class ItemModule extends Item{
 				list.add(" ");
 
 				list.add(StatCollector.translateToLocal("tooltip.securitycraft:module.itemAddons.added") + ":");
-				for(Item item : getItemAddons(stack.stackTagCompound))
-					list.add("- " + StatCollector.translateToLocal(item.getUnlocalizedName() + ".name"));
 
-				for(Block block : getBlockAddons(stack.stackTagCompound))
-					list.add("- " + StatCollector.translateToLocal(block.getLocalizedName()));
+				for(ItemStack addon : getAddons(stack.getTagCompound()))
+					list.add("- " + StatCollector.translateToLocal(addon.getUnlocalizedName() + ".name"));
 			}
 		}
 	}
