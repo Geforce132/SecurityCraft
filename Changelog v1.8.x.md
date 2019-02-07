@@ -4,7 +4,7 @@
 - New: Reinforced Sand
 - New: Sentry
 	- This feature was designed by Henzoid, who won our christmas giveaway! If you want to get notified of	future giveaways, join our Discord server: https://discord.gg/U8DvBAW
-- New: The SC Manual now shows texts that are too long texts on multiple subpages
+- New: The SC Manual now shows texts, that is too long to properly display, on multiple subpages
 - Change: Using the left and right arrow keys in the SC Manual will now change subpages
 - Fix for real: Reinforced blocks can be destroyed by the Wither
 - Fix: The Mine Remote Access Tool's GUI displays incorrectly for mines that cannot be defused
