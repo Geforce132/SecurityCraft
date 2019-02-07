@@ -50,8 +50,11 @@ public class GuiSCManual extends GuiScreen {
 	private static int lastPage = -1;
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
-	int startX = -1;
-	boolean update = false;
+	private int startX = -1;
+	private boolean update = false;
+	private List<String> subpages = new ArrayList<>();
+	private int currentSubpage = 0;
+	private final int subpageLength = 1285;
 
 	public GuiSCManual() {
 		super();
@@ -66,11 +69,11 @@ public class GuiSCManual extends GuiScreen {
 
 		startX = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
-		GuiSCManual.ChangePageButton nextButton = new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true);
-		GuiSCManual.ChangePageButton prevButton = new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false);
 
-		buttonList.add(nextButton);
-		buttonList.add(prevButton);
+		buttonList.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
+		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
+		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true)); //next subpage
+		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
 	}
 
@@ -100,7 +103,7 @@ public class GuiSCManual extends GuiScreen {
 			else
 				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey() + ".name"), startX + 39, 27, 0, false);
 
-			fontRenderer.drawSplitString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo()), startX + 18, 45, 225, 0);
+			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
 			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).designedBy();
 
@@ -186,9 +189,9 @@ public class GuiSCManual extends GuiScreen {
 		super.keyTyped(typedChar, keyCode);
 
 		if(keyCode == Keyboard.KEY_LEFT)
-			previousPage();
+			previousSubpage();
 		else if(keyCode == Keyboard.KEY_RIGHT)
-			nextPage();
+			nextSubpage();
 	}
 
 	@Override
@@ -197,6 +200,14 @@ public class GuiSCManual extends GuiScreen {
 			nextPage();
 		else if(button.id == 2)
 			previousPage();
+		else if(button.id == 3)
+			nextSubpage();
+		else if(button.id == 4)
+			previousSubpage();
+
+		//hide subpage buttons on main page
+		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 0;
+		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 0;
 	}
 
 	@Override
@@ -209,6 +220,10 @@ public class GuiSCManual extends GuiScreen {
 			case -1: nextPage(); break;
 			case 1: previousPage(); break;
 		}
+
+		//hide subpage buttons on main page
+		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	private void nextPage()
@@ -231,7 +246,25 @@ public class GuiSCManual extends GuiScreen {
 		updateRecipeAndIcons();
 	}
 
+	private void nextSubpage()
+	{
+		currentSubpage++;
+
+		if(currentSubpage == subpages.size())
+			currentSubpage = 0;
+	}
+
+	private void previousSubpage()
+	{
+		currentSubpage--;
+
+		if(currentSubpage == -1)
+			currentSubpage = subpages.size() - 1;
+	}
+
 	private void updateRecipeAndIcons(){
+		currentSubpage = 0;
+
 		if(currentPage < 0){
 			recipe = null;
 			hoverCheckers.clear();
@@ -326,6 +359,22 @@ public class GuiSCManual extends GuiScreen {
 			if(te instanceof CustomizableSCTE)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 		}
+
+		//set up subpages
+		String helpInfo = ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo());
+
+		subpages.clear();
+
+		while(fontRenderer.getStringWidth(helpInfo) > subpageLength)
+		{
+			String trimmed = fontRenderer.trimStringToWidth(helpInfo, 1285);
+
+			trimmed = trimmed.trim().substring(0, trimmed.lastIndexOf(' ')).trim(); //remove last word to remove the possibility to break it up onto multiple pages
+			subpages.add(trimmed);
+			helpInfo = helpInfo.replace(trimmed, "").trim();
+		}
+
+		subpages.add(helpInfo);
 	}
 
 	@SideOnly(Side.CLIENT)
