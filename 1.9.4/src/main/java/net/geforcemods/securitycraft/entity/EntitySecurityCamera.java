@@ -217,7 +217,7 @@ public class EntitySecurityCamera extends Entity{
 	public void moveViewUp() {
 		if(isCameraDown())
 		{
-			if(rotationPitch > 55F)
+			if(rotationPitch > 40F)
 				setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
 		}
 		else if(rotationPitch > -25F)
