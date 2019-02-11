@@ -142,7 +142,7 @@ public class GuiBriefcase extends GuiContainer {
 					NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
-					if(nbt.getString("passcode").matches(code))
+					if(nbt.getString("passcode").equals(code))
 						SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
 				}
 

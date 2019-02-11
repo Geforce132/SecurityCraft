@@ -24,7 +24,7 @@ public class LinkedBlock {
 	}
 
 	public boolean validate(World world) {
-		if(world == null || (world.isAirBlock(blockX, blockY, blockZ) || !world.getBlock(blockX, blockY, blockZ).getUnlocalizedName().matches(blockName))) return false;
+		if(world == null || (world.isAirBlock(blockX, blockY, blockZ) || !world.getBlock(blockX, blockY, blockZ).getUnlocalizedName().equals(blockName))) return false;
 
 		return true;
 	}

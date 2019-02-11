@@ -15,7 +15,7 @@ public class EntityUtils{
 			PotionEffect effect = (PotionEffect) effects.next();
 			String eName = effect.getEffectName();
 
-			if(eName.matches(potion.getName()))
+			if(eName.equals(potion.getName()))
 				return true;
 			else
 				continue;

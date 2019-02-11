@@ -62,7 +62,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 				else
 				{
 					optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
-					optionButtons[i].packedFGColour = option.toString().matches(option.getDefaultValue().toString()) ? 16777120 : 14737632;
+					optionButtons[i].packedFGColour = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
 				}
 
 				buttonList.add(optionButtons[i]);
@@ -108,7 +108,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 		if(!(guibutton instanceof GuiPictureButton)) {
 			Option<?> tempOption = tileEntity.customOptions()[guibutton.id];
 			tempOption.toggle();
-			guibutton.packedFGColour = tempOption.toString().matches(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
+			guibutton.packedFGColour = tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
 			guibutton.displayString = getOptionButtonTitle(tempOption);
 			SecurityCraft.network.sendToServer(new PacketSToggleOption(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, guibutton.id));
 		}

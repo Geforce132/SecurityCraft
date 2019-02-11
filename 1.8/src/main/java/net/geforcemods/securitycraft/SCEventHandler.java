@@ -173,7 +173,7 @@ public class SCEventHandler {
 						return;
 					}
 
-				if(((INameable) tileEntity).getCustomName().matches(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
+				if(((INameable) tileEntity).getCustomName().equals(event.entityPlayer.getCurrentEquippedItem().getDisplayName())) {
 					PlayerUtils.sendMessageToPlayer(event.entityPlayer, "Naming", StatCollector.translateToLocal("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), EnumChatFormatting.RED);
 					return;
 				}

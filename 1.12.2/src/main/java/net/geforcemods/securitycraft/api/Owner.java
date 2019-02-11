@@ -67,11 +67,11 @@ public class Owner {
 			String owner = ownable.getOwner().getName();
 
 			// Check the player's UUID first.
-			if(uuid != null && !uuid.matches(playerUUID))
+			if(uuid != null && !uuid.equals(playerUUID))
 				return false;
 
 			// If the TileEntity doesn't have a UUID saved, use the player's name instead.
-			if(owner != null && uuid.matches("ownerUUID") && !owner.matches("owner") && !owner.matches(playerName))
+			if(owner != null && uuid.equals("ownerUUID") && !owner.equals("owner") && !owner.equals(playerName))
 				return false;
 		}
 
@@ -86,10 +86,10 @@ public class Owner {
 		String uuid = player.getGameProfile().getId().toString();
 		String owner = player.getName();
 
-		if(uuid != null && uuid.matches(playerUUID))
+		if(uuid != null && uuid.equals(playerUUID))
 			return true;
 
-		if(owner != null && playerUUID.matches("ownerUUID") && owner.matches(playerName))
+		if(owner != null && playerUUID.equals("ownerUUID") && owner.equals(playerName))
 			return true;
 
 		return false;

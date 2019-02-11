@@ -29,7 +29,7 @@ public class VersionUpdateChecker {
 
 			if(update == null) return null;
 
-			if((update.getVersion().matches("0.0.0") && update.getFileName().matches("test")) || update.getVersion().matches(SecurityCraft.getVersion())){
+			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion())){
 				SecurityCraft.log("Running the latest version, no new updates avaliable.");
 				return null;
 			}

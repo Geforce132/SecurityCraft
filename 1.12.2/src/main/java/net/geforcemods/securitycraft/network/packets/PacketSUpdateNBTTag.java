@@ -42,7 +42,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 		@Override
 		public IMessage onMessage(PacketSUpdateNBTTag message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
-				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getTranslationKey().matches(message.itemName))
+				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName))
 					context.getServerHandler().player.inventory.getCurrentItem().setTagCompound(message.stackTag);
 			});
 

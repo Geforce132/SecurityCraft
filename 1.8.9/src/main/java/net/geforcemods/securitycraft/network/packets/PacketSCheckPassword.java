@@ -52,7 +52,7 @@ public class PacketSCheckPassword implements IMessage{
 			EntityPlayer player = ctx.getServerHandler().playerEntity;
 
 			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected)
-				if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().matches(password)){
+				if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().equals(password)){
 					((EntityPlayerMP) player).closeScreen();
 					((IPasswordProtected) getWorld(player).getTileEntity(pos)).activate(player);
 				}

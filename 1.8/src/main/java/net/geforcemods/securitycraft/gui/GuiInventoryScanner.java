@@ -63,7 +63,7 @@ public class GuiInventoryScanner extends GuiContainer {
 			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
 			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
 
-			if(((GuiButton)buttonList.get(0)).displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv"))){
+			if(((GuiButton)buttonList.get(0)).displayString.equals(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv"))){
 				fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
 				fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}else{
@@ -73,7 +73,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		}
 		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
 			fontRendererObj.drawString(StatCollector.translateToLocal("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRendererObj.drawString((tileEntity.getType().matches("check") ? StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv") : StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRendererObj.drawString((tileEntity.getType().equals("check") ? StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv") : StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
@@ -100,12 +100,12 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:
-				if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
+				if(button.displayString.equals(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")))
 					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone");
-				else if(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
+				else if(button.displayString.equals(StatCollector.translateToLocal("gui.securitycraft:invScan.emitRedstone")))
 					button.displayString = StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv");
 
-				saveType(button.displayString.matches(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
+				saveType(button.displayString.equals(StatCollector.translateToLocal("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}

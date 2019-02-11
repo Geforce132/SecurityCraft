@@ -61,16 +61,16 @@ public class CommandSC extends CommandBase implements ICommand{
 		if(args.length == 0)
 			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 		else if(args.length == 1){
-			if(args[0].matches("connect"))
+			if(args[0].equals("connect"))
 				sender.addChatMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
-			else if(args[0].matches("help"))
+			else if(args[0].equals("help"))
 				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
-			else if(args[0].matches("bug"))
+			else if(args[0].equals("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else
 				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
 		}else if(args.length >= 2){
-			if(args[0].matches("bug"))
+			if(args[0].equals("bug"))
 				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			else
 				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));

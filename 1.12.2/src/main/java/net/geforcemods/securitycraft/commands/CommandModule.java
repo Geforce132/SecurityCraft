@@ -55,7 +55,7 @@ public class CommandModule extends CommandBase implements ICommand {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException{
 		if(args.length == 1){
-			if(args[0].matches("copy")){
+			if(args[0].equals("copy")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
@@ -66,7 +66,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForData"), TextFormatting.RED);
 
 				return;
-			}else if(args[0].matches("paste")){
+			}else if(args[0].equals("paste")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(SecurityCraft.instance.getSavedModule() == null){
@@ -83,7 +83,7 @@ public class CommandModule extends CommandBase implements ICommand {
 				return;
 			}
 		}else if(args.length == 2)
-			if(args[0].matches("add")){
+			if(args[0].equals("add")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
@@ -91,7 +91,7 @@ public class CommandModule extends CommandBase implements ICommand {
 						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 
 					for(int i = 1; i <= 10; i++)
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(args[1])){
+						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).equals(args[1])){
 							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.alreadyContained").replace("#", args[1]), TextFormatting.RED);
 							return;
 						}
@@ -103,7 +103,7 @@ public class CommandModule extends CommandBase implements ICommand {
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForModify"), TextFormatting.RED);
 					return;
 				}
-			}else if(args[0].matches("remove")){
+			}else if(args[0].equals("remove")){
 				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
 
 				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
@@ -111,7 +111,7 @@ public class CommandModule extends CommandBase implements ICommand {
 						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 
 					for(int i = 1; i <= 10; i++)
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).matches(args[1]))
+						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).equals(args[1]))
 							player.inventory.getCurrentItem().getTagCompound().removeTag("Player" + i);
 
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.removed").replace("#", args[1]), TextFormatting.GREEN);

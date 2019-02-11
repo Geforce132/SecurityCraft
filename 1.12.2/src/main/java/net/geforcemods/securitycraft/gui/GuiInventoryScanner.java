@@ -60,7 +60,7 @@ public class GuiInventoryScanner extends GuiContainer {
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
 
-			if(buttonList.get(0).displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv"))){
+			if(buttonList.get(0).displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv"))){
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}else{
@@ -70,7 +70,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		}
 		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRenderer.drawString((tileEntity.getType().matches("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRenderer.drawString((tileEntity.getType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
@@ -88,12 +88,12 @@ public class GuiInventoryScanner extends GuiContainer {
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:
-				if(button.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
+				if(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
 					button.displayString = ClientUtils.localize("gui.securitycraft:invScan.emitRedstone");
-				else if(button.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
+				else if(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
 					button.displayString = ClientUtils.localize("gui.securitycraft:invScan.checkInv");
 
-				saveType(button.displayString.matches(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
+				saveType(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}

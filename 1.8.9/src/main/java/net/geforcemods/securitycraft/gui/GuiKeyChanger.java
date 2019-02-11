@@ -122,7 +122,7 @@ public class GuiKeyChanger extends GuiContainer {
 		String confirmedPasscode = !textboxConfirmPasscode.getText().isEmpty() ? textboxConfirmPasscode.getText() : null;
 
 		if(newPasscode == null || confirmedPasscode == null) return;
-		if(!newPasscode.matches(confirmedPasscode)) return;
+		if(!newPasscode.equals(confirmedPasscode)) return;
 
 		confirmButton.enabled = true;
 	}

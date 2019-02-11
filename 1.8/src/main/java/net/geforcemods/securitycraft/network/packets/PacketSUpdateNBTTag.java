@@ -40,7 +40,7 @@ public class PacketSUpdateNBTTag implements IMessage{
 
 		@Override
 		public IMessage onMessage(PacketSUpdateNBTTag message, MessageContext context) {
-			if(context.getServerHandler().playerEntity.getCurrentEquippedItem() != null && context.getServerHandler().playerEntity.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(message.itemName))
+			if(context.getServerHandler().playerEntity.getCurrentEquippedItem() != null && context.getServerHandler().playerEntity.getCurrentEquippedItem().getItem().getUnlocalizedName().equals(message.itemName))
 				context.getServerHandler().playerEntity.getCurrentEquippedItem().setTagCompound(message.stackTag);
 
 			return null;

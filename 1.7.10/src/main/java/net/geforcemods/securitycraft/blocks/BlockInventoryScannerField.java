@@ -84,7 +84,7 @@ public class BlockInventoryScannerField extends Block{
 
 	public void checkInventory(EntityPlayer entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		if(te.getType().matches("redstone"))
+		if(te.getType().equals("redstone"))
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
 			{
@@ -98,7 +98,7 @@ public class BlockInventoryScannerField extends Block{
 				}
 			}
 		}
-		else if(te.getType().matches("check"))
+		else if(te.getType().equals("check"))
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.length; i++)
 			{
@@ -119,7 +119,7 @@ public class BlockInventoryScannerField extends Block{
 
 	public void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		if(te.getType().matches("redstone"))
+		if(te.getType().equals("redstone"))
 		{
 			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
 					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))
@@ -127,7 +127,7 @@ public class BlockInventoryScannerField extends Block{
 				updateInventoryScannerPower(te);
 			}
 		}
-		else if(te.getType().matches("check"))
+		else if(te.getType().equals("check"))
 		{
 			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getEntityItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getEntityItem(), stack))
 					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getEntityItem().getItem() == stack.getItem()))

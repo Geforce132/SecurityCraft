@@ -108,7 +108,7 @@ public class GuiEditModule extends GuiContainer
 
 				for(int i = 1; i <= 10; i++)
 				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).matches(inputField.getText()))
+					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						return;
 				}
 
@@ -123,7 +123,7 @@ public class GuiEditModule extends GuiContainer
 
 				for(int i = 1; i <= 10; i++)
 				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).matches(inputField.getText()))
+					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						module.getTagCompound().removeTag("Player" + i);
 				}
 				break;

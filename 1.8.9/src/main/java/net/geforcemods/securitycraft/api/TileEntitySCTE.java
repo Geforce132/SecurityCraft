@@ -433,7 +433,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	@Override
 	public boolean hasCustomName() {
-		return (customName != null && !customName.matches("name"));
+		return (customName != null && !customName.equals("name"));
 	}
 
 	@Override

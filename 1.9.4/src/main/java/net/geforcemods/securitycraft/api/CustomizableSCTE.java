@@ -310,7 +310,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	@Override
 	public boolean hasCustomName() {
-		return (getCustomName() != null && !getCustomName().matches("name"));
+		return (getCustomName() != null && !getCustomName().equals("name"));
 	}
 
 	@Override
@@ -495,7 +495,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 */
 	public Option<?> getOptionByName(String name) {
 		for(Option<?> option : customOptions())
-			if(option.getName().matches(name))
+			if(option.getName().equals(name))
 				return option;
 
 		return null;

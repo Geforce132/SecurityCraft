@@ -243,7 +243,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	public boolean shouldProvidePower() {
-		return (type.matches("redstone") && isProvidingPower) ? true : false;
+		return (type.equals("redstone") && isProvidingPower) ? true : false;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {

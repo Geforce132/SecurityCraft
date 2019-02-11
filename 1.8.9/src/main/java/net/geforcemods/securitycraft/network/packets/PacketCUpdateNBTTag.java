@@ -44,7 +44,7 @@ public class PacketCUpdateNBTTag implements IMessage{
 		@Override
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(PacketCUpdateNBTTag message, MessageContext ctx) {
-			if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem().getUnlocalizedName().matches(message.itemName)){
+			if(Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem() != null && Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().getItem().getUnlocalizedName().equals(message.itemName)){
 				Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem().setTagCompound(message.stackTag);;
 			}
 

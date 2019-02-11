@@ -30,7 +30,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getCommandSenderName().matches(name))
+				if(tempPlayer.getCommandSenderName().equals(name))
 					return tempPlayer;
 			}
 
@@ -41,7 +41,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getCommandSenderName().matches(name))
+				if(tempPlayer.getCommandSenderName().equals(name))
 					return tempPlayer;
 			}
 
@@ -59,7 +59,7 @@ public class PlayerUtils{
 			for(int i = 0; i < Minecraft.getMinecraft().theWorld.playerEntities.size(); i++){
 				EntityPlayer player = (EntityPlayer) Minecraft.getMinecraft().theWorld.playerEntities.get(i);
 
-				if(player != null && player.getCommandSenderName().matches(name))
+				if(player != null && player.getCommandSenderName().equals(name))
 					return true;
 			}
 

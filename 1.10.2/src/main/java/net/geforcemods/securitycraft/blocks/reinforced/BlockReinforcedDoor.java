@@ -325,17 +325,17 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		}
 		else if(neighbor instanceof BlockInventoryScanner && BlockUtils.hasActiveInventoryScannerNextTo(world, pos))
 		{
-			if(BlockUtils.getBlock(world, pos.east()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).shouldProvidePower())
+			if(BlockUtils.getBlock(world, pos.east()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).shouldProvidePower())
 				return pos.east();
-			else if(BlockUtils.getBlock(world, pos.west()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).shouldProvidePower())
+			else if(BlockUtils.getBlock(world, pos.west()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).shouldProvidePower())
 				return pos.west();
-			else if(BlockUtils.getBlock(world, pos.south()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).shouldProvidePower())
+			else if(BlockUtils.getBlock(world, pos.south()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).shouldProvidePower())
 				return pos.south();
-			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).shouldProvidePower())
+			else if(BlockUtils.getBlock(world, pos.north()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).shouldProvidePower())
 				return pos.north();
-			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).shouldProvidePower())
+			else if(BlockUtils.getBlock(world, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).shouldProvidePower())
 				return pos.up();
-			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).shouldProvidePower())
+			else if(BlockUtils.getBlock(world, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).shouldProvidePower())
 				return pos.down();
 		}
 

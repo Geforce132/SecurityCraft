@@ -165,17 +165,17 @@ public class BlockUtils{
 	}
 
 	private static boolean hasActiveInventoryScannerNextTo(World world, int x, int y, int z){
-		if(world.getBlock(x + 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).shouldProvidePower())
+		if(world.getBlock(x + 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x + 1, y, z)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x + 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x - 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).shouldProvidePower())
+		else if(world.getBlock(x - 1, y, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x - 1, y, z)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x - 1, y, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).shouldProvidePower())
+		else if(world.getBlock(x, y, z + 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z + 1)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x, y, z + 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y, z - 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).shouldProvidePower())
+		else if(world.getBlock(x, y, z - 1) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y, z - 1)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x, y, z - 1)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y + 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).shouldProvidePower())
+		else if(world.getBlock(x, y + 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y + 1, z)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x, y + 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
-		else if(world.getBlock(x, y - 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).shouldProvidePower())
+		else if(world.getBlock(x, y - 1, z) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(x, y - 1, z)).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(x, y - 1, z)).getOwner().owns((IOwnable)world.getTileEntity(x, y, z));
 		else
 			return false;

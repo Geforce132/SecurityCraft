@@ -403,7 +403,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(!(access.getTileEntity(x, y, z) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType() == null)
 			return 0 ;
 
-		return (((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).shouldProvidePower())? 15 : 0;
+		return (((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).shouldProvidePower())? 15 : 0;
 	}
 
 	/**
@@ -415,7 +415,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType() == null)
 			return 0;
 
-		return (((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType().matches("redstone") && ((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).shouldProvidePower())? 15 : 0;
+		return (((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).getType().equals("redstone") && ((TileEntityInventoryScanner) access.getTileEntity(x, y, z)).shouldProvidePower())? 15 : 0;
 	}
 
 	/**
