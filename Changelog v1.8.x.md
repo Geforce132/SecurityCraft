@@ -3,7 +3,8 @@
 - New: Reinforced Gravel
 - New: Reinforced Sand
 - New: Sentry
-	- This feature was designed by Henzoid, who won our christmas giveaway! If you want to get notified of	future giveaways, join our Discord server: https://discord.gg/U8DvBAW
+	- This feature was designed by Henzoid, who won our New Year's Eve giveaway! If you want to get notified of	future giveaways, join our Discord server: https://discord.gg/U8DvBAW
+	- If you want to completely design a feature of your choice, consider becoming a patron! https://www.patreon.com/Geforce
 - New: The SC Manual now shows texts, that is too long to properly display, on multiple subpages
 - Change: Using the left and right arrow keys in the SC Manual will now change subpages
 - Change: The viewing range of cameras placed on the ceiling has been increased drastically
