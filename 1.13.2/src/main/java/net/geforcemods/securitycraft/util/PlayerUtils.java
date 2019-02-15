@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.geometry.Side;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -13,7 +14,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class PlayerUtils{
 

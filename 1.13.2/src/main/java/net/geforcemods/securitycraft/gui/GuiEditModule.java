@@ -2,12 +2,11 @@ package net.geforcemods.securitycraft.gui;
 
 import java.io.IOException;
 
-import org.lwjgl.input.Keyboard;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.java.games.input.Keyboard;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;

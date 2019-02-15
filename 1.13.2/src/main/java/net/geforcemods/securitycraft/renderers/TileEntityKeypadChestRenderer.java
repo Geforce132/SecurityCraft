@@ -2,15 +2,15 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
+import javafx.geometry.Side;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.client.model.ModelChest;
-import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.ModelChest;
+import net.minecraft.client.renderer.entity.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)

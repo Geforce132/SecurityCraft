@@ -1,12 +1,12 @@
 package net.geforcemods.securitycraft.entity;
 
+import javafx.geometry.Side;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityBouncingBetty extends Entity {

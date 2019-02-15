@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.models;
 
 import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**

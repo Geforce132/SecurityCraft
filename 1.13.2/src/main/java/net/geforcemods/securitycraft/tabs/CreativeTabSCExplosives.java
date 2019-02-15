@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.tabs;
 
+import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabSCExplosives extends CreativeTabs{

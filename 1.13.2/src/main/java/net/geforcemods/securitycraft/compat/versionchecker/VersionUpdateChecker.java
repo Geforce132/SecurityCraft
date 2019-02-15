@@ -13,7 +13,6 @@ import com.google.gson.JsonSyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.Loader;
 
 public class VersionUpdateChecker {
 

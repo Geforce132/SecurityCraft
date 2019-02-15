@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
+import javafx.geometry.Side;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCodebreaker extends Item {

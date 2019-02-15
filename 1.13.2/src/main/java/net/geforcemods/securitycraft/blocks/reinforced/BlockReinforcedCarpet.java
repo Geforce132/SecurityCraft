@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import java.util.Arrays;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
 {

@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.network.packets;
 
+import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketHelper {
