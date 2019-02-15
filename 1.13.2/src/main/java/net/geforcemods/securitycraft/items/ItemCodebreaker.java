@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.items;
 
-import javafx.geometry.Side;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemCodebreaker extends Item {
 
@@ -16,7 +16,7 @@ public class ItemCodebreaker extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean hasEffect(ItemStack stack){
 		return true;
 	}
@@ -25,7 +25,7 @@ public class ItemCodebreaker extends Item {
 	 * Return an item rarity from EnumRarity
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public EnumRarity getRarity(ItemStack stack){
 		return EnumRarity.RARE;
 	}

@@ -33,6 +33,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
@@ -70,9 +71,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	protected void entityInit()
+	protected void registerData()
 	{
-		super.entityInit();
+		super.registerData();
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
@@ -87,9 +88,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public void onEntityUpdate()
+	public void tick()
 	{
-		super.onEntityUpdate();
+		super.tick();
 
 		if(world.isRemote && animate)
 		{
@@ -156,12 +157,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	/**
 	 * Cleanly removes this sentry from the world, dropping the module and removing any block
 	 */
+	@Override
 	public void remove()
 	{
 		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, getPosition(), getModule()); //if there is none, nothing will drop
 		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
-		setDead();
 	}
 
 	@Override
@@ -245,13 +246,13 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tag)
+	public void writeAdditional(NBTTagCompound tag)
 	{
-		tag.setTag("TileEntityData", getOwnerTag());
-		tag.setTag("InstalledModule", getModule().writeToNBT(new NBTTagCompound()));
-		tag.setInteger("SentryMode", dataManager.get(MODE));
-		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
-		super.writeEntityToNBT(tag);
+		tag.put("TileEntityData", getOwnerTag());
+		tag.put("InstalledModule", getModule().write(new NBTTagCompound()));
+		tag.putInt("SentryMode", dataManager.get(MODE));
+		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
+		super.writeAdditional(tag);
 	}
 
 	private NBTTagCompound getOwnerTag()
@@ -259,23 +260,23 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.setString("owner", owner.getName());
-		tag.setString("ownerUUID", owner.getUUID());
+		tag.putString("owner", owner.getName());
+		tag.putString("ownerUUID", owner.getUUID());
 		return tag;
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tag)
+	public void readAdditional(NBTTagCompound tag)
 	{
-		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
+		NBTTagCompound teTag = tag.getCompound("TileEntityData");
 		String name = teTag.getString("owner");
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, (NBTTagCompound)tag.getTag("InstalledModule"));
-		dataManager.set(MODE, tag.getInteger("SentryMode"));
+		dataManager.set(MODULE, (NBTTagCompound)tag.get("InstalledModule"));
+		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
-		super.readEntityFromNBT(tag);
+		super.readAdditional(tag);
 	}
 
 	/**
@@ -292,17 +293,17 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 */
 	public void setModule(ItemStack module)
 	{
-		List<ItemStack> blocks = ((ItemModule)module.getItem()).getAddons(module.getTagCompound());
+		List<ItemStack> blocks = ((ItemModule)module.getItem()).getAddons(module.getTag());
 
 		if(blocks.size() > 0)
 		{
 			ItemStack disguiseStack = blocks.get(0);
-			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getItemDamage() : 0);
+			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getDamage() : 0);
 
-			world.setBlockState(getPosition(), state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
+			world.setBlockState(getPosition(), state.isFullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
-		dataManager.set(MODULE, module.writeToNBT(new NBTTagCompound()));
+		dataManager.set(MODULE, module.write(new NBTTagCompound()));
 	}
 
 	/**
@@ -315,7 +316,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
 		else
-			return new ItemStack(tag);
+			return ItemStack.read(tag);
 	}
 
 	/**
@@ -363,7 +364,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean getCanSpawnHere()
+	public boolean canSpawn(IWorld world, boolean aBoolean)
 	{
 		return false;
 	}
@@ -378,7 +379,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	protected void despawnEntity() {} //sentries don't despawn
+	protected void checkDespawn() {} //sentries don't despawn
 
 	//sentries are heavy, so don't push them around!
 	@Override

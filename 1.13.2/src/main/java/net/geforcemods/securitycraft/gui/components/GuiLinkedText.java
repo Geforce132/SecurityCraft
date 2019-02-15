@@ -21,36 +21,36 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	private int textColor = 16777120;
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(link), 14, link);
+		super(id, xPos, yPos, Minecraft.getInstance().fontRenderer.getStringWidth(link), 14, link);
 		url = link;
 	}
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getInstance().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 	}
 
 	public GuiLinkedText(int id, int xPos, int yPos, String link, String displayString, int color) {
-		super(id, xPos, yPos, Minecraft.getMinecraft().fontRenderer.getStringWidth(displayString), 14, displayString);
+		super(id, xPos, yPos, Minecraft.getInstance().fontRenderer.getStringWidth(displayString), 14, displayString);
 		url = link;
 		textColor = color;
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float f) {
+	public void render(int mouseX, int mouseY, float f) {
 		if (visible) {
-			FontRenderer fontRenderer = mc.fontRenderer;
-			mouseDragged(mc, mouseX, mouseY);
+			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+			onDrag(mouseX, mouseY);
 
 			drawCenteredString(fontRenderer, TextFormatting.UNDERLINE + displayString, x + width / 2, y + (height - 8) / 2, textColor);
 		}
 	}
 
 	@Override
-	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+	public boolean onClick(double mouseX, double mouseY) {
 		if(enabled && visible && mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height) {
-			if (mc.gameSettings.chatLinksPrompt)
-				mc.displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+			if (Minecraft.getInstance().gameSettings.chatLinksPrompt)
+				Minecraft.getInstance().displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
 
 			return true;
 		}
@@ -59,7 +59,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	}
 
 	@Override
-	public void confirmClicked(boolean choseYes, int buttonID) {
+	public void confirmResult(boolean choseYes, int buttonID) {
 		if(buttonID == 0)
 			if(choseYes)
 				ClientUtils.openURL(url);

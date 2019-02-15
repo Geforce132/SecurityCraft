@@ -69,8 +69,8 @@ public class PacketSUpdateTEOwnable implements IMessage
 		@Override
 		public IMessage onMessage(final PacketSUpdateTEOwnable message, MessageContext ctx)
 		{
-			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(message.pos);
+			Minecraft.getInstance().addScheduledTask(() -> {
+				TileEntity te = Minecraft.getInstance().world.getTileEntity(message.pos);
 
 				if(te == null || !(te instanceof IOwnable))
 					return;

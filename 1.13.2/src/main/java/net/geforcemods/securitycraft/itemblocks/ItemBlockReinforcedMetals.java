@@ -24,7 +24,7 @@ public class ItemBlockReinforcedMetals extends ItemBlock
 	{
 		String name = getTranslationKey();
 
-		switch(stack.getItemDamage())
+		switch(stack.getDamage())
 		{
 			case 0: return name + "_gold";
 			case 1: return name + "_iron";

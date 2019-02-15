@@ -22,8 +22,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
 
 	@Override
-	public void update(){
-		super.update();
+	public void tick(){
+		super.tick();
 
 		if(!shouldRotateOption.asBoolean())
 		{
@@ -68,6 +68,6 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public void onLoad()
 	{
 		super.onLoad();
-		down = world.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
+		down = world.getBlockState(pos).get(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
 	}
 }

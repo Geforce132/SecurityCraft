@@ -1,21 +1,21 @@
-package net.geforcemods.securitycraft.tabs;
+package net.geforcemods.securitycraft.itemgroups;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class CreativeTabSCTechnical extends CreativeTabs{
+public class ItemGroupSCTechnical extends ItemGroup{
 
-	public CreativeTabSCTechnical(){
-		super(getNextID(), "tabSecurityCraft");
+	public ItemGroupSCTechnical(){
+		super(GROUPS.length, "tabSecurityCraft");
 	}
 
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon(){
 		return new ItemStack(Item.getItemFromBlock(SCContent.usernameLogger));
 	}

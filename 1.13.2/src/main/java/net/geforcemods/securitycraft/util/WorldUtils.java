@@ -14,7 +14,7 @@ public class WorldUtils{
 	public static void addScheduledTask(World w, Runnable r)
 	{
 		if(w.isRemote) //clientside
-			Minecraft.getMinecraft().addScheduledTask(r);
+			Minecraft.getInstance().addScheduledTask(r);
 		else //serverside
 			((WorldServer)w).addScheduledTask(r);
 	}

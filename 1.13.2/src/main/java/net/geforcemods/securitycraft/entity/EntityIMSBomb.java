@@ -41,9 +41,9 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	@Override
-	public void onUpdate(){
+	public void tick(){
 		if(!launching){
-			super.onUpdate();
+			super.tick();
 			return;
 		}
 
@@ -60,33 +60,33 @@ public class EntityIMSBomb extends EntityFireball {
 			EntityPlayer target = PlayerUtils.getPlayerFromName(playerName);
 
 			double targetX = target.posX - posX;
-			double targetY = target.getEntityBoundingBox().minY + target.height / 2.0F - (posY + 1.25D);
+			double targetY = target.getBoundingBox().minY + target.height / 2.0F - (posY + 1.25D);
 			double targetZ = target.posZ - posZ;
 			EntityIMSBomb imsBomb = new EntityIMSBomb(world, target, posX, posY, posZ, targetX, targetY, targetZ, 0);
 
 			imsBomb.launching = false;
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(imsBomb));
-			setDead();
-		}else if(targetMob != null && !targetMob.isDead){
+			remove();
+		}else if(targetMob != null && !targetMob.removed){
 			double targetX = targetMob.posX - posX;
-			double targetY = targetMob.getEntityBoundingBox().minY + targetMob.height / 2.0F - (posY + 1.25D);
+			double targetY = targetMob.getBoundingBox().minY + targetMob.height / 2.0F - (posY + 1.25D);
 			double targetZ = targetMob.posZ - posZ;
 			EntityIMSBomb imsBomb = new EntityIMSBomb(world, targetMob, posX, posY, posZ, targetX, targetY, targetZ, 0);
 
 			imsBomb.launching = false;
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(imsBomb));
-			setDead();
+			remove();
 		}
 		else
-			setDead();
+			remove();
 	}
 
 	@Override
 	protected void onImpact(RayTraceResult result){
 		if(!world.isRemote)
-			if(result.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, result.getBlockPos()) != SCContent.ims){
+			if(result.type == Type.BLOCK && BlockUtils.getBlock(world, result.getBlockPos()) != SCContent.ims){
 				world.createExplosion(this, result.getBlockPos().getX(), result.getBlockPos().getY() + 1D, result.getBlockPos().getZ(), 7F, true);
-				setDead();
+				remove();
 			}
 	}
 

@@ -28,7 +28,7 @@ public class ItemBlockReinforcedLog extends ItemBlock
 	{
 		String name = getTranslationKey();
 
-		switch(stack.getItemDamage())
+		switch(stack.getDamage())
 		{
 			case 0: return block instanceof BlockReinforcedOldLog ? name + "_oak" : name + "_acacia";
 			case 1: return block instanceof BlockReinforcedOldLog ? name + "_spruce" : name + "_big_oak";

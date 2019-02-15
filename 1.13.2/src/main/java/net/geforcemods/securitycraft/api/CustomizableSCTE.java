@@ -37,8 +37,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
 
 	@Override
-	public void update() {
-		super.update();
+	public void tick() {
+		super.tick();
 
 		if(hasWorld() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
@@ -52,12 +52,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	{
 		super.readFromNBT(tag);
 
-		NBTTagList list = tag.getTagList("Modules", 10);
+		NBTTagList list = tag.getList("Modules", 10);
 		modules = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.tagCount(); ++i)
+		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			NBTTagCompound stackTag = list.getCompound(i);
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if (slot >= 0 && slot < modules.size())
@@ -68,17 +68,17 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			for(Option<?> option : customOptions())
 				option.readFromNBT(tag);
 
-		if (tag.hasKey("linkable"))
+		if (tag.contains("linkable"))
 			linkable = tag.getBoolean("linkable");
 
-		if (linkable && tag.hasKey("linkedBlocks"))
+		if (linkable && tag.contains("linkedBlocks"))
 		{
 			if(!hasWorld()) {
-				nbtTagStorage = tag.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
+				nbtTagStorage = tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
 				return;
 			}
 
-			readLinkedBlocks(tag.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND));
+			readLinkedBlocks(tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND));
 		}
 	}
 
@@ -93,18 +93,18 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			if (!modules.get(i).isEmpty())
 			{
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.setByte("ModuleSlot", (byte)i);
-				modules.get(i).writeToNBT(stackTag);
-				list.appendTag(stackTag);
+				stackTag.putByte("ModuleSlot", (byte)i);
+				modules.get(i).write(stackTag);
+				list.add(stackTag);
 			}
 
-		tag.setTag("Modules", list);
+		tag.put("Modules", list);
 
 		if(customOptions() != null)
 			for(Option<?> option : customOptions())
 				option.writeToNBT(tag);
 
-		tag.setBoolean("linkable", linkable);
+		tag.putBoolean("linkable", linkable);
 
 		if(linkable && hasWorld() && linkedBlocks.size() > 0) {
 			NBTTagList tagList = new NBTTagList();
@@ -122,16 +122,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 							continue;
 						}
 
-						toAppend.setString("blockName", block.blockName);
-						toAppend.setInteger("blockX", block.getX());
-						toAppend.setInteger("blockY", block.getY());
-						toAppend.setInteger("blockZ", block.getZ());
+						toAppend.putString("blockName", block.blockName);
+						toAppend.putInt("blockX", block.getX());
+						toAppend.putInt("blockY", block.getY());
+						toAppend.putInt("blockZ", block.getZ());
 					}
 
-					tagList.appendTag(toAppend);
+					tagList.add(toAppend);
 				}
 
-				tag.setTag("linkedBlocks", tagList);
+				tag.put("linkedBlocks", tagList);
 			});
 		}
 
@@ -141,11 +141,11 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	private void readLinkedBlocks(NBTTagList list) {
 		if(!linkable) return;
 
-		for(int i = 0; i < list.tagCount(); i++) {
-			String name = list.getCompoundTagAt(i).getString("blockName");
-			int x = list.getCompoundTagAt(i).getInteger("blockX");
-			int y = list.getCompoundTagAt(i).getInteger("blockY");
-			int z = list.getCompoundTagAt(i).getInteger("blockZ");
+		for(int i = 0; i < list.size(); i++) {
+			String name = list.getCompound(i).getString("blockName");
+			int x = list.getCompound(i).getInt("blockX");
+			int y = list.getCompound(i).getInt("blockY");
+			int z = list.getCompound(i).getInt("blockZ");
 
 			LinkedBlock block = new LinkedBlock(name, x, y, z);
 			if(hasWorld() && !block.validate(world)) {
@@ -183,13 +183,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return stack;
 			}
 			else
 			{
-				stack = modules.get(index).splitStack(count);
+				stack = modules.get(index).split(count);
 
 				if (modules.get(index).getCount() == 0)
 					modules.set(index, ItemStack.EMPTY);
@@ -198,7 +198,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return stack;
 			}
@@ -225,13 +225,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return stack;
 			}
 			else
 			{
-				stack = modules.get(index).splitStack(count);
+				stack = modules.get(index).split(count);
 
 				if (modules.get(index).getCount() == 0)
 					modules.set(index, ItemStack.EMPTY);
@@ -240,7 +240,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 
 				return stack;
 			}
@@ -278,7 +278,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			onModuleInserted(stack, ((ItemModule) stack.getItem()).getModule());
 
 			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 		}
 	}
 
@@ -296,7 +296,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
 		}
 	}
 

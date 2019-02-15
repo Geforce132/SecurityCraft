@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.List;
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -39,7 +38,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
 
@@ -57,7 +57,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
@@ -77,7 +77,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 		return BlockFaceShape.SOLID;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		if(world.getTileEntity(pos) == null)
 			return true;
@@ -256,7 +256,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 				Block block = Block.getBlockFromItem(disguisedStack.getItem());
 				boolean hasMeta = disguisedStack.getHasSubtypes();
 
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
+				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getDamage() : getMetaFromState(world.getBlockState(pos)));
 
 				if (block != this)
 					return disguisedModel.getActualState(world, pos);
@@ -282,7 +282,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 		return ItemStack.EMPTY;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		return ItemStack.EMPTY;

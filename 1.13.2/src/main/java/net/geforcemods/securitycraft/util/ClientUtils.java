@@ -3,23 +3,24 @@ package net.geforcemods.securitycraft.util;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientUtils{
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
-		Minecraft.getMinecraft().player.closeScreen();
+		Minecraft.getInstance().player.closeScreen();
 	}
 
 	/**
@@ -27,10 +28,10 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void takeScreenshot() {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().gameDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer()));
+		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT)
+			Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getInstance().gameDir, Minecraft.getInstance().displayWidth, Minecraft.getInstance().displayHeight, Minecraft.getInstance().getFramebuffer()));
 	}
 
 	/**
@@ -38,9 +39,9 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
-		Long time = Long.valueOf(Minecraft.getMinecraft().world.provider.getWorldTime());
+		Long time = Long.valueOf(Minecraft.getInstance().world.getDayTime());
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -54,10 +55,10 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
-		tileEntity.writeToNBT(tag);
+		tileEntity.write(tag);
 		SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
@@ -66,12 +67,12 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static void openURL(String url) {
 		URI uri = null;
 
@@ -101,6 +102,6 @@ public class ClientUtils{
 	 */
 	public static String localize(String key, Object... params)
 	{
-		return String.format(I18n.translateToLocal(key), params);
+		return I18n.format(key, params);
 	}
 }

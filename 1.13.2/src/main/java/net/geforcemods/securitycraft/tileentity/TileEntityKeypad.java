@@ -29,11 +29,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 			if(getValue()) {
 				BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, true);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+				world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 			}
 			else {
 				BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, false);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+				world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 			}
 		}
 	};
@@ -60,7 +60,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		super.writeToNBT(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+			tag.putString("passcode", passcode);
 
 		return tag;
 	}
@@ -73,9 +73,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	{
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("passcode"))
-			if(tag.getInteger("passcode") != 0)
-				passcode = String.valueOf(tag.getInteger("passcode"));
+		if (tag.contains("passcode"))
+			if(tag.getInt("passcode") != 0)
+				passcode = String.valueOf(tag.getInt("passcode"));
 			else
 				passcode = tag.getString("passcode");
 	}

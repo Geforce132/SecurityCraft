@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
@@ -31,7 +30,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockKeycardReader extends BlockOwnable  {
 
@@ -132,7 +132,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
 		if((state.getValue(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;

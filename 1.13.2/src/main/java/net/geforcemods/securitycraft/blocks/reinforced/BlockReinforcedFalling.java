@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntityFallingOwnableBlock;
 import net.minecraft.block.Block;
@@ -13,7 +12,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedFalling extends BlockReinforcedBase
 {
@@ -92,7 +92,7 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
 	 * of whether the block can receive random update ticks
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(16) == 0)

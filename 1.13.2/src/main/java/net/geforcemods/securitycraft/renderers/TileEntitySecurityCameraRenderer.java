@@ -22,7 +22,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
-		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
+		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
 			return;
 
 		float rotation = 0F;
@@ -39,9 +39,9 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		}
 
 		GlStateManager.pushMatrix();
-		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+		GlStateManager.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
-		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
+		Minecraft.getInstance().textureManager.bindTexture(cameraTexture);
 
 		GlStateManager.pushMatrix();
 
@@ -60,7 +60,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		else
 			rotation = -10000F;
 
-		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
+		GlStateManager.rotatef(180F, rotation, 0.0F, 1.0F);
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 

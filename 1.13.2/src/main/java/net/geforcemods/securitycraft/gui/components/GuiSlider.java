@@ -128,7 +128,7 @@ public class GuiSlider extends GuiButtonExt
 				updateSlider();
 			}
 
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)), y, 0, 66, 4, 20);
 			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)) + 4, y, 196, 66, 4, 20);
 		}
@@ -143,17 +143,11 @@ public class GuiSlider extends GuiButtonExt
 	 * e).
 	 */
 	@Override
-	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
+	public void onClick(double mouseX, double mouseY)
 	{
-		if (super.mousePressed(mc, mouseX, mouseY))
-		{
-			sliderValue = (double)(mouseX - (x + 4)) / (double)(width - 8);
-			updateSlider();
-			dragging = true;
-			return true;
-		}
-		else
-			return false;
+		sliderValue = (mouseX - (x + 4)) / (width - 8);
+		updateSlider();
+		dragging = true;
 	}
 
 	public void updateSlider()
@@ -195,7 +189,7 @@ public class GuiSlider extends GuiButtonExt
 	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
 	 */
 	@Override
-	public void mouseReleased(int mouseX, int mouseY)
+	public void onRelease(double mouseX, double mouseY)
 	{
 		dragging = false;
 	}

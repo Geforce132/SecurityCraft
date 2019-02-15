@@ -19,16 +19,16 @@ public class ContainerBlockReinforcer extends Container
 	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory)
 	{
 		blockReinforcer = player.inventory.getCurrentItem();
-		addSlotToContainer(new SlotBlockReinforcer(itemventory, 0, 79, 20)); //input & output slot
+		addSlot(new SlotBlockReinforcer(itemventory, 0, 79, 20)); //input & output slot
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlotToContainer(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
+				addSlot(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 84 + i * 18));
 
 		//player hotbar
 		for(int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
 	}
 
 	@Override
@@ -64,9 +64,9 @@ public class ContainerBlockReinforcer extends Container
 			if(!newStack.isEmpty())
 			{
 				if(customMeta != -1)
-					newStack.setItemDamage(customMeta);
+					newStack.setDamage(customMeta);
 				else
-					newStack.setItemDamage(stack.getItemDamage());
+					newStack.setDamage(stack.getDamage());
 
 				newStack.setCount(stack.getCount());
 				blockReinforcer.damageItem(stack.getCount(), player);
@@ -204,7 +204,7 @@ public class ContainerBlockReinforcer extends Container
 
 			return validBlock &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
+						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

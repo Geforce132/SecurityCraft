@@ -59,8 +59,8 @@ public class ModelSentry extends ModelBase
 
 		if(entity instanceof EntitySentry)
 		{
-			GlStateManager.rotate(((EntitySentry)entity).getDataManager().get(EntitySentry.HEAD_ROTATION), 0.0F, 1.0F, 0.0F);
-			GlStateManager.translate(0.0F, ((EntitySentry)entity).getHeadYTranslation(), 0.0F);
+			GlStateManager.rotatef(((EntitySentry)entity).getDataManager().get(EntitySentry.HEAD_ROTATION), 0.0F, 1.0F, 0.0F);
+			GlStateManager.translatef(0.0F, ((EntitySentry)entity).getHeadYTranslation(), 0.0F);
 		}
 
 		head.render(scale);

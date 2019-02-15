@@ -50,7 +50,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				}
 			}
 
-			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
+			EntityPlayerMP owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
 			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().toLowerCase()))
 				return false;
@@ -75,8 +75,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	{
 		super.writeToNBT(tag);
 
-		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		tag.setString("lastPlayerName", lastPlayerName);
+		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
+		tag.putString("lastPlayerName", lastPlayerName);
 		return tag;
 	}
 
@@ -85,10 +85,10 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	{
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("shouldSendNewMessage"))
+		if (tag.contains("shouldSendNewMessage"))
 			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 
-		if (tag.hasKey("lastPlayerName"))
+		if (tag.contains("lastPlayerName"))
 			lastPlayerName = tag.getString("lastPlayerName");
 	}
 

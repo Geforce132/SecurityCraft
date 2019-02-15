@@ -4,7 +4,8 @@ import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class PacketHelper {
 
@@ -16,9 +17,9 @@ public class PacketHelper {
 		return player.getEntityWorld().getMinecraftServer().getWorld(player.dimension);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public World getClientWorld(EntityPlayer player){
-		return Minecraft.getMinecraft().world;
+		return Minecraft.getInstance().world;
 	}
 
 }

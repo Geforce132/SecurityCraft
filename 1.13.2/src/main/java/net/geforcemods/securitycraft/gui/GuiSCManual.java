@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -16,7 +14,6 @@ import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.java.games.input.Keyboard;
-import net.java.games.input.Mouse;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
@@ -34,8 +31,9 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.HoverChecker;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiSCManual extends GuiScreen {
 
@@ -69,17 +67,17 @@ public class GuiSCManual extends GuiScreen {
 		startX = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
 
-		buttonList.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
-		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
-		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true)); //next subpage
-		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false)); //previous subpage
+		buttons.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
+		buttons.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
+		buttons.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true)); //next subpage
+		buttons.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
+	public void render(int mouseX, int mouseY, float partialTicks){
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
 		{
@@ -98,9 +96,9 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey() + ".name"), startX + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey() + ".name"), startX + 39, 27, 0);
 
 			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
@@ -109,15 +107,15 @@ public class GuiSCManual extends GuiScreen {
 			if(designedBy != null && !designedBy.isEmpty())
 				fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0, false);
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0, false);
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0, false);
+				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
-		for(int i = 0; i < buttonList.size(); i++)
-			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
+		for(int i = 0; i < buttons.size(); i++)
+			buttons.get(i).render(mouseX, mouseY, partialTicks);
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
@@ -125,7 +123,7 @@ public class GuiSCManual extends GuiScreen {
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
+			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world, 0) : null);
 			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
 			if(itemBlock != null){
@@ -184,8 +182,8 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException{
-		super.keyTyped(typedChar, keyCode);
+	public boolean charTyped(char typedChar, int keyCode){
+		return super.charTyped(typedChar, keyCode);
 
 		if(keyCode == Keyboard.KEY_LEFT)
 			previousSubpage();
@@ -205,24 +203,25 @@ public class GuiSCManual extends GuiScreen {
 			previousSubpage();
 
 		//hide subpage buttons on main page
-		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 0;
-		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 0;
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 0;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 0;
 	}
 
 	@Override
-	public void handleMouseInput() throws IOException
+	public boolean mouseScrolled(double aDouble)
 	{
-		super.handleMouseInput();
+		super.mouseScrolled(aDouble);
 
-		switch((int)Math.signum(Mouse.getEventDWheel()))
+		switch((int)Math.signum(aDouble))
 		{
 			case -1: nextPage(); break;
 			case 1: previousPage(); break;
 		}
 
 		//hide subpage buttons on main page
-		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 1;
-		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
+		return true;
 	}
 
 	private void nextPage()
@@ -339,7 +338,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
+		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world, 0) : null);
 		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
 		if(te != null){
@@ -376,7 +375,7 @@ public class GuiSCManual extends GuiScreen {
 		subpages.add(helpInfo);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	static class ChangePageButton extends GuiButton {
 		private final boolean isForward;
 
@@ -389,11 +388,11 @@ public class GuiSCManual extends GuiScreen {
 		 * Draws this button to the screen.
 		 */
 		@Override
-		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks){
+		public void render(int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(bookGuiTextures);
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 				int textureX = 0;
 				int textureY = 192;
 

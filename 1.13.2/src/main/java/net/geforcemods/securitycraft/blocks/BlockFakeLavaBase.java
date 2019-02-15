@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
@@ -17,7 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
 
@@ -63,7 +63,7 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return ItemStack.EMPTY;
 	}

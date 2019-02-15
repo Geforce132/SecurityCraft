@@ -18,17 +18,17 @@ public class ItemBlockReinforcedPlanks extends ItemBlock {
 
 	@Override
 	public String getTranslationKey(ItemStack stack){
-		if(stack.getItemDamage() == 0)
+		if(stack.getDamage() == 0)
 			return this.getTranslationKey() + "_oak";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getDamage() == 1)
 			return this.getTranslationKey() + "_spruce";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getDamage() == 2)
 			return this.getTranslationKey() + "_birch";
-		else if(stack.getItemDamage() == 3)
+		else if(stack.getDamage() == 3)
 			return this.getTranslationKey() + "_jungle";
-		else if(stack.getItemDamage() == 4)
+		else if(stack.getDamage() == 4)
 			return this.getTranslationKey() + "_acacia";
-		else if(stack.getItemDamage() == 5)
+		else if(stack.getDamage() == 5)
 			return this.getTranslationKey() + "_darkoak";
 		else
 			return this.getTranslationKey();

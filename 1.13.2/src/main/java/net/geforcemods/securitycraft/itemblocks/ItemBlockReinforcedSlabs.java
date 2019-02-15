@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.itemblocks;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -21,7 +20,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemBlockReinforcedSlabs extends ItemBlock {
 
@@ -40,19 +40,19 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
 	@Override
 	public String getTranslationKey(ItemStack stack){
-		if(stack.getItemDamage() == 0)
+		if(stack.getDamage() == 0)
 			return this.getTranslationKey() + "_stone";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getDamage() == 1)
 			return this.getTranslationKey() + "_cobble";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getDamage() == 2)
 			return this.getTranslationKey() + "_sandstone";
-		else if(stack.getItemDamage() == 3)
+		else if(stack.getDamage() == 3)
 			return this.getTranslationKey() + "_stonebrick";
-		else if(stack.getItemDamage() == 4)
+		else if(stack.getDamage() == 4)
 			return this.getTranslationKey() + "_brick";
-		else if(stack.getItemDamage() == 5)
+		else if(stack.getDamage() == 5)
 			return this.getTranslationKey() + "_netherbrick";
-		else if(stack.getItemDamage() == 6)
+		else if(stack.getDamage() == 6)
 			return this.getTranslationKey() + "_quartz";
 		else
 			return this.getTranslationKey();
@@ -127,7 +127,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
 		BlockPos originalPos = pos;
 		IProperty<?> variantProperty = singleSlab.getVariantProperty();

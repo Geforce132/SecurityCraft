@@ -17,6 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
@@ -29,16 +31,16 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+			tag.putString("passcode", passcode);
 
 		if(owner != null){
-			tag.setString("owner", owner.getName());
-			tag.setString("ownerUUID", owner.getUUID());
+			tag.putString("owner", owner.getName());
+			tag.putString("ownerUUID", owner.getUUID());
 		}
 
 		return tag;
@@ -48,42 +50,42 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
-		if (tag.hasKey("passcode"))
-			if(tag.getInteger("passcode") != 0)
-				passcode = String.valueOf(tag.getInteger("passcode"));
+		if (tag.contains("passcode"))
+			if(tag.getInt("passcode") != 0)
+				passcode = String.valueOf(tag.getInt("passcode"));
 			else
 				passcode = tag.getString("passcode");
 
-		if (tag.hasKey("owner"))
+		if (tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
 
-		if (tag.hasKey("ownerUUID"))
+		if (tag.contains("ownerUUID"))
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
+		write(tag);
 		return new SPacketUpdateTileEntity(pos, 1, tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
+		read(packet.getNbtCompound());
 	}
 
 	/**
 	 * Returns the name of the inventory
 	 */
 	@Override
-	public String getName()
+	public ITextComponent getName()
 	{
-		return "Protected chest";
+		return new TextComponentString("Protected chest");
 	}
 
 	@Override

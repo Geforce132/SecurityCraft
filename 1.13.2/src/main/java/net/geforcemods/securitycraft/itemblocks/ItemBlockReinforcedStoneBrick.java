@@ -20,13 +20,13 @@ public class ItemBlockReinforcedStoneBrick extends ItemBlock
 	@Override
 	public String getTranslationKey(ItemStack stack)
 	{
-		if(stack.getItemDamage() == 0)
+		if(stack.getDamage() == 0)
 			return this.getTranslationKey() + "_default";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getDamage() == 1)
 			return this.getTranslationKey() + "_mossy";
-		else if(stack.getItemDamage() == 2)
+		else if(stack.getDamage() == 2)
 			return this.getTranslationKey() + "_cracked";
-		else if(stack.getItemDamage() == 3)
+		else if(stack.getDamage() == 3)
 			return this.getTranslationKey() + "_chiseled";
 		else
 			return this.getTranslationKey();

@@ -24,7 +24,7 @@ public class ItemBlockReinforcedPurpur extends ItemBlock
 	{
 		String name = getTranslationKey();
 
-		switch(stack.getItemDamage())
+		switch(stack.getDamage())
 		{
 			case 0: return name + "_default";
 			case 1: case 2: case 3: return name + "_pillar";

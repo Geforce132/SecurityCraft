@@ -15,7 +15,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	private boolean isPowered = false;
 
 	@Override
-	public void update(){
+	public void tick(){
 		if(world.isRemote)
 			return;
 		else{
@@ -44,8 +44,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
-		tag.setInteger("cooldown", cooldown);
-		tag.setBoolean("isPowered", isPowered);
+		tag.putInt("cooldown", cooldown);
+		tag.putBoolean("isPowered", isPowered);
 		return tag;
 	}
 
@@ -57,10 +57,10 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	{
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
+		if (tag.contains("cooldown"))
+			cooldown = tag.getInt("cooldown");
 
-		if (tag.hasKey("isPowered"))
+		if (tag.contains("isPowered"))
 			isPowered = tag.getBoolean("isPowered");
 
 	}

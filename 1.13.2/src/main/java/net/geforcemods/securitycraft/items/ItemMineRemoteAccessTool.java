@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -25,7 +24,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemMineRemoteAccessTool extends Item {
 
@@ -84,7 +84,7 @@ public class ItemMineRemoteAccessTool extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, World world, List<String> list, ITooltipFlag flag) {
 		if(par1ItemStack.getTagCompound() == null)
 			return;

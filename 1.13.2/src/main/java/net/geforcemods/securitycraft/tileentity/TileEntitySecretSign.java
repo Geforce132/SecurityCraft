@@ -18,13 +18,13 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
 		if(owner != null){
-			tag.setString("owner", owner.getName());
-			tag.setString("ownerUUID", owner.getUUID());
+			tag.putString("owner", owner.getName());
+			tag.putString("ownerUUID", owner.getUUID());
 		}
 
 		return tag;
@@ -34,21 +34,21 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
-		if (tag.hasKey("owner"))
+		if (tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
 
-		if (tag.hasKey("ownerUUID"))
+		if (tag.contains("ownerUUID"))
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
+		write(tag);
 		return new SPacketUpdateTileEntity(pos, 1, tag);
 	}
 

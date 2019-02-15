@@ -20,22 +20,22 @@ public class ContainerCustomizeBlock extends Container{
 		this.tileEntity = tileEntity;
 
 		if(tileEntity.getNumberOfCustomizableOptions() == 1)
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 79, 20));
+			addSlot(new ModuleSlot(tileEntity, 0, 79, 20));
 		else if(tileEntity.getNumberOfCustomizableOptions() == 2){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 70, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 88, 20));
+			addSlot(new ModuleSlot(tileEntity, 0, 70, 20));
+			addSlot(new ModuleSlot(tileEntity, 1, 88, 20));
 		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 61, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 79, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 2, 97, 20));
+			addSlot(new ModuleSlot(tileEntity, 0, 61, 20));
+			addSlot(new ModuleSlot(tileEntity, 1, 79, 20));
+			addSlot(new ModuleSlot(tileEntity, 2, 97, 20));
 		}
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; ++j)
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 
 		for(int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class ContainerCustomizeBlock extends Container{
 					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ slotStack, EnumCustomModules.getModuleFromStack(slotStack) }, tileEntity);
 
 					if(tileEntity instanceof TileEntitySecurityCamera)
-						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).getValue(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock(), true);
+						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock(), true);
 				}
 			}
 			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))

@@ -88,7 +88,7 @@ public class Option<T> {
 		if(value instanceof Boolean)
 			value = (T) ((Boolean) tag.getBoolean(name));
 		else if(value instanceof Integer)
-			value = (T) ((Integer) tag.getInteger(name));
+			value = (T) ((Integer) tag.getInt(name));
 		else if(value instanceof Double)
 			value = (T) ((Double) tag.getDouble(name));
 		else if(value instanceof Float)
@@ -97,13 +97,13 @@ public class Option<T> {
 
 	public void writeToNBT(NBTTagCompound tag) {
 		if(value instanceof Boolean)
-			tag.setBoolean(name, asBoolean());
+			tag.putBoolean(name, asBoolean());
 		else if(value instanceof Integer)
-			tag.setInteger(name, asInteger());
+			tag.putInt(name, asInteger());
 		else if(value instanceof Double)
-			tag.setDouble(name, asDouble());
+			tag.putDouble(name, asDouble());
 		else if(value instanceof Float)
-			tag.setFloat(name, asFloat());
+			tag.putFloat(name, asFloat());
 	}
 
 	/**

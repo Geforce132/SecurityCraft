@@ -22,10 +22,10 @@ public class BriefcaseInventory implements IInventory {
 	public BriefcaseInventory(ItemStack briefcaseItem) {
 		briefcase = briefcaseItem;
 
-		if (!briefcase.hasTagCompound())
-			briefcase.setTagCompound(new NBTTagCompound());
+		if (!briefcase.hasTag())
+			briefcase.setTag(new NBTTagCompound());
 
-		readFromNBT(briefcase.getTagCompound());
+		readFromNBT(briefcase.getTag());
 	}
 
 	@Override
@@ -39,11 +39,11 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+		for(int i = 0; i < items.size(); i++) {
+			NBTTagCompound item = items.getCompound(i);
+			int slot = item.getInt("Slot");
 
 			if(slot < getSizeInventory())
 				briefcaseInventory.set(slot, new ItemStack(item));
@@ -56,13 +56,13 @@ public class BriefcaseInventory implements IInventory {
 		for(int i = 0; i < getSizeInventory(); i++)
 			if(getStackInSlot(i) != null) {
 				NBTTagCompound item = new NBTTagCompound();
-				item.setInteger("Slot", i);
-				getStackInSlot(i).writeToNBT(item);
+				item.putInt("Slot", i);
+				getStackInSlot(i).write(item);
 
-				items.appendTag(item);
+				items.add(item);
 			}
 
-		tag.setTag("ItemInventory", items);
+		tag.put("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
 	}
 
@@ -72,7 +72,7 @@ public class BriefcaseInventory implements IInventory {
 
 		if(!stack.isEmpty())
 			if(stack.getCount() > size) {
-				stack = stack.splitStack(size);
+				stack = stack.split(size);
 				markDirty();
 			}
 			else
@@ -99,8 +99,8 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public String getName() {
-		return "Briefcase";
+	public ITextComponent getName() {
+		return new TextComponentString("Briefcase");
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class BriefcaseInventory implements IInventory {
 			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
 				briefcaseInventory.set(i, ItemStack.EMPTY);
 
-		writeToNBT(briefcase.getTagCompound());
+		writeToNBT(briefcase.getTag());
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentString(getName());
+		return getName();
 	}
 
 	@Override

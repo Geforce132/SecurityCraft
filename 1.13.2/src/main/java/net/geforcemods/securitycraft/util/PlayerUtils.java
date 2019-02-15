@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -12,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -23,8 +23,8 @@ public class PlayerUtils{
 	 * Args: playerName.
 	 */
 	public static EntityPlayer getPlayerFromName(String name){
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List<?> players = Minecraft.getMinecraft().world.playerEntities;
+		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT){
+			List<?> players = Minecraft.getInstance().world.playerEntities;
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
@@ -54,9 +54,9 @@ public class PlayerUtils{
 	 * Args: playerName.
 	 */
 	public static boolean isPlayerOnline(String name) {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			for(int i = 0; i < Minecraft.getMinecraft().world.playerEntities.size(); i++){
-				EntityPlayer player = Minecraft.getMinecraft().world.playerEntities.get(i);
+		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT){
+			for(int i = 0; i < Minecraft.getInstance().world.playerEntities.size(); i++){
+				EntityPlayer player = Minecraft.getInstance().world.playerEntities.get(i);
 
 				if(player != null && player.getName().equals(name))
 					return true;

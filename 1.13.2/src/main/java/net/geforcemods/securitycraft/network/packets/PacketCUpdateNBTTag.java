@@ -1,14 +1,14 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketCUpdateNBTTag implements IMessage{
 
@@ -41,10 +41,10 @@ public class PacketCUpdateNBTTag implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketCUpdateNBTTag, IMessage> {
 
 		@Override
-		@SideOnly(Side.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public IMessage onMessage(PacketCUpdateNBTTag message, MessageContext ctx) {
-			if(!Minecraft.getMinecraft().player.inventory.getCurrentItem().isEmpty() && Minecraft.getMinecraft().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName)){
-				Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(message.stackTag);;
+			if(!Minecraft.getInstance().player.inventory.getCurrentItem().isEmpty() && Minecraft.getInstance().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName)){
+				Minecraft.getInstance().player.inventory.getCurrentItem().setTagCompound(message.stackTag);;
 			}
 
 			return null;

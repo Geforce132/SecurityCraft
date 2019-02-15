@@ -1,16 +1,16 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketCPlaySoundAtPos implements IMessage{
 
@@ -67,9 +67,9 @@ public class PacketCPlaySoundAtPos implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketCPlaySoundAtPos, IMessage> {
 
 		@Override
-		@SideOnly(Side.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
-			Minecraft.getMinecraft().world.playSound(Minecraft.getMinecraft().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
+			Minecraft.getInstance().world.playSound(Minecraft.getInstance().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
 			return null;
 		}
 

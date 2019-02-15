@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
@@ -8,8 +7,6 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,14 +18,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
@@ -36,7 +30,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
 
@@ -78,7 +73,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			}
 			else
 			{
-				stack = furnaceItemStacks.get(index).splitStack(count);
+				stack = furnaceItemStacks.get(index).split(count);
 
 				if (furnaceItemStacks.get(index).getCount() == 0)
 					furnaceItemStacks.set(index, ItemStack.EMPTY);
@@ -121,9 +116,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public String getName()
+	public ITextComponent getName()
 	{
-		return hasCustomName() ? furnaceCustomName : "container.furnace";
+		return new TextComponentString(hasCustomName() ? furnaceCustomName : "container.furnace");
 	}
 
 	@Override
@@ -141,16 +136,16 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-		NBTTagList list = tag.getTagList("Items", 10);
+		NBTTagList list = tag.getList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.tagCount(); ++i)
+		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			NBTTagCompound stackTag = list.getCompound(i);
 			byte slot = stackTag.getByte("Slot");
 
 			if (slot >= 0 && slot < furnaceItemStacks.size())
-				furnaceItemStacks.set(slot, new ItemStack(stackTag));
+				furnaceItemStacks.set(slot, ItemStack.read(stackTag));
 		}
 
 		furnaceBurnTime = tag.getShort("BurnTime");
@@ -159,7 +154,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		currentItemBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
 		passcode = tag.getString("passcode");
 
-		if (tag.hasKey("CustomName", 8))
+		if (tag.contains("CustomName", 8))
 			furnaceCustomName = tag.getString("CustomName");
 	}
 
@@ -167,27 +162,27 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
-		tag.setShort("BurnTime", (short)furnaceBurnTime);
-		tag.setShort("CookTime", (short)cookTime);
-		tag.setShort("CookTimeTotal", (short)totalCookTime);
+		tag.putShort("BurnTime", (short)furnaceBurnTime);
+		tag.putShort("CookTime", (short)cookTime);
+		tag.putShort("CookTimeTotal", (short)totalCookTime);
 		NBTTagList list = new NBTTagList();
 
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			if (!furnaceItemStacks.get(i).isEmpty())
 			{
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.setByte("Slot", (byte)i);
-				furnaceItemStacks.get(i).writeToNBT(stackTag);
-				list.appendTag(stackTag);
+				stackTag.putByte("Slot", (byte)i);
+				furnaceItemStacks.get(i).write(stackTag);
+				list.add(stackTag);
 			}
 
-		tag.setTag("Items", list);
+		tag.put("Items", list);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+			tag.putString("passcode", passcode);
 
 		if (hasCustomName())
-			tag.setString("CustomName", furnaceCustomName);
+			tag.putString("CustomName", furnaceCustomName);
 
 		return tag;
 	}
@@ -202,7 +197,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * Returns an integer between 0 and the passed value representing how close the current item is to being completely
 	 * cooked
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getCookProgressScaled(int scaleFactor)
 	{
 		return cookTime * scaleFactor / 200;
@@ -212,7 +207,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
 	 * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getBurnTimeRemainingScaled(int scaleFactor)
 	{
 		if (currentItemBurnTime == 0)
@@ -226,14 +221,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return furnaceBurnTime > 0;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static boolean isBurning(IInventory inventory)
 	{
 		return inventory.getField(0) > 0;
 	}
 
 	@Override
-	public void update()
+	public void tick()
 	{
 		boolean isBurning = this.isBurning();
 		boolean shouldMarkDirty = false;
@@ -335,35 +330,12 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	public static int getItemBurnTime(ItemStack stack)
 	{
-		if (stack.isEmpty())
+		if (stack.isEmpty()) {
 			return 0;
-		else
-		{
+		} else {
 			Item item = stack.getItem();
-
-			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
-			{
-				Block block = Block.getBlockFromItem(item);
-
-				if (block == Blocks.WOODEN_SLAB)
-					return 150;
-
-				if (block.getMaterial(block.getDefaultState()) == Material.WOOD)
-					return 300;
-
-				if (block == Blocks.COAL_BLOCK)
-					return 16000;
-			}
-
-			if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
-			if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
-			if (item instanceof ItemHoe && ((ItemHoe)item).getMaterialName().equals("WOOD")) return 200;
-			if (item == Items.STICK) return 100;
-			if (item == Items.COAL) return 1600;
-			if (item == Items.LAVA_BUCKET) return 20000;
-			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
-			if (item == Items.BLAZE_ROD) return 2400;
-			return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(stack);
+			int ret = stack.getBurnTime();
+			return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? TileEntityFurnace.getBurnTimes().getOrDefault(item, 0) : ret);
 		}
 	}
 
@@ -488,7 +460,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
+		return hasCustomName() ? getName() : new TextComponentTranslation(getName().getFormattedText(), new Object[0]);
 	}
 
 	@Override

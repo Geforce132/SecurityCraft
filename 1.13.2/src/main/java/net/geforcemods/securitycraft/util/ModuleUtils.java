@@ -127,8 +127,8 @@ public class ModuleUtils{
 			ItemStack item = te.getModule(module);
 
 			for(int i = 1; i <= 10; i++)
-				if(item.getTagCompound() != null && item.getTagCompound().getString("Player" + i) != null && !item.getTagCompound().getString("Player" + i).isEmpty())
-					list.add(item.getTagCompound().getString("Player" + i).toLowerCase());
+				if(item.getTag() != null && item.getTag().getString("Player" + i) != null && !item.getTag().getString("Player" + i).isEmpty())
+					list.add(item.getTag().getString("Player" + i).toLowerCase());
 		}
 
 		return list;
@@ -153,7 +153,7 @@ public class ModuleUtils{
 		}else if(te instanceof TileEntityKeycardReader){
 			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
-				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
+				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
 				return true;
 			}
 

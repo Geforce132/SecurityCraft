@@ -26,7 +26,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	private int cooldown = -1;
 
 	@Override
-	public void update() {
+	public void tick() {
 		if(getWorld().isRemote)
 			return;
 		else{
@@ -84,13 +84,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
-		tag.setInteger("cooldown", cooldown);
-		tag.setDouble("entityX", entityX);
-		tag.setDouble("entityY", entityY);
-		tag.setDouble("entityZ", entityZ);
+		super.write(tag);
+		tag.putInt("cooldown", cooldown);
+		tag.putDouble("entityX", entityX);
+		tag.putDouble("entityY", entityY);
+		tag.putDouble("entityZ", entityZ);
 		return tag;
 	}
 
@@ -98,20 +98,20 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
-		if (tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
+		if (tag.contains("cooldown"))
+			cooldown = tag.getInt("cooldown");
 
-		if (tag.hasKey("entityX"))
+		if (tag.contains("entityX"))
 			entityX = tag.getDouble("entityX");
 
-		if (tag.hasKey("entityY"))
+		if (tag.contains("entityY"))
 			entityY = tag.getDouble("entityY");
 
-		if (tag.hasKey("entityZ"))
+		if (tag.contains("entityZ"))
 			entityZ = tag.getDouble("entityZ");
 	}
 

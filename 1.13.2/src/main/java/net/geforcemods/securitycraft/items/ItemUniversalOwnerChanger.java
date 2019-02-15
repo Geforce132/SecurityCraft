@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -20,7 +19,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemUniversalOwnerChanger extends Item
 {
@@ -30,7 +30,7 @@ public class ItemUniversalOwnerChanger extends Item
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean isFull3D()
 	{
 		return true;

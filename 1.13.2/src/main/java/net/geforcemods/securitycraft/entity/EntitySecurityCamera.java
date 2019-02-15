@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.entity;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -30,7 +29,8 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntitySecurityCamera extends Entity{
 
@@ -139,7 +139,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	public void onUpdate(){
+	public void tick(){
 		if(world.isRemote && isBeingRidden()){
 			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
 
@@ -168,7 +168,7 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && screenshotCooldown == 0){
 				screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
@@ -182,21 +182,21 @@ public class EntitySecurityCamera extends Entity{
 			}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private void checkKeysPressed() {
-		if (Minecraft.getMinecraft().gameSettings.keyBindSneak.isPressed())
+		if (Minecraft.getInstance().gameSettings.keyBindSneak.isPressed())
 			dismountRidingEntity();
 
-		if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown())
+		if(Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 			moveViewUp();
 
-		if(Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown())
+		if(Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown())
 			moveViewDown();
 
-		if(Minecraft.getMinecraft().gameSettings.keyBindLeft.isKeyDown())
+		if(Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown())
 			moveViewLeft();
 
-		if(Minecraft.getMinecraft().gameSettings.keyBindRight.isKeyDown())
+		if(Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown())
 			moveViewRight();
 
 		if(KeyBindings.cameraEmitRedstone.isPressed() && redstoneCooldown == 0){
@@ -313,7 +313,7 @@ public class EntitySecurityCamera extends Entity{
 			else if(zoomAmount == 1F)
 				zoomAmount = -0.5F;
 
-		Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+		Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
@@ -342,7 +342,7 @@ public class EntitySecurityCamera extends Entity{
 		return zoomAmount;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	private void updateServerRotation(){
 		SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
 	}
@@ -353,8 +353,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	public void setDead(){
-		super.setDead();
+	public void remove(){
+		super.remove();
 
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
 			EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
@@ -364,51 +364,51 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	protected void entityInit(){}
+	protected void registerData(){}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tag){
-		tag.setInteger("CameraID", id);
+	public void writeAdditional(NBTTagCompound tag){
+		tag.putInt("CameraID", id);
 
 		if(playerViewingName != null)
-			tag.setString("playerName", playerViewingName);
+			tag.putString("playerName", playerViewingName);
 
 		if(cameraUseX != 0.0D)
-			tag.setDouble("cameraUseX", cameraUseX);
+			tag.putDouble("cameraUseX", cameraUseX);
 
 		if(cameraUseY != 0.0D)
-			tag.setDouble("cameraUseY", cameraUseY);
+			tag.putDouble("cameraUseY", cameraUseY);
 
 		if(cameraUseZ != 0.0D)
-			tag.setDouble("cameraUseZ", cameraUseZ);
+			tag.putDouble("cameraUseZ", cameraUseZ);
 
 		if(cameraUseYaw != 0.0D)
-			tag.setDouble("cameraUseYaw", cameraUseYaw);
+			tag.putDouble("cameraUseYaw", cameraUseYaw);
 
 		if(cameraUsePitch != 0.0D)
-			tag.setDouble("cameraUsePitch", cameraUsePitch);
+			tag.putDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tag){
-		id = tag.getInteger("CameraID");
+	public void readAdditional(NBTTagCompound tag){
+		id = tag.getInt("CameraID");
 
-		if(tag.hasKey("playerName"))
+		if(tag.contains("playerName"))
 			playerViewingName = tag.getString("playerName");
 
-		if(tag.hasKey("cameraUseX"))
+		if(tag.contains("cameraUseX"))
 			cameraUseX = tag.getDouble("cameraUseX");
 
-		if(tag.hasKey("cameraUseY"))
+		if(tag.contains("cameraUseY"))
 			cameraUseY = tag.getDouble("cameraUseY");
 
-		if(tag.hasKey("cameraUseZ"))
+		if(tag.contains("cameraUseZ"))
 			cameraUseZ = tag.getDouble("cameraUseZ");
 
-		if(tag.hasKey("cameraUseYaw"))
+		if(tag.contains("cameraUseYaw"))
 			cameraUseYaw = tag.getFloat("cameraUseYaw");
 
-		if(tag.hasKey("cameraUsePitch"))
+		if(tag.contains("cameraUsePitch"))
 			cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 

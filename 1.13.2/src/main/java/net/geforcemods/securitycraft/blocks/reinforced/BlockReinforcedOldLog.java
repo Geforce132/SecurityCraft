@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.common.base.Predicate;
 
-import javafx.geometry.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks;
@@ -17,7 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinforcedBlock
 {
@@ -39,7 +39,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		list.add(new ItemStack(this, 1, BlockPlanks.EnumType.OAK.getMetadata()));

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.INameable;
@@ -61,6 +60,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -82,11 +83,11 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SCEventHandler {
 
@@ -101,7 +102,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ConfigHandler.sayThanksMessage || !event.player.getEntityWorld().isRemote)
+		if(!ConfigHandler.sayThanksMessage || !event.getPlayer().getEntityWorld().isRemote)
 			return;
 
 		String tipKey = getRandomTip();
@@ -112,14 +113,14 @@ public class SCEventHandler {
 		else
 			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
-		event.player.sendMessage(message);
+		event.getPlayer().sendMessage(message);
 	}
 
 	@SubscribeEvent
 	public void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.player) && event.player.getRidingEntity() instanceof EntitySecurityCamera)
-			event.player.getRidingEntity().setDead();
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof EntitySecurityCamera)
+			event.getPlayer().getRidingEntity().remove();
 	}
 
 	@SubscribeEvent
@@ -206,7 +207,7 @@ public class SCEventHandler {
 						world.destroyBlock(event.getPos(), true);
 						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
 						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
-					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).getValue(BlockCageTrap.DEACTIVATED)) {
+					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(BlockCageTrap.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
 						BlockPos pos = originalPos.east().up();
 
@@ -444,7 +445,7 @@ public class SCEventHandler {
 					{
 						double y = pos.getY() + 0.5D;
 
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
+						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
 							y -= 3.0D;
 
 						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -458,7 +459,7 @@ public class SCEventHandler {
 						{
 							double y = pos.getY() + 0.5D;
 
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
 								y -= 3.0D;
 
 							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -474,7 +475,7 @@ public class SCEventHandler {
 					{
 						double y = pos.getY() + 0.5D;
 
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
 							y -= 3.0D;
 
 						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -488,7 +489,7 @@ public class SCEventHandler {
 						{
 							double y = pos.getY() + 0.5D;
 
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.PORTAL)
+							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
 								y -= 3.0D;
 
 							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
@@ -506,9 +507,9 @@ public class SCEventHandler {
 	public void onNeighborNotify(NeighborNotifyEvent event)
 	{
 		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
-		if(event.getState().getBlock() == Blocks.PORTAL)
+		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
 		{
-			EnumFacing.Axis axis = event.getState().getValue(BlockPortal.AXIS);
+			EnumFacing.Axis axis = event.getState().get(BlockPortal.AXIS);
 
 			if (axis == EnumFacing.Axis.X)
 			{
@@ -529,7 +530,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
-		if(!event.getWorld().isRemote)
+		if(!event.getWorld().isRemote())
 			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
 				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
 
@@ -543,7 +544,7 @@ public class SCEventHandler {
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
 
 						if(te instanceof TileEntitySecurityCamera)
-							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock(), true);
+							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock(), true);
 					}
 			}
 	}
@@ -590,30 +591,30 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void onDrawBlockHighlight(DrawBlockHighlightEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent event) {
-		if(Minecraft.getMinecraft().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
-				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ)));
+		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
+			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
+				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, event.getResolution(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
-			Minecraft mc = Minecraft.getMinecraft();
+			Minecraft mc = Minecraft.getInstance();
 			EntityPlayerSP player = mc.player;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
@@ -630,14 +631,14 @@ public class SCEventHandler {
 				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
 				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
-				if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+				if(mop != null && mop.type == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
 				{
-					NBTTagCompound cameras = monitor.getTagCompound();
+					NBTTagCompound cameras = monitor.getTag();
 
 					if(cameras != null)
 						for(int i = 1; i < 31; i++)
 						{
-							if(!cameras.hasKey("Camera" + i))
+							if(!cameras.contains("Camera" + i))
 								continue;
 
 							String[] coords = cameras.getString("Camera" + i).split(" ");
@@ -650,7 +651,7 @@ public class SCEventHandler {
 						}
 
 					GlStateManager.enableAlpha();
-					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
 					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableAlpha();
 				}
@@ -665,25 +666,25 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void fovUpdateEvent(FOVUpdateEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
 			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player))
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void onMouseClicked(MouseEvent event) {
-		if(Minecraft.getMinecraft().world != null)
+		if(Minecraft.getInstance().world != null)
 		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && event.getButton() != 1) //anything other than rightclick
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
 				event.setCanceled(true);
 		}
 	}

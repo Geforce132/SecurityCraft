@@ -53,7 +53,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	private Class<? extends Entity> typeToAttack = Entity.class;
 
 	@Override
-	public void update() {
+	public void tick() {
 		if(intersectsEntities){
 			int x = pos.getX();
 			int y = pos.getY();
@@ -194,17 +194,17 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
-		tag.setBoolean("intersectsEntities", intersectsEntities);
-		tag.setBoolean("viewActivated", viewActivated);
-		tag.setBoolean("attacks", attacks);
-		tag.setBoolean("canBeNamed", canBeNamed);
-		tag.setDouble("attackRange", attackRange);
-		tag.setInteger("attackCooldown", attackCooldown);
-		tag.setInteger("ticksBetweenAttacks", ticksBetweenAttacks);
+		tag.putBoolean("intersectsEntities", intersectsEntities);
+		tag.putBoolean("viewActivated", viewActivated);
+		tag.putBoolean("attacks", attacks);
+		tag.putBoolean("canBeNamed", canBeNamed);
+		tag.putDouble("attackRange", attackRange);
+		tag.putInt("attackCooldown", attackCooldown);
+		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
 		tag.setString("customName", customName);
 		return tag;
 	}
@@ -213,32 +213,32 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
-		if (tag.hasKey("intersectsEntities"))
+		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
 
-		if (tag.hasKey("viewActivated"))
+		if (tag.contains("viewActivated"))
 			viewActivated = tag.getBoolean("viewActivated");
 
-		if (tag.hasKey("attacks"))
+		if (tag.contains("attacks"))
 			attacks = tag.getBoolean("attacks");
 
-		if (tag.hasKey("canBeNamed"))
+		if (tag.contains("canBeNamed"))
 			canBeNamed = tag.getBoolean("canBeNamed");
 
-		if (tag.hasKey("attackRange"))
+		if (tag.contains("attackRange"))
 			attackRange = tag.getDouble("attackRange");
 
-		if (tag.hasKey("attackCooldown"))
-			attackCooldown = tag.getInteger("attackCooldown");
+		if (tag.contains("attackCooldown"))
+			attackCooldown = tag.getInt("attackCooldown");
 
-		if (tag.hasKey("ticksBetweenAttacks"))
-			ticksBetweenAttacks = tag.getInteger("ticksBetweenAttacks");
+		if (tag.contains("ticksBetweenAttacks"))
+			ticksBetweenAttacks = tag.getInt("ticksBetweenAttacks");
 
-		if (tag.hasKey("customName"))
+		if (tag.contains("customName"))
 			customName = tag.getString("customName");
 	}
 
@@ -250,13 +250,13 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
+		write(tag);
 		return new SPacketUpdateTileEntity(pos, 1, tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
+		read(packet.getNbtCompound());
 	}
 
 	@Override

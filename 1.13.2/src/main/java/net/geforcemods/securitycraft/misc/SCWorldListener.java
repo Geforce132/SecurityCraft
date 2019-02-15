@@ -5,28 +5,28 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldEventListener;
-import net.minecraft.world.World;
 
 public class SCWorldListener implements IWorldEventListener
 {
 	@Override
-	public void notifyBlockUpdate(World world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
+	public void notifyBlockUpdate(IBlockReader world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
 	{
-		//TODO: 1.13: Blocks.GRASS -> Blocks.GRASS_BLOCK
 		//chunky code because of readability
-		if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+		if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
 			world.setBlockState(pos, oldState);
 		else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
 			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.FLOWING_LAVA)
+		else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
 			world.setBlockState(pos, oldState);
 		else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
 			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
+		else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
 			world.setBlockState(pos, oldState);
 	}
 
@@ -43,10 +43,10 @@ public class SCWorldListener implements IWorldEventListener
 	public void playRecord(SoundEvent sound, BlockPos pos) {}
 
 	@Override
-	public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {}
+	public void addParticle(IParticleData data, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed) {}
 
 	@Override
-	public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) {}
+	public void addParticle(IParticleData data, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {}
 
 	@Override
 	public void onEntityAdded(Entity entity) {}

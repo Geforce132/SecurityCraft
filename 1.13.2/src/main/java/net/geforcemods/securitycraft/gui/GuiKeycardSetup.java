@@ -30,9 +30,9 @@ public class GuiKeycardSetup extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(lvlOfSecurityButton = new GuiButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, ""));
-		buttonList.add(requiresExactCardButton = new GuiButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher")));
-		buttonList.add(new GuiButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save")));
+		buttons.add(lvlOfSecurityButton = new GuiButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, ""));
+		buttons.add(requiresExactCardButton = new GuiButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher")));
+		buttons.add(new GuiButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save")));
 
 		updateButtonText();
 	}
@@ -55,7 +55,7 @@ public class GuiKeycardSetup extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -97,7 +97,7 @@ public class GuiKeycardSetup extends GuiContainer{
 
 		SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), lvlOfSecurity, requiresExactCard));
 
-		Minecraft.getMinecraft().player.closeScreen();
+		Minecraft.getInstance().player.closeScreen();
 	}
 
 }

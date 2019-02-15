@@ -13,14 +13,14 @@ public class ContainerDisguiseModule extends Container {
 
 	public ContainerDisguiseModule(EntityPlayer player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
 		inventory = moduleInventory;
-		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
+		addSlot(new AddonSlot(inventory, 0, 79, 20));
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 
 		for(int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+			addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
 	}
 
 	@Override

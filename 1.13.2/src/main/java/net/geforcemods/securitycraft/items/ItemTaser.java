@@ -93,8 +93,8 @@ public class ItemTaser extends Item {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
 		if(!world.isRemote)
-			if(par1ItemStack.getItemDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+			if(par1ItemStack.getDamage() >= 1)
+				par1ItemStack.setItemDamage(par1ItemStack.getDamage() - 1);
 	}
 
 }

@@ -34,14 +34,14 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	public void onUpdate()
+	public void tick()
 	{
-		super.onUpdate();
+		super.tick();
 
 		deathTime--;
 
 		if(deathTime <= 0)
-			setDead();
+			remove();
 	}
 
 	@Override
@@ -49,27 +49,27 @@ public class EntityTaserBullet extends EntityThrowable {
 	{
 		if(!world.isRemote)
 		{
-			if(result.typeOfHit == Type.ENTITY)
+			if(result.type== Type.ENTITY)
 			{
-				if(result.entityHit instanceof EntityPlayer)
+				if(result.entity instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)result.entityHit).capabilities.isCreativeMode || (EntityLivingBase)result.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)result.entity).capabilities.isCreativeMode || (EntityLivingBase)result.entity == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
 						return;
 				}
 
-				if(result.entityHit instanceof EntityLivingBase)
+				if(result.entity instanceof EntityLivingBase)
 				{
-					if(((EntityLivingBase) result.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F))
+					if(((EntityLivingBase) result.entity).attackEntityFrom(DamageSource.GENERIC, 1F))
 					{
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
-						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
-						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
+						((EntityLivingBase) result.entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+						((EntityLivingBase) result.entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+						((EntityLivingBase) result.entity).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
 					}
 
-					setDead();
+					remove();
 				}
 			}
 		}

@@ -26,18 +26,18 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	}
 
 	@Override
-	protected void entityInit()
+	protected void registerData()
 	{
-		super.entityInit();
+		super.registerData();
 
 		dataManager.register(OWNER, new Owner());
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag)
+	protected void writeAdditional(NBTTagCompound tag)
 	{
-		tag.setTag("TileEntityData", getOwnerTag());
-		super.writeEntityToNBT(tag);
+		tag.put("TileEntityData", getOwnerTag());
+		super.writeAdditional(tag);
 	}
 
 	public NBTTagCompound getOwnerTag()
@@ -45,20 +45,20 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.setString("owner", owner.getName());
-		tag.setString("ownerUUID", owner.getUUID());
+		tag.putString("owner", owner.getName());
+		tag.putString("ownerUUID", owner.getUUID());
 		return tag;
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag)
+	protected void readAdditional(NBTTagCompound tag)
 	{
-		NBTTagCompound teTag = tag.getCompoundTag("TileEntityData");
+		NBTTagCompound teTag = tag.getCompound("TileEntityData");
 		String name = teTag.getString("owner");
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
 
-		super.readEntityFromNBT(tag);
+		super.readAdditional(tag);
 	}
 }

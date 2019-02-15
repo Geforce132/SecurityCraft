@@ -198,7 +198,7 @@ public class BlockUtils{
 
 	public static boolean hasBlockProperty(World world, BlockPos pos, IProperty<?> property){
 		try{
-			world.getBlockState(pos).getValue(property);
+			world.getBlockState(pos).get(property);
 			return true;
 		}catch(IllegalArgumentException e){
 			return false;

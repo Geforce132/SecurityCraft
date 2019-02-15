@@ -50,17 +50,19 @@ public class GuiPictureButton extends GuiButton{
 	 * Draws this button to the screen.
 	 */
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
+	public void render(int mouseX, int mouseY, float partialTicks)
 	{
+		Minecraft mc = Minecraft.getInstance();
+
 		if (visible)
 		{
 			FontRenderer fontRenderer = mc.fontRenderer;
 			mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			int hoverState = getHoverState(hovered);
 			GlStateManager.enableBlend();
-			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+			OpenGlHelper.glBlendFuncSeparate(770, 771, 1, 0);
 			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 			this.drawTexturedModalRect(x, y, 0, 46 + hoverState * 20, width / 2, height);
 			this.drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
@@ -77,12 +79,12 @@ public class GuiPictureButton extends GuiButton{
 			}
 			else if(textureLocation != null)
 			{
-				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
 				drawTexturedModalRect(x, y + 1, u, v, texWidth, texHeight);
 			}
 
-			mouseDragged(mc, mouseX, mouseY);
+			onDrag(mouseX, mouseY);
 
 			int color = 14737632;
 

@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.entity;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityBouncingBetty extends Entity {
 
@@ -34,7 +33,7 @@ public class EntityBouncingBetty extends Entity {
 	}
 
 	@Override
-	protected void entityInit() {}
+	protected void registerData() {}
 
 	/**
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
@@ -52,14 +51,14 @@ public class EntityBouncingBetty extends Entity {
 	@Override
 	public boolean canBeCollidedWith()
 	{
-		return !isDead;
+		return !removed;
 	}
 
 	/**
 	 * Called to update the entity's position/logic.
 	 */
 	@Override
-	public void onUpdate()
+	public void tick()
 	{
 		prevPosX = posX;
 		prevPosY = posY;
@@ -79,7 +78,7 @@ public class EntityBouncingBetty extends Entity {
 
 		if (fuse-- <= 0)
 		{
-			setDead();
+			remove();
 
 			if (!world.isRemote)
 				explode();
@@ -102,21 +101,21 @@ public class EntityBouncingBetty extends Entity {
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag)
+	protected void writeAdditional(NBTTagCompound tag)
 	{
-		tag.setByte("Fuse", (byte)fuse);
+		tag.putByte("Fuse", (byte)fuse);
 	}
 
 	/**
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag)
+	protected void readAdditional(NBTTagCompound tag)
 	{
 		fuse = tag.getByte("Fuse");
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public float getShadowSize()
 	{
 		return 0.0F;

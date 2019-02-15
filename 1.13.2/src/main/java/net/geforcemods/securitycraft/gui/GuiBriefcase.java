@@ -38,16 +38,16 @@ public class GuiBriefcase extends GuiContainer {
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
 			keycodeTopButtons[i] = new GuiButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW);
-			buttonList.add(keycodeTopButtons[i]);
+			buttons.add(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
 			keycodeBottomButtons[i] = new GuiButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW);
-			buttonList.add(keycodeBottomButtons[i]);
+			buttons.add(keycodeBottomButtons[i]);
 		}
 
 		continueButton = new GuiButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">");
-		buttonList.add(continueButton);
+		buttons.add(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
 			keycodeTextboxes[i] = new GuiTextField(9 + i, fontRenderer, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12);
@@ -61,8 +61,8 @@ public class GuiBriefcase extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
 		for(GuiTextField textfield : keycodeTextboxes)
@@ -77,7 +77,7 @@ public class GuiBriefcase extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -138,12 +138,12 @@ public class GuiBriefcase extends GuiContainer {
 					keys[3]--;
 				break;
 			case 8:
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
+				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.briefcase)) {
+					NBTTagCompound nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTagCompound();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
+						SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ));
 				}
 
 				break;

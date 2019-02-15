@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.io.IOException;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
@@ -35,7 +33,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
+		buttons.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -55,8 +53,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 		drawString(fontRenderer, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
@@ -70,7 +68,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -78,11 +76,14 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	public boolean charTyped(char typedChar, int keyCode) {
 		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
-			keycodeTextbox.textboxKeyTyped(typedChar, keyCode);
+		{
+			keycodeTextbox.charTyped(typedChar, keyCode);
+			return true;
+		}
 		else
-			super.keyTyped(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
 	}
 
 	private boolean isValidChar(char c) {
@@ -96,9 +97,9 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		keycodeTextbox.mouseClicked(mouseX, mouseY, mouseButton);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	private void updateButtonText() {
@@ -115,13 +116,13 @@ public class GuiBriefcaseSetup extends GuiContainer {
 					return;
 				}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-					if(Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound() == null)
-						Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.briefcase)) {
+					if(Minecraft.getInstance().player.inventory.getCurrentItem().getTag() == null)
+						Minecraft.getInstance().player.inventory.getCurrentItem().setTag(new NBTTagCompound());
 
-					Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
-					ClientUtils.syncItemNBT(Minecraft.getMinecraft().player.inventory.getCurrentItem());
-					Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
+					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().setString("passcode", keycodeTextbox.getText());
+					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
+					Minecraft.getInstance().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getInstance().world, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ);
 				}
 		}
 	}

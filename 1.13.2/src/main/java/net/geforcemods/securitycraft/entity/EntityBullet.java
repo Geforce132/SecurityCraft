@@ -25,16 +25,16 @@ public class EntityBullet extends EntityArrow
 	@Override
 	protected void onHit(RayTraceResult raytraceResult)
 	{
-		if(raytraceResult.entityHit != null)
-			raytraceResult.entityHit.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
+		if(raytraceResult.entity!= null)
+			raytraceResult.entity.attackEntityFrom(DamageSource.causeArrowDamage(this, shootingEntity == null ? this : shootingEntity), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
 
-		setDead();
+		remove();
 	}
 
 	@Override
 	protected void arrowHit(EntityLivingBase entity)
 	{
-		setDead();
+		remove();
 	}
 
 	@Override

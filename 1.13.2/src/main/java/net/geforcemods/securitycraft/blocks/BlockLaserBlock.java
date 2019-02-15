@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -25,7 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockLaserBlock extends BlockOwnable {
 
@@ -169,7 +169,7 @@ public class BlockLaserBlock extends BlockOwnable {
 			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
 		if(state.getValue(POWERED).booleanValue()){

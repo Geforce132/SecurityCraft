@@ -129,7 +129,7 @@ public class GuiHandler implements IGuiHandler {
 			case CAMERA_MONITOR_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
 					return null;
-				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTagCompound());
+				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;

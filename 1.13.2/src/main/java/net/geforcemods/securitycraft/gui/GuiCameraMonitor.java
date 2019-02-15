@@ -58,8 +58,8 @@ public class GuiCameraMonitor extends GuiContainer {
 
 		prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
 		nextPageButton = new GuiButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
-		buttonList.add(prevPageButton);
-		buttonList.add(nextPageButton);
+		buttons.add(prevPageButton);
+		buttons.add(nextPageButton);
 
 		cameraButtons[0] = new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#");
 		cameraButtons[1] = new GuiButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#");
@@ -90,21 +90,21 @@ public class GuiCameraMonitor extends GuiContainer {
 			CameraView view;
 
 			button.displayString += camID;
-			buttonList.add(button);
+			buttons.add(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(view.dimension != Minecraft.getMinecraft().player.dimension) {
+				if(view.dimension != Minecraft.getInstance().player.dimension) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) != SCContent.securityCamera) {
+				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.securityCamera) {
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 
-				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
+				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getInstance().world.getTileEntity(view.getLocation());
 				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 			}
 			else
@@ -117,7 +117,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		}
 
 		for(int i = 0; i < 10; i++)
-			buttonList.add(unbindButtons[i]);
+			buttons.add(unbindButtons[i]);
 
 		if(page == 1)
 			prevPageButton.enabled = false;
@@ -131,8 +131,8 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks) {
+		super.render(mouseX, mouseY, partialTicks);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
@@ -155,10 +155,10 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
 
-			if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) == SCContent.securityCamera) {
-				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation())).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
+			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.securityCamera) {
+				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation())).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
 				SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
-				Minecraft.getMinecraft().player.closeScreen();
+				Minecraft.getInstance().player.closeScreen();
 			}
 			else
 				button.enabled = false;
@@ -168,7 +168,7 @@ public class GuiCameraMonitor extends GuiContainer {
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
 			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
-			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
+			nbtTag.remove(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;
 		}
@@ -182,7 +182,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;

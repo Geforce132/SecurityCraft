@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.itemblocks;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -21,7 +20,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
@@ -40,9 +40,9 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
 	@Override
 	public String getTranslationKey(ItemStack stack){
-		if(stack.getItemDamage() == 0)
+		if(stack.getDamage() == 0)
 			return this.getTranslationKey() + "_red_sandstone";
-		else if(stack.getItemDamage() == 1)
+		else if(stack.getDamage() == 1)
 			return this.getTranslationKey() + "_purpur";
 		else
 			return this.getTranslationKey();
@@ -107,7 +107,7 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
 		BlockPos originalPos = pos;
 		IProperty<?> variantProperty = singleSlab.getVariantProperty();

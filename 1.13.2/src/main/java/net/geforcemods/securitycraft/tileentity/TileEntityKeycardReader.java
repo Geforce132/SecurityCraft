@@ -24,8 +24,8 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag){
 		super.writeToNBT(tag);
-		tag.setInteger("passLV", passLV);
-		tag.setBoolean("requiresExactKeycard", requiresExactKeycard);
+		tag.putInt("passLV", passLV);
+		tag.putBoolean("requiresExactKeycard", requiresExactKeycard);
 		return tag;
 	}
 
@@ -36,10 +36,10 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("passLV"))
-			passLV = tag.getInteger("passLV");
+		if (tag.contains("passLV"))
+			passLV = tag.getInt("passLV");
 
-		if (tag.hasKey("requiresExactKeycard"))
+		if (tag.contains("requiresExactKeycard"))
 			requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
 	}

@@ -21,7 +21,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	private int cooldown;
 
 	@Override
-	public void update(){
+	public void tick(){
 		if(cooldown > 0)
 			cooldown--;
 		else if(isProvidingPower){
@@ -34,23 +34,23 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
 
-		NBTTagList list = tag.getTagList("Items", 10);
+		NBTTagList list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.tagCount(); ++i)
+		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			NBTTagCompound stackTag = list.getCompound(i);
 			int slot = stackTag.getByte("Slot") & 255;
 
 			if (slot >= 0 && slot < inventoryContents.size())
-				inventoryContents.set(slot, new ItemStack(stackTag));
+				inventoryContents.set(slot, ItemStack.read(stackTag));
 		}
 
 
-		if(tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
+		if(tag.contains("cooldown"))
+			cooldown = tag.getInt("cooldown");
 
-		if(tag.hasKey("type"))
+		if(tag.contains("type"))
 			type = tag.getString("type");
 
 	}
@@ -65,14 +65,14 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			if (!inventoryContents.get(i).isEmpty())
 			{
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.setByte("Slot", (byte)i);
-				inventoryContents.get(i).writeToNBT(stackTag);
-				list.appendTag(stackTag);
+				stackTag.putByte("Slot", (byte)i);
+				inventoryContents.get(i).write(stackTag);
+				list.add(stackTag);
 			}
 
-		tag.setTag("Items", list);
-		tag.setInteger("cooldown", cooldown);
-		tag.setString("type", type);
+		tag.put("Items", list);
+		tag.putInt("cooldown", cooldown);
+		tag.putString("type", type);
 		return tag;
 	}
 
@@ -97,7 +97,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			}
 			else
 			{
-				stack = inventoryContents.get(index).splitStack(count);
+				stack = inventoryContents.get(index).split(count);
 
 				if (inventoryContents.get(index).getCount() == 0)
 					inventoryContents.set(index, ItemStack.EMPTY);
@@ -189,7 +189,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			else
 			{
 				ItemStack toInsert = stackToInsert.copy();
-				ItemStack toReturn = toInsert.splitStack((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
+				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
 
 				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
 				return toReturn;

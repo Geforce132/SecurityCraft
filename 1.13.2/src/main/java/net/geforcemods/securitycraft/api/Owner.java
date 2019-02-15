@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block.
@@ -20,15 +19,15 @@ public class Owner {
 		@Override
 		public void write(PacketBuffer buf, Owner value)
 		{
-			ByteBufUtils.writeUTF8String(buf, value.getName());
-			ByteBufUtils.writeUTF8String(buf, value.getUUID());
+			buf.writeString(value.getName());
+			buf.writeString(value.getUUID());
 		}
 
 		@Override
 		public Owner read(PacketBuffer buf) throws IOException
 		{
-			String name = ByteBufUtils.readUTF8String(buf);
-			String uuid = ByteBufUtils.readUTF8String(buf);
+			String name = buf.readString(Integer.MAX_VALUE);
+			String uuid = buf.readString(Integer.MAX_VALUE);
 
 			return new Owner(name, uuid);
 		}

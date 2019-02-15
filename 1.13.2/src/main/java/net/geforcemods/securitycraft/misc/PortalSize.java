@@ -109,7 +109,7 @@ public class PortalSize
 						break label56;
 					}
 
-					if (block == Blocks.PORTAL)
+					if (block == Blocks.NETHER_PORTAL)
 					{
 						++this.portalBlockCount;
 					}
@@ -159,7 +159,7 @@ public class PortalSize
 
 	protected boolean isEmptyBlock(Block block)
 	{
-		return block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.FIRE || block == Blocks.PORTAL;
+		return block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.FIRE || block == Blocks.NETHER_PORTAL;
 	}
 
 	public boolean isValid()
@@ -175,7 +175,7 @@ public class PortalSize
 
 			for (int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(pos.up(j), Blocks.PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
+				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
 			}
 		}
 	}

@@ -46,7 +46,7 @@ public class PacketCInitSentryAnimation implements IMessage
 		@Override
 		public IMessage onMessage(PacketCInitSentryAnimation message, MessageContext ctx)
 		{
-			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+			List<EntityCreature> sentries = Minecraft.getInstance().player.world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 			if(!sentries.isEmpty())
 			{

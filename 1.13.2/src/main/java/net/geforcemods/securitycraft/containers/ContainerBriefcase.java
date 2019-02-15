@@ -17,14 +17,14 @@ public class ContainerBriefcase extends Container {
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 4; j++)
-				addSlotToContainer(new SlotItemRestricted(inventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.briefcase));
+				addSlot(new SlotItemRestricted(inventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.briefcase));
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 
 		for(int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+			addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
 	}
 
 	@Override

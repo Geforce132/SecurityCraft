@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import javafx.geometry.Side;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketCSetPlayerPositionAndRotation implements IMessage{
 
@@ -45,9 +45,9 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketCSetPlayerPositionAndRotation, IMessage> {
 
 		@Override
-		@SideOnly(Side.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public IMessage onMessage(PacketCSetPlayerPositionAndRotation message, MessageContext ctx) {
-			Minecraft.getMinecraft().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
+			Minecraft.getInstance().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
 			return null;
 		}
 

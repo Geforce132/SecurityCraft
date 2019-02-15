@@ -33,15 +33,15 @@ public class TileEntityIMS extends CustomizableSCTE {
 	private boolean updateBombCount = false;
 
 	@Override
-	public void update(){
-		super.update();
+	public void tick(){
+		super.tick();
 
 		if(!world.isRemote && updateBombCount){
 			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
 			updateBombCount = false;
 		}
 
-		if(world.getTotalWorldTime() % 80L == 0L)
+		if(world.getGameTime() % 80L == 0L)
 			launchMine();
 	}
 
@@ -73,7 +73,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 					continue;
 
 				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetY = entity.getBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
 				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
@@ -99,7 +99,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 					continue;
 
 				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetY = entity.getBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
 				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
@@ -157,9 +157,9 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag){
 		super.writeToNBT(tag);
 
-		tag.setInteger("bombsRemaining", bombsRemaining);
-		tag.setInteger("targetingOption", targetingOption.modeIndex);
-		tag.setBoolean("updateBombCount", updateBombCount);
+		tag.putInt("bombsRemaining", bombsRemaining);
+		tag.putInt("targetingOption", targetingOption.modeIndex);
+		tag.putBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
 
@@ -170,13 +170,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
 
-		if (tag.hasKey("bombsRemaining"))
-			bombsRemaining = tag.getInteger("bombsRemaining");
+		if (tag.contains("bombsRemaining"))
+			bombsRemaining = tag.getInt("bombsRemaining");
 
-		if (tag.hasKey("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
+		if (tag.contains("targetingOption"))
+			targetingOption = EnumIMSTargetingMode.values()[tag.getInt("targetingOption")];
 
-		if (tag.hasKey("updateBombCount"))
+		if (tag.contains("updateBombCount"))
 			updateBombCount = tag.getBoolean("updateBombCount");
 	}
 

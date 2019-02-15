@@ -24,7 +24,7 @@ public class ItemBlockReinforcedPrismarine extends ItemBlock
 	{
 		String name = getTranslationKey();
 
-		switch(stack.getItemDamage())
+		switch(stack.getDamage())
 		{
 			case 0: return name + "_default";
 			case 1: return name + "_bricks";

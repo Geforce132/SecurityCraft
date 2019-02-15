@@ -21,19 +21,19 @@ public class ContainerInventoryScanner extends Container {
 		inventoryScannerTE = te;
 
 		for(int i = 0; i < 10; i++)
-			addSlotToContainer(new SlotOwnerRestricted(te, te, i, (4 + (i * 17)), 16, true));
+			addSlot(new SlotOwnerRestricted(te, te, i, (4 + (i * 17)), 16, true));
 
 		if(((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
-					addSlotToContainer(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));
+					addSlot(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
+				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
 
 		for(int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 173));
+			addSlot(new Slot(inventory, i, 8 + i * 18, 173));
 	}
 
 	/**

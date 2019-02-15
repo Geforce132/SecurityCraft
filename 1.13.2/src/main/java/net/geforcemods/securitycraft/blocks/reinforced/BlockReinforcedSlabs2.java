@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -24,7 +23,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvider, ICustomWailaDisplay {
 
@@ -61,7 +61,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs2));
 	}

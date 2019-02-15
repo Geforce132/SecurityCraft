@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.io.IOException;
-
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
@@ -19,9 +16,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiKeyChanger extends GuiContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -41,7 +39,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
+		buttons.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -67,8 +65,8 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks){
+		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		textboxNewPasscode.drawTextBox();
 		textboxConfirmPasscode.drawTextBox();
@@ -84,7 +82,7 @@ public class GuiKeyChanger extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -92,18 +90,19 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	public boolean charTyped(char typedChar, int keyCode) {
 		if(!isValidChar(typedChar))
-			return;
+			return false;
 
 		if(textboxNewPasscode.isFocused())
-			textboxNewPasscode.textboxKeyTyped(typedChar, keyCode);
+			textboxNewPasscode.charTyped(typedChar, keyCode);
 		else if(textboxConfirmPasscode.isFocused())
-			textboxConfirmPasscode.textboxKeyTyped(typedChar, keyCode);
+			textboxConfirmPasscode.charTyped(typedChar, keyCode);
 		else
-			super.keyTyped(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
 
 		checkToEnableSaveButton();
+		return true;
 	}
 
 	private boolean isValidChar(char c) {
@@ -127,10 +126,10 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-		super.mouseClicked(mouseX, mouseY, mouseButton);
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
 		textboxNewPasscode.mouseClicked(mouseX, mouseY, mouseButton);
 		textboxConfirmPasscode.mouseClicked(mouseX, mouseY, mouseButton);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -141,7 +140,7 @@ public class GuiKeyChanger extends GuiContainer {
 				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
 		}
 	}
 

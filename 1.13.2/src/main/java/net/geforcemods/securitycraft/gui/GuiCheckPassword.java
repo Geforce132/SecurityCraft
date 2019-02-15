@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.io.IOException;
-
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
@@ -19,9 +16,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiCheckPassword extends GuiContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
@@ -43,17 +41,17 @@ public class GuiCheckPassword extends GuiContainer {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
 
-		buttonList.add(new GuiButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0"));
-		buttonList.add(new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1"));
-		buttonList.add(new GuiButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2"));
-		buttonList.add(new GuiButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3"));
-		buttonList.add(new GuiButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4"));
-		buttonList.add(new GuiButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5"));
-		buttonList.add(new GuiButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6"));
-		buttonList.add(new GuiButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "7"));
-		buttonList.add(new GuiButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8"));
-		buttonList.add(new GuiButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9"));
-		buttonList.add(new GuiButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-"));
+		buttons.add(new GuiButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0"));
+		buttons.add(new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1"));
+		buttons.add(new GuiButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2"));
+		buttons.add(new GuiButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3"));
+		buttons.add(new GuiButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4"));
+		buttons.add(new GuiButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5"));
+		buttons.add(new GuiButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6"));
+		buttons.add(new GuiButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "7"));
+		buttons.add(new GuiButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8"));
+		buttons.add(new GuiButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9"));
+		buttons.add(new GuiButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-"));
 
 		keycodeTextbox = new GuiTextField(11, fontRenderer, width / 2 - 37, height / 2 - 67, 77, 12);
 
@@ -70,8 +68,8 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks){
+		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		keycodeTextbox.drawTextBox();
 	}
@@ -90,7 +88,7 @@ public class GuiCheckPassword extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -98,22 +96,23 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+	public boolean charTyped(char typedChar, int keyCode) {
 		if(isValidChar(typedChar) && typedChar == '\u001B')
 			ClientUtils.closePlayerScreen();
 		else if(isValidChar(typedChar) && typedChar != ''){
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}else if(isValidChar(typedChar) && typedChar == ''){
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}
 		else
-			super.keyTyped(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
+		return true;
 	}
 
 	private boolean isValidChar(char c) {

@@ -32,10 +32,10 @@ public class ModuleInventory implements IInventory {
 		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
 		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 
-		if (!module.hasTagCompound())
-			module.setTagCompound(new NBTTagCompound());
+		if (!module.hasTag())
+			module.setTag(new NBTTagCompound());
 
-		readFromNBT(module.getTagCompound());
+		readFromNBT(module.getTag());
 	}
 
 	@Override
@@ -49,11 +49,11 @@ public class ModuleInventory implements IInventory {
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+		for(int i = 0; i < items.size(); i++) {
+			NBTTagCompound item = items.getCompound(i);
+			int slot = item.getInt("Slot");
 
 			if(slot < getSizeInventory())
 				moduleInventory.set(slot, new ItemStack(item));
@@ -66,13 +66,13 @@ public class ModuleInventory implements IInventory {
 		for(int i = 0; i < getSizeInventory(); i++)
 			if(!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
-				item.setInteger("Slot", i);
-				getStackInSlot(i).writeToNBT(item);
+				item.putInt("Slot", i);
+				getStackInSlot(i).write(item);
 
-				items.appendTag(item);
+				items.add(item);
 			}
 
-		tag.setTag("ItemInventory", items);
+		tag.putTag("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 
@@ -82,7 +82,7 @@ public class ModuleInventory implements IInventory {
 
 		if(!stack.isEmpty())
 			if(stack.getCount() > size) {
-				stack = stack.splitStack(size);
+				stack = stack.split(size);
 				markDirty();
 			}
 			else
@@ -109,13 +109,13 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
-	public String getName() {
-		return "ModuleCustomization";
+	public ITextComponent getName() {
+		return new TextComponentString("ModuleCustomization");
 	}
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentString(getName());
+		return getName();
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class ModuleInventory implements IInventory {
 			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
 				moduleInventory.set(i, ItemStack.EMPTY);
 
-		writeToNBT(module.getTagCompound());
+		writeToNBT(module.getTag());
 	}
 
 	@Override

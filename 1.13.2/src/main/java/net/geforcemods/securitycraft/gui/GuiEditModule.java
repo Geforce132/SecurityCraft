@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.io.IOException;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
@@ -37,11 +35,11 @@ public class GuiEditModule extends GuiContainer
 
 		Keyboard.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 100, 15);
-		buttonList.add(new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
-		buttonList.add(new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
-		buttonList.add(new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
-		buttonList.add(new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
-		buttonList.add(new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
+		buttons.add(new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
+		buttons.add(new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
+		buttons.add(new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
+		buttons.add(new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
+		buttons.add(new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
 		inputField.setTextColor(-1);
 		inputField.setDisabledTextColour(-1);
 		inputField.setEnableBackgroundDrawing(true);
@@ -55,8 +53,8 @@ public class GuiEditModule extends GuiContainer
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks){
-		super.drawScreen(mouseX, mouseY, partialTicks);
+	public void render(int mouseX, int mouseY, float partialTicks){
+		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		inputField.drawTextBox();
 	}
@@ -75,7 +73,7 @@ public class GuiEditModule extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		drawDefaultBackground();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
@@ -83,17 +81,20 @@ public class GuiEditModule extends GuiContainer
 	}
 
 	@Override
-	protected void keyTyped(char typedChar, int keyCode) throws IOException{
+	public boolean charTyped(char typedChar, int keyCode){
 		if(inputField.isFocused())
-			inputField.textboxKeyTyped(typedChar, keyCode);
+		{
+			inputField.charTyped(typedChar, keyCode);
+			return true;
+		}
 		else
-			super.keyTyped(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
-		super.mouseClicked(mouseX, mouseY, mouseButton);
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton){
 		inputField.mouseClicked(mouseX, mouseY, mouseButton);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -103,39 +104,39 @@ public class GuiEditModule extends GuiContainer
 				if(inputField.getText().isEmpty())
 					return;
 
-				if(module.getTagCompound() == null)
-					module.setTagCompound(new NBTTagCompound());
+				if(module.getTag() == null)
+					module.setTag(new NBTTagCompound());
 
 				for(int i = 1; i <= 10; i++)
 				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
+					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 						return;
 				}
 
-				module.getTagCompound().setString("Player" + getNextSlot(module.getTagCompound()), inputField.getText());
+				module.getTag().putString("Player" + getNextSlot(module.getTag()), inputField.getText());
 				break;
 			case 1: //remove
 				if(inputField.getText().isEmpty())
 					return;
 
-				if(module.getTagCompound() == null)
-					module.setTagCompound(new NBTTagCompound());
+				if(module.getTag() == null)
+					module.setTag(new NBTTagCompound());
 
 				for(int i = 1; i <= 10; i++)
 				{
-					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
-						module.getTagCompound().removeTag("Player" + i);
+					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
+						module.getTag().remove("Player" + i);
 				}
 				break;
 			case 2: //copy
-				SecurityCraft.instance.setSavedModule(module.getTagCompound());
+				SecurityCraft.instance.setSavedModule(module.getTag());
 				return;
 			case 3: //paste
-				module.setTagCompound(SecurityCraft.instance.getSavedModule());
+				module.setTag(SecurityCraft.instance.getSavedModule());
 				SecurityCraft.instance.setSavedModule(null);
 				break;
 			case 4:
-				module.setTagCompound(new NBTTagCompound());
+				module.setTag(new NBTTagCompound());
 				break;
 			default: return;
 		}

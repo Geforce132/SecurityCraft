@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.block.Block;
@@ -23,7 +22,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProvider {
 
@@ -292,7 +292,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;

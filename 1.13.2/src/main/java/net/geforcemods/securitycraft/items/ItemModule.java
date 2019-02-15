@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -18,8 +17,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemModule extends Item{
 
@@ -72,7 +72,7 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable"));

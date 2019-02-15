@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network;
 
 import java.lang.reflect.Field;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -34,10 +33,11 @@ import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends ServerProxy{
 
@@ -45,7 +45,7 @@ public class ClientProxy extends ServerProxy{
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void registerVariants() {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_planks"),
 				new ResourceLocation("securitycraft:reinforced_planks_oak"),
@@ -280,14 +280,14 @@ public class ClientProxy extends ServerProxy{
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void registerRenderThings(){
 		KeyBindings.init();
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderSentry(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderBullet(Minecraft.getMinecraft().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty(Minecraft.getInstance().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getInstance().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderSentry(Minecraft.getInstance().getRenderManager()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderBullet(Minecraft.getInstance().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
@@ -303,9 +303,9 @@ public class ClientProxy extends ServerProxy{
 				try
 				{
 					//registering reinforced blocks color overlay for world
-					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
+					Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
 					//same thing for inventory
-					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> tint, (Block)field.get(null));
+					Minecraft.getInstance().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> tint, (Block)field.get(null));
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
