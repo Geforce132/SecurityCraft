@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DTD",
+    "GSG",
+    "RER"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "minecraft:nether_star"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    }
+  },
+  "result": {
+    "item": "securitycraft:codebreaker",
+    "count": 1
+  }
+}

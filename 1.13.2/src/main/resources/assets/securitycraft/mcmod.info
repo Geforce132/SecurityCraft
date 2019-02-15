@@ -1,0 +1,20 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "securitycraft",
+    "name": "SecurityCraft",
+    "description": "SecurityCraft!",
+    "version": "${version}",
+    "mcversion": "1.10.2",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [ "Geforce, bl4ckscor3" ],
+    "logoFile": "scLogo.png",
+    "screenshots": [],
+    "parent": "",
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "useDependencyInformation": false
+  }]
+}

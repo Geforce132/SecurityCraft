@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    " DG",
+    "S  "
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:redstone_torch"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "securitycraft:remote_access_mine",
+    "count": 1
+  }
+}

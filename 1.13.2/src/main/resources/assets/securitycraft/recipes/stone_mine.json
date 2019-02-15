@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "block_mines",
+  "ingredients": [
+    {
+      "item": "minecraft:stone",
+      "data": 0
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:stone_mine",
+    "count": 1
+  }
+}

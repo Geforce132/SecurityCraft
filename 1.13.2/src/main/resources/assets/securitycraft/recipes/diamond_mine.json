@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "block_mines",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_ore"
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:diamond_mine",
+    "count": 1
+  }
+}

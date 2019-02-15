@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_stairs_inner",
+    "textures": {
+        "bottom": "blocks/planks_spruce",
+        "top": "blocks/planks_spruce",
+        "side": "blocks/planks_spruce"
+    }
+}

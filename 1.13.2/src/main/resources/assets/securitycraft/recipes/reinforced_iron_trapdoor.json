@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ITI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": {
+      "item": "minecraft:trapdoor"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_iron_trapdoor",
+    "count": 1
+  }
+}

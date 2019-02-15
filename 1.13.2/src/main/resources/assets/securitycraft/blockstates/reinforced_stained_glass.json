@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "color=white": { "model": "securitycraft:reinforced_stained_glass_white" },
+        "color=orange": { "model": "securitycraft:reinforced_stained_glass_orange" },
+        "color=magenta": { "model": "securitycraft:reinforced_stained_glass_magenta" },
+        "color=light_blue": { "model": "securitycraft:reinforced_stained_glass_light_blue" },
+        "color=yellow": { "model": "securitycraft:reinforced_stained_glass_yellow" },
+        "color=lime": { "model": "securitycraft:reinforced_stained_glass_lime" },
+        "color=pink": { "model": "securitycraft:reinforced_stained_glass_pink" },
+        "color=gray": { "model": "securitycraft:reinforced_stained_glass_gray" },
+        "color=silver": { "model": "securitycraft:reinforced_stained_glass_silver" },
+        "color=cyan": { "model": "securitycraft:reinforced_stained_glass_cyan" },
+        "color=purple": { "model": "securitycraft:reinforced_stained_glass_purple" },
+        "color=blue": { "model": "securitycraft:reinforced_stained_glass_blue" },
+        "color=brown": { "model": "securitycraft:reinforced_stained_glass_brown" },
+        "color=green": { "model": "securitycraft:reinforced_stained_glass_green" },
+        "color=red": { "model": "securitycraft:reinforced_stained_glass_red" },
+        "color=black": { "model": "securitycraft:reinforced_stained_glass_black" }
+    }
+}

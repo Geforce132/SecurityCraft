@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "block_mines",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:cobblestone_mine",
+    "count": 1
+  }
+}

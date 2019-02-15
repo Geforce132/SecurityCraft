@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_modules",
+  "pattern": [
+    "III",
+    "IPI",
+    "ICI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "C": {
+      "item": "securitycraft:keypad_chest"
+    }
+  },
+  "result": {
+    "item": "securitycraft:storage_module",
+    "count": 1
+  }
+}

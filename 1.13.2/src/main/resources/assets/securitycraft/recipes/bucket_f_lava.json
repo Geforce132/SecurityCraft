@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "fake_liquids",
+  "pattern": [
+    "P",
+    "B"
+  ],
+  "key": {
+    "P": [
+      {
+        "type": "minecraft:item_nbt",
+        "item": "minecraft:potion",
+        "nbt": {
+          "Potion": "minecraft:healing"
+        }
+      },
+      {
+        "type": "minecraft:item_nbt",
+        "item": "minecraft:potion",
+        "nbt": {
+          "Potion": "minecraft:strong_healing"
+        }
+      }
+    ],
+    "B": {
+      "item": "minecraft:lava_bucket"
+    }
+  },
+  "result": {
+    "item": "securitycraft:bucket_f_lava",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_stairs",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_red_sandstone",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_stairs_red_sandstone",
+    "count": 4
+  }
+}

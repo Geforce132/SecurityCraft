@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " RE",
+    " IR",
+    "I  "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_modifier",
+    "count": 1
+  }
+}

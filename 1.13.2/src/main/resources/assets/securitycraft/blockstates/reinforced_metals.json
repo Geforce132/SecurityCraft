@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "variant=gold":  { "model": "securitycraft:reinforced_metals_gold" },
+        "variant=iron": { "model": "securitycraft:reinforced_metals_iron" },
+        "variant=diamond":  { "model": "securitycraft:reinforced_metals_diamond" },
+        "variant=emerald":   { "model": "securitycraft:reinforced_metals_emerald" }
+    }
+}

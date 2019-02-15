@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:door_indestructible_iron_item"
+    },
+    {
+      "item": "securitycraft:retinal_scanner"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:scanner_door_item",
+    "count": 1
+  }
+}
