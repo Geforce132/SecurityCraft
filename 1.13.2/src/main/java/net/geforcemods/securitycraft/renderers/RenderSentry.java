@@ -22,7 +22,7 @@ public class RenderSentry extends Render<EntitySentry>
 	public void doRender(EntitySentry entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		GlStateManager.pushMatrix();
-		GlStateManager.translatef(x, y + 1.5F, z);
+		GlStateManager.translated(x, y + 1.5F, z);
 		GlStateManager.scalef(-1, -1, 1); //rotate model rightside up
 		bindEntityTexture(entity);
 		MODEL.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
