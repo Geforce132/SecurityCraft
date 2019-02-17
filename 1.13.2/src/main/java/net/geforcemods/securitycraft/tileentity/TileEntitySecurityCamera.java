@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -20,6 +21,11 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
+
+	public TileEntitySecurityCamera()
+	{
+		super(SCContent.teTypeSecurityCamera);
+	}
 
 	@Override
 	public void tick(){

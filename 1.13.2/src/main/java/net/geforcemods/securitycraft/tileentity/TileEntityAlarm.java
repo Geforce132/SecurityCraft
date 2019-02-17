@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -13,6 +14,11 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 	private int cooldown = 0;
 	private boolean isPowered = false;
+
+	public TileEntityAlarm()
+	{
+		super(SCContent.teTypeAlarm);
+	}
 
 	@Override
 	public void tick(){

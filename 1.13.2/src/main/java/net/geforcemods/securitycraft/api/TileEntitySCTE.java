@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -51,6 +53,16 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	private int attackCooldown = 0;
 
 	private Class<? extends Entity> typeToAttack = Entity.class;
+
+	public TileEntitySCTE()
+	{
+		this(SCContent.teTypeAbstract);
+	}
+
+	public TileEntitySCTE(TileEntityType<?> type)
+	{
+		super(type);
+	}
 
 	@Override
 	public void tick() {

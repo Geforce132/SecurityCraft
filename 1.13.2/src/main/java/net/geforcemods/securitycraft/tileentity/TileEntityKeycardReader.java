@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -16,6 +17,11 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
+
+	public TileEntityKeycardReader()
+	{
+		super(SCContent.teTypeKeycardReader);
+	}
 
 	/**
 	 * Writes a tile entity to NBT.

@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -15,6 +16,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class TileEntityLogger extends TileEntityOwnable {
 
 	public String[] players = new String[100];
+
+	public TileEntityLogger()
+	{
+		super(SCContent.teTypeUsernameLogger);
+	}
 
 	@Override
 	public boolean attackEntity(Entity entity) {

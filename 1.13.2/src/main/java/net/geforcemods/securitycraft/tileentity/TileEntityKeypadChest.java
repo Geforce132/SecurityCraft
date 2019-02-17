@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -25,6 +26,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	private String passcode;
 	private Owner owner = new Owner();
+
+	public TileEntityKeypadChest()
+	{
+		super(SCContent.teTypeKeypadChest);
+	}
 
 	/**
 	 * Writes a tile entity to NBT.

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
@@ -15,6 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityProtecto extends CustomizableSCTE {
+
+	public TileEntityProtecto()
+	{
+		super(SCContent.teTypeProtecto);
+	}
 
 	@Override
 	public boolean attackEntity(Entity entity){

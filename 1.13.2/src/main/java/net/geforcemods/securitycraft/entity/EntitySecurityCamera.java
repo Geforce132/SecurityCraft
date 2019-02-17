@@ -57,7 +57,7 @@ public class EntitySecurityCamera extends Entity{
 	private String playerViewingName = null;
 
 	public EntitySecurityCamera(World world){
-		super(world);
+		super(SCContent.eTypeSecurityCamera, world);
 		noClip = true;
 		height = 0.0001F;
 		width = 0.0001F;

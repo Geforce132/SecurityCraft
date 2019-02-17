@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
+import net.minecraft.init.Particles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,7 +16,7 @@ public class EntityBouncingBetty extends Entity {
 	public int fuse;
 
 	public EntityBouncingBetty(World world){
-		super(world);
+		super(SCContent.eTypeBouncingBetty, world);
 		preventEntitySpawning = true;
 		setSize(0.500F, 0.200F);
 	}

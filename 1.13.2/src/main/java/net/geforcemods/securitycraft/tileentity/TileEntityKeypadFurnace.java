@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
@@ -45,6 +46,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public int totalCookTime;
 	private String furnaceCustomName;
 	private String passcode;
+
+	public TileEntityKeypadFurnace()
+	{
+		super(SCContent.teTypeKeypadFurnace);
+	}
 
 	@Override
 	public int getSizeInventory()

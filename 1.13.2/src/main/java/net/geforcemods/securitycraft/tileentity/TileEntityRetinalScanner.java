@@ -20,6 +20,11 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 
+	public TileEntityRetinalScanner()
+	{
+		super(SCContent.teTypeRetinalScanner);
+	}
+
 	@Override
 	public void entityViewed(EntityLivingBase entity){
 		if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -14,6 +15,11 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
+	public TileEntityScannerDoor()
+	{
+		super(SCContent.teTypeScannerDoor);
+	}
+
 	@Override
 	public void entityViewed(EntityLivingBase entity)
 	{

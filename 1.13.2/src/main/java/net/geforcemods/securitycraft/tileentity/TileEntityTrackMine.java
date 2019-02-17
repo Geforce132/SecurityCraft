@@ -1,10 +1,16 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityTrackMine extends TileEntityOwnable
 {
 	private boolean active = true;
+
+	public TileEntityTrackMine()
+	{
+		super(SCContent.teTypeTrackMine);
+	}
 
 	public void activate()
 	{

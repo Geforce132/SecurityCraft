@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -31,6 +32,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 
 	private boolean updateBombCount = false;
+
+	public TileEntityIMS()
+	{
+		super(SCContent.teTypeIms);
+	}
 
 	@Override
 	public void tick(){

@@ -16,6 +16,11 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", ConfigHandler.motionActivatedLightSearchRadius, 5.0D, 20.0D, 5.0D);
 
+	public TileEntityMotionLight()
+	{
+		super(SCContent.teTypeMotionLight);
+	}
+
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof EntityPlayer)

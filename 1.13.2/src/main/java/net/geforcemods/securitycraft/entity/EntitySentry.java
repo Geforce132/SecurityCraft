@@ -51,7 +51,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	public EntitySentry(World world)
 	{
-		super(world);
+		super(SCContent.eTypeSentry, world);
 		setSize(1.0F, 1.0F);
 	}
 
@@ -62,7 +62,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	public EntitySentry(World world, Owner owner)
 	{
-		super(world);
+		super(SCContent.eTypeSentry, world);
 		setSize(1.0F, 1.0F);
 		dataManager.set(OWNER, owner);
 		dataManager.set(MODULE, new NBTTagCompound());
@@ -380,6 +380,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	@Override
 	protected void checkDespawn() {} //sentries don't despawn
+
+	@Override
+	public boolean canDespawn()
+	{
+		return false; //sentries don't despawn
+	}
 
 	//sentries are heavy, so don't push them around!
 	@Override

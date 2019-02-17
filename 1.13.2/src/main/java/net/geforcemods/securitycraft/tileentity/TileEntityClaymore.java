@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -24,6 +25,11 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	private double entityY = -1D;
 	private double entityZ = -1D;
 	private int cooldown = -1;
+
+	public TileEntityClaymore()
+	{
+		super(SCContent.teTypeClaymore);
+	}
 
 	@Override
 	public void tick() {

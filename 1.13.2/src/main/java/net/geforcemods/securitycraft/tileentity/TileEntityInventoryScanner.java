@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
@@ -19,6 +20,11 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	private String type = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
+
+	public TileEntityInventoryScanner()
+	{
+		super(SCContent.teTypeInventoryScanner);
+	}
 
 	@Override
 	public void tick(){

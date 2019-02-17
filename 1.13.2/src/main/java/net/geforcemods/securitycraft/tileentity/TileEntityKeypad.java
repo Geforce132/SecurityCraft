@@ -38,6 +38,11 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		}
 	};
 
+	public TileEntityKeypad()
+	{
+		super(SCContent.teTypeKeypad);
+	}
+
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
 		if(module == EnumCustomModules.DISGUISE)

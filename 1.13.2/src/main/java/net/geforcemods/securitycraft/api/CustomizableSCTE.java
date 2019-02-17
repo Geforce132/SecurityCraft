@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -14,6 +15,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -35,6 +37,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
+
+	public CustomizableSCTE()
+	{
+		this(SCContent.teTypeCustomizable);
+	}
+
+	public CustomizableSCTE(TileEntityType<?> type)
+	{
+		super(type);
+	}
 
 	@Override
 	public void tick() {

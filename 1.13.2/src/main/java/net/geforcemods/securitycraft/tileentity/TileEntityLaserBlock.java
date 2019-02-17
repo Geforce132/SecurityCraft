@@ -23,6 +23,11 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		}
 	};
 
+	public TileEntityLaserBlock()
+	{
+		super(SCContent.teTypeLaserBlock);
+	}
+
 	private void toggleLaser(OptionBoolean option) {
 		if(BlockUtils.getBlock(world, pos) != SCContent.laserBlock) return;
 

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
@@ -30,6 +31,11 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
+
+	public TileEntityPortableRadar()
+	{
+		super(SCContent.teTypePortableRadar);
+	}
 
 	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
 	@Override

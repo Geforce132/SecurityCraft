@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -17,12 +18,12 @@ public class EntityTaserBullet extends EntityThrowable {
 	private boolean powered;
 
 	public EntityTaserBullet(World world){
-		super(world);
+		super(SCContent.eTypeTaserBullet, world);
 		setSize(0.01F, 0.01F);
 	}
 
 	public EntityTaserBullet(World world, EntityLivingBase shooter, boolean isPowered){
-		super(world, shooter);
+		super(SCContent.eTypeTaserBullet, shooter, world);
 		setSize(0.01F, 0.01F);
 		powered = isPowered;
 		this.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);

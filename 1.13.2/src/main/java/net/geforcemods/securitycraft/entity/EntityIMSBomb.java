@@ -22,8 +22,7 @@ public class EntityIMSBomb extends EntityFireball {
 	public boolean launching = true;
 
 	public EntityIMSBomb(World world){
-		super(world);
-		setSize(0.25F, 0.3F);
+		super(SCContent.eTypeImsBomb, world, 0.25F, 0.3F);
 	}
 
 	public EntityIMSBomb(World world, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){

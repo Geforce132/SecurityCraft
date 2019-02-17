@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
@@ -8,10 +9,21 @@ import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpda
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 
 public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 
 	private Owner owner = new Owner();
+
+	public TileEntityOwnable()
+	{
+		this(SCContent.teTypeOwnable);
+	}
+
+	public TileEntityOwnable(TileEntityType<?> type)
+	{
+		super(type);
+	}
 
 	/**
 	 * Writes a tile entity to NBT.
