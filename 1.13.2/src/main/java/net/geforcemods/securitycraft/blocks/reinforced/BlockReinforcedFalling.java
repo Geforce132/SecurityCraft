@@ -9,7 +9,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.init.Particles;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -103,7 +104,7 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.spawnParticle(EnumParticleTypes.FALLING_DUST, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
+				world.spawnParticle(new BlockParticleData(Particles.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

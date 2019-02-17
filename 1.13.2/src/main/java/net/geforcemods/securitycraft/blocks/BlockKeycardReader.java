@@ -19,12 +19,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -140,13 +140,15 @@ public class BlockKeycardReader extends BlockOwnable  {
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
+			float f1 = 0.6F + 0.4F;
+			float f2 = Math.max(0.0F, 0.7F - 0.5F);
+			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-
-			world.spawnParticle(EnumParticleTypes.REDSTONE, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.REDSTONE, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.REDSTONE, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.REDSTONE, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

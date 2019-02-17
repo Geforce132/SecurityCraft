@@ -16,6 +16,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Particles;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
@@ -23,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -101,14 +101,14 @@ public class BlockIMS extends BlockOwnable {
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
 
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.SMOKE, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.SMOKE, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.SMOKE, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.SMOKE, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
 
-			world.spawnParticle(EnumParticleTypes.FLAME, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.FLAME, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.FLAME, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(Particles.FLAME, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
