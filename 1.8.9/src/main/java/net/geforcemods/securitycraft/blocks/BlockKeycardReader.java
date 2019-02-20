@@ -98,7 +98,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 		if(world.isRemote)
 		{
-			if(Integer.parseInt(((TileEntityKeycardReader)world.getTileEntity(pos)).getPassword()) != 0)
+			if(securityLevel != 0)
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack)), EnumChatFormatting.RED);
 			else
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.notSet"), EnumChatFormatting.RED);

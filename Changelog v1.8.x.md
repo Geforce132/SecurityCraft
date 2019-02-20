@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.12 of SecurityCraft--------------------------
+
+- Fix: [1.8+] Crash when rightclicking the Keycard Reader with a Keycard without having it set up first
+- Fix: [1.12.2] French translation does not work
+
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
 - New: Reinforced Gravel
