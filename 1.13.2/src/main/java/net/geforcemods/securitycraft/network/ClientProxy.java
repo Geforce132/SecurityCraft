@@ -27,7 +27,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -305,7 +304,7 @@ public class ClientProxy extends ServerProxy{
 					//registering reinforced blocks color overlay for world
 					Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
 					//same thing for inventory
-					Minecraft.getInstance().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> tint, (Block)field.get(null));
+					Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, (Block)field.get(null));
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
