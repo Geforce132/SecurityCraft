@@ -105,7 +105,7 @@ public class EntityBouncingBetty extends Entity {
 	@Override
 	protected void writeAdditional(NBTTagCompound tag)
 	{
-		tag.setByte("Fuse", (byte)fuse);
+		tag.putByte("Fuse", (byte)fuse);
 	}
 
 	/**

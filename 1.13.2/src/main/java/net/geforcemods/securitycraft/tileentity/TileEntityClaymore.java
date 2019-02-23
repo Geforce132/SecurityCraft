@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -94,10 +93,10 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	public NBTTagCompound write(NBTTagCompound tag)
 	{
 		super.write(tag);
-		tag.setInt("cooldown", cooldown);
-		tag.setDouble("entityX", entityX);
-		tag.setDouble("entityY", entityY);
-		tag.setDouble("entityZ", entityZ);
+		tag.putInt("cooldown", cooldown);
+		tag.putDouble("entityX", entityX);
+		tag.putDouble("entityY", entityY);
+		tag.putDouble("entityZ", entityZ);
 		return tag;
 	}
 
@@ -109,16 +108,16 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	{
 		super.read(tag);
 
-		if (tag.contains("cooldown", NBTUtils.NUMERIC))
+		if (tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
 
-		if (tag.contains("entityX", NBTUtils.NUMERIC))
+		if (tag.contains("entityX"))
 			entityX = tag.getDouble("entityX");
 
-		if (tag.contains("entityY", NBTUtils.NUMERIC))
+		if (tag.contains("entityY"))
 			entityY = tag.getDouble("entityY");
 
-		if (tag.contains("entityZ", NBTUtils.NUMERIC))
+		if (tag.contains("entityZ"))
 			entityZ = tag.getDouble("entityZ");
 	}
 

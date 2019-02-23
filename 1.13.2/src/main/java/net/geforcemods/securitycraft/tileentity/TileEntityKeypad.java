@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +65,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		super.write(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.setString("passcode", passcode);
+			tag.putString("passcode", passcode);
 
 		return tag;
 	}
@@ -79,7 +78,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	{
 		super.read(tag);
 
-		if (tag.contains("passcode", NBTUtils.STRING))
+		if (tag.contains("passcode"))
 			if(tag.getInt("passcode") != 0)
 				passcode = String.valueOf(tag.getInt("passcode"));
 			else

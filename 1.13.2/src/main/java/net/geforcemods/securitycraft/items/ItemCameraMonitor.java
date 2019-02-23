@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -52,17 +51,17 @@ public class ItemCameraMonitor extends Item {
 				if(player.inventory.getCurrentItem().getTag() == null)
 					player.inventory.getCurrentItem().setTag(new NBTTagCompound());
 
-				CameraView view = new CameraView(pos, player.dimension.getId());
+				CameraView view = new CameraView(pos, player.dimension);
 
 				if(isCameraAdded(player.inventory.getCurrentItem().getTag(), view)){
-					player.inventory.getCurrentItem().getTag().removeTag(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
+					player.inventory.getCurrentItem().getTag().remove(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
-					if (!player.inventory.getCurrentItem().getTag().contains("Camera" + i, NBTUtils.STRING)){
-						player.inventory.getCurrentItem().getTag().setString("Camera" + i, view.toNBTString());
+					if (!player.inventory.getCurrentItem().getTag().contains("Camera" + i)){
+						player.inventory.getCurrentItem().getTag().putString("Camera" + i, view.toNBTString());
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
@@ -112,7 +111,7 @@ public class ItemCameraMonitor extends Item {
 
 	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(tag.contains("Camera" + i, NBTUtils.STRING)){
+			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
@@ -124,7 +123,7 @@ public class ItemCameraMonitor extends Item {
 
 	public int getSlotFromPosition(NBTTagCompound tag, CameraView view) {
 		for(int i = 1; i <= 30; i++)
-			if(tag.contains("Camera" + i, NBTUtils.STRING)){
+			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
@@ -138,7 +137,7 @@ public class ItemCameraMonitor extends Item {
 		if(tag == null) return false;
 
 		for(int i = 1; i <= 30; i++)
-			if(tag.contains("Camera" + i, NBTUtils.STRING))
+			if(tag.contains("Camera" + i))
 				return true;
 
 		return false;
@@ -146,7 +145,7 @@ public class ItemCameraMonitor extends Item {
 
 	public boolean isCameraAdded(NBTTagCompound tag, CameraView view){
 		for(int i = 1; i <= 30; i++)
-			if(tag.contains("Camera" + i, NBTUtils.STRING)){
+			if(tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				if(view.checkCoordinates(coords))
@@ -160,7 +159,7 @@ public class ItemCameraMonitor extends Item {
 		ArrayList<CameraView> list = new ArrayList<CameraView>();
 
 		for(int i = 1; i <= 30; i++)
-			if(tag != null && tag.contains("Camera" + i, NBTUtils.STRING)){
+			if(tag != null && tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
 				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
@@ -175,7 +174,7 @@ public class ItemCameraMonitor extends Item {
 		if(tag == null) return 0;
 
 		for(int i = 1; i <= 31; i++)
-			if(tag.contains("Camera" + i, NBTUtils.STRING))
+			if(tag.contains("Camera" + i))
 				continue;
 			else
 				return i - 1;

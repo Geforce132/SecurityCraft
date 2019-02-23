@@ -7,15 +7,15 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.GlStateManager.DestFactor;
 import net.minecraft.client.renderer.GlStateManager.SourceFactor;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiPictureButton extends GuiButton{
 
-	private final ItemRenderer itemRenderer;
+	private final RenderItem itemRenderer;
 	private Block blockToRender;
 	private Item itemToRender;
 	private ResourceLocation textureLocation;
@@ -24,7 +24,7 @@ public class GuiPictureButton extends GuiButton{
 	private int texWidth;
 	private int texHeight;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender) {
 		super(id, xPos, yPos, width, height, "");
 		itemRenderer = par7;
 

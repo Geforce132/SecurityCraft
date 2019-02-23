@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -51,8 +50,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	public NBTTagCompound write(NBTTagCompound tag)
 	{
 		super.write(tag);
-		tag.setInt("cooldown", cooldown);
-		tag.setBoolean("isPowered", isPowered);
+		tag.putInt("cooldown", cooldown);
+		tag.putBoolean("isPowered", isPowered);
 		return tag;
 	}
 
@@ -64,10 +63,10 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	{
 		super.read(tag);
 
-		if (tag.contains("cooldown", NBTUtils.NUMERIC))
+		if (tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
 
-		if (tag.contains("isPowered", NBTUtils.BOOLEAN))
+		if (tag.contains("isPowered"))
 			isPowered = tag.getBoolean("isPowered");
 
 	}

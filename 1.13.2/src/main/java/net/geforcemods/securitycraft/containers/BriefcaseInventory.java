@@ -56,13 +56,13 @@ public class BriefcaseInventory implements IInventory {
 		for(int i = 0; i < getSizeInventory(); i++)
 			if(getStackInSlot(i) != null) {
 				NBTTagCompound item = new NBTTagCompound();
-				item.setInt("Slot", i);
+				item.putInt("Slot", i);
 				getStackInSlot(i).write(item);
 
 				items.add(item);
 			}
 
-		tag.setTag("ItemInventory", items);
+		tag.put("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
 	}
 
@@ -142,11 +142,6 @@ public class BriefcaseInventory implements IInventory {
 	public ITextComponent getDisplayName() {
 		return getName();
 	}
-	
-	@Override
-	public ITextComponent getCustomName() {
-		return getName();
-	}
 
 	@Override
 	public int getField(int id) {
@@ -176,5 +171,4 @@ public class BriefcaseInventory implements IInventory {
 
 		return true;
 	}
-
 }

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,8 +30,8 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	@Override
 	public NBTTagCompound write(NBTTagCompound tag){
 		super.write(tag);
-		tag.setInt("passLV", passLV);
-		tag.setBoolean("requiresExactKeycard", requiresExactKeycard);
+		tag.putInt("passLV", passLV);
+		tag.putBoolean("requiresExactKeycard", requiresExactKeycard);
 		return tag;
 	}
 
@@ -43,10 +42,10 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	public void read(NBTTagCompound tag){
 		super.read(tag);
 
-		if (tag.contains("passLV", NBTUtils.NUMERIC))
+		if (tag.contains("passLV"))
 			passLV = tag.getInt("passLV");
 
-		if (tag.contains("requiresExactKeycard", NBTUtils.BOOLEAN))
+		if (tag.contains("requiresExactKeycard"))
 			requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
 	}

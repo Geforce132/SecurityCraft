@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,7 +54,7 @@ public class ItemBriefcase extends Item {
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTag().contains("passcode", NBTUtils.STRING))
+			if(!stack.getTag().contains("passcode"))
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -69,8 +68,8 @@ public class ItemBriefcase extends Item {
 	{
 		ItemStack newStack = stack.copy();
 
-		if(newStack.getTag() != null && newStack.getTag().contains("passcode", NBTUtils.STRING))
-			newStack.getTag().removeTag("passcode");
+		if(newStack.getTag() != null && newStack.getTag().contains("passcode"))
+			newStack.getTag().remove("passcode");
 
 		return newStack;
 	}

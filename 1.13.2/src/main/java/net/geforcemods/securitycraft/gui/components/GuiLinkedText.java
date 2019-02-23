@@ -47,11 +47,15 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	}
 
 	@Override
-	public void onClick(double mouseX, double mouseY) {
+	public boolean onClick(double mouseX, double mouseY) {
 		if(enabled && visible && mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height) {
 			if (Minecraft.getInstance().gameSettings.chatLinksPrompt)
 				Minecraft.getInstance().displayGuiScreen(new GuiConfirmOpenLink(this, url, 0, false));
+
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override

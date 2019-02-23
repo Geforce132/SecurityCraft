@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
@@ -82,8 +81,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	{
 		super.write(tag);
 
-		tag.setBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		tag.setString("lastPlayerName", lastPlayerName);
+		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
+		tag.putString("lastPlayerName", lastPlayerName);
 		return tag;
 	}
 
@@ -92,10 +91,10 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	{
 		super.read(tag);
 
-		if (tag.contains("shouldSendNewMessage", NBTUtils.BOOLEAN))
+		if (tag.contains("shouldSendNewMessage"))
 			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
 
-		if (tag.contains("lastPlayerName", NBTUtils.STRING))
+		if (tag.contains("lastPlayerName"))
 			lastPlayerName = tag.getString("lastPlayerName");
 	}
 

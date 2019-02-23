@@ -54,7 +54,7 @@ public class EntityTaserBullet extends EntityThrowable {
 			{
 				if(result.entity instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)result.entity).abilities.isCreativeMode || (EntityLivingBase)result.entity == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)result.entity).capabilities.isCreativeMode || (EntityLivingBase)result.entity == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
 						return;
 				}
 
