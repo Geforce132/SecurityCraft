@@ -8,29 +8,32 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemKeyPanel extends Item {
 
 	public ItemKeyPanel(){
-		super();
+		super(new Item.Properties().group(SecurityCraft.tabSCTechnical));
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		if(!world.isRemote){
-			ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(ItemUseContext ctx)
+	{
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ());
+	}
 
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ){
+		if(!world.isRemote){
 			IPasswordConvertible.BLOCKS.forEach((pc) -> {
 				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
 				{
 					if(((IPasswordConvertible)pc).convert(player, world, pos))
 					{
-						if(!player.capabilities.isCreativeMode)
+						if(!player.isCreative())
 							stack.shrink(1);
 						SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F, "block"));
 					}

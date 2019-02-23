@@ -21,29 +21,30 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.network.NetworkRegistry;
 
 @Mod(SecurityCraft.MODID)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
+	//********************************* This is v1.8.11 for MC 1.13.2!
+	protected static final String VERSION = "v1.8.11-beta1";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static ServerProxy serverProxy;
 	public static SecurityCraft instance;
 	public static SimpleNetworkWrapper network;
-	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
@@ -55,9 +56,11 @@ public class SecurityCraft {
 	public SecurityCraft()
 	{
 		instance = this;
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
+		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
+		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
 	}
 
-	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandSC());
 		event.registerServerCommand(new CommandModule());
@@ -67,7 +70,6 @@ public class SecurityCraft {
 	public void preInit(FMLPreInitializationEvent event){
 		log("Starting to load....");
 		log("Loading config file....");
-		log(SecurityCraft.VERSION + " of SecurityCraft is for a post MC-1.6.4 version! Configuration files are useless for setting anything besides options.");
 		log("Config file loaded.");
 		log("Setting up network....");
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
@@ -83,9 +85,8 @@ public class SecurityCraft {
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event){
+	public void init(InterModEnqueueEvent event){
 		log("Setting up inter-mod stuff...");
-		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
@@ -97,12 +98,9 @@ public class SecurityCraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		EnumCustomModules.refresh();
 		serverProxy.registerRenderThings();
-		FMLCommonHandler.instance().getDataFixer().init(SecurityCraft.MODID, TileEntityIDDataFixer.VERSION).registerFix(FixTypes.BLOCK_ENTITY, new TileEntityIDDataFixer());
 	}
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event){
-		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
+	public void postInit(InterModProcessEvent event){
 		DataSerializers.registerSerializer(Owner.SERIALIZER);
 
 		for(Field field : SCContent.class.getFields())
@@ -154,6 +152,10 @@ public class SecurityCraft {
 
 	public static void log(String line, boolean isSevereError) {
 		if(ConfigHandler.debug)
-			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + line);
+			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLLoader.getDist() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLLoader.getDist() + "] " + line);
+	}
+
+	public static String getVersion() {
+		return VERSION;
 	}
 }

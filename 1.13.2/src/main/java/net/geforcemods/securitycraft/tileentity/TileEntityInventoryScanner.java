@@ -17,7 +17,7 @@ import net.minecraft.util.NonNullList;
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private String type = "check";
+	private String scanType = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -37,8 +37,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
-		super.readFromNBT(tag);
+	public void read(NBTTagCompound tag){
+		super.read(tag);
 
 		NBTTagList list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
@@ -57,13 +57,13 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			cooldown = tag.getInt("cooldown");
 
 		if(tag.contains("type"))
-			type = tag.getString("type");
+			scanType = tag.getString("type");
 
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
-		super.writeToNBT(tag);
+	public NBTTagCompound write(NBTTagCompound tag){
+		super.write(tag);
 
 		NBTTagList list = new NBTTagList();
 
@@ -78,7 +78,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		tag.putString("type", type);
+		tag.putString("type", scanType);
 		return tag;
 	}
 
@@ -241,16 +241,16 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		return true;
 	}
 
-	public String getType(){
-		return type;
+	public String getScanType(){
+		return scanType;
 	}
 
-	public void setType(String type){
-		this.type = type;
+	public void setScanType(String scanType){
+		this.scanType = scanType;
 	}
 
 	public boolean shouldProvidePower() {
-		return (type.equals("redstone") && isProvidingPower) ? true : false;
+		return (scanType.equals("redstone") && isProvidingPower) ? true : false;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {

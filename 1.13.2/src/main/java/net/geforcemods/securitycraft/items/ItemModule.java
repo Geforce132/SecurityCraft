@@ -16,6 +16,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -39,15 +42,13 @@ public class ItemModule extends Item{
 	}
 
 	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
+		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
 		this.canBeCustomized = canBeCustomized;
 		this.guiToOpen = guiToOpen;
 		numberOfItemAddons = itemAddons;
 		numberOfBlockAddons = blockAddons;
-
-		setMaxStackSize(1);
-		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	@Override
@@ -57,8 +58,8 @@ public class ItemModule extends Item{
 		try
 		{
 			if(!world.isRemote) {
-				if(!stack.hasTagCompound()) {
-					stack.setTagCompound(new NBTTagCompound());
+				if(!stack.hasTag()) {
+					stack.setTag(new NBTTagCompound());
 					ClientUtils.syncItemNBT(stack);
 				}
 
@@ -73,41 +74,41 @@ public class ItemModule extends Item{
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
+	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable"));
+			list.add(new TextComponentTranslation("tooltip.securitycraft:module.modifiable"));
 		else
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
+			list.add(new TextComponentTranslation("tooltip.securitycraft:module.notModifiable"));
 
 		if(nbtCanBeModified) {
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.usage"));
+			list.add(new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.usage"));
 
-			list.add(" ");
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
+			list.add(new TextComponentString(" "));
+			list.add(new TextComponentString(new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.players") + ":"));
 
-			if(stack.getTagCompound() != null)
+			if(stack.getTag() != null)
 				for(int i = 1; i <= 10; i++)
-					if(!stack.getTagCompound().getString("Player" + i).isEmpty())
-						list.add(stack.getTagCompound().getString("Player" + i));
+					if(!stack.getTag().getString("Player" + i).isEmpty())
+						list.add(new TextComponentString(stack.getTag().getString("Player" + i)));
 		}
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
+				list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + "")));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
+				list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + "")));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
+				list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + "")));
 
 			if(getNumberOfAddons() > 0) {
-				list.add(" ");
+				list.add(new TextComponentString(" "));
 
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
+				list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
 
-				for(ItemStack addon : getAddons(stack.getTagCompound()))
-					list.add("- " + ClientUtils.localize(addon.getTranslationKey() + ".name"));
+				for(ItemStack addon : getAddons(stack.getTag()))
+					list.add(new TextComponentString("- " + ClientUtils.localize(addon.getTranslationKey() + ".name")));
 			}
 		}
 	}
@@ -137,16 +138,16 @@ public class ItemModule extends Item{
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+		for(int i = 0; i < items.size(); i++) {
+			NBTTagCompound item = items.getCompound(i);
+			int slot = item.getInt("Slot");
 
 			if(slot < numberOfItemAddons) {
 				ItemStack stack;
 
-				if((stack = new ItemStack(item)).getTranslationKey().startsWith("item."))
+				if((stack = ItemStack.read(item)).getTranslationKey().startsWith("item."))
 					list.add(stack.getItem());
 			}
 		}
@@ -159,16 +160,16 @@ public class ItemModule extends Item{
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+		for(int i = 0; i < items.size(); i++) {
+			NBTTagCompound item = items.getCompound(i);
+			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons) {
 				ItemStack stack;
 
-				if((stack = new ItemStack(item)).getTranslationKey().startsWith("tile."))
+				if((stack = ItemStack.read(item)).getTranslationKey().startsWith("tile."))
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}
@@ -181,14 +182,14 @@ public class ItemModule extends Item{
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+		for(int i = 0; i < items.size(); i++) {
+			NBTTagCompound item = items.getCompound(i);
+			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons)
-				list.add(new ItemStack(item));
+				list.add(ItemStack.read(item));
 		}
 
 		return list;

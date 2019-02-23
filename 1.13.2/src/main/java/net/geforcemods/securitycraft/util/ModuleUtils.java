@@ -141,31 +141,31 @@ public class ModuleUtils{
 			return false;
 
 		if(te instanceof TileEntityKeypad){
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 				return true;
 			}
 
-			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
 				return true;
 			}
 
-			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
+			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase()))
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
 				return true;
 		}else if(te instanceof TileEntityInventoryScanner)
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase()))
+			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
 				return true;
 
 		return false;

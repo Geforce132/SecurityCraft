@@ -11,6 +11,8 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
 
@@ -66,8 +68,8 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	}
 
 	@Override
-	public String getName() {
-		return "Motion-Activated Light";
+	public ITextComponent getName() {
+		return new TextComponentString("Motion-Activated Light");
 	}
 
 }

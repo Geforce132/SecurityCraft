@@ -23,9 +23,9 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 	private static final ModelSign model = new ModelSign();
 
 	@Override
-	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		Block block = te.getBlockType();
+		Block block = te.getBlockState().getBlock();
 		GlStateManager.pushMatrix();
 
 		if (block == SCContent.secretSignStanding)
@@ -33,7 +33,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
 			float rotation = te.getBlockMetadata() * 360 / 16.0F;
 			GlStateManager.rotatef(-rotation, 0.0F, 1.0F, 0.0F);
-			model.signStick.showModel = true;
+			model.getSignStick().showModel = true;
 		}
 		else
 		{
@@ -58,7 +58,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
 			GlStateManager.rotatef(-roation, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translatef(0.0F, -0.3125F, -0.4375F);
-			model.signStick.showModel = false;
+			model.getSignStick().showModel = false;
 		}
 
 		if (destroyStage >= 0)

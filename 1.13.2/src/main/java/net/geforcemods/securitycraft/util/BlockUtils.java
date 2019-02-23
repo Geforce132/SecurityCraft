@@ -28,6 +28,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockUtils{
@@ -78,7 +79,7 @@ public class BlockUtils{
 	 */
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
-			world.scheduleUpdate(pos, block, delay);
+			world.getPendingBlockTicks().scheduleTick(pos, block, delay);
 		world.neighborChanged(pos.east(), world.getBlockState(pos).getBlock(), pos);
 		world.neighborChanged(pos.west(), world.getBlockState(pos).getBlock(), pos);
 		world.neighborChanged(pos.south(), world.getBlockState(pos).getBlock(), pos);
@@ -107,7 +108,7 @@ public class BlockUtils{
 		return world.getBlockState(pos).getBlock();
 	}
 
-	public static Block getBlock(IBlockAccess access, BlockPos pos){
+	public static Block getBlock(IBlockReader access, BlockPos pos){
 		return access.getBlockState(pos).getBlock();
 	}
 

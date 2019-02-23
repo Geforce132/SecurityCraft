@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -16,24 +17,25 @@ import net.minecraft.world.World;
 
 public class ItemBriefcase extends Item {
 
-	public ItemBriefcase() {}
-
-	@Override
-	public boolean isFull3D() {
-		return true;
+	public ItemBriefcase()
+	{
+		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
+	public EnumActionResult onItemUse(ItemUseContext ctx)
+	{
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ());
+	}
 
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
-			if(!stack.hasTagCompound()) {
-				stack.setTagCompound(new NBTTagCompound());
+			if(!stack.hasTag()) {
+				stack.setTag(new NBTTagCompound());
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTagCompound().hasKey("passcode"))
+			if(!stack.getTag().contains("passcode"))
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -47,12 +49,12 @@ public class ItemBriefcase extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(world.isRemote) {
-			if(!stack.hasTagCompound()) {
-				stack.setTagCompound(new NBTTagCompound());
+			if(!stack.hasTag()) {
+				stack.setTag(new NBTTagCompound());
 				ClientUtils.syncItemNBT(stack);
 			}
 
-			if(!stack.getTagCompound().hasKey("passcode"))
+			if(!stack.getTag().contains("passcode"))
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 			else
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -66,8 +68,8 @@ public class ItemBriefcase extends Item {
 	{
 		ItemStack newStack = stack.copy();
 
-		if(newStack.getTagCompound() != null && newStack.getTagCompound().hasKey("passcode"))
-			newStack.getTagCompound().removeTag("passcode");
+		if(newStack.getTag() != null && newStack.getTag().contains("passcode"))
+			newStack.getTag().remove("passcode");
 
 		return newStack;
 	}

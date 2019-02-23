@@ -10,10 +10,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class ItemTaser extends Item {
@@ -21,15 +23,16 @@ public class ItemTaser extends Item {
 	public boolean powered;
 
 	public ItemTaser(boolean isPowered){
-		super();
+		super(new Item.Properties().defaultMaxDamage(150));
 
 		powered = isPowered;
-		setMaxDamage(151);
 	}
 
 	@Override
-	public boolean isFull3D(){
-		return true;
+	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+	{
+		if(group == SecurityCraft.tabSCTechnical && powered)
+			items.add(new ItemStack(this));
 	}
 
 	@Override
@@ -44,7 +47,7 @@ public class ItemTaser extends Item {
 
 		if(!world.isRemote)
 		{
-			if(!stack.isItemDamaged()){
+			if(!stack.isDamaged()){
 				if(player.isSneaking() && (player.isCreative() || !powered))
 				{
 					ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
@@ -72,7 +75,7 @@ public class ItemTaser extends Item {
 				WorldUtils.addScheduledTask(world, () -> world.spawnEntity(new EntityTaserBullet(world, player, powered)));
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
-				if(!player.capabilities.isCreativeMode)
+				if(!player.isCreative())
 				{
 					if(powered)
 					{
@@ -91,10 +94,10 @@ public class ItemTaser extends Item {
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
+	public void inventoryTick(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
 		if(!world.isRemote)
 			if(par1ItemStack.getDamage() >= 1)
-				par1ItemStack.setItemDamage(par1ItemStack.getDamage() - 1);
+				par1ItemStack.setDamage(par1ItemStack.getDamage() - 1);
 	}
 
 }

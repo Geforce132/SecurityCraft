@@ -353,7 +353,7 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
 	{
-		registerBlock(event, block, new ItemBlock(block), true);
+		registerBlock(event, block, new ItemBlock(block, new Item.Properties()), true);
 	}
 
 	/**
@@ -363,7 +363,7 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage)
 	{
-		registerBlock(event, block, new ItemBlock(block), initPage);
+		registerBlock(event, block, new ItemBlock(block, new Item.Properties()), initPage);
 	}
 
 	/**

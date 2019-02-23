@@ -18,7 +18,7 @@ public class ItemUniversalBlockReinforcer extends Item
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		setMaxDamage(damage);
+		super(new Item.Properties().defaultMaxDamage(damage).group(SecurityCraft.tabSCTechnical).maxStackSize(1));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class ItemUniversalBlockReinforcer extends Item
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player)
 	{
-		if(!player.capabilities.isCreativeMode)
+		if(!player.isCreative())
 		{
 			World world = player.getEntityWorld();
 			IBlockState state = world.getBlockState(pos);

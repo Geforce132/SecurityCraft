@@ -35,7 +35,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 	}
 
 	@Override
-	public void render(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
+	public void render(TileEntityKeypadChest te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
 		int meta;
 
@@ -43,7 +43,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 			meta = 0;
 		else
 		{
-			Block block = te.getBlockType();
+			Block block = te.getBlockState().getBlock();
 			meta = te.getBlockMetadata();
 
 			if (block instanceof BlockChest && meta == 0)

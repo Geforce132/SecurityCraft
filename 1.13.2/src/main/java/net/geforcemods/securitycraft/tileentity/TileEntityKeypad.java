@@ -60,9 +60,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -74,9 +74,9 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
 		if (tag.contains("passcode"))
 			if(tag.getInt("passcode") != 0)

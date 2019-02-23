@@ -58,7 +58,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 			EntityPlayerMP owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
-			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().toLowerCase()))
+			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
 				return false;
 
 
@@ -77,9 +77,9 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
 		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
 		tag.putString("lastPlayerName", lastPlayerName);
@@ -87,9 +87,9 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
 		if (tag.contains("shouldSendNewMessage"))
 			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
@@ -101,7 +101,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public boolean shouldSendMessage(EntityPlayer player) {
 		if(!player.getName().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getName();
+			lastPlayerName = player.getName().getFormattedText();
 		}
 
 		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().equals(getOwner().getName());

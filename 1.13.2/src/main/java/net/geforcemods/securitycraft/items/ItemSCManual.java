@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiSCManual;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ItemSCManual extends Item {
 
 	public ItemSCManual(){
-		super();
+		super(new Item.Properties().maxStackSize(1).group(SecurityCraft.tabSCTechnical));
 	}
 
 	@Override
@@ -28,8 +29,8 @@ public class ItemSCManual extends Item {
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
-		if(par1ItemStack.getTagCompound() == null){
+	public void inventoryTick(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
+		if(par1ItemStack.getTag() == null){
 			NBTTagList bookPages = new NBTTagList();
 
 			par1ItemStack.setTagInfo("pages", bookPages);

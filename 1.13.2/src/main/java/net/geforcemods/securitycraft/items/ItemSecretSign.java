@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -8,14 +9,15 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -24,21 +26,25 @@ public class ItemSecretSign extends Item
 {
 	public ItemSecretSign()
 	{
-		setMaxStackSize(16);
+		super(new Item.Properties().maxStackSize(16).group(SecurityCraft.tabSCDecoration));
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(ItemUseContext ctx)
+	{
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx);
+	}
+
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ, ItemUseContext ctx)
 	{
 		IBlockState state = world.getBlockState(pos);
-		boolean isReplaceable = state.getBlock().isReplaceable(world, pos);
+		boolean isReplaceable = state.getBlock().isReplaceable(world.getBlockState(pos), new BlockItemUseContext(ctx));
 
 		if (facing != EnumFacing.DOWN && (state.getMaterial().isSolid() || isReplaceable) && (!isReplaceable || facing == EnumFacing.UP))
 		{
 			pos = pos.offset(facing);
-			ItemStack stack = player.getHeldItem(hand);
 
-			if (player.canPlayerEdit(pos, facing, stack) && SCContent.secretSignStanding.canPlaceBlockAt(world, pos))
+			if (player.canPlayerEdit(pos, facing, stack) && SCContent.secretSignStanding.isValidPosition(world.getBlockState(pos), world, pos))
 			{
 				if (world.isRemote)
 				{
@@ -62,7 +68,7 @@ public class ItemSecretSign extends Item
 
 					if (tileentity instanceof TileEntitySecretSign && !ItemBlock.setTileEntityNBT(world, player, pos, stack))
 					{
-						player.openEditSign((TileEntitySign)tileentity);
+						player.openSignEditor((TileEntitySign)tileentity);
 					}
 
 					if (player instanceof EntityPlayerMP)

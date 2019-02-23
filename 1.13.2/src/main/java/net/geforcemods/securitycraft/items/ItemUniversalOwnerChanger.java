@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
@@ -12,36 +13,31 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemUniversalOwnerChanger extends Item
 {
-	public ItemUniversalOwnerChanger(){}
-
-	/**
-	 * Returns True is the item is renderer in full 3D when hold.
-	 */
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean isFull3D()
+	public ItemUniversalOwnerChanger()
 	{
-		return true;
+		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1).defaultMaxDamage(48));
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(ItemUseContext ctx)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ());
+	}
+
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing side, float hitX, float hitY, float hitZ)
+	{
 		TileEntity te = world.getTileEntity(pos);
-		String newOwner = stack.getDisplayName();
+		String newOwner = stack.getDisplayName().getFormattedText();
 
 		if(!world.isRemote)
 		{
@@ -69,7 +65,7 @@ public class ItemUniversalOwnerChanger extends Item
 			if(isDefault)
 			{
 				if(ConfigHandler.allowBlockClaim)
-					newOwner = player.getName();
+					newOwner = player.getName().getFormattedText();
 				else
 				{
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
@@ -97,10 +93,10 @@ public class ItemUniversalOwnerChanger extends Item
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
 			if(door)
-				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
+				world.getServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return EnumActionResult.SUCCESS;

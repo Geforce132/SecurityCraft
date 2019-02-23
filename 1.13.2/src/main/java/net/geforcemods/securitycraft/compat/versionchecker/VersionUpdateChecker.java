@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class VersionUpdateChecker {
@@ -21,7 +22,7 @@ public class VersionUpdateChecker {
 		Gson gson = new GsonBuilder().create();
 
 		try{
-			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + Loader.MC_VERSION + ".json");
+			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + Minecraft.getInstance().getVersion() + ".json");
 			BufferedReader in = new BufferedReader(new InputStreamReader(updateURL.openStream()));
 
 			Update update = gson.fromJson(in, Update.class);
@@ -33,11 +34,11 @@ public class VersionUpdateChecker {
 				return null;
 			}
 
-			tag.setString("newVersion", update.getVersion());
-			tag.setString("updateUrl", update.getDownloadURL());
-			tag.setString("changelog", update.getChangelog());
-			tag.setString("newFileName", update.getFileName());
-			tag.setBoolean("isDirectLink", true);
+			tag.putString("newVersion", update.getVersion());
+			tag.putString("updateUrl", update.getDownloadURL());
+			tag.putString("changelog", update.getChangelog());
+			tag.putString("newFileName", update.getFileName());
+			tag.putBoolean("isDirectLink", true);
 		}catch(JsonSyntaxException e){
 			e.printStackTrace();
 			return null;

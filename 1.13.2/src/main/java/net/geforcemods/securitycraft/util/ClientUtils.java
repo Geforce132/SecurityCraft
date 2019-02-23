@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ClientUtils{
 
@@ -30,8 +30,19 @@ public class ClientUtils{
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static void takeScreenshot() {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT)
-			Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getInstance().gameDir, Minecraft.getInstance().displayWidth, Minecraft.getInstance().displayHeight, Minecraft.getInstance().getFramebuffer()));
+		if(FMLLoader.getDist() == Dist.CLIENT)
+		{
+			ScreenShotHelper.saveScreenshot(
+					Minecraft.getInstance().gameDir,
+					Minecraft.getInstance().mainWindow.getWidth(),
+					Minecraft.getInstance().mainWindow.getHeight(),
+					Minecraft.getInstance().getFramebuffer(),
+					msg -> {
+						Minecraft.getInstance().addScheduledTask(() -> {
+							Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg);
+						});
+					});
+		}
 	}
 
 	/**

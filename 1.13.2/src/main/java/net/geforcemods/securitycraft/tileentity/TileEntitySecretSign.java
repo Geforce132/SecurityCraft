@@ -62,7 +62,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
+		read(packet.getNbtCompound());
 	}
 
 	@Override

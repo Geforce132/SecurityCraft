@@ -10,9 +10,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemCodebreaker extends Item {
 
 	public ItemCodebreaker() {
-		super();
-		maxStackSize = 1;
-		setMaxDamage(4); //5 uses because when the damage is 0 the item has one more use
+		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(3));
 	}
 
 	@Override

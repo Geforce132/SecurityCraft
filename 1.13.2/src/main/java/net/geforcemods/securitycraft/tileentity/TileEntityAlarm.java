@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 public class TileEntityAlarm extends TileEntityOwnable {
 
@@ -47,9 +47,9 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
 		return tag;
@@ -59,9 +59,9 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
 		if (tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
@@ -76,7 +76,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	}
 
 	public void setCooldown(int cooldown){
-		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + FMLCommonHandler.instance().getEffectiveSide());
+		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + FMLLoader.getDist());
 		this.cooldown = cooldown;
 	}
 

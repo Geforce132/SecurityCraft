@@ -8,6 +8,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -17,9 +19,8 @@ public class ItemKeycardBase extends Item{
 	private final int level;
 
 	public ItemKeycardBase(int level) {
+		super(new Item.Properties().maxStackSize(0).group(SecurityCraft.tabSCTechnical));
 		this.level = level;
-		setMaxDamage(0);
-		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	public int getKeycardLvl(ItemStack par1ItemStack){
@@ -41,14 +42,14 @@ public class ItemKeycardBase extends Item{
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List list, ITooltipFlag flag) {
+	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(level == 3){
-			if(stack.getTagCompound() == null){
-				stack.setTagCompound(new NBTTagCompound());
-				stack.getTagCompound().setInteger("Uses", 5);
+			if(stack.getTag() == null){
+				stack.setTag(new NBTTagCompound());
+				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTagCompound().getInteger("Uses"));
+			list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
 
 		}
 	}

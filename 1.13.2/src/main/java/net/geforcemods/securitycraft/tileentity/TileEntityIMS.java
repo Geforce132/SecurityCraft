@@ -160,8 +160,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
-		super.writeToNBT(tag);
+	public NBTTagCompound write(NBTTagCompound tag){
+		super.write(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
 		tag.putInt("targetingOption", targetingOption.modeIndex);
@@ -173,8 +173,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
-		super.readFromNBT(tag);
+	public void read(NBTTagCompound tag){
+		super.read(tag);
 
 		if (tag.contains("bombsRemaining"))
 			bombsRemaining = tag.getInt("bombsRemaining");

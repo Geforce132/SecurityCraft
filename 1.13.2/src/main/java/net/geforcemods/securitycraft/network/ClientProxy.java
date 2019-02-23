@@ -37,6 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientProxy extends ServerProxy{
 
@@ -275,7 +276,7 @@ public class ClientProxy extends ServerProxy{
 
 	private Item findItem(String modid, String resourceName)
 	{
-		return Item.REGISTRY.getObject(new ResourceLocation(modid + ":" + resourceName));
+		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(modid + ":" + resourceName));
 	}
 
 	@Override

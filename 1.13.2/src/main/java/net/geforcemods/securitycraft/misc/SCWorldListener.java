@@ -10,24 +10,43 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldEventListener;
+import net.minecraft.world.chunk.IChunk;
 
 public class SCWorldListener implements IWorldEventListener
 {
 	@Override
 	public void notifyBlockUpdate(IBlockReader world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
 	{
-		//chunky code because of readability
-		if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
-			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
-			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
-			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
-			world.setBlockState(pos, oldState);
-		else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
-			world.setBlockState(pos, oldState);
+		if(world instanceof IChunk)
+		{
+			//chunky code because of readability
+			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+				((IChunk)world).setBlockState(pos, oldState, false);
+			else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
+				((IChunk)world).setBlockState(pos, oldState, false);
+			else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
+				((IChunk)world).setBlockState(pos, oldState, false);
+			else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
+				((IChunk)world).setBlockState(pos, oldState, false);
+			else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
+				((IChunk)world).setBlockState(pos, oldState, false);
+		}
+		else if(world instanceof IWorld)
+		{
+			//chunky code because of readability
+			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
+			else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
+				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
+			else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
+				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
+			else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
+				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
+			else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
+				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
+		}
 	}
 
 	@Override

@@ -1,35 +1,42 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.state.properties.DoorHingeSide;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemReinforcedDoor extends Item
 {
+	public ItemReinforcedDoor()
+	{
+		super(new Item.Properties().group(SecurityCraft.tabSCDecoration));
+	}
 
-	/**
-	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-	 */
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	public EnumActionResult onItemUse(ItemUseContext ctx)
+	{
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx);
+	}
+
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ, ItemUseContext ctx)
 	{
 		if(world.isRemote)
 			return EnumActionResult.FAIL;
-
-		ItemStack stack = player.getHeldItem(hand);
 
 		if (facing != EnumFacing.UP)
 			return EnumActionResult.FAIL;
@@ -38,10 +45,10 @@ public class ItemReinforcedDoor extends Item
 			IBlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!block.isReplaceable(world, pos))
+			if (!block.isReplaceable(world.getBlockState(pos), new BlockItemUseContext(ctx)))
 				pos = pos.offset(facing);
 
-			if (player.canPlayerEdit(pos, facing, stack) && SCContent.reinforcedDoor.canPlaceBlockAt(world, pos))
+			if (player.canPlayerEdit(pos, facing, stack) && SCContent.reinforcedDoor.isValidPosition(world.getBlockState(pos), world, pos))
 			{
 				EnumFacing angleFacing = EnumFacing.fromAngle(player.rotationYaw);
 				int offsetX = angleFacing.getXOffset();
@@ -84,10 +91,10 @@ public class ItemReinforcedDoor extends Item
 
 		BlockPos blockAbove = pos.up();
 		boolean isAnyPowered = world.isBlockPowered(pos) || world.isBlockPowered(blockAbove);
-		IBlockState state = door.getDefaultState().withProperty(BlockDoor.FACING, facing).withProperty(BlockDoor.HINGE, isRightHinge ? BlockDoor.EnumHingePosition.RIGHT : BlockDoor.EnumHingePosition.LEFT).withProperty(BlockDoor.POWERED, Boolean.valueOf(isAnyPowered)).withProperty(BlockDoor.OPEN, Boolean.valueOf(isAnyPowered));
-		world.setBlockState(pos, state.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.LOWER), 2);
-		world.setBlockState(blockAbove, state.withProperty(BlockDoor.HALF, BlockDoor.EnumDoorHalf.UPPER), 2);
-		world.notifyNeighborsOfStateChange(pos, door, false);
-		world.notifyNeighborsOfStateChange(blockAbove, door, false);
+		IBlockState state = door.getDefaultState().with(BlockDoor.FACING, facing).with(BlockDoor.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(BlockDoor.POWERED, Boolean.valueOf(isAnyPowered)).with(BlockDoor.OPEN, Boolean.valueOf(isAnyPowered));
+		world.setBlockState(pos, state.with(BlockDoor.HALF, DoubleBlockHalf.LOWER), 2);
+		world.setBlockState(blockAbove, state.with(BlockDoor.HALF, DoubleBlockHalf.UPPER), 2);
+		world.notifyNeighborsOfStateChange(pos, door);
+		world.notifyNeighborsOfStateChange(blockAbove, door);
 	}
 }

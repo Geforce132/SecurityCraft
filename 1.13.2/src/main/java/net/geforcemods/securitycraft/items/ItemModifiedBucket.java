@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -20,18 +21,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemModifiedBucket extends ItemBucket {
 
 	private Block containedBlock;
 
 	public ItemModifiedBucket(Block containedBlock) {
-		super(containedBlock);
+		super(containedBlock, new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
 		this.containedBlock = containedBlock;
 	}
 
@@ -46,7 +47,7 @@ public class ItemModifiedBucket extends ItemBucket {
 
 		if (rayTrace == null)
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
-		else if (rayTrace.typeOfHit != RayTraceResult.Type.BLOCK)
+		else if (rayTrace.type != RayTraceResult.Type.BLOCK)
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		else
 		{
@@ -91,7 +92,7 @@ public class ItemModifiedBucket extends ItemBucket {
 				else if (this.tryPlaceContainedLiquid(player, world, offsetPos))
 				{
 					player.addStat(StatList.getObjectUseStats(this));
-					return !player.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+					return !player.isCreative() ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 				}
 				else
 					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
@@ -101,7 +102,7 @@ public class ItemModifiedBucket extends ItemBucket {
 
 	private ItemStack fillBucket(ItemStack emptyBuckets, EntityPlayer player, Item fullBucket)
 	{
-		if (player.capabilities.isCreativeMode)
+		if (player.isCreative())
 			return emptyBuckets;
 
 		emptyBuckets.shrink(1);
@@ -137,10 +138,10 @@ public class ItemModifiedBucket extends ItemBucket {
 					int z = pos.getZ();
 
 					for(EntityPlayer player : world.playerEntities)
-						world.playSound(player, new BlockPos(x + 0.5F, y + 0.5F, z + 0.5F), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+						world.playSound(player, new BlockPos(x + 0.5F, y + 0.5F, z + 0.5F), ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
 					for (int l = 0; l < 8; ++l)
-						world.spawnParticle(Particles.LARGE_SMOKE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D);
+						world.addParticle(Particles.LARGE_SMOKE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D);
 				}
 				else
 				{

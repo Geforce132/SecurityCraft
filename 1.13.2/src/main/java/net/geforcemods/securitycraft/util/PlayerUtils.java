@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,7 +13,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class PlayerUtils{
 
@@ -23,7 +24,7 @@ public class PlayerUtils{
 	 * Args: playerName.
 	 */
 	public static EntityPlayer getPlayerFromName(String name){
-		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT){
+		if(FMLLoader.getDist() == Dist.CLIENT){
 			List<?> players = Minecraft.getInstance().world.playerEntities;
 			Iterator<?> iterator = players.iterator();
 
@@ -35,7 +36,7 @@ public class PlayerUtils{
 
 			return null;
 		}else{
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
+			List<?> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
@@ -54,7 +55,7 @@ public class PlayerUtils{
 	 * Args: playerName.
 	 */
 	public static boolean isPlayerOnline(String name) {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Dist.CLIENT){
+		if(FMLLoader.getDist() == Dist.CLIENT){
 			for(int i = 0; i < Minecraft.getInstance().world.playerEntities.size(); i++){
 				EntityPlayer player = Minecraft.getInstance().world.playerEntities.get(i);
 
@@ -65,7 +66,7 @@ public class PlayerUtils{
 			return false;
 		}
 		else
-			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(name) != null);
+			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
@@ -77,7 +78,7 @@ public class PlayerUtils{
 	 *
 	 * Args: sender, prefix, text, link, color.
 	 */
-	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, TextFormatting color){
+	public static void sendMessageEndingWithLink(ICommandSource sender, String prefix, String text, String link, TextFormatting color){
 		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 

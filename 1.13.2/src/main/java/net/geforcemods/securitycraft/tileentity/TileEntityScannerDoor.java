@@ -11,6 +11,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
@@ -26,7 +27,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
 
-		if(!world.isRemote && upperState.get(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER)
+		if(!world.isRemote && upperState.get(BlockDoor.HALF) == DoubleBlockHalf.UPPER)
 		{
 			if(!(entity instanceof EntityPlayer))
 				return;

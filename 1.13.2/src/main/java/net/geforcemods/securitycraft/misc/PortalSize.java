@@ -175,7 +175,7 @@ public class PortalSize
 
 			for (int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().withProperty(BlockPortal.AXIS, this.axis), 2 | 16);
+				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(BlockPortal.AXIS, this.axis), 2 | 16);
 			}
 		}
 	}

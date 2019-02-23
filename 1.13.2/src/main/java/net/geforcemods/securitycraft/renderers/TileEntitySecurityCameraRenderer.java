@@ -21,7 +21,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
 
 	@Override
-	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
+	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
 		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
 			return;
 
@@ -29,13 +29,13 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 
 		if(par1TileEntity.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
-			float brightness = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
+			float brightness = par1TileEntity.getWorld().getBrightness(par1TileEntity.getPos());
 			int skyBrightness = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
 			int lightmapX = skyBrightness % 65536;
 			int lightmapY = skyBrightness / 65536;
 			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
+			OpenGlHelper.glMultiTexCoord2f(OpenGlHelper.GL_TEXTURE1, lightmapX, lightmapY);
 		}
 
 		GlStateManager.pushMatrix();

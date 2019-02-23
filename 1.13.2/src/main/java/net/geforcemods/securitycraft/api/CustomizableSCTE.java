@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -60,9 +60,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 
 		NBTTagList list = tag.getList("Modules", 10);
 		modules = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
@@ -73,7 +73,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if (slot >= 0 && slot < modules.size())
-				modules.set(slot, new ItemStack(stackTag));
+				modules.set(slot, ItemStack.read(stackTag));
 		}
 
 		if(customOptions() != null)
@@ -95,9 +95,9 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 
 		NBTTagList list = new NBTTagList();
 
@@ -314,12 +314,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation(getName());
+		return getName();
 	}
 
 	@Override
-	public String getName(){
-		return "Customize";
+	public ITextComponent getName(){
+		return new TextComponentString("Customize");
 	}
 
 	@Override

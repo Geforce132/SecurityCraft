@@ -25,7 +25,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote) {
-			addPlayerName(((EntityPlayer) entity).getName());
+			addPlayerName(((EntityPlayer) entity).getName().getFormattedText());
 			sendChangeToClient();
 		}
 
@@ -45,7 +45,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayerName(((EntityPlayer)iterator.next()).getName());
+			addPlayerName(((EntityPlayer)iterator.next()).getName().getFormattedText());
 
 		sendChangeToClient();
 	}
@@ -72,8 +72,8 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag){
-		super.writeToNBT(tag);
+	public NBTTagCompound write(NBTTagCompound tag){
+		super.write(tag);
 
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
@@ -83,8 +83,8 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag){
-		super.readFromNBT(tag);
+	public void read(NBTTagCompound tag){
+		super.read(tag);
 
 		for(int i = 0; i < players.length; i++)
 			if (tag.contains("player" + i))

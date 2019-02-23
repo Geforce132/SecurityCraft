@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.api;
 
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.util.text.ITextComponent;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block.
@@ -24,7 +23,7 @@ public class Owner {
 		}
 
 		@Override
-		public Owner read(PacketBuffer buf) throws IOException
+		public Owner read(PacketBuffer buf)
 		{
 			String name = buf.readString(Integer.MAX_VALUE);
 			String uuid = buf.readString(Integer.MAX_VALUE);
@@ -83,7 +82,7 @@ public class Owner {
 	public boolean isOwner(EntityPlayer player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
-		String owner = player.getName();
+		String owner = player.getName().getFormattedText();
 
 		if(uuid != null && uuid.equals(playerUUID))
 			return true;
@@ -99,6 +98,14 @@ public class Owner {
 	 */
 	public void set(String uuid, String name) {
 		playerName = name;
+		playerUUID = uuid;
+	}
+
+	/**
+	 * Set the UUID and name of a new owner using strings.
+	 */
+	public void set(String uuid, ITextComponent name) {
+		playerName = name.getFormattedText();
 		playerUUID = uuid;
 	}
 

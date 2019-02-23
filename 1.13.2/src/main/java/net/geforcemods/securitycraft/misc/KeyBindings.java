@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.java.games.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
+
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
@@ -17,10 +18,10 @@ public class KeyBindings {
 	public static KeyBinding cameraActivateNightVision;
 
 	public static void init(){
-		cameraZoomIn = new KeyBinding("key.cameraZoomIn", Keyboard.KEY_EQUALS, "key.categories.securitycraft");
-		cameraZoomOut = new KeyBinding("key.cameraZoomOut", Keyboard.KEY_MINUS, "key.categories.securitycraft");
-		cameraEmitRedstone = new KeyBinding("key.cameraEmitRedstone", Keyboard.KEY_R, "key.categories.securitycraft");
-		cameraActivateNightVision = new KeyBinding("key.cameraActivateNightVision", Keyboard.KEY_N, "key.categories.securitycraft");
+		cameraZoomIn = new KeyBinding("key.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
+		cameraZoomOut = new KeyBinding("key.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
+		cameraEmitRedstone = new KeyBinding("key.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
+		cameraActivateNightVision = new KeyBinding("key.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
 
 		ClientRegistry.registerKeyBinding(cameraZoomIn);
 		ClientRegistry.registerKeyBinding(cameraZoomOut);

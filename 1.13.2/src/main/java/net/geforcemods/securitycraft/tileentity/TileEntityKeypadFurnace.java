@@ -139,9 +139,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
-		super.readFromNBT(tag);
+		super.read(tag);
 		NBTTagList list = tag.getList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
@@ -165,9 +165,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		super.writeToNBT(tag);
+		super.write(tag);
 		tag.putShort("BurnTime", (short)furnaceBurnTime);
 		tag.putShort("CookTime", (short)cookTime);
 		tag.putShort("CookTimeTotal", (short)totalCookTime);

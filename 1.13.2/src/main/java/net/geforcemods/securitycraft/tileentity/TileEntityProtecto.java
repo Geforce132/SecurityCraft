@@ -76,12 +76,12 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
-		world.notifyNeighborsOfStateChange(pos, blockType, false);
+		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
-		world.notifyNeighborsOfStateChange(pos, blockType, false);
+		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 }

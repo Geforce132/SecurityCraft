@@ -140,7 +140,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			}
 			else if(player.getHeldItemMainhand().getItem() == SCContent.universalBlockModifier)
 			{
-				world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
+				world.removeBlock(getPosition());
 				Block.spawnAsEntity(world, getPosition(), getModule());
 				dataManager.set(MODULE, new NBTTagCompound());
 			}

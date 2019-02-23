@@ -40,10 +40,10 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 			}
 
 			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
-			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, 60);
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.retinalScanner, 60);
 
 			if(entity instanceof EntityPlayer)
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.securitycraft:retinalScanner.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.securitycraft:retinalScanner.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName().getFormattedText()), TextFormatting.GREEN);
 		}
 	}
 
