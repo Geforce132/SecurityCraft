@@ -156,7 +156,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 		furnace.writeToNBT(tag);
 		furnace.clear();
 		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getCommandSenderName());
 		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;
 	}

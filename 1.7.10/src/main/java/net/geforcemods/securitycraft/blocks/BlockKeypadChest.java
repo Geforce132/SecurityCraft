@@ -119,7 +119,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 
 		world.setBlock(x, y, z, SCContent.keypadChest, newMeta, 3);
 		world.setBlockMetadataWithNotify(x, y, z, newMeta, 3);
-		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
+		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getUniqueID().toString(), player.getCommandSenderName());
 		((TileEntityChest)world.getTileEntity(x, y, z)).readFromNBT(tag);
 		return true;
 	}

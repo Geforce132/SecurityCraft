@@ -165,7 +165,7 @@ public class BlockKeypadFurnace extends BlockContainer implements IPasswordConve
 		}
 
 		world.setBlock(x, y, z, SCContent.keypadFurnace, newMeta, 3);
-		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getCommandSenderName(), player.getUniqueID().toString());
+		((IOwnable) world.getTileEntity(x, y, z)).getOwner().set(player.getUniqueID().toString(), player.getCommandSenderName());
 		((TileEntityFurnace)world.getTileEntity(x, y, z)).readFromNBT(tag);
 		return true;
 	}
