@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum<BlockReinforcedPurpur.EnumType> VARIANT = PropertyEnum.<BlockReinforcedPurpur.EnumType>create("variant", BlockReinforcedPurpur.EnumType.class);
 

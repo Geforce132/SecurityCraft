@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -21,7 +21,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends BlockExplosive implements IIntersectable, ICustomWailaDisplay {
+public class BlockFullMineBase extends BlockExplosive implements IIntersectable, IOverlayDisplay {
 
 	private final Block blockDisguisedAs;
 

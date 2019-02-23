@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockWoodSlab;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, ICustomWailaDisplay {
+public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay {
 
 	private final boolean isDouble;
 

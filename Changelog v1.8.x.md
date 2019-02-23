@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.12 of SecurityCraft--------------------------
 
+- New: [1.12.2] The One Probe support (https://minecraft.curseforge.com/projects/the-one-probe)
 - Fix: [1.8+] Crash when rightclicking the Keycard Reader with a Keycard without having it set up first
 - Fix: [1.12.2] French translation does not work
 - Fix: [1.12.2] Password-protected Chest doesn't show in the inventory under certain circumstances

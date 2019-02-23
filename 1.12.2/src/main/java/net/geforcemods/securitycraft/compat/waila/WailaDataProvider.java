@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -31,13 +32,13 @@ public class WailaDataProvider implements IWailaDataProvider {
 		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", ClientUtils.localize("waila.securitycraft:showPasswords"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", ClientUtils.localize("waila.securitycraft:showCustomName"));
 		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
-		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
+		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
 	}
 
 	@Override
 	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
-		if(data.getBlock() instanceof ICustomWailaDisplay)
-			return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+		if(data.getBlock() instanceof IOverlayDisplay)
+			return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
 		return ItemStack.EMPTY;
 	}
@@ -49,7 +50,7 @@ public class WailaDataProvider implements IWailaDataProvider {
 
 	@Override
 	public List<String> getWailaBody(ItemStack stack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
-		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return body;
+		if(data.getBlock() instanceof IOverlayDisplay && !((IOverlayDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return body;
 
 		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable)
 			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());

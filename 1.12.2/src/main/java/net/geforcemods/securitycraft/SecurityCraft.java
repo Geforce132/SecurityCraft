@@ -99,6 +99,7 @@ public class SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		log("Setting up inter-mod stuff...");
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
+		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
