@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -35,8 +36,8 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 		super.write(tag);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			tag.setString("owner", owner.getName());
+			tag.setString("ownerUUID", owner.getUUID());
 		}
 
 		return tag;
@@ -50,10 +51,10 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	{
 		super.read(tag);
 
-		if (tag.contains("owner"))
+		if (tag.contains("owner", NBTUtils.STRING))
 			owner.setOwnerName(tag.getString("owner"));
 
-		if (tag.contains("ownerUUID"))
+		if (tag.contains("ownerUUID", NBTUtils.STRING))
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 

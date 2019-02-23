@@ -116,9 +116,10 @@ public class GuiSlider extends GuiButtonExt
 	 */
 	/**
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
+	 * @return 
 	 */
 	@Override
-	protected void mouseDragged(Minecraft mc, int mouseX, int mouseY)
+	public boolean mouseDragged(double mouseX, double mouseY, int buttonClicked, double dMouseX, double dMouseY)
 	{
 		if (visible)
 		{
@@ -131,7 +132,10 @@ public class GuiSlider extends GuiButtonExt
 			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)), y, 0, 66, 4, 20);
 			this.drawTexturedModalRect(x + (int)(sliderValue * (width - 8)) + 4, y, 196, 66, 4, 20);
+			return true;
 		}
+		
+		return false;
 	}
 
 	/**

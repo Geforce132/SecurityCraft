@@ -66,13 +66,13 @@ public class ModuleInventory implements IInventory {
 		for(int i = 0; i < getSizeInventory(); i++)
 			if(!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
-				item.putInt("Slot", i);
+				item.setInt("Slot", i);
 				getStackInSlot(i).write(item);
 
 				items.add(item);
 			}
 
-		tag.putTag("ItemInventory", items);
+		tag.setTag("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 

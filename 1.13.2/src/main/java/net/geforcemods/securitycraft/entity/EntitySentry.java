@@ -248,10 +248,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	public void writeAdditional(NBTTagCompound tag)
 	{
-		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledModule", getModule().write(new NBTTagCompound()));
-		tag.putInt("SentryMode", dataManager.get(MODE));
-		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
+		tag.setTag("TileEntityData", getOwnerTag());
+		tag.setTag("InstalledModule", getModule().write(new NBTTagCompound()));
+		tag.setInt("SentryMode", dataManager.get(MODE));
+		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeAdditional(tag);
 	}
 
@@ -260,8 +260,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.putString("owner", owner.getName());
-		tag.putString("ownerUUID", owner.getUUID());
+		tag.setString("owner", owner.getName());
+		tag.setString("ownerUUID", owner.getUUID());
 		return tag;
 	}
 
@@ -273,7 +273,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, (NBTTagCompound)tag.get("InstalledModule"));
+		dataManager.set(MODULE, (NBTTagCompound)tag.getTag("InstalledModule"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);

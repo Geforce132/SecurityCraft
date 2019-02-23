@@ -129,7 +129,7 @@ public class ContainerBlockReinforcer extends Container
 				slot = inventorySlots.get(currentIndex);
 				slotStack = slot.getStack();
 
-				if(!slotStack.isEmpty() && slotStack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == slotStack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, slotStack))
+				if(!slotStack.isEmpty() && Container.areItemsAndTagsEqual(stack, slotStack))
 				{
 					int combinedCount = slotStack.getCount() + stack.getCount();
 

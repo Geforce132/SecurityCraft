@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.java.games.input.Mouse;
 import net.minecraft.client.Minecraft;
@@ -74,7 +75,7 @@ public class EntitySecurityCamera extends Entity{
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
-		playerViewingName = player.getName();
+		playerViewingName = player.getName().getString();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30F;
@@ -177,7 +178,7 @@ public class EntitySecurityCamera extends Entity{
 
 		if(!world.isRemote)
 			if(getPassengers().size() == 0 | BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
-				setDead();
+				remove();
 				return;
 			}
 	}
@@ -368,47 +369,47 @@ public class EntitySecurityCamera extends Entity{
 
 	@Override
 	public void writeAdditional(NBTTagCompound tag){
-		tag.putInt("CameraID", id);
+		tag.setInt("CameraID", id);
 
 		if(playerViewingName != null)
-			tag.putString("playerName", playerViewingName);
+			tag.setString("playerName", playerViewingName);
 
 		if(cameraUseX != 0.0D)
-			tag.putDouble("cameraUseX", cameraUseX);
+			tag.setDouble("cameraUseX", cameraUseX);
 
 		if(cameraUseY != 0.0D)
-			tag.putDouble("cameraUseY", cameraUseY);
+			tag.setDouble("cameraUseY", cameraUseY);
 
 		if(cameraUseZ != 0.0D)
-			tag.putDouble("cameraUseZ", cameraUseZ);
+			tag.setDouble("cameraUseZ", cameraUseZ);
 
 		if(cameraUseYaw != 0.0D)
-			tag.putDouble("cameraUseYaw", cameraUseYaw);
+			tag.setDouble("cameraUseYaw", cameraUseYaw);
 
 		if(cameraUsePitch != 0.0D)
-			tag.putDouble("cameraUsePitch", cameraUsePitch);
+			tag.setDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
 	public void readAdditional(NBTTagCompound tag){
 		id = tag.getInt("CameraID");
 
-		if(tag.contains("playerName"))
+		if(tag.contains("playerName", NBTUtils.NUMERIC))
 			playerViewingName = tag.getString("playerName");
 
-		if(tag.contains("cameraUseX"))
+		if(tag.contains("cameraUseX", NBTUtils.NUMERIC))
 			cameraUseX = tag.getDouble("cameraUseX");
 
-		if(tag.contains("cameraUseY"))
+		if(tag.contains("cameraUseY", NBTUtils.NUMERIC))
 			cameraUseY = tag.getDouble("cameraUseY");
 
-		if(tag.contains("cameraUseZ"))
+		if(tag.contains("cameraUseZ", NBTUtils.NUMERIC))
 			cameraUseZ = tag.getDouble("cameraUseZ");
 
-		if(tag.contains("cameraUseYaw"))
+		if(tag.contains("cameraUseYaw", NBTUtils.NUMERIC))
 			cameraUseYaw = tag.getFloat("cameraUseYaw");
 
-		if(tag.contains("cameraUsePitch"))
+		if(tag.contains("cameraUsePitch", NBTUtils.NUMERIC))
 			cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 

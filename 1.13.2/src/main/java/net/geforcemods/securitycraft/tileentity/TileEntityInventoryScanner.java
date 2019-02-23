@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -53,10 +54,10 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		}
 
 
-		if(tag.contains("cooldown"))
+		if(tag.contains("cooldown", NBTUtils.NUMERIC))
 			cooldown = tag.getInt("cooldown");
 
-		if(tag.contains("type"))
+		if(tag.contains("type", NBTUtils.STRING))
 			scanType = tag.getString("type");
 
 	}
@@ -71,14 +72,14 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 			if (!inventoryContents.get(i).isEmpty())
 			{
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.putByte("Slot", (byte)i);
+				stackTag.setByte("Slot", (byte)i);
 				inventoryContents.get(i).write(stackTag);
 				list.add(stackTag);
 			}
 
-		tag.put("Items", list);
-		tag.putInt("cooldown", cooldown);
-		tag.putString("type", scanType);
+		tag.setTag("Items", list);
+		tag.setInt("cooldown", cooldown);
+		tag.setString("type", scanType);
 		return tag;
 	}
 

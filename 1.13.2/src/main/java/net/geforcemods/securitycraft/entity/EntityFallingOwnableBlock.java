@@ -36,7 +36,7 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	@Override
 	protected void writeAdditional(NBTTagCompound tag)
 	{
-		tag.put("TileEntityData", getOwnerTag());
+		tag.setTag("TileEntityData", getOwnerTag());
 		super.writeAdditional(tag);
 	}
 
@@ -45,8 +45,8 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 		NBTTagCompound tag = new NBTTagCompound();
 		Owner owner = dataManager.get(OWNER);
 
-		tag.putString("owner", owner.getName());
-		tag.putString("ownerUUID", owner.getUUID());
+		tag.setString("owner", owner.getName());
+		tag.setString("ownerUUID", owner.getUUID());
 		return tag;
 	}
 

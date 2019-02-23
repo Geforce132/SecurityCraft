@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -77,7 +78,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				tag.putString("player" + i, players[i]);
+				tag.setString("player" + i, players[i]);
 
 		return tag;
 	}
@@ -87,7 +88,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		super.read(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (tag.contains("player" + i))
+			if (tag.contains("player" + i, NBTUtils.STRING))
 				players[i] = tag.getString("player" + i);
 	}
 

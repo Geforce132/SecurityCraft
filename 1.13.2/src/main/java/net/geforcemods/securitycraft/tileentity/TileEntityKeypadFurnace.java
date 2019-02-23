@@ -168,27 +168,27 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public NBTTagCompound write(NBTTagCompound tag)
 	{
 		super.write(tag);
-		tag.putShort("BurnTime", (short)furnaceBurnTime);
-		tag.putShort("CookTime", (short)cookTime);
-		tag.putShort("CookTimeTotal", (short)totalCookTime);
+		tag.setShort("BurnTime", (short)furnaceBurnTime);
+		tag.setShort("CookTime", (short)cookTime);
+		tag.setShort("CookTimeTotal", (short)totalCookTime);
 		NBTTagList list = new NBTTagList();
 
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			if (!furnaceItemStacks.get(i).isEmpty())
 			{
 				NBTTagCompound stackTag = new NBTTagCompound();
-				stackTag.putByte("Slot", (byte)i);
+				stackTag.setByte("Slot", (byte)i);
 				furnaceItemStacks.get(i).write(stackTag);
 				list.add(stackTag);
 			}
 
-		tag.put("Items", list);
+		tag.setTag("Items", list);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+			tag.setString("passcode", passcode);
 
 		if (hasCustomName())
-			tag.putString("CustomName", furnaceCustomName);
+			tag.setString("CustomName", furnaceCustomName);
 
 		return tag;
 	}

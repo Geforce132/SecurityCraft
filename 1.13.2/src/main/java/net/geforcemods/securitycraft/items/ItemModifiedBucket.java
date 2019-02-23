@@ -131,7 +131,7 @@ public class ItemModifiedBucket extends ItemBucket {
 				return false;
 			else
 			{
-				if (world.provider.doesWaterVaporize() && containedBlock == Blocks.FLOWING_WATER)
+				if (world.dimension.doesWaterVaporize() && containedBlock == Blocks.FLOWING_WATER)
 				{
 					int x = pos.getX();
 					int y = pos.getY();

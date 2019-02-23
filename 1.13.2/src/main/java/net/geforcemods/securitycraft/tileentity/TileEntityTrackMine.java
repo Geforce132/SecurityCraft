@@ -38,7 +38,7 @@ public class TileEntityTrackMine extends TileEntityOwnable
 	@Override
 	public NBTTagCompound write(NBTTagCompound tag)
 	{
-		tag.putBoolean("TrackMineEnabled", active);
+		tag.setBoolean("TrackMineEnabled", active);
 		return super.write(tag);
 	}
 

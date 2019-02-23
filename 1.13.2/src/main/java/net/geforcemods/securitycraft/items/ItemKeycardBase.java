@@ -46,7 +46,7 @@ public class ItemKeycardBase extends Item{
 		if(level == 3){
 			if(stack.getTag() == null){
 				stack.setTag(new NBTTagCompound());
-				stack.getTag().putInt("Uses", 5);
+				stack.getTag().setInt("Uses", 5);
 			}
 
 			list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));

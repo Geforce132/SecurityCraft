@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -42,11 +43,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		super.write(tag);
 
 		if(passcode != null && !passcode.isEmpty())
-			tag.putString("passcode", passcode);
+			tag.setString("passcode", passcode);
 
 		if(owner != null){
-			tag.putString("owner", owner.getName());
-			tag.putString("ownerUUID", owner.getUUID());
+			tag.setString("owner", owner.getName());
+			tag.setString("ownerUUID", owner.getUUID());
 		}
 
 		return tag;
@@ -60,16 +61,16 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	{
 		super.read(tag);
 
-		if (tag.contains("passcode"))
+		if (tag.contains("passcode", NBTUtils.STRING))
 			if(tag.getInt("passcode") != 0)
 				passcode = String.valueOf(tag.getInt("passcode"));
 			else
 				passcode = tag.getString("passcode");
 
-		if (tag.contains("owner"))
+		if (tag.contains("owner", NBTUtils.STRING))
 			owner.setOwnerName(tag.getString("owner"));
 
-		if (tag.contains("ownerUUID"))
+		if (tag.contains("ownerUUID", NBTUtils.STRING))
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 

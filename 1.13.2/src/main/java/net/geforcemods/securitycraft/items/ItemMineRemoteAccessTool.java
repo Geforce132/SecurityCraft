@@ -76,7 +76,7 @@ public class ItemMineRemoteAccessTool extends Item {
 					if(stack.getTag() == null)
 						stack.setTag(new NBTTagCompound());
 
-					stack.getTag().putIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
+					stack.getTag().setIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
 					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				}else{
@@ -120,7 +120,7 @@ public class ItemMineRemoteAccessTool extends Item {
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
-					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
+					stack.getTag().setIntArray("mine" + i, new int[]{0, 0, 0});
 					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
 					return;
 				}

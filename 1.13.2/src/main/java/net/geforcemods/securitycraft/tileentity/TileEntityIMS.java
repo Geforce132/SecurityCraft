@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.NBTUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -163,9 +164,9 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public NBTTagCompound write(NBTTagCompound tag){
 		super.write(tag);
 
-		tag.putInt("bombsRemaining", bombsRemaining);
-		tag.putInt("targetingOption", targetingOption.modeIndex);
-		tag.putBoolean("updateBombCount", updateBombCount);
+		tag.setInt("bombsRemaining", bombsRemaining);
+		tag.setInt("targetingOption", targetingOption.modeIndex);
+		tag.setBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
 
@@ -176,13 +177,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public void read(NBTTagCompound tag){
 		super.read(tag);
 
-		if (tag.contains("bombsRemaining"))
+		if (tag.contains("bombsRemaining", NBTUtils.NUMERIC))
 			bombsRemaining = tag.getInt("bombsRemaining");
 
-		if (tag.contains("targetingOption"))
+		if (tag.contains("targetingOption", NBTUtils.NUMERIC))
 			targetingOption = EnumIMSTargetingMode.values()[tag.getInt("targetingOption")];
 
-		if (tag.contains("updateBombCount"))
+		if (tag.contains("updateBombCount", NBTUtils.BOOLEAN))
 			updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
