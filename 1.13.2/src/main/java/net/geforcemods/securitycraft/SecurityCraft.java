@@ -70,7 +70,7 @@ public class SecurityCraft {
 		event.registerServerCommand(new CommandModule());
 	}
 
-	public void onFMLCommonSetup(FMLCommonSetupEvent event) //pre init
+	public void onFMLCommonSetup(FMLCommonSetupEvent event) //preInit
 	{
 		RegistrationHandler.registerPackets();
 	}
