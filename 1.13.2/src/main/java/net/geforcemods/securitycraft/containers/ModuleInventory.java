@@ -119,6 +119,11 @@ public class ModuleInventory implements IInventory {
 	}
 
 	@Override
+	public ITextComponent getCustomName() {
+		return getName();
+	}
+
+	@Override
 	public boolean hasCustomName() {
 		return true;
 	}

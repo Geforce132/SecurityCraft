@@ -23,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -65,6 +66,7 @@ public class SecurityCraft {
 		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
 	}
 
+	@SubscribeEvent
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandSC());
 		event.registerServerCommand(new CommandModule());
@@ -75,7 +77,7 @@ public class SecurityCraft {
 		RegistrationHandler.registerPackets();
 	}
 
-	@EventHandler
+	@SubscribeEvent
 	public void preInit(FMLPreInitializationEvent event){
 		log("Starting to load....");
 		log("Loading config file....");
@@ -89,7 +91,7 @@ public class SecurityCraft {
 		log("Regisering mod content... (PT 1/2)");
 	}
 
-	@EventHandler
+	@SubscribeEvent
 	public void init(InterModEnqueueEvent event){
 		log("Setting up inter-mod stuff...");
 

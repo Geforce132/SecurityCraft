@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
 
 /**
  * Vanilla code adapted to allow reinforced obsidian
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
  */
 public class PortalSize
 {
-	private final World world;
+	private final IWorld world;
 	private final EnumFacing.Axis axis;
 	private final EnumFacing rightDir;
 	private final EnumFacing leftDir;
@@ -24,7 +24,7 @@ public class PortalSize
 	private int height;
 	private int width;
 
-	public PortalSize(World world, BlockPos pos, EnumFacing.Axis axis)
+	public PortalSize(IWorld world, BlockPos pos, EnumFacing.Axis axis)
 	{
 		this.world = world;
 		this.axis = axis;

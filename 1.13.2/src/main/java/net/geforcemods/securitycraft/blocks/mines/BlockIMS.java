@@ -2,12 +2,14 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -36,7 +38,7 @@ public class BlockIMS extends BlockOwnable {
 	public static final PropertyInteger MINES = PropertyInteger.create("mines", 0, 4);
 
 	public BlockIMS(Material material) {
-		super(SoundType.METAL, material);
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 0.7F, 6000000.0F));
 	}
 
 	@Override

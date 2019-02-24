@@ -79,6 +79,6 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().provider.getDimension()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().getDimension().getType().getId()));
 	}
 }

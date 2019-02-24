@@ -144,6 +144,11 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
+	public ITextComponent getCustomName() {
+		return getName();
+	}
+
+	@Override
 	public int getField(int id) {
 		return 0;
 	}

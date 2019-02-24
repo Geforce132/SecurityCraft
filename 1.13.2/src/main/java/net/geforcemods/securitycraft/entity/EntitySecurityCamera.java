@@ -75,7 +75,7 @@ public class EntitySecurityCamera extends Entity{
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
-		playerViewingName = player.getName();
+		playerViewingName = player.getName().getString();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30F;
@@ -186,7 +186,7 @@ public class EntitySecurityCamera extends Entity{
 	@OnlyIn(Dist.CLIENT)
 	private void checkKeysPressed() {
 		if (Minecraft.getInstance().gameSettings.keyBindSneak.isPressed())
-			dismountRidingEntity();
+			stopRiding();
 
 		if(Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 			moveViewUp();
@@ -335,7 +335,8 @@ public class EntitySecurityCamera extends Entity{
 	public String getCameraInfo(){
 		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
 		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) posY + " Z: " + (int) Math.floor(posZ) + "\n";
-		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(getPassengers().get(0).getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[2]) : "";
+		String riderName = getPassengers().get(0).getName().getString();
+		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(riderName)) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[2]) : "";
 		return nowViewing + pos + viewingFrom;
 	}
 

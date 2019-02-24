@@ -179,13 +179,13 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					for(String character : new String[]{"(", ")"})
-						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getString().contains(character)) {
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getString()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName().getString()), TextFormatting.RED);
 						return;
 					}
 
@@ -651,10 +651,10 @@ public class SCEventHandler {
 							}
 						}
 
-					GlStateManager.enableAlpha();
+					GlStateManager.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
 					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
-					GlStateManager.disableAlpha();
+					GlStateManager.disableAlphaTest();
 				}
 			}
 		}
@@ -721,7 +721,7 @@ public class SCEventHandler {
 
 	private void handleOwnableTEs(PlaceEvent event) {
 		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
-			String name = event.getPlayer().getName();
+			String name = event.getPlayer().getName().getString();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
 			((IOwnable) event.getWorld().getTileEntity(event.getPos())).getOwner().set(uuid, name);
