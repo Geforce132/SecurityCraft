@@ -58,7 +58,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	public EntitySentry(World world, EntityPlayer owner)
 	{
-		this(world, new Owner(owner.getName().getString(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
+		this(world, new Owner(owner.getName().getFormattedText(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
 	}
 
 	public EntitySentry(World world, Owner owner)

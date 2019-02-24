@@ -179,13 +179,13 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					for(String character : new String[]{"(", ")"})
-						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getString().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getString()).replace("#c", character), TextFormatting.RED);
+						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText().contains(character)) {
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName().getString()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName().getFormattedText()), TextFormatting.RED);
 						return;
 					}
 
@@ -721,7 +721,7 @@ public class SCEventHandler {
 
 	private void handleOwnableTEs(PlaceEvent event) {
 		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
-			String name = event.getPlayer().getName().getString();
+			String name = event.getPlayer().getName().getFormattedText();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
 			((IOwnable) event.getWorld().getTileEntity(event.getPos())).getOwner().set(uuid, name);

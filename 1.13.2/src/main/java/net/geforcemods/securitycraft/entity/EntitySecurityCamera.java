@@ -75,7 +75,7 @@ public class EntitySecurityCamera extends Entity{
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
-		playerViewingName = player.getName().getString();
+		playerViewingName = player.getName().getFormattedText();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		rotationPitch = 30F;
@@ -335,7 +335,7 @@ public class EntitySecurityCamera extends Entity{
 	public String getCameraInfo(){
 		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
 		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) posY + " Z: " + (int) Math.floor(posZ) + "\n";
-		String riderName = getPassengers().get(0).getName().getString();
+		String riderName = getPassengers().get(0).getName().getFormattedText();
 		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(riderName)) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[2]) : "";
 		return nowViewing + pos + viewingFrom;
 	}
