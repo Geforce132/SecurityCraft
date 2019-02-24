@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
@@ -22,11 +23,11 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,12 +38,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockCageTrap(Material material) {
-		super(material);
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -58,11 +54,12 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
-			return null;
-		else
-			return blockState.getBoundingBox(world, pos);
+	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader world, BlockPos pos){
+		//		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+		//			return null;
+		//		else
+		//			return blockState.getBoundingBox(world, pos);
+		return Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
 	}
 
 	@Override
@@ -122,7 +119,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityCageTrap().intersectsEntities();
 	}
 

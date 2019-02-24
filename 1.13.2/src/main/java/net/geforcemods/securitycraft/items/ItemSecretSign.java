@@ -26,7 +26,7 @@ public class ItemSecretSign extends Item
 {
 	public ItemSecretSign()
 	{
-		super(new Item.Properties().maxStackSize(16).group(SecurityCraft.tabSCDecoration));
+		super(new Item.Properties().maxStackSize(16).group(SecurityCraft.groupSCDecoration));
 	}
 
 	@Override

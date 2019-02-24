@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
@@ -17,14 +19,18 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -33,17 +39,7 @@ public class BlockMine extends BlockExplosive {
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockMine(Material material) {
-		super(material);
-	}
-
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
+		super(SoundType.STONE, material);
 	}
 
 	/**
@@ -65,18 +61,18 @@ public class BlockMine extends BlockExplosive {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else
-			explode((World)world, pos);
+			explode(world, pos);
 	}
 
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
 		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(world, pos.down()) == Material.PLANTS)
 			return false;
 		else
@@ -84,32 +80,33 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!player.capabilities.isCreativeMode && !world.isRemote)
-			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
-				return super.removedByPlayer(state, world, pos, player, willHarvest);
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
+		if(!player.isCreative() && !world.isRemote)
+			if(player != null && player.isCreative() && !ConfigHandler.mineExplodesWhenInCreative)
+				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else{
 				explode(world, pos);
-				return super.removedByPlayer(state, world, pos, player, willHarvest);
+				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest);
+		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		float fifth = 0.2F;
-		float tenth = 0.1F;
-
-		return BlockUtils.fromBounds(0.5F - fifth, 0.0F, 0.5F - fifth, 0.5F + fifth, (tenth * 2.0F) / 2 + 0.1F, 0.5F + fifth);
+		//		float fifth = 0.2F;
+		//		float tenth = 0.1F;
+		//
+		//		return BlockUtils.fromBounds(0.5F - fifth, 0.0F, 0.5F - fifth, 0.5F + fifth, (tenth * 2.0F) / 2 + 0.1F, 0.5F + fifth);
+		return VoxelShapes.fullCube();
 	}
 
 	/**
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
+	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity){
 		if(world.isRemote)
 			return;
 		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
@@ -148,16 +145,16 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune){
-		return Item.getItemFromBlock(SCContent.mine);
+	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune){
+		return SCContent.mine.asItem();
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, IBlockState state){
+		return new ItemStack(SCContent.mine.asItem());
 	}
 
 	@Override
@@ -189,7 +186,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityOwnable();
 	}
 

@@ -26,7 +26,8 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -36,23 +37,12 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public static final PropertyBool OPEN = PropertyBool.create("open");
 
 	public BlockKeypadFurnace(Material material) {
-		super(material);
-		setSoundType(SoundType.METAL);
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
-	}
-
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
 	}
 
 	/**
@@ -79,7 +69,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
 		{
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
@@ -98,11 +88,11 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	public int getLightValue(IBlockState state, IWorldReader world, BlockPos pos)
 	{
 		TileEntity te = world.getTileEntity(pos);
 
-		return (state.getValue(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace)te).isBurning()) ? 15 : 0;
+		return (state.get(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace)te).isBurning()) ? 15 : 0;
 	}
 
 	@Override
@@ -136,7 +126,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityKeypadFurnace();
 	}
 
@@ -149,14 +139,14 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	public boolean convert(EntityPlayer player, World world, BlockPos pos)
 	{
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).get(FACING);
 		TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
-		NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
+		NBTTagCompound tag = furnace.write(new NBTTagCompound());
 
 		furnace.clear();
-		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
-		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
+		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().with(FACING, facing).with(OPEN, false));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
+		((TileEntityKeypadFurnace)world.getTileEntity(pos)).read(tag);
 		return true;
 	}
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 public class ItemUniversalKeyChanger extends Item {
 
 	public ItemUniversalKeyChanger() {
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 	}
 
 	@Override

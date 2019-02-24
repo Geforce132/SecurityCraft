@@ -1,31 +1,28 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
 
 public class BlockOwnable extends BlockContainer {
 
 	private EnumBlockRenderType renderType = EnumBlockRenderType.MODEL;
 
-	public BlockOwnable(Material material) {
-		super(material);
-
-		if(material == Material.GROUND)
-			setSoundType(SoundType.GROUND);
-		else if(material == Material.GLASS)
-			setSoundType(SoundType.GLASS);
-		else
-			setSoundType(SoundType.STONE);
+	public BlockOwnable(Block.Properties properties) {
+		this(SoundType.STONE, properties);
 	}
 
-	public BlockOwnable(Material material, EnumBlockRenderType renderType) {
-		this(material);
+	public BlockOwnable(SoundType soundType, Block.Properties properties) {
+		super(properties.sound(soundType));
+	}
+
+	public BlockOwnable(SoundType soundType, Block.Properties properties, EnumBlockRenderType renderType) {
+		this(soundType, properties);
 		this.renderType = renderType;
 	}
 
@@ -35,7 +32,7 @@ public class BlockOwnable extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityOwnable();
 	}
 }

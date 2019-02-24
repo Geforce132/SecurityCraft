@@ -13,13 +13,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider {
 
 	public BlockIronTrapDoor(Material material) {
-		super(material);
-		setSoundType(SoundType.METAL);
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -27,16 +27,16 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	{
 		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-		if(hasActiveSCBlock != state.getValue(OPEN))
+		if(hasActiveSCBlock != state.get(OPEN))
 		{
-			world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(world, pos))), 2);
+			world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(world, pos))), 2);
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			playSound((EntityPlayer)null, world, pos, hasActiveSCBlock);
 		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		return false;
 	}
 
@@ -56,7 +56,7 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityOwnable();
 	}
 }

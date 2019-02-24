@@ -16,6 +16,7 @@ public class BlockSecretSignStanding extends BlockSecretSign
 
 	public BlockSecretSignStanding()
 	{
+		super();
 		setDefaultState(blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
 	}
 
@@ -24,8 +25,8 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	{
 		if (!world.getBlockState(pos.down()).getMaterial().isSolid())
 		{
-			dropBlockAsItem(world, pos, state, 0);
-			world.setBlockToAir(pos);
+			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
+			world.removeBlock(pos);
 		}
 
 		super.neighborChanged(state, world, pos, block, fromPos);

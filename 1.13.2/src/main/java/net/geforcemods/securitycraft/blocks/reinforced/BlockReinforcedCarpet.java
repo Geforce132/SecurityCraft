@@ -3,28 +3,27 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
 {
-	public BlockReinforcedCarpet()
+	public BlockReinforcedCarpet(EnumDyeColor color)
 	{
-		super();
-		setSoundType(SoundType.CLOTH);
+		super(color, Block.Properties.create(Material.CLOTH).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.CLOTH));
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
+	public TileEntity createNewTileEntity(IBlockReader world)
 	{
 		return new TileEntityOwnable();
 	}
@@ -42,7 +41,7 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCarpet), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(asItem());
 	}
 
 	@Override

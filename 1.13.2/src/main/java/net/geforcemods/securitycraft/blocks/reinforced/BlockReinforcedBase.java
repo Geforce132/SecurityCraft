@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
 public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBlock
@@ -14,7 +15,12 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 
 	public BlockReinforcedBase(Material mat, int a, Block... vB)
 	{
-		super(mat);
+		this(SoundType.STONE, mat, a, vB);
+	}
+
+	public BlockReinforcedBase(SoundType soundType, Material mat, int a, Block... vB)
+	{
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F));
 
 		vanillaBlocks = Arrays.asList(vB);
 		amount = a;

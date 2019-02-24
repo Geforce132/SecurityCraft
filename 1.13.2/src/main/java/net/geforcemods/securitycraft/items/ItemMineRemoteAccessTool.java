@@ -35,7 +35,7 @@ public class ItemMineRemoteAccessTool extends Item {
 	public int listIndex = 0;
 
 	public ItemMineRemoteAccessTool() {
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 	}
 
 	@Override

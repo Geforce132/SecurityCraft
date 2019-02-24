@@ -24,7 +24,7 @@ public class ItemReinforcedDoor extends Item
 {
 	public ItemReinforcedDoor()
 	{
-		super(new Item.Properties().group(SecurityCraft.tabSCDecoration));
+		super(new Item.Properties().group(SecurityCraft.groupSCDecoration));
 	}
 
 	@Override

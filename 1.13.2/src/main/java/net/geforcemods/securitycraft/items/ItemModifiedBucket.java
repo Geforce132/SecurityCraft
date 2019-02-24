@@ -32,7 +32,7 @@ public class ItemModifiedBucket extends ItemBucket {
 	private Block containedBlock;
 
 	public ItemModifiedBucket(Block containedBlock) {
-		super(containedBlock, new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
+		super(containedBlock, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 		this.containedBlock = containedBlock;
 	}
 

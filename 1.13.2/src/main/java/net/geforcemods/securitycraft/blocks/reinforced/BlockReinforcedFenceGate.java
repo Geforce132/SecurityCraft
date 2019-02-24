@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -25,22 +24,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IIntersectable {
 
 	public BlockReinforcedFenceGate(){
-		super(BlockPlanks.EnumType.OAK);
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 18);
-		setSoundType(SoundType.METAL);
 	}
 
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		return false;
 	}
 
@@ -82,16 +81,16 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 			boolean isPoweredSCBlock = isSCBlock(block) && world.isBlockPowered(pos);
 
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
-				if (isPoweredSCBlock && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
-					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
+				if (isPoweredSCBlock && !state.get(OPEN).booleanValue() && !state.get(POWERED).booleanValue()) {
+					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(true)).with(POWERED, Boolean.valueOf(true)), 2);
 					world.playEvent((EntityPlayer)null, 1008, pos, 0);
 				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
-					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
+				else if (!isPoweredSCBlock && state.get(OPEN).booleanValue() && state.get(POWERED).booleanValue()) {
+					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(false)).with(POWERED, Boolean.valueOf(false)), 2);
 					world.playEvent((EntityPlayer)null, 1014, pos, 0);
 				}
-				else if (isPoweredSCBlock != state.getValue(POWERED).booleanValue())
-					world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
+				else if (isPoweredSCBlock != state.get(POWERED).booleanValue())
+					world.setBlockState(pos, state.with(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
 		}
 	}
 
@@ -108,7 +107,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 

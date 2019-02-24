@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.minecraft.block.Block;
@@ -10,12 +8,14 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,8 +24,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 {
 	public BlockScannerDoor(Material material)
 	{
-		super(material);
-		setSoundType(SoundType.METAL);
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -40,19 +39,18 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
-	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor)
+	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor)
 	{
-		World world = (World)access;
 		IBlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-		if(state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER)
+		if(state.get(HALF) == DoubleBlockHalf.UPPER)
 		{
 			BlockPos blockBelow = pos.down();
 			IBlockState stateBelow = world.getBlockState(blockBelow);
 
 			if(stateBelow.getBlock() != this)
-				world.setBlockToAir(pos);
+				world.removeBlock(pos);
 			else if (neighborBlock != this)
 				onNeighborChanged(world, blockBelow, neighbor);
 		}
@@ -64,22 +62,22 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 
 			if(stateBelow.getBlock() != this)
 			{
-				world.setBlockToAir(pos);
+				world.removeBlock(pos);
 				drop = true;
 			}
 
 			if(!world.isSideSolid(pos.down(), EnumFacing.UP))
 			{
-				world.setBlockToAir(pos);
+				world.removeBlock(pos);
 				drop = true;
 
 				if(stateBelow.getBlock() == this)
-					world.setBlockToAir(blockBelow);
+					world.removeBlock(blockBelow);
 			}
 
 			if(drop)
 				if(!world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
+					dropBlockAsItemWithChance(world, pos, state, 1.0F, 0);
 		}
 	}
 
@@ -102,19 +100,19 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
+	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
 	{
 		return new ItemStack(SCContent.scannerDoorItem);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune)
+	public IItemProvider getItemDropped(IBlockState state, World world, BlockPos pos, int fortune)
 	{
-		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : SCContent.scannerDoorItem;
+		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.scannerDoorItem;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
+	public TileEntity createNewTileEntity(IBlockReader world)
 	{
 		return new TileEntityScannerDoor().activatedByView();
 	}

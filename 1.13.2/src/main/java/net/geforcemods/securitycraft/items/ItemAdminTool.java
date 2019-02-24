@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 public class ItemAdminTool extends Item {
 
 	public ItemAdminTool() {
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

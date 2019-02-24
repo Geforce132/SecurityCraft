@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,12 +18,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
  * Simple TileEntity that SecurityCraft uses to easily create blocks like
@@ -43,7 +42,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	private boolean attacks = false;
 	private boolean canBeNamed = false;
 
-	private String customName = "name";
+	private ITextComponent customName = new TextComponentString("name");
 
 	private double attackRange = 0.0D;
 
@@ -109,7 +108,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 				Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().x * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().y * 5)), (entity.posZ + (entity.getLookVec().z * 5)));
 
 				RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
-				if(mop != null && mop.typeOfHit == Type.BLOCK)
+				if(mop != null && mop.type == Type.BLOCK)
 					if(mop.getBlockPos().getX() == getPos().getX() && mop.getBlockPos().getY() == getPos().getY() && mop.getBlockPos().getZ() == getPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
 							entityViewed(entity);
@@ -217,7 +216,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
 		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
-		tag.setString("customName", customName);
+		tag.putString("customName", customName.getFormattedText());
 		return tag;
 	}
 
@@ -251,12 +250,13 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			ticksBetweenAttacks = tag.getInt("ticksBetweenAttacks");
 
 		if (tag.contains("customName"))
-			customName = tag.getString("customName");
+			customName = new TextComponentString(tag.getString("customName"));
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
-		return (oldState.getBlock() != newState.getBlock());
+	public boolean shouldRenderInPass(int pass)
+	{
+		return super.shouldRenderInPass(pass);
 	}
 
 	@Override
@@ -272,8 +272,8 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	@Override
-	public void invalidate() {
-		super.invalidate();
+	public void remove() {
+		super.remove();
 
 		onTileEntityDestroyed();
 	}
@@ -292,7 +292,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		if(world.isRemote)
 			ClientUtils.syncTileEntity(this);
 		else
-			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
+			ServerLifecycleHooks.getCurrentServer().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
 	}
 
 	/**
@@ -429,12 +429,12 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	@Override
-	public String getCustomName() {
+	public ITextComponent getCustomName() {
 		return customName;
 	}
 
 	@Override
-	public void setCustomName(String customName) {
+	public void setCustomName(ITextComponent customName) {
 		this.customName = customName;
 		sync();
 	}

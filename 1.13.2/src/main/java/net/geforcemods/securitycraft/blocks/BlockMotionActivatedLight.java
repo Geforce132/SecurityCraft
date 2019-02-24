@@ -19,9 +19,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -31,14 +33,8 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public BlockMotionActivatedLight(Material material) {
-		super(material);
-		setSoundType(SoundType.GLASS);
+		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
 	}
 
 	@Override
@@ -57,33 +53,34 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
-		EnumFacing dir = state.getValue(FACING);
-		float px = 1.0F / 16.0F;
-
-		if(dir == EnumFacing.NORTH) {
-			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
-		}
-		else if(dir == EnumFacing.SOUTH) {
-			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
-		}
-		else if(dir == EnumFacing.EAST) {
-			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
-		}
-		else if(dir == EnumFacing.WEST) {
-			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
-		}
-
-		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
+	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos){
+		//		EnumFacing dir = state.getValue(FACING);
+		//		float px = 1.0F / 16.0F;
+		//
+		//		if(dir == EnumFacing.NORTH) {
+		//			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
+		//		}
+		//		else if(dir == EnumFacing.SOUTH) {
+		//			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
+		//		}
+		//		else if(dir == EnumFacing.EAST) {
+		//			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
+		//		}
+		//		else if(dir == EnumFacing.WEST) {
+		//			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
+		//		}
+		//
+		//		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public int getLightValue(IBlockState state, IWorldReader world, BlockPos pos) {
 		if(BlockUtils.getBlock(world, pos) != SCContent.motionActivatedLight)
 			return 0; //Weird if statement I had to include because Waila kept
 		//crashing if I looked at one of these lights then looked away quickly.
 
-		return world.getBlockState(pos).getValue(LIT).booleanValue() ? 15 : 0;
+		return world.getBlockState(pos).get(LIT) ? 15 : 0;
 	}
 
 	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
@@ -125,9 +122,9 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!canPlaceBlockOnSide(world, pos, state.getValue(FACING).getOpposite())) {
-			dropBlockAsItem(world, pos, state, 0);
-			world.setBlockToAir(pos);
+		if (!canPlaceBlockOnSide(world, pos, state.get(FACING).getOpposite())) {
+			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
+			world.removeBlock(pos);
 		}
 	}
 
@@ -166,7 +163,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityMotionLight().attacks(EntityPlayer.class, ConfigHandler.motionActivatedLightSearchRadius, 1);
 	}
 

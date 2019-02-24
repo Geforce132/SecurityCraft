@@ -29,7 +29,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 	 */
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		world.scheduleUpdate(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 	 */
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		world.scheduleUpdate(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
 	}
 
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
@@ -57,7 +57,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 				{
 					BlockPos blockpos;
 
-					world.setBlockToAir(pos);
+					world.removeBlock(pos);
 
 					for(blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
 
@@ -100,7 +100,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.spawnParticle(new BlockParticleData(Particles.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

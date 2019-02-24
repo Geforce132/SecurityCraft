@@ -49,9 +49,9 @@ public class SecurityCraft {
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 	private NBTTagCompound savedModule;
-	public static ItemGroup tabSCTechnical = new ItemGroupSCTechnical();
-	public static ItemGroup tabSCMine = new ItemGroupSCExplosives();
-	public static ItemGroup tabSCDecoration = new ItemGroupSCDecoration();
+	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
+	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
+	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
 
 	public SecurityCraft()
 	{

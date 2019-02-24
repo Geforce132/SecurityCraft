@@ -21,19 +21,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockLaserBlock extends BlockOwnable {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockLaserBlock(Material material) {
-		super(material);
-		setSoundType(SoundType.METAL);
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -44,15 +42,6 @@ public class BlockLaserBlock extends BlockOwnable {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
-	}
-
-	/**
-	 * Called whenever the block is added into the world. Args: world, pos
-	 */
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-	{
-		super.onBlockAdded(world, pos, state);
 	}
 
 	/**
@@ -68,7 +57,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 	public void setLaser(World world, BlockPos pos)
 	{
-		for(EnumFacing facing : EnumFacing.VALUES)
+		for(EnumFacing facing : EnumFacing.values())
 		{
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
@@ -88,7 +77,7 @@ public class BlockLaserBlock extends BlockOwnable {
 						offsetPos = pos.offset(facing, j);
 
 						if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
-							world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+							world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(BlockLaserField.BOUNDTYPE, boundType));
 					}
 				}
 			}
@@ -99,14 +88,14 @@ public class BlockLaserBlock extends BlockOwnable {
 	 * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
 	 */
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state) {
 		if(!world.isRemote)
 			destroyAdjacentLasers(world, pos);
 	}
 
 	public static void destroyAdjacentLasers(World world, BlockPos pos)
 	{
-		for(EnumFacing facing : EnumFacing.VALUES)
+		for(EnumFacing facing : EnumFacing.values())
 		{
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
@@ -122,7 +111,7 @@ public class BlockLaserBlock extends BlockOwnable {
 
 						IBlockState state = world.getBlockState(offsetPos);
 
-						if(state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
+						if(state.getBlock() == SCContent.laserField && state.get(BlockLaserField.BOUNDTYPE) == boundType)
 							world.destroyBlock(offsetPos, false);
 					}
 				}
@@ -141,8 +130,8 @@ public class BlockLaserBlock extends BlockOwnable {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+		if(blockState.get(POWERED))
 			return 15;
 		else
 			return 0;
@@ -153,8 +142,8 @@ public class BlockLaserBlock extends BlockOwnable {
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+	public int getStrongPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+		if(blockState.get(POWERED))
 			return 15;
 		else
 			return 0;
@@ -164,15 +153,14 @@ public class BlockLaserBlock extends BlockOwnable {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED).booleanValue())
+	public void tick(IBlockState state, World world, BlockPos pos, Random random){
+		if (!world.isRemote && state.get(POWERED))
 			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-		if((state.getValue(POWERED).booleanValue())){
+	public void randomTick(IBlockState state, World world, BlockPos pos, Random rand){
+		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -182,11 +170,11 @@ public class BlockLaserBlock extends BlockOwnable {
 			float f2 = Math.max(0.0F, 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 
 	}
@@ -210,7 +198,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityLaserBlock().linkable();
 	}
 

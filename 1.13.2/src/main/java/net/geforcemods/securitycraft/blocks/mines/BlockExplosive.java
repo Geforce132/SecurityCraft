@@ -1,9 +1,12 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,12 +18,12 @@ import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
-	public BlockExplosive(Material material) {
-		super(material);
+	public BlockExplosive(SoundType soundType, Material material) {
+		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 1F, 6000000.0F));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote){
 			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
 				explode(world, pos);

@@ -18,6 +18,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -26,8 +27,7 @@ public class BlockLogger extends BlockContainer {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockLogger(Material material) {
-		super(material);
-		setSoundType(SoundType.STONE);
+		super(Block.Properties.create(material).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class BlockLogger extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 			return true;
 		else{
@@ -84,7 +84,7 @@ public class BlockLogger extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityLogger().attacks(EntityPlayer.class, ConfigHandler.usernameLoggerSearchRadius, 80);
 	}
 }

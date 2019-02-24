@@ -4,6 +4,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 /**
@@ -23,5 +24,5 @@ public interface IIntersectable extends ITileEntityProvider {
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity);
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta);
+	public TileEntity createNewTileEntity(IBlockReader world);
 }

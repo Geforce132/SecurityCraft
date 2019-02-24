@@ -19,7 +19,7 @@ public class ItemSentry extends Item
 {
 	public ItemSentry()
 	{
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

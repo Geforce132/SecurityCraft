@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -11,7 +12,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -20,8 +21,7 @@ public class BlockFrame extends BlockOwnable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockFrame(Material material){
-		super(material);
-		setSoundType(SoundType.STONE);
+		super(SoundType.STONE, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -30,9 +30,9 @@ public class BlockFrame extends BlockOwnable {
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
+	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
 	{
-		return face == state.getValue(FACING) ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
+		return face == state.get(FACING) ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
 	}
 
 	@Override

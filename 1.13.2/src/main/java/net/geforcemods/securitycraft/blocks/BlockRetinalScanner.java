@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,7 +19,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -27,9 +28,8 @@ public class BlockRetinalScanner extends BlockContainer {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockRetinalScanner(Material par1) {
-		super(par1);
-		setSoundType(SoundType.METAL);
+	public BlockRetinalScanner(Material material) {
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -46,18 +46,18 @@ public class BlockRetinalScanner extends BlockContainer {
 		IBlockState south = world.getBlockState(pos.south());
 		IBlockState west = world.getBlockState(pos.west());
 		IBlockState east = world.getBlockState(pos.east());
-		EnumFacing facing = state.getValue(FACING);
+		EnumFacing facing = state.get(FACING);
 
-		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+		if (facing == EnumFacing.NORTH && north.isFullCube() && !south.isFullCube())
 			facing = EnumFacing.SOUTH;
-		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+		else if (facing == EnumFacing.SOUTH && south.isFullCube() && !north.isFullCube())
 			facing = EnumFacing.NORTH;
-		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+		else if (facing == EnumFacing.WEST && west.isFullCube() && !east.isFullCube())
 			facing = EnumFacing.EAST;
-		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+		else if (facing == EnumFacing.EAST && east.isFullCube() && !west.isFullCube())
 			facing = EnumFacing.WEST;
 
-		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
+		world.setBlockState(pos, state.with(FACING, facing), 2);
 
 	}
 
@@ -65,8 +65,8 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED).booleanValue())
+	public void tick(IBlockState state, World world, BlockPos pos, Random random){
+		if (!world.isRemote && state.get(POWERED).booleanValue())
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}
 
@@ -85,9 +85,9 @@ public class BlockRetinalScanner extends BlockContainer {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.get(POWERED))
 			return 15;
 		else
 			return 0;
@@ -124,7 +124,7 @@ public class BlockRetinalScanner extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityRetinalScanner().activatedByView();
 	}
 

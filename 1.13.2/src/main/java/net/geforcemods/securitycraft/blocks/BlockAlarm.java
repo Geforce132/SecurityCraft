@@ -11,20 +11,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockAlarm extends BlockOwnable {
 
@@ -32,22 +31,10 @@ public class BlockAlarm extends BlockOwnable {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
 	public BlockAlarm(Material material, boolean isLit) {
-		super(material);
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().lightValue(isLit ? 0 : 15));
 
 		this.isLit = isLit;
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-
-		if(isLit)
-			setLightLevel(1.0F);
-	}
-
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
 	}
 
 	@Override
@@ -72,16 +59,16 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!canPlaceBlockOnSide(world, pos, state.getValue(FACING))) {
+		if (!canPlaceBlockOnSide(world, pos, state.get(FACING))) {
 			dropBlockAsItem(world, pos, state, 0);
-			world.setBlockToAir(pos);
+			world.removeBlock(pos);
 		}
 	}
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
-		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().with(FACING, facing) : getDefaultState().with(FACING, EnumFacing.DOWN);
 	}
 
 	/**
@@ -92,7 +79,7 @@ public class BlockAlarm extends BlockOwnable {
 		if(world.isRemote)
 			return;
 		else
-			world.scheduleUpdate(pos, state.getBlock(), 1);
+			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 1);
 	}
 
 	/**
@@ -126,32 +113,32 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		float threePx = 0.1875F;
-		float ySideMin = 0.5F - threePx; //bottom of the alarm when placed on a block side
-		float ySideMax = 0.5F + threePx; //top of the alarm when placed on a block side
-		float hSideMin = 0.5F - threePx; //the left start for s/w and right start for n/e
-		float hSideMax = 0.5F + threePx; //the left start for n/e and right start for s/w
-		float px = 1.0F / 16.0F; //one sixteenth of a block
-		EnumFacing facing = state.getValue(FACING);
+		//		float threePx = 0.1875F;
+		//		float ySideMin = 0.5F - threePx; //bottom of the alarm when placed on a block side
+		//		float ySideMax = 0.5F + threePx; //top of the alarm when placed on a block side
+		//		float hSideMin = 0.5F - threePx; //the left start for s/w and right start for n/e
+		//		float hSideMax = 0.5F + threePx; //the left start for n/e and right start for s/w
+		//		float px = 1.0F / 16.0F; //one sixteenth of a block
+		//		EnumFacing facing = state.getValue(FACING);
+		//
+		//		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()]){
+		//			case 1: //east
+		//				return new AxisAlignedBB(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
+		//			case 2: //west
+		//				return new AxisAlignedBB(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
+		//			case 3: //north
+		//				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
+		//			case 4: //south
+		//				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
+		//			case 5: //up
+		//				return new AxisAlignedBB(0.5F - threePx - px, 0F, 0.5F - threePx - px, 0.5F + threePx + px, 0.5F, 0.5F + threePx + px);
+		//			case 6: //down
+		//				return new AxisAlignedBB(0.5F - threePx - px, 0.5F, 0.5F - threePx - px, 0.5F + threePx + px, 1.0F, 0.5F + threePx + px);
+		//		}
 
-		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()]){
-			case 1: //east
-				return new AxisAlignedBB(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
-			case 2: //west
-				return new AxisAlignedBB(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
-			case 3: //north
-				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
-			case 4: //south
-				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
-			case 5: //up
-				return new AxisAlignedBB(0.5F - threePx - px, 0F, 0.5F - threePx - px, 0.5F + threePx + px, 0.5F, 0.5F + threePx + px);
-			case 6: //down
-				return new AxisAlignedBB(0.5F - threePx - px, 0.5F, 0.5F - threePx - px, 0.5F + threePx + px, 1.0F, 0.5F + threePx + px);
-		}
-
-		return state.getBoundingBox(source, pos);
+		return Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
 	}
 
 	private void playSoundAndUpdate(World world, BlockPos pos){
@@ -183,15 +170,16 @@ public class BlockAlarm extends BlockOwnable {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.alarm));
+	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
+	{
+		return new ItemStack(SCContent.alarm.asItem());
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
-		return Item.getItemFromBlock(SCContent.alarm);
+	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune)
+	{
+		return SCContent.alarm.asItem();
 	}
 
 	@Override
@@ -256,7 +244,7 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta){
+	public TileEntity createNewTileEntity(IBlockReader reader){
 		return new TileEntityAlarm();
 	}
 

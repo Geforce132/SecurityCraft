@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class ItemKeyPanel extends Item {
 
 	public ItemKeyPanel(){
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

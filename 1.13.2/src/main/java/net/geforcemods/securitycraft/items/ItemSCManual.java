@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class ItemSCManual extends Item {
 
 	public ItemSCManual(){
-		super(new Item.Properties().maxStackSize(1).group(SecurityCraft.tabSCTechnical));
+		super(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

@@ -10,7 +10,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -24,35 +26,37 @@ public class BlockSecretSignWall extends BlockSecretSign
 
 	public BlockSecretSignWall()
 	{
+		super();
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		switch (state.getValue(FACING))
-		{
-			case NORTH:
-			default:
-				return SIGN_NORTH_AABB;
-			case SOUTH:
-				return SIGN_SOUTH_AABB;
-			case WEST:
-				return SIGN_WEST_AABB;
-			case EAST:
-				return SIGN_EAST_AABB;
-		}
+		//		switch (state.getValue(FACING))
+		//		{
+		//			case NORTH:
+		//			default:
+		//				return SIGN_NORTH_AABB;
+		//			case SOUTH:
+		//				return SIGN_SOUTH_AABB;
+		//			case WEST:
+		//				return SIGN_WEST_AABB;
+		//			case EAST:
+		//				return SIGN_EAST_AABB;
+		//		}
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		EnumFacing facing = state.getValue(FACING);
+		EnumFacing facing = state.get(FACING);
 
 		if (!world.getBlockState(pos.offset(facing.getOpposite())).getMaterial().isSolid())
 		{
-			dropBlockAsItem(world, pos, state, 0);
-			world.setBlockToAir(pos);
+			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
+			world.removeBlock(pos);
 		}
 
 		super.neighborChanged(state, world, pos, block, fromPos);

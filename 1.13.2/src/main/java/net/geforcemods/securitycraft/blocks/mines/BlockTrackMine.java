@@ -4,32 +4,34 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider {
 
 	public BlockTrackMine() {
-		super();
-		setSoundType(SoundType.METAL);
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
 	}
 
 	@Override
-	public void onMinecartPass(World world, EntityMinecart cart, BlockPos pos){
+	public void onMinecartPass(IBlockState state, World world, BlockPos pos, EntityMinecart cart){
 		TileEntity te = world.getTileEntity(pos);
 
 		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
 		{
 			BlockUtils.destroyBlock(world, pos, false);
 			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
-			cart.setDead();
+			cart.remove();
 		}
 	}
 
@@ -82,7 +84,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityTrackMine();
 	}
 

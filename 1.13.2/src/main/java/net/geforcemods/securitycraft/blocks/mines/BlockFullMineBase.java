@@ -15,10 +15,12 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 public class BlockFullMineBase extends BlockExplosive implements IIntersectable, ICustomWailaDisplay {
@@ -26,15 +28,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	private final Block blockDisguisedAs;
 
 	public BlockFullMineBase(Material material, Block disguisedBlock) {
-		super(material);
+		super(material == Material.SAND ? SoundType.SAND : (material == Material.GROUND ? SoundType.GROUND : SoundType.STONE), material);
 		blockDisguisedAs = disguisedBlock;
-
-		if(material == Material.SAND)
-			setSoundType(SoundType.SAND);
-		else if(material == Material.GROUND)
-			setSoundType(SoundType.GROUND);
-		else
-			setSoundType(SoundType.STONE);
 	}
 
 	@Override
@@ -43,8 +38,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos){
-		return null;
+	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader access, BlockPos pos){
+		return VoxelShapes.empty();
 	}
 
 	@Override
@@ -70,7 +65,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state){
+	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state){
 		if (!world.isRemote)
 			explode(world, pos);
 	}
@@ -115,7 +110,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityOwnable().intersectsEntities();
 	}
 

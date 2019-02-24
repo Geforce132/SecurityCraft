@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -27,7 +28,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -39,8 +40,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockKeycardReader(Material material) {
-		super(material);
-		setSoundType(SoundType.METAL);
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
@@ -59,18 +59,18 @@ public class BlockKeycardReader extends BlockOwnable  {
 		IBlockState south = world.getBlockState(pos.south());
 		IBlockState west = world.getBlockState(pos.west());
 		IBlockState east = world.getBlockState(pos.east());
-		EnumFacing facing = state.getValue(FACING);
+		EnumFacing facing = state.get(FACING);
 
-		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+		if (facing == EnumFacing.NORTH && north.isFullCube() && !south.isFullCube())
 			facing = EnumFacing.SOUTH;
-		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+		else if (facing == EnumFacing.SOUTH && south.isFullCube() && !north.isFullCube())
 			facing = EnumFacing.NORTH;
-		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+		else if (facing == EnumFacing.WEST && west.isFullCube() && !east.isFullCube())
 			facing = EnumFacing.EAST;
-		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+		else if (facing == EnumFacing.EAST && east.isFullCube() && !west.isFullCube())
 			facing = EnumFacing.WEST;
 
-		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
+		world.setBlockState(pos, state.with(FACING, facing), 2);
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
@@ -83,10 +83,10 @@ public class BlockKeycardReader extends BlockOwnable  {
 			securityLevel = Integer.parseInt(((TileEntityKeycardReader)world.getTileEntity(pos)).getPassword());
 
 		if((!((TileEntityKeycardReader)world.getTileEntity(pos)).doesRequireExactKeycard() && securityLevel <= ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack) || ((TileEntityKeycardReader)world.getTileEntity(pos)).doesRequireExactKeycard() && securityLevel == ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack))){
-			if(((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack) == 6 && stack.getTagCompound() != null && !player.capabilities.isCreativeMode){
-				stack.getTagCompound().setInteger("Uses", stack.getTagCompound().getInteger("Uses") - 1);
+			if(((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack) == 6 && stack.getTag() != null && !player.isCreative()){
+				stack.getTag().putInt("Uses", stack.getTag().getInt("Uses") - 1);
 
-				if(stack.getTagCompound().getInteger("Uses") <= 0)
+				if(stack.getTag().getInt("Uses") <= 0)
 					stack.shrink(1);
 			}
 
@@ -103,7 +103,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) world.getTileEntity(pos)).openPasswordGUI(player);
 		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)
@@ -116,15 +116,15 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 	public static void activate(World world, BlockPos pos){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
-		world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
-		world.scheduleUpdate(pos, SCContent.keycardReader, 60);
+		world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
+		world.getPendingBlockTicks().scheduleTick(pos, SCContent.keycardReader, 60);
 	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
-			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
+			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
 		}
 	}
 
@@ -133,8 +133,8 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-		if((state.getValue(POWERED))){
+	public void randomTick(IBlockState state, World world, BlockPos pos, Random rand){
+		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -144,11 +144,11 @@ public class BlockKeycardReader extends BlockOwnable  {
 			float f2 = Math.max(0.0F, 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -158,9 +158,9 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if((blockState.getValue(POWERED)))
+		if((blockState.get(POWERED)))
 			return 15;
 		else
 			return 0;
@@ -206,7 +206,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityKeycardReader();
 	}
 

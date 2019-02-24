@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,8 +15,10 @@ import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.Vo
+import net.minecraft.world.IBlockReader;xelShapes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
@@ -25,16 +28,7 @@ public class BlockPortableRadar extends BlockContainer {
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public BlockPortableRadar(Material material) {
-		super(material);
-	}
-
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	/**
@@ -51,16 +45,17 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
+		//		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
+		return VoxelShapes.fullCube();
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {
-		if(par5 && !world.getBlockState(pos).getValue(POWERED).booleanValue()){
+		if(par5 && !world.getBlockState(pos).get(POWERED)){
 			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
 			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
-		}else if(!par5 && world.getBlockState(pos).getValue(POWERED).booleanValue()){
+		}else if(!par5 && world.getBlockState(pos).get(POWERED)){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
 			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
 		}
@@ -73,8 +68,8 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+		if(blockState.get(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -99,7 +94,7 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityPortableRadar().attacks(EntityPlayer.class, ConfigHandler.portableRadarSearchRadius, ConfigHandler.portableRadarDelay).nameable();
 	}
 

@@ -25,7 +25,7 @@ public class ItemUniversalOwnerChanger extends Item
 {
 	public ItemUniversalOwnerChanger()
 	{
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1).defaultMaxDamage(48));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1).defaultMaxDamage(48));
 	}
 
 	@Override

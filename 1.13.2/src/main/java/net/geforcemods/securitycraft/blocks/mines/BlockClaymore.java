@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -12,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.init.Items;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
@@ -20,6 +23,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,13 +39,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockClaymore(Material material) {
-		super(material);
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
+		super(Block.Properties.create(material).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 1F, 6000000.0F));
 	}
 
 	/**
@@ -61,31 +63,25 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos)
+	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader access, BlockPos pos)
 	{
-		return null;
+		return VoxelShapes.empty();
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos)
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos)
 	{
 		return world.getBlockState(pos.down()).getBlock().isSideSolid(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
 			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, true));
 				return true;
 			}else if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, false));
 				return true;
 			}
 
@@ -93,20 +89,20 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
+		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(BlockClaymore.DEACTIVATED))
 		{
 			BlockUtils.destroyBlock(world, pos, false);
 			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 
-		return super.removedByPlayer(state, world, pos, player, willHarvest);
+		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 	}
 
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).get(BlockClaymore.DEACTIVATED))
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -143,16 +139,17 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
-			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-			return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
-			return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
-		else
-			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
+		//		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+		//			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
+		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+		//			return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
+		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+		//			return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
+		//		else
+		//			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
@@ -181,7 +178,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).get(DEACTIVATED);
 	}
 
 	@Override
@@ -190,7 +187,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityClaymore();
 	}
 }

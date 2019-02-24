@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+//TODO: redo
 public class BlockKeypadChest extends BlockChest implements IPasswordConvertible {
 
 	public BlockKeypadChest(){

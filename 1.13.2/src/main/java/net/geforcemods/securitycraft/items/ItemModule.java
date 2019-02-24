@@ -42,7 +42,7 @@ public class ItemModule extends Item{
 	}
 
 	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
-		super(new Item.Properties().group(SecurityCraft.tabSCTechnical).maxStackSize(1));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
 		this.canBeCustomized = canBeCustomized;

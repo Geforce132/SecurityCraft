@@ -13,24 +13,21 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedIronBars(Material material, boolean par2) {
-		super(material, par2);
-		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 16);
+	public BlockReinforcedIronBars(Material material) {
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+	public void tick(IBlockState state, World world, BlockPos pos, Random random) {
 		BlockUtils.setBlock(world, pos, Blocks.IRON_BARS);
 	}
 
@@ -48,22 +45,20 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(this));
+	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state){
+		return new ItemStack(asItem());
 	}
 
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public Item getItemDropped(IBlockState state, Random random, int par3){
-		return Item.getItemFromBlock(this);
+	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune){
+		return asItem();
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityOwnable();
 	}
 

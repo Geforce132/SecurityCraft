@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -24,27 +25,29 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.loading.FMLLoader;
 
 public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockInventoryScannerField(Material material) {
-		super(material);
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
+	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return null;
+		return VoxelShapes.empty();
 	}
 
 	@Override
@@ -52,16 +55,6 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
-	}
-
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-	 */
-	@Override
-	public boolean isOpaqueCube(IBlockState state)
-	{
-		return false;
 	}
 
 	/**
@@ -77,12 +70,6 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	public boolean isFullCube(IBlockState state)
 	{
 		return false;
-	}
-
-	@Override
-	public boolean isPassable(IBlockAccess world, BlockPos pos)
-	{
-		return true;
 	}
 
 	@Override
@@ -175,7 +162,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				if(te.hasModule(EnumCustomModules.STORAGE))
 					te.addItemToStorage(entity.getItem());
 
-				entity.setDead();
+				entity.remove();
 			}
 		}
 	}
@@ -189,7 +176,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		te.setCooldown(60);
 		checkAndUpdateTEAppropriately(te);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
-		SecurityCraft.log("Emitting redstone on the " + FMLCommonHandler.instance().getEffectiveSide() + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
+		SecurityCraft.log("Emitting redstone on the " + FMLLoader.getDist() + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
 	}
 
 	/**
@@ -214,16 +201,16 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 		te.setShouldProvidePower(true);
 		te.setCooldown(60);
-		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockType(), 1, true);
+		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getBlockState().getBlock(), 1, true);
 		connectedScanner.setShouldProvidePower(true);
 		connectedScanner.setCooldown(60);
-		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.getPos(), connectedScanner.getBlockType(), 1, true);
+		BlockUtils.updateAndNotify(connectedScanner.getWorld(), connectedScanner.getPos(), connectedScanner.getBlockState().getBlock(), 1, true);
 	}
 
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state)
 	{
-		if(!world.isRemote)
+		if(!world.isRemote())
 		{
 			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
 			{
@@ -280,13 +267,14 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
-			return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-			return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
-		return state.getBoundingBox(source, pos);
+		//		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
+		//			return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
+		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+		//			return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
+		//		return state.getBoundingBox(source, pos);
+		return VoxelShapes.fullCube();
 	}
 
 	@Override
@@ -315,13 +303,13 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
+	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 

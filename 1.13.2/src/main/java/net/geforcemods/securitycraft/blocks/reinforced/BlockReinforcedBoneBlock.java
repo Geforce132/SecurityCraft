@@ -5,7 +5,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.EnumFacing;
@@ -109,9 +108,10 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 		return new BlockStateContainer(this, new IProperty[] {AXIS});
 	}
 
+	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state)
 	{
-		return new ItemStack(Item.getItemFromBlock(this));
+		return new ItemStack(asItem());
 	}
 
 	/**

@@ -31,7 +31,7 @@ public class ItemTaser extends Item {
 	@Override
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
 	{
-		if(group == SecurityCraft.tabSCTechnical && powered)
+		if(group == SecurityCraft.groupSCTechnical && powered)
 			items.add(new ItemStack(this));
 	}
 
