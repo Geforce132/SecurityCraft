@@ -74,7 +74,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 				}
 				else if (isChristmas)
 					bindTexture(christmasNormal);
-				else if(te.lidAngle >= 0.9)
+				else if(te.getLidAngle(partialTicks) >= 0.9)
 					bindTexture(normalSingleActive);
 				else
 					bindTexture(normalSingleUnactive);
@@ -94,7 +94,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 				}
 				else if (isChristmas)
 					bindTexture(christmasDouble);
-				else if(te.lidAngle >= 0.9)
+				else if(te.getLidAngle(partialTicks) >= 0.9)
 					bindTexture(normalDoubleActive);
 				else
 					bindTexture(normalDoubleUnactive);
@@ -131,7 +131,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 
 			GlStateManager.rotatef(rotation, 0.0F, 1.0F, 0.0F);
 			GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
-			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+			float angle = te.prevLidAngle + (te.getLidAngle(partialTicks) - te.prevLidAngle) * partialTicks;
 			float adjacentAngle;
 
 			if (te.adjacentChestZNeg != null)

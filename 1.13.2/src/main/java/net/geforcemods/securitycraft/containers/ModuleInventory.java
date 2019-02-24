@@ -72,7 +72,7 @@ public class ModuleInventory implements IInventory {
 				items.add(item);
 			}
 
-		tag.putTag("ItemInventory", items);
+		tag.put("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 

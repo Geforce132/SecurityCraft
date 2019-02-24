@@ -51,7 +51,7 @@ public class ItemCameraMonitor extends Item {
 				if(player.inventory.getCurrentItem().getTag() == null)
 					player.inventory.getCurrentItem().setTag(new NBTTagCompound());
 
-				CameraView view = new CameraView(pos, player.dimension);
+				CameraView view = new CameraView(pos, player.dimension.getId());
 
 				if(isCameraAdded(player.inventory.getCurrentItem().getTag(), view)){
 					player.inventory.getCurrentItem().getTag().remove(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
