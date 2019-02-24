@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
-import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
+import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -117,7 +117,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 			tempOption.toggle();
 			button.packedFGColor = tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
 			button.displayString = getOptionButtonTitle(tempOption);
-			SecurityCraft.network.sendToServer(new PacketSToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
+			SecurityCraft.channel.sendToServer(new ToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
 		}
 	}
 

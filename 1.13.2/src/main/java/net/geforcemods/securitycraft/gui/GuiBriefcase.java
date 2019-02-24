@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
+import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -139,11 +139,11 @@ public class GuiBriefcase extends GuiContainer {
 				break;
 			case 8:
 				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTagCompound();
+					NBTTagCompound nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ));
+						SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ));
 				}
 
 				break;

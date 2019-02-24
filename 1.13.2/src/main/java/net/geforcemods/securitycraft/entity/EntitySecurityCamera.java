@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
-import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
-import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.server.GivePotionEffect;
+import net.geforcemods.securitycraft.network.server.SetBlock;
+import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -31,6 +31,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class EntitySecurityCamera extends Entity{
 
@@ -172,7 +173,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.network.sendToServer(new PacketGivePotionEffect(Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("night_vision")), 3, -1));
+				SecurityCraft.channel.sendToServer(new GivePotionEffect(Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("night_vision")), 3, -1));
 		}
 
 		if(!world.isRemote)
@@ -321,9 +322,9 @@ public class EntitySecurityCamera extends Entity{
 
 		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
+				SecurityCraft.channel.sendToServer(new SetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
 			else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
+				SecurityCraft.channel.sendToServer(new SetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
 	}
 
 	public void enableNightVision() {
@@ -344,7 +345,7 @@ public class EntitySecurityCamera extends Entity{
 
 	@OnlyIn(Dist.CLIENT)
 	private void updateServerRotation(){
-		SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
+		SecurityCraft.channel.sendToServer(new SetCameraRotation(rotationYaw, rotationPitch));
 	}
 
 	private boolean isCameraDown()
@@ -359,7 +360,7 @@ public class EntitySecurityCamera extends Entity{
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
 			EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
 			player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
-			SecurityCraft.network.sendTo(new PacketCSetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch), (EntityPlayerMP) player);
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new SetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch));
 		}
 	}
 

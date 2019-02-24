@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
+import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -35,6 +35,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
@@ -208,7 +209,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		{
 			animateUpwards = getMode() == EnumSentryMode.CAMOUFLAGE && target != null;
 			animate = true;
-			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), animate, animateUpwards));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), animate, animateUpwards));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();

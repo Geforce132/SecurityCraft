@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
-import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
+import net.geforcemods.securitycraft.network.server.MountCamera;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -157,7 +157,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.securityCamera) {
 				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation())).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
-				SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
+				SecurityCraft.channel.sendToServer(new MountCamera(view.x, view.y, view.z, camID));
 				Minecraft.getInstance().player.closeScreen();
 			}
 			else
@@ -167,7 +167,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		{
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
-			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
+			SecurityCraft.channel.sendToServer(new RemoveCameraTag(playerInventory.getCurrentItem(), camID));
 			nbtTag.remove(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;

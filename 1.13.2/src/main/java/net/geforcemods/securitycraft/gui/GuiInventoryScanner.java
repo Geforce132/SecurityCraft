@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.network.packets.PacketSetISType;
+import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.java.games.input.Keyboard;
@@ -100,8 +100,8 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	private void saveType(String type){
-		tileEntity.setType(type);
-		SecurityCraft.network.sendToServer(new PacketSetISType(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), type));
+		tileEntity.setScanType(type);
+		SecurityCraft.channel.sendToServer(new SetScanType(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), type));
 
 	}
 

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -29,6 +29,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ItemMineRemoteAccessTool extends Item {
 
@@ -77,7 +78,7 @@ public class ItemMineRemoteAccessTool extends Item {
 						stack.setTag(new NBTTagCompound());
 
 					stack.getTag().putIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTag(stack));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos, player);
@@ -121,7 +122,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTag(stack));
 					return;
 				}
 			}

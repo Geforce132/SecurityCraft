@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -89,6 +89,6 @@ public class TileEntityOwnable extends TileEntitySCTE implements IOwnable {
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.network.sendToServer(new PacketCRequestTEOwnableUpdate(this));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(this));
 	}
 }

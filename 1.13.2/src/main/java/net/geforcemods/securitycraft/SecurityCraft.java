@@ -21,19 +21,21 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 @Mod(SecurityCraft.MODID)
 public class SecurityCraft {
@@ -44,7 +46,8 @@ public class SecurityCraft {
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static ServerProxy serverProxy;
 	public static SecurityCraft instance;
-	public static SimpleNetworkWrapper network;
+	public static final String PROTOCOL_VERSION = "1.0";
+	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	private GuiHandler guiHandler = new GuiHandler();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
@@ -56,7 +59,8 @@ public class SecurityCraft {
 	public SecurityCraft()
 	{
 		instance = this;
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModProcess);
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
 	}
@@ -66,15 +70,16 @@ public class SecurityCraft {
 		event.registerServerCommand(new CommandModule());
 	}
 
+	public void onFMLCommonSetup(FMLCommonSetupEvent event) //pre init
+	{
+		RegistrationHandler.registerPackets();
+	}
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		log("Starting to load....");
 		log("Loading config file....");
 		log("Config file loaded.");
-		log("Setting up network....");
-		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
-		RegistrationHandler.registerPackets(SecurityCraft.network);
-		log("Network setup.");
 
 		log("Loading mod content....");
 		SetupHandler.setupBlocks();
@@ -100,7 +105,7 @@ public class SecurityCraft {
 		serverProxy.registerRenderThings();
 	}
 
-	public void postInit(InterModProcessEvent event){
+	public void onInterModProcess(InterModProcessEvent event){ //postInit
 		DataSerializers.registerSerializer(Owner.SERIALIZER);
 
 		for(Field field : SCContent.class.getFields())

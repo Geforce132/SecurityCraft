@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.network.server.SetBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -44,7 +44,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName() : ClientUtils.localize(ClientUtils.localize("gui.securitycraft:protectedFurnace.name"), new Object[0]));
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName().getFormattedText() : ClientUtils.localize(ClientUtils.localize("gui.securitycraft:protectedFurnace.name"), new Object[0]));
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
@@ -71,7 +71,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		SecurityCraft.network.sendToServer(new PacketSetBlock(tileFurnace.getPos().getX(), tileFurnace.getPos().getY(), tileFurnace.getPos().getZ(), "securitycraft:keypad_furnace", mc.world.getBlockState(tileFurnace.getPos()).getBlock().getMetaFromState(mc.world.getBlockState(tileFurnace.getPos())) - 6));
+		SecurityCraft.channel.sendToServer(new SetBlock(tileFurnace.getPos().getX(), tileFurnace.getPos().getY(), tileFurnace.getPos().getZ(), "securitycraft:keypad_furnace", mc.world.getBlockState(tileFurnace.getPos()).getBlock().getMetaFromState(mc.world.getBlockState(tileFurnace.getPos())) - 6));
 	}
 
 }

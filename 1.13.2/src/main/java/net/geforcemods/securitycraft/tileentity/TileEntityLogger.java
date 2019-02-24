@@ -6,12 +6,13 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityLogger extends TileEntityOwnable {
 
@@ -94,7 +95,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public void sendChangeToClient(){
 		for(int i = 0; i < players.length; i++)
 			if(players[i] != null)
-				SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
 	}
 
 }

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
+import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.java.games.input.Keyboard;
@@ -196,6 +196,6 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	public void checkCode(String code) {
-		SecurityCraft.network.sendToServer(new PacketSCheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), code));
+		SecurityCraft.channel.sendToServer(new CheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), code));
 	}
 }

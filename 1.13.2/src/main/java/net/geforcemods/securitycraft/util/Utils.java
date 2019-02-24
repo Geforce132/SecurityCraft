@@ -31,6 +31,6 @@ public class Utils {
 			return;
 
 		connectedScanner.setContents(contents);
-		connectedScanner.setType(type);
+		connectedScanner.setScanType(type);
 	}
 }

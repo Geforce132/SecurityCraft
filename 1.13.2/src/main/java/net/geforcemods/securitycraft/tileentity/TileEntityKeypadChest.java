@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -175,6 +175,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.network.sendToServer(new PacketCRequestTEOwnableUpdate(pos, world.provider.getDimension()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos, world.provider.getDimension()));
 	}
 }

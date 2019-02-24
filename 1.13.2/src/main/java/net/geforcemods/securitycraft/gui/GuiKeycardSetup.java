@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
+import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -95,7 +95,7 @@ public class GuiKeycardSetup extends GuiContainer{
 		keypadInventory.setPassword(String.valueOf(lvlOfSecurity));
 		keypadInventory.setRequiresExactKeycard(requiresExactCard);
 
-		SecurityCraft.network.sendToServer(new PacketSetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), lvlOfSecurity, requiresExactCard));
+		SecurityCraft.channel.sendToServer(new SetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), lvlOfSecurity, requiresExactCard));
 
 		Minecraft.getInstance().player.closeScreen();
 	}

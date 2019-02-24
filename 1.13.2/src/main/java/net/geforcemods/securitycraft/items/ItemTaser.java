@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +17,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ItemTaser extends Item {
 
@@ -73,7 +74,7 @@ public class ItemTaser extends Item {
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.spawnEntity(new EntityTaserBullet(world, player, powered)));
-				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
 				if(!player.isCreative())
 				{

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityIMS extends CustomizableSCTE {
 
@@ -85,7 +86,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(world.isRemote)
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
 
 				bombsRemaining--;
 				launchedMine = true;
@@ -111,7 +112,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(world.isRemote)
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
 
 				bombsRemaining--;
 				updateBombCount = true;

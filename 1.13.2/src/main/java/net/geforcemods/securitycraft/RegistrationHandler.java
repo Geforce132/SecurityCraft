@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 
-import javafx.geometry.Side;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -27,30 +26,26 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
-import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
-import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
-import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
-import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
-import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
-import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
-import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
-import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
-import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
-import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
-import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
-import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateTEOwnable;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
-import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
-import net.geforcemods.securitycraft.network.packets.PacketSetISType;
-import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
-import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
+import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.client.UpdateLogger;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
+import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.GivePotionEffect;
+import net.geforcemods.securitycraft.network.server.MountCamera;
+import net.geforcemods.securitycraft.network.server.OpenGui;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
+import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.network.server.SetBlock;
+import net.geforcemods.securitycraft.network.server.SetCameraRotation;
+import net.geforcemods.securitycraft.network.server.SetExplosiveState;
+import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
+import net.geforcemods.securitycraft.network.server.SetPassword;
+import net.geforcemods.securitycraft.network.server.SetScanType;
+import net.geforcemods.securitycraft.network.server.ToggleOption;
+import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
@@ -84,12 +79,10 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class RegistrationHandler
@@ -310,32 +303,30 @@ public class RegistrationHandler
 		event.getRegistry().register(EntityType.Builder.create(EntityBullet.class, EntityBullet::new).tracker(256, 1, true).build(SecurityCraft.MODID + ":bullet"));
 	}
 
-	public static void registerPackets(SimpleNetworkWrapper network)
+	public static void registerPackets()
 	{
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 1, Side.SERVER);
-		network.registerMessage(PacketSetISType.Handler.class, PacketSetISType.class, 2, Side.SERVER);
-		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 3, Side.SERVER);
-		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 4, Dist.CLIENT);
-		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 5, Dist.CLIENT);
-		network.registerMessage(PacketSUpdateNBTTag.Handler.class, PacketSUpdateNBTTag.class, 6, Side.SERVER);
-		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 7, Dist.CLIENT);
-		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 8, Side.SERVER);
-		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 9, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 10, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 11, Side.SERVER);
-		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 12, Side.SERVER);
-		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 13, Side.SERVER);
-		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 14, Side.SERVER);
-		network.registerMessage(PacketSMountCamera.Handler.class, PacketSMountCamera.class, 15, Side.SERVER);
-		network.registerMessage(PacketSSetCameraRotation.Handler.class, PacketSSetCameraRotation.class, 16, Side.SERVER);
-		network.registerMessage(PacketCSetPlayerPositionAndRotation.Handler.class, PacketCSetPlayerPositionAndRotation.class, 17, Dist.CLIENT);
-		network.registerMessage(PacketSOpenGui.Handler.class, PacketSOpenGui.class, 18, Side.SERVER);
-		network.registerMessage(PacketSToggleOption.Handler.class, PacketSToggleOption.class, 19, Side.SERVER);
-		network.registerMessage(PacketCRequestTEOwnableUpdate.Handler.class, PacketCRequestTEOwnableUpdate.class, 20, Side.SERVER);
-		network.registerMessage(PacketSUpdateTEOwnable.Handler.class, PacketSUpdateTEOwnable.class, 21, Dist.CLIENT);
-		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
-		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 23, Side.SERVER);
-		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 24, Dist.CLIENT);
+		int index = 0;
+
+		SecurityCraft.channel.registerMessage(index++, SetBlock.class, SetBlock::encode, SetBlock::decode, SetBlock::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetScanType.class, SetScanType::encode, SetScanType::decode, SetScanType::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetKeycardLevel.class, SetKeycardLevel::encode, SetKeycardLevel::decode, SetKeycardLevel::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateNBTTag.class, UpdateNBTTag::encode, UpdateNBTTag::decode, UpdateNBTTag::onMessage);
+		SecurityCraft.channel.registerMessage(index++, PlaySoundAtPos.class, PlaySoundAtPos::encode, PlaySoundAtPos::decode, PlaySoundAtPos::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetExplosiveState.class, SetExplosiveState::encode, SetExplosiveState::decode, SetExplosiveState::onMessage);
+		SecurityCraft.channel.registerMessage(index++, GivePotionEffect.class, GivePotionEffect::encode, GivePotionEffect::decode, GivePotionEffect::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetPassword.class, SetPassword::encode, SetPassword::decode, SetPassword::onMessage);
+		SecurityCraft.channel.registerMessage(index++, CheckPassword.class, CheckPassword::encode, CheckPassword::decode, CheckPassword::onMessage);
+		SecurityCraft.channel.registerMessage(index++, MountCamera.class, MountCamera::encode, MountCamera::decode, MountCamera::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetCameraRotation.class, SetCameraRotation::encode, SetCameraRotation::decode, SetCameraRotation::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetPlayerPositionAndRotation.class, SetPlayerPositionAndRotation::encode, SetPlayerPositionAndRotation::decode, SetPlayerPositionAndRotation::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenGui.class, OpenGui::encode, OpenGui::decode, OpenGui::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ToggleOption.class, ToggleOption::encode, ToggleOption::decode, ToggleOption::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RequestTEOwnableUpdate.class, RequestTEOwnableUpdate::encode, RequestTEOwnableUpdate::decode, RequestTEOwnableUpdate::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateTEOwnable.class, UpdateTEOwnable::encode, UpdateTEOwnable::decode, UpdateTEOwnable::onMessage);
+		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
+		SecurityCraft.channel.registerMessage(index++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::decode, RemoveCameraTag::onMessage);
+		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
 	}
 
 	@SubscribeEvent

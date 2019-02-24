@@ -4,8 +4,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -70,7 +70,7 @@ public class ClientUtils{
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.write(tag);
-		SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
+		SecurityCraft.channel.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class ClientUtils{
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
+		SecurityCraft.channel.sendToServer(new UpdateNBTTag(item));
 	}
 
 	@OnlyIn(Dist.CLIENT)

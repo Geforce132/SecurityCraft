@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
+import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -79,6 +79,6 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.network.sendToServer(new PacketCRequestTEOwnableUpdate(getPos(), getWorld().provider.getDimension()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().provider.getDimension()));
 	}
 }
