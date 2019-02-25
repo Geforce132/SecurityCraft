@@ -39,7 +39,7 @@ public class GuiCheckPassword extends GuiContainer {
 	@Override
 	public void initGui(){
 		super.initGui();
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 
 		buttons.add(new GuiButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0"));
 		buttons.add(new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1"));
@@ -64,7 +64,7 @@ public class GuiCheckPassword extends GuiContainer {
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override

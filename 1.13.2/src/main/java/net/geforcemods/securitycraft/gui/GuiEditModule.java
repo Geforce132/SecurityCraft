@@ -33,7 +33,7 @@ public class GuiEditModule extends GuiContainer
 	{
 		super.initGui();
 
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 100, 15);
 		buttons.add(new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
 		buttons.add(new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
@@ -49,7 +49,7 @@ public class GuiEditModule extends GuiContainer
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override

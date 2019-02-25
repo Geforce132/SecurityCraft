@@ -94,7 +94,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = tileEntity.hasCustomName() ? tileEntity.getName() : ClientUtils.localize(tileEntity.getName(), new Object[0]);
+		String s = tileEntity.hasCustomName() ? tileEntity.getName().getFormattedText() : ClientUtils.localize(tileEntity.getName().getFormattedText(), new Object[0]);
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
 	}

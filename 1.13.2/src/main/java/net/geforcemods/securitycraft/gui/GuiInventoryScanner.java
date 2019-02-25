@@ -44,7 +44,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	public void initGui(){
 		super.initGui();
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
 			buttons.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
@@ -80,7 +80,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override

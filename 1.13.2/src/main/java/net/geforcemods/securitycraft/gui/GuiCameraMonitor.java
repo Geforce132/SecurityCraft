@@ -93,7 +93,7 @@ public class GuiCameraMonitor extends GuiContainer {
 			buttons.add(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(view.dimension != Minecraft.getInstance().player.dimension) {
+				if(view.dimension != Minecraft.getInstance().player.dimension.getId()) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}

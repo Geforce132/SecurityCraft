@@ -32,7 +32,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 		buttons.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
@@ -49,7 +49,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		flag = false;
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 					if(Minecraft.getInstance().player.inventory.getCurrentItem().getTag() == null)
 						Minecraft.getInstance().player.inventory.getCurrentItem().setTag(new NBTTagCompound());
 
-					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().setString("passcode", keycodeTextbox.getText());
+					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
 					Minecraft.getInstance().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getInstance().world, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ);
 				}

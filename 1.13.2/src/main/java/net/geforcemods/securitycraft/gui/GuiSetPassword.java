@@ -39,7 +39,7 @@ public class GuiSetPassword extends GuiContainer {
 	@Override
 	public void initGui(){
 		super.initGui();
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 		buttons.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
@@ -56,7 +56,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void onGuiClosed(){
 		super.onGuiClosed();
 		isInvalid = false;
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
