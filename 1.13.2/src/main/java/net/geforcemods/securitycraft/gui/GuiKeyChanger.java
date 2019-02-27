@@ -18,6 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiKeyChanger extends GuiContainer {
@@ -39,7 +40,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttons.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
+		buttons.add(confirmButton = new GuiButtonExt(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -61,15 +62,15 @@ public class GuiKeyChanger extends GuiContainer {
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
-		textboxNewPasscode.drawTextBox();
-		textboxConfirmPasscode.drawTextBox();
+		textboxNewPasscode.drawTextField(mouseX, mouseY, partialTicks);
+		textboxConfirmPasscode.drawTextField(mouseX, mouseY, partialTicks);
 	}
 
 	@Override

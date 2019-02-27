@@ -15,6 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiBriefcase extends GuiContainer {
 
@@ -37,16 +38,16 @@ public class GuiBriefcase extends GuiContainer {
 		super.initGui();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			keycodeTopButtons[i] = new GuiButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW);
+			keycodeTopButtons[i] = new GuiButtonExt(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW);
 			buttons.add(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			keycodeBottomButtons[i] = new GuiButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW);
+			keycodeBottomButtons[i] = new GuiButtonExt(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW);
 			buttons.add(keycodeBottomButtons[i]);
 		}
 
-		continueButton = new GuiButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">");
+		continueButton = new GuiButtonExt(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">");
 		buttons.add(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
@@ -66,7 +67,7 @@ public class GuiBriefcase extends GuiContainer {
 		GlStateManager.disableLighting();
 
 		for(GuiTextField textfield : keycodeTextboxes)
-			textfield.drawTextBox();
+			textfield.drawTextField(mouseX, mouseY, partialTicks);
 	}
 
 	@Override

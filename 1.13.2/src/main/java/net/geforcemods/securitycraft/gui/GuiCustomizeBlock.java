@@ -24,6 +24,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
@@ -64,7 +65,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 				}
 				else
 				{
-					optionButtons[i] = new GuiButton(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
+					optionButtons[i] = new GuiButtonExt(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
 					optionButtons[i].packedFGColor = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
 				}
 

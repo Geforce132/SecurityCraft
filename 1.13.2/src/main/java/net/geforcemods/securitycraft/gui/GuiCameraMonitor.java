@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 public class GuiCameraMonitor extends GuiContainer {
@@ -56,32 +57,32 @@ public class GuiCameraMonitor extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 
-		prevPageButton = new GuiButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
-		nextPageButton = new GuiButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
+		prevPageButton = new GuiButtonExt(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
+		nextPageButton = new GuiButtonExt(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
 		buttons.add(prevPageButton);
 		buttons.add(nextPageButton);
 
-		cameraButtons[0] = new GuiButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[1] = new GuiButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[2] = new GuiButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[3] = new GuiButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[4] = new GuiButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[5] = new GuiButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[6] = new GuiButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "#");
-		cameraButtons[7] = new GuiButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "#");
-		cameraButtons[8] = new GuiButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "#");
-		cameraButtons[9] = new GuiButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "#");
+		cameraButtons[0] = new GuiButtonExt(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#");
+		cameraButtons[1] = new GuiButtonExt(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#");
+		cameraButtons[2] = new GuiButtonExt(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#");
+		cameraButtons[3] = new GuiButtonExt(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#");
+		cameraButtons[4] = new GuiButtonExt(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#");
+		cameraButtons[5] = new GuiButtonExt(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#");
+		cameraButtons[6] = new GuiButtonExt(7, width / 2 - 38, height / 2 + 10, 20, 20, "#");
+		cameraButtons[7] = new GuiButtonExt(8, width / 2 - 8, height / 2 + 10, 20, 20, "#");
+		cameraButtons[8] = new GuiButtonExt(9, width / 2 + 22, height / 2 + 10, 20, 20, "#");
+		cameraButtons[9] = new GuiButtonExt(10, width / 2 - 38, height / 2 + 40, 80, 20, "#");
 
-		unbindButtons[0] = new GuiButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[1] = new GuiButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[2] = new GuiButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[3] = new GuiButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[4] = new GuiButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[5] = new GuiButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[6] = new GuiButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x");
-		unbindButtons[7] = new GuiButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x");
-		unbindButtons[8] = new GuiButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
-		unbindButtons[9] = new GuiButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
+		unbindButtons[0] = new GuiButtonExt(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[1] = new GuiButtonExt(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[2] = new GuiButtonExt(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x");
+		unbindButtons[3] = new GuiButtonExt(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[4] = new GuiButtonExt(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[5] = new GuiButtonExt(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x");
+		unbindButtons[6] = new GuiButtonExt(17, width / 2 - 19, height / 2 + 2, 8, 8, "x");
+		unbindButtons[7] = new GuiButtonExt(18, width / 2 + 11, height / 2 + 2, 8, 8, "x");
+		unbindButtons[8] = new GuiButtonExt(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
+		unbindButtons[9] = new GuiButtonExt(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
 
 		for(int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];

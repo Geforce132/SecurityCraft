@@ -65,7 +65,7 @@ public class GuiSCManual extends GuiScreen {
 			update = true;
 
 		startX = (width - 256) / 2;
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 
 		buttons.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
 		buttons.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page

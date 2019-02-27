@@ -24,14 +24,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class EntitySecurityCamera extends Entity{
 
@@ -169,11 +170,11 @@ public class EntitySecurityCamera extends Entity{
 			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && screenshotCooldown == 0){
 				screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GivePotionEffect(Potion.getIdFromPotion(Potion.getPotionFromResourceLocation("night_vision")), 3, -1));
+				SecurityCraft.channel.sendToServer(new GivePotionEffect(Potion.getIdFromPotion(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
 		}
 
 		if(!world.isRemote)
@@ -314,7 +315,7 @@ public class EntitySecurityCamera extends Entity{
 			else if(zoomAmount == 1F)
 				zoomAmount = -0.5F;
 
-		Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+		Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
