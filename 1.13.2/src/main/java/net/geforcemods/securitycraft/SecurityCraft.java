@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -17,11 +18,14 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -55,6 +59,7 @@ public class SecurityCraft {
 	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
 	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
 	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
+	private final List<Field> toTint = new ArrayList<>();
 
 	public SecurityCraft()
 	{
@@ -62,6 +67,8 @@ public class SecurityCraft {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetup);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModProcess);
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
+		MinecraftForge.EVENT_BUS.addListener(this::registerBlockColorHandler);
+		MinecraftForge.EVENT_BUS.addListener(this::registerItemColorHandler);
 		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
 	}
 
@@ -73,6 +80,72 @@ public class SecurityCraft {
 	public void onFMLCommonSetup(FMLCommonSetupEvent event) //preInit
 	{
 		RegistrationHandler.registerPackets();
+	}
+
+	public void registerBlockColorHandler(ColorHandlerEvent.Block event)
+	{
+		getOrPopulateToTint().forEach(field -> {
+			int tint = field.getAnnotation(Tinted.class).tint();
+
+			try
+			{
+				Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+
+	public void registerItemColorHandler(ColorHandlerEvent.Item event)
+	{
+		getOrPopulateToTint().forEach(field -> {
+			int tint = field.getAnnotation(Tinted.class).tint();
+
+			try
+			{
+				Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, (Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		});
+	}
+
+	private List<Field> getOrPopulateToTint()
+	{
+		if(toTint.isEmpty())
+		{
+			for(Field field : SCContent.class.getFields())
+			{
+				if(field.isAnnotationPresent(Tinted.class))
+					toTint.add(field);
+			}
+		}
+
+		return toTint;
+	}
+
+	public void onInterModProcess(InterModProcessEvent event){ //postInit
+		DataSerializers.registerSerializer(Owner.SERIALIZER);
+
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		toTint.clear(); //clear up some unused memory
+		log("Mod finished loading correctly! :D");
 	}
 
 	@SubscribeEvent
@@ -103,25 +176,6 @@ public class SecurityCraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		EnumCustomModules.refresh();
 		serverProxy.registerRenderThings();
-	}
-
-	public void onInterModProcess(InterModProcessEvent event){ //postInit
-		DataSerializers.registerSerializer(Owner.SERIALIZER);
-
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		log("Mod finished loading correctly! :D");
 	}
 
 	public Object[] getUsePosition(String playerName) {

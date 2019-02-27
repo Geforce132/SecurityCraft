@@ -177,10 +177,10 @@ public class SetupHandler
 
 		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.MOSSY_COBBLESTONE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_mossy_cobblestone").setTranslationKey("securitycraft:reinforcedMossyCobblestone");
 
-		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.BRICK_BLOCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_brick").setTranslationKey("securitycraft:reinforcedBrick");
+		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_brick").setTranslationKey("securitycraft:reinforcedBrick");
 		SCContent.reinforcedStairsBrick= new BlockReinforcedStairs(SCContent.reinforcedBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_brick").setTranslationKey("securitycraft:reinforcedStairsBrick");
 
-		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHER_BRICK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_nether_brick").setTranslationKey("securitycraft:reinforcedNetherBrick");
+		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHER_BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_nether_brick").setTranslationKey("securitycraft:reinforcedNetherBrick");
 		SCContent.reinforcedStairsNetherBrick= new BlockReinforcedStairs(SCContent.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_nether_brick").setTranslationKey("securitycraft:reinforcedStairsNetherBrick");
 
 		SCContent.reinforcedHardenedClay = new BlockReinforcedBase(Material.ROCK, 1, Blocks.HARDENED_CLAY).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_hardened_clay").setTranslationKey("securitycraft:reinforcedHardenedClay");
@@ -205,9 +205,9 @@ public class SetupHandler
 		SCContent.reinforcedStoneSlabs2 = new BlockReinforcedSlabs2(false, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stone_slabs2").setTranslationKey("securitycraft:reinforcedStoneSlabs2");
 		SCContent.reinforcedDoubleStoneSlabs2 = new BlockReinforcedSlabs2(true, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_stone_slabs2").setTranslationKey("securitycraft:reinforcedDoubleStoneSlabs2");
 
-		SCContent.reinforcedEndStoneBricks = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_end_stone_bricks").setTranslationKey("securitycraft:reinforcedEndStoneBricks");
+		SCContent.reinforcedEndStoneBricks = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_STONE_BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_end_stone_bricks").setTranslationKey("securitycraft:reinforcedEndStoneBricks");
 
-		SCContent.reinforcedRedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.RED_NETHER_BRICK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_red_nether_brick").setTranslationKey("securitycraft:reinforcedRedNetherBrick");
+		SCContent.reinforcedRedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHER_BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_red_nether_brick").setTranslationKey("securitycraft:reinforcedRedNetherBrick");
 
 		SCContent.reinforcedPurpur = new BlockReinforcedPurpur().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_purpur").setTranslationKey("securitycraft:reinforcedPurpur");
 		SCContent.reinforcedStairsPurpur = new BlockReinforcedStairs(SCContent.reinforcedPurpur, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_purpur").setTranslationKey("securitycraft:reinforcedStairsPurpur");

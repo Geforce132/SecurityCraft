@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.network;
 
-import java.lang.reflect.Field;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -20,11 +18,8 @@ import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.Tinted;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.model.ModelBakery;
@@ -293,25 +288,5 @@ public class ClientProxy extends ServerProxy{
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
 
 		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
-
-		for(Field field : SCContent.class.getFields())
-		{
-			if(field.isAnnotationPresent(Tinted.class))
-			{
-				int tint = field.getAnnotation(Tinted.class).tint();
-
-				try
-				{
-					//registering reinforced blocks color overlay for world
-					Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
-					//same thing for inventory
-					Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, (Block)field.get(null));
-				}
-				catch(IllegalArgumentException | IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 }
