@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
@@ -46,7 +46,7 @@ public class SecurityCraft {
 	protected static final String DEPENDENCIES = "required-after:Forge@[11.15.0.1655,)"; //not latest recommended, because this version is supposed to work on both 1.8.8 and 1.8.9
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
-	public static ServerProxy serverProxy;
+	public static IProxy proxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
 	public static ConfigHandler config = new ConfigHandler();
@@ -86,10 +86,10 @@ public class SecurityCraft {
 		log("Finished loading mod content.");
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerContent();
-		serverProxy.registerResourceLocations();
+		proxy.registerResourceLocations();
 		RegistrationHandler.registerTileEntities();
 		RegistrationHandler.registerRecipes();
-		serverProxy.registerVariants();
+		proxy.registerVariants();
 		ModMetadata modMeta = event.getModMetadata();
 		modMeta.authorList = Arrays.asList(new String[] {
 				"Geforce", "bl4ckscor3"
@@ -117,7 +117,7 @@ public class SecurityCraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		RegistrationHandler.registerEntities();
 		EnumCustomModules.refresh();
-		serverProxy.registerRenderThings();
+		proxy.registerRenderThings();
 	}
 
 	@EventHandler

@@ -139,7 +139,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onWorldUnloaded(Unload event){
 		if(event.world.isRemote)
-			((ClientProxy) SecurityCraft.serverProxy).worldViews.clear();
+			((ClientProxy) SecurityCraft.proxy).worldViews.clear();
 	}
 
 	@SubscribeEvent

@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCTechnical;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
@@ -48,7 +48,7 @@ public class SecurityCraft {
 	//********************************* This is v1.8.11 for MC 1.13.2!
 	protected static final String VERSION = "v1.8.11-beta1";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
-	public static ServerProxy serverProxy;
+	public static IProxy proxy;
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
@@ -175,7 +175,7 @@ public class SecurityCraft {
 		log("Registering mod content... (PT 2/2)");
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		EnumCustomModules.refresh();
-		serverProxy.registerRenderThings();
+		proxy.registerRenderThings();
 	}
 
 	public Object[] getUsePosition(String playerName) {

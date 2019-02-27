@@ -31,7 +31,7 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
-import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
@@ -53,7 +53,7 @@ public class SecurityCraft
 	protected static final String VERSION = "v1.8.11";
 	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.4.1558,);after:LookingGlass@[0.2.0.01,);";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
-	public static ServerProxy serverProxy;
+	public static IProxy proxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
 	public static ConfigHandler config = new ConfigHandler();
@@ -133,7 +133,7 @@ public class SecurityCraft
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		RegistrationHandler.registerEntities();
 		EnumCustomModules.refresh();
-		serverProxy.registerRenderThings();
+		proxy.registerRenderThings();
 	}
 
 	@EventHandler
@@ -172,21 +172,21 @@ public class SecurityCraft
 	 * Get the IWorldView object for the specified key.
 	 */
 	public IWorldViewHelper getViewFromCoords(String coords){
-		return ((ClientProxy) SecurityCraft.serverProxy).worldViews.get(coords);
+		return ((ClientProxy) SecurityCraft.proxy).worldViews.get(coords);
 	}
 
 	/**
 	 * Do we have an IWorldView object for the given key already saved?
 	 */
 	public boolean hasViewForCoords(String coords){
-		return ((ClientProxy) SecurityCraft.serverProxy).worldViews.containsKey(coords);
+		return ((ClientProxy) SecurityCraft.proxy).worldViews.containsKey(coords);
 	}
 
 	/**
 	 * Remove the IWorldView object for the specified key.
 	 */
 	public void removeViewForCoords(String coords){
-		((ClientProxy) SecurityCraft.serverProxy).worldViews.remove(coords);
+		((ClientProxy) SecurityCraft.proxy).worldViews.remove(coords);
 	}
 
 	/**

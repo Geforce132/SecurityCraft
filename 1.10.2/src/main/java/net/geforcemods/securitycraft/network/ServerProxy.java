@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.network;
 
-public class ServerProxy
+public class ServerProxy implements IProxy
 {
+	@Override
 	public void registerRenderThings() {}
 
+	@Override
 	public void registerVariants() {}
 
+	@Override
 	public void registerResourceLocations() {}
 }

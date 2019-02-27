@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
@@ -54,7 +54,7 @@ public class SecurityCraft {
 	protected static final String DEPENDENCIES = "required-after:Forge@[12.18.3.2185,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
-	public static ServerProxy serverProxy;
+	public static IProxy proxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
 	public static ConfigHandler config = new ConfigHandler();
@@ -129,8 +129,8 @@ public class SecurityCraft {
 		}
 
 		RegistrationHandler.registerRecipes();
-		SecurityCraft.serverProxy.registerResourceLocations();
-		serverProxy.registerVariants();
+		SecurityCraft.proxy.registerResourceLocations();
+		proxy.registerVariants();
 		ModMetadata modMeta = event.getModMetadata();
 		modMeta.authorList = Arrays.asList(new String[] {
 				"Geforce", "bl4ckscor3"
@@ -158,7 +158,7 @@ public class SecurityCraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		RegistrationHandler.registerEntities();
 		EnumCustomModules.refresh();
-		serverProxy.registerRenderThings();
+		proxy.registerRenderThings();
 	}
 
 	@EventHandler

@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCDecoration;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCExplosives;
 import net.geforcemods.securitycraft.tabs.CreativeTabSCTechnical;
@@ -47,7 +47,7 @@ public class SecurityCraft {
 	protected static final String DEPENDENCIES = "required-after:forge@[14.23.3.2694,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
-	public static ServerProxy serverProxy;
+	public static IProxy proxy;
 	@Instance("securitycraft")
 	public static SecurityCraft instance = new SecurityCraft();
 	public static SimpleNetworkWrapper network;
@@ -110,7 +110,7 @@ public class SecurityCraft {
 		log("Registering mod content... (PT 2/2)");
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		EnumCustomModules.refresh();
-		serverProxy.registerRenderThings();
+		proxy.registerRenderThings();
 		FMLCommonHandler.instance().getDataFixer().init(SecurityCraft.MODID, TileEntityIDDataFixer.VERSION).registerFix(FixTypes.BLOCK_ENTITY, new TileEntityIDDataFixer());
 	}
 

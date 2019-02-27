@@ -34,7 +34,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ClientProxy extends ServerProxy{
+public class ClientProxy implements IProxy {
 
 	/**
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.

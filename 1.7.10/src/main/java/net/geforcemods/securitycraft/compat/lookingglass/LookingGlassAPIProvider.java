@@ -63,7 +63,7 @@ public class LookingGlassAPIProvider {
 
 		if(!SecurityCraft.instance.hasViewForCoords(xCoord + " " + yCoord + " " + zCoord + " " + dimension)){
 			SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(xCoord, yCoord, zCoord));
-			((ClientProxy) SecurityCraft.serverProxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord + " " + dimension, new IWorldViewHelper(lgView));
+			((ClientProxy) SecurityCraft.proxy).worldViews.put(xCoord + " " + yCoord + " " + zCoord + " " + dimension, new IWorldViewHelper(lgView));
 		}
 	}
 

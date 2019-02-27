@@ -269,7 +269,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.secretSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
 
-		SecurityCraft.serverProxy.registerVariants();
+		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
 		itemBlocks.clear();
 		blockPages.clear();

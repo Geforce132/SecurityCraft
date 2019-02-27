@@ -50,7 +50,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-public class ClientProxy extends ServerProxy{
+public class ClientProxy implements IProxy {
 
 	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<String, IWorldViewHelper>();
 
