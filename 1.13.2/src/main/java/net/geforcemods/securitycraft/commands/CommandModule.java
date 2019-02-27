@@ -1,131 +1,139 @@
 package net.geforcemods.securitycraft.commands;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+
+import com.google.common.base.Predicates;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextFormatting;
 
-public class CommandModule extends CommandBase implements ICommand {
-
-	private List<String> nicknames;
-
-	public CommandModule() {
-		nicknames = new ArrayList<String>();
-		nicknames.add("module");
-	}
-
-	@Override
-	public int getRequiredPermissionLevel()
+public class CommandModule {
+	public static void register(CommandDispatcher<CommandSource> dispatcher)
 	{
-		return 0;
+		dispatcher.register(LiteralArgumentBuilder.<CommandSource>literal("module")
+				.requires(Predicates.alwaysTrue())
+				.then(copy())
+				.then(paste())
+				.then(add())
+				.then(remove()));
 	}
 
-	@Override
-	public String getName() {
-		return "module";
-	}
+	private static ArgumentBuilder<CommandSource, ?> copy()
+	{
+		return Commands.literal("copy").executes(ctx -> {
+			EntityPlayer player = ctx.getSource().asPlayer();
 
-	@Override
-	public List<String> getAliases() {
-		return nicknames;
-	}
-
-	@Override
-	public String getUsage(ICommandSender sender) {
-		return ClientUtils.localize("messages.securitycraft:command.module.usage");
-	}
-
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException{
-		if(args.length == 1){
-			if(args[0].equals("copy")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
-
-				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTagCompound());
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.saved"), TextFormatting.GREEN);
-				}
-				else
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForData"), TextFormatting.RED);
-
-				return;
-			}else if(args[0].equals("paste")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
-
-				if(SecurityCraft.instance.getSavedModule() == null){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.nothingSaved"), TextFormatting.RED);
-					return;
-				}
-
-				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					player.inventory.getCurrentItem().setTagCompound(SecurityCraft.instance.getSavedModule());
-					SecurityCraft.instance.setSavedModule(null);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.saved"), TextFormatting.GREEN);
-				}
-
-				return;
+			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
+				SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTag());
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.saved"), TextFormatting.GREEN);
 			}
-		}else if(args.length == 2)
-			if(args[0].equals("add")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
+			else
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForData"), TextFormatting.RED);
 
-				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					if(player.inventory.getCurrentItem().getTagCompound() == null)
-						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+			return 0;
+		});
+	}
 
-					for(int i = 1; i <= 10; i++)
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).equals(args[1])){
-							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.alreadyContained").replace("#", args[1]), TextFormatting.RED);
-							return;
+	private static ArgumentBuilder<CommandSource, ?> paste()
+	{
+		return Commands.literal("paste").executes(ctx -> {
+			EntityPlayer player = ctx.getSource().asPlayer();
+
+			if(SecurityCraft.instance.getSavedModule() == null){
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.nothingSaved"), TextFormatting.RED);
+				return 0;
+			}
+
+			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
+				player.inventory.getCurrentItem().setTag(SecurityCraft.instance.getSavedModule());
+				SecurityCraft.instance.setSavedModule(null);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.saved"), TextFormatting.GREEN);
+			}
+
+			return 0;
+		});
+	}
+
+	private static ArgumentBuilder<CommandSource, ?> add()
+	{
+		return Commands.literal("add")
+				.then(Commands.argument("target", EntityArgument.players()))
+				.executes(ctx -> {
+					EntityPlayer player = ctx.getSource().asPlayer();
+					Collection<EntityPlayerMP> players = EntityArgument.getPlayers(ctx, "target");
+
+					for(EntityPlayerMP arg : players)
+					{
+						String name = arg.getName().getFormattedText();
+
+						if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
+							if(player.inventory.getCurrentItem().getTag() == null)
+								player.inventory.getCurrentItem().setTag(new NBTTagCompound());
+
+							for(int i = 1; i <= 10; i++)
+								if(player.inventory.getCurrentItem().getTag().contains("Player" + i) && player.inventory.getCurrentItem().getTag().getString("Player" + i).equals(name)){
+									PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.alreadyContained").replace("#", name), TextFormatting.RED);
+									return 0;
+								}
+
+							player.inventory.getCurrentItem().getTag().putString("Player" + getNextSlot(player.inventory.getCurrentItem().getTag()), name);
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.added").replace("#", name), TextFormatting.GREEN);
+							return 0;
+						}else{
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForModify"), TextFormatting.RED);
+							return 0;
 						}
+					}
 
-					player.inventory.getCurrentItem().getTagCompound().setString("Player" + getNextSlot(player.inventory.getCurrentItem().getTagCompound()), args[1]);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.added").replace("#", args[1]), TextFormatting.GREEN);
-					return;
-				}else{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForModify"), TextFormatting.RED);
-					return;
-				}
-			}else if(args[0].equals("remove")){
-				EntityPlayer player = PlayerUtils.getPlayerFromName(sender.getName());
-
-				if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
-					if(player.inventory.getCurrentItem().getTagCompound() == null)
-						player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
-
-					for(int i = 1; i <= 10; i++)
-						if(player.inventory.getCurrentItem().getTagCompound().hasKey("Player" + i) && player.inventory.getCurrentItem().getTagCompound().getString("Player" + i).equals(args[1]))
-							player.inventory.getCurrentItem().getTagCompound().removeTag("Player" + i);
-
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.removed").replace("#", args[1]), TextFormatting.GREEN);
-					return;
-				}else{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForModify"), TextFormatting.RED);
-					return;
-				}
-			}
-
-		throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.module.usage"));
+					return 0;
+				});
 	}
 
-	private int getNextSlot(NBTTagCompound tag) {
+	private static ArgumentBuilder<CommandSource, ?> remove()
+	{
+		return Commands.literal("remove")
+				.then(Commands.argument("target", EntityArgument.players()))
+				.executes(ctx -> {
+					EntityPlayer player = ctx.getSource().asPlayer();
+					Collection<EntityPlayerMP> players = EntityArgument.getPlayers(ctx, "target");
+
+					for(EntityPlayerMP arg : players)
+					{
+						String name = arg.getName().getFormattedText();
+
+						if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
+							if(player.inventory.getCurrentItem().getTag() == null)
+								player.inventory.getCurrentItem().setTag(new NBTTagCompound());
+
+							for(int i = 1; i <= 10; i++)
+								if(player.inventory.getCurrentItem().getTag().contains("Player" + i) && player.inventory.getCurrentItem().getTag().getString("Player" + i).equals(name))
+									player.inventory.getCurrentItem().getTag().remove("Player" + i);
+
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.removed").replace("#", name), TextFormatting.GREEN);
+							return 0;
+						}else{
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.notHoldingForModify"), TextFormatting.RED);
+							return 0;
+						}
+					}
+
+					return 0;
+				});
+	}
+
+	private static int getNextSlot(NBTTagCompound tag) {
 		for(int i = 1; i <= 10; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;

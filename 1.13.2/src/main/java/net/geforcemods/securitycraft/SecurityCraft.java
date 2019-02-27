@@ -79,8 +79,8 @@ public class SecurityCraft {
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){
-		event.registerServerCommand(new CommandSC());
-		event.registerServerCommand(new CommandModule());
+		CommandSC.register(event.getCommandDispatcher());
+		CommandModule.register(event.getCommandDispatcher());
 	}
 
 	public void onFMLCommonSetup(FMLCommonSetupEvent event) //preInit

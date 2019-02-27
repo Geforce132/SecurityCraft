@@ -1,81 +1,52 @@
 package net.geforcemods.securitycraft.commands;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.base.Predicates;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 
-public class CommandSC extends CommandBase implements ICommand{
-
-	private List<String> nicknames;
-
-	public CommandSC(){
-		nicknames = new ArrayList<String>();
-		nicknames.add("sc");
-	}
-
-	/**
-	 * Return the required permission level for this command.
-	 */
-	@Override
-	public int getRequiredPermissionLevel()
+public class CommandSC {
+	public static void register(CommandDispatcher<CommandSource> dispatcher)
 	{
-		return 0;
+		dispatcher.register(LiteralArgumentBuilder.<CommandSource>literal("sc")
+				.requires(Predicates.alwaysTrue())
+				.then(connect())
+				.then(help())
+				.then(bug()));
 	}
 
-	@Override
-	public String getName() {
-		return "sc";
+	private static ArgumentBuilder<CommandSource, ?> connect()
+	{
+		return Commands.literal("connect").executes(ctx -> {
+			ctx.getSource().asPlayer().sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+			return 0;
+		});
 	}
 
-	@Override
-	public List<String> getAliases() {
-		return nicknames;
+	private static ArgumentBuilder<CommandSource, ?> help()
+	{
+		return Commands.literal("help").executes(ctx -> {
+			ctx.getSource().asPlayer().addItemStackToInventory(new ItemStack(SCContent.scManual));
+			return 0;
+		});
 	}
 
-	@Override
-	public String getUsage(ICommandSender sender) {
-		return ClientUtils.localize("messages.securitycraft:command.sc.usage");
-	}
-
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if(args.length == 0)
-			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
-		else if(args.length == 1){
-			if(args[0].equals("connect"))
-				sender.sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
-			else if(args[0].equals("help"))
-				getCommandSenderAsPlayer(sender).inventory.addItemStackToInventory(new ItemStack(SCContent.scManual));
-			else if(args[0].equals("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
-			else
-				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
-		}else if(args.length >= 2){
-			if(args[0].equals("bug"))
-				PlayerUtils.sendMessageEndingWithLink(sender, "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
-			else
-				throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
-		}
-		else
-			throw new WrongUsageException(ClientUtils.localize("messages.securitycraft:command.sc.usage"));
+	private static ArgumentBuilder<CommandSource, ?> bug()
+	{
+		return Commands.literal("help").executes(ctx -> {
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+			return 0;
+		});
 	}
 }
