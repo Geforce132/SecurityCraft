@@ -606,6 +606,8 @@
     "config.securitycraft:cameraSpeed.tooltip": "How fast can you rotate when mounted to a camera and holding W-A-S-D?",
     "config.securitycraft:checkForUpdates": "Should check for updates on GitHub?",
     "config.securitycraft:checkForUpdates.tooltip": "Should SecurityCraft check for new updates of the mod through SecurityCraft's GitHub repository?",
+    "config.securitycraft:allowBlockClaim": "Allow claiming unowned blocks?",
+    "config.securitycraft:allowBlockClaim.tooltip": "Allow claiming unowned blocks?",
 
     "option.securitycraft:portableRadar.searchRadius": "Search radius: #",
     "option.securitycraft:portableRadar.searchRadius.description": "The radius the radar searches in.",

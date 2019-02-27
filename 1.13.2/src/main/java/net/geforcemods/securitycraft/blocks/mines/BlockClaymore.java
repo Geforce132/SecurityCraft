@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
@@ -21,15 +21,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -39,7 +36,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
 	public BlockClaymore(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 1F, 6000000.0F));
+		super(Block.Properties.create(material).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1F, 6000000.0F));
 	}
 
 	/**

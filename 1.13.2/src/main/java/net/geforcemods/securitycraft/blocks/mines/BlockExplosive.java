@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
 	public BlockExplosive(SoundType soundType, Material material) {
-		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ConfigHandler.ableToBreakMines ? -1F : 1F, 6000000.0F));
+		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1F, 6000000.0F));
 	}
 
 	@Override

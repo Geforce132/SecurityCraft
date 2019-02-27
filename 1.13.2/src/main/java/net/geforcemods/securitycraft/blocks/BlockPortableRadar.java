@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
@@ -17,9 +17,8 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.Vo
-import net.minecraft.world.IBlockReader;xelShapes;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
@@ -95,7 +94,7 @@ public class BlockPortableRadar extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new TileEntityPortableRadar().attacks(EntityPlayer.class, ConfigHandler.portableRadarSearchRadius, ConfigHandler.portableRadarDelay).nameable();
+		return new TileEntityPortableRadar().attacks(EntityPlayer.class, ServerConfig.CONFIG.portableRadarSearchRadius.get(), ServerConfig.CONFIG.portableRadarDelay.get()).nameable();
 	}
 
 }

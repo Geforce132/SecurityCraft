@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -153,7 +153,7 @@ public class BlockInventoryScanner extends BlockContainer {
 		TileEntityInventoryScanner connectedScanner = null;
 		for(EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
 		{
-			for(int i = 1; i <= ConfigHandler.inventoryScannerRange; i++)
+			for(int i = 1; i <= ServerConfig.CONFIG.inventoryScannerRange.get(); i++)
 			{
 				BlockPos offsetIPos = pos.offset(facing, i);
 
@@ -206,7 +206,7 @@ public class BlockInventoryScanner extends BlockContainer {
 	{
 		EnumFacing facing = world.getBlockState(pos).get(FACING);
 
-		for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
+		for(int i = 0; i <= ServerConfig.CONFIG.inventoryScannerRange.get(); i++)
 		{
 			BlockPos offsetPos = pos.offset(facing, i);
 			Block block = BlockUtils.getBlock(world, offsetPos);

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
@@ -245,13 +246,13 @@ public class SetupHandler
 		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("mine").setTranslationKey("securitycraft:mine");
 		SCContent.mineCut = (BlockMine) new BlockMine(Material.CIRCUITS).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
 
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1.25F).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 2.5F).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 2.75F).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
-		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1.25F).setRegistryName("sand_mine").setTranslationKey("securitycraft:sandMine");
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.75F).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
-		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.75F).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
-		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1.25F).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
+		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.5F).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.75F).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
+		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("sand_mine").setTranslationKey("securitycraft:sandMine");
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
+		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
+		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
 
 		SCContent.trackMine = new BlockTrackMine().setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
 

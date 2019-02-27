@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -31,7 +31,7 @@ public class ItemAdminTool extends Item {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		EntityPlayer player = ctx.getPlayer();
-		if(!world.isRemote && ConfigHandler.allowAdminTool) {
+		if(!world.isRemote && ServerConfig.CONFIG.allowAdminTool.get()) {
 			if(world.getTileEntity(pos) != null) {
 				TileEntity te = world.getTileEntity(pos);
 				boolean hasInfo = false;

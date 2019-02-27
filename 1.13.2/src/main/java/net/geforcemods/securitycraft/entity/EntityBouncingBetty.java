@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -93,7 +93,7 @@ public class EntityBouncingBetty extends Entity {
 	{
 		float f = 6.0F;
 
-		if(ConfigHandler.smallerMineExplosion)
+		if(ServerConfig.CONFIG.smallerMineExplosion.get())
 			world.createExplosion(this, posX, posY, posZ, (f / 2), true);
 		else
 			world.createExplosion(this, posX, posY, posZ, f, true);

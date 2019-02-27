@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class EntitySecurityCamera extends Entity{
 
-	private final float CAMERA_SPEED = ConfigHandler.cameraSpeed;
+	private final float CAMERA_SPEED = ServerConfig.CONFIG.cameraSpeed.get();
 
 	public int blockPosX;
 	public int blockPosY;

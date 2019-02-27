@@ -6,6 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
@@ -39,7 +40,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	public void logPlayers(){
-		double range = ConfigHandler.usernameLoggerSearchRadius;
+		double range = ServerConfig.CONFIG.usernameLoggerSearchRadius.get();
 
 		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 		List<?> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area);

@@ -1,126 +1,240 @@
 package net.geforcemods.securitycraft;
 
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.Config.LangKey;
-import net.minecraftforge.common.config.Config.Name;
-import net.minecraftforge.common.config.Config.RequiresMcRestart;
+import org.apache.commons.lang3.tuple.Pair;
 
-@Config(modid=SecurityCraft.MODID, category="options")
-public class ConfigHandler
-{
-	@Name("Is codebreaker allowed?")
-	@LangKey("config.securitycraft:isCodebreakerAllowed")
-	public static boolean allowCodebreakerItem = true;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
-	@Name("Is admin tool allowed?")
-	@LangKey("config.securitycraft:allowAdminTool")
-	public static boolean allowAdminTool = false;
+public class ConfigHandler {
 
-	@Name("Mine(s) spawn fire when detonated?")
-	@LangKey("config.securitycraft:shouldSpawnFire")
-	public static boolean shouldSpawnFire = true;
+	public static class ServerConfig {
+		public static final ForgeConfigSpec CONFIG_SPEC;
+		public static final ServerConfig CONFIG;
+		
+		static {
+			Pair<ServerConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
 
-	@Name("Are mines unbreakable?")
-	@LangKey("config.securitycraft:ableToBreakMines")
-	@RequiresMcRestart
-	public static boolean ableToBreakMines = true;
+			CONFIG_SPEC = specPair.getRight();
+			CONFIG = specPair.getLeft();
+		}
+		
+		public BooleanValue allowCodebreakerItem;
+		
+		public BooleanValue allowAdminTool;
 
-	@Name("Craftable level 1 keycard?")
-	@LangKey("config.securitycraft:ableToCraftKeycard1")
-	@RequiresMcRestart
-	public static boolean ableToCraftKeycard1 = true;
+		public BooleanValue shouldSpawnFire;
 
-	@Name("Craftable level 2 keycard?")
-	@LangKey("config.securitycraft:ableToCraftKeycard2")
-	@RequiresMcRestart
-	public static boolean ableToCraftKeycard2 = true;
+		public BooleanValue ableToBreakMines;
 
-	@Name("Craftable level 3 keycard?")
-	@LangKey("config.securitycraft:ableToCraftKeycard3")
-	@RequiresMcRestart
-	public static boolean ableToCraftKeycard3 = true;
+		public BooleanValue ableToCraftKeycard1;
 
-	@Name("Craftable level 4 keycard?")
-	@LangKey("config.securitycraft:ableToCraftKeycard4")
-	@RequiresMcRestart
-	public static boolean ableToCraftKeycard4 = true;
+		public BooleanValue ableToCraftKeycard2;
 
-	@Name("Craftable level 5 keycard?")
-	@LangKey("config.securitycraft:ableToCraftKeycard5")
-	@RequiresMcRestart
-	public static boolean ableToCraftKeycard5 = true;
+		public BooleanValue ableToCraftKeycard3;
 
-	@Name("Craftable Limited Use keycard?")
-	@LangKey("config.securitycraft:ableToCraftLUKeycard")
-	@RequiresMcRestart
-	public static boolean ableToCraftLUKeycard = true;
+		public BooleanValue ableToCraftKeycard4;
 
-	@Name("Mines use a smaller explosion?")
-	@LangKey("config.securitycraft:smallerMineExplosion")
-	public static boolean smallerMineExplosion = false;
+		public BooleanValue ableToCraftKeycard5;
 
-	@Name("Mines explode when broken in Creative?")
-	@LangKey("config.securitycraft:mineExplodesWhenInCreative")
-	public static boolean mineExplodesWhenInCreative = true;
+		public BooleanValue ableToCraftLUKeycard;
 
-	@Name("Display a 'tip' message at spawn?")
-	@LangKey("config.securitycraft:sayThanksMessage")
-	public static boolean sayThanksMessage = true;
+		public BooleanValue smallerMineExplosion;
 
-	@Name("Should check for updates on Github?")
-	@LangKey("config.securitycraft:checkForUpdates")
-	public static boolean checkForUpdates =true;
+		public BooleanValue mineExplodesWhenInCreative;
+		
+		public DoubleValue portableRadarSearchRadius;
 
-	@Name("Portable radar search radius:")
-	@LangKey("config.securitycraft:portableRadarSearchRadius")
-	public static double portableRadarSearchRadius = 25.0D;
+		public IntValue usernameLoggerSearchRadius;
 
-	@Name("Username logger search radius:")
-	@LangKey("config.securitycraft:usernameLoggerSearchRadius")
-	public static int usernameLoggerSearchRadius = 3;
+		public IntValue laserBlockRange;
 
-	@Name("Laser range:")
-	@LangKey("config.securitycraft:laserBlockRange")
-	public static int laserBlockRange = 5;
+		public IntValue alarmTickDelay;
+		
+		public IntValue portableRadarDelay;
 
-	@Name("Delay between alarm sounds (seconds):")
-	@LangKey("config.securitycraft:alarmTickDelay")
-	public static int alarmTickDelay = 2;
+		public IntValue claymoreRange;
 
-	@Name("Alarm sound volume:")
-	@LangKey("config.securitycraft:alarmSoundVolume")
-	public static float alarmSoundVolume = 0.3F;
+		public IntValue imsRange;
+		
+		public IntValue inventoryScannerRange;
 
-	@Name("Portable radar delay (seconds):")
-	@LangKey("config.securitycraft:portableRadarDelay")
-	public static int portableRadarDelay = 4;
+		public DoubleValue motionActivatedLightSearchRadius;
 
-	@Name("Claymore range:")
-	@LangKey("config.securitycraft:claymoreRange")
-	public static int claymoreRange = 5;
+		public BooleanValue debug;
 
-	@Name("IMS range:")
-	@LangKey("config.securitycraft:imsRange")
-	public static int imsRange = 12;
+		public BooleanValue allowBlockClaim;
+		
+		public ServerConfig(ForgeConfigSpec.Builder builder)
+		{
+			
+			allowCodebreakerItem = builder
+					.translation("config.securitycraft:isCodebreakerAllowed")
+					.comment("config.securitycraft:isCodebreakerAllowed.tooltip")
+					.define("allowCodebreakerItem", true);
+			
+			allowAdminTool = builder
+					.translation("config.securitycraft:allowAdminTool")
+					.comment("config.securitycraft:allowAdminTool.tooltip")
+					.define("allowAdminTool", false);
+			
+			shouldSpawnFire = builder
+					.translation("config.securitycraft:shouldSpawnFire")
+					.comment("config.securitycraft:shouldSpawnFire.tooltip")
+					.define("shouldSpawnFire", true);
+			
+			ableToBreakMines = builder
+					.translation("config.securitycraft:ableToBreakMines")
+					.comment("config.securitycraft:ableToBreakMines.tooltip")
+					.worldRestart()
+					.define("ableToBreakMines", true);
+			
+			ableToCraftKeycard1 = builder
+					.translation("config.securitycraft:ableToCraftKeycard1")
+					.comment("config.securitycraft:ableToCraftKeycard1.tooltip")
+					.worldRestart()
+					.define("ableToCraftKeycard1", true);
+			
+			ableToCraftKeycard2 = builder
+					.translation("config.securitycraft:ableToCraftKeycard2")
+					.comment("config.securitycraft:ableToCraftKeycard2.tooltip")
+					.worldRestart()
+					.define("ableToCraftKeycard2", true);
+			
+			ableToCraftKeycard3 = builder
+					.translation("config.securitycraft:ableToCraftKeycard3")
+					.comment("config.securitycraft:ableToCraftKeycard3.tooltip")
+					.worldRestart()
+					.define("ableToCraftKeycard3", true);
+			
+			ableToCraftKeycard4 = builder
+					.translation("config.securitycraft:ableToCraftKeycard4")
+					.comment("config.securitycraft:ableToCraftKeycard4.tooltip")
+					.worldRestart()
+					.define("ableToCraftKeycard4", true);
+			
+			ableToCraftKeycard5 = builder
+					.translation("config.securitycraft:ableToCraftKeycard5")
+					.comment("config.securitycraft:ableToCraftKeycard5.tooltip")
+					.worldRestart()
+					.define("ableToCraftKeycard5", true);
+			
+			ableToCraftLUKeycard = builder
+					.translation("config.securitycraft:ableToCraftLUKeycard")
+					.comment("config.securitycraft:ableToCraftLUKeycard.tooltip")
+					.worldRestart()
+					.define("ableToCraftLUKeycard", true);
+			
+			smallerMineExplosion = builder
+					.translation("config.securitycraft:smallerMineExplosion")
+					.comment("config.securitycraft:smallerMineExplosion.tooltip")
+					.define("smallerMineExplosion", false);
+			
+			mineExplodesWhenInCreative = builder
+					.translation("config.securitycraft:mineExplodesWhenInCreative")
+					.comment("config.securitycraft:mineExplodesWhenInCreative.tooltip")
+					.define("mineExplodesWhenInCreative", true);
+			
+			portableRadarSearchRadius = builder
+					.translation("config.securitycraft:portableRadarSearchRadius")
+					.comment("config.securitycraft:portableRadarSearchRadius.tooltip")
+					.defineInRange("portableRadarSearchRadius", 25.0D, 0.0D, Double.MAX_VALUE);
+			
+			usernameLoggerSearchRadius = builder
+					.translation("config.securitycraft:usernameLoggerSearchRadius")
+					.comment("config.securitycraft:usernameLoggerSearchRadius.tooltip")
+					.defineInRange("usernameLoggerSearchRadius", 3, 0, Integer.MAX_VALUE);
+			
+			laserBlockRange = builder
+					.translation("config.securitycraft:laserBlockRange")
+					.comment("config.securitycraft:laserBlockRange.tooltip")
+					.defineInRange("laserBlockRange", 5, 0, Integer.MAX_VALUE);
+			
+			alarmTickDelay = builder
+					.translation("config.securitycraft:alarmTickDelay")
+					.comment("config.securitycraft:alarmTickDelay.tooltip")
+					.defineInRange("alarmTickDelay", 2, 0, Integer.MAX_VALUE);
+			
+			portableRadarDelay = builder
+					.translation("config.securitycraft:portableRadarDelay")
+					.comment("config.securitycraft:portableRadarDelay.tooltip")
+					.defineInRange("portableRadarDelay", 4, 0, Integer.MAX_VALUE);
+			
+			claymoreRange = builder
+					.translation("config.securitycraft:claymoreRange")
+					.comment("config.securitycraft:claymoreRange.tooltip")
+					.defineInRange("claymoreRange", 5, 0, Integer.MAX_VALUE);
+			
+			imsRange = builder
+					.translation("config.securitycraft:imsRange")
+					.comment("config.securitycraft:imsRange.tooltip")
+					.defineInRange("imsRange", 12, 0, Integer.MAX_VALUE);
+			
+			inventoryScannerRange = builder
+					.translation("config.securitycraft:inventoryScannerRange")
+					.comment("config.securitycraft:inventoryScannerRange.tooltip")
+					.defineInRange("inventoryScannerRange", 2, 0, Integer.MAX_VALUE);
+			
+			motionActivatedLightSearchRadius = builder
+					.translation("config.securitycraft:motionActivatedLightSearchRadius")
+					.comment("config.securitycraft:motionActivatedLightSearchRadius.tooltip")
+					.defineInRange("motionActivatedLightSearchRadius", 5.0D, 0.0D, Double.MAX_VALUE);
+			
+			debug = builder
+					.translation("config.securitycraft:debuggingMode")
+					.comment("config.securitycraft:debuggingMode.tooltip")
+					.define("debuggingMode", false);
+			
+			allowBlockClaim = builder
+					.translation("config.securitycraft:allowBlockClaim")
+					.comment("config.securitycraft:allowBlockClaim.tooltip")
+					.define("allowBlockClaim", false);
+		}
+	}
+	
+	public static class ClientConfig {
+		public static final ForgeConfigSpec CONFIG_SPEC;
+		public static final ClientConfig CONFIG;
+		
+		public BooleanValue sayThanksMessage;
 
-	@Name("Camera Speed when not using LookingGlass:")
-	@LangKey("config.securitycraft:cameraSpeed")
-	@RequiresMcRestart
-	public static float cameraSpeed = 2.0F;
+		public BooleanValue checkForUpdates;
 
-	@Name("Inventory Scanner range:")
-	@LangKey("config.securitycraft:inventoryScannerRange")
-	public static int inventoryScannerRange = 2;
+		//public FloatValue alarmSoundVolume;
 
-	@Name("Motion-activated light range:")
-	@LangKey("config.securitycraft:motionLightSearchRadius")
-	public static double motionActivatedLightSearchRadius = 5.0D;
+		//public FloatValue cameraSpeed;
+		
+		static {
+			Pair<ClientConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
 
-	@Name("Is debug mode? (not recommended!)")
-	@LangKey("config.securitycraft:debuggingMode")
-	public static boolean debug = false;
+			CONFIG_SPEC = specPair.getRight();
+			CONFIG = specPair.getLeft();
+		}
+		
+		public ClientConfig(ForgeConfigSpec.Builder builder) {
+			sayThanksMessage = builder
+					.translation("config.securitycraft:sayThanksMessage")
+					.comment("config.securitycraft:sayThanksMessage.tooltip")
+					.define("sayThanksMessage", true);
+			
+			checkForUpdates = builder
+					.translation("config.securitycraft:checkForUpdates")
+					.comment("config.securitycraft:checkForUpdates.tooltip")
+					.define("checkForUpdates", true);
+			
+			/*
+			alarmSoundVolume = builder
+					.translation("config.securitycraft:alarmSoundVolume")
+					.comment("config.securitycraft:alarmSoundVolume.tooltip")
+					.define("alarmSoundVolume", 0.3F);
+			
+			cameraSpeed = builder
+					.translation("config.securitycraft:cameraSpeed")
+					.comment("config.securitycraft:cameraSpeed.tooltip")
+					.define("cameraSpeed", 2.0F);
+			*/
+		}
+	}
 
-	@Name("Allow claiming unowned blocks?")
-	@LangKey("config.securitycraft:allowBlockClaim")
-	public static boolean allowBlockClaim = false;
 }

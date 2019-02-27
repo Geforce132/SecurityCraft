@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
-
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -20,7 +18,6 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
@@ -82,7 +79,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
 		if(!player.isCreative() && !world.isRemote)
-			if(player != null && player.isCreative() && !ConfigHandler.mineExplodesWhenInCreative)
+			if(player != null && player.isCreative() && !ServerConfig.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else{
 				explode(world, pos);
@@ -134,7 +131,7 @@ public class BlockMine extends BlockExplosive {
 
 		if(!world.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
-			if(ConfigHandler.smallerMineExplosion)
+			if(ServerConfig.CONFIG.smallerMineExplosion.get())
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);

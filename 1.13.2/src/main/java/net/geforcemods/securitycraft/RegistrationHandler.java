@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -226,12 +227,12 @@ public class RegistrationHandler
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
 		registerItem(event, SCContent.universalBlockRemover);
-		registerItem(event, SCContent.keycardLvl1, ConfigHandler.ableToCraftKeycard1);
-		registerItem(event, SCContent.keycardLvl2, ConfigHandler.ableToCraftKeycard2);
-		registerItem(event, SCContent.keycardLvl3, ConfigHandler.ableToCraftKeycard3);
-		registerItem(event, SCContent.keycardLvl4, ConfigHandler.ableToCraftKeycard4);
-		registerItem(event, SCContent.keycardLvl5, ConfigHandler.ableToCraftKeycard5);
-		registerItem(event, SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
+		registerItem(event, SCContent.keycardLvl1, ServerConfig.CONFIG.ableToCraftKeycard1.get());
+		registerItem(event, SCContent.keycardLvl2, ServerConfig.CONFIG.ableToCraftKeycard2.get());
+		registerItem(event, SCContent.keycardLvl3, ServerConfig.CONFIG.ableToCraftKeycard3.get());
+		registerItem(event, SCContent.keycardLvl4, ServerConfig.CONFIG.ableToCraftKeycard4.get());
+		registerItem(event, SCContent.keycardLvl5, ServerConfig.CONFIG.ableToCraftKeycard5.get());
+		registerItem(event, SCContent.limitedUseKeycard, ServerConfig.CONFIG.ableToCraftLUKeycard.get());
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});

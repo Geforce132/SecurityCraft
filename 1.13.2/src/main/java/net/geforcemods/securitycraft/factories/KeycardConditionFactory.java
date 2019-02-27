@@ -4,7 +4,7 @@ import java.util.function.BooleanSupplier;
 
 import com.google.gson.JsonObject;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
@@ -16,12 +16,12 @@ public class KeycardConditionFactory implements IConditionFactory
 	{
 		String type = JsonUtils.getString(json, "type");
 
-		if(type.equals("securitycraft_toggle_keycard_1")) return () -> ConfigHandler.ableToCraftKeycard1;
-		else if(type.equals("securitycraft_toggle_keycard_2")) return () -> ConfigHandler.ableToCraftKeycard2;
-		else if(type.equals("securitycraft_toggle_keycard_3")) return () -> ConfigHandler.ableToCraftKeycard3;
-		else if(type.equals("securitycraft_toggle_keycard_4")) return () -> ConfigHandler.ableToCraftKeycard4;
-		else if(type.equals("securitycraft_toggle_keycard_5")) return () -> ConfigHandler.ableToCraftKeycard5;
-		else if(type.equals("securitycraft_toggle_lu_keycard")) return () -> ConfigHandler.ableToCraftLUKeycard;
+		if(type.equals("securitycraft_toggle_keycard_1")) return () -> ServerConfig.CONFIG.ableToCraftKeycard1.get();
+		else if(type.equals("securitycraft_toggle_keycard_2")) return () -> ServerConfig.CONFIG.ableToCraftKeycard2.get();
+		else if(type.equals("securitycraft_toggle_keycard_3")) return () -> ServerConfig.CONFIG.ableToCraftKeycard3.get();
+		else if(type.equals("securitycraft_toggle_keycard_4")) return () -> ServerConfig.CONFIG.ableToCraftKeycard4.get();
+		else if(type.equals("securitycraft_toggle_keycard_5")) return () -> ServerConfig.CONFIG.ableToCraftKeycard5.get();
+		else if(type.equals("securitycraft_toggle_lu_keycard")) return () -> ServerConfig.CONFIG.ableToCraftLUKeycard.get();
 		else return () -> true;
 	}
 }

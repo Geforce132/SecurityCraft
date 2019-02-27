@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler.ClientConfig;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
@@ -28,10 +30,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -70,6 +74,8 @@ public class SecurityCraft {
 		MinecraftForge.EVENT_BUS.addListener(this::registerBlockColorHandler);
 		MinecraftForge.EVENT_BUS.addListener(this::registerItemColorHandler);
 		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.CONFIG_SPEC);
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){
@@ -166,7 +172,7 @@ public class SecurityCraft {
 	public void init(InterModEnqueueEvent event){
 		log("Setting up inter-mod stuff...");
 
-		if(ConfigHandler.checkForUpdates) {
+		if(ClientConfig.CONFIG.checkForUpdates.get()) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
 			if(vcUpdateTag != null)
 				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
@@ -210,7 +216,7 @@ public class SecurityCraft {
 	}
 
 	public static void log(String line, boolean isSevereError) {
-		if(ConfigHandler.debug)
+		if(ServerConfig.CONFIG.debug.get())
 			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLLoader.getDist() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLLoader.getDist() + "] " + line);
 	}
 
