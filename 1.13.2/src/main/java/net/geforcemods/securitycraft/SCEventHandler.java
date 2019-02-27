@@ -71,7 +71,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -87,7 +86,6 @@ import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -384,7 +382,10 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
-		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+		if(!(event.getWorld() instanceof World))
+			return;
+
+		List<EntitySentry> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
 		if(!sentries.isEmpty())
@@ -393,18 +394,11 @@ public class SCEventHandler {
 			return;
 		}
 
-		sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos().up()));
+		sentries = ((World)event.getWorld()).getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos().up()));
 
 		//remove sentry if block below is broken
 		if(!sentries.isEmpty())
 			sentries.get(0).remove();
-	}
-
-	@SubscribeEvent
-	public void onConfigChanged(OnConfigChangedEvent event)
-	{
-		if(event.getModID().equals(SecurityCraft.MODID))
-			ConfigManager.sync(SecurityCraft.MODID, Config.Type.INSTANCE);
 	}
 
 	@SubscribeEvent
@@ -533,14 +527,14 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
-		if(!event.getWorld().isRemote())
+		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
 			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
 				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
 
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
 					if(!te.modules.get(i).isEmpty()){
 						ItemStack stack = te.modules.get(i);
-						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
+						EntityItem item = new EntityItem((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
@@ -613,7 +607,7 @@ public class SCEventHandler {
 	public void renderGameOverlay(RenderGameOverlayEvent event) {
 		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
 			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
-				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, event.getResolution(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
+				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().mainWindow, Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
@@ -655,7 +649,7 @@ public class SCEventHandler {
 
 					GlStateManager.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableAlphaTest();
 				}
 			}
@@ -711,10 +705,10 @@ public class SCEventHandler {
 		Block block = world.getBlockState(pos).getBlock();
 
 		if(block == SCContent.bogusWater){
-			world.setBlockToAir(pos);
+			world.removeBlock(pos);
 			return new ItemStack(SCContent.fWaterBucket, 1);
 		}else if(block == SCContent.bogusLava){
-			world.setBlockToAir(pos);
+			world.removeBlock(pos);
 			return new ItemStack(SCContent.fLavaBucket, 1);
 		}
 		else

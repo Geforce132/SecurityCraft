@@ -2,10 +2,13 @@ package net.geforcemods.securitycraft.compat.waila;
 
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.IComponentProvider;
+import mcp.mobius.waila.api.IDataAccessor;
+import mcp.mobius.waila.api.IPluginConfig;
+import mcp.mobius.waila.api.IRegistrar;
+import mcp.mobius.waila.api.IWailaPlugin;
+import mcp.mobius.waila.api.TooltipPosition;
+import mcp.mobius.waila.api.WailaPlugin;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
@@ -14,28 +17,33 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
-public class WailaDataProvider implements IWailaDataProvider {
+@WailaPlugin(SecurityCraft.MODID)
+public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
+	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
+	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
+	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
+	public static final ResourceLocation SHOW_PASSWORDS = new ResourceLocation(SecurityCraft.MODID, "showpasswords");
+	public static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
 
-	public static void callbackRegister(IWailaRegistrar registrar){
+	@Override
+	public void register(IRegistrar registrar)
+	{
 		SecurityCraft.log("Adding Waila support!");
-
-		registrar.addConfig("SecurityCraft", "securitycraft.showowner", ClientUtils.localize("waila.securitycraft:displayOwner"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", ClientUtils.localize("waila.securitycraft:showModules"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", ClientUtils.localize("waila.securitycraft:showPasswords"));
-		registrar.addConfig("SecurityCraft", "securitycraft.showcustomname", ClientUtils.localize("waila.securitycraft:showCustomName"));
-		registrar.registerBodyProvider(new WailaDataProvider(), IOwnable.class);
-		registrar.registerStackProvider(new WailaDataProvider(), ICustomWailaDisplay.class);
+		registrar.addConfig(SHOW_OWNER, true);
+		registrar.addConfig(SHOW_MODULES, true);
+		registrar.addConfig(SHOW_PASSWORDS, true);
+		registrar.addConfig(SHOW_CUSTOM_NAME, true);
+		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, IOwnable.class);
+		registrar.registerStackProvider(INSTANCE, ICustomWailaDisplay.class);
 	}
 
 	@Override
-	public ItemStack getWailaStack(IWailaDataAccessor data, IWailaConfigHandler config) {
+	public ItemStack getStack(IDataAccessor data, IPluginConfig config) {
 		if(data.getBlock() instanceof ICustomWailaDisplay)
 			return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
@@ -43,48 +51,30 @@ public class WailaDataProvider implements IWailaDataProvider {
 	}
 
 	@Override
-	public List<String> getWailaHead(ItemStack stack, List<String> head, IWailaDataAccessor data, IWailaConfigHandler config) {
-		return head;
-	}
+	public void appendBody(List<ITextComponent> body, IDataAccessor data, IPluginConfig config) {
+		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
 
-	@Override
-	public List<String> getWailaBody(ItemStack stack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
-		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return body;
+		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable)
+			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));
 
-		if(config.getConfig("securitycraft.showowner") && data.getTileEntity() instanceof IOwnable)
-			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());
-
-		if(config.getConfig("securitycraft.showmodules") && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
+		if(config.get(SHOW_MODULES) && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty())
-				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
+				body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:equipped")));
 
 			for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules())
-				body.add("- " + module.getName());
+				body.add(new TextComponentString("- " + module.getName()));
 		}
 
-		if(config.getConfig("securitycraft.showpasswords") && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
+		if(config.get(SHOW_PASSWORDS) && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 
-			body.add(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
+			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
 		}
 
-		if(config.getConfig("securitycraft.showcustomname") && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
-			String name = ((INameable) data.getTileEntity()).getCustomName();
+		if(config.get(SHOW_CUSTOM_NAME) && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
+			String name = ((INameable) data.getTileEntity()).getCustomName().getFormattedText();
 
-			body.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
 		}
-
-		return body;
 	}
-
-	@Override
-	public List<String> getWailaTail(ItemStack stack, List<String> tail, IWailaDataAccessor data, IWailaConfigHandler config) {
-		return tail;
-	}
-
-	@Override
-	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity tileEntity, NBTTagCompound tag, World world, BlockPos pos) {
-		return tag;
-	}
-
 }
