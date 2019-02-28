@@ -184,9 +184,7 @@ public class ConfigHandler {
 
 		public BooleanValue sayThanksMessage;
 		public BooleanValue checkForUpdates;
-
 		public DoubleValue alarmSoundVolume;
-
 		public DoubleValue cameraSpeed;
 
 		static {
