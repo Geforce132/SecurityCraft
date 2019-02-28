@@ -66,6 +66,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -561,7 +562,8 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onWorldLoad(WorldEvent.Load event)
 	{
-		event.getWorld().addEventListener(new SCWorldListener());
+		if(event.getWorld() instanceof World)
+			((World)event.getWorld()).addEventListener(new SCWorldListener());
 	}
 
 	@SubscribeEvent
@@ -678,7 +680,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
-	public void onMouseClicked(MouseEvent event) {
+	public void onMouseClicked(MouseClickedEvent event) {
 		if(Minecraft.getInstance().world != null)
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
