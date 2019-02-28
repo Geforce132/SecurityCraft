@@ -45,7 +45,6 @@ public class ConfigHandler {
 		public BooleanValue mineExplodesWhenInCreative;
 		
 		public DoubleValue portableRadarSearchRadius;
-
 		public IntValue usernameLoggerSearchRadius;
 
 		public IntValue laserBlockRange;
@@ -201,10 +200,10 @@ public class ConfigHandler {
 
 		public BooleanValue checkForUpdates;
 
-		//public FloatValue alarmSoundVolume;
+		public DoubleValue alarmSoundVolume;
 
-		//public FloatValue cameraSpeed;
-		
+		public DoubleValue cameraSpeed;
+
 		static {
 			Pair<ClientConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
 
@@ -223,17 +222,15 @@ public class ConfigHandler {
 					.comment("config.securitycraft:checkForUpdates.tooltip")
 					.define("checkForUpdates", true);
 			
-			/*
 			alarmSoundVolume = builder
 					.translation("config.securitycraft:alarmSoundVolume")
 					.comment("config.securitycraft:alarmSoundVolume.tooltip")
-					.define("alarmSoundVolume", 0.3F);
+					.defineInRange("alarmSoundVolume", 0.3D, 0.0D, Double.MAX_VALUE);
 			
 			cameraSpeed = builder
 					.translation("config.securitycraft:cameraSpeed")
 					.comment("config.securitycraft:cameraSpeed.tooltip")
-					.define("cameraSpeed", 2.0F);
-			*/
+					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 		}
 	}
 
