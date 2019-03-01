@@ -46,9 +46,9 @@ public class PlaySoundAtPos{
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		sound = buf.readString(Integer.MAX_VALUE);
+		sound = buf.readString(Integer.MAX_VALUE / 4);
 		volume = buf.readDouble();
-		category = buf.readString(Integer.MAX_VALUE);
+		category = buf.readString(Integer.MAX_VALUE / 4);
 	}
 
 	public void toBytes(PacketBuffer buf) {

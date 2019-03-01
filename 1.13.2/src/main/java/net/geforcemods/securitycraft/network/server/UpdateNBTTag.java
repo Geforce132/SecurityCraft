@@ -26,7 +26,7 @@ public class UpdateNBTTag {
 
 	public void fromBytes(PacketBuffer buf) {
 		stackTag = buf.readCompoundTag();
-		itemName = buf.readString(Integer.MAX_VALUE);
+		itemName = buf.readString(Integer.MAX_VALUE / 4);
 	}
 
 	public void toBytes(PacketBuffer buf) {

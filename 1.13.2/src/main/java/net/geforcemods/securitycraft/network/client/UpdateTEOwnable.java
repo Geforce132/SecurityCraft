@@ -54,8 +54,8 @@ public class UpdateTEOwnable
 	public void fromBytes(PacketBuffer buf)
 	{
 		pos = BlockPos.fromLong(buf.readLong());
-		name = buf.readString(Integer.MAX_VALUE);
-		uuid = buf.readString(Integer.MAX_VALUE);
+		name = buf.readString(Integer.MAX_VALUE / 4);
+		uuid = buf.readString(Integer.MAX_VALUE / 4);
 		customizable = buf.readBoolean();
 
 		if(customizable)

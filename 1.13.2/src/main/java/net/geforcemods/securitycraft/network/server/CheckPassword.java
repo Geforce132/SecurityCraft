@@ -37,7 +37,7 @@ public class CheckPassword {
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		password = buf.readString(Integer.MAX_VALUE);
+		password = buf.readString(Integer.MAX_VALUE / 4);
 	}
 
 	public static void encode(CheckPassword message, PacketBuffer packet)

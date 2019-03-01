@@ -25,8 +25,8 @@ public class Owner {
 		@Override
 		public Owner read(PacketBuffer buf)
 		{
-			String name = buf.readString(Integer.MAX_VALUE);
-			String uuid = buf.readString(Integer.MAX_VALUE);
+			String name = buf.readString(Integer.MAX_VALUE / 4);
+			String uuid = buf.readString(Integer.MAX_VALUE / 4);
 
 			return new Owner(name, uuid);
 		}

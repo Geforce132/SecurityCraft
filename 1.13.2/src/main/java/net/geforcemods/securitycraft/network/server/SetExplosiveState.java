@@ -28,7 +28,7 @@ public class SetExplosiveState{
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		state = buf.readString(Integer.MAX_VALUE);
+		state = buf.readString(Integer.MAX_VALUE / 4);
 	}
 
 	public void toBytes(PacketBuffer buf) {

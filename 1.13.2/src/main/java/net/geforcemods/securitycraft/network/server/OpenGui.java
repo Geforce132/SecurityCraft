@@ -39,7 +39,7 @@ public class OpenGui {
 	}
 
 	public void fromBytes(PacketBuffer buf) {
-		id = new ResourceLocation(buf.readString(Integer.MAX_VALUE));
+		id = new ResourceLocation(buf.readString(Integer.MAX_VALUE / 4));
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();

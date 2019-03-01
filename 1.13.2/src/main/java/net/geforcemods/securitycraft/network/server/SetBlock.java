@@ -51,7 +51,7 @@ public class SetBlock{
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		blockID = buf.readString(Integer.MAX_VALUE);
+		blockID = buf.readString(Integer.MAX_VALUE / 4);
 		meta = buf.readInt();
 	}
 

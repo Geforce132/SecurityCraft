@@ -40,7 +40,7 @@ public class UpdateLogger {
 		y = buf.readInt();
 		z = buf.readInt();
 		i = buf.readInt();
-		username = buf.readString(Integer.MAX_VALUE);
+		username = buf.readString(Integer.MAX_VALUE / 4);
 	}
 
 	public static void encode(UpdateLogger message, PacketBuffer packet)

@@ -32,7 +32,7 @@ public class SetScanType{
 		x = buf.readInt();
 		y = buf.readInt();
 		z = buf.readInt();
-		type = buf.readString(Integer.MAX_VALUE);
+		type = buf.readString(Integer.MAX_VALUE / 4);
 
 	}
 
