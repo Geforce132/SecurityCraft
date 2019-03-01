@@ -33,10 +33,15 @@ repositories {
     name = "ModMaven"
     url = "modmaven.k-4u.nl"
   }
+  maven { // TOP
+	name 'tterrag maven'
+	url "http://maven.tterrag.com/"
+  }
 }
 
 dependencies {
     compile files('libs/Hwyla-1.8.20-B35_1.12.deobf.jar')
+	compile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
     runtime 'mezz.jei:jei_1.12.2:4.11.0.204'
     deobfProvided 'mezz.jei:jei_1.12.2:4.11.0.204:api'
 }
