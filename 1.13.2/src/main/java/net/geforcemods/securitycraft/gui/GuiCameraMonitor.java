@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.server.MountCamera;
@@ -62,27 +63,27 @@ public class GuiCameraMonitor extends GuiContainer {
 		buttons.add(prevPageButton);
 		buttons.add(nextPageButton);
 
-		cameraButtons[0] = new GuiButtonExt(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[1] = new GuiButtonExt(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[2] = new GuiButtonExt(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#");
-		cameraButtons[3] = new GuiButtonExt(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[4] = new GuiButtonExt(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[5] = new GuiButtonExt(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#");
-		cameraButtons[6] = new GuiButtonExt(7, width / 2 - 38, height / 2 + 10, 20, 20, "#");
-		cameraButtons[7] = new GuiButtonExt(8, width / 2 - 8, height / 2 + 10, 20, 20, "#");
-		cameraButtons[8] = new GuiButtonExt(9, width / 2 + 22, height / 2 + 10, 20, 20, "#");
-		cameraButtons[9] = new GuiButtonExt(10, width / 2 - 38, height / 2 + 40, 80, 20, "#");
+		cameraButtons[0] = new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[1] = new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[2] = new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[3] = new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[4] = new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[5] = new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[6] = new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[7] = new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[8] = new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "#", this::actionPerformed);
+		cameraButtons[9] = new GuiButtonClick(10, width / 2 - 38, height / 2 + 40, 80, 20, "#", this::actionPerformed);
 
-		unbindButtons[0] = new GuiButtonExt(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[1] = new GuiButtonExt(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[2] = new GuiButtonExt(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x");
-		unbindButtons[3] = new GuiButtonExt(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[4] = new GuiButtonExt(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[5] = new GuiButtonExt(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x");
-		unbindButtons[6] = new GuiButtonExt(17, width / 2 - 19, height / 2 + 2, 8, 8, "x");
-		unbindButtons[7] = new GuiButtonExt(18, width / 2 + 11, height / 2 + 2, 8, 8, "x");
-		unbindButtons[8] = new GuiButtonExt(19, width / 2 + 41, height / 2 + 2, 8, 8, "x");
-		unbindButtons[9] = new GuiButtonExt(20, width / 2 + 41, height / 2 + 32, 8, 8, "x");
+		unbindButtons[0] = new GuiButtonClick(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[1] = new GuiButtonClick(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[2] = new GuiButtonClick(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[3] = new GuiButtonClick(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[4] = new GuiButtonClick(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[5] = new GuiButtonClick(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[6] = new GuiButtonClick(17, width / 2 - 19, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[7] = new GuiButtonClick(18, width / 2 + 11, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[8] = new GuiButtonClick(19, width / 2 + 41, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[9] = new GuiButtonClick(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
 
 		for(int i = 0; i < 10; i++) {
 			GuiButton button = cameraButtons[i];
@@ -141,11 +142,10 @@ public class GuiCameraMonitor extends GuiContainer {
 					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRenderer);
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomName().getFormattedText()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button) {
 		if(button.id == -1)
 			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));

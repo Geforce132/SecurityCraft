@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -8,7 +9,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiIMS extends GuiContainer{
 
@@ -28,7 +28,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttons.add(targetButton = new GuiButtonExt(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players")));
+		buttons.add(targetButton = new GuiButtonClick(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
 	}
 
 	/**
@@ -50,7 +50,6 @@ public class GuiIMS extends GuiContainer{
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

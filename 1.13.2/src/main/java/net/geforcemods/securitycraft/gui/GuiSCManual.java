@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -68,10 +69,10 @@ public class GuiSCManual extends GuiScreen {
 		startX = (width - 256) / 2;
 		mc.keyboardListener.enableRepeatEvents(true);
 
-		buttons.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
-		buttons.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
-		buttons.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true)); //next subpage
-		buttons.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false)); //previous subpage
+		buttons.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
+		buttons.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
+		buttons.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
+		buttons.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
 		updateRecipeAndIcons();
 	}
 
@@ -192,7 +193,6 @@ public class GuiSCManual extends GuiScreen {
 		return super.charTyped(typedChar, keyCode);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		if(button.id == 1)
 			nextPage();
@@ -379,10 +379,18 @@ public class GuiSCManual extends GuiScreen {
 	@OnlyIn(Dist.CLIENT)
 	static class ChangePageButton extends GuiButton {
 		private final boolean isForward;
+		private Consumer<GuiButton> onClick;
 
-		public ChangePageButton(int index, int xPos, int yPos, boolean forward){
+		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<GuiButton> onClick){
 			super(index, xPos, yPos, 23, 13, "");
 			isForward = forward;
+			this.onClick = onClick;
+		}
+
+		@Override
+		public void onClick(double mouseX, double mouseY)
+		{
+			onClick.accept(this);
 		}
 
 		/**

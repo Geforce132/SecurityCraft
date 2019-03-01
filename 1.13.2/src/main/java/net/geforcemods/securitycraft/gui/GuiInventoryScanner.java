@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -16,7 +17,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiInventoryScanner extends GuiContainer {
@@ -47,7 +47,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		mc.keyboardListener.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
-			buttons.add(new GuiButtonExt(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
+			buttons.add(new GuiButtonClick(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"), this::actionPerformed));
 	}
 
 	@Override
@@ -83,7 +83,6 @@ public class GuiInventoryScanner extends GuiContainer {
 		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

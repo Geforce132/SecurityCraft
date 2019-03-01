@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -11,7 +12,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiEditModule extends GuiContainer
 {
@@ -33,11 +33,11 @@ public class GuiEditModule extends GuiContainer
 
 		mc.keyboardListener.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 100, 15);
-		buttons.add(new GuiButtonExt(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
-		buttons.add(new GuiButtonExt(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
-		buttons.add(new GuiButtonExt(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
-		buttons.add(new GuiButtonExt(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
-		buttons.add(new GuiButtonExt(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
+		buttons.add(new GuiButtonClick(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		buttons.add(new GuiButtonClick(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		buttons.add(new GuiButtonClick(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		buttons.add(new GuiButtonClick(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		buttons.add(new GuiButtonClick(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
 		inputField.setTextColor(-1);
 		inputField.setDisabledTextColour(-1);
 		inputField.setEnableBackgroundDrawing(true);
@@ -95,7 +95,6 @@ public class GuiEditModule extends GuiContainer
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0: //add

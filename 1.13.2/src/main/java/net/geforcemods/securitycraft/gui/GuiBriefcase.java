@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -13,7 +14,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiBriefcase extends GuiContainer {
 
@@ -36,16 +36,16 @@ public class GuiBriefcase extends GuiContainer {
 		super.initGui();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			keycodeTopButtons[i] = new GuiButtonExt(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW);
+			keycodeTopButtons[i] = new GuiButtonClick(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
 			buttons.add(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			keycodeBottomButtons[i] = new GuiButtonExt(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW);
+			keycodeBottomButtons[i] = new GuiButtonClick(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
 			buttons.add(keycodeBottomButtons[i]);
 		}
 
-		continueButton = new GuiButtonExt(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">");
+		continueButton = new GuiButtonClick(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed);
 		buttons.add(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
@@ -83,7 +83,6 @@ public class GuiBriefcase extends GuiContainer {
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button) {
 		int[] keys = new int[]{Integer.parseInt(keycodeTextboxes[0].getText()), Integer.parseInt(keycodeTextboxes[1].getText()), Integer.parseInt(keycodeTextboxes[2].getText()), Integer.parseInt(keycodeTextboxes[3].getText())};
 

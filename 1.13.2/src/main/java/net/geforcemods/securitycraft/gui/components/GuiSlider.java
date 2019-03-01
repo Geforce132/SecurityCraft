@@ -21,7 +21,6 @@ package net.geforcemods.securitycraft.gui.components;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -118,13 +117,13 @@ public class GuiSlider extends GuiButtonExt
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
 	 */
 	@Override
-	protected void mouseDragged(Minecraft mc, int mouseX, int mouseY)
+	protected void onDrag(double mouseX, double mouseY, double mouseDX, double mouseDY)
 	{
 		if (visible)
 		{
 			if (dragging)
 			{
-				sliderValue = (mouseX - (x + 4)) / (double)(width - 8);
+				sliderValue = (mouseX - (x + 4)) / (width - 8);
 				updateSlider();
 			}
 

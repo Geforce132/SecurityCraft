@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.java.games.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -17,7 +17,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiKeyChanger extends GuiContainer {
@@ -39,7 +38,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		mc.keyboardListener.enableRepeatEvents(true);
-		buttons.add(confirmButton = new GuiButtonExt(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
+		buttons.add(confirmButton = new GuiButtonClick(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -132,7 +131,6 @@ public class GuiKeyChanger extends GuiContainer {
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

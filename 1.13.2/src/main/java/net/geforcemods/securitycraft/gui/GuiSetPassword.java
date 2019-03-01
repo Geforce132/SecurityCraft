@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -16,7 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiSetPassword extends GuiContainer {
@@ -40,7 +40,7 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		mc.keyboardListener.enableRepeatEvents(true);
-		buttons.add(saveAndContinueButton = new GuiButtonExt(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
+		buttons.add(saveAndContinueButton = new GuiButtonClick(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -119,7 +119,6 @@ public class GuiSetPassword extends GuiContainer {
 		saveAndContinueButton.displayString = !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode");
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

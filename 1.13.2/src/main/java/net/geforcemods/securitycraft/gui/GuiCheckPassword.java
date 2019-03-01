@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -15,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
@@ -40,17 +40,17 @@ public class GuiCheckPassword extends GuiContainer {
 		super.initGui();
 		mc.keyboardListener.enableRepeatEvents(true);
 
-		buttons.add(new GuiButtonExt(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0"));
-		buttons.add(new GuiButtonExt(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1"));
-		buttons.add(new GuiButtonExt(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2"));
-		buttons.add(new GuiButtonExt(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3"));
-		buttons.add(new GuiButtonExt(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4"));
-		buttons.add(new GuiButtonExt(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5"));
-		buttons.add(new GuiButtonExt(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6"));
-		buttons.add(new GuiButtonExt(7, width / 2 - 38, height / 2 + 10, 20, 20, "7"));
-		buttons.add(new GuiButtonExt(8, width / 2 - 8, height / 2 + 10, 20, 20, "8"));
-		buttons.add(new GuiButtonExt(9, width / 2 + 22, height / 2 + 10, 20, 20, "9"));
-		buttons.add(new GuiButtonExt(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-"));
+		buttons.add(new GuiButtonClick(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
+		buttons.add(new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
+		buttons.add(new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
+		buttons.add(new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
+		buttons.add(new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
+		buttons.add(new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
+		buttons.add(new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
+		buttons.add(new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
+		buttons.add(new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
+		buttons.add(new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
+		buttons.add(new GuiButtonClick(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
 		keycodeTextbox = new GuiTextField(11, fontRenderer, width / 2 - 37, height / 2 - 67, 77, 12);
 
@@ -124,7 +124,6 @@ public class GuiCheckPassword extends GuiContainer {
 		return false;
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

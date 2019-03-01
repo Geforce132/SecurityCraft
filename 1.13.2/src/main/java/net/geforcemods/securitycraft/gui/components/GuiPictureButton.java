@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.gui.components;
 
+import java.util.function.Consumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -23,8 +25,18 @@ public class GuiPictureButton extends GuiButton{
 	private int v;
 	private int texWidth;
 	private int texHeight;
+	private Consumer<GuiButton> onClick;
 
 	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
+		this(id, xPos, yPos, width, height, par7, itemToRender, null);
+	}
+
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight)
+	{
+		this(id, xPos, yPos, width, height, texture, textureX, textureY, textureWidth, textureHeight, null);
+	}
+
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<GuiButton> onClick) {
 		super(id, xPos, yPos, width, height, "");
 		itemRenderer = par7;
 
@@ -34,7 +46,7 @@ public class GuiPictureButton extends GuiButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight)
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<GuiButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "");
 
@@ -44,6 +56,14 @@ public class GuiPictureButton extends GuiButton{
 		v = textureY;
 		texWidth = textureWidth;
 		texHeight = textureHeight;
+		this.onClick = onClick;
+	}
+
+	@Override
+	public void onClick(double mouseX, double mouseY)
+	{
+		if(onClick != null)
+			onClick.accept(this);
 	}
 
 	/**
@@ -110,7 +130,7 @@ public class GuiPictureButton extends GuiButton{
 	}
 
 	public Item getItemStack() {
-		return (blockToRender != null ? Item.getItemFromBlock(blockToRender) : itemToRender);
+		return (blockToRender != null ? blockToRender.asItem() : itemToRender);
 	}
 
 }

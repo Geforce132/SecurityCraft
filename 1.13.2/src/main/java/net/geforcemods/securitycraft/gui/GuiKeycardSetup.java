@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -9,9 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiKeycardSetup extends GuiContainer{
 
@@ -31,9 +30,9 @@ public class GuiKeycardSetup extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttons.add(lvlOfSecurityButton = new GuiButtonExt(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, ""));
-		buttons.add(requiresExactCardButton = new GuiButtonExt(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher")));
-		buttons.add(new GuiButtonExt(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save")));
+		buttons.add(lvlOfSecurityButton = new GuiButtonClick(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, "", this::actionPerformed));
+		buttons.add(requiresExactCardButton = new GuiButtonClick(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"), this::actionPerformed));
+		buttons.add(new GuiButtonClick(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save"), this::actionPerformed));
 
 		updateButtonText();
 	}
@@ -74,7 +73,6 @@ public class GuiKeycardSetup extends GuiContainer{
 		}
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		switch(button.id){
 			case 0:

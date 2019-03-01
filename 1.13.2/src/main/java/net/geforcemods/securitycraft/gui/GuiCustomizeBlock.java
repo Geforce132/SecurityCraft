@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
@@ -24,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
@@ -65,7 +65,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 				}
 				else
 				{
-					optionButtons[i] = new GuiButtonExt(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option));
+					optionButtons[i] = new GuiButtonClick(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::actionPerformed);
 					optionButtons[i].packedFGColor = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
 				}
 
@@ -111,7 +111,6 @@ public class GuiCustomizeBlock extends GuiContainer{
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button) {
 		if(!(button instanceof GuiPictureButton)) {
 			Option<?> tempOption = tileEntity.customOptions()[button.id];

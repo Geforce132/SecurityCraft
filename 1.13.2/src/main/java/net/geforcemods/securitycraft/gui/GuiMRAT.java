@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
@@ -21,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiMRAT extends GuiContainer{
 
@@ -67,19 +67,19 @@ public class GuiMRAT extends GuiContainer{
 				switch(j)
 				{
 					case DEFUSE:
-						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters));
+						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters), this::actionPerformed);
 						guiButtons[i][j].enabled = active && bound && defusable;
 						break;
 					case ACTIVATE:
-						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.FLINT_AND_STEEL));
+						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.FLINT_AND_STEEL), this::actionPerformed);
 						guiButtons[i][j].enabled = !active && bound && defusable;
 						break;
 					case DETONATE:
-						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18);
+						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18, this::actionPerformed);
 						guiButtons[i][j].enabled = active && bound;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new GuiButtonExt(id++, btnX, btnY, 20, 20, "X");
+						guiButtons[i][j] = new GuiButtonClick(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
 						guiButtons[i][j].enabled = bound;
 						break;
 				}
@@ -131,7 +131,6 @@ public class GuiMRAT extends GuiContainer{
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton button){
 		int mine = button.id / 4;
 		int action = button.id % 4;
