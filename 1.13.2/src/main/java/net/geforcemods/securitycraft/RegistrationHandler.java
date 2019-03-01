@@ -217,9 +217,9 @@ public class RegistrationHandler
 		for(Block block : blockPages)
 		{
 			if(block == SCContent.reinforcedStone)
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
+				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
 			else
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info"));
+				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help." + block.getTranslationKey().substring(5) + ".info"));
 		}
 
 		registerItem(event, SCContent.codebreaker);
