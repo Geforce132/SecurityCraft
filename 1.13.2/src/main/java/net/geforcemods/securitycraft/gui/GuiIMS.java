@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -19,8 +18,8 @@ public class GuiIMS extends GuiContainer{
 	private GuiButton targetButton;
 	private int targetingOptionIndex = 0;
 
-	public GuiIMS(InventoryPlayer inventory, TileEntityIMS te) {
-		super(new ContainerGeneric(inventory, te));
+	public GuiIMS(TileEntityIMS te) {
+		super(new ContainerGeneric());
 		tileEntity = te;
 		targetingOptionIndex = tileEntity.getTargetingOption().modeIndex;
 	}

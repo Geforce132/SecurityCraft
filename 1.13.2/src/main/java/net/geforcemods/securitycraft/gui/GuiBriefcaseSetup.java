@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -10,9 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -25,8 +24,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
 	private boolean flag = false;
 	private GuiButton saveAndContinueButton;
 
-	public GuiBriefcaseSetup(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
-		super(new ContainerGeneric(inventoryPlayer, tileEntity));
+	public GuiBriefcaseSetup() {
+		super(new ContainerGeneric());
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 
 					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
-					Minecraft.getInstance().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getInstance().world, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ);
+					SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, Minecraft.getInstance().player.getPosition()));
 				}
 		}
 	}

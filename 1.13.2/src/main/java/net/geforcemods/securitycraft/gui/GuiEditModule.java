@@ -8,10 +8,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -21,9 +19,9 @@ public class GuiEditModule extends GuiContainer
 	private ItemStack module;
 	private GuiTextField inputField;
 
-	public GuiEditModule(InventoryPlayer inventory, ItemStack item, TileEntity te)
+	public GuiEditModule(ItemStack item)
 	{
-		super(new ContainerGeneric(inventory, te));
+		super(new ContainerGeneric());
 
 		module = item;
 	}

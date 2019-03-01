@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -29,6 +30,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ItemMineRemoteAccessTool extends Item {
@@ -41,14 +43,10 @@ public class ItemMineRemoteAccessTool extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
-		ItemStack stack = player.getHeldItem(hand);
+		if(!world.isRemote && player instanceof EntityPlayerMP)
+			NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.MRAT));
 
-		if(world.isRemote)
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		else{
-			player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		}
+		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -85,8 +83,8 @@ public class ItemMineRemoteAccessTool extends Item {
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 				}
 			}
-			else
-				player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			else if(player instanceof EntityPlayerMP)
+				NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.MRAT));
 
 		return EnumActionResult.SUCCESS;
 	}

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -36,9 +37,9 @@ public class ItemBriefcase extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_SETUP, player.getPosition()));
 			else
-				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
 		}
 
 		return EnumActionResult.FAIL;
@@ -55,9 +56,9 @@ public class ItemBriefcase extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_SETUP, player.getPosition()));
 			else
-				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);

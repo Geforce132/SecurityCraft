@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,8 +29,8 @@ public class GuiSetPassword extends GuiContainer {
 	private boolean isInvalid = false;
 	private GuiButton saveAndContinueButton;
 
-	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
-		super(new ContainerGeneric(inventoryPlayer, tileEntity));
+	public GuiSetPassword(TileEntity tileEntity, Block block){
+		super(new ContainerGeneric());
 		this.tileEntity = tileEntity;
 		blockName = ClientUtils.localize(block.getTranslationKey() + ".name");
 	}

@@ -4,10 +4,10 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -16,6 +16,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Particles;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockIMS extends BlockOwnable {
 
@@ -75,8 +77,9 @@ public class BlockIMS extends BlockOwnable {
 					world.setBlockState(pos, state.with(MINES, mines + 1));
 					((TileEntityIMS)world.getTileEntity(pos)).setBombsRemaining(mines + 1);
 				}
-				else
-					player.openGui(SecurityCraft.instance, GuiHandler.IMS_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				else if(player instanceof EntityPlayerMP)
+					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.IMS), pos);
+
 				return true;
 			}
 		}

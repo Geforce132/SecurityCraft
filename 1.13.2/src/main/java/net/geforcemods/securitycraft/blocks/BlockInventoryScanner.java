@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.TEInteractionObject;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -16,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
@@ -29,6 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockInventoryScanner extends BlockContainer {
 
@@ -82,8 +85,8 @@ public class BlockInventoryScanner extends BlockContainer {
 		if(world.isRemote)
 			return true;
 		else{
-			if(isFacingAnotherScanner(world, pos))
-				player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			if(isFacingAnotherScanner(world, pos) && player instanceof EntityPlayerMP)
+				NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.INVENTORY_SCANNER, world, pos), pos);
 			else
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 

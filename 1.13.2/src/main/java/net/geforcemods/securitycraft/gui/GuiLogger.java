@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiLogger extends GuiContainer{
@@ -13,8 +12,8 @@ public class GuiLogger extends GuiContainer{
 	private TileEntityLogger tileEntity;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
-	public GuiLogger(InventoryPlayer inventory, TileEntityLogger te) {
-		super(new ContainerGeneric(inventory, te));
+	public GuiLogger(TileEntityLogger te) {
+		super(new ContainerGeneric());
 		tileEntity = te;
 	}
 

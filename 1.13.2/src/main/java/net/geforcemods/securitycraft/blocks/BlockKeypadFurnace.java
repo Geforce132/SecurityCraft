@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.TEInteractionObject;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -15,6 +15,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -30,6 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvertible {
 
@@ -83,8 +85,11 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 		if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockKeypadFurnace.OPEN))
 			BlockUtils.setBlockProperty(world, pos, BlockKeypadFurnace.OPEN, true, false);
 
-		world.playEvent((EntityPlayer)null, 1006, pos, 0);
-		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		if(player instanceof EntityPlayerMP)
+		{
+			world.playEvent((EntityPlayer)null, 1006, pos, 0);
+			NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.KEYPAD_FURNACE, world, pos), pos);
+		}
 	}
 
 	@Override

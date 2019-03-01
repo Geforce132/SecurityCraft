@@ -42,7 +42,7 @@ public class GuiCameraMonitor extends GuiContainer {
 	private int page = 1;
 
 	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag) {
-		super(new ContainerGeneric(inventory, null));
+		super(new ContainerGeneric());
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;

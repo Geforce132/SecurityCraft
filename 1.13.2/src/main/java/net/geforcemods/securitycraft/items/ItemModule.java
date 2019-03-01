@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +18,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -23,25 +26,26 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ItemModule extends Item{
 
 	private final EnumCustomModules module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
-	private int guiToOpen;
+	private ResourceLocation guiToOpen;
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
 	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified){
-		this(module, nbtCanBeModified, false, -1, 0, 0);
+		this(module, nbtCanBeModified, false, null, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen){
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, ResourceLocation guiToOpen){
 		this(module, nbtCanBeModified, canBeCustomized, guiToOpen, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, ResourceLocation guiToOpen, int itemAddons, int blockAddons){
 		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
@@ -63,8 +67,8 @@ public class ItemModule extends Item{
 					ClientUtils.syncItemNBT(stack);
 				}
 
-				if(canBeCustomized())
-					player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				if(canBeCustomized() && player instanceof EntityPlayerMP)
+					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(guiToOpen));
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}

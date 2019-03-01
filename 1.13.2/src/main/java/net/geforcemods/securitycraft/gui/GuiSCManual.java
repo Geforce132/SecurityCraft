@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.glfw.GLFW;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -13,7 +15,6 @@ import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
-import net.java.games.input.Keyboard;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
@@ -123,7 +124,7 @@ public class GuiSCManual extends GuiScreen {
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world, 0) : null);
+			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
 			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
 			if(itemBlock != null){
@@ -178,17 +179,17 @@ public class GuiSCManual extends GuiScreen {
 	public void onGuiClosed(){
 		super.onGuiClosed();
 		lastPage = currentPage;
-		Keyboard.enableRepeatEvents(false);
+		mc.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode){
-		return super.charTyped(typedChar, keyCode);
-
-		if(keyCode == Keyboard.KEY_LEFT)
+		if(keyCode == GLFW.GLFW_KEY_LEFT)
 			previousSubpage();
-		else if(keyCode == Keyboard.KEY_RIGHT)
+		else if(keyCode == GLFW.GLFW_KEY_RIGHT)
 			nextSubpage();
+
+		return super.charTyped(typedChar, keyCode);
 	}
 
 	@Override
@@ -338,7 +339,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world, 0) : null);
+		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
 		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
 		if(te != null){

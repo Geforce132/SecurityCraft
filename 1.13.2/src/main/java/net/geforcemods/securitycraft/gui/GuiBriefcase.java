@@ -11,9 +11,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -29,8 +27,8 @@ public class GuiBriefcase extends GuiContainer {
 	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];
 	private GuiButton continueButton;
 
-	public GuiBriefcase(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
-		super(new ContainerGeneric(inventoryPlayer, tileEntity));
+	public GuiBriefcase() {
+		super(new ContainerGeneric());
 	}
 
 	@Override
@@ -144,7 +142,7 @@ public class GuiBriefcase extends GuiContainer {
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getInstance().player.posX, (int) Minecraft.getInstance().player.posY, (int) Minecraft.getInstance().player.posZ));
+						SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE, Minecraft.getInstance().player.getPosition()));
 				}
 
 				break;

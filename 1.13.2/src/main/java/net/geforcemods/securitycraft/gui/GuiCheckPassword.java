@@ -11,13 +11,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiCheckPassword extends GuiContainer {
@@ -30,8 +29,8 @@ public class GuiCheckPassword extends GuiContainer {
 	private GuiTextField keycodeTextbox;
 	private String currentString = "";
 
-	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
-		super(new ContainerGeneric(inventoryPlayer, tileEntity));
+	public GuiCheckPassword(TileEntity tileEntity, Block block){
+		super(new ContainerGeneric());
 		this.tileEntity = tileEntity;
 		blockName = ClientUtils.localize(block.getTranslationKey() + ".name");
 	}
@@ -100,12 +99,12 @@ public class GuiCheckPassword extends GuiContainer {
 		if(isValidChar(typedChar) && typedChar == '\u001B')
 			ClientUtils.closePlayerScreen();
 		else if(isValidChar(typedChar) && typedChar != ''){
-			Minecraft.getInstance().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}else if(isValidChar(typedChar) && typedChar == ''){
-			Minecraft.getInstance().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);

@@ -22,8 +22,8 @@ public class GuiKeycardSetup extends GuiContainer{
 	private boolean requiresExactCard = false;
 	private int lvlOfSecurity = 0;
 
-	public GuiKeycardSetup(InventoryPlayer inventory, TileEntityKeycardReader tile_entity) {
-		super(new ContainerGeneric(inventory, tile_entity));
+	public GuiKeycardSetup(TileEntityKeycardReader tile_entity) {
+		super(new ContainerGeneric());
 		keypadInventory = tile_entity;
 	}
 

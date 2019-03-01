@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -77,7 +78,7 @@ public class ItemCameraMonitor extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 
-			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, pos));
 			return EnumActionResult.SUCCESS;
 		}
 
@@ -95,7 +96,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResult.newResult(EnumActionResult.PASS, stack);
 			}
 
-			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, player.getPosition()));
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);

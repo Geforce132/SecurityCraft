@@ -12,7 +12,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -31,15 +30,15 @@ public class GuiKeyChanger extends GuiContainer {
 
 	private TileEntity tileEntity;
 
-	public GuiKeyChanger(InventoryPlayer inventoryPlayer, TileEntity tile_entity) {
-		super(new ContainerGeneric(inventoryPlayer, null));
+	public GuiKeyChanger(TileEntity tile_entity) {
+		super(new ContainerGeneric());
 		tileEntity = tile_entity;
 	}
 
 	@Override
 	public void initGui(){
 		super.initGui();
-		Keyboard.enableRepeatEvents(true);
+		mc.keyboardListener.enableRepeatEvents(true);
 		buttons.add(confirmButton = new GuiButtonExt(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
 		confirmButton.enabled = false;
 

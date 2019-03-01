@@ -15,13 +15,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiMRAT extends GuiContainer{
 
@@ -31,8 +31,8 @@ public class GuiMRAT extends GuiContainer{
 	private GuiButton[][] guiButtons = new GuiButton[6][4]; //6 buttons, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 
-	public GuiMRAT(InventoryPlayer inventory, ItemStack item) {
-		super(new ContainerGeneric(inventory, null));
+	public GuiMRAT(ItemStack item) {
+		super(new ContainerGeneric());
 
 		mrat = item;
 		xSize = 256;
@@ -79,7 +79,7 @@ public class GuiMRAT extends GuiContainer{
 						guiButtons[i][j].enabled = active && bound;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
+						guiButtons[i][j] = new GuiButtonExt(id++, btnX, btnY, 20, 20, "X");
 						guiButtons[i][j].enabled = bound;
 						break;
 				}

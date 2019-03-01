@@ -10,11 +10,12 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentString;
 
 public class ContainerBlockReinforcer extends Container
 {
 	private ItemStack blockReinforcer;
-	private InventoryBasic itemventory = new InventoryBasic("BlockReinforcer", true, 1);
+	private InventoryBasic itemventory = new InventoryBasic(new TextComponentString("BlockReinforcer"), 1);
 
 	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory)
 	{
