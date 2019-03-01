@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
@@ -219,8 +218,6 @@ public class SCContent
 	public static TileEntityType<TileEntityIMS> teTypeIms;
 	@ObjectHolder(SecurityCraft.MODID + ":protecto")
 	public static TileEntityType<TileEntityProtecto> teTypeProtecto;
-	@ObjectHolder(SecurityCraft.MODID + ":customizable")
-	public static TileEntityType<CustomizableSCTE> teTypeCustomizable;
 	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
 	public static TileEntityType<TileEntityScannerDoor> teTypeScannerDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")

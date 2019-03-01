@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -132,7 +133,7 @@ public class GuiSetPassword extends GuiContainer {
 				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
 				ClientUtils.closePlayerScreen();
-				Minecraft.getInstance().player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
+				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.INSERT_PASSWORD, Minecraft.getInstance().player.getPosition()));
 		}
 	}
 

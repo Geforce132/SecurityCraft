@@ -152,7 +152,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 
 			angle = 1.0F - angle;
 			angle = 1.0F - angle * angle * angle;
-			model.chestLid.rotateAngleX = -(angle * (float)Math.PI / 2.0F);
+			model.getLid().rotateAngleX = -(angle * (float)Math.PI / 2.0F);
 			model.renderAll();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();

@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
@@ -112,7 +111,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public static void checkInventory(EntityPlayer entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		if(te.getType().equals("redstone"))
+		if(te.getScanType().equals("redstone"))
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.size(); i++)
 			{
@@ -126,7 +125,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				}
 			}
 		}
-		else if(te.getType().equals("check"))
+		else if(te.getScanType().equals("check"))
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.size(); i++)
 			{
@@ -147,7 +146,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public static void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		if(te.getType().equals("redstone"))
+		if(te.getScanType().equals("redstone"))
 		{
 			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
 					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getItem().getItem() == stack.getItem()))
@@ -155,7 +154,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				updateInventoryScannerPower(te);
 			}
 		}
-		else if(te.getType().equals("check"))
+		else if(te.getScanType().equals("check"))
 		{
 			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
 					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getItem().getItem() == stack.getItem()))

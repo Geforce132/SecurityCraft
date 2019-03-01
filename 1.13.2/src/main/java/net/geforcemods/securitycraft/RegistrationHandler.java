@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -286,7 +285,6 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityKeypadFurnace::new).build(null).setRegistryName(new ResourceLocation("securitycraft:keypad_furnace")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityIMS::new).build(null).setRegistryName(new ResourceLocation("securitycraft:ims")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityProtecto::new).build(null).setRegistryName(new ResourceLocation("securitycraft:protecto")));
-		event.getRegistry().register(TileEntityType.Builder.create(CustomizableSCTE::new).build(null).setRegistryName(new ResourceLocation("securitycraft:customizable")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityScannerDoor::new).build(null).setRegistryName(new ResourceLocation("securitycraft:scanner_door")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecretSign::new).build(null).setRegistryName(new ResourceLocation("securitycraft:secret_sign")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMotionLight::new).build(null).setRegistryName(new ResourceLocation("securitycraft:motion_light")));

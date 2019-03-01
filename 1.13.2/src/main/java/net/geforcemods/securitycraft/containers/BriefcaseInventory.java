@@ -46,7 +46,7 @@ public class BriefcaseInventory implements IInventory {
 			int slot = item.getInt("Slot");
 
 			if(slot < getSizeInventory())
-				briefcaseInventory.set(slot, new ItemStack(item));
+				briefcaseInventory.set(slot, ItemStack.read(item));
 		}
 	}
 

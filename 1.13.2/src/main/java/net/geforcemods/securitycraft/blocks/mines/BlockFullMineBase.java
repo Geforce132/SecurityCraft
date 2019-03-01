@@ -66,8 +66,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state){
-		if (!world.isRemote)
-			explode(world, pos);
+		if (!world.isRemote() && world instanceof World)
+			explode((World)world, pos);
 	}
 
 	@Override

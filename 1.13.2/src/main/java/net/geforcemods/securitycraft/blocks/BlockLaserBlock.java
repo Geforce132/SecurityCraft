@@ -89,11 +89,11 @@ public class BlockLaserBlock extends BlockOwnable {
 	 */
 	@Override
 	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state) {
-		if(!world.isRemote)
+		if(!world.isRemote())
 			destroyAdjacentLasers(world, pos);
 	}
 
-	public static void destroyAdjacentLasers(World world, BlockPos pos)
+	public static void destroyAdjacentLasers(IWorld world, BlockPos pos)
 	{
 		for(EnumFacing facing : EnumFacing.values())
 		{

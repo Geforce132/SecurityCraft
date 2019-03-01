@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
@@ -73,7 +74,7 @@ public class RequestTEOwnableUpdate
 		NBTTagCompound tag = customizable ? ((CustomizableSCTE)te).write(new NBTTagCompound()) : null;
 
 		if(te != null && te instanceof IOwnable)
-			return new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag);
+			SecurityCraft.channel.reply(new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag), ctx.get());
 
 		ctx.get().setPacketHandled(true);
 	}

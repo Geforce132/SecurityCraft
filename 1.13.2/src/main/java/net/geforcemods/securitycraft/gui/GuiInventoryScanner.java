@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.java.games.input.Keyboard;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiInventoryScanner extends GuiContainer {
@@ -47,7 +47,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		mc.keyboardListener.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
-			buttons.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
+			buttons.add(new GuiButtonExt(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
 	}
 
 	@Override
@@ -67,9 +67,9 @@ public class GuiInventoryScanner extends GuiContainer {
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
-		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
+		else if(tileEntity.getScanType() != null && tileEntity.getScanType() != ""){
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRenderer.drawString((tileEntity.getType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRenderer.drawString((tileEntity.getScanType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
