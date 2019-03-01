@@ -196,16 +196,15 @@ public class ContainerBlockReinforcer extends Container
 
 		@Override
 		public boolean isItemValid(ItemStack stack)
-		{
-			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
-				return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch((vanillaBlock) -> {
-					return stack.getItem().equals(Item.getItemFromBlock(vanillaBlock));
-				});
+		{			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
+			return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch((vanillaBlock) -> {
+				return stack.getItem().equals(vanillaBlock.asItem());
 			});
+		});
 
-			return validBlock &&
-					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
+		return validBlock &&
+				(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
+					blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

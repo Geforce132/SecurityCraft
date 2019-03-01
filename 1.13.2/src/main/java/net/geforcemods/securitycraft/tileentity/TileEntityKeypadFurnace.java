@@ -326,7 +326,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			else if (furnaceItemStacks.get(2).getItem() == smeltResult.getItem())
 				furnaceItemStacks.get(2).grow(smeltResult.getCount()); // Forge BugFix: Results may have multiple items
 
-			if (furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && furnaceItemStacks.get(0).getMetadata() == 1 && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
+			if (furnaceItemStacks.get(0).getItem() == Blocks.SPONGE.asItem() && furnaceItemStacks.get(0).getMetadata() == 1 && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
 				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
 
 			furnaceItemStacks.get(0).shrink(1);

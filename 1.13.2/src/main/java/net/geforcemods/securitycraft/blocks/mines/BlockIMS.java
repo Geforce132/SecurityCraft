@@ -18,7 +18,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Particles;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
@@ -69,7 +68,7 @@ public class BlockIMS extends BlockOwnable {
 				ItemStack held = player.getHeldItem(hand);
 				int mines = state.get(MINES);
 
-				if(held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4)
+				if(held.getItem() == SCContent.bouncingBetty.asItem() && mines < 4)
 				{
 					if(!player.isCreative())
 						held.shrink(1);

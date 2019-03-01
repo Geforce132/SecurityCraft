@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.itemgroups;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,7 +16,7 @@ public class ItemGroupSCExplosives extends ItemGroup{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon(){
-		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
+		return new ItemStack(SCContent.mine.asItem());
 	}
 
 	@Override
