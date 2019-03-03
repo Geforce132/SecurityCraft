@@ -28,7 +28,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -279,26 +281,26 @@ public class GuiSCManual extends GuiScreen {
 			{
 				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
 
-				if(object instanceof ShapedRecipes){
-					ShapedRecipes recipe = (ShapedRecipes) object;
+				if(object instanceof ShapedRecipe){
+					ShapedRecipe recipe = (ShapedRecipe) object;
 
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.recipeItems.get(i));
+							recipeItems.set(i, recipe.getIngredients().get(i));
 
 						this.recipe = recipeItems;
 						break;
 					}
-				}else if(object instanceof ShapelessRecipes){
-					ShapelessRecipes recipe = (ShapelessRecipes) object;
+				}else if(object instanceof ShapelessRecipe){
+					ShapelessRecipe recipe = (ShapelessRecipe) object;
 
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
+						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.recipeItems.get(i));
+							recipeItems.set(i, recipe.getIngredients().get(i));
 
 						this.recipe = recipeItems;
 						break;
