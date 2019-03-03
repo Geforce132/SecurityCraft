@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiConfirmOpenLink;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Invisible "button" which allows you to add clickable links to your GUIs.
@@ -15,6 +17,7 @@ import net.minecraft.util.text.TextFormatting;
  *
  * @author Geforce
  */
+@OnlyIn(Dist.CLIENT)
 public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 
 	private final String url;

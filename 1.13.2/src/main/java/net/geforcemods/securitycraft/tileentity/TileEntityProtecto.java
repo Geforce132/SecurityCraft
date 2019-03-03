@@ -25,7 +25,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase) {
-			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().getFormattedText().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
 					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))
 				return false;

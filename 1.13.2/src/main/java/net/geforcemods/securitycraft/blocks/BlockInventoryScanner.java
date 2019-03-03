@@ -30,7 +30,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockInventoryScanner extends BlockContainer {
@@ -243,7 +243,7 @@ public class BlockInventoryScanner extends BlockContainer {
 	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side)
 	{
 		if(!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType() == null){
-			SecurityCraft.log("type is null on the " + FMLLoader.getDist() + " side");
+			SecurityCraft.log("type is null on the " + EffectiveSide.get() + " side");
 			return 0;
 		}
 

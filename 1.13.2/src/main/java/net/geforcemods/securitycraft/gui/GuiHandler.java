@@ -38,6 +38,7 @@ public class GuiHandler {
 	public static final ResourceLocation DISGUISE_MODULE = new ResourceLocation(SecurityCraft.MODID, "disguise_module");
 	public static final ResourceLocation BLOCK_REINFORCER = new ResourceLocation(SecurityCraft.MODID, "block_reinforcer");
 	public static final ResourceLocation MODULES = new ResourceLocation(SecurityCraft.MODID, "modules");
+	public static final ResourceLocation MANUAL = new ResourceLocation(SecurityCraft.MODID, "manual");
 
 	public static GuiScreen getClientGuiElement(OpenContainer message)
 	{
@@ -122,6 +123,8 @@ public class GuiHandler {
 			return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 		else if(message.getId().equals(MODULES) && (player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule))
 			return new GuiEditModule(player.getHeldItemMainhand());
+		else if(message.getId().equals(MANUAL))
+			return new GuiSCManual();
 
 		return null;
 	}

@@ -31,8 +31,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockKeycardReader extends BlockOwnable  {
 
@@ -121,7 +119,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+	public void tick(IBlockState state, World world, BlockPos pos, Random random){
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
@@ -132,7 +130,6 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void randomTick(IBlockState state, World world, BlockPos pos, Random rand){
 		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;

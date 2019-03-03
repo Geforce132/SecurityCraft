@@ -30,8 +30,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
@@ -47,7 +45,6 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.CUTOUT;
@@ -89,7 +86,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer)
-					world.getMinecraftServer().sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.securitycraft:cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					entity.sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.securitycraft:cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName().getFormattedText()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}

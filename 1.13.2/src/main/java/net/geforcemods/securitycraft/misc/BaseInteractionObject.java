@@ -6,6 +6,7 @@ import static net.geforcemods.securitycraft.gui.GuiHandler.CAMERA_MONITOR;
 import static net.geforcemods.securitycraft.gui.GuiHandler.DISGUISE_MODULE;
 import static net.geforcemods.securitycraft.gui.GuiHandler.IMS;
 import static net.geforcemods.securitycraft.gui.GuiHandler.INSERT_PASSWORD;
+import static net.geforcemods.securitycraft.gui.GuiHandler.MANUAL;
 import static net.geforcemods.securitycraft.gui.GuiHandler.MODULES;
 import static net.geforcemods.securitycraft.gui.GuiHandler.MRAT;
 import static net.geforcemods.securitycraft.gui.GuiHandler.SETUP_KEYCARD_READER;
@@ -69,6 +70,8 @@ public class BaseInteractionObject implements IInteractionObject
 			return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
 		else if(id.equals(BLOCK_REINFORCER))
 			return new ContainerBlockReinforcer(player, player.inventory);
+		else if(id.equals(MANUAL))
+			return new ContainerGeneric();
 
 		return null;
 	}

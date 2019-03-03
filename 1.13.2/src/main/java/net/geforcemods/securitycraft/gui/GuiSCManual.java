@@ -39,6 +39,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiSCManual extends GuiScreen {
 
 	private ResourceLocation infoBookTexture = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
@@ -378,7 +379,6 @@ public class GuiSCManual extends GuiScreen {
 		subpages.add(helpInfo);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	static class ChangePageButton extends GuiButton {
 		private final boolean isForward;
 		private Consumer<GuiButton> onClick;

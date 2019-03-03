@@ -14,11 +14,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ClientUtils{
 
-	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
 	}
@@ -28,21 +26,17 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void takeScreenshot() {
-		if(FMLLoader.getDist() == Dist.CLIENT)
-		{
-			ScreenShotHelper.saveScreenshot(
-					Minecraft.getInstance().gameDir,
-					Minecraft.getInstance().mainWindow.getWidth(),
-					Minecraft.getInstance().mainWindow.getHeight(),
-					Minecraft.getInstance().getFramebuffer(),
-					msg -> {
-						Minecraft.getInstance().addScheduledTask(() -> {
-							Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg);
-						});
+		ScreenShotHelper.saveScreenshot(
+				Minecraft.getInstance().gameDir,
+				Minecraft.getInstance().mainWindow.getWidth(),
+				Minecraft.getInstance().mainWindow.getHeight(),
+				Minecraft.getInstance().getFramebuffer(),
+				msg -> {
+					Minecraft.getInstance().addScheduledTask(() -> {
+						Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg);
 					});
-		}
+				});
 	}
 
 	/**
@@ -50,7 +44,6 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
 		Long time = Long.valueOf(Minecraft.getInstance().world.getDayTime());
 
@@ -66,7 +59,6 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.write(tag);
@@ -78,12 +70,10 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.channel.sendToServer(new UpdateNBTTag(item));
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void openURL(String url) {
 		URI uri = null;
 

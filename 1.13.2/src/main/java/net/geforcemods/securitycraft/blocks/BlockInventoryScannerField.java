@@ -26,15 +26,14 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.LogicalSide;
 
 public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
 
@@ -51,7 +50,6 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
@@ -176,7 +174,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		te.setCooldown(60);
 		checkAndUpdateTEAppropriately(te);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
-		SecurityCraft.log("Emitting redstone on the " + FMLLoader.getDist() + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
+		SecurityCraft.log("Emitting redstone on the " + (te.getWorld().isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER) + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
 	}
 
 	/**
@@ -297,13 +295,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		return new BlockStateContainer(this, new IProperty[] {FACING});
 	}
 
-	@OnlyIn(Dist.CLIENT)
-
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
-	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
 	{
 		return ItemStack.EMPTY;
 	}

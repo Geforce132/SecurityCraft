@@ -14,7 +14,10 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiPictureButton extends GuiButton{
 
 	private final ItemRenderer itemRenderer;

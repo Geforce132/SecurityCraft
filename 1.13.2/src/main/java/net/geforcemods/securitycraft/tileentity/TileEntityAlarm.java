@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.LogicalSide;
 
 public class TileEntityAlarm extends TileEntityOwnable {
 
@@ -35,7 +35,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 			if(isPowered && cooldown == 0){
 				TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ClientConfig.CONFIG.alarmSoundVolume.get(), 1.0F);
+				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ClientConfig.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
 				te.setCooldown((ServerConfig.CONFIG.alarmTickDelay.get() * 20));
 				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
 				world.setTileEntity(pos, te);
@@ -77,7 +77,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	}
 
 	public void setCooldown(int cooldown){
-		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + FMLLoader.getDist());
+		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + (world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER));
 		this.cooldown = cooldown;
 	}
 

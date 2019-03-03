@@ -64,8 +64,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
@@ -595,14 +593,12 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void onDrawBlockHighlight(DrawBlockHighlightEvent event)
 	{
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
@@ -610,7 +606,6 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent event) {
 		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
 			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
@@ -670,21 +665,18 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void fovUpdateEvent(FOVUpdateEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
 			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void renderHandEvent(RenderHandEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public void onMouseClicked(MouseClickedEvent event) {
 		if(Minecraft.getInstance().world != null)
 		{

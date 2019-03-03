@@ -29,6 +29,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockUtils{
@@ -230,7 +231,7 @@ public class BlockUtils{
 		return world.getBlockState(pos).getValue(property);
 	}
 
-	public static Material getBlockMaterial(World world, BlockPos pos){
+	public static Material getBlockMaterial(IWorldReaderBase world, BlockPos pos){
 		return world.getBlockState(pos).getMaterial();
 	}
 

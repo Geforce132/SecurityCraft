@@ -17,8 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, ICustomWailaDisplay {
 
@@ -47,7 +45,6 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs));
 	}

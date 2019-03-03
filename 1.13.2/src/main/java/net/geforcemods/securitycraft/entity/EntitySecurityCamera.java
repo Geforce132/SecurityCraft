@@ -29,8 +29,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -136,8 +134,8 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	public boolean shouldDismountInWater(Entity rider){
-		return true;
+	public boolean canBeRiddenInWater(Entity rider){
+		return false;
 	}
 
 	@Override
@@ -184,7 +182,6 @@ public class EntitySecurityCamera extends Entity{
 			}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void checkKeysPressed() {
 		if (Minecraft.getInstance().gameSettings.keyBindSneak.isPressed())
 			stopRiding();
@@ -345,7 +342,6 @@ public class EntitySecurityCamera extends Entity{
 		return zoomAmount;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void updateServerRotation(){
 		SecurityCraft.channel.sendToServer(new SetCameraRotation(rotationYaw, rotationPitch));
 	}

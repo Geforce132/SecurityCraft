@@ -2,7 +2,7 @@
 
 - New: [1.12.2] The One Probe support (https://minecraft.curseforge.com/projects/the-one-probe)
 - Fix: Ownership does not get set correctly when creating Password-protected Chests/Furnaces
-- Fix: Update some translations to reflect changes in functionality
+- Fix: Update some manual entries to reflect changes in functionality
 - Fix: [1.8+] Crash when rightclicking the Keycard Reader with a Keycard without having it set up first
 - Fix: [1.12.2] French translation does not work
 - Fix: [1.12.2] Password-protected Chest doesn't show in the inventory under certain circumstances

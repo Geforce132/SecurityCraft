@@ -64,7 +64,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((EntityPlayer)attacked))
 			{
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
 				setSentMessage();
 			}
 
@@ -99,12 +99,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {
-		if(!player.getName().equals(lastPlayerName)) {
+		if(!player.getName().getFormattedText().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName().getFormattedText();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().getFormattedText().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {

@@ -17,6 +17,7 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.tileentity.TileEntity;
@@ -26,14 +27,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockLaserField extends BlockContainer implements IIntersectable{
@@ -51,7 +51,6 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
@@ -93,7 +92,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
+						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().getFormattedText().toLowerCase()))
 							return;
 
 						BlockUtils.setBlockProperty(world, offsetPos, BlockLaserBlock.POWERED, true, true);
@@ -171,12 +170,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
-	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
 	{
 		return ItemStack.EMPTY;
 	}

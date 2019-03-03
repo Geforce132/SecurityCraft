@@ -33,13 +33,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
@@ -215,7 +215,7 @@ public class SecurityCraft {
 
 	public static void log(String line, boolean isSevereError) {
 		if(ServerConfig.CONFIG.debug.get())
-			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLLoader.getDist() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLLoader.getDist() + "] " + line);
+			System.out.println(isSevereError ? "{SecurityCraft} {" + EffectiveSide.get() + "} {Severe}: " + line : "[SecurityCraft] [" + EffectiveSide.get() + "] " + line);
 	}
 
 	public static String getVersion() {

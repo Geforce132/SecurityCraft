@@ -76,7 +76,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
 					continue;
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase()))
+				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
 				double targetX = entity.posX - (pos.getX() + 0.5D);

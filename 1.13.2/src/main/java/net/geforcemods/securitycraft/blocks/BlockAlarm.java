@@ -86,11 +86,11 @@ public class BlockAlarm extends BlockOwnable {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+	public void tick(IBlockState state, World world, BlockPos pos, Random random){
 		if(!world.isRemote){
 			playSoundAndUpdate(world, pos);
 
-			world.scheduleUpdate(pos, state.getBlock(), 5);
+			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 		}
 	}
 

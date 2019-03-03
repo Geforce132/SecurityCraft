@@ -20,8 +20,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 
@@ -107,7 +105,6 @@ public class ItemBlockReinforcedSlabs2 extends ItemBlock {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side, EntityPlayer player, ItemStack stack){
 		BlockPos originalPos = pos;
 		IProperty<?> variantProperty = singleSlab.getVariantProperty();

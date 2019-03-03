@@ -7,8 +7,6 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.init.Particles;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityBouncingBetty extends Entity {
 
@@ -117,7 +115,6 @@ public class EntityBouncingBetty extends Entity {
 		fuse = tag.getByte("Fuse");
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public float getShadowSize()
 	{
 		return 0.0F;

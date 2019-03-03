@@ -121,14 +121,14 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	@Override
 	public boolean convert(EntityPlayer player, World world, BlockPos pos)
 	{
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).get(FACING);
 		TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
-		NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
+		NBTTagCompound tag = chest.write(new NBTTagCompound());
 
 		chest.clear();
-		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
-		((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
+		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().with(FACING, facing));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName().getFormattedText(), player.getUniqueID().toString());
+		((TileEntityChest)world.getTileEntity(pos)).read(tag);
 		return true;
 	}
 }

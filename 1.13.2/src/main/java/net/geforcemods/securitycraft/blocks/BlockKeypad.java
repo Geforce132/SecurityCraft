@@ -40,8 +40,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
 
@@ -53,7 +51,6 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
@@ -73,7 +70,6 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 		return BlockFaceShape.SOLID;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public boolean shouldSideBeRendered(IBlockReader world, BlockPos pos, EnumFacing side) {
 		if(world.getTileEntity(pos) == null)
 			return true;

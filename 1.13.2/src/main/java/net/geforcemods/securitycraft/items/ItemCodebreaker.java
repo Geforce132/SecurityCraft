@@ -23,7 +23,6 @@ public class ItemCodebreaker extends Item {
 	 * Return an item rarity from EnumRarity
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public EnumRarity getRarity(ItemStack stack){
 		return EnumRarity.RARE;
 	}

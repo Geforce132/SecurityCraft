@@ -85,7 +85,6 @@ public class ItemCameraMonitor extends Item {
 		return EnumActionResult.SUCCESS;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);

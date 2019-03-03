@@ -89,8 +89,9 @@ public class BlockFullMineFalling extends BlockFullMineBase
 	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
 	 * of whether the block can receive random update ticks
 	 */
+	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
+	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(16) == 0)
 		{

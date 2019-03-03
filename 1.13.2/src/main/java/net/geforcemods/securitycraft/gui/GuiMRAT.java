@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiMRAT extends GuiContainer{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
@@ -186,7 +187,6 @@ public class GuiMRAT extends GuiContainer{
 			return new int[] {0,0,0};
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player)
 	{
 		if(stack.getTag() == null)

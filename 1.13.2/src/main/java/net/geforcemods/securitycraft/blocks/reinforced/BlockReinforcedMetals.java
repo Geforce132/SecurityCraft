@@ -23,8 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
 {
@@ -51,7 +49,6 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		BlockReinforcedMetals.EnumType[] values = BlockReinforcedMetals.EnumType.values();

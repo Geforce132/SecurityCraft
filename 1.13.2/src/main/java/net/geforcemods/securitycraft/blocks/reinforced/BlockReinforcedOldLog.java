@@ -16,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.IProperty;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinforcedBlock
 {
@@ -39,7 +37,6 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		list.add(new ItemStack(this, 1, BlockPlanks.EnumType.OAK.getMetadata()));

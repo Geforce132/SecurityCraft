@@ -3,11 +3,14 @@ package net.geforcemods.securitycraft.models;
 import net.minecraft.client.renderer.entity.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * IMSBomb - Geforce
  * Created using Tabula 4.1.1
  */
+@OnlyIn(Dist.CLIENT)
 public class ModelIMSBomb extends ModelBase {
 	public ModelRenderer shape1;
 

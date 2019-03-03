@@ -32,8 +32,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
@@ -205,7 +203,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * Returns an integer between 0 and the passed value representing how close the current item is to being completely
 	 * cooked
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public int getCookProgressScaled(int scaleFactor)
 	{
 		return cookTime * scaleFactor / 200;
@@ -215,7 +212,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	 * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
 	 * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public int getBurnTimeRemainingScaled(int scaleFactor)
 	{
 		if (currentItemBurnTime == 0)
@@ -229,7 +225,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return furnaceBurnTime > 0;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static boolean isBurning(IInventory inventory)
 	{
 		return inventory.getField(0) > 0;

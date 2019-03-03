@@ -17,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
 
@@ -65,7 +63,6 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;

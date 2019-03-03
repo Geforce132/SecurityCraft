@@ -27,8 +27,6 @@ import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -40,7 +38,6 @@ public class ClientProxy implements IProxy {
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void registerVariants() {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_planks"),
 				new ResourceLocation("securitycraft:reinforced_planks_oak"),
@@ -275,7 +272,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void registerRenderThings(){
 		KeyBindings.init();
 

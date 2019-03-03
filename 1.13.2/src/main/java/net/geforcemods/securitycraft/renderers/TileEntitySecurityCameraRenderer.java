@@ -14,7 +14,10 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEntitySecurityCamera> {
 
 	private static final ModelSecurityCamera modelSecurityCamera = new ModelSecurityCamera();

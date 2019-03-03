@@ -51,7 +51,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
 			if(open)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
 		}
 	}
 

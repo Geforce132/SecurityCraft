@@ -24,8 +24,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ICustomWailaDisplay {
 
@@ -63,7 +61,6 @@ public class BlockReinforcedSlabs extends BlockSlab implements ICustomWailaDispl
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs));
 	}

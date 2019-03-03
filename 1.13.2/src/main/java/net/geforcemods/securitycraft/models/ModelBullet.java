@@ -3,7 +3,10 @@ package net.geforcemods.securitycraft.models;
 import net.minecraft.client.renderer.entity.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ModelBullet extends ModelBase
 {
 	public ModelRenderer bullet;

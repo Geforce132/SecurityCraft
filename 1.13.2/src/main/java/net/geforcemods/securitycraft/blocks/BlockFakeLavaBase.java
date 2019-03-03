@@ -63,7 +63,6 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return ItemStack.EMPTY;
 	}

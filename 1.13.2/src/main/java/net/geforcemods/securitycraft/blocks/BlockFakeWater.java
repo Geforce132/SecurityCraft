@@ -20,8 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockFakeWater extends BlockDynamicLiquid{
 
@@ -290,7 +288,6 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	 * Gets an item for the block being called on. Args: world, x, y, z
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;

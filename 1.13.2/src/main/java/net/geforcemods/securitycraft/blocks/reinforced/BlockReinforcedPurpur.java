@@ -25,8 +25,6 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
 {
@@ -74,7 +72,6 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		list.add(new ItemStack(this, 1, BlockReinforcedPurpur.EnumType.DEFAULT.getMetadata()));

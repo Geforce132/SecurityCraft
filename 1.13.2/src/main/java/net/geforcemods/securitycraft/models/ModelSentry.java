@@ -5,11 +5,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.model.ModelBase;
 import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Sentry - bl4ckscor3
  * Created using Tabula 7.0.0
  */
+@OnlyIn(Dist.CLIENT)
 public class ModelSentry extends ModelBase
 {
 	public ModelRenderer base;

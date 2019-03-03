@@ -8,6 +8,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
@@ -15,10 +16,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 {
@@ -99,8 +99,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
 	{
 		return new ItemStack(SCContent.scannerDoorItem);
 	}
