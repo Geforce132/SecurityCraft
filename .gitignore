@@ -7,3 +7,7 @@
 *.settings
 *.project
 *bin
+*.launch
+*/run/
+*.cfg
+*.log

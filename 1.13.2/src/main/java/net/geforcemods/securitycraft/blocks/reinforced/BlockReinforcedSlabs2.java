@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -21,12 +20,13 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvider, ICustomWailaDisplay {
+public class BlockReinforcedSlabs2 extends BlockSlab implements ICustomWailaDisplay {
 
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs2.EnumType.class);
 
@@ -117,7 +117,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createTileEntity(IBlockState state, IBlockReader reader) {
 		return new TileEntityOwnable();
 	}
 

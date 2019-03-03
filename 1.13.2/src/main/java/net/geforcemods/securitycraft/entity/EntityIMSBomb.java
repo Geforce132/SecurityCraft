@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -26,17 +27,15 @@ public class EntityIMSBomb extends EntityFireball {
 	}
 
 	public EntityIMSBomb(World world, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, x, y, z, targetX, targetY, targetZ);
+		super(EntityType.FIREBALL, x, y, z, targetX, targetY, targetZ, world, 0.25F, 0.3F);
 		playerName = targetEntity.getName().getFormattedText();
 		launchHeight = height;
-		setSize(0.25F, 0.3F);
 	}
 
 	public EntityIMSBomb(World world, EntityLivingBase targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, x, y, z, targetX, targetY, targetZ);
+		super(EntityType.FIREBALL, targetEntity, targetX, targetY, targetZ, world, 0.25F, 0.3F);
 		targetMob = targetEntity;
 		launchHeight = height;
-		setSize(0.25F, 0.3F);
 	}
 
 	@Override

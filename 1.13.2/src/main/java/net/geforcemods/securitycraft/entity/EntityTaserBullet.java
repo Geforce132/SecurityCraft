@@ -10,7 +10,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.server.FMLServerHandler;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class EntityTaserBullet extends EntityThrowable {
 
@@ -54,7 +54,7 @@ public class EntityTaserBullet extends EntityThrowable {
 			{
 				if(result.entity instanceof EntityPlayer)
 				{
-					if(((EntityPlayer)result.entity).abilities.isCreativeMode || (EntityLivingBase)result.entity == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+					if(((EntityPlayer)result.entity).abilities.isCreativeMode || (EntityLivingBase)result.entity == getThrower() || !ServerLifecycleHooks.getCurrentServer().isPVPEnabled())
 						return;
 				}
 

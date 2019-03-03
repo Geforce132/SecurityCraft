@@ -8,19 +8,19 @@ import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockReinforcedStone extends BlockStone implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedStone extends BlockStone implements ICustomWailaDisplay, IReinforcedBlock
 {
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
+	public TileEntity createTileEntity(IBlockState state, IBlockReader reader)
 	{
 		return new TileEntityOwnable();
 	}
