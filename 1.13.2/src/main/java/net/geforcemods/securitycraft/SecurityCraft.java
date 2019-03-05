@@ -47,8 +47,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
-	//********************************* This is v1.8.11 for MC 1.13.2!
-	protected static final String VERSION = "v1.8.11-beta1";
+	//********************************* This is v1.8.12 for MC 1.13.2!
+	protected static final String VERSION = "v1.8.12-beta1";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static IProxy proxy;
 	public static SecurityCraft instance;
