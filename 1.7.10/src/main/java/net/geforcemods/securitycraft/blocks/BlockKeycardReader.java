@@ -66,22 +66,28 @@ public class BlockKeycardReader extends BlockOwnable {
 		if(ModuleUtils.checkForModule(world, x, y, z, player, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(world, x, y, z, player, EnumCustomModules.BLACKLIST))
 			return;
 
-		if((((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword() != null) && (!((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) <= ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack) || ((TileEntityKeycardReader) world.getTileEntity(x, y, z)).doesRequireExactKeycard() && Integer.parseInt(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()) == ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack))){
-			if(stack.getMetadata() == 3 && stack.stackTagCompound != null && !player.capabilities.isCreativeMode){
-				stack.stackTagCompound.setInteger("Uses", stack.stackTagCompound.getInteger("Uses") - 1);
+		int requiredLevel = -1;
+		int cardLvl = ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack);
 
-				if(stack.stackTagCompound.getInteger("Uses") <= 0)
+		if(((TileEntityKeycardReader)world.getTileEntity(x, y, z)).getPassword() != null)
+			requiredLevel = Integer.parseInt(((TileEntityKeycardReader)world.getTileEntity(x, y, z)).getPassword());
+
+		if((!((TileEntityKeycardReader)world.getTileEntity(x, y, z)).doesRequireExactKeycard() && requiredLevel <= cardLvl || ((TileEntityKeycardReader)world.getTileEntity(x, y, z)).doesRequireExactKeycard() && requiredLevel == cardLvl)){
+			if(cardLvl == 6 && stack.getTagCompound() != null && !player.capabilities.isCreativeMode){
+				stack.getTagCompound().setInteger("Uses", stack.getTagCompound().getInteger("Uses") - 1);
+
+				if(stack.getTagCompound().getInteger("Uses") <= 0)
 					stack.stackSize--;
 			}
 
-			activate(world, x, y, z);
+			BlockKeycardReader.activate(world, x, y, z);
 		}
 
-		if(world.isRemote)
+		if(!world.isRemote)
 		{
-			if(((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword() != null)
-				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()).replace("#c", "" + ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack)), EnumChatFormatting.RED);
-			else
+			if(requiredLevel != -1 && ((TileEntityKeycardReader)world.getTileEntity(x, y, z)).doesRequireExactKeycard() && requiredLevel != cardLvl)
+				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(x, y, z)).getPassword()).replace("#c", "" + cardLvl), EnumChatFormatting.RED);
+			else if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, StatCollector.translateToLocal("tile.securitycraft:keycardReader.name"), StatCollector.translateToLocal("messages.securitycraft:keycardReader.notSet"), EnumChatFormatting.RED);
 		}
 	}
