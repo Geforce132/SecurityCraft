@@ -46,7 +46,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 			{
 				EntityLivingBase potentialTarget = list.get(i);
 
-				if(potentialTarget instanceof EntityPlayer && !((EntityPlayer)potentialTarget).capabilities.isCreativeMode && sentry.getOwner().isOwner(((EntityPlayer)potentialTarget)))
+				if(potentialTarget instanceof EntityPlayer && !((EntityPlayer)potentialTarget).capabilities.isCreativeMode && !sentry.getOwner().isOwner(((EntityPlayer)potentialTarget)))
 					break;
 				else if(potentialTarget instanceof EntityMob && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
