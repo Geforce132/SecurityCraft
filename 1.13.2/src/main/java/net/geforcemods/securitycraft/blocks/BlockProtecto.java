@@ -4,14 +4,17 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
@@ -20,10 +23,11 @@ import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockProtecto extends BlockOwnable {
 
-	public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
+	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
 
 	public BlockProtecto(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(7));
+		setDefaultState(stateContainer.getBaseState().with(ACTIVATED, false));
 	}
 
 	@Override
@@ -37,27 +41,20 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getDefaultState().withProperty(ACTIVATED, false);
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+	}
+
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	{
+		return getDefaultState().with(ACTIVATED, false);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		return getDefaultState().withProperty(ACTIVATED, meta == 1 ? true : false);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(ACTIVATED).booleanValue() == true ? 1 : 0;
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {ACTIVATED});
+		builder.add(ACTIVATED);
 	}
 
 	@Override

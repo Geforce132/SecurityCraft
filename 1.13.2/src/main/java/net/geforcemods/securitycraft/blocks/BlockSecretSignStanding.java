@@ -1,23 +1,23 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockSecretSignStanding extends BlockSecretSign
 {
-	public static final PropertyInteger ROTATION = PropertyInteger.create("rotation", 0, 15);
+	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_0_15;
 
 	public BlockSecretSignStanding()
 	{
 		super();
-		setDefaultState(blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
+		setDefaultState(stateContainer.getBaseState().with(ROTATION, 0));
 	}
 
 	@Override
@@ -33,32 +33,19 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
+	public IBlockState rotate(IBlockState state, Rotation rot) {
+		return state.with(ROTATION, rot.rotate(state.get(ROTATION), 16));
+	}
+
+
+	@Override
+	public IBlockState mirror(IBlockState state, Mirror mirror) {
+		return state.with(ROTATION, mirror.mirrorRotation(state.get(ROTATION), 16));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		return state.getValue(ROTATION).intValue();
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
-	{
-		return state.withProperty(ROTATION, Integer.valueOf(rot.rotate(state.getValue(ROTATION).intValue(), 16)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-	{
-		return state.withProperty(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(state.getValue(ROTATION).intValue(), 16)));
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {ROTATION});
+		builder.add(ROTATION);
 	}
 }

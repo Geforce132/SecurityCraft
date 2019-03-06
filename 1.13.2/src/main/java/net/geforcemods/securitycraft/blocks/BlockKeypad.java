@@ -19,15 +19,16 @@ import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -39,15 +40,15 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPasswordConvertible {
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool POWERED = PropertyBool.create("powered");
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public BlockKeypad(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
+		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false));
 	}
 
 	@Override
@@ -203,32 +204,14 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
 	}
 
-	@Override
-	public IBlockState getStateFromMeta(int meta)
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
-		if(meta == 15) return getDefaultState();
-
-		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
-		else
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
-			return (state.getValue(FACING).getIndex() + 6);
-		else{
-			if(!state.getProperties().containsKey(FACING)) return 15;
-
-			return state.getValue(FACING).getIndex();
-		}
+		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
 	@Override
@@ -280,9 +263,10 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState()
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		builder.add(FACING);
+		builder.add(POWERED);
 	}
 
 	/**

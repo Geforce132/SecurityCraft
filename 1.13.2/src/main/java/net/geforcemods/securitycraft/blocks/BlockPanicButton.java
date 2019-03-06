@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -37,17 +38,17 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	@Override
 	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(state.get(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
-			world.markBlockRangeForRenderUpdate(pos, pos);
-			notifyNeighbors(world, pos, state.get(FACING));
-			return true;
-		}else{
-			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
-			world.markBlockRangeForRenderUpdate(pos, pos);
-			notifyNeighbors(world, pos, state.get(FACING));
-			return true;
-		}
+		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
+		world.markBlockRangeForRenderUpdate(pos, pos);
+
+		if(state.get(FACE) == AttachFace.WALL)
+			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));
+		else if(state.get(FACE) == AttachFace.CEILING)
+			notifyNeighbors(world, pos, EnumFacing.UP);
+		else if(state.get(FACE) == AttachFace.FLOOR)
+			notifyNeighbors(world, pos, EnumFacing.DOWN);
+
+		return true;
 	}
 
 	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing)
@@ -57,8 +58,9 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
-		super.breakBlock(world, pos, state);
+	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	{
+		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
@@ -99,68 +101,6 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityOwnable();
-	}
-
-	static final class SwitchEnumFacing
-	{
-		static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
-
-		static
-		{
-			try
-			{
-				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-
-			try
-			{
-				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-
-			try
-			{
-				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-
-			try
-			{
-				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-
-			try
-			{
-				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-
-			try
-			{
-				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
-			}
-			catch (NoSuchFieldError e)
-			{
-				;
-			}
-		}
 	}
 
 	@Override

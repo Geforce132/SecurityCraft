@@ -9,16 +9,17 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -29,12 +30,12 @@ import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-	public static final PropertyBool LIT = PropertyBool.create("lit");
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public BlockMotionActivatedLight(Material material) {
 		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(LIT, false));
 	}
 
 	@Override
@@ -115,9 +116,14 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing.getOpposite()) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+	}
+
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	{
+		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().with(FACING, facing.getOpposite()) : getDefaultState().with(FACING, EnumFacing.DOWN);
 	}
 
 	@Override
@@ -129,37 +135,10 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		if(meta == 15) return getDefaultState();
-
-		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(LIT, false);
-		else
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(LIT, true);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getProperties().containsKey(LIT) && state.getValue(LIT).booleanValue())
-			return (state.getValue(FACING).getIndex() + 6);
-		else{
-			if(!state.getProperties().containsKey(FACING)) return 15;
-
-			return state.getValue(FACING).getIndex();
-		}
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, LIT});
+		builder.add(FACING);
+		builder.add(LIT);
 	}
 
 	@Override

@@ -77,14 +77,14 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 
 			if(drop)
 				if(!world.isRemote)
-					dropBlockAsItemWithChance(world, pos, state, 1.0F, 0);
+					dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
 		}
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
 	{
-		super.breakBlock(world, pos, state);
+		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 

@@ -24,7 +24,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -113,12 +112,6 @@ public class BlockSecretSign extends BlockContainer
 			TileEntity tileentity = world.getTileEntity(pos);
 			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
 		}
-	}
-
-	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos)
-	{
-		return !hasInvalidNeighbor(world, pos) && super.isValidPosition(state, world, pos);
 	}
 
 	@Override

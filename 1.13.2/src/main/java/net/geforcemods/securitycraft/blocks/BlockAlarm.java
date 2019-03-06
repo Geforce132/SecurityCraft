@@ -8,33 +8,40 @@ import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
+
 
 public class BlockAlarm extends BlockOwnable {
 
-	public final boolean isLit;
-	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
-	public BlockAlarm(Material material, boolean isLit) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().lightValue(isLit ? 0 : 15));
+	public BlockAlarm(Material material) {
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
 
-		this.isLit = isLit;
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.UP).with(LIT, false));
+	}
+
+	@Override
+	public int getLightValue(IBlockState state, IWorldReader world, BlockPos pos)
+	{
+		return state.get(LIT) ? 15 : 0;
 	}
 
 	@Override
@@ -66,7 +73,12 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	{
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+	}
+
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
 		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().with(FACING, facing) : getDefaultState().with(FACING, EnumFacing.DOWN);
 	}
@@ -75,7 +87,7 @@ public class BlockAlarm extends BlockOwnable {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState) {
 		if(world.isRemote)
 			return;
 		else
@@ -95,20 +107,20 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess w, BlockPos pos, BlockPos neighbor){
-		World world = ((World)w);
-
-		if(world.isRemote)
+	public void onNeighborChange(IBlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor){
+		if(w.isRemote() || !(w instanceof World))
 			return;
+
+		World world = (World)w;
 
 		playSoundAndUpdate((world), pos);
 
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).get(FACING);
 
 		if (!world.isSideSolid(pos.offset(facing.getOpposite()), facing, true))
 		{
-			dropBlockAsItem((world), pos, world.getBlockState(pos), 0);
-			world.setBlockToAir(pos);
+			dropBlockAsItemWithChance(world.getBlockState(pos), world, pos, 1.0F, 0);
+			world.removeBlock(pos);
 		}
 	}
 
@@ -183,110 +195,13 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta){
-		EnumFacing facing;
-
-		switch (meta & 7){
-			case 0:
-				facing = EnumFacing.DOWN;
-				break;
-			case 1:
-				facing = EnumFacing.EAST;
-				break;
-			case 2:
-				facing = EnumFacing.WEST;
-				break;
-			case 3:
-				facing = EnumFacing.SOUTH;
-				break;
-			case 4:
-				facing = EnumFacing.NORTH;
-				break;
-			case 5:
-			default:
-				facing = EnumFacing.UP;
-		}
-
-		return getDefaultState().withProperty(FACING, facing);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state){
-		int meta;
-
-		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]){
-			case 1:
-				meta = 1;
-				break;
-			case 2:
-				meta = 2;
-				break;
-			case 3:
-				meta = 3;
-				break;
-			case 4:
-				meta = 4;
-				break;
-			case 5:
-			default:
-				meta = 5;
-				break;
-			case 6:
-				meta = 0;
-		}
-
-		return meta;
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+	protected void fillStateContainer(Builder<Block, IBlockState> builder){
+		builder.add(FACING);
+		builder.add(LIT);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader reader){
 		return new TileEntityAlarm();
-	}
-
-	static final class SwitchEnumFacing{
-		static final int[] FACING_LOOKUP = new int[EnumFacing.values().length];
-
-		static{
-			try{
-				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
-			}catch (NoSuchFieldError e){
-				;
-			}
-
-			try{
-				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
-			}catch (NoSuchFieldError e){
-				;
-			}
-
-			try{
-				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
-			}catch (NoSuchFieldError e){
-				;
-			}
-
-			try{
-				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
-			}catch (NoSuchFieldError e){
-				;
-			}
-
-			try{
-				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
-			}catch (NoSuchFieldError e){
-				;
-			}
-
-			try{
-				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
-			}catch (NoSuchFieldError e){
-				;
-			}
-		}
 	}
 }

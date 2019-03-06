@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,8 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IItemProvider;
@@ -29,14 +29,14 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockMine extends BlockExplosive {
 
-	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
+	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public BlockMine(Material material) {
 		super(SoundType.STONE, material);
+		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class BlockMine extends BlockExplosive {
 		if(world.isRemote)
 			return;
 
-		if(!world.getBlockState(pos).getValue(DEACTIVATED).booleanValue()){
+		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
 			if(ServerConfig.CONFIG.smallerMineExplosion.get())
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
@@ -155,26 +155,14 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		return getDefaultState().withProperty(DEACTIVATED, meta == 1 ? true : false);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
+		builder.add(DEACTIVATED);
 	}
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).get(DEACTIVATED).booleanValue();
 	}
 
 	@Override

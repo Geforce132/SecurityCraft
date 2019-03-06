@@ -23,7 +23,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 //TODO: redo
@@ -37,7 +38,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote) {
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
 				((TileEntityKeypadChest) world.getTileEntity(pos)).openPasswordGUI(player);
@@ -50,7 +51,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 
 	public static void activate(World world, BlockPos pos, EntityPlayer player){
 		if(!isBlocked(world, pos))
-			player.displayGUIChest(((BlockChest) BlockUtils.getBlock(world, pos)).getLockableContainer(world, pos));
+			player.displayGUIChest(((BlockChest) BlockUtils.getBlock(world, pos)).getContainer(world.getBlockState(pos), world, pos, false));
 	}
 
 	/**
@@ -71,8 +72,8 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
-		super.onNeighborChange(world, pos, neighbor);
+	public void onNeighborChange(IBlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor){
+		super.onNeighborChange(state, world, pos, neighbor);
 		TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)world.getTileEntity(pos);
 
 		if (tileentitychest != null)
@@ -84,7 +85,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta)
+	public TileEntity createNewTileEntity(IBlockReader reader)
 	{
 		return new TileEntityKeypadChest();
 	}

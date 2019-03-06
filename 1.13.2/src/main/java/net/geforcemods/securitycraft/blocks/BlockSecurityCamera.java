@@ -12,32 +12,34 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.state.IProperty;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing");
-	public static final PropertyBool POWERED = PropertyBool.create("powered");
+	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> {
+		return facing != EnumFacing.DOWN;
+	});
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public BlockSecurityCamera(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+		stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false);
 	}
 
 	@Override
@@ -47,8 +49,6 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
-		if(state.get(FACING) == EnumFacing.DOWN)
-			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
@@ -58,9 +58,9 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state)
+	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
 	{
-		super.breakBlock(world, pos, state);
+		super.onReplaced(state, world, pos, newState, isMoving);
 
 		world.notifyNeighborsOfStateChange(pos.north(), world.getBlockState(pos).getBlock());
 		world.notifyNeighborsOfStateChange(pos.south(), world.getBlockState(pos).getBlock());
@@ -88,12 +88,17 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		IBlockState state = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+	}
+
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	{
+		IBlockState state = getDefaultState().with(POWERED, Boolean.valueOf(false));
 
 		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
-			return state.withProperty(FACING, facing).withProperty(POWERED, false);
+			return state.with(FACING, facing).with(POWERED, false);
 		else{
 			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
 			EnumFacing iFacing;
@@ -105,7 +110,7 @@ public class BlockSecurityCamera extends BlockContainer{
 				iFacing = (EnumFacing)iterator.next();
 			}while (!world.isSideSolid(pos.offset(iFacing.getOpposite()), iFacing));
 
-			return state.withProperty(FACING, facing).withProperty(POWERED, false);
+			return state.with(FACING, facing).with(POWERED, false);
 		}
 	}
 
@@ -132,10 +137,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		if(side == EnumFacing.UP)
-			return false;
-		else
-			return world.isSideSolid(pos.offset(side.getOpposite()), side);
+		return world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
@@ -168,27 +170,10 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
-		else
-			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		if(state.getValue(POWERED).booleanValue())
-			return (state.getValue(FACING).getIndex() + 6);
-		else
-			return state.getValue(FACING).getIndex();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		builder.add(FACING);
+		builder.add(POWERED);
 	}
 
 	@Override

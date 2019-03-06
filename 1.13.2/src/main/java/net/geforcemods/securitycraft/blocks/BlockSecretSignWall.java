@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -14,11 +14,10 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockSecretSignWall extends BlockSecretSign
 {
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	protected static final AxisAlignedBB SIGN_EAST_AABB = new AxisAlignedBB(0.0D, 0.28125D, 0.0D, 0.125D, 0.78125D, 1.0D);
 	protected static final AxisAlignedBB SIGN_WEST_AABB = new AxisAlignedBB(0.875D, 0.28125D, 0.0D, 1.0D, 0.78125D, 1.0D);
 	protected static final AxisAlignedBB SIGN_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.28125D, 0.0D, 1.0D, 0.78125D, 0.125D);
@@ -27,7 +26,7 @@ public class BlockSecretSignWall extends BlockSecretSign
 	public BlockSecretSignWall()
 	{
 		super();
-		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH));
 	}
 
 	@Override
@@ -63,39 +62,18 @@ public class BlockSecretSignWall extends BlockSecretSign
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		EnumFacing facing = EnumFacing.byIndex(meta);
-
-		if (facing.getAxis() == EnumFacing.Axis.Y)
-		{
-			facing = EnumFacing.NORTH;
-		}
-
-		return getDefaultState().withProperty(FACING, facing);
+	public IBlockState rotate(IBlockState state, Rotation rot) {
+		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(FACING).getIndex();
+	public IBlockState mirror(IBlockState state, Mirror mirror) {
+		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot)
+	protected void fillStateContainer(Builder<Block, IBlockState> builder)
 	{
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
-	{
-		return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		builder.add(FACING);
 	}
 }

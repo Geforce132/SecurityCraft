@@ -16,18 +16,17 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
@@ -93,10 +92,6 @@ public class BlockUtils{
 		world.destroyBlock(pos, drop);
 	}
 
-	public static int getBlockMeta(World world, BlockPos pos){
-		return world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos));
-	}
-
 	public static void setBlock(World world, BlockPos pos, Block block){
 		world.setBlockState(pos, block.getDefaultState());
 	}
@@ -117,11 +112,11 @@ public class BlockUtils{
 		return world.getBlockState(toPos(x, y, z)).getBlock();
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value) {
+	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value) {
 		setBlockProperty(world, pos, property, value, false);
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
+	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
 			NonNullList<ItemStack> modules = null;
 			NonNullList<ItemStack> inventory = null;
@@ -157,7 +152,7 @@ public class BlockUtils{
 				cooldown = ((TileEntityPortableRadar) world.getTileEntity(pos)).getAttackCooldown();
 
 			TileEntity tileEntity = world.getTileEntity(pos);
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+			world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 			world.setTileEntity(pos, tileEntity);
 
 			if(modules != null)
@@ -187,15 +182,15 @@ public class BlockUtils{
 				((TileEntityPortableRadar) world.getTileEntity(pos)).setAttackCooldown(cooldown);
 		}
 		else
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+			world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, PropertyInteger property, int value) {
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+	public static void setBlockProperty(World world, BlockPos pos, IntegerProperty property, int value) {
+		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, PropertyEnum property, EnumFacing value) {
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+	public static void setBlockProperty(World world, BlockPos pos, EnumProperty<EnumFacing> property, EnumFacing value) {
+		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
 	public static boolean hasBlockProperty(World world, BlockPos pos, IProperty<?> property){
@@ -207,28 +202,28 @@ public class BlockUtils{
 		}
 	}
 
-	public static boolean getBlockPropertyAsBoolean(World world, BlockPos pos, PropertyBool property){
-		return world.getBlockState(pos).getValue(property).booleanValue();
+	public static boolean getBlockPropertyAsBoolean(World world, BlockPos pos, BooleanProperty property){
+		return world.getBlockState(pos).get(property).booleanValue();
 	}
 
-	public static boolean getBlockPropertyAsBoolean(IBlockAccess access, BlockPos pos, PropertyBool property){
-		return access.getBlockState(pos).getValue(property).booleanValue();
+	public static boolean getBlockPropertyAsBoolean(IBlockReader access, BlockPos pos, BooleanProperty property){
+		return access.getBlockState(pos).get(property).booleanValue();
 	}
 
-	public static int getBlockPropertyAsInteger(World world, BlockPos pos, PropertyInteger property){
-		return world.getBlockState(pos).getValue(property).intValue();
+	public static int getBlockPropertyAsInteger(World world, BlockPos pos, IntegerProperty property){
+		return world.getBlockState(pos).get(property).intValue();
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(World world, BlockPos pos, PropertyEnum<?> property){
-		return ((EnumFacing) world.getBlockState(pos).getValue(property));
+	public static EnumFacing getBlockPropertyAsEnum(World world, BlockPos pos, EnumProperty<?> property){
+		return ((EnumFacing) world.getBlockState(pos).get(property));
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess world, BlockPos pos, PropertyEnum<?> property){
-		return ((EnumFacing) world.getBlockState(pos).getValue(property));
+	public static EnumFacing getBlockPropertyAsEnum(IBlockReader world, BlockPos pos, EnumProperty<?> property){
+		return ((EnumFacing) world.getBlockState(pos).get(property));
 	}
 
-	public static EnumFacing getBlockProperty(World world, BlockPos pos, PropertyDirection property) {
-		return world.getBlockState(pos).getValue(property);
+	public static EnumFacing getBlockProperty(World world, BlockPos pos, DirectionProperty property) {
+		return world.getBlockState(pos).get(property);
 	}
 
 	public static Material getBlockMaterial(IWorldReaderBase world, BlockPos pos){
