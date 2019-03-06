@@ -40,8 +40,9 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements IOverlayDisplay 
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state){
-		super.breakBlock(world, pos, state);
+	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	{
+		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
