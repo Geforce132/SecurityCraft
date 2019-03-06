@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -21,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
-public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedCompressedBlocks.EnumType.class);
 

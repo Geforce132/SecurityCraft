@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -39,20 +40,20 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
 		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, IOwnable.class);
-		registrar.registerStackProvider(INSTANCE, ICustomWailaDisplay.class);
+		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
 	}
 
 	@Override
 	public ItemStack getStack(IDataAccessor data, IPluginConfig config) {
-		if(data.getBlock() instanceof ICustomWailaDisplay)
-			return ((ICustomWailaDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
+		if(data.getBlock() instanceof IOverlayDisplay)
+			return ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public void appendBody(List<ITextComponent> body, IDataAccessor data, IPluginConfig config) {
-		if(data.getBlock() instanceof ICustomWailaDisplay && !((ICustomWailaDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
+		if(data.getBlock() instanceof IOverlayDisplay && !((IOverlayDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
 
 		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable)
 			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));

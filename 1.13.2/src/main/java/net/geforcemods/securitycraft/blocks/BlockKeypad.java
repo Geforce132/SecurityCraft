@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
@@ -41,7 +41,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
-public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
+public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPasswordConvertible {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -258,7 +258,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 		return null;
 	}
 
-	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
+	public static ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
 			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
@@ -266,12 +266,12 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 			if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTag()).isEmpty()) {
 				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTag()).get(0);
 
-				if(Block.getBlockFromItem(disguisedStack.getItem()) != this)
+				if(Block.getBlockFromItem(disguisedStack.getItem()) != SCContent.keypad)
 					return disguisedStack;
 			}
 		}
 
-		return ItemStack.EMPTY;
+		return new ItemStack(SCContent.keypad);
 	}
 
 	@Override
@@ -295,22 +295,18 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		ItemStack stack = getDisguisedStack(world, pos);
-
-		return !stack.isEmpty() ? stack : new ItemStack(this);
+		return getDisguisedStack(world, pos);
 	}
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos).isEmpty();
+		return getDisguisedStack(world, pos).getItem() == asItem();
 	}
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
 	{
-		ItemStack stack = getDisguisedStack(world, pos);
-
-		return stack.isEmpty() ? new ItemStack(this) : stack;
+		return getDisguisedStack(world, pos);
 	}
 
 	@Override

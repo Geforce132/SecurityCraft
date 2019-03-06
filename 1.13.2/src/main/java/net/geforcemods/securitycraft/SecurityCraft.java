@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
@@ -31,8 +32,10 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -67,6 +70,7 @@ public class SecurityCraft {
 	{
 		instance = this;
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetup);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModEnqueue);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModProcess);
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		MinecraftForge.EVENT_BUS.addListener(this::registerBlockColorHandler);
@@ -131,6 +135,10 @@ public class SecurityCraft {
 		}
 
 		return toTint;
+	}
+
+	public void onInterModEnqueue(InterModEnqueueEvent event){
+		InterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 	}
 
 	public void onInterModProcess(InterModProcessEvent event){ //postInit

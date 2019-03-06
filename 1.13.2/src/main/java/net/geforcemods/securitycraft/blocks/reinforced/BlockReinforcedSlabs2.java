@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
@@ -24,7 +24,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
-public class BlockReinforcedSlabs2 extends BlockSlab implements ICustomWailaDisplay {
+public class BlockReinforcedSlabs2 extends BlockSlab implements IOverlayDisplay {
 
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs2.EnumType.class);
 

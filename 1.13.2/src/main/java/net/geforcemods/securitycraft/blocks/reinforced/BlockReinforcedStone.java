@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockReinforcedStone extends BlockStone implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedStone extends BlockStone implements IOverlayDisplay, IReinforcedBlock
 {
 	@Override
 	public TileEntity createTileEntity(IBlockState state, IBlockReader reader)

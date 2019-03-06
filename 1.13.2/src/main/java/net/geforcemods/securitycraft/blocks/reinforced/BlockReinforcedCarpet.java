@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock
 {
 	public BlockReinforcedCarpet(EnumDyeColor color)
 	{

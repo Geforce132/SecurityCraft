@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedLog extends BlockOwnable implements ICustomWailaDisplay
+public class BlockReinforcedLog extends BlockOwnable implements IOverlayDisplay
 {
 	public static final PropertyEnum LOG_AXIS = PropertyEnum.create("axis", BlockLog.EnumAxis.class);
 

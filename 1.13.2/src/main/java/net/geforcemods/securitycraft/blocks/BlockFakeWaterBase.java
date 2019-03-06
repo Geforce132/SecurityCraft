@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, ICustomWailaDisplay {
+public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, IOverlayDisplay {
 
 	public BlockFakeWaterBase(Material material)
 	{

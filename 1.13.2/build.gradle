@@ -49,7 +49,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.13.2-25.0.10'
 	compile "mcp.mobius.waila:Hwyla:1.10.0-B52_1.13.2"
-	compile "mcjty.theoneprobe:TheOneProbe:1.13-1.4.29-alpha"
+	compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
 }
 
 jar {

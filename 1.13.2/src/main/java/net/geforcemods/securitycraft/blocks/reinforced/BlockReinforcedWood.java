@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -22,7 +22,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock {
+public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 
 	public BlockReinforcedWood(){
 		super();

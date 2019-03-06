@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.compat.waila.ICustomWailaDisplay;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
@@ -22,7 +22,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
 
-public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisplay {
+public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
