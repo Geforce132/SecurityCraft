@@ -10,10 +10,7 @@ import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedMetals;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPrismarine;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPurpur;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedQuartz;
@@ -129,10 +126,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.alarm);
 		event.getRegistry().register(SCContent.alarmLit);
 		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), false);
-		registerBlock(event, SCContent.reinforcedDirt, false);
-		registerBlock(event, SCContent.reinforcedCobblestone, false);
 		registerBlock(event, SCContent.reinforcedFencegate);
-		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), false);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
 		registerBlock(event, SCContent.claymore);
@@ -160,7 +154,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStoneBrick, new ItemBlockReinforcedStoneBrick(SCContent.reinforcedStoneBrick), false);
 		registerBlock(event, SCContent.reinforcedStairsStoneBrick);
 		registerBlock(event, SCContent.reinforcedMossyCobblestone, false);
-		registerBlock(event, SCContent.reinforcedBrick, false);
 		registerBlock(event, SCContent.reinforcedStairsBrick);
 		registerBlock(event, SCContent.reinforcedNetherBrick, false);
 		registerBlock(event, SCContent.reinforcedStairsNetherBrick);
@@ -168,8 +161,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStainedHardenedClay, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedHardenedClay), false);
 		registerBlock(event, SCContent.reinforcedOldLogs, new ItemBlockReinforcedLog(SCContent.reinforcedOldLogs), false);
 		registerBlock(event, SCContent.reinforcedNewLogs, new ItemBlockReinforcedLog(SCContent.reinforcedNewLogs), false);
-		registerBlock(event, SCContent.reinforcedMetals, new ItemBlockReinforcedMetals(SCContent.reinforcedMetals), false);
-		registerBlock(event, SCContent.reinforcedCompressedBlocks, new ItemBlockReinforcedCompressedBlocks(SCContent.reinforcedCompressedBlocks), false);
 		registerBlock(event, SCContent.reinforcedWool, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedWool), false);
 		registerBlock(event, SCContent.reinforcedQuartz, new ItemBlockReinforcedQuartz(SCContent.reinforcedQuartz), false);
 		registerBlock(event, SCContent.reinforcedStairsQuartz);
@@ -203,26 +194,58 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerReinforcedBlocks(RegistryEvent.Register<Block> event)
 	{
+		//ordered by vanilla creative tab order
 		registerBlock(event, SCContent.reinforcedStone, true);
-		registerBlock(event, SCContent.reinforcedAndesite, false);
-		registerBlock(event, SCContent.reinforcedPolishedAndesite, false);
-		registerBlock(event, SCContent.reinforcedDiorite, false);
-		registerBlock(event, SCContent.reinforcedPolishedDiorite, false);
 		registerBlock(event, SCContent.reinforcedGranite, false);
 		registerBlock(event, SCContent.reinforcedPolishedGranite, false);
+		registerBlock(event, SCContent.reinforcedDiorite, false);
+		registerBlock(event, SCContent.reinforcedPolishedDiorite, false);
+		registerBlock(event, SCContent.reinforcedAndesite, false);
+		registerBlock(event, SCContent.reinforcedPolishedAndesite, false);
+		registerBlock(event, SCContent.reinforcedDirt, false);
+		registerBlock(event, SCContent.reinforcedCobblestone, false);
+		registerBlock(event, SCContent.reinforcedOakPlanks, true);
+		registerBlock(event, SCContent.reinforcedSprucePlanks, true);
+		registerBlock(event, SCContent.reinforcedBirchPlanks, true);
+		registerBlock(event, SCContent.reinforcedJunglePlanks, true);
+		registerBlock(event, SCContent.reinforcedAcaciaPlanks, true);
+		registerBlock(event, SCContent.reinforcedDarkOakPlanks, true);
+		registerBlock(event, SCContent.reinforcedLapisBlock, false);
+		registerBlock(event, SCContent.reinforcedGoldBlock, false);
+		registerBlock(event, SCContent.reinforcedIronBlock, false);
+		registerBlock(event, SCContent.reinforcedBricks, false);
+		registerBlock(event, SCContent.reinforcedDiamondBlock, false);
+		registerBlock(event, SCContent.reinforcedEmeraldBlock, false);
+		registerBlock(event, SCContent.reinforcedCoalBlock, false);
 		registerBlock(event, SCContent.reinforcedBoneBlock, false);
 	}
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
+		//ordered by vanilla creative tab order
 		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedStone));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAndesite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedAndesite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiorite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedDiorite));
 		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedGranite));
 		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedGranite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiorite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedDiorite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAndesite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedAndesite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDirt));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedCobblestone));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedOakPlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedSprucePlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBirchPlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedJunglePlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAcaciaPlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDarkOakPlanks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedLapisBlock));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedGoldBlock));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedIronBlock));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBricks));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiamondBlock));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedEmeraldBlock));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedCoalBlock));
 		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBoneBlock));
 
 		//init block sc manual pages

@@ -68,12 +68,8 @@ public class SCContent
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block protecto;
-	@Reinforced @Tinted public static Block reinforcedBrick;
 	@Reinforced @Tinted public static Block reinforcedCarpet;
-	@Reinforced @Tinted public static Block reinforcedCobblestone;
-	@Reinforced @Tinted public static Block reinforcedCompressedBlocks;
 	@Reinforced @Tinted public static Block reinforcedConcrete;
-	@Reinforced @Tinted public static Block reinforcedDirt;
 	public static Block reinforcedDoor;
 	@Tinted public static Block reinforcedDoubleStoneSlabs;
 	@Tinted public static Block reinforcedDoubleStoneSlabs2;
@@ -87,7 +83,6 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedGravel;
 	@Reinforced @Tinted public static Block reinforcedHardenedClay;
 	@Reinforced public static Block reinforcedIronBars;
-	@Reinforced @Tinted public static Block reinforcedMetals;
 	@Reinforced @Tinted public static Block reinforcedMossyCobblestone;
 	@Reinforced @Tinted public static Block reinforcedNetherBrick;
 	@Reinforced @Tinted public static Block reinforcedNetherrack;
@@ -123,7 +118,6 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedStoneBrick;
 	@Tinted public static Block reinforcedStoneSlabs;
 	@Tinted public static Block reinforcedStoneSlabs2;
-	@Reinforced @Tinted public static Block reinforcedWoodPlanks;
 	@Tinted public static Block reinforcedWoodSlabs;
 	@Reinforced @Tinted public static Block reinforcedWool;
 	public static Block retinalScanner;
@@ -140,14 +134,29 @@ public class SCContent
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
 
-	//Reinforced Blocks
+	//Reinforced Blocks (ordered by vanilla creative tab order)
 	@Reinforced @Tinted public static Block reinforcedStone;
-	@Reinforced @Tinted public static Block reinforcedAndesite;
-	@Reinforced @Tinted public static Block reinforcedPolishedAndesite;
-	@Reinforced @Tinted public static Block reinforcedDiorite;
-	@Reinforced @Tinted public static Block reinforcedPolishedDiorite;
 	@Reinforced @Tinted public static Block reinforcedGranite;
 	@Reinforced @Tinted public static Block reinforcedPolishedGranite;
+	@Reinforced @Tinted public static Block reinforcedDiorite;
+	@Reinforced @Tinted public static Block reinforcedPolishedDiorite;
+	@Reinforced @Tinted public static Block reinforcedAndesite;
+	@Reinforced @Tinted public static Block reinforcedPolishedAndesite;
+	@Reinforced @Tinted public static Block reinforcedDirt;
+	@Reinforced @Tinted public static Block reinforcedCobblestone;
+	@Reinforced @Tinted public static Block reinforcedOakPlanks;
+	@Reinforced @Tinted public static Block reinforcedSprucePlanks;
+	@Reinforced @Tinted public static Block reinforcedBirchPlanks;
+	@Reinforced @Tinted public static Block reinforcedJunglePlanks;
+	@Reinforced @Tinted public static Block reinforcedAcaciaPlanks;
+	@Reinforced @Tinted public static Block reinforcedDarkOakPlanks;
+	@Reinforced @Tinted public static Block reinforcedLapisBlock;
+	@Reinforced @Tinted public static Block reinforcedGoldBlock;
+	@Reinforced @Tinted public static Block reinforcedIronBlock;
+	@Reinforced @Tinted public static Block reinforcedBricks;
+	@Reinforced @Tinted public static Block reinforcedDiamondBlock;
+	@Reinforced @Tinted public static Block reinforcedEmeraldBlock;
+	@Reinforced @Tinted public static Block reinforcedCoalBlock;
 	@Reinforced @Tinted public static Block reinforcedBoneBlock;
 
 	//Items
