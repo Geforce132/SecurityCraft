@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
@@ -63,6 +64,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.init.Items;
@@ -189,64 +191,38 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.gravelMine, false);
 		registerBlock(event, SCContent.reinforcedSand, false);
 		registerBlock(event, SCContent.reinforcedGravel, false);
-	}
 
-	@SubscribeEvent
-	public static void registerReinforcedBlocks(RegistryEvent.Register<Block> event)
-	{
-		//ordered by vanilla creative tab order
-		registerBlock(event, SCContent.reinforcedStone, true);
-		registerBlock(event, SCContent.reinforcedGranite, false);
-		registerBlock(event, SCContent.reinforcedPolishedGranite, false);
-		registerBlock(event, SCContent.reinforcedDiorite, false);
-		registerBlock(event, SCContent.reinforcedPolishedDiorite, false);
-		registerBlock(event, SCContent.reinforcedAndesite, false);
-		registerBlock(event, SCContent.reinforcedPolishedAndesite, false);
-		registerBlock(event, SCContent.reinforcedDirt, false);
-		registerBlock(event, SCContent.reinforcedCobblestone, false);
-		registerBlock(event, SCContent.reinforcedOakPlanks, true);
-		registerBlock(event, SCContent.reinforcedSprucePlanks, true);
-		registerBlock(event, SCContent.reinforcedBirchPlanks, true);
-		registerBlock(event, SCContent.reinforcedJunglePlanks, true);
-		registerBlock(event, SCContent.reinforcedAcaciaPlanks, true);
-		registerBlock(event, SCContent.reinforcedDarkOakPlanks, true);
-		registerBlock(event, SCContent.reinforcedLapisBlock, false);
-		registerBlock(event, SCContent.reinforcedGoldBlock, false);
-		registerBlock(event, SCContent.reinforcedIronBlock, false);
-		registerBlock(event, SCContent.reinforcedBricks, false);
-		registerBlock(event, SCContent.reinforcedDiamondBlock, false);
-		registerBlock(event, SCContent.reinforcedEmeraldBlock, false);
-		registerBlock(event, SCContent.reinforcedCoalBlock, false);
-		registerBlock(event, SCContent.reinforcedBoneBlock, false);
+		//register reinforced blocks
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					registerBlock(event, (Block)field.get(null), field.getAnnotation(Reinforced.class).value());
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
-		//ordered by vanilla creative tab order
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedStone));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedGranite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedGranite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiorite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedDiorite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAndesite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedAndesite));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDirt));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedCobblestone));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedOakPlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedSprucePlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBirchPlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedJunglePlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAcaciaPlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDarkOakPlanks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedLapisBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedGoldBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedIronBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBricks));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiamondBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedEmeraldBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedCoalBlock));
-		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBoneBlock));
+		//register itemblocks for the reinforced blocks
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					event.getRegistry().register(new ItemReinforcedBlock((Block)field.get(null)));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
 		//init block sc manual pages
 		for(Block block : blockPages)

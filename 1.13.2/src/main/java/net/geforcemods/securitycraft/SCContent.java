@@ -135,7 +135,7 @@ public class SCContent
 	public static BlockStaticLiquid bogusWater;
 
 	//Reinforced Blocks (ordered by vanilla creative tab order)
-	@Reinforced @Tinted public static Block reinforcedStone;
+	@Reinforced(true) @Tinted public static Block reinforcedStone;
 	@Reinforced @Tinted public static Block reinforcedGranite;
 	@Reinforced @Tinted public static Block reinforcedPolishedGranite;
 	@Reinforced @Tinted public static Block reinforcedDiorite;
