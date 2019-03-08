@@ -89,7 +89,6 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 
 public class SetupHandler
 {
@@ -185,14 +184,14 @@ public class SetupHandler
 
 	public static void setupReinforcedBlocks()
 	{
-		SCContent.reinforcedStone = new BlockReinforcedBase(Material.ROCK, Blocks.STONE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_stone"));
-		SCContent.reinforcedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.ANDESITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_andesite"));
-		SCContent.reinforcedPolishedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_ANDESITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_polished_andesite"));
-		SCContent.reinforcedDiorite = new BlockReinforcedBase(Material.ROCK, Blocks.DIORITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_diorite"));
-		SCContent.reinforcedPolishedDiorite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_DIORITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_polished_diorite"));
-		SCContent.reinforcedGranite = new BlockReinforcedBase(Material.ROCK, Blocks.GRANITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_granite"));
-		SCContent.reinforcedPolishedGranite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_GRANITE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_polished_granite"));
-		SCContent.reinforcedBoneBlock = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.BONE_BLOCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_bone_block"));
+		SCContent.reinforcedStone = new BlockReinforcedBase(Material.ROCK, Blocks.STONE, "reinforced_stone");
+		SCContent.reinforcedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.ANDESITE, "reinforced_andesite");
+		SCContent.reinforcedPolishedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_ANDESITE, "reinforced_polished_andesite");
+		SCContent.reinforcedDiorite = new BlockReinforcedBase(Material.ROCK, Blocks.DIORITE, "reinforced_diorite");
+		SCContent.reinforcedPolishedDiorite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_DIORITE, "reinforced_polished_diorite");
+		SCContent.reinforcedGranite = new BlockReinforcedBase(Material.ROCK, Blocks.GRANITE, "reinforced_granite");
+		SCContent.reinforcedPolishedGranite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_GRANITE, "reinforced_polished_granite");
+		SCContent.reinforcedBoneBlock = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.BONE_BLOCK, "reinforced_bone_block");
 	}
 
 	public static void setupMines()

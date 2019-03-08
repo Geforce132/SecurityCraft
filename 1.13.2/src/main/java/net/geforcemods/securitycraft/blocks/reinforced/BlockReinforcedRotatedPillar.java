@@ -15,14 +15,14 @@ public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 {
 	public static final EnumProperty<EnumFacing.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public BlockReinforcedRotatedPillar(Material mat, Block vB)
+	public BlockReinforcedRotatedPillar(Material mat, Block vB, String registryPath)
 	{
-		this(SoundType.STONE, mat, vB);
+		this(SoundType.STONE, mat, vB, registryPath);
 	}
 
-	public BlockReinforcedRotatedPillar(SoundType soundType, Material mat, Block vB)
+	public BlockReinforcedRotatedPillar(SoundType soundType, Material mat, Block vB, String registryPath)
 	{
-		super(soundType, mat, vB);
+		super(soundType, mat, vB, registryPath);
 
 		setDefaultState(stateContainer.getBaseState().with(AXIS, EnumFacing.Axis.Y));
 	}
