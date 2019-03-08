@@ -74,8 +74,6 @@ public class SCContent
 	@Tinted public static Block reinforcedDoubleStoneSlabs;
 	@Tinted public static Block reinforcedDoubleStoneSlabs2;
 	@Tinted public static Block reinforcedDoubleWoodSlabs;
-	@Reinforced @Tinted public static Block reinforcedEndStone;
-	@Reinforced @Tinted public static Block reinforcedEndStoneBricks;
 	public static Block reinforcedFencegate;
 	@Reinforced public static Block reinforcedGlass;
 	@Reinforced public static Block reinforcedGlassPane;
@@ -89,9 +87,6 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedNewLogs;
 	@Reinforced @Tinted public static Block reinforcedObsidian;
 	@Reinforced @Tinted public static Block reinforcedOldLogs;
-	@Reinforced @Tinted public static Block reinforcedPrismarine;
-	@Reinforced @Tinted public static Block reinforcedPurpur;
-	@Reinforced @Tinted public static Block reinforcedQuartz;
 	@Reinforced @Tinted public static Block reinforcedRedNetherBrick;
 	@Reinforced @Tinted public static Block reinforcedRedSandstone;
 	@Reinforced @Tinted public static Block reinforcedSand;
@@ -115,7 +110,6 @@ public class SCContent
 	@Tinted public static Block reinforcedStairsSpruce;
 	@Tinted public static Block reinforcedStairsStone;
 	@Tinted public static Block reinforcedStairsStoneBrick;
-	@Reinforced @Tinted public static Block reinforcedStoneBrick;
 	@Tinted public static Block reinforcedStoneSlabs;
 	@Tinted public static Block reinforcedStoneSlabs2;
 	@Tinted public static Block reinforcedWoodSlabs;
@@ -154,9 +148,23 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedGoldBlock;
 	@Reinforced @Tinted public static Block reinforcedIronBlock;
 	@Reinforced @Tinted public static Block reinforcedBricks;
+	@Reinforced @Tinted public static Block reinforcedPurpurBlock;
+	@Reinforced @Tinted public static Block reinforcedPurpurPillar;
 	@Reinforced @Tinted public static Block reinforcedDiamondBlock;
+	@Reinforced @Tinted public static Block reinforcedStoneBricks;
+	@Reinforced @Tinted public static Block reinforcedMossyStoneBricks;
+	@Reinforced @Tinted public static Block reinforcedCrackedStoneBricks;
+	@Reinforced @Tinted public static Block reinforcedChiseledStoneBricks;
+	@Reinforced @Tinted public static Block reinforcedEndStone;
+	@Reinforced @Tinted public static Block reinforcedEndStoneBricks;
 	@Reinforced @Tinted public static Block reinforcedEmeraldBlock;
+	@Reinforced @Tinted public static Block reinforcedChiseledQuartz;
+	@Reinforced @Tinted public static Block reinforcedQuartz;
+	@Reinforced @Tinted public static Block reinforcedQuartzPillar;
 	@Reinforced @Tinted public static Block reinforcedCoalBlock;
+	@Reinforced @Tinted public static Block reinforcedPrismarine;
+	@Reinforced @Tinted public static Block reinforcedPrismarineBricks;
+	@Reinforced @Tinted public static Block reinforcedDarkPrismarine;
 	@Reinforced @Tinted public static Block reinforcedBoneBlock;
 
 	//Items
