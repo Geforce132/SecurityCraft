@@ -18,6 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+//TODO: keep, but make ready for 16 different blocks (getVanillaBlock needs to be modular, extend BlockReinforcedPane)
 public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane implements IReinforcedBlock
 {
 	public BlockReinforcedStainedGlassPanes()
@@ -54,16 +55,10 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.STAINED_GLASS_PANE
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 16;
 	}
 }

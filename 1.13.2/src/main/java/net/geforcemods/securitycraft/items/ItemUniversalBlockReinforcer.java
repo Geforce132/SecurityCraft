@@ -45,13 +45,13 @@ public class ItemUniversalBlockReinforcer extends Item
 			{
 				IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-				if(reinforcedBlock.getVanillaBlocks().contains(block))
+				if(reinforcedBlock.getVanillaBlock().contains(block))
 				{
-					if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
+					if(reinforcedBlock.getVanillaBlock().size() == reinforcedBlock.getAmount())
 					{
 						for(int i = 0; i < reinforcedBlock.getAmount(); i++)
 						{
-							if(block.equals(reinforcedBlock.getVanillaBlocks().get(i)))
+							if(block.equals(reinforcedBlock.getVanillaBlock().get(i)))
 								world.setBlockState(pos, rb.getStateFromMeta(i));
 						}
 					}

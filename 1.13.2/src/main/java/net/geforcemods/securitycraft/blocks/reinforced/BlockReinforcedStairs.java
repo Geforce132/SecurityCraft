@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+//TODO: keep, but make ready for different blocks (similar to BlockReinforcedRotatedPillar)
 public class BlockReinforcedStairs extends BlockStairs {
 
 	public BlockReinforcedStairs(Block baseBlock, int meta) {

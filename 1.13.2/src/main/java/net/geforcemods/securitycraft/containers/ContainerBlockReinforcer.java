@@ -53,12 +53,12 @@ public class ContainerBlockReinforcer extends Container
 			{
 				IReinforcedBlock block = (IReinforcedBlock)rb;
 
-				if(block.getVanillaBlocks().contains(Block.getBlockFromItem(item)))
+				if(block.getVanillaBlock().contains(Block.getBlockFromItem(item)))
 				{
 					newStack = new ItemStack(rb);
 
-					if(block.getVanillaBlocks().size() == block.getAmount())
-						customMeta = block.getVanillaBlocks().indexOf(Block.getBlockFromItem(item));
+					if(block.getVanillaBlock().size() == block.getAmount())
+						customMeta = block.getVanillaBlock().indexOf(Block.getBlockFromItem(item));
 				}
 			}
 
@@ -197,7 +197,7 @@ public class ContainerBlockReinforcer extends Container
 		@Override
 		public boolean isItemValid(ItemStack stack)
 		{			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
-			return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch((vanillaBlock) -> {
+			return ((IReinforcedBlock)reinforcedBlock).getVanillaBlock().stream().anyMatch((vanillaBlock) -> {
 				return stack.getItem().equals(vanillaBlock.asItem());
 			});
 		});

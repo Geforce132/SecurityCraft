@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 
+//TODO: rename to BlockReinforcedPane, and make ready for different blocks (similar to BlockReinforcedRotatedPillar)
 public class BlockReinforcedGlassPane extends BlockPane implements IReinforcedBlock
 {
 	public BlockReinforcedGlassPane()
@@ -45,16 +46,10 @@ public class BlockReinforcedGlassPane extends BlockPane implements IReinforcedBl
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.GLASS_PANE
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 1;
 	}
 }

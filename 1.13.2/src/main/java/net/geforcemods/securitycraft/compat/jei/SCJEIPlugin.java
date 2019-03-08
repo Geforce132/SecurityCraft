@@ -22,9 +22,9 @@ public class SCJEIPlugin implements IModPlugin
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-			reinforcedBlock.getVanillaBlocks().forEach((vanillaBlock) -> {
-				if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
-					registry.addIngredientInfo(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", vanillaBlock.getTranslationKey() + ".name");
+			reinforcedBlock.getVanillaBlock().forEach((vanillaBlock) -> {
+				if(reinforcedBlock.getVanillaBlock().size() == reinforcedBlock.getAmount())
+					registry.addIngredientInfo(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlock().indexOf(vanillaBlock)), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", vanillaBlock.getTranslationKey() + ".name");
 				else
 				{
 					for(int i = 0; i < reinforcedBlock.getAmount(); i++)

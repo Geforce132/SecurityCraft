@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
@@ -17,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedSandstone extends BlockSandStone implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedSandstone(){
@@ -48,16 +48,10 @@ public class BlockReinforcedSandstone extends BlockSandStone implements ITileEnt
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.SANDSTONE
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 3;
 	}
 }

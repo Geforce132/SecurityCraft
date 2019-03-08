@@ -582,7 +582,7 @@ public class SCEventHandler {
 				{
 					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-					if(reinforcedBlock.getVanillaBlocks().contains(event.getState().getBlock()))
+					if(reinforcedBlock.getVanillaBlock().contains(event.getState().getBlock()))
 					{
 						event.setNewSpeed(10000.0F);
 						return;

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -25,8 +24,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase/BlockReinforcedRotatedPillar
 public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum<BlockReinforcedPurpur.EnumType> VARIANT = PropertyEnum.<BlockReinforcedPurpur.EnumType>create("variant", BlockReinforcedPurpur.EnumType.class);
@@ -93,24 +92,6 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	}
 
 	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.byMetadata(meta));
-	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return state.getValue(VARIANT).getMetadata();
-	}
-
-	/**
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
 	 */
@@ -135,12 +116,6 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 			default:
 				return state;
 		}
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
 	}
 
 	@Override
@@ -175,18 +150,12 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.PURPUR_BLOCK,
 				Blocks.PURPUR_PILLAR
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 2;
 	}
 
 	public static enum EnumType implements IStringSerializable

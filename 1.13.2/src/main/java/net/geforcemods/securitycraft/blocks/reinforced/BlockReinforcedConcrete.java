@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedConcrete extends BlockColored implements ICustomWailaDisplay, IReinforcedBlock
 {
 	public BlockReinforcedConcrete()
@@ -28,7 +29,7 @@ public class BlockReinforcedConcrete extends BlockColored implements ICustomWail
 	}
 
 	@Override
-	public TileEntity createTileEntity(IBlockState state, IBlockReader reader) {
+	public TileEntity createTileEntity(IBlockState state, IBlockReader reader)
 	{
 		return new TileEntityOwnable();
 	}
@@ -63,11 +64,5 @@ public class BlockReinforcedConcrete extends BlockColored implements ICustomWail
 		return Arrays.asList(new Block[] {
 				Blocks.CONCRETE
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 16;
 	}
 }

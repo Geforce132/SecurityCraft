@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -19,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
+//TODO: keep, but make ready for 16 different blocks (getVanillaBlock needs to be modular)
 public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock
 {
 	public BlockReinforcedCarpet(EnumDyeColor color)
@@ -51,16 +51,10 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.CARPET
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 16;
 	}
 }

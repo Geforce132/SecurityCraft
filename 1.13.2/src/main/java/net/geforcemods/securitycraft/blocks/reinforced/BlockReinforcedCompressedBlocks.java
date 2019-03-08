@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -14,13 +13,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedCompressedBlocks.EnumType.class);
@@ -53,30 +51,6 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 			items.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.byMetadata(meta));
-	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
-	}
-
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
@@ -90,18 +64,12 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[]{
 				Blocks.LAPIS_BLOCK,
 				Blocks.COAL_BLOCK
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 2;
 	}
 
 	public static enum EnumType implements IStringSerializable

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -16,14 +15,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
@@ -57,30 +55,6 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 			list.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
-	/**
-	 * Convert the given metadata into a BlockState for this Block
-	 */
-	@Override
-	public IBlockState getStateFromMeta(int meta)
-	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.byMetadata(meta));
-	}
-
-	/**
-	 * Convert the BlockState into the correct metadata value
-	 */
-	@Override
-	public int getMetaFromState(IBlockState state)
-	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState()
-	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
-	}
-
 	@Override
 	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
 	{
@@ -100,7 +74,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.GOLD_BLOCK,
@@ -108,12 +82,6 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 				Blocks.DIAMOND_BLOCK,
 				Blocks.EMERALD_BLOCK
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 4;
 	}
 
 	public static enum EnumType implements IStringSerializable

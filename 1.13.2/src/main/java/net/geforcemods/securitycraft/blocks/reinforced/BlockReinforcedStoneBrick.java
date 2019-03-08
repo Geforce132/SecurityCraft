@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -20,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 
 	public BlockReinforcedStoneBrick(){
@@ -56,16 +56,10 @@ public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileE
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.STONEBRICK
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 4;
 	}
 }

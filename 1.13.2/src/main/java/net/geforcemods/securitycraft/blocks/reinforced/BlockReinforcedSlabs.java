@@ -23,8 +23,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
+//TODO: rename to BlockReinforcedSlab, but make ready for different blocks (similar to BlockReinforcedRotatedPillar)
 public class BlockReinforcedSlabs extends BlockSlab implements IOverlayDisplay {
 
 	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
@@ -84,31 +84,6 @@ public class BlockReinforcedSlabs extends BlockSlab implements IOverlayDisplay {
 	@Override
 	public Comparable<?> getTypeForItem(ItemStack stack) {
 		return BlockReinforcedSlabs.EnumType.byMetadata(stack.getMetadata() & 7);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta){
-		IBlockState state = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
-
-		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
-
-		return state;
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state){
-		byte b0 = 0;
-		int meta = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
-
-		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
-			meta |= 8;
-
-		return meta;
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
 	}
 
 	@Override

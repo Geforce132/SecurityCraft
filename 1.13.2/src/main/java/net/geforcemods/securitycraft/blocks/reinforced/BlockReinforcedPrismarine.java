@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -19,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase
 public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock
 {
 	@Override
@@ -52,16 +52,10 @@ public class BlockReinforcedPrismarine extends BlockPrismarine implements ITileE
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.PRISMARINE
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 3;
 	}
 }

@@ -36,7 +36,6 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraftforge.registries.ObjectHolder;
 
 public class SCContent
 {
@@ -69,7 +68,6 @@ public class SCContent
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block protecto;
-	@Reinforced @Tinted public static Block reinforcedBoneBlock;
 	@Reinforced @Tinted public static Block reinforcedBrick;
 	@Reinforced @Tinted public static Block reinforcedCarpet;
 	@Reinforced @Tinted public static Block reinforcedCobblestone;
@@ -122,7 +120,6 @@ public class SCContent
 	@Tinted public static Block reinforcedStairsSpruce;
 	@Tinted public static Block reinforcedStairsStone;
 	@Tinted public static Block reinforcedStairsStoneBrick;
-	@Reinforced @Tinted public static Block reinforcedStone;
 	@Reinforced @Tinted public static Block reinforcedStoneBrick;
 	@Tinted public static Block reinforcedStoneSlabs;
 	@Tinted public static Block reinforcedStoneSlabs2;
@@ -142,6 +139,16 @@ public class SCContent
 	public static BlockMine mineCut;
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
+
+	//Reinforced Blocks
+	@Reinforced @Tinted public static Block reinforcedStone;
+	@Reinforced @Tinted public static Block reinforcedAndesite;
+	@Reinforced @Tinted public static Block reinforcedPolishedAndesite;
+	@Reinforced @Tinted public static Block reinforcedDiorite;
+	@Reinforced @Tinted public static Block reinforcedPolishedDiorite;
+	@Reinforced @Tinted public static Block reinforcedGranite;
+	@Reinforced @Tinted public static Block reinforcedPolishedGranite;
+	@Reinforced @Tinted public static Block reinforcedBoneBlock;
 
 	//Items
 	public static Item adminTool;

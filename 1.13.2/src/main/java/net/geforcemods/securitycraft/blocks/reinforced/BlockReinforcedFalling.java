@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+//TODO: keep, but make ready for different blocks (similar to BlockReinforcedRotatedPillar)
 public class BlockReinforcedFalling extends BlockReinforcedBase
 {
 	public static boolean fallInstantly;

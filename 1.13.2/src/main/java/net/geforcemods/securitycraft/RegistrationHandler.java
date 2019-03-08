@@ -21,9 +21,9 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs2;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStainedBlock;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
+import net.geforcemods.securitycraft.items.ItemReinforcedBlock;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
@@ -71,13 +71,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -95,7 +93,6 @@ public class RegistrationHandler
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), PotionTypes.STRONG_HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
-	private static ArrayList<Item> itemBlocks = new ArrayList<Item>();
 	private static ArrayList<Block> blockPages = new ArrayList<Block>();
 
 	@SubscribeEvent
@@ -131,7 +128,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.usernameLogger);
 		registerBlock(event, SCContent.alarm);
 		event.getRegistry().register(SCContent.alarmLit);
-		registerBlock(event, SCContent.reinforcedStone, new ItemBlockReinforcedStone(SCContent.reinforcedStone), true);
 		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), false);
 		registerBlock(event, SCContent.reinforcedDirt, false);
 		registerBlock(event, SCContent.reinforcedCobblestone, false);
@@ -205,13 +201,29 @@ public class RegistrationHandler
 	}
 
 	@SubscribeEvent
+	public static void registerReinforcedBlocks(RegistryEvent.Register<Block> event)
+	{
+		registerBlock(event, SCContent.reinforcedStone, true);
+		registerBlock(event, SCContent.reinforcedAndesite, false);
+		registerBlock(event, SCContent.reinforcedPolishedAndesite, false);
+		registerBlock(event, SCContent.reinforcedDiorite, false);
+		registerBlock(event, SCContent.reinforcedPolishedDiorite, false);
+		registerBlock(event, SCContent.reinforcedGranite, false);
+		registerBlock(event, SCContent.reinforcedPolishedGranite, false);
+		registerBlock(event, SCContent.reinforcedBoneBlock, false);
+	}
+
+	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
-		//register item blocks
-		for(Item item : itemBlocks)
-		{
-			event.getRegistry().register(item);
-		}
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedStone));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedAndesite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedAndesite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedDiorite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedDiorite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedGranite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedPolishedGranite));
+		event.getRegistry().register(new ItemReinforcedBlock(SCContent.reinforcedBoneBlock));
 
 		//init block sc manual pages
 		for(Block block : blockPages)
@@ -261,7 +273,6 @@ public class RegistrationHandler
 
 		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
-		itemBlocks.clear();
 		blockPages.clear();
 	}
 
@@ -343,7 +354,7 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
 	{
-		registerBlock(event, block, new ItemBlock(block, new Item.Properties()), true);
+		registerBlock(event, block, true);
 	}
 
 	/**
@@ -353,21 +364,7 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage)
 	{
-		registerBlock(event, block, new ItemBlock(block, new Item.Properties()), initPage);
-	}
-
-	/**
-	 * Registers a block with a custom ItemBlock
-	 * @param block The Block to register
-	 * @param itemBlock The ItemBlock to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
-	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage)
-	{
 		event.getRegistry().register(block);
-
-		if(itemBlock != null)
-			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
 
 		if(initPage)
 			blockPages.add(block);

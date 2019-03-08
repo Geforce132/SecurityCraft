@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -19,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+//TODO: delete and break up into seperate blocks instantiated with BlockReinforcedBase/BlockReinforcedRotatedPillar
 public class BlockReinforcedQuartz extends BlockQuartz implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock
 {
 	@Override
@@ -52,16 +52,10 @@ public class BlockReinforcedQuartz extends BlockQuartz implements ITileEntityPro
 	}
 
 	@Override
-	public List<Block> getVanillaBlocks()
+	public Block getVanillaBlock()
 	{
 		return Arrays.asList(new Block[] {
 				Blocks.QUARTZ_BLOCK
 		});
-	}
-
-	@Override
-	public int getAmount()
-	{
-		return 5;
 	}
 }

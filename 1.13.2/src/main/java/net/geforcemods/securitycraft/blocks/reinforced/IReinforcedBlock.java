@@ -9,7 +9,5 @@ public interface IReinforcedBlock
 {
 	public static final List<Block> BLOCKS = new ArrayList<>();
 
-	public List<Block> getVanillaBlocks();
-
-	public int getAmount();
+	public Block getVanillaBlock();
 }

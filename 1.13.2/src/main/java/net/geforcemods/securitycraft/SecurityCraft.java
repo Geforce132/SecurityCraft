@@ -35,18 +35,19 @@ import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 @Mod(SecurityCraft.MODID)
+@EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
@@ -69,9 +70,6 @@ public class SecurityCraft {
 	public SecurityCraft()
 	{
 		instance = this;
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCommonSetup);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModEnqueue);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInterModProcess);
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		MinecraftForge.EVENT_BUS.addListener(this::registerBlockColorHandler);
 		MinecraftForge.EVENT_BUS.addListener(this::registerItemColorHandler);
@@ -81,14 +79,61 @@ public class SecurityCraft {
 		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 	}
 
+	@SubscribeEvent
+	public void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
+	{
+		log("Loading mod content....");
+		SetupHandler.setupBlocks();
+		SetupHandler.setupReinforcedBlocks();
+		SetupHandler.setupMines();
+		SetupHandler.setupItems();
+		log("Finished loading mod content.");
+		log("Regisering mod content... (PT 1/2)");
+		RegistrationHandler.registerPackets();
+	}
+
+	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
+
+	@SubscribeEvent
+	public void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
+		log("Setting up inter-mod stuff...");
+		InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
+
+		if(ClientConfig.CONFIG.checkForUpdates.get()) {
+			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+			if(vcUpdateTag != null)
+				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
+		}
+
+		log("Registering mod content... (PT 2/2)");
+		EnumCustomModules.refresh();
+		proxy.registerRenderThings();
+	}
+
+	@SubscribeEvent
+	public void onInterModProcess(InterModProcessEvent event){ //stage 4
+		DataSerializers.registerSerializer(Owner.SERIALIZER);
+
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		toTint.clear(); //clear up some unused memory
+		log("Mod finished loading correctly! :D");
+	}
+
 	public void serverStarting(FMLServerStartingEvent event){
 		CommandSC.register(event.getCommandDispatcher());
 		CommandModule.register(event.getCommandDispatcher());
-	}
-
-	public void onFMLCommonSetup(FMLCommonSetupEvent event) //preInit
-	{
-		RegistrationHandler.registerPackets();
 	}
 
 	public void registerBlockColorHandler(ColorHandlerEvent.Block event)
@@ -135,59 +180,6 @@ public class SecurityCraft {
 		}
 
 		return toTint;
-	}
-
-	public void onInterModEnqueue(InterModEnqueueEvent event){
-		InterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
-	}
-
-	public void onInterModProcess(InterModProcessEvent event){ //postInit
-		DataSerializers.registerSerializer(Owner.SERIALIZER);
-
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		toTint.clear(); //clear up some unused memory
-		log("Mod finished loading correctly! :D");
-	}
-
-	@SubscribeEvent
-	public void preInit(FMLPreInitializationEvent event){
-		log("Starting to load....");
-		log("Loading config file....");
-		log("Config file loaded.");
-
-		log("Loading mod content....");
-		SetupHandler.setupBlocks();
-		SetupHandler.setupMines();
-		SetupHandler.setupItems();
-		log("Finished loading mod content.");
-		log("Regisering mod content... (PT 1/2)");
-	}
-
-	@SubscribeEvent
-	public void init(InterModEnqueueEvent event){
-		log("Setting up inter-mod stuff...");
-
-		if(ClientConfig.CONFIG.checkForUpdates.get()) {
-			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
-			if(vcUpdateTag != null)
-				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
-		}
-
-		log("Registering mod content... (PT 2/2)");
-		EnumCustomModules.refresh();
-		proxy.registerRenderThings();
 	}
 
 	public Object[] getUsePosition(String playerName) {
