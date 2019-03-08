@@ -184,60 +184,33 @@ public class SCContent
 	public static ItemModule whitelistModule;
 
 	//Tile entity typses
-	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static TileEntityType<TileEntityOwnable> teTypeOwnable;
-	@ObjectHolder(SecurityCraft.MODID + ":abstract")
 	public static TileEntityType<TileEntitySCTE> teTypeAbstract;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad")
 	public static TileEntityType<TileEntityKeypad> teTypeKeypad;
-	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
 	public static TileEntityType<TileEntityLaserBlock> teTypeLaserBlock;
-	@ObjectHolder(SecurityCraft.MODID + ":cage_trap")
 	public static TileEntityType<TileEntityCageTrap> teTypeCageTrap;
-	@ObjectHolder(SecurityCraft.MODID + ":keycard_reader")
 	public static TileEntityType<TileEntityKeycardReader> teTypeKeycardReader;
-	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
 	public static TileEntityType<TileEntityInventoryScanner> teTypeInventoryScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":portable_radar")
 	public static TileEntityType<TileEntityPortableRadar> teTypePortableRadar;
-	@ObjectHolder(SecurityCraft.MODID + ":security_camera")
 	public static TileEntityType<TileEntitySecurityCamera> teTypeSecurityCamera;
-	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
 	public static TileEntityType<TileEntityLogger> teTypeUsernameLogger;
-	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
 	public static TileEntityType<TileEntityRetinalScanner> teTypeRetinalScanner;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
 	public static TileEntityType<TileEntityKeypadChest> teTypeKeypadChest;
-	@ObjectHolder(SecurityCraft.MODID + ":alarm")
 	public static TileEntityType<TileEntityAlarm> teTypeAlarm;
-	@ObjectHolder(SecurityCraft.MODID + ":claymore")
 	public static TileEntityType<TileEntityClaymore> teTypeClaymore;
-	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
 	public static TileEntityType<TileEntityKeypadFurnace> teTypeKeypadFurnace;
-	@ObjectHolder(SecurityCraft.MODID + ":ims")
 	public static TileEntityType<TileEntityIMS> teTypeIms;
-	@ObjectHolder(SecurityCraft.MODID + ":protecto")
 	public static TileEntityType<TileEntityProtecto> teTypeProtecto;
-	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
 	public static TileEntityType<TileEntityScannerDoor> teTypeScannerDoor;
-	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")
 	public static TileEntityType<TileEntitySecretSign> teTypeSecretSign;
-	@ObjectHolder(SecurityCraft.MODID + ":motion_light")
 	public static TileEntityType<TileEntityMotionLight> teTypeMotionLight;
-	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
 
 	//Entity types
-	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
 	public static EntityType<EntityBouncingBetty> eTypeBouncingBetty;
-	@ObjectHolder(SecurityCraft.MODID + ":taserbullet")
 	public static EntityType<EntityTaserBullet> eTypeTaserBullet;
-	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
 	public static EntityType<EntityIMSBomb> eTypeImsBomb;
-	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
 	public static EntityType<EntitySecurityCamera> eTypeSecurityCamera;
-	@ObjectHolder(SecurityCraft.MODID + ":sentry")
 	public static EntityType<EntitySentry> eTypeSentry;
-	@ObjectHolder(SecurityCraft.MODID + ":bullet")
 	public static EntityType<EntityBullet> eTypeBullet;
 }
