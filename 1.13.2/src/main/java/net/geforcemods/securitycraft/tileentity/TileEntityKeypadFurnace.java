@@ -21,7 +21,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -32,6 +31,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
@@ -301,7 +301,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			return false;
 		else
 		{
-			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
+			ItemStack smeltResult = world.getRecipeManager().getResult(this, world, VanillaRecipeTypes.SMELTING);
 			if (smeltResult.isEmpty()) return false;
 			if (furnaceItemStacks.get(2).isEmpty()) return true;
 			if (!furnaceItemStacks.get(2).isItemEqual(smeltResult)) return false;
@@ -314,14 +314,14 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		if (canSmelt())
 		{
-			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
+			ItemStack smeltResult = world.getRecipeManager().getResult(this, world, VanillaRecipeTypes.SMELTING);
 
 			if (furnaceItemStacks.get(2).isEmpty())
 				furnaceItemStacks.set(2, smeltResult.copy());
 			else if (furnaceItemStacks.get(2).getItem() == smeltResult.getItem())
 				furnaceItemStacks.get(2).grow(smeltResult.getCount()); // Forge BugFix: Results may have multiple items
 
-			if (furnaceItemStacks.get(0).getItem() == Blocks.SPONGE.asItem() && furnaceItemStacks.get(0).getMetadata() == 1 && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
+			if (furnaceItemStacks.get(0).getItem() == Blocks.WET_SPONGE.asItem() && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
 				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
 
 			furnaceItemStacks.get(0).shrink(1);

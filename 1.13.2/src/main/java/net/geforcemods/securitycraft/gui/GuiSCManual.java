@@ -25,7 +25,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -35,6 +34,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
@@ -276,10 +276,8 @@ public class GuiSCManual extends GuiScreen {
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
-			for(int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++)
+			for(IRecipe object : Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING))
 			{
-				IRecipe object = CraftingManager.REGISTRY.getObjectById(o);
-
 				if(object instanceof ShapedRecipe){
 					ShapedRecipe recipe = (ShapedRecipe) object;
 

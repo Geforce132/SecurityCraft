@@ -47,28 +47,18 @@ public class ContainerBlockReinforcer extends Container
 		{
 			Item item = stack.getItem();
 			ItemStack newStack = ItemStack.EMPTY;
-			int customMeta = -1;
 
 			for(Block rb : IReinforcedBlock.BLOCKS)
 			{
 				IReinforcedBlock block = (IReinforcedBlock)rb;
 
-				if(block.getVanillaBlock().contains(Block.getBlockFromItem(item)))
-				{
+				if(block.getVanillaBlock() == Block.getBlockFromItem(item))
 					newStack = new ItemStack(rb);
-
-					if(block.getVanillaBlock().size() == block.getAmount())
-						customMeta = block.getVanillaBlock().indexOf(Block.getBlockFromItem(item));
-				}
 			}
 
 			if(!newStack.isEmpty())
 			{
-				if(customMeta != -1)
-					newStack.setDamage(customMeta);
-				else
-					newStack.setDamage(stack.getDamage());
-
+				newStack.setDamage(stack.getDamage());
 				newStack.setCount(stack.getCount());
 				blockReinforcer.damageItem(stack.getCount(), player);
 				player.dropItem(newStack, false);
@@ -196,15 +186,14 @@ public class ContainerBlockReinforcer extends Container
 
 		@Override
 		public boolean isItemValid(ItemStack stack)
-		{			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
-			return ((IReinforcedBlock)reinforcedBlock).getVanillaBlock().stream().anyMatch((vanillaBlock) -> {
-				return stack.getItem().equals(vanillaBlock.asItem());
+		{
+			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch((reinforcedBlock) -> {
+				return stack.getItem().equals(((IReinforcedBlock)reinforcedBlock).getVanillaBlock().asItem());
 			});
-		});
 
-		return validBlock &&
-				(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-					blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
+			return validBlock &&
+					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
+						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 	}
 }

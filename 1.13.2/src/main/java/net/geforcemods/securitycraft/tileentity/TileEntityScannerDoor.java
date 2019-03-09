@@ -45,8 +45,8 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 
 			boolean open = !BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockDoor.OPEN);
 
-			world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.get(BlockDoor.OPEN).booleanValue()), 3);
-			world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.get(BlockDoor.OPEN).booleanValue()), 3);
+			world.setBlockState(pos, upperState.with(BlockDoor.OPEN, !upperState.get(BlockDoor.OPEN).booleanValue()), 3);
+			world.setBlockState(pos.down(), lowerState.with(BlockDoor.OPEN, !lowerState.get(BlockDoor.OPEN).booleanValue()), 3);
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 

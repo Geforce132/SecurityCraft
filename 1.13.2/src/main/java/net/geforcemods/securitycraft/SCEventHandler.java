@@ -545,7 +545,7 @@ public class SCEventHandler {
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
 
 						if(te instanceof TileEntitySecurityCamera)
-							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock(), true);
+							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
 					}
 			}
 	}
@@ -582,7 +582,7 @@ public class SCEventHandler {
 				{
 					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-					if(reinforcedBlock.getVanillaBlock().contains(event.getState().getBlock()))
+					if(reinforcedBlock.getVanillaBlock() == event.getState().getBlock())
 					{
 						event.setNewSpeed(10000.0F);
 						return;

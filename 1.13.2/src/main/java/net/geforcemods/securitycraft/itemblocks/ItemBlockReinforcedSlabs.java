@@ -70,7 +70,7 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 
 			if(state.getBlock() instanceof BlockReinforcedSlabs){
 				IProperty<?> variantProperty = singleSlab.getVariantProperty();
-				Comparable<?> value = state.getValue(variantProperty);
+				Comparable<?> value = state.get(variantProperty);
 				BlockSlab.EnumBlockHalf half = state.getValue(BlockSlab.HALF);
 				Owner owner = null;
 
@@ -134,13 +134,13 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 		if(state.getBlock() == singleSlab){
 			boolean isTop = state.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP;
 
-			if((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop) && type == state.getValue(variantProperty))
+			if((side == EnumFacing.UP && !isTop || side == EnumFacing.DOWN && isTop) && type == state.get(variantProperty))
 				return true;
 		}
 
 		pos = pos.offset(side);
 		IBlockState updatedState = world.getBlockState(pos);
-		return updatedState.getBlock() == singleSlab && type == updatedState.getValue(variantProperty) ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
+		return updatedState.getBlock() == singleSlab && type == updatedState.get(variantProperty) ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
 	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos, Object variantInStack){
@@ -172,10 +172,10 @@ public class ItemBlockReinforcedSlabs extends ItemBlock {
 	}
 
 	protected  <T extends Comparable<T>> IBlockState makeState(IProperty<T> property, Comparable<?> comparable) {
-		return doubleSlab.getDefaultState().withProperty(property, (T)comparable);
+		return doubleSlab.getDefaultState().with(property, (T)comparable);
 	}
 
 	protected <T extends Comparable<T>> IBlockState makeState_Stone(IProperty<T> property, Comparable<?> comparable) {
-		return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().withProperty(property, (T)comparable);
+		return SCContent.reinforcedDoubleStoneSlabs.getDefaultState().with(property, (T)comparable);
 	}
 }

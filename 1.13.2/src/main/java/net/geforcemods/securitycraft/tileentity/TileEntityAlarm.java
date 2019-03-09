@@ -37,7 +37,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 				TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ClientConfig.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
 				te.setCooldown((ServerConfig.CONFIG.alarmTickDelay.get() * 20));
-				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
+				world.setBlockState(pos, world.getBlockState(pos).with(BlockAlarm.FACING, world.getBlockState(pos).get(BlockAlarm.FACING)), 2);
 				world.setTileEntity(pos, te);
 			}
 		}
