@@ -278,7 +278,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote)
-			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
+			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).abilities.isCreativeMode)
 				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 			else
 				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);

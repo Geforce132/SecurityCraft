@@ -36,6 +36,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ItemCameraMonitor extends Item {
 
+	public ItemCameraMonitor() {
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	}
+
 	@Override
 	public EnumActionResult onItemUse(ItemUseContext ctx)
 	{
