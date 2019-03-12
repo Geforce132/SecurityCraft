@@ -11,69 +11,74 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Particles;
 import net.minecraft.particles.BlockParticleData;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//TODO: keep, but make ready for different blocks (similar to BlockReinforcedRotatedPillar)
 public class BlockReinforcedFalling extends BlockReinforcedBase
 {
 	public static boolean fallInstantly;
 
-	public BlockReinforcedFalling(Material material, Block disguisedBlock)
+	public BlockReinforcedFalling(SoundType soundType, Material mat, Block vB, String registryPath)
 	{
-		super(material == Material.SAND ? SoundType.SAND : SoundType.GROUND, material, 1, disguisedBlock);
+		super(soundType, mat, vB, registryPath);
 	}
 
-	/**
-	 * Called after the block is set in the Chunk data, but before the Tile Entity is set
-	 */
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+	@Override
+	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState)
 	{
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, tickRate(world));
 	}
 
-	/**
-	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
-	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
-	 * block, etc.
-	 */
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	@Override
+	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(currentPos, this, tickRate(world));
+		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+	@Override
+	public void tick(IBlockState state, World world, BlockPos pos, Random random)
 	{
 		if(!world.isRemote)
+			checkFallable(world, pos);
+	}
+
+	private void checkFallable(World world, BlockPos pos)
+	{
+		if(canFallThrough(world.getBlockState(pos.down())) && pos.getY() >= 0)
 		{
-			if((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0)
+			if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
 			{
-				if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
-				{
-					if(!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
-						world.spawnEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()));
-				}
-				else
-				{
-					BlockPos blockpos;
+				if(!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
+					world.spawnEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()));
+			}
+			else
+			{
+				IBlockState state = getDefaultState();
 
+				if(world.getBlockState(pos).getBlock() == this)
+				{
+					state = world.getBlockState(pos);
 					world.removeBlock(pos);
-
-					for(blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
-
-					if(blockpos.getY() > 0)
-						world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 				}
+
+				BlockPos blockpos;
+
+				for(blockpos = pos.down(); canFallThrough(world.getBlockState(blockpos)) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
+
+				if(blockpos.getY() > 0)
+					world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
 	}
 
-	/**
-	 * How many world ticks before ticking
-	 */
-	public int tickRate(World world)
+	@Override
+	public int tickRate(IWorldReaderBase world)
 	{
 		return 2;
 	}
@@ -83,28 +88,31 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 
-		return block == Blocks.FIRE || material == Material.AIR || material == Material.WATER || material == Material.LAVA;
+		return state.isAir() || block == Blocks.FIRE || material.isLiquid() || material.isReplaceable();
 	}
 
-	/**
-	 * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that
-	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
-	 * of whether the block can receive random update ticks
-	 */
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand)
+	@Override
+	public void animateTick(IBlockState stateIn, World world, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(16) == 0)
 		{
-			if(canFallThrough(world.getBlockState(pos.down())))
-			{
-				double particleX = pos.getX() + rand.nextFloat();
-				double particleY = pos.getY() - 0.05D;
-				double particleZ = pos.getZ() + rand.nextFloat();
+			BlockPos blockpos = pos.down();
 
-				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+			if(canFallThrough(world.getBlockState(blockpos)))
+			{
+				double x = pos.getX() + rand.nextFloat();
+				double y = pos.getY() - 0.05D;
+				double z = pos.getZ() + rand.nextFloat();
+
+				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, stateIn), x, y, z, 0.0D, 0.0D, 0.0D);
 			}
 		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public int getDustColor(IBlockState state)
+	{
+		return -16777216;
 	}
 }

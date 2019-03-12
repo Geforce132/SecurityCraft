@@ -11,11 +11,7 @@ import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs2;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStainedBlock;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.ItemReinforcedBlock;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -96,7 +92,6 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
 		registerBlock(event, SCContent.mine);
-		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.dirtMine);
 		registerBlock(event, SCContent.stoneMine, false);
 		registerBlock(event, SCContent.cobblestoneMine, false);
@@ -140,34 +135,20 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.ims);
 		registerBlock(event, SCContent.reinforcedGlass, false);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), true);
-		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), true);
-		event.getRegistry().register(SCContent.reinforcedDoubleWoodSlabs);
-		registerBlock(event, SCContent.reinforcedStoneSlabs, new ItemBlockReinforcedSlabs(SCContent.reinforcedStoneSlabs), true);
-		event.getRegistry().register(SCContent.reinforcedDoubleStoneSlabs);
 		registerBlock(event, SCContent.protecto);
 		event.getRegistry().register(SCContent.scannerDoor);
 		registerBlock(event, SCContent.reinforcedStairsStoneBrick);
 		registerBlock(event, SCContent.reinforcedStairsBrick);
 		registerBlock(event, SCContent.reinforcedStairsNetherBrick);
-		registerBlock(event, SCContent.reinforcedOldLogs, new ItemBlockReinforcedLog(SCContent.reinforcedOldLogs), false);
-		registerBlock(event, SCContent.reinforcedNewLogs, new ItemBlockReinforcedLog(SCContent.reinforcedNewLogs), false);
 		registerBlock(event, SCContent.reinforcedStairsQuartz);
 		registerBlock(event, SCContent.reinforcedStairsRedSandstone);
-		registerBlock(event, SCContent.reinforcedStoneSlabs2, new ItemBlockReinforcedSlabs2(SCContent.reinforcedStoneSlabs2), false);
-		event.getRegistry().register(SCContent.reinforcedDoubleStoneSlabs2);
 		registerBlock(event, SCContent.reinforcedStairsPurpur);
 		event.getRegistry().register(SCContent.secretSignWall);
 		event.getRegistry().register(SCContent.secretSignStanding);
 		registerBlock(event, SCContent.motionActivatedLight);
-		registerBlock(event, SCContent.reinforcedObsidian, false);
-		registerBlock(event, SCContent.reinforcedSeaLantern, false);
-		registerBlock(event, SCContent.reinforcedBoneBlock, false);
 		registerBlock(event, SCContent.reinforcedGlassPane, false);
 		registerBlock(event, SCContent.reinforcedStainedGlassPanes, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlassPanes), true);
-		registerBlock(event, SCContent.reinforcedGlowstone, false);
 		registerBlock(event, SCContent.gravelMine, false);
-		registerBlock(event, SCContent.reinforcedSand, false);
-		registerBlock(event, SCContent.reinforcedGravel, false);
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())
