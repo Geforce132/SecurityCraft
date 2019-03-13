@@ -16,7 +16,7 @@ public class ItemGroupSCDecoration extends ItemGroup{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon(){
-		return new ItemStack(SCContent.reinforcedStairsOak.asItem());
+		return new ItemStack(SCContent.reinforcedOakStairs.asItem());
 	}
 
 	@Override

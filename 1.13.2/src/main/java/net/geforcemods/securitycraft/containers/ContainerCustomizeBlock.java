@@ -62,7 +62,7 @@ public class ContainerCustomizeBlock extends Container{
 					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ slotStack, EnumCustomModules.getModuleFromStack(slotStack) }, tileEntity);
 
 					if(tileEntity instanceof TileEntitySecurityCamera)
-						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock(), true);
+						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock());
 				}
 			}
 			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))

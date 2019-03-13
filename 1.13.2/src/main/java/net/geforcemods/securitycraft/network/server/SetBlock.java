@@ -124,7 +124,7 @@ public class SetBlock{
 				((TileEntityKeypadChest) te).setPassword(password);
 
 			if(te instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 		});
 		ctx.get().setPacketHandled(true);
 	}

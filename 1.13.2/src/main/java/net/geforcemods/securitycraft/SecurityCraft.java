@@ -21,7 +21,6 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
@@ -139,11 +138,9 @@ public class SecurityCraft {
 	public void registerBlockColorHandler(ColorHandlerEvent.Block event)
 	{
 		getOrPopulateToTint().forEach(field -> {
-			int tint = field.getAnnotation(Tinted.class).tint();
-
 			try
 			{
-				Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
+				Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, (Block)field.get(null));
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
 			{
@@ -155,11 +152,9 @@ public class SecurityCraft {
 	public void registerItemColorHandler(ColorHandlerEvent.Item event)
 	{
 		getOrPopulateToTint().forEach(field -> {
-			int tint = field.getAnnotation(Tinted.class).tint();
-
 			try
 			{
-				Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, (Block)field.get(null));
+				Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> 0x999999, (Block)field.get(null));
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
 			{
@@ -174,7 +169,7 @@ public class SecurityCraft {
 		{
 			for(Field field : SCContent.class.getFields())
 			{
-				if(field.isAnnotationPresent(Tinted.class))
+				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
 					toTint.add(field);
 			}
 		}

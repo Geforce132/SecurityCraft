@@ -1,24 +1,23 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBeacon;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class BlockReinforcedStainedGlass extends BlockReinforcedGlass
+public class BlockReinforcedStainedGlassPane extends BlockReinforcedPane
 {
 	private final EnumDyeColor color;
 
-	public BlockReinforcedStainedGlass(EnumDyeColor color, Block vB, String registryPath)
+	public BlockReinforcedStainedGlassPane(EnumDyeColor color, Block vB, String registryPath)
 	{
-		super(vB, registryPath);
+		super(SoundType.GLASS, Material.GLASS, vB, registryPath);
 		this.color = color;
 	}
 
@@ -29,33 +28,9 @@ public class BlockReinforcedStainedGlass extends BlockReinforcedGlass
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(IBlockState state, IBlockReader reader, BlockPos pos)
-	{
-		return true;
-	}
-
-	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
-	}
-
-	@Override
-	public int quantityDropped(IBlockState state, Random random)
-	{
-		return 0;
-	}
-
-	@Override
-	protected boolean canSilkHarvest()
-	{
-		return true;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
 	}
 
 	@Override

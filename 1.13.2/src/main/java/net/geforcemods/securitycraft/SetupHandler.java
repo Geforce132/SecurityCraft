@@ -42,12 +42,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRotatedPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlab;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlass;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPanes;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStairs;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemAdminTool;
@@ -73,6 +72,7 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 
 public class SetupHandler
@@ -94,7 +94,6 @@ public class SetupHandler
 		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
 		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
 		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
-		SCContent.reinforcedIronBars = new BlockReinforcedIronBars(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_iron_bars").setTranslationKey("securitycraft:reinforcedIronBars");
 		SCContent.keypadChest = new BlockKeypadChest().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
 		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");
 		SCContent.alarm = new BlockAlarm().setRegistryName("alarm");
@@ -103,31 +102,12 @@ public class SetupHandler
 		SCContent.frame = new BlockFrame(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_frame").setTranslationKey("securitycraft:keypadFrame");
 		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_furnace").setTranslationKey("securitycraft:keypadFurnace");
 		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("security_camera").setTranslationKey("securitycraft:securityCamera");
-		SCContent.reinforcedStairsOak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_oak").setTranslationKey("securitycraft:reinforcedStairsOak");
-		SCContent.reinforcedStairsSpruce = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_spruce").setTranslationKey("securitycraft:reinforcedStairsSpruce");
-		SCContent.reinforcedStairsBirch = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_birch").setTranslationKey("securitycraft:reinforcedStairsBirch");
-		SCContent.reinforcedStairsJungle = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_jungle").setTranslationKey("securitycraft:reinforcedStairsJungle");
-		SCContent.reinforcedStairsAcacia = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_acacia").setTranslationKey("securitycraft:reinforcedStairsAcacia");
-		SCContent.reinforcedStairsDarkoak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_darkoak").setTranslationKey("securitycraft:reinforcedStairsDarkoak");
-		SCContent.reinforcedStairsStone = new BlockReinforcedStairs(SCContent.reinforcedStone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_stone").setTranslationKey("securitycraft:reinforcedStairsStone");
 		SCContent.ironFence = new BlockIronFence(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("electrified_iron_fence").setTranslationKey("securitycraft:electrifiedIronFence");
-		SCContent.reinforcedGlass = new BlockReinforcedGlass(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_glass_block").setTranslationKey("securitycraft:reinforcedGlassBlock");
-		SCContent.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stained_glass").setTranslationKey("securitycraft:reinforcedStainedGlass");
-		SCContent.reinforcedStairsCobblestone = new BlockReinforcedStairs(SCContent.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_cobblestone").setTranslationKey("securitycraft:reinforcedStairsCobblestone");
-		SCContent.reinforcedStairsSandstone = new BlockReinforcedStairs(SCContent.reinforcedSandstone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_sandstone").setTranslationKey("securitycraft:reinforcedStairsSandstone");
 		SCContent.protecto = new BlockProtecto(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("protecto").setTranslationKey("securitycraft:protecto");
 		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName("scanner_door").setTranslationKey("securitycraft:scannerDoor");
-		SCContent.reinforcedStairsStoneBrick= new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_stone_brick").setTranslationKey("securitycraft:reinforcedStairsStoneBrick");
-		SCContent.reinforcedStairsBrick= new BlockReinforcedStairs(SCContent.reinforcedBricks, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_brick").setTranslationKey("securitycraft:reinforcedStairsBrick");
-		SCContent.reinforcedStairsNetherBrick= new BlockReinforcedStairs(SCContent.reinforcedNetherBricks, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_nether_brick").setTranslationKey("securitycraft:reinforcedStairsNetherBrick");
-		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_quartz").setTranslationKey("securitycraft:reinforcedStairsQuartz");
-		SCContent.reinforcedStairsRedSandstone = new BlockReinforcedStairs(SCContent.reinforcedRedSandstone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_red_sandstone").setTranslationKey("securitycraft:reinforcedStairsRedSandstone");
-		SCContent.reinforcedStairsPurpur = new BlockReinforcedStairs(SCContent.reinforcedPurpurBlock, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stairs_purpur").setTranslationKey("securitycraft:reinforcedStairsPurpur");
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing").setTranslationKey("securitycraft:secretSign");
 		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall").setTranslationKey("securitycraft:secretSign");
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setTranslationKey("securitycraft:motionActivatedLight").setCreativeTab(SecurityCraft.groupSCTechnical);
-		SCContent.reinforcedGlassPane = new BlockReinforcedGlassPane().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_glass_pane").setTranslationKey("securitycraft:reinforcedGlassPane");
-		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_stained_panes").setTranslationKey("securitycraft:reinforcedStainedGlassPanes");
 	}
 
 	public static void setupReinforcedBlocks()
@@ -156,6 +136,7 @@ public class SetupHandler
 		SCContent.reinforcedJungleLog = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.JUNGLE_LOG, "reinforced_jungle_log");
 		SCContent.reinforcedAcaciaLog = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.ACACIA_LOG, "reinforced_acacia_log");
 		SCContent.reinforcedDarkOakLog = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.DARK_OAK_LOG, "reinforced_dark_oak_log");
+		SCContent.reinforcedGlass = new BlockReinforcedGlass(Blocks.GLASS, "reinforced_glass");
 		SCContent.reinforcedLapisBlock = new BlockReinforcedBase(Material.ROCK, Blocks.LAPIS_BLOCK, "reinforced_lapis_block");
 		SCContent.reinforcedSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.SANDSTONE, "reinforced_sandstone");
 		SCContent.reinforcedChiseledSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.CHISELED_SANDSTONE, "reinforced_chiseled_sandstone");
@@ -198,20 +179,31 @@ public class SetupHandler
 		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.ROCK, Blocks.OBSIDIAN, "reinforced_obsidian");
 		SCContent.reinforcedPurpurBlock = new BlockReinforcedBase(Material.ROCK, Blocks.PURPUR_BLOCK, "reinforced_purpur_block");
 		SCContent.reinforcedPurpurPillar = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.PURPUR_PILLAR, "reinforced_purpur_pillar");
+		SCContent.reinforcedPurpurStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.PURPUR_STAIRS, "reinforced_purpur_stairs");
+		SCContent.reinforcedOakStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.OAK_STAIRS, "reinforced_oak_stairs");
 		SCContent.reinforcedDiamondBlock = new BlockReinforcedBase(Material.ROCK, Blocks.DIAMOND_BLOCK, "reinforced_diamond_block");
+		SCContent.reinforcedCobblestoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.COBBLESTONE_STAIRS, "reinforced_cobblestone_stairs");
 		SCContent.reinforcedNetherrack = new BlockReinforcedBase(Material.ROCK, Blocks.NETHERRACK, "reinforced_netherrack");
 		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.GLASS, Blocks.GLOWSTONE, "reinforced_glowstone", 15);
 		SCContent.reinforcedStoneBricks = new BlockReinforcedBase(Material.ROCK, Blocks.STONE_BRICKS, "reinforced_stone_bricks");
 		SCContent.reinforcedMossyStoneBricks = new BlockReinforcedBase(Material.ROCK, Blocks.MOSSY_STONE_BRICKS, "reinforced_mossy_stone_bricks");
 		SCContent.reinforcedCrackedStoneBricks = new BlockReinforcedBase(Material.ROCK, Blocks.CRACKED_STONE_BRICKS, "reinforced_cracked_stone_bricks");
 		SCContent.reinforcedChiseledStoneBricks = new BlockReinforcedBase(Material.ROCK, Blocks.CHISELED_STONE_BRICKS, "reinforced_chiseled_stone_bricks");
+		SCContent.reinforcedBrickStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.BRICK_STAIRS, "reinforced_brick_stairs");
+		SCContent.reinforcedStoneBrickStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE_BRICK_STAIRS, "reinforced_stone_brick_stairs");
 		SCContent.reinforcedNetherBricks = new BlockReinforcedBase(Material.ROCK, Blocks.NETHER_BRICKS, "reinforced_nether_bricks");
+		SCContent.reinforcedNetherBrickStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.NETHER_BRICK_STAIRS, "reinforced_nether_brick_stairs");
 		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.ROCK, Blocks.END_STONE, "reinforced_end_stone");
 		SCContent.reinforcedEndStoneBricks = new BlockReinforcedBase(Material.ROCK, Blocks.END_STONE_BRICKS, "reinforced_end_stone_bricks");
+		SCContent.reinforcedSandstoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.SANDSTONE_STAIRS, "reinforced_sandstone_stairs");
 		SCContent.reinforcedEmeraldBlock = new BlockReinforcedBase(Material.ROCK, Blocks.EMERALD_BLOCK, "reinforced_emerald_block");
+		SCContent.reinforcedSpruceStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.SPRUCE_STAIRS, "reinforced_spruce_stairs");
+		SCContent.reinforcedBirchStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.BIRCH_STAIRS, "reinforced_birch_stairs");
+		SCContent.reinforcedJungleStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.JUNGLE_STAIRS, "reinforced_jungle_stairs");
 		SCContent.reinforcedChiseledQuartz = new BlockReinforcedBase(Material.ROCK, Blocks.CHISELED_QUARTZ_BLOCK, "reinforced_chiseled_quartz_block");
 		SCContent.reinforcedQuartz = new BlockReinforcedBase(Material.ROCK, Blocks.QUARTZ_BLOCK, "reinforced_quartz_block");
 		SCContent.reinforcedQuartzPillar = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.QUARTZ_PILLAR, "reinforced_quartz_pillar");
+		SCContent.reinforcedQuartzStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.QUARTZ_STAIRS, "reinforced_quartz_stairs");
 		SCContent.reinforcedWhiteTerracotta = new BlockReinforcedBase(Material.ROCK, Blocks.WHITE_TERRACOTTA, "reinforced_white_terracotta");
 		SCContent.reinforcedOrangeTerracotta = new BlockReinforcedBase(Material.ROCK, Blocks.ORANGE_TERRACOTTA, "reinforced_orange_terracotta");
 		SCContent.reinforcedMagentaTerracotta = new BlockReinforcedBase(Material.ROCK, Blocks.MAGENTA_TERRACOTTA, "reinforced_magenta_terracotta");
@@ -230,6 +222,24 @@ public class SetupHandler
 		SCContent.reinforcedBlackTerracotta = new BlockReinforcedBase(Material.ROCK, Blocks.BLACK_TERRACOTTA, "reinforced_black_terracotta");
 		SCContent.reinforcedTerracotta = new BlockReinforcedBase(Material.ROCK, Blocks.TERRACOTTA, "reinforced_hardened_clay");
 		SCContent.reinforcedCoalBlock = new BlockReinforcedBase(Material.ROCK, Blocks.COAL_BLOCK, "reinforced_coal_block");
+		SCContent.reinforcedAcaciaStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.ACACIA_STAIRS, "reinforced_acacia_stairs");
+		SCContent.reinforcedDarkOakStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.DARK_OAK_STAIRS, "reinforced_dark_oak_stairs");
+		SCContent.reinforcedWhiteStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.WHITE, Blocks.WHITE_STAINED_GLASS, "reinforced_white_stained_glass");
+		SCContent.reinforcedOrangeStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS, "reinforced_orange_stained_glass");
+		SCContent.reinforcedMagentaStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS, "reinforced_magenta_stained_glass");
+		SCContent.reinforcedLightBlueStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS, "reinforced_light_blue_stained_glass");
+		SCContent.reinforcedYellowStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS, "reinforced_yellow_stained_glass");
+		SCContent.reinforcedLimeStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIME, Blocks.LIME_STAINED_GLASS, "reinforced_lime_stained_glass");
+		SCContent.reinforcedPinkStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.PINK, Blocks.PINK_STAINED_GLASS, "reinforced_pink_stained_glass");
+		SCContent.reinforcedGrayStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.GRAY, Blocks.GRAY_STAINED_GLASS, "reinforced_gray_stained_glass");
+		SCContent.reinforcedLightGrayStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS, "reinforced_light_gray_stained_glass");
+		SCContent.reinforcedCyanStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.CYAN, Blocks.CYAN_STAINED_GLASS, "reinforced_cyan_stained_glass");
+		SCContent.reinforcedPurpleStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS, "reinforced_purple_stained_glass");
+		SCContent.reinforcedBlueStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BLUE, Blocks.BLUE_STAINED_GLASS, "reinforced_blue_stained_glass");
+		SCContent.reinforcedBrownStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BROWN, Blocks.BROWN_STAINED_GLASS, "reinforced_brown_stained_glass");
+		SCContent.reinforcedGreenStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.GREEN, Blocks.GREEN_STAINED_GLASS, "reinforced_green_stained_glass");
+		SCContent.reinforcedRedStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.RED, Blocks.RED_STAINED_GLASS, "reinforced_red_stained_glass");
+		SCContent.reinforcedBlackStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BLACK, Blocks.BLACK_STAINED_GLASS, "reinforced_black_stained_glass");
 		SCContent.reinforcedPrismarine = new BlockReinforcedBase(Material.ROCK, Blocks.PRISMARINE, "reinforced_prismarine");
 		SCContent.reinforcedPrismarineBricks = new BlockReinforcedBase(Material.ROCK, Blocks.PRISMARINE_BRICKS, "reinforced_prismarine_bricks");
 		SCContent.reinforcedDarkPrismarine = new BlockReinforcedBase(Material.ROCK, Blocks.DARK_PRISMARINE, "reinforced_dark_prismarine");
@@ -237,6 +247,7 @@ public class SetupHandler
 		SCContent.reinforcedRedSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.SANDSTONE, "reinforced_red_sandstone");
 		SCContent.reinforcedChiseledRedSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.CHISELED_SANDSTONE, "reinforced_chiseled_red_sandstone");
 		SCContent.reinforcedCutRedSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.CUT_SANDSTONE, "reinforced_cut_red_sandstone");
+		SCContent.reinforcedRedSandstoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.RED_SANDSTONE_STAIRS, "reinforced_red_sandstone_stairs");
 		SCContent.reinforcedRedNetherBricks = new BlockReinforcedBase(Material.ROCK, Blocks.RED_NETHER_BRICKS, "reinforced_red_nether_bricks");
 		SCContent.reinforcedBoneBlock = new BlockReinforcedRotatedPillar(Material.ROCK, Blocks.BONE_BLOCK, "reinforced_bone_block");
 		SCContent.reinforcedWhiteConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.WHITE_CONCRETE, "reinforced_white_concrete");
@@ -256,6 +267,8 @@ public class SetupHandler
 		SCContent.reinforcedRedConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.RED_CONCRETE, "reinforced_red_concrete");
 		SCContent.reinforcedBlackConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.BLACK_CONCRETE, "reinforced_black_concrete");
 		//ordered by vanilla decoration blocks creative tab order
+		SCContent.reinforcedIronBars = new BlockReinforcedPane(SoundType.METAL, Material.IRON, Blocks.IRON_BARS, "reinforced_iron_bars");
+		SCContent.reinforcedGlassPane = new BlockReinforcedPane(SoundType.GLASS, Material.GLASS, Blocks.GLASS_PANE, "reinforced_glass_pane");
 		SCContent.reinforcedWhiteCarpet = new BlockReinforcedCarpet(Blocks.WHITE_CARPET, "reinforced_white_carpet");
 		SCContent.reinforcedOrangeCarpet = new BlockReinforcedCarpet(Blocks.ORANGE_CARPET, "reinforced_orange_carpet");
 		SCContent.reinforcedMagentaCarpet = new BlockReinforcedCarpet(Blocks.MAGENTA_CARPET, "reinforced_magenta_carpet");
@@ -272,6 +285,24 @@ public class SetupHandler
 		SCContent.reinforcedGreenCarpet = new BlockReinforcedCarpet(Blocks.GREEN_CARPET, "reinforced_green_carpet");
 		SCContent.reinforcedRedCarpet = new BlockReinforcedCarpet(Blocks.RED_CARPET, "reinforced_red_carpet");
 		SCContent.reinforcedBlackCarpet = new BlockReinforcedCarpet(Blocks.BLACK_CARPET, "reinforced_black_carpet");
+		SCContent.reinforcedWhiteStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.WHITE, Blocks.WHITE_STAINED_GLASS_PANE, "reinforced_white_stained_glass_pane");
+		SCContent.reinforcedOrangeStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS_PANE, "reinforced_orange_stained_glass_pane");
+		SCContent.reinforcedMagentaStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS_PANE, "reinforced_magenta_stained_glass_pane");
+		SCContent.reinforcedLightBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, "reinforced_light_blue_stained_glass_pane");
+		SCContent.reinforcedYellowStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS_PANE, "reinforced_yellow_stained_glass_pane");
+		SCContent.reinforcedLimeStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIME, Blocks.LIME_STAINED_GLASS_PANE, "reinforced_lime_stained_glass_pane");
+		SCContent.reinforcedPinkStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.PINK, Blocks.PINK_STAINED_GLASS_PANE, "reinforced_pink_stained_glass_pane");
+		SCContent.reinforcedGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.GRAY, Blocks.GRAY_STAINED_GLASS_PANE, "reinforced_gray_stained_glass_pane");
+		SCContent.reinforcedLightGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, "reinforced_light_gray_stained_glass_pane");
+		SCContent.reinforcedCyanStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.CYAN, Blocks.CYAN_STAINED_GLASS_PANE, "reinforced_cyan_stained_glass_pane");
+		SCContent.reinforcedPurpleStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS_PANE, "reinforced_purple_stained_glass_pane");
+		SCContent.reinforcedBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BLUE, Blocks.BLUE_STAINED_GLASS_PANE, "reinforced_blue_stained_glass_pane");
+		SCContent.reinforcedBrownStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BROWN, Blocks.BROWN_STAINED_GLASS_PANE, "reinforced_brown_stained_glass_pane");
+		SCContent.reinforcedGreenStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE, "reinforced_green_stained_glass_pane");
+		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
+		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
+		//anything else, alphabetical
+		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.AIR, "reinforced_stone_stairs");
 	}
 
 	public static void setupMines()

@@ -3,10 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;

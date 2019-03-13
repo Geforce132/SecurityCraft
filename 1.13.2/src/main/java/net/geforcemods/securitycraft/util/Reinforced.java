@@ -17,7 +17,12 @@ import java.lang.annotation.Target;
 public @interface Reinforced
 {
 	/**
-	 * @return Whether or not to register an SC Manual page for this block
+	 * @return true if an SC Manual page for this block should be registered, false if not
 	 */
-	boolean value() default false;
+	boolean hasPage() default false;
+
+	/**
+	 * @return true if this block should receive a tint ox 0x999999, false if not
+	 */
+	boolean hasTint() default true;
 }

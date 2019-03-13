@@ -189,7 +189,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 
 				return stack;
 			}
@@ -204,7 +204,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 
 				return stack;
 			}
@@ -231,7 +231,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 
 				return stack;
 			}
@@ -246,7 +246,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 
 				return stack;
 			}
@@ -277,14 +277,14 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		modules.set(index, stack);
 
 		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack = new ItemStack(stack.getItem(), getInventoryStackLimit(), stack.getMetadata());
+			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
 
 		if(!stack.isEmpty())
 		{
 			onModuleInserted(stack, ((ItemModule) stack.getItem()).getModule());
 
 			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 		}
 	}
 
@@ -295,14 +295,14 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		modules.set(index, stack);
 
 		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack = new ItemStack(stack.getItem(), getInventoryStackLimit(), stack.getMetadata());
+			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
 
 		if(!stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemModule){
 			onModuleInserted(stack, ((ItemModule) stack.getItem()).getModule());
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, this);
 
 			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
 		}
 	}
 

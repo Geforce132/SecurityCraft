@@ -55,23 +55,19 @@ public class GuiUtils{
 			drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
 	}
 
-	public static void drawItemStackToGui(Minecraft mc, Item item, int itemDamage, int x, int y, boolean fixLighting){
+	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		if(fixLighting)
 			GlStateManager.enableLighting();
 
 		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.enableRescaleNormal();
-		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item, 1, itemDamage), x, y);
+		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, Item.getItemFromBlock(block), 0, x, y, fixLighting);
-	}
-
-	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, item, 0, x, y, fixLighting);
+		drawItemStackToGui(mc, block.asItem(), x, y, fixLighting);
 	}
 }
