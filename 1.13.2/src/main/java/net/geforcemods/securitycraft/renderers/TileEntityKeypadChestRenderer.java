@@ -63,7 +63,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 			GlStateManager.translatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
 			GlStateManager.scalef(1.0F, -1.0F, -1.0F);
 			float f = iblockstate.get(BlockChest.FACING).getHorizontalAngle();
-			if ((double)Math.abs(f) > 1.0E-5D) {
+			if (Math.abs(f) > 1.0E-5D) {
 				GlStateManager.translatef(0.5F, 0.5F, 0.5F);
 				GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);
 				GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
@@ -87,10 +87,10 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 
 		if (partialTicks >= 0) {
 			resourcelocation = DESTROY_STAGES[partialTicks];
-		} 
+		}
 		else if (this.isChristmas) {
 			resourcelocation = flag ? CHRISTMAS_DOUBLE : CHRISTMAS_SINGLE;
-		} 
+		}
 		else if(te.getLidAngle(partialTicks) >= 0.9F){
 			resourcelocation = flag ? NORMAL_DOUBLE_ACTIVE : NORMAL_SINGLE_ACTIVE;
 		}

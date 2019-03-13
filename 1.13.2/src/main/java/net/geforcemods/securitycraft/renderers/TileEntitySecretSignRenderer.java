@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft.renderers;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
@@ -25,43 +27,26 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 	@Override
 	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		Block block = te.getBlockState().getBlock();
+		IBlockState state = te.getBlockState();
+		FontRenderer fontRenderer = getFontRenderer();
+
 		GlStateManager.pushMatrix();
 
-		if (block == SCContent.secretSignStanding)
+		if(state.getBlock() == SCContent.secretSignStanding)
 		{
 			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			float rotation = te.getBlockMetadata() * 360 / 16.0F;
-			GlStateManager.rotatef(-rotation, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotatef(-(state.get(BlockSecretSignStanding.ROTATION) * 360 / 16.0F), 0.0F, 1.0F, 0.0F);
 			model.getSignStick().showModel = true;
 		}
 		else
 		{
-			int meta = te.getBlockMetadata();
-			float roation = 0.0F;
-
-			if (meta == 2)
-			{
-				roation = 180.0F;
-			}
-
-			if (meta == 4)
-			{
-				roation = 90.0F;
-			}
-
-			if (meta == 5)
-			{
-				roation = -90.0F;
-			}
-
 			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			GlStateManager.rotatef(-roation, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotatef(-state.get(BlockSecretSignWall.FACING).getHorizontalAngle(), 0.0F, 1.0F, 0.0F);
 			GlStateManager.translatef(0.0F, -0.3125F, -0.4375F);
 			model.getSignStick().showModel = false;
 		}
 
-		if (destroyStage >= 0)
+		if(destroyStage >= 0)
 		{
 			bindTexture(DESTROY_STAGES[destroyStage]);
 			GlStateManager.matrixMode(5890);
@@ -71,54 +56,43 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 			GlStateManager.matrixMode(5888);
 		}
 		else
-		{
 			bindTexture(SIGN_TEXTURE);
-		}
 
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.pushMatrix();
 		GlStateManager.scalef(0.6666667F, -0.6666667F, -0.6666667F);
 		model.renderSign();
 		GlStateManager.popMatrix();
+		GlStateManager.translatef(0.0F, 0.33333334F, 0.046666667F);
+		GlStateManager.scalef(0.010416667F, -0.010416667F, 0.010416667F);
+		GlStateManager.normal3f(0.0F, 0.0F, -0.010416667F);
+		GlStateManager.depthMask(false);
 
-		if(te.getOwner().isOwner(Minecraft.getInstance().player))
+		if(te.getOwner().isOwner(Minecraft.getInstance().player) && destroyStage < 0)
 		{
-			FontRenderer fontrenderer = getFontRenderer();
-			GlStateManager.translatef(0.0F, 0.33333334F, 0.046666667F);
-			GlStateManager.scalef(0.010416667F, -0.010416667F, 0.010416667F);
-			GlStateManager.normal3f(0.0F, 0.0F, -0.010416667F);
-			GlStateManager.depthMask(false);
-
-			if (destroyStage < 0)
+			for(int i = 0; i < 4; ++i)
 			{
-				for (int j = 0; j < te.signText.length; ++j)
-				{
-					if (te.signText[j] != null)
-					{
-						ITextComponent text = te.signText[j];
-						List<ITextComponent> textList = GuiUtilRenderComponents.splitText(text, 90, fontrenderer, false, true);
-						String line = textList != null && !textList.isEmpty() ? textList.get(0).getFormattedText() : "";
+				String s = te.func_212364_a(i, textComponent -> {
+					List<ITextComponent> list = GuiUtilRenderComponents.splitText(textComponent, 90, fontRenderer, false, true);
 
-						if (j == te.lineBeingEdited)
-						{
-							line = "> " + line + " <";
-							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
-						}
-						else
-						{
-							fontrenderer.drawString(line, -fontrenderer.getStringWidth(line) / 2, j * 10 - te.signText.length * 5, 0);
-						}
-					}
+					return list.isEmpty() ? "" : list.get(0).getFormattedText();
+				});
+
+				if(s != null)
+				{
+					if(i == te.lineBeingEdited)
+						s = "> " + s + " <";
+
+					fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, 0);
 				}
 			}
-
-			GlStateManager.depthMask(true);
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 
+		GlStateManager.depthMask(true);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.popMatrix();
 
-		if (destroyStage >= 0)
+		if(destroyStage >= 0)
 		{
 			GlStateManager.matrixMode(5890);
 			GlStateManager.popMatrix();
