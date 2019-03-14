@@ -1,11 +1,15 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldReader;
 
 public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBlock
 {
@@ -38,5 +42,11 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 	public Block getVanillaBlock()
 	{
 		return vanillaBlock;
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockState state, IWorldReader world, BlockPos pos, BlockPos beacon)
+	{
+		return this == SCContent.reinforcedIronBlock || this == SCContent.reinforcedGoldBlock || this == SCContent.reinforcedDiamondBlock || this == SCContent.reinforcedEmeraldBlock;
 	}
 }

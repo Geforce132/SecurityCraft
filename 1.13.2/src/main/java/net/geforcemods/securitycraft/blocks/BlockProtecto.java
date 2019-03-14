@@ -9,7 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockProtecto extends BlockOwnable {
 
@@ -37,7 +35,7 @@ public class BlockProtecto extends BlockOwnable {
 
 	@Override
 	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		return world.isSideSolid(pos.down(), EnumFacing.UP);
+		return world.getBlockState(pos.down()).isTopSolid();
 	}
 
 	@Override

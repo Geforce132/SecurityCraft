@@ -27,7 +27,7 @@ public class EntityBullet extends EntityArrow
 	protected void onHit(RayTraceResult raytraceResult)
 	{
 		if(raytraceResult.entity!= null)
-			raytraceResult.entity.attackEntityFrom(DamageSource.causeArrowDamage(this, func_212360_k()), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
+			raytraceResult.entity.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
 
 		remove();
 	}

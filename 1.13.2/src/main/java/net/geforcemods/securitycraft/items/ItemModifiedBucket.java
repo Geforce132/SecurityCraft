@@ -112,7 +112,7 @@ public class ItemModifiedBucket extends ItemBucket {
 		else
 		{
 			if (!player.inventory.addItemStackToInventory(new ItemStack(fullBucket)))
-				player.dropItem(new ItemStack(fullBucket, 1, 0), false);
+				player.dropItem(new ItemStack(fullBucket), false);
 
 			return emptyBuckets;
 		}

@@ -299,7 +299,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		if(blocks.size() > 0)
 		{
 			ItemStack disguiseStack = blocks.get(0);
-			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getDamage() : 0);
+			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
 			world.setBlockState(getPosition(), state.isFullCube() ? state : Blocks.AIR.getDefaultState());
 		}

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -97,7 +98,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	{
 		IBlockState state = getDefaultState().with(POWERED, Boolean.valueOf(false));
 
-		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
+		if(BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing))
 			return state.with(FACING, facing).with(POWERED, false);
 		else{
 			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
@@ -108,7 +109,7 @@ public class BlockSecurityCamera extends BlockContainer{
 					return state;
 
 				iFacing = (EnumFacing)iterator.next();
-			}while (!world.isSideSolid(pos.offset(iFacing.getOpposite()), iFacing));
+			}while (!BlockUtils.isSideSolid(world, pos.offset(iFacing.getOpposite()), iFacing));
 
 			return state.with(FACING, facing).with(POWERED, false);
 		}
@@ -137,7 +138,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		return world.isSideSolid(pos.offset(side.getOpposite()), side);
+		return BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
 	}
 
 	@Override

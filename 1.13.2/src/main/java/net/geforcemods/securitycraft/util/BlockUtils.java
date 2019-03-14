@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -32,6 +33,11 @@ import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockUtils{
+
+	public static boolean isSideSolid(World world, BlockPos pos, EnumFacing side)
+	{
+		return world.getBlockState(pos).getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
+	}
 
 	public static void setBlockInBox(World world, int x, int y, int z, Block block){
 		BlockUtils.setBlock(world, x + 1, y + 1, z, block);

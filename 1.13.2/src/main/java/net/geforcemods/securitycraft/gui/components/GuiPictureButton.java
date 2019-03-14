@@ -107,7 +107,7 @@ public class GuiPictureButton extends GuiButton{
 				drawTexturedModalRect(x, y + 1, u, v, texWidth, texHeight);
 			}
 
-			onDrag(mouseX, mouseY);
+			onDrag(mouseX, mouseY, 0, 0);
 
 			int color = 14737632;
 

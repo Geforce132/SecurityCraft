@@ -43,7 +43,7 @@ public class GuiLinkedText extends GuiButton implements GuiYesNoCallback {
 	public void render(int mouseX, int mouseY, float f) {
 		if (visible) {
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			onDrag(mouseX, mouseY);
+			onDrag(mouseX, mouseY, 0, 0);
 
 			drawCenteredString(fontRenderer, TextFormatting.UNDERLINE + displayString, x + width / 2, y + (height - 8) / 2, textColor);
 		}

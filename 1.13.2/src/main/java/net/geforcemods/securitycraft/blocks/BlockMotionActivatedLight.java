@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +25,6 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
 
@@ -112,7 +110,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
 		if(side == EnumFacing.UP || side == EnumFacing.DOWN) return false;
 
-		return world.isSideSolid(pos.offset(side.getOpposite()), side);
+		return BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
@@ -123,7 +121,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
-		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().with(FACING, facing.getOpposite()) : getDefaultState().with(FACING, EnumFacing.DOWN);
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing.getOpposite()) : getDefaultState().with(FACING, EnumFacing.DOWN);
 	}
 
 	@Override

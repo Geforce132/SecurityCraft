@@ -13,7 +13,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -66,7 +65,7 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 				drop = true;
 			}
 
-			if(!world.isSideSolid(pos.down(), EnumFacing.UP))
+			if(!world.isTopSolid(pos.down()))
 			{
 				world.removeBlock(pos);
 				drop = true;

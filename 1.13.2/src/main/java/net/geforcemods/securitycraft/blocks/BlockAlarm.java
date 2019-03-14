@@ -32,7 +32,7 @@ public class BlockAlarm extends BlockOwnable {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	public BlockAlarm() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).needsRandomTick());
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.UP).with(LIT, false));
 	}
@@ -59,14 +59,15 @@ public class BlockAlarm extends BlockOwnable {
 	 */
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		return side == EnumFacing.UP && world.isSideSolid(pos.down(), EnumFacing.UP) ? true : world.isSideSolid(pos.offset(side.getOpposite()), side);
+
+		return side == EnumFacing.UP && world.isTopSolid(pos.down()) ? true : BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
 		if (!canPlaceBlockOnSide(world, pos, state.get(FACING))) {
-			dropBlockAsItem(world, pos, state, 0);
+			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
 			world.removeBlock(pos);
 		}
 	}
@@ -79,7 +80,7 @@ public class BlockAlarm extends BlockOwnable {
 
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
-		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().with(FACING, facing) : getDefaultState().with(FACING, EnumFacing.DOWN);
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : getDefaultState().with(FACING, EnumFacing.DOWN);
 	}
 
 	/**
@@ -116,7 +117,7 @@ public class BlockAlarm extends BlockOwnable {
 
 		EnumFacing facing = world.getBlockState(pos).get(FACING);
 
-		if (!world.isSideSolid(pos.offset(facing.getOpposite()), facing, true))
+		if (!BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing))
 		{
 			dropBlockAsItemWithChance(world.getBlockState(pos), world, pos, 1.0F, 0);
 			world.removeBlock(pos);

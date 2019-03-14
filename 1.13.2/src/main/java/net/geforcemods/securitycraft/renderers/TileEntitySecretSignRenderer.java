@@ -72,7 +72,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 		{
 			for(int i = 0; i < 4; ++i)
 			{
-				String s = te.func_212364_a(i, textComponent -> {
+				String s = te.getRenderText(i, textComponent -> {
 					List<ITextComponent> list = GuiUtilRenderComponents.splitText(textComponent, 90, fontRenderer, false, true);
 
 					return list.isEmpty() ? "" : list.get(0).getFormattedText();

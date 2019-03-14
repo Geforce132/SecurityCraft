@@ -69,7 +69,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos)
 	{
-		return world.getBlockState(pos.down()).getBlock().isSideSolid(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP);
+		return world.getBlockState(pos.down()).isTopSolid();
 	}
 
 	@Override
