@@ -22,29 +22,21 @@ public class SCWorldListener implements IWorldEventListener
 		if(world instanceof IChunk)
 		{
 			//chunky code because of readability
-			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && world.getBlockState(pos.up()).getBlock() == SCContent.fakeWaterBlock)
 				((IChunk)world).setBlockState(pos, oldState, false);
-			else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
+			else if(oldState.getBlock() == SCContent.fakeLavaBlock && newState.getBlock() == Blocks.LAVA)
 				((IChunk)world).setBlockState(pos, oldState, false);
-			else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
-				((IChunk)world).setBlockState(pos, oldState, false);
-			else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
-				((IChunk)world).setBlockState(pos, oldState, false);
-			else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
+			else if(oldState.getBlock() == SCContent.fakeWaterBlock && newState.getBlock() == Blocks.WATER)
 				((IChunk)world).setBlockState(pos, oldState, false);
 		}
 		else if(world instanceof IWorld)
 		{
 			//chunky code because of readability
-			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && (world.getBlockState(pos.up()).getBlock() == SCContent.bogusWaterFlowing || world.getBlockState(pos.up()).getBlock() == SCContent.bogusWater))
+			if(oldState.getBlock() == Blocks.DIRT && newState.getBlock() == Blocks.GRASS_BLOCK && world.getBlockState(pos.up()).getBlock() == SCContent.fakeWaterBlock)
 				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
-			else if(oldState == SCContent.bogusLava && newState.getBlock() == Blocks.LAVA)
+			else if(oldState.getBlock() == SCContent.fakeLavaBlock && newState.getBlock() == Blocks.LAVA)
 				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
-			else if(oldState == SCContent.bogusLavaFlowing && newState.getBlock() == Blocks.LAVA)
-				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
-			else if(oldState == SCContent.bogusWater && newState.getBlock() == Blocks.WATER)
-				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
-			else if(oldState == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.WATER)
+			else if(oldState.getBlock() == SCContent.fakeWaterBlock && newState.getBlock() == Blocks.WATER)
 				((IWorld)world).setBlockState(pos, oldState, 1 | 2);
 		}
 	}

@@ -703,10 +703,10 @@ public class SCEventHandler {
 	private ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block == SCContent.bogusWater){
+		if(block == SCContent.fakeWaterBlock){
 			world.removeBlock(pos);
 			return new ItemStack(SCContent.fWaterBucket, 1);
-		}else if(block == SCContent.bogusLava){
+		}else if(block == SCContent.fakeLavaBlock){
 			world.removeBlock(pos);
 			return new ItemStack(SCContent.fLavaBucket, 1);
 		}

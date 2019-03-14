@@ -52,14 +52,12 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	private static final String MOTU = "Finally! Cameras!";
 	//********************************* This is v1.8.12 for MC 1.13.2!
 	protected static final String VERSION = "v1.8.12-beta1";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());;
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	private GuiHandler guiHandler = new GuiHandler();
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 	private NBTTagCompound savedModule;
@@ -84,6 +82,7 @@ public class SecurityCraft {
 	public void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
 	{
 		log("Loading mod content....");
+		SetupHandler.setupFluids();
 		SetupHandler.setupBlocks();
 		SetupHandler.setupReinforcedBlocks();
 		SetupHandler.setupMines();
@@ -91,6 +90,7 @@ public class SecurityCraft {
 		log("Finished loading mod content.");
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerPackets();
+		RegistrationHandler.registerFluids();
 	}
 
 	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent

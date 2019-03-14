@@ -4,9 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
-import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
-import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
 import net.geforcemods.securitycraft.blocks.BlockFrame;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -48,6 +46,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlab;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStairs;
+import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
+import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemAdminTool;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
@@ -56,7 +56,6 @@ import net.geforcemods.securitycraft.items.ItemCodebreaker;
 import net.geforcemods.securitycraft.items.ItemKeyPanel;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.items.ItemMineRemoteAccessTool;
-import net.geforcemods.securitycraft.items.ItemModifiedBucket;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
@@ -68,16 +67,23 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.Properties;
+import net.minecraft.item.ItemBucket;
 
 public class SetupHandler
 {
+	public static void setupFluids()
+	{
+		SCContent.flowingFakeWater = new FakeWaterFluid.Flowing();
+		SCContent.fakeWater = new FakeWaterFluid.Source();
+		SCContent.flowingFakeLava = new FakeLavaFluid.Flowing();
+		SCContent.fakeLava = new FakeLavaFluid.Source();
+	}
+
 	public static void setupBlocks()
 	{
 		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("laser_block");
@@ -85,10 +91,6 @@ public class SetupHandler
 		SCContent.keypad = new BlockKeypad(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad");
 		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("retinal_scanner");
 		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setRegistryName("iron_door_reinforced");
-		SCContent.bogusLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava");
-		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing");
-		SCContent.bogusWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water");
-		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing");
 		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keycard_reader");
 		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_iron_trapdoor");
 		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("inventory_scanner");
@@ -109,6 +111,8 @@ public class SetupHandler
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing");
 		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall");
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setCreativeTab(SecurityCraft.groupSCTechnical);
+		SCContent.fakeWaterBlock = new BlockFakeWater();
+		SCContent.fakeLavaBlock = new BlockFakeLava();
 	}
 
 	public static void setupReinforcedBlocks()
@@ -334,8 +338,8 @@ public class SetupHandler
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item");
 		SCContent.universalBlockRemover = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName("universal_block_remover");
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setRegistryName("remote_access_mine");
-		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setRegistryName("bucket_f_water");
-		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setRegistryName("bucket_f_lava");
+		SCContent.fWaterBucket = new ItemBucket(SCContent.fakeWater, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName("bucket_f_water");
+		SCContent.fLavaBucket = new ItemBucket(SCContent.fakeLava, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName("bucket_f_lava");
 		SCContent.universalBlockModifier = new Item(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical)).setRegistryName("universal_block_modifier");
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module");
 		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module");

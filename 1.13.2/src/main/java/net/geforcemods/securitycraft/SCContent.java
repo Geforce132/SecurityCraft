@@ -31,8 +31,9 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 
@@ -40,8 +41,6 @@ public class SCContent
 {
 	//Blocks
 	public static Block alarm;
-	public static Block bogusLavaFlowing;
-	public static Block bogusWaterFlowing;
 	public static Block bouncingBetty;
 	public static Block cageTrap;
 	public static Block claymore;
@@ -78,8 +77,8 @@ public class SCContent
 	public static Block trackMine;
 	public static Block usernameLogger;
 	public static BlockMine mine;
-	public static BlockStaticLiquid bogusLava;
-	public static BlockStaticLiquid bogusWater;
+	public static BlockFlowingFluid fakeWaterBlock;
+	public static BlockFlowingFluid fakeLavaBlock;
 
 	//Reinforced Blocks (ordered by vanilla building blocks creative tab order)
 	@Reinforced(hasPage=true) public static Block reinforcedStone;
@@ -272,6 +271,12 @@ public class SCContent
 	@Reinforced(hasTint=false) public static Block reinforcedBlackStainedGlassPane;
 	//anything else, alphabetical
 	@Reinforced public static Block reinforcedStoneStairs;
+
+	//Fluids
+	public static FlowingFluid flowingFakeWater;
+	public static FlowingFluid fakeWater;
+	public static FlowingFluid flowingFakeLava;
+	public static FlowingFluid fakeLava;
 
 	//Items
 	public static Item adminTool;

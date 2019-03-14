@@ -65,7 +65,9 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -84,6 +86,14 @@ public class RegistrationHandler
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
 	private static ArrayList<Block> blockPages = new ArrayList<Block>();
 
+	public static void registerFluids()
+	{
+		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_water"), SCContent.flowingFakeWater);
+		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "fake_water"), SCContent.fakeWater);
+		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_lava"), SCContent.flowingFakeLava);
+		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "fake_lava"), SCContent.fakeLava);
+	}
+
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
 	{
@@ -99,10 +109,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.furnaceMine);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
-		registerBlock(event, SCContent.bogusLava, false);
-		registerBlock(event, SCContent.bogusLavaFlowing, false);
-		registerBlock(event, SCContent.bogusWater, false);
-		registerBlock(event, SCContent.bogusWaterFlowing, false);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.ironTrapdoor);
 		registerBlock(event, SCContent.bouncingBetty);
@@ -128,6 +134,8 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.secretSignStanding);
 		registerBlock(event, SCContent.motionActivatedLight);
 		registerBlock(event, SCContent.gravelMine, false);
+		registerBlock(event, SCContent.fakeLavaBlock, false);
+		registerBlock(event, SCContent.fakeWaterBlock, false);
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())

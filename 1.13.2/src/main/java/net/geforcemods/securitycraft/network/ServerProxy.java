@@ -4,7 +4,4 @@ public class ServerProxy implements IProxy
 {
 	@Override
 	public void registerRenderThings() {}
-
-	@Override
-	public void registerVariants() {}
 }
