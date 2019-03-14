@@ -59,7 +59,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 */
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos){
-		return world.isSideSolid(pos.down(), EnumFacing.UP);
+		return world.isTopSolid(pos.down());
 	}
 
 	@Override

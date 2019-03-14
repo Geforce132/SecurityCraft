@@ -18,7 +18,7 @@ archivesBaseName = 'securitycraft'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20181007-1.13'
+    mappings channel: 'snapshot', version: '20190313-1.13.2'
 	
     runs {
         client = {
@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.10'
+    minecraft 'net.minecraftforge:forge:1.13.2-25.0.64'
 	compile "mcp.mobius.waila:Hwyla:1.10.0-B52_1.13.2"
 	compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
 }

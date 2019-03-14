@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -10,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ItemCodebreaker extends Item {
 
 	public ItemCodebreaker() {
-		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(3));
+		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(3).group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

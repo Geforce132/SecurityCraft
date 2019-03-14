@@ -64,7 +64,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				drop = true;
 			}
 
-			if (!world.isSideSolid(pos.down(), EnumFacing.UP))
+			if (!world.isTopSolid(pos.down()))
 			{
 				world.removeBlock(pos);
 				drop = true;

@@ -105,7 +105,7 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 				double y = pos.getY() - 0.05D;
 				double z = pos.getZ() + rand.nextFloat();
 
-				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, stateIn), x, y, z, 0.0D, 0.0D, 0.0D);
+				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, stateIn), false, x, y, z, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

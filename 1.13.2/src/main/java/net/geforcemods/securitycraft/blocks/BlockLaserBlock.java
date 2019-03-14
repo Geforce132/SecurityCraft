@@ -171,11 +171,11 @@ public class BlockLaserBlock extends BlockOwnable {
 			float f2 = Math.max(0.0F, 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 
 	}

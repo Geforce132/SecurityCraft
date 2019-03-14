@@ -32,7 +32,7 @@ public class BlockAlarm extends BlockOwnable {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	public BlockAlarm() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).needsRandomTick());
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.UP).with(LIT, false));
 	}

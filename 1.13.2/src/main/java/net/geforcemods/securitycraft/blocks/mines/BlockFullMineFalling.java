@@ -101,7 +101,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

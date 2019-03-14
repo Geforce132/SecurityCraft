@@ -74,40 +74,41 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.Properties;
 
 public class SetupHandler
 {
 	public static void setupBlocks()
 	{
-		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
+		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("laser_block");
 		SCContent.laserField = new BlockLaserField(Material.ROCK).setRegistryName("laser");
-		SCContent.keypad = new BlockKeypad(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
-		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
-		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
-		SCContent.bogusLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
-		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("securitycraft:bogusLavaFlowing");
-		SCContent.bogusWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
-		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing").setTranslationKey("securitycraft:bogusWaterFlowing");
-		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
-		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_iron_trapdoor").setTranslationKey("securitycraft:reinforcedIronTrapdoor");
-		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
-		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
-		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
-		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
-		SCContent.keypadChest = new BlockKeypadChest().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
-		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");
+		SCContent.keypad = new BlockKeypad(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad");
+		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("retinal_scanner");
+		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setRegistryName("iron_door_reinforced");
+		SCContent.bogusLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava");
+		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing");
+		SCContent.bogusWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water");
+		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing");
+		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keycard_reader");
+		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_iron_trapdoor");
+		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("inventory_scanner");
+		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setRegistryName("inventory_scanner_field");
+		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("cage_trap");
+		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("portable_radar");
+		SCContent.keypadChest = new BlockKeypadChest().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_chest");
+		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("username_logger");
 		SCContent.alarm = new BlockAlarm().setRegistryName("alarm");
-		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_fence_gate").setTranslationKey("securitycraft:reinforcedFenceGate");
-		SCContent.panicButton = new BlockPanicButton().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("panic_button").setTranslationKey("securitycraft:panicButton");
-		SCContent.frame = new BlockFrame(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_frame").setTranslationKey("securitycraft:keypadFrame");
-		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_furnace").setTranslationKey("securitycraft:keypadFurnace");
-		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("security_camera").setTranslationKey("securitycraft:securityCamera");
-		SCContent.ironFence = new BlockIronFence(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("electrified_iron_fence").setTranslationKey("securitycraft:electrifiedIronFence");
-		SCContent.protecto = new BlockProtecto(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("protecto").setTranslationKey("securitycraft:protecto");
-		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName("scanner_door").setTranslationKey("securitycraft:scannerDoor");
-		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing").setTranslationKey("securitycraft:secretSign");
-		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall").setTranslationKey("securitycraft:secretSign");
-		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setTranslationKey("securitycraft:motionActivatedLight").setCreativeTab(SecurityCraft.groupSCTechnical);
+		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_fence_gate");
+		SCContent.panicButton = new BlockPanicButton().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("panic_button");
+		SCContent.frame = new BlockFrame(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_frame");
+		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_furnace");
+		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("security_camera");
+		SCContent.ironFence = new BlockIronFence(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("electrified_iron_fence");
+		SCContent.protecto = new BlockProtecto(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("protecto");
+		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName("scanner_door");
+		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing");
+		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall");
+		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setCreativeTab(SecurityCraft.groupSCTechnical);
 	}
 
 	public static void setupReinforcedBlocks()
@@ -307,57 +308,57 @@ public class SetupHandler
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("mine").setTranslationKey("securitycraft:mine");
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.5F).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.75F).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
-		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("sand_mine").setTranslationKey("securitycraft:sandMine");
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
-		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
-		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
-		SCContent.trackMine = new BlockTrackMine().setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
-		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
-		SCContent.ims = new BlockIMS(Material.IRON).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("ims").setTranslationKey("securitycraft:ims");
+		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("mine");
+		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("dirt_mine");
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.5F).setRegistryName("stone_mine");
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.75F).setRegistryName("cobblestone_mine");
+		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("sand_mine");
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("diamond_mine");
+		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("furnace_mine");
+		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("gravel_mine");
+		SCContent.trackMine = new BlockTrackMine().setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("track_mine");
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("bouncing_betty");
+		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("claymore");
+		SCContent.ims = new BlockIMS(Material.IRON).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("ims");
 	}
 
 	public static void setupItems()
 	{
-		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");
-		SCContent.keycardLvl1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setTranslationKey("securitycraft:keycardLV1");
-		SCContent.keycardLvl2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setTranslationKey("securitycraft:keycardLV2");
-		SCContent.keycardLvl3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setTranslationKey("securitycraft:keycardLV3");
-		SCContent.keycardLvl4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
-		SCContent.keycardLvl5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
-		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
-		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.groupSCDecoration);
-		SCContent.universalBlockRemover = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
-		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
-		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("bucket_f_water").setTranslationKey("securitycraft:bucketFWater");
-		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("bucket_f_lava").setTranslationKey("securitycraft:bucketFLava");
-		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_block_modifier").setTranslationKey("securitycraft:universalBlockModifier");
-		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module").setTranslationKey("securitycraft:redstoneModule");
-		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module").setTranslationKey("securitycraft:whitelistModule");
-		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module").setTranslationKey("securitycraft:blacklistModule");
-		SCContent.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setRegistryName("harming_module").setTranslationKey("securitycraft:harmingModule");
-		SCContent.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setRegistryName("smart_module").setTranslationKey("securitycraft:smartModule");
-		SCContent.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setRegistryName("storage_module").setTranslationKey("securitycraft:storageModule");
-		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName("disguise_module").setTranslationKey("securitycraft:disguiseModule");
-		SCContent.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("wire_cutters").setTranslationKey("securitycraft:wireCutters");
-		SCContent.keyPanel = new ItemKeyPanel().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_item").setTranslationKey("securitycraft:keypadItem");
-		SCContent.adminTool = new ItemAdminTool().setMaxStackSize(1).setRegistryName("admin_tool").setTranslationKey("securitycraft:adminTool");
-		SCContent.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("camera_monitor").setTranslationKey("securitycraft:cameraMonitor");
-		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("sc_manual").setTranslationKey("securitycraft:scManual");
-		SCContent.taser = new ItemTaser(false).setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("taser").setTranslationKey("securitycraft:taser");
-		SCContent.taserPowered = new ItemTaser(true).setMaxStackSize(1).setRegistryName("taser_powered").setTranslationKey("securitycraft:taser");
-		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_owner_changer").setTranslationKey("securitycraft:universalOwnerChanger");
-		SCContent.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_block_reinforcer_lvl1").setTranslationKey("securitycraft:universalBlockReinforcerLvL1");
-		SCContent.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_block_reinforcer_lvl2").setTranslationKey("securitycraft:universalBlockReinforcerLvL2");
-		SCContent.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_block_reinforcer_lvl3").setTranslationKey("securitycraft:universalBlockReinforcerLvL3");
-		SCContent.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("briefcase").setTranslationKey("securitycraft:briefcase");
-		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("universal_key_changer").setTranslationKey("securitycraft:universalKeyChanger");
-		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.groupSCDecoration);
-		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.groupSCDecoration);
-		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.groupSCTechnical);
+		SCContent.codebreaker = new ItemCodebreaker().setRegistryName("codebreaker");
+		SCContent.keycardLvl1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1");
+		SCContent.keycardLvl2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2");
+		SCContent.keycardLvl3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3");
+		SCContent.keycardLvl4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4");
+		SCContent.keycardLvl5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5");
+		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard");
+		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item");
+		SCContent.universalBlockRemover = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName("universal_block_remover");
+		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setRegistryName("remote_access_mine");
+		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setRegistryName("bucket_f_water");
+		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setRegistryName("bucket_f_lava");
+		SCContent.universalBlockModifier = new Item(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical)).setRegistryName("universal_block_modifier");
+		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module");
+		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module");
+		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module");
+		SCContent.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setRegistryName("harming_module");
+		SCContent.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setRegistryName("smart_module");
+		SCContent.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setRegistryName("storage_module");
+		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName("disguise_module");
+		SCContent.wireCutters = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName("wire_cutters");
+		SCContent.keyPanel = new ItemKeyPanel().setRegistryName("keypad_item");
+		SCContent.adminTool = new ItemAdminTool().setRegistryName("admin_tool");
+		SCContent.cameraMonitor = new ItemCameraMonitor().setRegistryName("camera_monitor");
+		SCContent.scManual = new ItemSCManual().setRegistryName("sc_manual");
+		SCContent.taser = new ItemTaser(false).setRegistryName("taser");
+		SCContent.taserPowered = new ItemTaser(true).setRegistryName("taser_powered");
+		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setRegistryName("universal_owner_changer");
+		SCContent.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setRegistryName("universal_block_reinforcer_lvl1");
+		SCContent.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setRegistryName("universal_block_reinforcer_lvl2");
+		SCContent.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setRegistryName("universal_block_reinforcer_lvl3");
+		SCContent.briefcase = new ItemBriefcase().setRegistryName("briefcase");
+		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setRegistryName("universal_key_changer");
+		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item");
+		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item");
+		SCContent.sentry = new ItemSentry().setRegistryName("sentry");
 	}
 }

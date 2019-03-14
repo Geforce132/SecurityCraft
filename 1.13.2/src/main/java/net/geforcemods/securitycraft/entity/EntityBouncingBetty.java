@@ -84,7 +84,7 @@ public class EntityBouncingBetty extends Entity {
 				explode();
 		}
 		else
-			world.addParticle(Particles.SMOKE, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
+			world.addParticle(Particles.SMOKE, false, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode()
