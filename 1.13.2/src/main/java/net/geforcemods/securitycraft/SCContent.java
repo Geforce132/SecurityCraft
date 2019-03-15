@@ -104,7 +104,7 @@ public class SCContent
 	@Reinforced public static Block reinforcedJungleLog;
 	@Reinforced public static Block reinforcedAcaciaLog;
 	@Reinforced public static Block reinforcedDarkOakLog;
-	@Reinforced public static Block reinforcedGlass;
+	@Reinforced(hasTint=false) public static Block reinforcedGlass;
 	@Reinforced public static Block reinforcedLapisBlock;
 	@Reinforced public static Block reinforcedSandstone;
 	@Reinforced public static Block reinforcedChiseledSandstone;
