@@ -165,7 +165,7 @@ public class EntitySecurityCamera extends Entity{
 
 			checkKeysPressed();
 
-			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && screenshotCooldown == 0){
+			if(Mouse.isButtonDown(2) && screenshotCooldown == 0){
 				screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
 				Minecraft.getInstance().world.playSound(new BlockPos(posX, posY, posZ), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);

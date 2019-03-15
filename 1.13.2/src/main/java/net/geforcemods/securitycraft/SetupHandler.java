@@ -100,7 +100,7 @@ public class SetupHandler
 		SCContent.keypadChest = new BlockKeypadChest().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_chest");
 		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("username_logger");
 		SCContent.alarm = new BlockAlarm().setRegistryName("alarm");
-		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_fence_gate");
+		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_fence_gate");
 		SCContent.panicButton = new BlockPanicButton().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("panic_button");
 		SCContent.frame = new BlockFrame(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_frame");
 		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_furnace");
@@ -108,8 +108,8 @@ public class SetupHandler
 		SCContent.ironFence = new BlockIronFence(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("electrified_iron_fence");
 		SCContent.protecto = new BlockProtecto(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("protecto");
 		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName("scanner_door");
-		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing");
-		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall");
+		SCContent.secretSignStanding = new BlockSecretSignStanding().setRegistryName("secret_sign_standing");
+		SCContent.secretSignWall = new BlockSecretSignWall().setRegistryName("secret_sign_wall");
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setCreativeTab(SecurityCraft.groupSCTechnical);
 		SCContent.fakeWaterBlock = new BlockFakeWater();
 		SCContent.fakeLavaBlock = new BlockFakeLava();
