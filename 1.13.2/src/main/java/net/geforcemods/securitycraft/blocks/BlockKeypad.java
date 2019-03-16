@@ -36,7 +36,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -215,6 +214,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
+	/*
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
@@ -241,6 +241,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 
 		return null;
 	}
+	*/
 
 	public static ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {

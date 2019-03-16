@@ -1,17 +1,21 @@
 package net.geforcemods.securitycraft.compat.jei;
 
+/*
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemStack;*/
 
+/*
 @JEIPlugin
 public class SCJEIPlugin implements IModPlugin
+{*/
+public class SCJEIPlugin 
 {
-	@Override
+	/*@Override
 	public void register(IModRegistry registry)
 	{
 		registry.addAdvancedGuiHandlers(new SlotMover());
@@ -24,5 +28,5 @@ public class SCJEIPlugin implements IModPlugin
 
 			registry.addIngredientInfo(new ItemStack(rb), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey() + ".name");
 		});
-	}
+	}*/
 }

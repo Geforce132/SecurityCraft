@@ -1,17 +1,18 @@
 package net.geforcemods.securitycraft.factories;
 
-import java.util.function.BooleanSupplier;
+/*import java.util.function.BooleanSupplier;
 
 import com.google.gson.JsonObject;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
-import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.common.crafting.JsonContext;*/
 
-public class KeycardConditionFactory implements IConditionFactory
+//public class KeycardConditionFactory implements IConditionFactory
+public class KeycardConditionFactory
 {
-	@Override
+	/*@Override
 	public BooleanSupplier parse(JsonContext context, JsonObject json)
 	{
 		String type = JsonUtils.getString(json, "type");
@@ -23,5 +24,5 @@ public class KeycardConditionFactory implements IConditionFactory
 		else if(type.equals("securitycraft_toggle_keycard_5")) return () -> ServerConfig.CONFIG.ableToCraftKeycard5.get();
 		else if(type.equals("securitycraft_toggle_lu_keycard")) return () -> ServerConfig.CONFIG.ableToCraftLUKeycard.get();
 		else return () -> true;
-	}
+	}*/
 }

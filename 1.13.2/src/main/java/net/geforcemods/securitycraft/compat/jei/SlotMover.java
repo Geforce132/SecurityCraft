@@ -1,13 +1,15 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-import java.awt.Rectangle;
+/*import java.awt.Rectangle;
 import java.util.List;
 
 import mezz.jei.api.gui.IAdvancedGuiHandler;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;*/
 
-public class SlotMover implements IAdvancedGuiHandler<GuiCustomizeBlock>
+//public class SlotMover implements IAdvancedGuiHandler<GuiCustomizeBlock>
+public class SlotMover
 {
+	/*
 	@Override
 	public Class<GuiCustomizeBlock> getGuiContainerClass()
 	{
@@ -18,5 +20,5 @@ public class SlotMover implements IAdvancedGuiHandler<GuiCustomizeBlock>
 	public List<Rectangle> getGuiExtraAreas(GuiCustomizeBlock guiContainer)
 	{
 		return guiContainer.getGuiExtraAreas();
-	}
+	}*/
 }
