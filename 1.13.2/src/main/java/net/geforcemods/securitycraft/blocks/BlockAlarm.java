@@ -24,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockAlarm extends BlockOwnable {
@@ -58,15 +59,16 @@ public class BlockAlarm extends BlockOwnable {
 	 * Check whether this Block can be placed on the given side
 	 */
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
+		EnumFacing facing = state.get(FACING);
 
-		return side == EnumFacing.UP && world.isTopSolid(pos.down()) ? true : BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
+		return facing == EnumFacing.UP && world.getBlockState(pos.down()).isTopSolid() ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!canPlaceBlockOnSide(world, pos, state.get(FACING))) {
+		if (!isValidPosition(state, world, pos)) {
 			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
 			world.removeBlock(pos);
 		}

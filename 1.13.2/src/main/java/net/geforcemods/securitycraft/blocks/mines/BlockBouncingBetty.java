@@ -25,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -32,8 +33,8 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public BlockBouncingBetty(Material material) {
-		super(SoundType.STONE, material);
+	public BlockBouncingBetty(Material material, float baseHardness) {
+		super(SoundType.STONE, material, baseHardness);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 
@@ -57,8 +58,8 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos){
-		return world.isTopSolid(pos.down());
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
+		return world.getBlockState(pos.down()).isTopSolid();
 	}
 
 	@Override

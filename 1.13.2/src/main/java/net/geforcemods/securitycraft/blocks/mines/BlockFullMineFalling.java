@@ -19,9 +19,9 @@ public class BlockFullMineFalling extends BlockFullMineBase
 {
 	public static boolean fallInstantly;
 
-	public BlockFullMineFalling(Material material, Block disguisedBlock)
+	public BlockFullMineFalling(Material material, Block disguisedBlock, float baseHardness)
 	{
-		super(material, disguisedBlock);
+		super(material, disguisedBlock, baseHardness);
 	}
 
 	/**

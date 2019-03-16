@@ -27,8 +27,8 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public BlockFurnaceMine(Material material) {
-		super(SoundType.STONE, material);
+	public BlockFurnaceMine(Material material, float baseHardness) {
+		super(SoundType.STONE, material, baseHardness);
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH));
 	}
 

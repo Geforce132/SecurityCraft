@@ -27,8 +27,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material material, Block disguisedBlock) {
-		super(material == Material.SAND ? SoundType.SAND : (material == Material.GROUND ? SoundType.GROUND : SoundType.STONE), material);
+	public BlockFullMineBase(Material material, Block disguisedBlock, float baseHardness) {
+		super(material == Material.SAND ? SoundType.SAND : (material == Material.GROUND ? SoundType.GROUND : SoundType.STONE), material, baseHardness);
 		blockDisguisedAs = disguisedBlock;
 	}
 

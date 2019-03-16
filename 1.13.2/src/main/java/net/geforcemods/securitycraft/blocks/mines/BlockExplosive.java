@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
-	public BlockExplosive(SoundType soundType, Material material) {
-		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1F, 6000000.0F));
+	public BlockExplosive(SoundType soundType, Material material, float baseHardness) {
+		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : baseHardness, 6000000.0F));
 	}
 
 	@Override

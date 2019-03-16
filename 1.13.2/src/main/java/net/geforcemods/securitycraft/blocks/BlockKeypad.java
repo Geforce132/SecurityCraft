@@ -22,7 +22,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -88,16 +87,18 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 
 				// If the keypad has a disguise module added with a transparent block inserted.
 				if(!blockToDisguiseAs.getDefaultState().getShape(world, pos).equals(VoxelShapes.fullCube()) || !blockToDisguiseAs.getDefaultState().isFullCube())
-					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)).getBlock(), side);
+					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)), side);
 			}
 		}
 
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockReader world, BlockPos keypadPos, Block neighborBlock, EnumFacing side) {
-		if(neighborBlock == Blocks.AIR)
+	public boolean checkForSideTransparency(IBlockReader world, BlockPos keypadPos, IBlockState neighborState, EnumFacing side) {
+		if(neighborState.isAir(world, keypadPos.offset(side)))
 			return true;
+
+		Block neighborBlock = neighborState.getBlock();
 
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
 		// and a vanilla block instead of checking for specific blocks, since all vanilla

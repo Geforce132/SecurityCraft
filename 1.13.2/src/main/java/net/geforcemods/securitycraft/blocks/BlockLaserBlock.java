@@ -65,9 +65,10 @@ public class BlockLaserBlock extends BlockOwnable {
 			inner: for(int i = 1; i <= ServerConfig.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
+				IBlockState state = world.getBlockState(offsetPos);
 				Block id = world.getBlockState(offsetPos).getBlock();
 
-				if(id != Blocks.AIR && id != SCContent.laserBlock)
+				if(!state.isAir(world, offsetPos) && id != SCContent.laserBlock)
 					break inner;
 				else if(id == SCContent.laserBlock)
 				{
@@ -77,7 +78,7 @@ public class BlockLaserBlock extends BlockOwnable {
 					{
 						offsetPos = pos.offset(facing, j);
 
-						if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
+						if(world.getBlockState(offsetPos).isAir(world, offsetPos))
 							world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(BlockLaserField.BOUNDTYPE, boundType));
 					}
 				}

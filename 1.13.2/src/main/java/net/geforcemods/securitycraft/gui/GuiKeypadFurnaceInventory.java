@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.SetBlock;
+import net.geforcemods.securitycraft.network.server.CloseFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -71,7 +71,7 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		SecurityCraft.channel.sendToServer(new SetBlock(tileFurnace.getPos().getX(), tileFurnace.getPos().getY(), tileFurnace.getPos().getZ(), "securitycraft:keypad_furnace", mc.world.getBlockState(tileFurnace.getPos()).getBlock().getMetaFromState(mc.world.getBlockState(tileFurnace.getPos())) - 6));
+		SecurityCraft.channel.sendToServer(new CloseFurnace(tileFurnace.getPos()));
 	}
 
 }

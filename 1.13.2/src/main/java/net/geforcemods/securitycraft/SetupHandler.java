@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
@@ -86,31 +85,31 @@ public class SetupHandler
 
 	public static void setupBlocks()
 	{
-		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("laser_block");
+		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setRegistryName("laser_block");
 		SCContent.laserField = new BlockLaserField(Material.ROCK).setRegistryName("laser");
-		SCContent.keypad = new BlockKeypad(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad");
-		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("retinal_scanner");
+		SCContent.keypad = new BlockKeypad(Material.IRON).setRegistryName("keypad");
+		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setRegistryName("retinal_scanner");
 		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setRegistryName("iron_door_reinforced");
-		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keycard_reader");
-		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_iron_trapdoor");
-		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("inventory_scanner");
+		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setRegistryName("keycard_reader");
+		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setRegistryName("reinforced_iron_trapdoor");
+		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setRegistryName("inventory_scanner");
 		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setRegistryName("inventory_scanner_field");
-		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("cage_trap");
-		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("portable_radar");
-		SCContent.keypadChest = new BlockKeypadChest().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_chest");
-		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("username_logger");
+		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setRegistryName("cage_trap");
+		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setRegistryName("portable_radar");
+		SCContent.keypadChest = new BlockKeypadChest().setRegistryName("keypad_chest");
+		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setRegistryName("username_logger");
 		SCContent.alarm = new BlockAlarm().setRegistryName("alarm");
-		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("reinforced_fence_gate");
-		SCContent.panicButton = new BlockPanicButton().setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("panic_button");
-		SCContent.frame = new BlockFrame(Material.ROCK).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_frame");
-		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("keypad_furnace");
-		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("security_camera");
-		SCContent.ironFence = new BlockIronFence(Material.IRON).setCreativeTab(SecurityCraft.groupSCDecoration).setRegistryName("electrified_iron_fence");
-		SCContent.protecto = new BlockProtecto(Material.IRON).setCreativeTab(SecurityCraft.groupSCTechnical).setRegistryName("protecto");
+		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setRegistryName("reinforced_fence_gate");
+		SCContent.panicButton = new BlockPanicButton().setRegistryName("panic_button");
+		SCContent.frame = new BlockFrame(Material.ROCK).setRegistryName("keypad_frame");
+		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setRegistryName("keypad_furnace");
+		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setRegistryName("security_camera");
+		SCContent.ironFence = new BlockIronFence(Material.IRON).setRegistryName("electrified_iron_fence");
+		SCContent.protecto = new BlockProtecto(Material.IRON).setRegistryName("protecto");
 		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName("scanner_door");
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setRegistryName("secret_sign_standing");
 		SCContent.secretSignWall = new BlockSecretSignWall().setRegistryName("secret_sign_wall");
-		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light").setCreativeTab(SecurityCraft.groupSCTechnical);
+		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light");
 		SCContent.fakeWaterBlock = new BlockFakeWater();
 		SCContent.fakeLavaBlock = new BlockFakeLava();
 	}
@@ -312,18 +311,18 @@ public class SetupHandler
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("mine");
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("dirt_mine");
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.5F).setRegistryName("stone_mine");
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 2.75F).setRegistryName("cobblestone_mine");
-		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("sand_mine");
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("diamond_mine");
-		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 3.75F).setRegistryName("furnace_mine");
-		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.groupSCMine).setHardness(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1.25F).setRegistryName("gravel_mine");
-		SCContent.trackMine = new BlockTrackMine().setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("track_mine");
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("bouncing_betty");
-		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("claymore");
-		SCContent.ims = new BlockIMS(Material.IRON).setCreativeTab(SecurityCraft.groupSCMine).setRegistryName("ims");
+		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS, 1F).setRegistryName("mine");
+		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT, 1.25F).setRegistryName("dirt_mine");
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE, 2.5F).setRegistryName("stone_mine");
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE, 2.75F).setRegistryName("cobblestone_mine");
+		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND, 1.25F).setRegistryName("sand_mine");
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE, 3.75F).setRegistryName("diamond_mine");
+		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK, 3.75F).setRegistryName("furnace_mine");
+		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL, 1.25F).setRegistryName("gravel_mine");
+		SCContent.trackMine = new BlockTrackMine().setRegistryName("track_mine");
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS, 1F).setRegistryName("bouncing_betty");
+		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setRegistryName("claymore");
+		SCContent.ims = new BlockIMS(Material.IRON).setRegistryName("ims");
 	}
 
 	public static void setupItems()

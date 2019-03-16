@@ -21,12 +21,13 @@ import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.CloseFurnace;
 import net.geforcemods.securitycraft.network.server.GivePotionEffect;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
-import net.geforcemods.securitycraft.network.server.SetBlock;
+import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
@@ -34,6 +35,7 @@ import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
@@ -54,12 +56,14 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionUtils;
@@ -155,19 +159,29 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
-		//register itemblocks for the reinforced blocks
+		//register item blocks from annoated fields
 		for(Field field : SCContent.class.getFields())
 		{
 			try
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 					event.getRegistry().register(new ItemReinforcedBlock((Block)field.get(null)));
+				else if(field.isAnnotationPresent(RegisterItemBlock.class))
+				{
+					int tab = field.getAnnotation(RegisterItemBlock.class).value();
+					Block block = (Block)field.get(null);
+
+					event.getRegistry().register(new ItemBlock(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
+				}
+
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
 			{
 				e.printStackTrace();
 			}
 		}
+
+		event.getRegistry().register(new ItemBlock(SCContent.keypadChest, new Item.Properties().group(SecurityCraft.groupSCTechnical).setTEISR(() -> () -> new ItemKeypadChestRenderer())));
 
 		//init block sc manual pages
 		for(Block block : blockPages)
@@ -178,6 +192,7 @@ public class RegistrationHandler
 				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help." + block.getTranslationKey().substring(5) + ".info"));
 		}
 
+		//items
 		registerItem(event, SCContent.codebreaker);
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
@@ -215,7 +230,6 @@ public class RegistrationHandler
 		registerItem(event, SCContent.secretSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
 
-		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
 		blockPages.clear();
 	}
@@ -261,7 +275,6 @@ public class RegistrationHandler
 	{
 		int index = 0;
 
-		SecurityCraft.channel.registerMessage(index++, SetBlock.class, SetBlock::encode, SetBlock::decode, SetBlock::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetScanType.class, SetScanType::encode, SetScanType::decode, SetScanType::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetKeycardLevel.class, SetKeycardLevel::encode, SetKeycardLevel::decode, SetKeycardLevel::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::decode, UpdateLogger::onMessage);
@@ -281,6 +294,8 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, UpdateSliderValue.class, UpdateSliderValue::encode, UpdateSliderValue::decode, UpdateSliderValue::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RemoveCameraTag.class, RemoveCameraTag::encode, RemoveCameraTag::decode, RemoveCameraTag::onMessage);
 		SecurityCraft.channel.registerMessage(index++, InitSentryAnimation.class, InitSentryAnimation::encode, InitSentryAnimation::decode, InitSentryAnimation::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetCameraPowered.class, SetCameraPowered::encode, SetCameraPowered::decode, SetCameraPowered::onMessage);
+		SecurityCraft.channel.registerMessage(index++, CloseFurnace.class, CloseFurnace::encode, CloseFurnace::decode, CloseFurnace::onMessage);
 	}
 
 	@SubscribeEvent

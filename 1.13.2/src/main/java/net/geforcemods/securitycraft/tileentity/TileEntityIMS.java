@@ -16,10 +16,10 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -148,10 +148,14 @@ public class TileEntityIMS extends CustomizableSCTE {
 		int height;
 
 		for(height = 1; height <= 9; height++)
-			if(BlockUtils.getBlock(getWorld(), getPos().up(height)) == null || BlockUtils.getBlock(getWorld(), getPos().up(height)) == Blocks.AIR)
+		{
+			IBlockState state = getWorld().getBlockState(getPos().up(height));
+
+			if(state == null || state.isAir(getWorld(), getPos()))
 				continue;
 			else
 				break;
+		}
 
 		return height * 3;
 	}

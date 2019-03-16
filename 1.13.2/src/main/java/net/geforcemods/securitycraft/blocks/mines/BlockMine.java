@@ -34,8 +34,8 @@ public class BlockMine extends BlockExplosive {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public BlockMine(Material material) {
-		super(SoundType.STONE, material);
+	public BlockMine(Material material, float baseHardness) {
+		super(SoundType.STONE, material, baseHardness);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 

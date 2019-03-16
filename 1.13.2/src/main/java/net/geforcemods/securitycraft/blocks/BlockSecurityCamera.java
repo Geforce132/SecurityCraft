@@ -29,6 +29,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockSecurityCamera extends BlockContainer{
@@ -137,8 +138,12 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
-		return BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
+		EnumFacing facing = state.get(FACING);
+		BlockPos placeOnPos = pos.offset(facing.getOpposite());
+		IBlockState placeOnState = world.getBlockState(placeOnPos);
+
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) && !isExceptBlockForAttachWithPiston(placeOnState.getBlock());
 	}
 
 	@Override
@@ -164,7 +169,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!isValidPosition(world.getBlockState(pos), world, pos) && !canPlaceBlockOnSide(world, pos, state.get(FACING))) {
+		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos)) {
 			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
 			world.removeBlock(pos);
 		}

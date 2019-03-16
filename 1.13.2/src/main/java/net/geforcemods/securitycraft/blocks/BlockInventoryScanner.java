@@ -18,7 +18,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
@@ -215,10 +214,10 @@ public class BlockInventoryScanner extends BlockContainer {
 		for(int i = 0; i <= ServerConfig.CONFIG.inventoryScannerRange.get(); i++)
 		{
 			BlockPos offsetPos = pos.offset(facing, i);
-			Block block = BlockUtils.getBlock(world, offsetPos);
 			IBlockState state = world.getBlockState(offsetPos);
+			Block block = state.getBlock();
 
-			if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+			if(!state.isAir(world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
 				return null;
 
 			if(block == SCContent.inventoryScanner && state.get(FACING) == facing.getOpposite())

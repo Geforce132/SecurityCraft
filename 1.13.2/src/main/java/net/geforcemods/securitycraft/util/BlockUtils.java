@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 
 public class BlockUtils{
 
-	public static boolean isSideSolid(World world, BlockPos pos, EnumFacing side)
+	public static boolean isSideSolid(IWorldReaderBase world, BlockPos pos, EnumFacing side)
 	{
 		return world.getBlockState(pos).getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
 	}
