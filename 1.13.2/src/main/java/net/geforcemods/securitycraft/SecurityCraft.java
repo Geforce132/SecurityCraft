@@ -24,7 +24,6 @@ import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
@@ -64,7 +63,7 @@ public class SecurityCraft {
 	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
 	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
 	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
-	private final List<Field> toTint = new ArrayList<>();
+	private final static List<Block> toTint = new ArrayList<>();
 
 	public SecurityCraft()
 	{
@@ -79,7 +78,7 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
+	public static void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
 	{
 		log("Loading mod content....");
 		SetupHandler.setupFluids();
@@ -96,7 +95,7 @@ public class SecurityCraft {
 	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
 
 	@SubscribeEvent
-	public void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
+	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
 		log("Setting up inter-mod stuff...");
 		InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
@@ -112,7 +111,7 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public void onInterModProcess(InterModProcessEvent event){ //stage 4
+	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
 		DataSerializers.registerSerializer(Owner.SERIALIZER);
 
 		for(Field field : SCContent.class.getFields())
@@ -139,40 +138,32 @@ public class SecurityCraft {
 
 	public void registerBlockColorHandler(ColorHandlerEvent.Block event)
 	{
-		getOrPopulateToTint().forEach(field -> {
-			try
-			{
-				Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, (Block)field.get(null));
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		});
+		getOrPopulateToTint().forEach(block -> event.getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, block));
 	}
 
 	public void registerItemColorHandler(ColorHandlerEvent.Item event)
 	{
-		getOrPopulateToTint().forEach(field -> {
-			try
-			{
-				Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> 0x999999, (Block)field.get(null));
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		});
+		getOrPopulateToTint().forEach(item -> event.getItemColors().register((stack, tintIndex) -> 0x999999, item));
 	}
 
-	private List<Field> getOrPopulateToTint()
+	private List<Block> getOrPopulateToTint()
 	{
 		if(toTint.isEmpty())
 		{
 			for(Field field : SCContent.class.getFields())
 			{
 				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
-					toTint.add(field);
+				{
+					try
+					{
+						System.out.println(field.get(null));
+						toTint.add((Block)field.get(null));
+					}
+					catch(IllegalArgumentException | IllegalAccessException e)
+					{
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 
