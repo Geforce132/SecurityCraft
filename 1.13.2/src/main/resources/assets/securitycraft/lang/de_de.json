@@ -636,8 +636,8 @@
 
     "securitycraft.subtitle.alarm": "Alarm geht los",
     "securitycraft.subtitle.electrified": "Stromschlag",
-    "securitycraft.subtitle.cameraZoomIn": "Kamerazoom",
-    "securitycraft.subtitle.cameraSnap": "Kamerablende",
-    "securitycraft.subtitle.taserFire": "Taser wird gefeuert",
+    "securitycraft.subtitle.camerazoomin": "Kamerazoom",
+    "securitycraft.subtitle.camerasnap": "Kamerablende",
+    "securitycraft.subtitle.taserfire": "Taser wird gefeuert",
     "securitycraft.subtitle.lock": "Behälter wird verschlossen"
 }

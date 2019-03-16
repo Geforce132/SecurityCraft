@@ -636,8 +636,8 @@
 
     "securitycraft.subtitle.alarm": "Alarm sounding",
     "securitycraft.subtitle.electrified": "Entity electrocuted",
-    "securitycraft.subtitle.cameraZoomIn": "Camera zooming",
-    "securitycraft.subtitle.cameraSnap": "Camera shutter",
-    "securitycraft.subtitle.taserFire": "Taser firing",
+    "securitycraft.subtitle.camerazoomin": "Camera zooming",
+    "securitycraft.subtitle.camerasnap": "Camera shutter",
+    "securitycraft.subtitle.taserfire": "Taser firing",
     "securitycraft.subtitle.lock": "Container locking"
 }

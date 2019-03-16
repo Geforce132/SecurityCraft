@@ -6,9 +6,9 @@ import net.minecraft.util.SoundEvent;
 public enum SCSounds {
 
 	ALARM("securitycraft:alarm", 20),
-	CAMERAZOOMIN("securitycraft:cameraZoomIn", 10),
-	CAMERASNAP("securitycraft:cameraSnap", 15),
-	TASERFIRED("securitycraft:taserFire", 20),
+	CAMERAZOOMIN("securitycraft:camerazoomin", 10),
+	CAMERASNAP("securitycraft:camerasnap", 15),
+	TASERFIRED("securitycraft:taserfire", 20),
 	ELECTRIFIED("securitycraft:electrified", 20),
 	LOCK("securitycraft:lock", 20);
 
