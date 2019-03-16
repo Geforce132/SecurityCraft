@@ -22,7 +22,7 @@ public @interface Reinforced
 	boolean hasPage() default false;
 
 	/**
-	 * @return true if this block should receive a tint ox 0x999999, false if not
+	 * @return true if this block should receive a tint of 0x999999, false if not
 	 */
 	boolean hasTint() default true;
 }
