@@ -355,9 +355,10 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy)
 	{
+		event.getRegistry().register(item); //need this call first before accessing the translation key
+
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
 
-		event.getRegistry().register(item);
 		page.designedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
@@ -368,9 +369,10 @@ public class RegistrationHandler
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy)
 	{
+		event.getRegistry().register(item); //need this call first before accessing the translation key
+
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
 
-		event.getRegistry().register(item);
 		page.designedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
@@ -381,7 +383,7 @@ public class RegistrationHandler
 	 */
 	private static void registerItemWithCustomRecipe(RegistryEvent.Register<Item> event, Item item, ItemStack... customRecipe)
 	{
-		event.getRegistry().register(item);
+		event.getRegistry().register(item); //need this call first before accessing the translation key
 
 		NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(customRecipe.length, Ingredient.EMPTY);
 

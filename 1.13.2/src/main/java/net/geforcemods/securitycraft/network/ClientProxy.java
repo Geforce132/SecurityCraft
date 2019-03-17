@@ -55,7 +55,6 @@ public class ClientProxy implements IProxy {
 				{
 					try
 					{
-						System.out.println(field.get(null));
 						toTint.add((Block)field.get(null));
 					}
 					catch(IllegalArgumentException | IllegalAccessException e)
