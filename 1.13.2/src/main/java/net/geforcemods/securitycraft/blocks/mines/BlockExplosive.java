@@ -14,12 +14,19 @@ import net.minecraft.init.Items;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public abstract class BlockExplosive extends BlockOwnable implements IExplosive {
 
 	public BlockExplosive(SoundType soundType, Material material, float baseHardness) {
-		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : baseHardness, 6000000.0F));
+		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(baseHardness, 6000000.0F));
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	{
+		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

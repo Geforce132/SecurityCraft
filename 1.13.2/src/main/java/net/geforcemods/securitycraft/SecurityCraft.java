@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler.ClientConfig;
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
@@ -12,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
@@ -28,7 +26,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -38,7 +35,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -63,14 +59,11 @@ public class SecurityCraft {
 	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
 	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
 	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
-	private final static List<Block> toTint = new ArrayList<>();
 
 	public SecurityCraft()
 	{
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-		MinecraftForge.EVENT_BUS.addListener(this::registerBlockColorHandler);
-		MinecraftForge.EVENT_BUS.addListener(this::registerItemColorHandler);
 		MinecraftForge.EVENT_BUS.register(new SCEventHandler());
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.CONFIG_SPEC);
@@ -80,16 +73,8 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
 	{
-		log("Loading mod content....");
-		SetupHandler.setupFluids();
-		SetupHandler.setupBlocks();
-		SetupHandler.setupReinforcedBlocks();
-		SetupHandler.setupMines();
-		SetupHandler.setupItems();
-		log("Finished loading mod content.");
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerPackets();
-		RegistrationHandler.registerFluids();
 	}
 
 	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
@@ -99,11 +84,11 @@ public class SecurityCraft {
 		log("Setting up inter-mod stuff...");
 		InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
-		if(ClientConfig.CONFIG.checkForUpdates.get()) {
-			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
-			if(vcUpdateTag != null)
-				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
-		}
+		//		if(ClientConfig.CONFIG.checkForUpdates.get()) {
+		//			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+		//			if(vcUpdateTag != null)
+		//				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
+		//		}
 
 		log("Registering mod content... (PT 2/2)");
 		EnumCustomModules.refresh();
@@ -127,47 +112,12 @@ public class SecurityCraft {
 			}
 		}
 
-		toTint.clear(); //clear up some unused memory
 		log("Mod finished loading correctly! :D");
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){
 		CommandSC.register(event.getCommandDispatcher());
 		CommandModule.register(event.getCommandDispatcher());
-	}
-
-	public void registerBlockColorHandler(ColorHandlerEvent.Block event)
-	{
-		getOrPopulateToTint().forEach(block -> event.getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, block));
-	}
-
-	public void registerItemColorHandler(ColorHandlerEvent.Item event)
-	{
-		getOrPopulateToTint().forEach(item -> event.getItemColors().register((stack, tintIndex) -> 0x999999, item));
-	}
-
-	private List<Block> getOrPopulateToTint()
-	{
-		if(toTint.isEmpty())
-		{
-			for(Field field : SCContent.class.getFields())
-			{
-				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
-				{
-					try
-					{
-						System.out.println(field.get(null));
-						toTint.add((Block)field.get(null));
-					}
-					catch(IllegalArgumentException | IllegalAccessException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-
-		return toTint;
 	}
 
 	public Object[] getUsePosition(String playerName) {
@@ -202,8 +152,9 @@ public class SecurityCraft {
 	}
 
 	public static void log(String line, boolean isSevereError) {
-		if(ServerConfig.CONFIG.debug.get())
-			System.out.println(isSevereError ? "{SecurityCraft} {" + EffectiveSide.get() + "} {Severe}: " + line : "[SecurityCraft] [" + EffectiveSide.get() + "] " + line);
+		//TODO: find out how to not call this too early (java.lang.NullPointerException: Cannot get config value without assigned Config object present)
+		//		if(ServerConfig.CONFIG.debug.get())
+		//			System.out.println(isSevereError ? "{SecurityCraft} {" + EffectiveSide.get() + "} {Severe}: " + line : "[SecurityCraft] [" + EffectiveSide.get() + "] " + line);
 	}
 
 	public static String getVersion() {

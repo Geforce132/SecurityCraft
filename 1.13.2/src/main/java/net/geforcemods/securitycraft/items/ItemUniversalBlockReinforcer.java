@@ -20,7 +20,7 @@ public class ItemUniversalBlockReinforcer extends Item
 {
 	public ItemUniversalBlockReinforcer(int damage)
 	{
-		super(new Item.Properties().defaultMaxDamage(damage).group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(damage).group(SecurityCraft.groupSCTechnical));
 	}
 
 	@Override

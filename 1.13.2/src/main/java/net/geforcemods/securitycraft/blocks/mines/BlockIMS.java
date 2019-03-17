@@ -38,8 +38,14 @@ public class BlockIMS extends BlockOwnable {
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
 
 	public BlockIMS(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 0.7F, 6000000.0F));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(0.7F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(MINES, 4));
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	{
+		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

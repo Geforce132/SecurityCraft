@@ -66,6 +66,7 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -110,8 +111,8 @@ public class SetupHandler
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setRegistryName("secret_sign_standing");
 		SCContent.secretSignWall = new BlockSecretSignWall().setRegistryName("secret_sign_wall");
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName("motion_activated_light");
-		SCContent.fakeWaterBlock = new BlockFakeWater();
-		SCContent.fakeLavaBlock = new BlockFakeLava();
+		SCContent.fakeWaterBlock = (BlockFlowingFluid)new BlockFakeWater().setRegistryName("fake_water_block");
+		SCContent.fakeLavaBlock = (BlockFlowingFluid)new BlockFakeLava().setRegistryName("fake_lava_block");
 	}
 
 	public static void setupReinforcedBlocks()

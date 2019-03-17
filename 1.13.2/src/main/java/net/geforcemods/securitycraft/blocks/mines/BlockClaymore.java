@@ -36,8 +36,14 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public BlockClaymore(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 1F, 6000000.0F));
+		super(Block.Properties.create(material).hardnessAndResistance(1F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(DEACTIVATED, false));
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	{
+		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	/**

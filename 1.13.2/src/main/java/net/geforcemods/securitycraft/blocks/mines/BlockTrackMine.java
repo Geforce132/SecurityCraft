@@ -20,7 +20,13 @@ import net.minecraft.world.World;
 public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider {
 
 	public BlockTrackMine() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(!ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : 0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	{
+		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

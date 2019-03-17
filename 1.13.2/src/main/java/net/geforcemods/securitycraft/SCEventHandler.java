@@ -677,7 +677,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onMouseClicked(MouseClickedEvent event) {
+	public void onMouseClicked(MouseClickedEvent.Pre event) {
 		if(Minecraft.getInstance().world != null)
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
