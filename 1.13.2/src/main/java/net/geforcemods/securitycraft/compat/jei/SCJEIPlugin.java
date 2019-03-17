@@ -1,32 +1,44 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-/*
 import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.minecraft.item.ItemStack;*/
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
-/*
-@JEIPlugin
+@JeiPlugin
 public class SCJEIPlugin implements IModPlugin
-{*/
-public class SCJEIPlugin 
 {
-	/*@Override
-	public void register(IModRegistry registry)
+	@Override
+	public void registerRecipes(IRecipeRegistration registration)
 	{
-		registry.addAdvancedGuiHandlers(new SlotMover());
-		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), ItemStack.class, "gui.securitycraft:scManual.recipe.adminTool");
+		registration.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
-			registry.addIngredientInfo(new ItemStack(pc), ItemStack.class, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
+			registration.addIngredientInfo(new ItemStack(pc), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
 		});
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-			registry.addIngredientInfo(new ItemStack(rb), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey() + ".name");
+			registration.addIngredientInfo(new ItemStack(rb), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey() + ".name");
 		});
-	}*/
+	}
+
+	@Override
+	public void registerGuiHandlers(IGuiHandlerRegistration registration)
+	{
+		registration.addGuiContainerHandler(GuiCustomizeBlock.class, new SlotMover());
+	}
+
+	@Override
+	public ResourceLocation getPluginUid()
+	{
+		return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID);
+	}
 }

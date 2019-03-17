@@ -1,24 +1,16 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-/*import java.awt.Rectangle;
 import java.util.List;
 
-import mezz.jei.api.gui.IAdvancedGuiHandler;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;*/
+import mezz.jei.api.gui.handlers.IGuiContainerHandler;
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.minecraft.client.renderer.Rectangle2d;
 
-//public class SlotMover implements IAdvancedGuiHandler<GuiCustomizeBlock>
-public class SlotMover
+public class SlotMover implements IGuiContainerHandler<GuiCustomizeBlock>
 {
-	/*
 	@Override
-	public Class<GuiCustomizeBlock> getGuiContainerClass()
-	{
-		return GuiCustomizeBlock.class;
-	}
-
-	@Override
-	public List<Rectangle> getGuiExtraAreas(GuiCustomizeBlock guiContainer)
+	public List<Rectangle2d> getGuiExtraAreas(GuiCustomizeBlock guiContainer)
 	{
 		return guiContainer.getGuiExtraAreas();
-	}*/
+	}
 }

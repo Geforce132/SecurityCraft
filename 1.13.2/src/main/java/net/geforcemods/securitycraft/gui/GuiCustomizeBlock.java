@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.gui;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -137,16 +137,16 @@ public class GuiCustomizeBlock extends GuiContainer{
 		return (ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
 	}
 
-	public List<Rectangle> getGuiExtraAreas()
+	public List<Rectangle2d> getGuiExtraAreas()
 	{
-		List<Rectangle> rects = new ArrayList<Rectangle>();
+		List<Rectangle2d> rects = new ArrayList<>();
 
 		for(GuiButton button : optionButtons)
 		{
 			if(button == null)
 				continue;
 
-			rects.add(new Rectangle(button.x, button.y, button.width, button.height));
+			rects.add(new Rectangle2d(button.x, button.y, button.width, button.height));
 		}
 
 		return rects;
