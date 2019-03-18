@@ -308,7 +308,7 @@ public class SetupHandler
 		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
 		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
 		//anything else, alphabetical
-		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.AIR, "reinforced_stone_stairs");
+		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE, "reinforced_stone_stairs");
 	}
 
 	public static void setupMines()
