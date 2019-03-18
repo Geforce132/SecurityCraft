@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "bouncingBetty": "securitycraft:blocks/bouncing_betty_defused",
-        "particle": "securitycraft:blocks/bouncing_betty_defused"
+        "bouncingBetty": "securitycraft:block/bouncing_betty_defused",
+        "particle": "securitycraft:block/bouncing_betty_defused"
     },
     "display": {
          "ground": {

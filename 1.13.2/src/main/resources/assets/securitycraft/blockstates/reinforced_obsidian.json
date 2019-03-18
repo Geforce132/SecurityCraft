@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_obsidian" }
+        "": [
+            { "model": "securitycraft:block/reinforced_obsidian" }
         ]
     }
 }

@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "securitycraft:items/universal_owner_changer"
+        "layer0": "securitycraft:item/universal_owner_changer"
     },
     "display": {
         "thirdperson_righthand": {

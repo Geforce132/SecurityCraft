@@ -2,7 +2,7 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "taser": "securitycraft:items/taser"
+        "taser": "securitycraft:item/taser"
     },
     "display": {
     	"gui": {

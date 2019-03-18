@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_dirt" }
+        "": [
+            { "model": "securitycraft:block/reinforced_dirt" }
         ]
     }
 }

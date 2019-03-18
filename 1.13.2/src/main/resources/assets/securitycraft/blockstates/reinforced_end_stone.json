@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_end_stone" }
+        "": [
+            { "model": "securitycraft:block/reinforced_end_stone" }
         ]
     }
 }

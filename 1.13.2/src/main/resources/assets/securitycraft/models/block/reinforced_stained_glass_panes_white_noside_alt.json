@@ -1,6 +1,6 @@
 {
     "parent": "block/pane_noside_alt",
     "textures": {
-        "pane": "securitycraft:blocks/glass_reinforced_white"
+        "pane": "securitycraft:block/glass_reinforced_white"
     }
 }

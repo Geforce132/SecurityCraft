@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_mossy_cobblestone" }
+        "": [
+            { "model": "securitycraft:block/reinforced_mossy_cobblestone" }
         ]
     }
 }

@@ -1,6 +1,6 @@
 {
     "variants": {
-        "deactivated=false": { "model": "securitycraft:mine" },
-        "deactivated=true": { "model": "securitycraft:mine_cut" }
+        "deactivated=false": { "model": "securitycraft:block/mine" },
+        "deactivated=true": { "model": "securitycraft:block/mine_cut" }
     }
 }

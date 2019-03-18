@@ -1,7 +1,7 @@
 {
 	"textures": {
-		"0": "securitycraft:blocks/motion_activated_light",
-		"particle": "securitycraft:blocks/motion_activated_light"
+		"0": "securitycraft:block/motion_activated_light",
+		"particle": "securitycraft:block/motion_activated_light"
 	},
 	"elements": [
 		{

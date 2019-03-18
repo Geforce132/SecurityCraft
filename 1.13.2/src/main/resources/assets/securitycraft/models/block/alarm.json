@@ -1,9 +1,9 @@
 {
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "securitycraft:blocks/alarm_particle_texture",
-		"0": "securitycraft:blocks/alarm_top_deactivated",
-		"2": "securitycraft:blocks/alarm_sides_deactivated"
+		"particle": "securitycraft:block/alarm_particle_texture",
+		"0": "securitycraft:block/alarm_top_deactivated",
+		"2": "securitycraft:block/alarm_sides_deactivated"
 	},
 	"elements": [
 		{

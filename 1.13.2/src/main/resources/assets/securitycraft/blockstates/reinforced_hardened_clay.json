@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_hardened_clay" }
+        "": [
+            { "model": "securitycraft:block/reinforced_hardened_clay" }
         ]
     }
 }

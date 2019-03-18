@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "mine": "securitycraft:blocks/mine_cut",
-        "particle": "securitycraft:blocks/mine_cut"
+        "mine": "securitycraft:block/mine_cut",
+        "particle": "securitycraft:block/mine_cut"
     },
     "elements": [
         {

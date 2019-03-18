@@ -1,6 +1,6 @@
 {
     "variants": {
-        "deactivated=true": { "model": "securitycraft:cage_trap" },
-        "deactivated=false":  { "model": "securitycraft:cage_trap" }
+        "deactivated=true": { "model": "securitycraft:block/cage_trap" },
+        "deactivated=false":  { "model": "securitycraft:block/cage_trap" }
     }
 }

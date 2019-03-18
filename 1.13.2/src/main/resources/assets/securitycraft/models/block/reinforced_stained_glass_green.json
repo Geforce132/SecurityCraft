@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "securitycraft:blocks/glass_reinforced_green"
+        "all": "securitycraft:block/glass_reinforced_green"
     }
 }

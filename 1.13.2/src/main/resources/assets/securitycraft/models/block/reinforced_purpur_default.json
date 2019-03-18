@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/purpur_block"
+        "all": "block/purpur_block"
     }
 }

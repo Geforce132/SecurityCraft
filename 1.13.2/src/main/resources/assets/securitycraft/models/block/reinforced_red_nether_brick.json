@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/red_nether_brick"
+        "all": "block/red_nether_bricks"
     }
 }

@@ -1,13 +1,13 @@
 {
     "parent": "securitycraft:block/reinforced_block",
     "textures": {
-        "side": "blocks/red_sandstone_carved",
-        "down": "blocks/red_sandstone_bottom",
-        "up": "blocks/red_sandstone_top",
-        "north": "blocks/red_sandstone_carved",
-        "east": "blocks/red_sandstone_carved",
-        "south": "blocks/red_sandstone_carved",
-        "west": "blocks/red_sandstone_carved",
-        "particle": "blocks/red_sandstone_carved"
+        "side": "block/chiseled_red_sandstone",
+        "down": "block/red_sandstone_bottom",
+        "up": "block/red_sandstone_top",
+        "north": "block/chiseled_red_sandstone",
+        "east": "block/chiseled_red_sandstone",
+        "south": "block/chiseled_red_sandstone",
+        "west": "block/chiseled_red_sandstone",
+        "particle": "block/chiseled_red_sandstone"
     }
 }

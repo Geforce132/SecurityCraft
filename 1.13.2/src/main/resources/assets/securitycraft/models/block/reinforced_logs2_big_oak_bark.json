@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/log_big_oak"
+        "all": "block/dark_oak_log"
     }
 }

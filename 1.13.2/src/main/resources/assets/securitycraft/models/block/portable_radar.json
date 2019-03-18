@@ -3,9 +3,9 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "portableRadarSides": "securitycraft:blocks/portable_radar_sides",
-        "particle": "securitycraft:blocks/portable_radar_sides",
-        "portableRadarTop": "securitycraft:blocks/portable_radar_top1"
+        "portableRadarSides": "securitycraft:block/portable_radar_sides",
+        "particle": "securitycraft:block/portable_radar_sides",
+        "portableRadarTop": "securitycraft:block/portable_radar_top1"
     },
     "elements": [
         {

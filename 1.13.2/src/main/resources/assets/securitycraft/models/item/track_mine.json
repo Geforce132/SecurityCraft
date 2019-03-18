@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:blocks/rail_mine"
+        "layer0": "securitycraft:block/rail_mine"
     }
 }

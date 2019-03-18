@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:gravel_mine" }
+        "": [
+            { "model": "securitycraft:block/gravel_mine" }
         ]
     }
 }

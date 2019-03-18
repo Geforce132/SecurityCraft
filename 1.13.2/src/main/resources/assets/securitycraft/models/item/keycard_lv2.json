@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:items/lv2_keycard"
+        "layer0": "securitycraft:item/lv2_keycard"
     }
 }

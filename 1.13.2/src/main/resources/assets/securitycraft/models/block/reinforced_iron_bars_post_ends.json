@@ -1,8 +1,8 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/reinforced_iron_bars",
-        "edge": "securitycraft:blocks/reinforced_iron_bars"
+        "particle": "securitycraft:block/reinforced_iron_bars",
+        "edge": "securitycraft:block/reinforced_iron_bars"
     },
     "elements": [
         {   "from": [ 7, 0.001, 7 ],

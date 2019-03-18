@@ -1,8 +1,8 @@
 {
     "parent": "securitycraft:block/reinforced_top_slab",
     "textures": {
-        "bottom": "blocks/red_sandstone_top",
-        "top": "blocks/red_sandstone_top",
-        "side": "blocks/red_sandstone_normal"
+        "bottom": "block/red_sandstone_top",
+        "top": "block/red_sandstone_top",
+        "side": "block/red_sandstone"
     }
 }

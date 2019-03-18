@@ -1,6 +1,6 @@
 {
     "parent": "block/wall_gate_closed",
     "textures": {
-        "texture": "securitycraft:blocks/reinforced_door_lower"
+        "texture": "securitycraft:block/reinforced_door_lower"
     }
 }

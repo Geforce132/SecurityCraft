@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/ani_laser",
-        "laser": "securitycraft:blocks/ani_laser"
+        "particle": "securitycraft:block/ani_laser",
+        "laser": "securitycraft:block/ani_laser"
     },
     "elements": [
         {

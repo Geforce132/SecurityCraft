@@ -1,7 +1,7 @@
 {
     "variants": {
-        "axis=y": { "model": "securitycraft:reinforced_bone_block" },
-        "axis=z": { "model": "securitycraft:reinforced_bone_block", "x": 90 },
-        "axis=x": { "model": "securitycraft:reinforced_bone_block", "x": 90, "y": 90 }
+        "axis=y": { "model": "securitycraft:block/reinforced_bone_block" },
+        "axis=z": { "model": "securitycraft:block/reinforced_bone_block", "x": 90 },
+        "axis=x": { "model": "securitycraft:block/reinforced_bone_block", "x": 90, "y": 90 }
     }
 }

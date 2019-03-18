@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/log_spruce"
+        "all": "block/spruce_log"
     }
 }

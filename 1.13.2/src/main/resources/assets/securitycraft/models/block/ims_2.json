@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "ims": "securitycraft:blocks/ims",
-        "particle": "securitycraft:blocks/ims"
+        "ims": "securitycraft:block/ims",
+        "particle": "securitycraft:block/ims"
     },
     "display": {
          "ground": {

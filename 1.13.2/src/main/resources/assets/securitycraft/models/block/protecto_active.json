@@ -3,9 +3,9 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "protectoActive": "securitycraft:blocks/protecto_active",
-        "protectoDeactivated": "securitycraft:blocks/protecto_deactivated",
-        "particle": "securitycraft:blocks/protecto_active"
+        "protectoActive": "securitycraft:block/protecto_active",
+        "protectoDeactivated": "securitycraft:block/protecto_deactivated",
+        "particle": "securitycraft:block/protecto_active"
     },
     "elements": [
         {

@@ -1,10 +1,16 @@
 {
     "variants": {
-        "facing=down": { "model": "securitycraft:alarm", "x": 180 },
-        "facing=east":  { "model": "securitycraft:alarm", "x": 90, "y": 90 },
-        "facing=west":  { "model": "securitycraft:alarm", "x": 90, "y": 270 },
-        "facing=south": { "model": "securitycraft:alarm", "x": 90, "y": 180 },
-        "facing=north": { "model": "securitycraft:alarm", "x": 90 },
-        "facing=up": { "model": "securitycraft:alarm"}
+        "facing=down,lit=false": { "model": "securitycraft:block/alarm", "x": 180 },
+        "facing=east,lit=false":  { "model": "securitycraft:block/alarm", "x": 90, "y": 90 },
+        "facing=west,lit=false":  { "model": "securitycraft:block/alarm", "x": 90, "y": 270 },
+        "facing=south,lit=false": { "model": "securitycraft:block/alarm", "x": 90, "y": 180 },
+        "facing=north,lit=false": { "model": "securitycraft:block/alarm", "x": 90 },
+        "facing=up,lit=false": { "model": "securitycraft:block/alarm"},
+        "facing=down,lit=true": { "model": "securitycraft:block/alarm", "x": 180 },
+        "facing=east,lit=true":  { "model": "securitycraft:block/alarm", "x": 90, "y": 90 },
+        "facing=west,lit=true":  { "model": "securitycraft:block/alarm", "x": 90, "y": 270 },
+        "facing=south,lit=true": { "model": "securitycraft:block/alarm", "x": 90, "y": 180 },
+        "facing=north,lit=true": { "model": "securitycraft:block/alarm", "x": 90 },
+        "facing=up,lit=true": { "model": "securitycraft:block/alarm"}
     }
 }

@@ -1,14 +1,14 @@
 {
     "variants": {
-        "shape=north_south": { "model": "securitycraft:track_mine_flat" },
-        "shape=east_west": { "model": "securitycraft:track_mine_flat", "y": 90 },
-        "shape=ascending_east": { "model": "securitycraft:track_mine_raised_ne", "y": 90 },
-        "shape=ascending_west": { "model": "securitycraft:track_mine_raised_sw", "y": 90 },
-        "shape=ascending_north": { "model": "securitycraft:track_mine_raised_ne" },
-        "shape=ascending_south": { "model": "securitycraft:track_mine_raised_sw" },
-        "shape=south_east": { "model": "securitycraft:track_mine_curved" },
-        "shape=south_west": { "model": "securitycraft:track_mine_curved", "y": 90 },
-        "shape=north_west": { "model": "securitycraft:track_mine_curved", "y": 180 },
-        "shape=north_east": { "model": "securitycraft:track_mine_curved", "y": 270 }
+        "shape=north_south": { "model": "securitycraft:block/track_mine_flat" },
+        "shape=east_west": { "model": "securitycraft:block/track_mine_flat", "y": 90 },
+        "shape=ascending_east": { "model": "securitycraft:block/track_mine_raised_ne", "y": 90 },
+        "shape=ascending_west": { "model": "securitycraft:block/track_mine_raised_sw", "y": 90 },
+        "shape=ascending_north": { "model": "securitycraft:block/track_mine_raised_ne" },
+        "shape=ascending_south": { "model": "securitycraft:block/track_mine_raised_sw" },
+        "shape=south_east": { "model": "securitycraft:block/track_mine_curved" },
+        "shape=south_west": { "model": "securitycraft:block/track_mine_curved", "y": 90 },
+        "shape=north_west": { "model": "securitycraft:block/track_mine_curved", "y": 180 },
+        "shape=north_east": { "model": "securitycraft:block/track_mine_curved", "y": 270 }
     }
 }

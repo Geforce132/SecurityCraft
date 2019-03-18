@@ -1,12 +1,12 @@
 {
     "variants": {
-        "deactivated=true,facing=north": { "model": "securitycraft:claymore_defused" },
-        "deactivated=true,facing=south": { "model": "securitycraft:claymore_defused", "y": 180 },
-        "deactivated=true,facing=west":  { "model": "securitycraft:claymore_defused", "y": 270 },
-        "deactivated=true,facing=east":  { "model": "securitycraft:claymore_defused", "y": 90 },
-        "deactivated=false,facing=north": { "model": "securitycraft:claymore_active" },
-        "deactivated=false,facing=south": { "model": "securitycraft:claymore_active", "y": 180 },
-        "deactivated=false,facing=west":  { "model": "securitycraft:claymore_active", "y": 270 },
-        "deactivated=false,facing=east":  { "model": "securitycraft:claymore_active", "y": 90 }
+        "deactivated=true,facing=north": { "model": "securitycraft:block/claymore_defused" },
+        "deactivated=true,facing=south": { "model": "securitycraft:block/claymore_defused", "y": 180 },
+        "deactivated=true,facing=west":  { "model": "securitycraft:block/claymore_defused", "y": 270 },
+        "deactivated=true,facing=east":  { "model": "securitycraft:block/claymore_defused", "y": 90 },
+        "deactivated=false,facing=north": { "model": "securitycraft:block/claymore_active" },
+        "deactivated=false,facing=south": { "model": "securitycraft:block/claymore_active", "y": 180 },
+        "deactivated=false,facing=west":  { "model": "securitycraft:block/claymore_active", "y": 270 },
+        "deactivated=false,facing=east":  { "model": "securitycraft:block/claymore_active", "y": 90 }
     }
 }

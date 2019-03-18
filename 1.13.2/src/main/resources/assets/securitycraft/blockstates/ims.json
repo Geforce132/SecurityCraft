@@ -1,9 +1,9 @@
 {
     "variants": {
-        "mines=4": { "model": "securitycraft:ims_4" },
-        "mines=3": { "model": "securitycraft:ims_3" },
-        "mines=2": { "model": "securitycraft:ims_2" },
-        "mines=1": { "model": "securitycraft:ims_1" },
-        "mines=0": { "model": "securitycraft:ims_0" }
+        "mines=4": { "model": "securitycraft:block/ims_4" },
+        "mines=3": { "model": "securitycraft:block/ims_3" },
+        "mines=2": { "model": "securitycraft:block/ims_2" },
+        "mines=1": { "model": "securitycraft:block/ims_1" },
+        "mines=0": { "model": "securitycraft:block/ims_0" }
     }
 }

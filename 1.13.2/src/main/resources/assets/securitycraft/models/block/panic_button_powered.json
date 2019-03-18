@@ -3,8 +3,8 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
 	"ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/panic_button_powered",
-        "0": "securitycraft:blocks/panic_button_powered"
+        "particle": "securitycraft:block/panic_button_powered",
+        "0": "securitycraft:block/panic_button_powered"
     },
     "display": {
          "ground": {

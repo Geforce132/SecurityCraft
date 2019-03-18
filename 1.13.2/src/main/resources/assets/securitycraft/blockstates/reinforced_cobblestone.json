@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_cobblestone" }
+        "": [
+            { "model": "securitycraft:block/reinforced_cobblestone" }
         ]
     }
 }

@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": { "model": "securitycraft:inventory_scanner" },
-        "facing=south": { "model": "securitycraft:inventory_scanner", "y": 180 },
-        "facing=west":  { "model": "securitycraft:inventory_scanner", "y": 270 },
-        "facing=east":  { "model": "securitycraft:inventory_scanner", "y": 90 }
+        "facing=north": { "model": "securitycraft:block/inventory_scanner" },
+        "facing=south": { "model": "securitycraft:block/inventory_scanner", "y": 180 },
+        "facing=west":  { "model": "securitycraft:block/inventory_scanner", "y": 270 },
+        "facing=east":  { "model": "securitycraft:block/inventory_scanner", "y": 90 }
     }
 }

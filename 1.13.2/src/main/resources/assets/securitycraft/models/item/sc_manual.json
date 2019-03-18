@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:items/sc_manual"
+        "layer0": "securitycraft:item/sc_manual"
     }
 }

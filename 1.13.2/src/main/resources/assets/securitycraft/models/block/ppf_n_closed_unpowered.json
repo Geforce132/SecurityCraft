@@ -3,13 +3,13 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "keypadUnpowered": "securitycraft:blocks/keypad_unactive",
-        "furnaceSides": "blocks/furnace_side",
-        "ironBlock": "blocks/iron_block",
-        "furnaceFrontOn": "blocks/furnace_front_on",
-        "furnaceTop": "blocks/furnace_top",
-        "furnaceFrontOff": "blocks/furnace_front_off",
-        "particle": "blocks/iron_block"
+        "keypadUnpowered": "securitycraft:block/keypad_unactive",
+        "furnaceSides": "block/furnace_side",
+        "ironBlock": "block/iron_block",
+        "furnaceFrontOn": "block/furnace_front_on",
+        "furnaceTop": "block/furnace_top",
+        "furnaceFrontOff": "block/furnace_front_off",
+        "particle": "block/iron_block"
     },
     "elements": [
         {

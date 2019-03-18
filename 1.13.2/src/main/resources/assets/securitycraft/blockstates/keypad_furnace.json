@@ -1,12 +1,12 @@
 {
     "variants": {
-        "facing=north,open=false": { "model": "securitycraft:ppf_n_closed_unpowered" },
-        "facing=south,open=false": { "model": "securitycraft:ppf_n_closed_unpowered", "y": 180 },
-        "facing=west,open=false":  { "model": "securitycraft:ppf_n_closed_unpowered", "y": 270 },
-        "facing=east,open=false":  { "model": "securitycraft:ppf_n_closed_unpowered", "y": 90 },
-        "facing=north,open=true": { "model": "securitycraft:ppf_n_open_unpowered" },
-        "facing=south,open=true": { "model": "securitycraft:ppf_n_open_unpowered", "y": 180 },
-        "facing=west,open=true":  { "model": "securitycraft:ppf_n_open_unpowered", "y": 270 },
-        "facing=east,open=true":  { "model": "securitycraft:ppf_n_open_unpowered", "y": 90 }
+        "facing=north,open=false": { "model": "securitycraft:block/ppf_n_closed_unpowered" },
+        "facing=south,open=false": { "model": "securitycraft:block/ppf_n_closed_unpowered", "y": 180 },
+        "facing=west,open=false":  { "model": "securitycraft:block/ppf_n_closed_unpowered", "y": 270 },
+        "facing=east,open=false":  { "model": "securitycraft:block/ppf_n_closed_unpowered", "y": 90 },
+        "facing=north,open=true": { "model": "securitycraft:block/ppf_n_open_unpowered" },
+        "facing=south,open=true": { "model": "securitycraft:block/ppf_n_open_unpowered", "y": 180 },
+        "facing=west,open=true":  { "model": "securitycraft:block/ppf_n_open_unpowered", "y": 270 },
+        "facing=east,open=true":  { "model": "securitycraft:block/ppf_n_open_unpowered", "y": 90 }
     }
 }

@@ -1,6 +1,6 @@
 {
     "variants": {
-        "powered=false": { "model": "securitycraft:portable_radar" },
-        "powered=true": { "model": "securitycraft:portable_radar" }
+        "powered=false": { "model": "securitycraft:block/portable_radar" },
+        "powered=true": { "model": "securitycraft:block/portable_radar" }
     }
 }

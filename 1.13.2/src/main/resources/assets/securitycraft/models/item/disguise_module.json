@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:items/disguise_module"
+        "layer0": "securitycraft:item/disguise_module"
     }
 }

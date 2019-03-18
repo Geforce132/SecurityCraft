@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/stonebrick_carved"
+        "all": "block/chiseled_stone_bricks"
     }
 }

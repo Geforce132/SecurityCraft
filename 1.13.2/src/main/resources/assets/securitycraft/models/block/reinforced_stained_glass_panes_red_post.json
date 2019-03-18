@@ -1,7 +1,7 @@
 {
     "parent": "block/pane_post",
     "textures": {
-        "edge": "securitycraft:blocks/glass_reinforced_pane_top_red",
-        "pane": "securitycraft:blocks/glass_reinforced_red"
+        "edge": "securitycraft:block/glass_reinforced_pane_top_red",
+        "pane": "securitycraft:block/glass_reinforced_red"
     }
 }

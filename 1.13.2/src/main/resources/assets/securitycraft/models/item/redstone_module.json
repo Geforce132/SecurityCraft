@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:items/redstone_module"
+        "layer0": "securitycraft:item/redstone_module"
     }
 }

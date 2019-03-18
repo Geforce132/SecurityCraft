@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:sand_mine" }
+        "": [
+            { "model": "securitycraft:block/sand_mine" }
         ]
     }
 }

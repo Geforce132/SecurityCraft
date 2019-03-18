@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/lapis_block"
+        "all": "block/lapis_block"
     }
 }

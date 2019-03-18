@@ -1,7 +1,7 @@
 {
     "parent": "securitycraft:block/reinforced_carpet",
     "textures": {
-        "particle": "blocks/wool_colored_blue",
-        "wool": "blocks/wool_colored_blue"
+        "particle": "block/blue_wool",
+        "wool": "block/blue_wool"
     }
 }

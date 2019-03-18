@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/iron_block",
-        "iron_block": "securitycraft:blocks/iron_block"
+        "particle": "securitycraft:block/iron_block",
+        "iron_block": "securitycraft:block/iron_block"
     },
     "elements": [
         {

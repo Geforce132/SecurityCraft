@@ -1,7 +1,7 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_sea_lantern" }
+        "": [
+            { "model": "securitycraft:block/reinforced_sea_lantern" }
         ]
     }
 }

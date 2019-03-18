@@ -1,6 +1,6 @@
 {
     "parent": "block/pane_noside",
     "textures": {
-        "pane": "securitycraft:blocks/glass_reinforced"
+        "pane": "securitycraft:block/glass_reinforced"
     }
 }

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=top": { "model": "securitycraft:block/reinforced_top_slab_jungle" },
+        "type=bottom": { "model": "securitycraft:block/reinforced_half_slab_jungle" },
+        "type=double": { "model": "securitycraft:block/reinforced_planks_jungle" }
+    }
+}

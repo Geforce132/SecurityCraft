@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/cobblestone_mossy"
+        "all": "block/mossy_cobblestone"
     }
 }

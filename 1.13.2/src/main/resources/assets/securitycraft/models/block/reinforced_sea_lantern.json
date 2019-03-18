@@ -1,6 +1,6 @@
 {
     "parent": "securitycraft:block/reinforced_block_all",
     "textures": {
-        "all": "blocks/sea_lantern"
+        "all": "block/sea_lantern"
     }
 }

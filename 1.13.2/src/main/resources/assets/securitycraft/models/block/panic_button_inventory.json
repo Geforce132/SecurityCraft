@@ -1,6 +1,6 @@
 {
     "parent": "block/button_inventory",
     "textures": {
-        "texture": "securitycraft:blocks/panic_button"
+        "texture": "securitycraft:block/panic_button"
     }
 }

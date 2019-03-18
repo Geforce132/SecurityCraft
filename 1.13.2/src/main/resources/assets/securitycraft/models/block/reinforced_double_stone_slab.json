@@ -45,12 +45,12 @@
         }
     ],
     "textures": {
-        "particle": "blocks/stone_slab_side",
-        "down": "blocks/stone_slab_top",
-        "up": "blocks/stone_slab_top",
-        "north": "blocks/stone_slab_side",
-        "east": "blocks/stone_slab_side",
-        "south": "blocks/stone_slab_side",
-        "west": "blocks/stone_slab_side"
+        "particle": "block/stone_slab_side",
+        "down": "block/stone_slab_top",
+        "up": "block/stone_slab_top",
+        "north": "block/stone_slab_side",
+        "east": "block/stone_slab_side",
+        "south": "block/stone_slab_side",
+        "west": "block/stone_slab_side"
     }
 }

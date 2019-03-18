@@ -3,8 +3,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/security_camera_particle_texture",
-        "securityCamera": "securitycraft:blocks/security_camera2"
+        "particle": "securitycraft:block/security_camera_particle_texture",
+        "securityCamera": "securitycraft:block/security_camera2"
     },
     "display": {
          "ground": {

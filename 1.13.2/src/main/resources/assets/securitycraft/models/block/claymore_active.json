@@ -3,9 +3,9 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:blocks/claymore",
-        "claymore": "securitycraft:blocks/claymore",
-        "laser": "securitycraft:blocks/laser"
+        "particle": "securitycraft:block/claymore",
+        "claymore": "securitycraft:block/claymore",
+        "laser": "securitycraft:block/laser"
     },
     "display": {
          "ground": {

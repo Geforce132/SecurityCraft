@@ -2,8 +2,8 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "claymore": "securitycraft:blocks/claymore",
-        "particle": "securitycraft:blocks/claymore"
+        "claymore": "securitycraft:block/claymore",
+        "particle": "securitycraft:block/claymore"
     },
     "display": {
          "ground": {
