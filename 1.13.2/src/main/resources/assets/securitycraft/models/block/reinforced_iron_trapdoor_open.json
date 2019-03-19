@@ -1,5 +1,5 @@
 {
-    "parent": "block/trapdoor_open",
+    "parent": "block/template_trapdoor_open",
     "textures": {
         "texture": "securitycraft:block/reinforced_iron_trapdoor"
     }

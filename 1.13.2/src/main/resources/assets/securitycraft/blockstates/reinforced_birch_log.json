@@ -2,6 +2,6 @@
     "variants": {
         "axis=y":  { "model": "securitycraft:block/reinforced_logs_birch" },
         "axis=z":   { "model": "securitycraft:block/reinforced_logs_birch_side" },
-        "axis=x":   { "model": "securitycraft:block/reinforced_logs_birch_side", "y": 90 },
+        "axis=x":   { "model": "securitycraft:block/reinforced_logs_birch_side", "y": 90 }
     }
 }

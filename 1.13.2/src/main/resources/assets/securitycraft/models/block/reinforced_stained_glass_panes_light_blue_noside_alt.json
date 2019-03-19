@@ -1,5 +1,5 @@
 {
-    "parent": "block/pane_noside_alt",
+    "parent": "block/glass_pane_noside_alt",
     "textures": {
         "pane": "securitycraft:block/glass_reinforced_light_blue"
     }

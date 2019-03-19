@@ -34,9 +34,7 @@ import net.minecraft.world.World;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> {
-		return facing != EnumFacing.DOWN;
-	});
+	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != EnumFacing.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public BlockSecurityCamera(Material material) {

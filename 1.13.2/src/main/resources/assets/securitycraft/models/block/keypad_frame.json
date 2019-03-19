@@ -91,10 +91,10 @@
                     "texture": "#iron_block"
                 },
                 "west": {
-                    "texture": "missingtexture"
+                    "texture": "#iron_block"
                 },
                 "east": {
-                    "texture": "missingtexture"
+                    "texture": "#iron_block"
                 },
                 "north": {
                     "texture": "#iron_block"
@@ -113,10 +113,10 @@
                     "texture": "#iron_block"
                 },
                 "west": {
-                    "texture": "missingtexture"
+                    "texture": "#iron_block"
                 },
                 "east": {
-                    "texture": "missingtexture"
+                    "texture": "#iron_block"
                 },
                 "north": {
                     "texture": "#iron_block"

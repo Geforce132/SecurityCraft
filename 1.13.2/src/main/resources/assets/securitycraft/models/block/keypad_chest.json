@@ -1,5 +1,5 @@
 {
-    "parent": "block/orientable",
+    "parent": "builtin/entity",
     "textures": {
         "particle": "block/iron_block"
     }
