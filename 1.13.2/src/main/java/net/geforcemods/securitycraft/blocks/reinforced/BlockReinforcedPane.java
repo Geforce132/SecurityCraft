@@ -6,15 +6,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.BlockSixWay;
+import net.minecraft.block.IBucketPickupHandler;
+import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -28,12 +34,13 @@ import net.minecraft.world.IWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockReinforcedPane extends BlockReinforcedBase
+public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketPickupHandler, ILiquidContainer
 {
 	public static final BooleanProperty NORTH = BlockSixWay.NORTH;
 	public static final BooleanProperty EAST = BlockSixWay.EAST;
 	public static final BooleanProperty SOUTH = BlockSixWay.SOUTH;
 	public static final BooleanProperty WEST = BlockSixWay.WEST;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final Map<EnumFacing, BooleanProperty> FACING_TO_PROPERTY_MAP = BlockSixWay.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
 		return p_199775_0_.getKey().getAxis().isHorizontal();
 	}).collect(Util.toMapCollector());
@@ -45,7 +52,7 @@ public class BlockReinforcedPane extends BlockReinforcedBase
 		super(soundType, mat, vB, registryPath, 0);
 		field_196410_A = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		field_196412_B = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
-		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false));
+		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));
 	}
 
 	protected VoxelShape[] func_196408_a(float p_196408_1_, float p_196408_2_, float p_196408_3_, float p_196408_4_, float p_196408_5_)
@@ -69,6 +76,43 @@ public class BlockReinforcedPane extends BlockReinforcedBase
 		}
 
 		return avoxelshape;
+	}
+
+	public Fluid pickupFluid(IWorld world, BlockPos pos, IBlockState state)
+	{
+		if(state.get(WATERLOGGED))
+		{
+			world.setBlockState(pos, state.with(WATERLOGGED, false), 3);
+			return Fluids.WATER;
+		}
+		else
+			return Fluids.EMPTY;
+	}
+
+	public IFluidState getFluidState(IBlockState state)
+	{
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, IBlockState state, Fluid fluid)
+	{
+		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
+	}
+
+	public boolean receiveFluid(IWorld world, BlockPos pos, IBlockState state, IFluidState fluidState)
+	{
+		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
+		{
+			if(!world.isRemote())
+			{
+				world.setBlockState(pos, state.with(WATERLOGGED, Boolean.valueOf(true)), 3);
+				world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+			}
+
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@Override
@@ -142,21 +186,25 @@ public class BlockReinforcedPane extends BlockReinforcedBase
 		}
 	}
 
-	@Override
 	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
 		IBlockReader iblockreader = ctx.getWorld();
 		BlockPos blockpos = ctx.getPos();
+		IFluidState ifluidstate = ctx.getWorld().getFluidState(ctx.getPos());
 		return this.getDefaultState()
 				.with(NORTH, canPaneConnectTo(iblockreader, blockpos, EnumFacing.NORTH))
 				.with(SOUTH, canPaneConnectTo(iblockreader, blockpos, EnumFacing.SOUTH))
 				.with(WEST, canPaneConnectTo(iblockreader, blockpos, EnumFacing.WEST))
-				.with(EAST, canPaneConnectTo(iblockreader, blockpos, EnumFacing.EAST));
+				.with(EAST, canPaneConnectTo(iblockreader, blockpos, EnumFacing.EAST))
+				.with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
 	}
 
 	@Override
 	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
+		if (state.get(WATERLOGGED))
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
 		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canPaneConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
@@ -208,7 +256,7 @@ public class BlockReinforcedPane extends BlockReinforcedBase
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
 	{
-		builder.add(NORTH, EAST, WEST, SOUTH);
+		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
 	}
 
 	@Override
