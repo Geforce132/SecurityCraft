@@ -8,7 +8,7 @@
         "furnaceSides": "block/furnace_side",
         "ironBlock": "block/iron_block",
         "furnaceFrontOn": "block/furnace_front_on",
-        "furnaceFrontOff": "block/furnace_front_off",
+        "furnaceFrontOff": "block/furnace_front",
         "furnaceTop": "block/furnace_top"
     },
     "elements": [
