@@ -38,6 +38,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
+	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 4, 4, 16, 12, 12);
+	private static final VoxelShape SHAPE_Y = Block.makeCuboidShape(4, 0, 4, 12, 16, 12);
+	private static final VoxelShape SHAPE_Z = Block.makeCuboidShape(4, 4, 0, 12, 12, 16);
 
 	public BlockLaserField(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -135,14 +138,15 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
-		//			return new AxisAlignedBB(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
-		//		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
-		//			return new AxisAlignedBB(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
-		//		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
-		//			return new AxisAlignedBB(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
-		//		return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
-		return VoxelShapes.fullCube();
+		int boundType = source.getBlockState(pos).get(BOUNDTYPE);
+
+		if (boundType == 1)
+			return SHAPE_Y;
+		else if (boundType == 2)
+			return SHAPE_Z;
+		else if (boundType == 3)
+			return SHAPE_X;
+		else return VoxelShapes.fullCube();
 	}
 
 	@Override

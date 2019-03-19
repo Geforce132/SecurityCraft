@@ -22,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.IWorldReaderBase;
@@ -31,6 +32,12 @@ public class BlockAlarm extends BlockOwnable {
 
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(0, 4, 4, 8, 12, 12);
+	private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(8, 4, 4, 16, 12, 12);
+	private static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(4, 4, 8, 12, 12, 16);
+	private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(4, 4, 0, 12, 12, 8);
+	private static final VoxelShape SHAPE_UP = Block.makeCuboidShape(4, 0, 4, 12, 8, 12);
+	private static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(4, 8, 4, 12, 16, 12);
 
 	public BlockAlarm() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
@@ -129,30 +136,24 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		float threePx = 0.1875F;
-		//		float ySideMin = 0.5F - threePx; //bottom of the alarm when placed on a block side
-		//		float ySideMax = 0.5F + threePx; //top of the alarm when placed on a block side
-		//		float hSideMin = 0.5F - threePx; //the left start for s/w and right start for n/e
-		//		float hSideMax = 0.5F + threePx; //the left start for n/e and right start for s/w
-		//		float px = 1.0F / 16.0F; //one sixteenth of a block
-		//		EnumFacing facing = state.getValue(FACING);
-		//
-		//		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()]){
-		//			case 1: //east
-		//				return new AxisAlignedBB(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
-		//			case 2: //west
-		//				return new AxisAlignedBB(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
-		//			case 3: //north
-		//				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
-		//			case 4: //south
-		//				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
-		//			case 5: //up
-		//				return new AxisAlignedBB(0.5F - threePx - px, 0F, 0.5F - threePx - px, 0.5F + threePx + px, 0.5F, 0.5F + threePx + px);
-		//			case 6: //down
-		//				return new AxisAlignedBB(0.5F - threePx - px, 0.5F, 0.5F - threePx - px, 0.5F + threePx + px, 1.0F, 0.5F + threePx + px);
-		//		}
+		EnumFacing facing = state.get(FACING);
 
-		return Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+		switch(facing){
+			case EAST:
+				return SHAPE_EAST;
+			case WEST:
+				return SHAPE_WEST;
+			case NORTH:
+				return SHAPE_NORTH;
+			case SOUTH:
+				return SHAPE_SOUTH;
+			case UP:
+				return SHAPE_UP;
+			case DOWN:
+				return SHAPE_DOWN;
+		}
+
+		return VoxelShapes.fullCube();
 	}
 
 	private void playSoundAndUpdate(World world, BlockPos pos){

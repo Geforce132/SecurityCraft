@@ -18,13 +18,13 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockPortableRadar extends BlockContainer {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(5, 0, 5, 11, 7, 11);
 
 	public BlockPortableRadar(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -47,8 +47,7 @@ public class BlockPortableRadar extends BlockContainer {
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
-		return VoxelShapes.fullCube();
+		return SHAPE;
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {

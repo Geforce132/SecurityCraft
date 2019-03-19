@@ -25,7 +25,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
@@ -33,6 +32,7 @@ import net.minecraft.world.World;
 public class BlockMine extends BlockExplosive {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(5, 0, 5, 11, 3, 11);
 
 	public BlockMine(Material material, float baseHardness) {
 		super(SoundType.STONE, material, baseHardness);
@@ -92,11 +92,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		float fifth = 0.2F;
-		//		float tenth = 0.1F;
-		//
-		//		return BlockUtils.fromBounds(0.5F - fifth, 0.0F, 0.5F - fifth, 0.5F + fifth, (tenth * 2.0F) / 2 + 0.1F, 0.5F + fifth);
-		return VoxelShapes.fullCube();
+		return SHAPE;
 	}
 
 	/**

@@ -20,10 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
@@ -32,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BlockBouncingBetty extends BlockExplosive implements IIntersectable {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(3, 0, 3, 13, 3, 13);
 
 	public BlockBouncingBetty(Material material, float baseHardness) {
 		super(SoundType.STONE, material, baseHardness);
@@ -51,7 +50,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		return VoxelShapes.create(new AxisAlignedBB(0.200F, 0.000F, 0.200F, 0.800F, 0.200F, 0.800F));
+		return SHAPE;
 	}
 
 	/**

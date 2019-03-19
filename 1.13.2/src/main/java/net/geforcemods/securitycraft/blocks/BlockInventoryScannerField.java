@@ -38,6 +38,8 @@ import net.minecraftforge.fml.LogicalSide;
 public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
+	private static final VoxelShape SHAPE_NS = Block.makeCuboidShape(6, 0, 0, 10, 16, 16);
 
 	public BlockInventoryScannerField(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -268,11 +270,12 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
-		//			return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
-		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-		//			return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
-		//		return state.getBoundingBox(source, pos);
+		EnumFacing facing = source.getBlockState(pos).get(FACING);
+
+		if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
+			return SHAPE_EW; //ew
+		else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
+			return SHAPE_NS; //ns
 		return VoxelShapes.fullCube();
 	}
 
