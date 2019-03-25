@@ -25,7 +25,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -36,6 +35,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class BlockIMS extends BlockOwnable {
 
 	public static final IntegerProperty MINES = IntegerProperty.create("mines", 0, 4);
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(4, 0, 5, 12, 7, 11);
+	private static final VoxelShape SHAPE_1_MINE = VoxelShapes.or(SHAPE, Block.makeCuboidShape(0, 0, 0, 5, 5, 5));
+	private static final VoxelShape SHAPE_2_MINES = VoxelShapes.or(SHAPE_1_MINE, Block.makeCuboidShape(0, 0, 11, 5, 5, 16));
+	private static final VoxelShape SHAPE_3_MINES = VoxelShapes.or(SHAPE_2_MINES, Block.makeCuboidShape(11, 0, 0, 16, 5, 5));
+	private static final VoxelShape SHAPE_4_MINES = VoxelShapes.or(SHAPE_3_MINES, Block.makeCuboidShape(11, 0, 11, 16, 5, 16));
 
 	public BlockIMS(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(0.7F, 6000000.0F));
@@ -61,7 +65,14 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		return VoxelShapes.create(new AxisAlignedBB(0F, 0F, 0F, 1F, 0.45F, 1F));
+		switch(state.get(MINES))
+		{
+			case 4: return SHAPE_4_MINES;
+			case 3: return SHAPE_3_MINES;
+			case 2: return SHAPE_2_MINES;
+			case 1: return SHAPE_1_MINE;
+			default: return SHAPE;
+		}
 	}
 
 	@Override

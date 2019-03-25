@@ -24,6 +24,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -36,6 +37,10 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != EnumFacing.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
+	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
+	private static final VoxelShape SHAPE_WEST = VoxelShapes.create(new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
+	private static final VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
 
 	public BlockSecurityCamera(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -71,20 +76,18 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
-		//		float px = 1.0F/16.0F; //one sixteenth of a block
-		//
-		//		if(dir == EnumFacing.SOUTH)
-		//			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
-		//		else if(dir == EnumFacing.NORTH)
-		//			return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
-		//		else if(dir == EnumFacing.WEST)
-		//			return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
-		//		else if(dir == EnumFacing.DOWN)
-		//			return new AxisAlignedBB(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
-		//		else
-		//			return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
-		return VoxelShapes.fullCube();
+		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+
+		if(dir == EnumFacing.SOUTH)
+			return SHAPE_SOUTH;
+		else if(dir == EnumFacing.NORTH)
+			return SHAPE_NORTH;
+		else if(dir == EnumFacing.WEST)
+			return SHAPE_WEST;
+		else if(dir == EnumFacing.DOWN)
+			return VoxelShapes.fullCube();
+		else
+			return SHAPE;
 	}
 
 	@Override

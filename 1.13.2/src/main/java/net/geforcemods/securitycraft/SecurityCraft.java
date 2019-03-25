@@ -31,6 +31,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -82,7 +83,8 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
 		log("Setting up inter-mod stuff...");
-		InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
+		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
+			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
 		//		if(ClientConfig.CONFIG.checkForUpdates.get()) {
 		//			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();

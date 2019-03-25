@@ -22,6 +22,22 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
+	private static final VoxelShape FLOOR_NS_POWERED = Block.makeCuboidShape(3, 0, 5, 13, 1, 11);
+	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.makeCuboidShape(3, 0, 5, 13, 2, 11);
+	private static final VoxelShape FLOOR_EW_POWERED = Block.makeCuboidShape(5, 0, 3, 11, 1, 13);
+	private static final VoxelShape FLOOR_EW_UNPOWERED = Block.makeCuboidShape(5, 0, 3, 11, 2, 13);
+	private static final VoxelShape WALL_N_POWERED = Block.makeCuboidShape(3, 5, 15, 13, 11, 16);
+	private static final VoxelShape WALL_N_UNPOWERED = Block.makeCuboidShape(3, 5, 14, 13, 11, 16);
+	private static final VoxelShape WALL_S_POWERED = Block.makeCuboidShape(3, 5, 1, 13, 11, 0);
+	private static final VoxelShape WALL_S_UNPOWERED = Block.makeCuboidShape(3, 5, 2, 13, 11, 0);
+	private static final VoxelShape WALL_E_POWERED = Block.makeCuboidShape(1, 5, 3, 0, 11, 13);
+	private static final VoxelShape WALL_E_UNPOWERED = Block.makeCuboidShape(2, 5, 3, 0, 11, 13);
+	private static final VoxelShape WALL_W_POWERED = Block.makeCuboidShape(15, 5, 3, 16, 11, 13);
+	private static final VoxelShape WALL_W_UNPOWERED = Block.makeCuboidShape(14, 5, 3, 16, 11, 13);
+	private static final VoxelShape CEILING_NS_POWERED = Block.makeCuboidShape(3, 15, 5, 13, 16, 11);
+	private static final VoxelShape CEILING_NS_UNPOWERED = Block.makeCuboidShape(3, 14, 5, 13, 16, 11);
+	private static final VoxelShape CEILING_EW_POWERED = Block.makeCuboidShape(5, 15, 3, 11, 16, 13);
+	private static final VoxelShape CEILING_EW_UNPOWERED = Block.makeCuboidShape(5, 14, 3, 11, 16, 13);
 
 	public BlockPanicButton() {
 		super(false, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -74,28 +90,74 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		EnumFacing facing = state.getValue(FACING);
-		//		boolean isPowered = state.getValue(POWERED).booleanValue();
-		//		float height = (isPowered ? 1 : 2) / 16.0F;
-		//
-		//		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()])
-		//		{
-		//			case 1:
-		//				return new AxisAlignedBB(0.0F, 0.30F, 0.18F, height, 0.70F, 0.82F);
-		//			case 2:
-		//				return new AxisAlignedBB(1.0F - height, 0.30F, 0.18F, 1.0F, 0.70F, 0.82F);
-		//			case 3:
-		//				return new AxisAlignedBB(0.1800F, 0.300F, 0.0F, 0.8150F, 0.700F, height);
-		//			case 4:
-		//				return new AxisAlignedBB(0.1800F, 0.300F, 1.0F - height, 0.8150F, 0.700F, 1.0F);
-		//			case 5:
-		//				return new AxisAlignedBB(0.175F, 0.0F, 0.300F, 0.825F, 0.0F + height, 0.700F);
-		//			case 6:
-		//				return new AxisAlignedBB(0.175F, 1.0F - height, 0.300F, 0.8225F, 1.0F, 0.700F);
-		//		}
-		//
-		//		return super.getBoundingBox(state, source, pos);
+		switch(state.get(FACE))
+		{
+			case FLOOR:
+				switch(state.get(HORIZONTAL_FACING))
+				{
+					case NORTH: case SOUTH:
+						if(state.get(POWERED))
+							return FLOOR_NS_POWERED;
+						else
+							return FLOOR_NS_UNPOWERED;
+					case EAST: case WEST:
+						if(state.get(POWERED))
+							return FLOOR_EW_POWERED;
+						else
+							return FLOOR_EW_UNPOWERED;
+					default: break;
+				}
+				break;
+			case WALL:
+				switch(state.get(HORIZONTAL_FACING))
+				{
+					case NORTH:
+						if(state.get(POWERED))
+							return WALL_N_POWERED;
+						else
+							return WALL_N_UNPOWERED;
+					case SOUTH:
+						if(state.get(POWERED))
+							return WALL_S_POWERED;
+						else
+							return WALL_S_UNPOWERED;
+					case EAST:
+						if(state.get(POWERED))
+							return WALL_E_POWERED;
+						else
+							return WALL_E_UNPOWERED;
+					case WEST:
+						if(state.get(POWERED))
+							return WALL_W_POWERED;
+						else
+							return WALL_W_UNPOWERED;
+					default: break;
+				}
+				break;
+			case CEILING:
+				switch(state.get(HORIZONTAL_FACING))
+				{
+					case NORTH: case SOUTH:
+						if(state.get(POWERED))
+							return CEILING_NS_POWERED;
+						else
+							return CEILING_NS_UNPOWERED;
+					case EAST: case WEST:
+						if(state.get(POWERED))
+							return CEILING_EW_POWERED;
+						else
+							return CEILING_EW_UNPOWERED;
+					default: break;
+				}
+		}
+
 		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	{
+		return VoxelShapes.empty();
 	}
 
 	@Override

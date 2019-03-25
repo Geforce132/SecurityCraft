@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -31,6 +32,10 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.makeCuboidShape(6, 6, 2, 10, 9, 3), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 0, 9, 8, 2), Block.makeCuboidShape(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.makeCuboidShape(13, 3, 6, 14, 4, 10), VoxelShapes.or(Block.makeCuboidShape(13, 6, 6, 14, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(14, 3, 7, 16, 8, 9), Block.makeCuboidShape(15, 4, 7, 14, 7, 9), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.makeCuboidShape(6, 6, 13, 10, 9, 14), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 14, 9, 8, 16), Block.makeCuboidShape(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.makeCuboidShape(3, 3, 6, 2, 4, 10), VoxelShapes.or(Block.makeCuboidShape(3, 6, 6, 2, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(2, 3, 7, 0, 8, 9), Block.makeCuboidShape(1, 4, 7, 2, 7, 9), IBooleanFunction.ONLY_FIRST)));
 
 	public BlockMotionActivatedLight(Material material) {
 		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -54,24 +59,14 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos){
-		//		EnumFacing dir = state.getValue(FACING);
-		//		float px = 1.0F / 16.0F;
-		//
-		//		if(dir == EnumFacing.NORTH) {
-		//			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
-		//		}
-		//		else if(dir == EnumFacing.SOUTH) {
-		//			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
-		//		}
-		//		else if(dir == EnumFacing.EAST) {
-		//			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
-		//		}
-		//		else if(dir == EnumFacing.WEST) {
-		//			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
-		//		}
-		//
-		//		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
-		return VoxelShapes.fullCube();
+		switch(state.get(FACING))
+		{
+			case NORTH: return SHAPE_NORTH;
+			case EAST: return SHAPE_EAST;
+			case SOUTH: return SHAPE_SOUTH;
+			case WEST: return SHAPE_WEST;
+			default: return VoxelShapes.fullCube();
+		}
 	}
 
 	@Override

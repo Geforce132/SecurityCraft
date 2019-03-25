@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
@@ -43,13 +42,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public void tick(){
 		super.tick();
 
-		if(!world.isRemote && updateBombCount){
-			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
-			updateBombCount = false;
-		}
-
-		if(world.getGameTime() % 80L == 0L)
-			launchMine();
+		//		if(!world.isRemote && updateBombCount){
+		//			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
+		//			updateBombCount = false;
+		//		}
+		//
+		//		if(world.getGameTime() % 80L == 0L)
+		//			launchMine();
 	}
 
 	/**

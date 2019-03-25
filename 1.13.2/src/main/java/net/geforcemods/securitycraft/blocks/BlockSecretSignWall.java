@@ -1,5 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.state.DirectionProperty;
@@ -8,20 +13,15 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class BlockSecretSignWall extends BlockSecretSign
 {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	protected static final AxisAlignedBB SIGN_EAST_AABB = new AxisAlignedBB(0.0D, 0.28125D, 0.0D, 0.125D, 0.78125D, 1.0D);
-	protected static final AxisAlignedBB SIGN_WEST_AABB = new AxisAlignedBB(0.875D, 0.28125D, 0.0D, 1.0D, 0.78125D, 1.0D);
-	protected static final AxisAlignedBB SIGN_SOUTH_AABB = new AxisAlignedBB(0.0D, 0.28125D, 0.0D, 1.0D, 0.78125D, 0.125D);
-	protected static final AxisAlignedBB SIGN_NORTH_AABB = new AxisAlignedBB(0.0D, 0.28125D, 0.875D, 1.0D, 0.78125D, 1.0D);
+	private static final Map<EnumFacing, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(EnumFacing.NORTH, Block.makeCuboidShape(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), EnumFacing.SOUTH, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), EnumFacing.EAST, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), EnumFacing.WEST, Block.makeCuboidShape(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
 
 	public BlockSecretSignWall()
 	{
@@ -32,19 +32,7 @@ public class BlockSecretSignWall extends BlockSecretSign
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		switch (state.getValue(FACING))
-		//		{
-		//			case NORTH:
-		//			default:
-		//				return SIGN_NORTH_AABB;
-		//			case SOUTH:
-		//				return SIGN_SOUTH_AABB;
-		//			case WEST:
-		//				return SIGN_WEST_AABB;
-		//			case EAST:
-		//				return SIGN_EAST_AABB;
-		//		}
-		return VoxelShapes.fullCube();
+		return SHAPES.get(state.get(FACING));
 	}
 
 	@Override

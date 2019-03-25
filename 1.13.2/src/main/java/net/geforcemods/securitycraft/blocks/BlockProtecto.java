@@ -15,6 +15,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
@@ -22,10 +24,17 @@ import net.minecraft.world.World;
 public class BlockProtecto extends BlockOwnable {
 
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
+	public static final VoxelShape SHAPE = VoxelShapes.or(Block.makeCuboidShape(0, 0, 5, 16, 16, 11), Block.makeCuboidShape(5, 0, 0, 11, 16, 16));
 
 	public BlockProtecto(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(7));
 		setDefaultState(stateContainer.getBaseState().with(ACTIVATED, false));
+	}
+
+	@Override
+	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	{
+		return SHAPE;
 	}
 
 	@Override

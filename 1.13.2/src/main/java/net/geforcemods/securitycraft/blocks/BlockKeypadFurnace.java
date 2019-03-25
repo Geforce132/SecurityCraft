@@ -28,6 +28,9 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -37,10 +40,47 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
+	private static final VoxelShape NORTH_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 3, 16, 16, 16), Block.makeCuboidShape(1, 1, 2, 15, 2, 3)), VoxelShapes.combine(Block.makeCuboidShape(4, 1, 0, 12, 2, 2), Block.makeCuboidShape(5, 1, 1, 11, 2, 2), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(1, 2, 3, 15, 15, 4), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape NORTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 3, 16, 16, 16), Block.makeCuboidShape(1, 1, 2, 15, 15, 3)), VoxelShapes.combine(Block.makeCuboidShape(4, 14, 0, 12, 15, 2), Block.makeCuboidShape(5, 14, 1, 11, 15, 2), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape EAST_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 13, 16, 16), Block.makeCuboidShape(13, 1, 1, 14, 2, 15)), VoxelShapes.combine(Block.makeCuboidShape(14, 1, 4, 16, 2, 12), Block.makeCuboidShape(14, 1, 5, 15, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(12, 2, 1, 13, 15, 15), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape EAST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 13, 16, 16), Block.makeCuboidShape(13, 1, 1, 14, 15, 15)), VoxelShapes.combine(Block.makeCuboidShape(14, 14, 4, 16, 15, 12), Block.makeCuboidShape(14, 14, 5, 15, 15, 11), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape SOUTH_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 16, 16, 13), Block.makeCuboidShape(1, 1, 13, 15, 2, 14)), VoxelShapes.combine(Block.makeCuboidShape(4, 1, 14, 12, 2, 16), Block.makeCuboidShape(5, 1, 14, 11, 2, 15), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(1, 2, 12, 15, 15, 13), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape SOUTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 16, 16, 13), Block.makeCuboidShape(1, 1, 13, 15, 15, 14)), VoxelShapes.combine(Block.makeCuboidShape(4, 14, 14, 12, 15, 16), Block.makeCuboidShape(5, 14, 14, 11, 15, 15), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape WEST_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(3, 0, 0, 16, 16, 16), Block.makeCuboidShape(2, 1, 1, 3, 2, 15)), VoxelShapes.combine(Block.makeCuboidShape(0, 1, 4, 2, 2, 12), Block.makeCuboidShape(1, 1, 5, 2, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(3, 2, 1, 4, 15, 15), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape WEST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(3, 0, 0, 16, 16, 16), Block.makeCuboidShape(2, 1, 1, 3, 15, 15)), VoxelShapes.combine(Block.makeCuboidShape(0, 14, 4, 2, 15, 12), Block.makeCuboidShape(1, 14, 5, 2, 15, 11), IBooleanFunction.ONLY_FIRST));
 
 	public BlockKeypadFurnace(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(OPEN, false));
+	}
+
+	@Override
+	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	{
+		switch(state.get(FACING))
+		{
+			case NORTH:
+				if(state.get(OPEN))
+					return NORTH_OPEN;
+				else
+					return NORTH_CLOSED;
+			case EAST:
+				if(state.get(OPEN))
+					return EAST_OPEN;
+				else
+					return EAST_CLOSED;
+			case SOUTH:
+				if(state.get(OPEN))
+					return SOUTH_OPEN;
+				else
+					return SOUTH_CLOSED;
+			case WEST:
+				if(state.get(OPEN))
+					return WEST_OPEN;
+				else
+					return WEST_CLOSED;
+			default: return VoxelShapes.fullCube();
+		}
 	}
 
 	@Override

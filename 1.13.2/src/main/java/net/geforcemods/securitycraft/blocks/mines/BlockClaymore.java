@@ -34,6 +34,14 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
+	private static final VoxelShape NORTH_OFF = VoxelShapes.or(Block.makeCuboidShape(4, 0, 5, 12, 4, 7), VoxelShapes.or(Block.makeCuboidShape(4, 4, 5, 12, 5, 6), VoxelShapes.or(Block.makeCuboidShape(5, 4, 4, 6, 5, 5), VoxelShapes.or(Block.makeCuboidShape(10, 4, 4, 11, 5, 5), VoxelShapes.or(Block.makeCuboidShape(4, 4, 3, 5, 5, 4), Block.makeCuboidShape(11, 4, 3, 12, 5, 4))))));
+	private static final VoxelShape NORTH_ON = VoxelShapes.or(NORTH_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 2, 4, 5, 3), Block.makeCuboidShape(12, 4, 2, 13, 5, 3)));
+	private static final VoxelShape EAST_OFF = VoxelShapes.or(Block.makeCuboidShape(9, 0, 4, 11, 4, 12), VoxelShapes.or(Block.makeCuboidShape(10, 4, 4, 11, 5, 12), VoxelShapes.or(Block.makeCuboidShape(11, 4, 5, 12, 5, 6), VoxelShapes.or(Block.makeCuboidShape(11, 4, 10, 12, 5, 11), VoxelShapes.or(Block.makeCuboidShape(12, 4, 4, 13, 5, 5), Block.makeCuboidShape(12, 4, 11, 13, 5, 12))))));
+	private static final VoxelShape EAST_ON = VoxelShapes.or(EAST_OFF, VoxelShapes.or(Block.makeCuboidShape(13, 4, 3, 14, 5, 4), Block.makeCuboidShape(13, 4, 12, 14, 5, 13)));
+	private static final VoxelShape SOUTH_OFF = VoxelShapes.or(Block.makeCuboidShape(4, 0, 9, 12, 4, 11), VoxelShapes.or(Block.makeCuboidShape(4, 4, 10, 12, 5, 11), VoxelShapes.or(Block.makeCuboidShape(5, 4, 11, 6, 5, 12), VoxelShapes.or(Block.makeCuboidShape(10, 4, 11, 11, 5, 12), VoxelShapes.or(Block.makeCuboidShape(4, 4, 12, 5, 5, 13), Block.makeCuboidShape(11, 4, 12, 12, 5, 13))))));
+	private static final VoxelShape SOUTH_ON = VoxelShapes.or(SOUTH_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 13, 4, 5, 14), Block.makeCuboidShape(12, 4, 13, 13, 5, 14)));
+	private static final VoxelShape WEST_OFF = VoxelShapes.or(Block.makeCuboidShape(7, 0, 4, 5, 4, 12), VoxelShapes.or(Block.makeCuboidShape(6, 4, 4, 5, 5, 12), VoxelShapes.or(Block.makeCuboidShape(5, 4, 5, 4, 5, 6), VoxelShapes.or(Block.makeCuboidShape(5, 4, 10, 4, 5, 11), VoxelShapes.or(Block.makeCuboidShape(4, 4, 4, 3, 5, 5), Block.makeCuboidShape(4, 4, 11, 3, 5, 12))))));
+	private static final VoxelShape WEST_ON = VoxelShapes.or(WEST_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 3, 2, 5, 4), Block.makeCuboidShape(3, 4, 12, 2, 5, 13)));
 
 	public BlockClaymore(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(1F, 6000000.0F));
@@ -150,15 +158,30 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		//		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
-		//			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-		//			return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-		//		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
-		//			return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
-		//		else
-		//			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
-		return VoxelShapes.fullCube();
+		switch(state.get(FACING))
+		{
+			case NORTH:
+				if(state.get(DEACTIVATED))
+					return NORTH_OFF;
+				else
+					return NORTH_ON;
+			case EAST:
+				if(state.get(DEACTIVATED))
+					return EAST_OFF;
+				else
+					return EAST_ON;
+			case SOUTH:
+				if(state.get(DEACTIVATED))
+					return SOUTH_OFF;
+				else
+					return SOUTH_ON;
+			case WEST:
+				if(state.get(DEACTIVATED))
+					return WEST_OFF;
+				else
+					return WEST_ON;
+			default: return VoxelShapes.fullCube();
+		}
 	}
 
 	@Override
