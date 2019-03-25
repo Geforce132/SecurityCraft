@@ -21,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEntitySecurityCamera> {
 
 	private static final ModelSecurityCamera modelSecurityCamera = new ModelSecurityCamera();
-	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
+	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
 
 	@Override
 	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
