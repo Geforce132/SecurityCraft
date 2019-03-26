@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
@@ -406,9 +407,13 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBlockPlaced(PlaceEvent event) {
+	public void onOwnership(OwnershipEvent event)
+	{
 		handleOwnableTEs(event);
+	}
 
+	@SubscribeEvent
+	public void onBlockPlaced(PlaceEvent event) {
 		//reinforced obsidian portal handling
 		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
 		{
@@ -714,7 +719,7 @@ public class SCEventHandler {
 			return ItemStack.EMPTY;
 	}
 
-	private void handleOwnableTEs(PlaceEvent event) {
+	private void handleOwnableTEs(OwnershipEvent event) {
 		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
 			String name = event.getPlayer().getName().getFormattedText();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
