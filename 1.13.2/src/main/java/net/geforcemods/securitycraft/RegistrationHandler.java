@@ -193,7 +193,7 @@ public class RegistrationHandler
 			if(block == SCContent.reinforcedStone)
 				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
 			else
-				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help." + block.getTranslationKey().substring(5) + ".info"));
+				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help" + block.getTranslationKey().substring(5) + ".info"));
 		}
 
 		//items
