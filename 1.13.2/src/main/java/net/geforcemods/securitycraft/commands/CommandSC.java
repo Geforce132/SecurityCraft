@@ -44,7 +44,7 @@ public class CommandSC {
 
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
-		return Commands.literal("help").executes(ctx -> {
+		return Commands.literal("bug").executes(ctx -> {
 			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
 			return 0;
 		});
