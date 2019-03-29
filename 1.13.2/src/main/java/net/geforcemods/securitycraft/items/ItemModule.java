@@ -88,7 +88,7 @@ public class ItemModule extends Item{
 			list.add(new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.usage"));
 
 			list.add(new TextComponentString(" "));
-			list.add(new TextComponentString(new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.players") + ":"));
+			list.add(new TextComponentString(new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
 
 			if(stack.getTag() != null)
 				for(int i = 1; i <= 10; i++)
