@@ -24,7 +24,7 @@ public class ItemTaser extends Item {
 	public boolean powered;
 
 	public ItemTaser(boolean isPowered){
-		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(150).group(isPowered ? null : SecurityCraft.groupSCTechnical));
+		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(150).group(!isPowered ? null : SecurityCraft.groupSCTechnical));
 
 		powered = isPowered;
 	}
