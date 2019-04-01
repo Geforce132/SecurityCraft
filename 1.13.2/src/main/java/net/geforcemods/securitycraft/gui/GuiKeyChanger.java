@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
@@ -73,7 +74,7 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:universalKeyChanger.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey())) / 2, 6, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
@@ -138,7 +139,7 @@ public class GuiKeyChanger extends GuiContainer {
 				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
 		}
 	}
 

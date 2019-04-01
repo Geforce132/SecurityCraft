@@ -26,7 +26,7 @@ public class SCJEIPlugin implements IModPlugin
 		IReinforcedBlock.BLOCKS.forEach((rb) -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-			registration.addIngredientInfo(new ItemStack(rb), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey() + ".name");
+			registration.addIngredientInfo(new ItemStack(rb), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey());
 		});
 	}
 

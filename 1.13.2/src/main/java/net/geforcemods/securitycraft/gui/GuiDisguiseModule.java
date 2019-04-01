@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -29,7 +30,7 @@ public class GuiDisguiseModule extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:disguiseModule.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:disguiseModule.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize(SCContent.disguiseModule.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.disguiseModule.getTranslationKey())) / 2, 6, 4210752);
 	}
 
 	@Override

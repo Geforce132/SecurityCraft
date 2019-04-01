@@ -198,7 +198,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				animate = true;
 			}
 
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
 		}
 	}
 

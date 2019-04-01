@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -36,7 +37,7 @@ public class ItemSentry extends Item
 
 			if(world.isAirBlock(pos.down()))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -44,7 +45,7 @@ public class ItemSentry extends Item
 			{
 				if(world.isAirBlock(pos.offset(horizontal)))
 				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlocksAround"), TextFormatting.DARK_RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlocksAround"), TextFormatting.DARK_RED);
 					return EnumActionResult.SUCCESS;
 				}
 			}

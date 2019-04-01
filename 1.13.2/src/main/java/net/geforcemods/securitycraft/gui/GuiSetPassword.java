@@ -33,7 +33,7 @@ public class GuiSetPassword extends GuiContainer {
 	public GuiSetPassword(TileEntity tileEntity, Block block){
 		super(new ContainerGeneric());
 		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getTranslationKey() + ".name");
+		blockName = ClientUtils.localize(block.getTranslationKey());
 	}
 
 	@Override

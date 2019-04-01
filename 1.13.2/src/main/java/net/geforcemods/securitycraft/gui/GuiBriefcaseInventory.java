@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -31,7 +32,7 @@ public class GuiBriefcaseInventory extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:briefcase.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:briefcase.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize(SCContent.briefcase.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.briefcase.getTranslationKey())) / 2, 6, 4210752);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -39,7 +40,7 @@ public class ItemUniversalKeyChanger extends Item {
 					NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.KEY_CHANGER, world, pos));
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
 
 			return EnumActionResult.SUCCESS;
 		}

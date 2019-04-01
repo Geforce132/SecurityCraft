@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -37,13 +38,13 @@ public class ItemAdminTool extends Item {
 				boolean hasInfo = false;
 
 				if(te instanceof IOwnable) {
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.owner.name").replace("#", (((IOwnable) te).getOwner().getName() == null ? "????" : ((IOwnable) te).getOwner().getName())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.owner.uuid").replace("#", (((IOwnable) te).getOwner().getUUID() == null ? "????" : ((IOwnable) te).getOwner().getUUID())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
 				if(te instanceof IPasswordProtected) {
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.password").replace("#", (((IPasswordProtected) te).getPassword() == null ? "????" : ((IPasswordProtected) te).getPassword())), TextFormatting.DARK_PURPLE);
 					hasInfo = true;
 				}
 
@@ -51,10 +52,10 @@ public class ItemAdminTool extends Item {
 					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
 
 					if(!modules.isEmpty()) {
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(EnumCustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "-" + module.getName(), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), "-" + module.getName(), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
@@ -62,23 +63,23 @@ public class ItemAdminTool extends Item {
 
 				if(te instanceof TileEntitySecretSign)
 				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "", TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), "", TextFormatting.DARK_PURPLE);
 
 					for(int i = 0; i < 4; i++)
 					{
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ((TileEntitySecretSign)te).signText[i].getUnformattedComponentText(), TextFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ((TileEntitySecretSign)te).signText[i].getUnformattedComponentText(), TextFormatting.DARK_PURPLE);
 					}
 
 					hasInfo = true;
 				}
 
 				if(!hasInfo)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
 				return EnumActionResult.FAIL;
 			}
 
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
 
 		return EnumActionResult.FAIL;

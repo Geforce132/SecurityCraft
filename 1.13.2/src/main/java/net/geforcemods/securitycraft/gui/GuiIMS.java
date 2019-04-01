@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
@@ -39,7 +40,7 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize("tile.securitycraft:ims.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("tile.securitycraft:ims.name")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize(SCContent.ims.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.ims.getTranslationKey())) / 2, 6, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 

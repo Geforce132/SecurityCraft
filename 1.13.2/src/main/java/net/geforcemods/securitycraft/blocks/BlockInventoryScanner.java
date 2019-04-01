@@ -92,7 +92,7 @@ public class BlockInventoryScanner extends BlockContainer {
 			if(isFacingAnotherScanner(world, pos) && player instanceof EntityPlayerMP)
 				NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.INVENTORY_SCANNER, world, pos), pos);
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.inventoryScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
 			return true;
 		}

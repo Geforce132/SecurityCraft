@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -130,7 +131,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
 		if(!world.isRemote && player.getRidingEntity() == null)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:securityCamera.name"), ClientUtils.localize("messages.securitycraft:securityCamera.mounted"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.securityCamera.getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted"), TextFormatting.GREEN);
 
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());

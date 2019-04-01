@@ -102,7 +102,7 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessMine.name")), -25 + 13, 0xFF0000);
+		fontRenderer.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
