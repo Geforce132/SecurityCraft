@@ -37,28 +37,28 @@ minecraft {
 }
 
 repositories {  
-    maven {
+    maven { // HWYLA
 		url "http://tehnut.info/maven"
 	}
 	maven { // TOP
 		name 'tterrag maven'
 		url "http://maven.tterrag.com/"
 	}
-	maven { // location of the maven that hosts JEI files
-		name = "Progwml6 maven"
-		url = "http://dvs1.progwml6.com/files/maven"
+    maven { // JEI
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // location of a maven mirror for JEI files, as a fallback
-		name = "ModMaven"
-		url = "modmaven.k-4u.nl"
+    maven { // JEI fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
     }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.13.2-25.0.77'
 	compile "mcp.mobius.waila:Hwyla:1.10.1-B53_1.13.2"
-	compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
-    compile "mezz.jei:jei_1.13.2:5.0.0.7:api"
+    compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
+    compile "mezz.jei:jei-1.13.2:5.0.0.12:api"
 }
 
 jar {
