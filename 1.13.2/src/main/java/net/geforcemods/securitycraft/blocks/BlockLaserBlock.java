@@ -30,7 +30,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public BlockLaserBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
 	}
 

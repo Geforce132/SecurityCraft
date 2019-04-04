@@ -198,7 +198,7 @@ public class GuiMRAT extends GuiContainer{
 			{
 				int[] coords = stack.getTag().getIntArray("mine" + i);
 
-				if(coords[0] == x && coords[1] == y && coords[2] == z)
+				if(coords[0] == x && coords[1] == y && coords[2] == z && !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0))
 				{
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
 					SecurityCraft.channel.sendToServer(new UpdateNBTTag(stack));

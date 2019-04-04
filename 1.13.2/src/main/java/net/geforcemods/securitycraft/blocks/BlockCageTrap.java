@@ -24,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
@@ -34,7 +35,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public BlockCageTrap(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 
@@ -50,12 +51,8 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader world, BlockPos pos){
-		//		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
-		//			return null;
-		//		else
-		//			return blockState.getBoundingBox(world, pos);
-		return Block.makeCuboidShape(0, 0, 0, 16, 16, 16);
+	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos){
+		return state.get(DEACTIVATED) ? VoxelShapes.fullCube() : VoxelShapes.empty();
 	}
 
 	@Override

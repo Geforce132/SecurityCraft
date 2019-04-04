@@ -440,7 +440,7 @@
     "messages.securitycraft:module.removed": "Removed # from the held module.",
     "messages.securitycraft:module.notHoldingForModify": "You must be holding the module you wish to modify!",
     "messages.securitycraft:notOwned": "I'm sorry, you cannot do that to this block. This block is owned by #.",
-    "messages.securitycraft:adminTool.owner": "Owner: #",
+    "messages.securitycraft:adminTool.owner.name": "Owner: #",
     "messages.securitycraft:adminTool.owner.uuid": "Owner's UUID: #",
     "messages.securitycraft:adminTool.password": "Password: #",
     "messages.securitycraft:adminTool.equippedModules": "Equipped Modules:",

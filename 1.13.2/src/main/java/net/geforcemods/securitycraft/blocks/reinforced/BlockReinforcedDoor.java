@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -51,6 +52,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	{
 		IBlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
+		Owner previousOwner = null;
+
+		if(world.getTileEntity(pos) instanceof TileEntityOwnable)
+			previousOwner = ((TileEntityOwnable)world.getTileEntity(pos)).getOwner();
 
 		if (state.get(HALF) == DoubleBlockHalf.UPPER)
 		{
@@ -189,6 +194,9 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 				}
 			}
 		}
+
+		if(previousOwner != null && world.getTileEntity(pos) instanceof TileEntityOwnable)
+			((TileEntityOwnable)world.getTileEntity(pos)).getOwner().set(previousOwner);
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class ItemTaser extends Item {
 	public boolean powered;
 
 	public ItemTaser(boolean isPowered){
-		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(150).group(!isPowered ? null : SecurityCraft.groupSCTechnical));
+		super(new Item.Properties().defaultMaxDamage(151).group(!isPowered ? null : SecurityCraft.groupSCTechnical));
 
 		powered = isPowered;
 	}
@@ -74,7 +74,7 @@ public class ItemTaser extends Item {
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.spawnEntity(new EntityTaserBullet(world, player, powered)));
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "players"));
 
 				if(!player.isCreative())
 				{

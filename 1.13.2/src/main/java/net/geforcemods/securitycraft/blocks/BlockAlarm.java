@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
@@ -73,6 +74,12 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
 		if (!isValidPosition(state, world, pos)) {
@@ -89,7 +96,7 @@ public class BlockAlarm extends BlockOwnable {
 
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : getDefaultState().with(FACING, EnumFacing.DOWN);
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
 
 	/**

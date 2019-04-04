@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
@@ -32,10 +33,10 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.makeCuboidShape(6, 6, 2, 10, 9, 3), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 0, 9, 8, 2), Block.makeCuboidShape(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.makeCuboidShape(13, 3, 6, 14, 4, 10), VoxelShapes.or(Block.makeCuboidShape(13, 6, 6, 14, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(14, 3, 7, 16, 8, 9), Block.makeCuboidShape(15, 4, 7, 14, 7, 9), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.makeCuboidShape(6, 6, 13, 10, 9, 14), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 14, 9, 8, 16), Block.makeCuboidShape(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.makeCuboidShape(3, 3, 6, 2, 4, 10), VoxelShapes.or(Block.makeCuboidShape(3, 6, 6, 2, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(2, 3, 7, 0, 8, 9), Block.makeCuboidShape(1, 4, 7, 2, 7, 9), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.makeCuboidShape(6, 6, 13, 10, 9, 14), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 14, 9, 8, 16), Block.makeCuboidShape(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.makeCuboidShape(3, 3, 6, 2, 4, 10), VoxelShapes.or(Block.makeCuboidShape(3, 6, 6, 2, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(2, 3, 7, 0, 8, 9), Block.makeCuboidShape(1, 4, 7, 2, 7, 9), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.makeCuboidShape(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.makeCuboidShape(6, 6, 2, 10, 9, 3), VoxelShapes.combine(Block.makeCuboidShape(7, 3, 0, 9, 8, 2), Block.makeCuboidShape(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.makeCuboidShape(13, 3, 6, 14, 4, 10), VoxelShapes.or(Block.makeCuboidShape(13, 6, 6, 14, 9, 10), VoxelShapes.combine(Block.makeCuboidShape(14, 3, 7, 16, 8, 9), Block.makeCuboidShape(15, 4, 7, 14, 7, 9), IBooleanFunction.ONLY_FIRST)));
 
 	public BlockMotionActivatedLight(Material material) {
 		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -103,6 +104,12 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
 	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
 		EnumFacing side = state.get(FACING);
 
@@ -117,7 +124,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
 	{
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing.getOpposite()) : getDefaultState().with(FACING, EnumFacing.DOWN);
+		return facing != EnumFacing.UP && facing != EnumFacing.DOWN && BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
 
 	@Override

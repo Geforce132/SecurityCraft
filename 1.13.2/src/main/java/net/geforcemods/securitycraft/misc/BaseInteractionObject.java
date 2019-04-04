@@ -73,7 +73,7 @@ public class BaseInteractionObject implements IInteractionObject
 		else if(id.equals(MANUAL))
 			return new ContainerGeneric();
 
-		return null;
+		return new ContainerGeneric();
 	}
 
 	@Override

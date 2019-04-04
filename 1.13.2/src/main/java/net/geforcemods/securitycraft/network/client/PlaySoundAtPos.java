@@ -74,7 +74,7 @@ public class PlaySoundAtPos{
 	}
 
 	public static void onMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx) {
-		Minecraft.getInstance().world.playSound(Minecraft.getInstance().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category), (float) message.volume, 1.0F);
+		Minecraft.getInstance().world.playSound(Minecraft.getInstance().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), (float) message.volume, 1.0F);
 		ctx.get().setPacketHandled(true);
 	}
 }

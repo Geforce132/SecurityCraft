@@ -136,7 +136,7 @@ public class SCEventHandler {
 		}
 
 		if(event.getSource() == CustomDamageSources.electricity)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, SCSounds.ELECTRIFIED.path, 0.25F, "block"));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().posX, event.getEntity().posY, event.getEntity().posZ, SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
 	}
 
 	@SubscribeEvent
@@ -175,7 +175,7 @@ public class SCEventHandler {
 					}
 
 					if(event.getEntityPlayer() instanceof EntityPlayerMP)
-						NetworkHooks.openGui((EntityPlayerMP)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.KEY_CHANGER, world, event.getPos()));
+						NetworkHooks.openGui((EntityPlayerMP)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()));
 
 					return;
 				}
@@ -709,10 +709,10 @@ public class SCEventHandler {
 		Block block = world.getBlockState(pos).getBlock();
 
 		if(block == SCContent.fakeWaterBlock){
-			world.removeBlock(pos);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return new ItemStack(SCContent.fWaterBucket, 1);
 		}else if(block == SCContent.fakeLavaBlock){
-			world.removeBlock(pos);
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return new ItemStack(SCContent.fLavaBucket, 1);
 		}
 		else

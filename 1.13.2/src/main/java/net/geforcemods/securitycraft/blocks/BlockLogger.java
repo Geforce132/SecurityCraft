@@ -52,7 +52,7 @@ public class BlockLogger extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote && player instanceof EntityPlayerMP)
-			NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.INVENTORY_SCANNER), pos);
+			NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.USERNAME_LOGGER), pos);
 
 		return true;
 	}

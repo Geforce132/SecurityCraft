@@ -48,7 +48,7 @@ public class ItemScannerDoor extends Item
 			if (!block.isReplaceable(world.getBlockState(pos), new BlockItemUseContext(ctx)))
 				pos = pos.offset(facing);
 
-			if (player.canPlayerEdit(pos, facing, stack) && SCContent.scannerDoor.isValidPosition(world.getBlockState(pos), world, pos))
+			if (player.canPlayerEdit(pos, facing, stack) && world.getBlockState(pos.down()).isTopSolid())
 			{
 				EnumFacing angleFacing = EnumFacing.fromAngle(player.rotationYaw);
 				int offsetX = angleFacing.getXOffset();
@@ -57,7 +57,9 @@ public class ItemScannerDoor extends Item
 				placeDoor(world, pos, angleFacing, SCContent.scannerDoor, flag);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-				stack.shrink(1);
+
+				if(!player.isCreative())
+					stack.shrink(1);
 
 				if(world.getTileEntity(pos) != null)
 				{

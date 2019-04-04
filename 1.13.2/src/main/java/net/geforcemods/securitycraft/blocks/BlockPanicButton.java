@@ -71,9 +71,9 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 		if(state.get(FACE) == AttachFace.WALL)
 			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));
 		else if(state.get(FACE) == AttachFace.CEILING)
-			notifyNeighbors(world, pos, EnumFacing.UP);
-		else if(state.get(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(world, pos, EnumFacing.DOWN);
+		else if(state.get(FACE) == AttachFace.FLOOR)
+			notifyNeighbors(world, pos, EnumFacing.UP);
 
 		return true;
 	}

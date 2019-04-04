@@ -49,6 +49,8 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			world.setBlockState(pos.down(), lowerState.with(BlockDoor.OPEN, !lowerState.get(BlockDoor.OPEN).booleanValue()), 3);
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
+			((TileEntityOwnable)world.getTileEntity(pos)).getOwner().set(getOwner());
+			((TileEntityOwnable)world.getTileEntity(pos.down())).getOwner().set(getOwner());
 
 			if(open)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.scannerDoorItem.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
