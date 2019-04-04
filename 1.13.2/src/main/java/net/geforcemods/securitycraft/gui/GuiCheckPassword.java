@@ -40,17 +40,17 @@ public class GuiCheckPassword extends GuiContainer {
 		super.initGui();
 		mc.keyboardListener.enableRepeatEvents(true);
 
-		buttons.add(new GuiButtonClick(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
-		buttons.add(new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
-		buttons.add(new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
-		buttons.add(new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
-		buttons.add(new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
-		buttons.add(new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
-		buttons.add(new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
-		buttons.add(new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
-		buttons.add(new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
-		buttons.add(new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
-		buttons.add(new GuiButtonClick(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
+		addButton(new GuiButtonClick(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
+		addButton(new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
+		addButton(new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
+		addButton(new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
+		addButton(new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
+		addButton(new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
+		addButton(new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
+		addButton(new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
+		addButton(new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
+		addButton(new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
+		addButton(new GuiButtonClick(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
 		keycodeTextbox = new GuiTextField(11, fontRenderer, width / 2 - 37, height / 2 - 67, 77, 12);
 

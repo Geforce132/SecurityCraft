@@ -63,8 +63,8 @@ public class GuiCameraMonitor extends GuiContainer {
 
 		prevPageButton = new GuiButtonExt(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
 		nextPageButton = new GuiButtonExt(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
-		buttons.add(prevPageButton);
-		buttons.add(nextPageButton);
+		addButton(prevPageButton);
+		addButton(nextPageButton);
 
 		cameraButtons[0] = new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
 		cameraButtons[1] = new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
@@ -95,7 +95,7 @@ public class GuiCameraMonitor extends GuiContainer {
 			CameraView view;
 
 			button.displayString += camID;
-			buttons.add(button);
+			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getInstance().player.dimension.getId()) {
@@ -122,7 +122,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		}
 
 		for(int i = 0; i < 10; i++)
-			buttons.add(unbindButtons[i]);
+			addButton(unbindButtons[i]);
 
 		if(page == 1)
 			prevPageButton.enabled = false;

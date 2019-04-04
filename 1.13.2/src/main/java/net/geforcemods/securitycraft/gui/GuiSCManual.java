@@ -70,10 +70,10 @@ public class GuiSCManual extends GuiScreen {
 		startX = (width - 256) / 2;
 		mc.keyboardListener.enableRepeatEvents(true);
 
-		buttons.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
-		buttons.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
-		buttons.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
-		buttons.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
+		addButton(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
+		addButton(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
+		addButton(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
 		updateRecipeAndIcons();
 	}
 

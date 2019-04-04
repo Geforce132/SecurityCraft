@@ -40,16 +40,16 @@ public class GuiBriefcase extends GuiContainer {
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
 			keycodeTopButtons[i] = new GuiButtonClick(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
-			buttons.add(keycodeTopButtons[i]);
+			addButton(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
 			keycodeBottomButtons[i] = new GuiButtonClick(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
-			buttons.add(keycodeBottomButtons[i]);
+			addButton(keycodeBottomButtons[i]);
 		}
 
 		continueButton = new GuiButtonClick(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed);
-		buttons.add(continueButton);
+		addButton(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
 			keycodeTextboxes[i] = new GuiTextField(9 + i, fontRenderer, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12);

@@ -85,7 +85,7 @@ public class GuiMRAT extends GuiContainer{
 						break;
 				}
 
-				buttons.add(guiButtons[i][j]);
+				addButton(guiButtons[i][j]);
 
 				if(!(block instanceof IExplosive))
 				{

@@ -50,7 +50,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
 			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
-			buttons.add(descriptionButtons[i]);
+			addButton(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
 
@@ -69,7 +69,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 					optionButtons[i].packedFGColor = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
 				}
 
-				buttons.add(optionButtons[i]);
+				addButton(optionButtons[i]);
 				hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
 			}
 	}
