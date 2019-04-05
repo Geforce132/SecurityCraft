@@ -7,22 +7,18 @@
   "key": {
     "B": [
       {
-        "item": "securitycraft:reinforced_sandstone",
-        "data": 0
+        "item": "securitycraft:reinforced_sandstone"
       },
       {
-        "item": "securitycraft:reinforced_sandstone",
-        "data": 1
+        "item": "securitycraft:reinforced_chiseled_sandstone"
       },
       {
-        "item": "securitycraft:reinforced_sandstone",
-        "data": 2
+        "item": "securitycraft:reinforced_cut_sandstone"
       }
     ]
   },
   "result": {
-    "item": "securitycraft:reinforced_stone_slabs",
-    "data": 2,
+    "item": "securitycraft:reinforced_sandstone_slab",
     "count": 6
   }
 }

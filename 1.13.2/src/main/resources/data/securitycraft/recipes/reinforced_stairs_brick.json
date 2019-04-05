@@ -8,11 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_brick"
+      "item": "securitycraft:reinforced_bricks"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_brick",
+    "item": "securitycraft:reinforced_brick_stairs",
     "count": 4
   }
 }

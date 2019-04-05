@@ -10,8 +10,7 @@
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone_slabs",
-    "data": 1,
+    "item": "securitycraft:reinforced_cobblestone_slab",
     "count": 6
   }
 }

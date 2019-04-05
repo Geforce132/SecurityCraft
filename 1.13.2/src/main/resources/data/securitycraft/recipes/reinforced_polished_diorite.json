@@ -6,13 +6,11 @@
   ],
   "key": {
     "A": {
-      "item": "securitycraft:reinforced_stone",
-      "data": 5
+      "item": "securitycraft:reinforced_diorite"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone",
-    "count": 4,
-    "data": 6
+    "item": "securitycraft:reinforced_polished_diorite",
+    "count": 4
   }
 }

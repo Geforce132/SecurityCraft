@@ -8,12 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_planks",
-      "data": 2
+      "item": "securitycraft:reinforced_birch_planks"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_birch",
+    "item": "securitycraft:reinforced_birch_stairs",
     "count": 4
   }
 }

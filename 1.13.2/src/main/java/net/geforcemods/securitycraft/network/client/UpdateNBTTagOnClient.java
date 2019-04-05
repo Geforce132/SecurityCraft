@@ -8,16 +8,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class UpdateNBTTag{
+public class UpdateNBTTagOnClient{
 
 	private NBTTagCompound stackTag;
 	private String itemName;
 
-	public UpdateNBTTag(){
+	public UpdateNBTTagOnClient(){
 
 	}
 
-	public UpdateNBTTag(ItemStack stack){
+	public UpdateNBTTagOnClient(ItemStack stack){
 		if(!stack.isEmpty() && stack.hasTag()){
 			stackTag = stack.getTag();
 			itemName = stack.getTranslationKey();
@@ -34,20 +34,20 @@ public class UpdateNBTTag{
 		buf.writeString(itemName);
 	}
 
-	public static void encode(UpdateNBTTag message, PacketBuffer packet)
+	public static void encode(UpdateNBTTagOnClient message, PacketBuffer packet)
 	{
 		message.toBytes(packet);
 	}
 
-	public static UpdateNBTTag decode(PacketBuffer packet)
+	public static UpdateNBTTagOnClient decode(PacketBuffer packet)
 	{
-		UpdateNBTTag message = new UpdateNBTTag();
+		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
 
 		message.fromBytes(packet);
 		return message;
 	}
 
-	public static void onMessage(UpdateNBTTag message, Supplier<NetworkEvent.Context> ctx) {
+	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx) {
 		if(!Minecraft.getInstance().player.inventory.getCurrentItem().isEmpty() && Minecraft.getInstance().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName)){
 			Minecraft.getInstance().player.inventory.getCurrentItem().setTag(message.stackTag);;
 		}

@@ -1,31 +1,26 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "group": "fake_liquids",
-  "pattern": [
-    "P",
-    "B"
-  ],
-  "key": {
-    "P": [
-      {
-        "type": "minecraft:item_nbt",
-        "item": "minecraft:potion",
-        "nbt": {
-          "Potion": "minecraft:harming"
-        }
-      },
-      {
-        "type": "minecraft:item_nbt",
-        "item": "minecraft:potion",
-        "nbt": {
-          "Potion": "minecraft:strong_harming"
-        }
-      }
-    ],
-    "B": {
+  "ingredients": [
+    {
       "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
     }
-  },
+  ],
   "result": {
     "item": "securitycraft:bucket_f_water",
     "count": 1

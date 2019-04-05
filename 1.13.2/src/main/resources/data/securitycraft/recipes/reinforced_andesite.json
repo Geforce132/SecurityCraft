@@ -2,16 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "securitycraft:reinforced_stone",
-      "data": 3
+      "item": "securitycraft:reinforced_diorite"
     },
     {
       "item": "minecraft:cobblestone"
     }
   ],
   "result": {
-    "item": "securitycraft:reinforced_stone",
-    "count": 2,
-    "data": 5
+    "item": "securitycraft:reinforced_andesite",
+    "count": 2
   }
 }

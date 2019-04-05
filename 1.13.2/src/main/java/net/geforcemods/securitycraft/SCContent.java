@@ -236,8 +236,8 @@ public class SCContent
 	@Reinforced public static Block reinforcedRedConcrete;
 	@Reinforced public static Block reinforcedBlackConcrete;
 	//ordered by vanilla decoration blocks creative tab order
-	@Reinforced(hasPage=true, hasTint=false) public static Block reinforcedIronBars;
-	@Reinforced(hasPage=true, hasTint=false) public static Block reinforcedGlassPane;
+	@Reinforced(hasTint=false) public static Block reinforcedIronBars;
+	@Reinforced(hasTint=false) public static Block reinforcedGlassPane;
 	@Reinforced public static Block reinforcedWhiteCarpet;
 	@Reinforced public static Block reinforcedOrangeCarpet;
 	@Reinforced public static Block reinforcedMagentaCarpet;

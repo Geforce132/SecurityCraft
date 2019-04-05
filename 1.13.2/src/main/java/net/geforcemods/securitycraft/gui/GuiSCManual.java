@@ -268,6 +268,8 @@ public class GuiSCManual extends GuiScreen {
 		if(currentPage < 0){
 			recipe = null;
 			hoverCheckers.clear();
+			buttons.get(2).visible = false;
+			buttons.get(3).visible = false;
 			return;
 		}
 

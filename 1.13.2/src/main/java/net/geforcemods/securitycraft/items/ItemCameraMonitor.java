@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -72,7 +72,7 @@ public class ItemCameraMonitor extends Item {
 						break;
 					}
 
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTag(stack));
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTagOnClient(stack));
 
 				return EnumActionResult.SUCCESS;
 			}

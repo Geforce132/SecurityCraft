@@ -8,12 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_planks",
-      "data": 3
+      "item": "securitycraft:reinforced_jungle_planks"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_jungle",
+    "item": "securitycraft:reinforced_jungle_stairs",
     "count": 4
   }
 }

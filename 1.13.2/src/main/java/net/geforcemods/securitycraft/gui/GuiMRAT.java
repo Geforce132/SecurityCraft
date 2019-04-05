@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -29,7 +29,7 @@ public class GuiMRAT extends GuiContainer{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private ItemStack mrat;
-	private GuiButton[][] guiButtons = new GuiButton[6][4]; //6 buttons, 4 actions (defuse, prime, detonate, unbind)
+	private GuiButton[][] guiButtons = new GuiButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 
 	public GuiMRAT(ItemStack item) {
@@ -201,7 +201,7 @@ public class GuiMRAT extends GuiContainer{
 				if(coords[0] == x && coords[1] == y && coords[2] == z && !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0))
 				{
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.channel.sendToServer(new UpdateNBTTag(stack));
+					SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(stack));
 					return;
 				}
 			}

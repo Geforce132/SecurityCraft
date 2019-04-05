@@ -6,13 +6,11 @@
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_stone",
-      "data": 1
+      "item": "securitycraft:reinforced_granite"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone",
-    "count": 4,
-    "data": 2
+    "item": "securitycraft:reinforced_polished_granite",
+    "count": 4
   }
 }

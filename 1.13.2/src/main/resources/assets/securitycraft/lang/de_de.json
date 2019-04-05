@@ -392,7 +392,7 @@
     "gui.securitycraft:keycardSetup.explanation.6": "Level den du aussuchst können diesen",
     "gui.securitycraft:keycardSetup.explanation.7": "Schlüsselkarten Leser nutzen.",
     "gui.securitycraft:keycardSetup.lvlNeeded": "Benötigter Sicherheitslevel:",
-    "gui.securitycraft:protectedFurnace": "Gesicherter Ofen",
+    "gui.securitycraft:protectedFurnace.name": "Gesicherter Ofen",
     "gui.securitycraft:logger.logged": "Protokollierte Spieler:",
     "gui.securitycraft:mrat.notBound": "Nicht verbunden!",
     "gui.securitycraft:mrat.mineLocations": "Mine bei #location",

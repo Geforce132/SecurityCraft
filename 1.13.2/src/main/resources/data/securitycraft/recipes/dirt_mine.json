@@ -3,8 +3,7 @@
   "group": "block_mines",
   "ingredients": [
     {
-      "item": "minecraft:dirt",
-      "data": 0
+      "item": "minecraft:dirt"
     },
     {
       "item": "securitycraft:mine"

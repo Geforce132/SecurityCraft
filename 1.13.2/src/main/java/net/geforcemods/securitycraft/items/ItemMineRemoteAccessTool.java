@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -77,7 +77,7 @@ public class ItemMineRemoteAccessTool extends Item {
 						stack.setTag(new NBTTagCompound());
 
 					stack.getTag().putIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTag(stack));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTagOnClient(stack));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos, player);
@@ -121,7 +121,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTag(stack));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTagOnClient(stack));
 					return;
 				}
 			}

@@ -8,12 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_purpur",
-      "data": 0
+      "item": "securitycraft:reinforced_purpur_block"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_purpur",
+    "item": "securitycraft:reinforced_purpur_stairs",
     "count": 4
   }
 }

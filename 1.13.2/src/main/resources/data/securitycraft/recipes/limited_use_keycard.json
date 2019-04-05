@@ -15,8 +15,7 @@
       "item": "minecraft:iron_ingot"
     },
     "B": {
-      "item": "minecraft:dye",
-      "data": 4
+      "item": "minecraft:lapis_lazuli"
     }
   },
   "result": {

@@ -14,8 +14,7 @@
       "item": "minecraft:paper"
     },
     "D": {
-      "item": "minecraft:dye",
-      "data": 0
+      "item": "minecraft:ink_sac"
     }
   },
   "result": {

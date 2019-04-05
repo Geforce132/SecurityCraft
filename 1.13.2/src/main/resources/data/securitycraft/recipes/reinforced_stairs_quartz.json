@@ -8,12 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_quartz",
-      "data": 0
+      "item": "securitycraft:reinforced_quartz_block"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_quartz",
+    "item": "securitycraft:reinforced_quartz_stairs",
     "count": 4
   }
 }

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -63,7 +63,7 @@ public class BriefcaseInventory implements IInventory {
 			}
 
 		tag.put("ItemInventory", items);
-		SecurityCraft.channel.sendToServer(new UpdateNBTTag(briefcase));
+		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(briefcase));
 	}
 
 	@Override

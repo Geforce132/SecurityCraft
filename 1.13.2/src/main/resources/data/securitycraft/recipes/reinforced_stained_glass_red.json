@@ -8,16 +8,14 @@
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_glass_block"
+      "item": "securitycraft:reinforced_glass"
     },
     "D": {
-      "item": "minecraft:dye",
-	  "data": 1
+      "item": "minecraft:rose_red"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stained_glass",
-    "data": 14,
+    "item": "securitycraft:reinforced_red_stained_glass",
     "count": 8
   }
 }

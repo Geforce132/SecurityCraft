@@ -47,6 +47,8 @@ public class GuiPictureButton extends GuiButton{
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
 		else
 			this.itemToRender = itemToRender.getItem();
+
+		this.onClick = onClick;
 	}
 
 	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<GuiButton> onClick)

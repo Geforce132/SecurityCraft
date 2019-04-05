@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.IBucketPickupHandler;
+import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -14,26 +16,32 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IItemProvider;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockSecretSign extends BlockContainer
+public class BlockSecretSign extends BlockContainer implements IBucketPickupHandler, ILiquidContainer
 {
-	protected static final AxisAlignedBB SIGN_AABB = new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	protected static final VoxelShape SHAPE = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
 	public BlockSecretSign()
 	{
@@ -45,6 +53,15 @@ public class BlockSecretSign extends BlockContainer
 	{
 		if(placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+	}
+
+	@Override
+	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	{
+		if (state.get(WATERLOGGED))
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+
+		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
@@ -61,7 +78,7 @@ public class BlockSecretSign extends BlockContainer
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		return VoxelShapes.create(SIGN_AABB);
+		return SHAPE;
 	}
 
 	@Nullable
@@ -110,10 +127,8 @@ public class BlockSecretSign extends BlockContainer
 	@Override
 	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if (world.isRemote)
-		{
+		if(world.isRemote)
 			return true;
-		}
 		else
 		{
 			if(player.getHeldItem(hand).getItem() == SCContent.adminTool)
@@ -128,5 +143,46 @@ public class BlockSecretSign extends BlockContainer
 	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face)
 	{
 		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
+	public Fluid pickupFluid(IWorld world, BlockPos pos, IBlockState state)
+	{
+		if(state.get(WATERLOGGED))
+		{
+			world.setBlockState(pos, state.with(WATERLOGGED, Boolean.valueOf(false)), 3);
+			return Fluids.WATER;
+		}
+		else
+			return Fluids.EMPTY;
+	}
+
+	@Override
+	public IFluidState getFluidState(IBlockState state)
+	{
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, IBlockState state, Fluid fluid)
+	{
+		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
+	}
+
+	@Override
+	public boolean receiveFluid(IWorld world, BlockPos pos, IBlockState state, IFluidState fluidState)
+	{
+		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
+		{
+			if(!world.isRemote())
+			{
+				world.setBlockState(pos, state.with(WATERLOGGED, Boolean.valueOf(true)), 3);
+				world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+			}
+
+			return true;
+		}
+		else
+			return false;
 	}
 }

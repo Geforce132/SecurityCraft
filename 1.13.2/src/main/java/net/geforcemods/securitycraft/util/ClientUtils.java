@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -69,7 +69,7 @@ public class ClientUtils{
 	 * Only works on the CLIENT side.
 	 */
 	public static void syncItemNBT(ItemStack item){
-		SecurityCraft.channel.sendToServer(new UpdateNBTTag(item));
+		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
 	public static void openURL(String url) {

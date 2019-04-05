@@ -8,16 +8,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class UpdateNBTTag {
+public class UpdateNBTTagOnServer {
 
 	private NBTTagCompound stackTag;
 	private String itemName;
 
-	public UpdateNBTTag(){
+	public UpdateNBTTagOnServer(){
 
 	}
 
-	public UpdateNBTTag(ItemStack stack){
+	public UpdateNBTTagOnServer(ItemStack stack){
 		if(!stack.isEmpty() && stack.hasTag()){
 			stackTag = stack.getTag();
 			itemName = stack.getTranslationKey();
@@ -34,20 +34,20 @@ public class UpdateNBTTag {
 		buf.writeString(itemName);
 	}
 
-	public static void encode(UpdateNBTTag message, PacketBuffer packet)
+	public static void encode(UpdateNBTTagOnServer message, PacketBuffer packet)
 	{
 		message.toBytes(packet);
 	}
 
-	public static UpdateNBTTag decode(PacketBuffer packet)
+	public static UpdateNBTTagOnServer decode(PacketBuffer packet)
 	{
-		UpdateNBTTag message = new UpdateNBTTag();
+		UpdateNBTTagOnServer message = new UpdateNBTTagOnServer();
 
 		message.fromBytes(packet);
 		return message;
 	}
 
-	public static void onMessage(UpdateNBTTag message, Supplier<NetworkEvent.Context> ctx)
+	public static void onMessage(UpdateNBTTagOnServer message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
 			EntityPlayer player = ctx.get().getSender();

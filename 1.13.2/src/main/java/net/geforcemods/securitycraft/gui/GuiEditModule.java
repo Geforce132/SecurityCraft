@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -141,7 +141,7 @@ public class GuiEditModule extends GuiContainer
 			default: return;
 		}
 
-		SecurityCraft.channel.sendToServer(new UpdateNBTTag(module));
+		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
 	private int getNextSlot(NBTTagCompound tag) {

@@ -8,12 +8,11 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_red_sandstone",
-      "data": 0
+      "item": "securitycraft:reinforced_red_sandstone"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stairs_red_sandstone",
+    "item": "securitycraft:reinforced_red_sandstone_stairs",
     "count": 4
   }
 }

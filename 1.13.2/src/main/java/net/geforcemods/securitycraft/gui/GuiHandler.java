@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -39,6 +40,7 @@ public class GuiHandler {
 	public static final ResourceLocation BLOCK_REINFORCER = new ResourceLocation(SecurityCraft.MODID, "block_reinforcer");
 	public static final ResourceLocation MODULES = new ResourceLocation(SecurityCraft.MODID, "modules");
 	public static final ResourceLocation MANUAL = new ResourceLocation(SecurityCraft.MODID, "manual");
+	public static final ResourceLocation EDIT_SECRET_SIGN = new ResourceLocation(SecurityCraft.MODID, "edit_secret_sign");
 
 	public static GuiScreen getClientGuiElement(OpenContainer message)
 	{
@@ -125,6 +127,13 @@ public class GuiHandler {
 			return new GuiEditModule(player.getHeldItemMainhand());
 		else if(message.getId().equals(MANUAL))
 			return new GuiSCManual();
+		else if(message.getId().equals(EDIT_SECRET_SIGN))
+		{
+			TileEntity te = getTe(message);
+
+			if(te instanceof TileEntitySecretSign)
+				return new GuiEditSecretSign((TileEntitySecretSign)te);
+		}
 
 		return null;
 	}

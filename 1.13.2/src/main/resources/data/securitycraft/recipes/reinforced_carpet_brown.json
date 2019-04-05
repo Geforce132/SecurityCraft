@@ -6,13 +6,11 @@
   ],
   "key": {
     "W": {
-      "item": "securitycraft:reinforced_wool",
-      "data": 12
+      "item": "securitycraft:reinforced_brown_wool"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_carpet",
-    "data": 12,
+    "item": "securitycraft:reinforced_brown_carpet",
     "count": 3
   }
 }

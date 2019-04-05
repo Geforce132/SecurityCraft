@@ -15,8 +15,7 @@
       "item": "minecraft:iron_ingot"
     },
     "B": {
-      "item": "minecraft:dye",
-      "data": 5
+      "item": "minecraft:purple_dye"
     }
   },
   "result": {

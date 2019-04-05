@@ -6,13 +6,11 @@
   ],
   "key": {
     "B": {
-      "item": "securitycraft:reinforced_purpur",
-      "data": 0
+      "item": "securitycraft:reinforced_purpur_block"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone_slabs2",
-    "data": 1,
+    "item": "securitycraft:reinforced_purpur_slab",
     "count": 6
   }
 }

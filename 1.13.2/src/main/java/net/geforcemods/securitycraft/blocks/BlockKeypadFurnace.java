@@ -100,15 +100,18 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
 	{
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if (tileentity instanceof IInventory)
+		if(!(newState.getBlock() instanceof BlockKeypadFurnace))
 		{
-			InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
-			world.updateComparatorOutputLevel(pos, this);
-		}
+			TileEntity tileentity = world.getTileEntity(pos);
 
-		super.onReplaced(state, world, pos, newState, isMoving);
+			if (tileentity instanceof IInventory)
+			{
+				InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
+				world.updateComparatorOutputLevel(pos, this);
+			}
+
+			super.onReplaced(state, world, pos, newState, isMoving);
+		}
 	}
 
 	@Override

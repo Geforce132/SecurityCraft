@@ -8,8 +8,7 @@
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_stained_glass",
-      "data": 15
+      "item": "securitycraft:reinforced_black_stained_glass"
     },
     "D": {
       "item": "minecraft:diamond_block"

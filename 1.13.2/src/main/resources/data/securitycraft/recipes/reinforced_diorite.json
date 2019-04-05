@@ -13,8 +13,7 @@
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone",
-    "count": 2,
-    "data": 3
+    "item": "securitycraft:reinforced_diorite",
+    "count": 2
   }
 }

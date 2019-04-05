@@ -17,7 +17,7 @@ public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
 		Block block = Block.getBlockFromItem(item.getItem());
 
 		if (block == SCContent.keypadChest)
-			TileEntityRendererDispatcher.instance.render(new TileEntityKeypadChest(), 0.0D, 0.0D, 0.0D, 0.0F);
+			TileEntityRendererDispatcher.instance.renderAsItem(new TileEntityKeypadChest());
 		else
 			super.renderByItem(item);
 

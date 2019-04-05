@@ -391,7 +391,7 @@
     "gui.securitycraft:keycardSetup.explanation.6": "level you select will be able to",
     "gui.securitycraft:keycardSetup.explanation.7": "use this keycard reader.",
     "gui.securitycraft:keycardSetup.lvlNeeded": "Level of security needed:",
-    "gui.securitycraft:protectedFurnace": "Protected Furnace",
+    "gui.securitycraft:protectedFurnace.name": "Protected Furnace",
     "gui.securitycraft:logger.logged": "Logged players:",
     "gui.securitycraft:mrat.notBound": "Not bound!",
     "gui.securitycraft:mrat.mineLocations": "Mine at #location",

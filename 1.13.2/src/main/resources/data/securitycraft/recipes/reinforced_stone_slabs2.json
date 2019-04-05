@@ -6,13 +6,11 @@
   ],
   "key": {
     "B": {
-      "item": "securitycraft:reinforced_red_sandstone",
-      "data": 0
+      "item": "securitycraft:reinforced_red_sandstone"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone_slabs2",
-    "data": 0,
+    "item": "securitycraft:reinforced_red_sandstone_slab",
     "count": 6
   }
 }

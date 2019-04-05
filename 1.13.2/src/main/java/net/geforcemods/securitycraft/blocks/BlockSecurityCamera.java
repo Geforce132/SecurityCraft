@@ -46,6 +46,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
 	private static final VoxelShape SHAPE_WEST = VoxelShapes.create(new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F));
 	private static final VoxelShape SHAPE = VoxelShapes.create(new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F));
+	private static final VoxelShape SHAPE_DOWN = VoxelShapes.or(Block.makeCuboidShape(7, 15, 5, 9, 16, 11), VoxelShapes.or(Block.makeCuboidShape(6, 15, 6, 7, 16, 10), VoxelShapes.or(Block.makeCuboidShape(5, 15, 7, 6, 16, 9), VoxelShapes.or(Block.makeCuboidShape(9, 15, 6, 10, 16, 10), VoxelShapes.or(Block.makeCuboidShape(10, 15, 7, 11, 16, 9), Block.makeCuboidShape(7, 14, 7, 9, 15, 9))))));
 
 	public BlockSecurityCamera(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -66,7 +67,13 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+		return state.get(FACING) == EnumFacing.DOWN ? EnumBlockRenderType.MODEL : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+
+	@Override
+	public boolean isBlockNormalCube(IBlockState state)
+	{
+		return false;
 	}
 
 	@Override
@@ -97,7 +104,7 @@ public class BlockSecurityCamera extends BlockContainer{
 		else if(dir == EnumFacing.WEST)
 			return SHAPE_WEST;
 		else if(dir == EnumFacing.DOWN)
-			return VoxelShapes.fullCube();
+			return SHAPE_DOWN;
 		else
 			return SHAPE;
 	}
@@ -105,7 +112,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return ctx.getFace() != EnumFacing.UP ? getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer()) : null;
 	}
 
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)

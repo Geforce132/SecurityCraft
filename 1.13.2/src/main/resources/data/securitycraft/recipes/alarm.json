@@ -7,10 +7,10 @@
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_glass_block"
+      "item": "securitycraft:reinforced_glass"
     },
     "N": {
-      "item": "minecraft:noteblock"
+      "item": "minecraft:note_block"
     },
     "R": {
       "item": "minecraft:redstone"

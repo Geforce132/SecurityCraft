@@ -7,13 +7,11 @@
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_stained_glass",
-      "data": 13
+      "item": "securitycraft:reinforced_green_stained_glass"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stained_panes",
-    "data": 13,
+    "item": "securitycraft:reinforced_green_stained_glass_pane",
     "count": 8
   }
 }
