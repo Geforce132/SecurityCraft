@@ -8,6 +8,12 @@
 - Fix: [1.12.2] French translation does not work
 - Fix: [1.12.2] Password-protected Chest doesn't show in the inventory under certain circumstances
 
+1.13.2 beta versions:
+- beta-1
+	- Changed: Fake Water/Lava recipes now require their respective raw brewing ingredients (glass bottle, nether wart, glistering melon, glowstone...)
+	- Removed: Functionality of Disguise Module for Keypad (may come back later)
+	- Removed: Ability to turn off keycards via the config file
+
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
 - New: Reinforced Gravel

@@ -286,7 +286,7 @@ public class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
+			slider.displayString = (ClientUtils.localize("option" + blockName + "." + getName()) + " ").replace("#", toString());
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), id, getValue()));
 		}
 	}
