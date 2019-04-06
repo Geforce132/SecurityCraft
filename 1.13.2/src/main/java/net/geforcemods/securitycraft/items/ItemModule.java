@@ -80,6 +80,9 @@ public class ItemModule extends Item{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+		if(module == EnumCustomModules.DISGUISE)
+			list.add(new TextComponentString("" + TextFormatting.RED + TextFormatting.BOLD + "Not yet implemented!"));
+
 		if(nbtCanBeModified || canBeCustomized())
 			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.modifiable").getFormattedText()));
 		else

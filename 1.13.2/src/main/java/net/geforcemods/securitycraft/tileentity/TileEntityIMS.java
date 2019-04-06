@@ -44,7 +44,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 		super.tick();
 
 		if(!world.isRemote && updateBombCount){
-			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
+			int mineCount = BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES);
+
+			if(!(mineCount - 1 < 0 || mineCount > 4))
+				BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
+
 			updateBombCount = false;
 		}
 
