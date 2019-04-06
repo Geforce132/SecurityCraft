@@ -175,7 +175,7 @@ public class SCEventHandler {
 					}
 
 					if(event.getEntityPlayer() instanceof EntityPlayerMP)
-						NetworkHooks.openGui((EntityPlayerMP)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()));
+						NetworkHooks.openGui((EntityPlayerMP)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()), event.getPos());
 
 					return;
 				}

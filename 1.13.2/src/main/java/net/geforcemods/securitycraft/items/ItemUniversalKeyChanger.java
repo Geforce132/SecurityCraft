@@ -37,7 +37,7 @@ public class ItemUniversalKeyChanger extends Item {
 			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
 			{
 				if(player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.KEY_CHANGER, world, pos));
+					NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.KEY_CHANGER, world, pos), pos);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);

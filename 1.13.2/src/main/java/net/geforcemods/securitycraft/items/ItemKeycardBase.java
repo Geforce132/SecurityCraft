@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,7 +50,7 @@ public class ItemKeycardBase extends Item{
 				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
+			list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
 
 		}
 	}

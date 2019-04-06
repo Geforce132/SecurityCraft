@@ -138,15 +138,19 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
 	{
-		int boundType = source.getBlockState(pos).get(BOUNDTYPE);
+		if(source.getBlockState(pos).getBlock() instanceof BlockLaserField)
+		{
+			int boundType = source.getBlockState(pos).get(BOUNDTYPE);
 
-		if (boundType == 1)
-			return SHAPE_Y;
-		else if (boundType == 2)
-			return SHAPE_Z;
-		else if (boundType == 3)
-			return SHAPE_X;
-		else return VoxelShapes.fullCube();
+			if (boundType == 1)
+				return SHAPE_Y;
+			else if (boundType == 2)
+				return SHAPE_Z;
+			else if (boundType == 3)
+				return SHAPE_X;
+		}
+
+		return VoxelShapes.empty();
 	}
 
 	@Override

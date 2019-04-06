@@ -60,7 +60,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
-					optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (double)option.getMin(), (double)option.getMax(), (double)option.getValue(), true, true, (OptionDouble)option);
+					optionButtons[i] = new GuiSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", (double)option.getMin(), (double)option.getMax(), (double)option.getValue(), true, true, (OptionDouble)option);
 					optionButtons[i].packedFGColor = 14737632;
 				}
 				else
@@ -122,19 +122,19 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	private String getModuleDescription(int buttonID) {
-		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description";
+		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
 		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey()) + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option." + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
+		String optionDescription = "option" + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
 
 		return ClientUtils.localize(optionDescription);
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
+		return (ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString());
 	}
 
 	public List<Rectangle2d> getGuiExtraAreas()

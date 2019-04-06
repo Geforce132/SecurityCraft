@@ -18,7 +18,7 @@ public class UpdateNBTTagOnServer {
 	}
 
 	public UpdateNBTTagOnServer(ItemStack stack){
-		if(!stack.isEmpty() && stack.hasTag()){
+		if(!stack.isEmpty() && stack.getTag() != null){
 			stackTag = stack.getTag();
 			itemName = stack.getTranslationKey();
 		}
