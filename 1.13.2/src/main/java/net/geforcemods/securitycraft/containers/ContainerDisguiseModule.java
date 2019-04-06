@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ContainerDisguiseModule extends Container {
@@ -84,11 +85,11 @@ public class ContainerDisguiseModule extends Container {
 		public boolean isItemValid(ItemStack itemStack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = itemStack.getTranslationKey().startsWith("tile.");
+			boolean isStackBlock = itemStack.getItem() instanceof ItemBlock;
 
 			for(ItemStack stack : inventory.moduleInventory)
 				if(!stack.isEmpty() && stack.getItem() != null)
-					if(stack.getItem().getTranslationKey().startsWith("tile."))
+					if(stack.getItem() instanceof ItemBlock)
 						numberOfBlocks++;
 					else
 						numberOfItems++;

@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -50,8 +49,9 @@ public class ItemSentry extends Item
 				}
 			}
 
-			Entity entity = new EntitySentry(world, player);
+			EntitySentry entity = SCContent.eTypeSentry.create(world);
 
+			entity.setupSentry(player);
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 			world.spawnEntity(entity);
 

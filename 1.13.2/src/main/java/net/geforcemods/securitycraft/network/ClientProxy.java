@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -22,17 +23,31 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
+@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class ClientProxy implements IProxy {
 	private final List<Block> toTint = new ArrayList<>();
 
+	@SubscribeEvent
+	public static void onModelRegistry(ModelRegistryEvent event)
+	{
+		SecurityCraft.proxy.registerRenderThings();
+	}
+
+	@Override
+	public void registerKeybindings()
+	{
+		KeyBindings.init();
+	}
+
 	@Override
 	public void registerRenderThings(){
-		KeyBindings.init();
-
 		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, manager -> new RenderSentry(manager));
@@ -40,12 +55,10 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
-		getOrPopulateToTint().forEach(block -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, block));
-		getOrPopulateToTint().forEach(item -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> 0x999999, item));
-		toTint.clear(); //clear up some unused memory
 	}
 
-	private List<Block> getOrPopulateToTint()
+	@Override
+	public List<Block> getOrPopulateToTint()
 	{
 		if(toTint.isEmpty())
 		{
@@ -66,5 +79,11 @@ public class ClientProxy implements IProxy {
 		}
 
 		return toTint;
+	}
+
+	@Override
+	public void cleanup()
+	{
+		toTint.clear();
 	}
 }

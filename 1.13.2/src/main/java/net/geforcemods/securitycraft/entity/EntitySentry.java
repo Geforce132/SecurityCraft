@@ -56,16 +56,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		setSize(1.0F, 1.0F);
 	}
 
-	public EntitySentry(World world, EntityPlayer owner)
+	public void setupSentry(EntityPlayer owner)
 	{
-		this(world, new Owner(owner.getName().getFormattedText(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
-	}
-
-	public EntitySentry(World world, Owner owner)
-	{
-		super(SCContent.eTypeSentry, world);
-		setSize(1.0F, 1.0F);
-		dataManager.set(OWNER, owner);
+		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new NBTTagCompound());
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
@@ -161,6 +154,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	public void remove()
 	{
+		super.remove();
 		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, getPosition(), getModule()); //if there is none, nothing will drop
 		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
