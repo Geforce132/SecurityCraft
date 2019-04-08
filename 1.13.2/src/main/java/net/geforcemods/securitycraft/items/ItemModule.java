@@ -12,6 +12,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -80,9 +81,6 @@ public class ItemModule extends Item{
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-		if(module == EnumCustomModules.DISGUISE)
-			list.add(new TextComponentString("" + TextFormatting.RED + TextFormatting.BOLD + "Not implemented for the Keypad yet!"));
-
 		if(nbtCanBeModified || canBeCustomized())
 			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.modifiable").getFormattedText()));
 		else
@@ -155,7 +153,7 @@ public class ItemModule extends Item{
 			if(slot < numberOfItemAddons) {
 				ItemStack stack;
 
-				if((stack = ItemStack.read(item)).getTranslationKey().startsWith("item."))
+				if(!((stack = ItemStack.read(item)).getItem() instanceof ItemBlock))
 					list.add(stack.getItem());
 			}
 		}
@@ -177,7 +175,7 @@ public class ItemModule extends Item{
 			if(slot < numberOfBlockAddons) {
 				ItemStack stack;
 
-				if((stack = ItemStack.read(item)).getTranslationKey().startsWith("tile."))
+				if((stack = ItemStack.read(item)).getItem() instanceof ItemBlock)
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}

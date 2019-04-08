@@ -37,6 +37,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -50,6 +51,26 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	public BlockKeypad(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false));
+	}
+
+	@Override
+	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	{
+		IBlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.getShape(world, pos);
+		else return super.getShape(state, world, pos);
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	{
+		IBlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.getCollisionShape(world, pos);
+		else return super.getCollisionShape(state, world, pos);
 	}
 
 	@Override
@@ -224,34 +245,25 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
-	/*
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public IBlockState getExtendedState(IBlockState state, IBlockReader world, BlockPos pos)
+	{
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
 		return disguisedState != null ? disguisedState : state;
 	}
 
-	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
+	public IBlockState getDisguisedBlockState(IBlockReader world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
 			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
 
-			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTag()).isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTag()).get(0);
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
-
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getDamage() : getMetaFromState(world.getBlockState(pos)));
-
-				if (block != this)
-					return disguisedModel.getActualState(world, pos);
-			}
+			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTag()).isEmpty())
+				return ((ItemModule) module.getItem()).getBlockAddons(module.getTag()).get(0).getDefaultState();
 		}
 
 		return null;
 	}
-	 */
 
 	public static ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
