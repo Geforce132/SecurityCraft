@@ -11,13 +11,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ItemKeypadChestRenderer extends TileEntityItemStackRenderer {
+	private static final TileEntityKeypadChest DUMMY = new TileEntityKeypadChest();
 
 	@Override
 	public void renderByItem(ItemStack item) {
 		Block block = Block.getBlockFromItem(item.getItem());
 
 		if (block == SCContent.keypadChest)
-			TileEntityRendererDispatcher.instance.renderAsItem(new TileEntityKeypadChest());
+			TileEntityRendererDispatcher.instance.renderAsItem(DUMMY);
 		else
 			super.renderByItem(item);
 
