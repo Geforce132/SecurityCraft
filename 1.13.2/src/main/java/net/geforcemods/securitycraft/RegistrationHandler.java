@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.function.BooleanSupplier;
 
+import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -202,13 +204,13 @@ public class RegistrationHandler
 		registerItem(event, SCContent.codebreaker);
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
-		registerItem(event, SCContent.universalBlockRemover); //TODO: keycard recipes
-		registerItem(event, SCContent.keycardLvl1);//, ServerConfig.CONFIG.ableToCraftKeycard1.get());
-		registerItem(event, SCContent.keycardLvl2);//, ServerConfig.CONFIG.ableToCraftKeycard2.get());
-		registerItem(event, SCContent.keycardLvl3);//, ServerConfig.CONFIG.ableToCraftKeycard3.get());
-		registerItem(event, SCContent.keycardLvl4);//, ServerConfig.CONFIG.ableToCraftKeycard4.get());
-		registerItem(event, SCContent.keycardLvl5);//, ServerConfig.CONFIG.ableToCraftKeycard5.get());
-		registerItem(event, SCContent.limitedUseKeycard);//, ServerConfig.CONFIG.ableToCraftLUKeycard.get());
+		registerItem(event, SCContent.universalBlockRemover);
+		registerItem(event, SCContent.keycardLvl1, () -> ServerConfig.CONFIG.ableToCraftKeycard1.get());
+		registerItem(event, SCContent.keycardLvl2, () -> ServerConfig.CONFIG.ableToCraftKeycard2.get());
+		registerItem(event, SCContent.keycardLvl3, () -> ServerConfig.CONFIG.ableToCraftKeycard3.get());
+		registerItem(event, SCContent.keycardLvl4, () -> ServerConfig.CONFIG.ableToCraftKeycard4.get());
+		registerItem(event, SCContent.keycardLvl5, () -> ServerConfig.CONFIG.ableToCraftKeycard5.get());
+		registerItem(event, SCContent.limitedUseKeycard, () -> ServerConfig.CONFIG.ableToCraftLUKeycard.get());
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
@@ -345,14 +347,14 @@ public class RegistrationHandler
 		registerItem(event, item, "");
 	}
 
-	//	/**
-	//	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	//	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
-	//	 */
-	//	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue)
-	//	{
-	//		registerItem(event, item, configValue, "");
-	//	}
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 */
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, BooleanSupplier configValue)
+	{
+		registerItem(event, item, configValue, "");
+	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
@@ -367,19 +369,19 @@ public class RegistrationHandler
 		SecurityCraft.instance.manualPages.add(page);
 	}
 
-	//	/**
-	//	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	//	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
-	//	 */
-	//	private static void registerItem(RegistryEvent.Register<Item> event, Item item, boolean configValue, String designedBy)
-	//	{
-	//		event.getRegistry().register(item); //need this call first before accessing the translation key
-	//
-	//		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
-	//
-	//		page.designedBy(designedBy);
-	//		SecurityCraft.instance.manualPages.add(page);
-	//	}
+	/**
+	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
+	 */
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, BooleanSupplier configValue, String designedBy)
+	{
+		event.getRegistry().register(item); //need this call first before accessing the translation key
+
+		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
+
+		page.designedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
+	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.

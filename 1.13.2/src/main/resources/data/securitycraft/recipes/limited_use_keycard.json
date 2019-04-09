@@ -3,7 +3,7 @@
   "group": "securitycraft_keycards",
   "conditions": [
     {
-      "type": "securitycraft_toggle_lu_keycard"
+      "type": "securitycraft:toggle_lu_keycard"
     }
   ],
   "pattern": [

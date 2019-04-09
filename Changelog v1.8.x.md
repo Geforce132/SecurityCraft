@@ -15,6 +15,7 @@
 	- Removed: Ability to turn off keycards via the config file
 - beta2
 	- New: Disguise Module works with the Keypad again
+	- New: Keycard recipes can be disabled again
 	- Change: Fake Water/Lava recipes are back to normal
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
