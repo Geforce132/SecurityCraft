@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
@@ -221,7 +222,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 
 	@Override
 	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune){
-		return state.get(HALF) == DoubleBlockHalf.UPPER ? null : SCContent.reinforcedDoorItem;
+		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.reinforcedDoorItem;
 	}
 
 	@Override
