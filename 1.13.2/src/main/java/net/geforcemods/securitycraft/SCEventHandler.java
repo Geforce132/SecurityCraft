@@ -73,7 +73,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -84,7 +83,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBloc
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
-import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -412,102 +410,102 @@ public class SCEventHandler {
 		handleOwnableTEs(event);
 	}
 
-	@SubscribeEvent
-	public void onBlockPlaced(PlaceEvent event) {
-		//reinforced obsidian portal handling
-		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
-		{
-			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
-
-			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-				portalSize.placePortalBlocks();
-			else
-			{
-				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
-
-				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-					portalSize.placePortalBlocks();
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onEntityJoinWorld(EntityJoinWorldEvent event)
-	{
-		//fix for spawning under the portal
-		if(event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
-		{
-			BlockPos pos = event.getEntity().getPosition();
-
-			//check for obsidian or reinforced obsidian from the player's position up to the world height
-			do
-			{
-				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
-				{
-					//check if the block is part of a valid portal, and if so move the entity down
-					BlockPortal.Size portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.X);
-
-					if (portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else //check other axis
-					{
-						portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.Z);
-
-						if (portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
-				{
-					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
-
-					if (portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else
-					{
-						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
-
-						if (portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-			}
-			while((pos = pos.up()).getY() < event.getWorld().getHeight());
-
-		}
-	}
+	//	@SubscribeEvent
+	//	public void onBlockPlaced(PlaceEvent event) {
+	//		//reinforced obsidian portal handling
+	//		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
+	//		{
+	//			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
+	//
+	//			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
+	//				portalSize.placePortalBlocks();
+	//			else
+	//			{
+	//				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
+	//
+	//				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
+	//					portalSize.placePortalBlocks();
+	//			}
+	//		}
+	//	}
+	//
+	//	@SubscribeEvent
+	//	public void onEntityJoinWorld(EntityJoinWorldEvent event)
+	//	{
+	//		//fix for spawning under the portal
+	//		if(event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
+	//		{
+	//			BlockPos pos = event.getEntity().getPosition();
+	//
+	//			//check for obsidian or reinforced obsidian from the player's position up to the world height
+	//			do
+	//			{
+	//				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
+	//				{
+	//					//check if the block is part of a valid portal, and if so move the entity down
+	//					BlockPortal.Size portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.X);
+	//
+	//					if (portalSize.isValid())
+	//					{
+	//						double y = pos.getY() + 0.5D;
+	//
+	//						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
+	//							y -= 3.0D;
+	//
+	//						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
+	//						break;
+	//					}
+	//					else //check other axis
+	//					{
+	//						portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.Z);
+	//
+	//						if (portalSize.isValid())
+	//						{
+	//							double y = pos.getY() + 0.5D;
+	//
+	//							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
+	//								y -= 3.0D;
+	//
+	//							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
+	//							break;
+	//						}
+	//					}
+	//				}
+	//				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
+	//				{
+	//					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
+	//
+	//					if (portalSize.isValid())
+	//					{
+	//						double y = pos.getY() + 0.5D;
+	//
+	//						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
+	//							y -= 3.0D;
+	//
+	//						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
+	//						break;
+	//					}
+	//					else
+	//					{
+	//						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
+	//
+	//						if (portalSize.isValid())
+	//						{
+	//							double y = pos.getY() + 0.5D;
+	//
+	//							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
+	//								y -= 3.0D;
+	//
+	//							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
+	//							break;
+	//						}
+	//					}
+	//				}
+	//			}
+	//			while((pos = pos.up()).getY() < event.getWorld().getHeight());
+	//
+	//		}
+	//	}
 
 	@SubscribeEvent
 	public void onNeighborNotify(NeighborNotifyEvent event)

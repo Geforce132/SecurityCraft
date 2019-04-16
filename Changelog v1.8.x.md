@@ -19,6 +19,7 @@
 	- Change: Fake Water/Lava recipes are back to normal
 	- Fix: Particles don't appear for certain blocks
 	- Fix: Security Cameras can be placed against each other
+	- Removed: Ability to make a portal out of reinforced obsidian
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
