@@ -23,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
@@ -61,21 +60,21 @@ public class GuiCameraMonitor extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 
-		prevPageButton = new GuiButtonExt(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<");
-		nextPageButton = new GuiButtonExt(0, width / 2 + 52, height / 2 + 40, 20, 20, ">");
+		prevPageButton = new GuiButtonClick(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed);
+		nextPageButton = new GuiButtonClick(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed);
 		addButton(prevPageButton);
 		addButton(nextPageButton);
 
-		cameraButtons[0] = new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[1] = new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[2] = new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[3] = new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[4] = new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[5] = new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[6] = new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[7] = new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[8] = new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "#", this::actionPerformed);
-		cameraButtons[9] = new GuiButtonClick(10, width / 2 - 38, height / 2 + 40, 80, 20, "#", this::actionPerformed);
+		cameraButtons[0] = new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[1] = new GuiButtonClick(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[2] = new GuiButtonClick(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[3] = new GuiButtonClick(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[4] = new GuiButtonClick(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[5] = new GuiButtonClick(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[6] = new GuiButtonClick(7, width / 2 - 38, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[7] = new GuiButtonClick(8, width / 2 - 8, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[8] = new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[9] = new GuiButtonClick(10, width / 2 - 38, height / 2 + 40, 80, 20, "", this::actionPerformed);
 
 		unbindButtons[0] = new GuiButtonClick(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
 		unbindButtons[1] = new GuiButtonClick(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
