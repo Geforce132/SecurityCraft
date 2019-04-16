@@ -2,11 +2,12 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.components.GuiSlider;
-import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.gui.components.NamedSlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.client.config.GuiSlider;
+import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
 
 /**
  * A class that allows blocks that have
@@ -280,14 +281,14 @@ public class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
+		public void onChangeSliderValue(GuiSlider slider)
 		{
 			if(!isSlider())
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (ClientUtils.localize("option" + blockName + "." + getName()) + " ").replace("#", toString());
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), id, getValue()));
+			slider.displayString = (ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString());
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), slider.id, getValue()));
 		}
 	}
 

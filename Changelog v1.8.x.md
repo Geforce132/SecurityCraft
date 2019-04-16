@@ -22,6 +22,7 @@
 	- Fix: Cannot switch pages in the Camera Monitor
 	- Fix: Removing the Reinforced Door by rightclicking the top part does not work
 	- Fix: Keycard Reader does not work
+	- Fix: Slider in Security Camera's customization GUI does not work as intended
 	- Removed: Ability to make a portal out of reinforced obsidian
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
