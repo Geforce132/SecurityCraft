@@ -18,6 +18,7 @@
 	- New: Keycard recipes can be disabled again
 	- Change: Fake Water/Lava recipes are back to normal
 	- Fix: Particles don't appear for certain blocks
+	- Fix: Security Cameras can be placed against each other
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
