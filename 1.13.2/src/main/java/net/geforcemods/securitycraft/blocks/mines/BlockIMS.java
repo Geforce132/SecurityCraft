@@ -107,8 +107,8 @@ public class BlockIMS extends BlockOwnable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	public void randomTick(IBlockState state, World world, BlockPos pos, Random random){
-		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0){
+	public void animateTick(IBlockState state, World world, BlockPos pos, Random random){
+		if(state.get(MINES) == 0){
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;

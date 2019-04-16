@@ -132,7 +132,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
-	public void randomTick(IBlockState state, World world, BlockPos pos, Random rand){
+	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand){
 		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -143,11 +143,11 @@ public class BlockKeycardReader extends BlockOwnable  {
 			float f2 = Math.max(0.0F, 0.7F - 0.5F);
 			float f3 = Math.max(0.0F, 0.6F - 0.7F);
 
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(new RedstoneParticleData(1, f1, f2, f3), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(new RedstoneParticleData(f1, f2, f3, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
