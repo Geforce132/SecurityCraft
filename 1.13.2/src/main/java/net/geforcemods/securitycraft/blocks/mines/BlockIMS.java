@@ -30,6 +30,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockIMS extends BlockOwnable {
@@ -107,6 +109,7 @@ public class BlockIMS extends BlockOwnable {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	@Override
+	@OnlyIn(Dist.CLIENT)
 	public void animateTick(IBlockState state, World world, BlockPos pos, Random random){
 		if(state.get(MINES) == 0){
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;

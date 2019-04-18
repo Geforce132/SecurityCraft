@@ -31,17 +31,10 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
@@ -51,27 +44,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -86,16 +67,18 @@ import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+@EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
 	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
 
-	public SCEventHandler()
+	static
 	{
 		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
@@ -103,7 +86,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
+	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
 		if(!ClientConfig.CONFIG.sayThanksMessage.get() || !event.getPlayer().getEntityWorld().isRemote)
 			return;
 
@@ -119,14 +102,14 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerLoggedOut(PlayerLoggedOutEvent event)
+	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof EntitySecurityCamera)
 			event.getPlayer().getRidingEntity().remove();
 	}
 
 	@SubscribeEvent
-	public void onDamageTaken(LivingHurtEvent event)
+	public static void onDamageTaken(LivingHurtEvent event)
 	{
 		if(event.getEntityLiving() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
 			event.setCanceled(true);
@@ -138,7 +121,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBucketUsed(FillBucketEvent event){
+	public static void onBucketUsed(FillBucketEvent event){
 		if(event.getTarget() == null)
 			return;
 
@@ -150,7 +133,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onRightClickBlock(RightClickBlock event){
+	public static void onRightClickBlock(RightClickBlock event){
 		if(event.getHand() == EnumHand.MAIN_HAND)
 		{
 			World world = event.getWorld();
@@ -383,7 +366,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBlockEventBreak(BlockEvent.BreakEvent event)
+	public static void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
 		if(!(event.getWorld() instanceof World))
 			return;
@@ -405,13 +388,13 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onOwnership(OwnershipEvent event)
+	public static void onOwnership(OwnershipEvent event)
 	{
 		handleOwnableTEs(event);
 	}
 
 	//	@SubscribeEvent
-	//	public void onBlockPlaced(PlaceEvent event) {
+	//	public static void onBlockPlaced(PlaceEvent event) {
 	//		//reinforced obsidian portal handling
 	//		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
 	//		{
@@ -430,7 +413,7 @@ public class SCEventHandler {
 	//	}
 	//
 	//	@SubscribeEvent
-	//	public void onEntityJoinWorld(EntityJoinWorldEvent event)
+	//	public static void onEntityJoinWorld(EntityJoinWorldEvent event)
 	//	{
 	//		//fix for spawning under the portal
 	//		if(event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
@@ -508,7 +491,7 @@ public class SCEventHandler {
 	//	}
 
 	@SubscribeEvent
-	public void onNeighborNotify(NeighborNotifyEvent event)
+	public static void onNeighborNotify(NeighborNotifyEvent event)
 	{
 		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
 		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
@@ -533,7 +516,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBlockBroken(BreakEvent event){
+	public static void onBlockBroken(BreakEvent event){
 		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
 			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
 				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
@@ -554,7 +537,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
+	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
 		if(event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
 		{
@@ -566,14 +549,14 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load event)
+	public static void onWorldLoad(WorldEvent.Load event)
 	{
 		if(event.getWorld() instanceof World)
 			((World)event.getWorld()).addEventListener(new SCWorldListener());
 	}
 
 	@SubscribeEvent
-	public void onBreakSpeed(BreakSpeed event)
+	public static void onBreakSpeed(BreakSpeed event)
 	{
 		if(event.getEntityPlayer() != null)
 		{
@@ -596,114 +579,12 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public void onDrawBlockHighlight(DrawBlockHighlightEvent event)
-	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public void renderGameOverlay(RenderGameOverlayEvent event) {
-		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
-				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().mainWindow, Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
-		}
-		else if(event.getType() == ElementType.HOTBAR)
-		{
-			Minecraft mc = Minecraft.getInstance();
-			EntityPlayerSP player = mc.player;
-			World world = player.getEntityWorld();
-			int held = player.inventory.currentItem;
-
-			if(held < 0 || held >= player.inventory.mainInventory.size())
-				return;
-
-			ItemStack monitor = player.inventory.mainInventory.get(held);
-
-			if(!monitor.isEmpty() && monitor.getItem() == SCContent.cameraMonitor)
-			{
-				String textureToUse = "camera_not_bound";
-				double eyeHeight = player.getEyeHeight();
-				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
-
-				if(mop != null && mop.type == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
-				{
-					NBTTagCompound cameras = monitor.getTag();
-
-					if(cameras != null)
-						for(int i = 1; i < 31; i++)
-						{
-							if(!cameras.contains("Camera" + i))
-								continue;
-
-							String[] coords = cameras.getString("Camera" + i).split(" ");
-
-							if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
-							{
-								textureToUse = "camera_bound";
-								break;
-							}
-						}
-
-					GlStateManager.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
-					GlStateManager.disableAlphaTest();
-				}
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onLivingDestroyEvent(LivingDestroyBlockEvent event)
+	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
 	}
 
-	@SubscribeEvent
-	public void fovUpdateEvent(FOVUpdateEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
-			event.setNewfov(((EntitySecurityCamera) event.getEntity().getRidingEntity()).getZoomAmount());
-	}
-
-	@SubscribeEvent
-	public void renderHandEvent(RenderHandEvent event){
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public void onMouseClicked(MouseClickedEvent.Pre event) {
-		if(Minecraft.getInstance().world != null)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
-				event.setCanceled(true);
-		}
-	}
-
-	private void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
-	{
-		double z = 200;
-		double widthFactor = 1F / (double) textureWidth;
-		double heightFactor = 1F / (double) textureHeight;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(x, y + height, z).tex(u * widthFactor, (v + height) * heightFactor).endVertex();
-		buffer.pos(x + width, y + height, z).tex((u + width) * widthFactor, (v + height) * heightFactor).endVertex();
-		buffer.pos(x + width, y, z).tex((u + width) * widthFactor, v * heightFactor).endVertex();
-		buffer.pos(x, y, z).tex(u * widthFactor, v * heightFactor).endVertex();
-		tessellator.draw();
-	}
-
-	private ItemStack fillBucket(World world, BlockPos pos){
+	private static ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
 		if(block == SCContent.fakeWaterBlock){
@@ -717,7 +598,7 @@ public class SCEventHandler {
 			return ItemStack.EMPTY;
 	}
 
-	private void handleOwnableTEs(OwnershipEvent event) {
+	private static void handleOwnableTEs(OwnershipEvent event) {
 		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
 			String name = event.getPlayer().getName().getFormattedText();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
@@ -726,7 +607,7 @@ public class SCEventHandler {
 		}
 	}
 
-	private boolean handleCodebreaking(PlayerInteractEvent event) {
+	private static boolean handleCodebreaking(PlayerInteractEvent event) {
 		World world = event.getEntityPlayer().world;
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
@@ -739,7 +620,7 @@ public class SCEventHandler {
 		return false;
 	}
 
-	private String getRandomTip(){
+	private static String getRandomTip(){
 		String[] tips = {
 				"messages.tip.scHelp",
 				"messages.tip.trello",
@@ -751,7 +632,7 @@ public class SCEventHandler {
 		return tips[new Random().nextInt(tips.length)];
 	}
 
-	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
+	private static boolean isOwnableBlock(Block block, TileEntity tileEntity){
 		return (tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable);
 	}
 

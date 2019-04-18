@@ -24,6 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockLaserBlock extends BlockOwnable {
 
@@ -160,6 +162,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	}
 
 	@Override
+	@OnlyIn(Dist.CLIENT)
 	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand){
 		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
