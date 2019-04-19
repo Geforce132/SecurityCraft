@@ -87,7 +87,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ClientConfig.CONFIG.sayThanksMessage.get() || !event.getPlayer().getEntityWorld().isRemote)
+		if(!event.getPlayer().getEntityWorld().isRemote || !ClientConfig.CONFIG.sayThanksMessage.get())
 			return;
 
 		String tipKey = getRandomTip();

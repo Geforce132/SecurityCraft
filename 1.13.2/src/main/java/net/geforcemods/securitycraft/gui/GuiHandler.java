@@ -18,6 +18,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.FMLPlayMessages.OpenContainer;
 
 public class GuiHandler {
@@ -42,6 +44,7 @@ public class GuiHandler {
 	public static final ResourceLocation MANUAL = new ResourceLocation(SecurityCraft.MODID, "manual");
 	public static final ResourceLocation EDIT_SECRET_SIGN = new ResourceLocation(SecurityCraft.MODID, "edit_secret_sign");
 
+	@OnlyIn(Dist.CLIENT)
 	public static GuiScreen getClientGuiElement(OpenContainer message)
 	{
 		EntityPlayerSP player = Minecraft.getInstance().player;
@@ -138,6 +141,7 @@ public class GuiHandler {
 		return null;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	private static TileEntity getTe(OpenContainer message)
 	{
 		return Minecraft.getInstance().world.getTileEntity(message.getAdditionalData().readBlockPos());

@@ -8,6 +8,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PlaySoundAtPos{
@@ -73,7 +76,13 @@ public class PlaySoundAtPos{
 		return message;
 	}
 
-	public static void onMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx) {
+	public static void onMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx)
+	{
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> handleMessage(message, ctx));
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void handleMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx) {
 		Minecraft.getInstance().world.playSound(Minecraft.getInstance().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), (float) message.volume, 1.0F);
 		ctx.get().setPacketHandled(true);
 	}

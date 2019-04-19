@@ -8,6 +8,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateLogger {
@@ -57,6 +60,12 @@ public class UpdateLogger {
 	}
 
 	public static void onMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx)
+	{
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> handleMessage(message, ctx));
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void handleMessage(UpdateLogger message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
