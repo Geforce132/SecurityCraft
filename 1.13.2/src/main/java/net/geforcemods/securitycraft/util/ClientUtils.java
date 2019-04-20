@@ -7,14 +7,17 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ClientUtils{
 
+	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
 	}
@@ -24,6 +27,7 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static void takeScreenshot() {
 		ScreenShotHelper.saveScreenshot(
 				Minecraft.getInstance().gameDir,
@@ -42,6 +46,7 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
 		Long time = Long.valueOf(Minecraft.getInstance().world.getDayTime());
 
@@ -57,6 +62,7 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.write(tag);
@@ -68,6 +74,7 @@ public class ClientUtils{
 	 *
 	 * Only works on the CLIENT side.
 	 */
+	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
@@ -101,6 +108,6 @@ public class ClientUtils{
 	 */
 	public static String localize(String key, Object... params)
 	{
-		return I18n.format(key, params);
+		return new TextComponentTranslation(key, params).getFormattedText();
 	}
 }

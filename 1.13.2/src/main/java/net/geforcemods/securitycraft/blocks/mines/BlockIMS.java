@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
@@ -51,7 +51,7 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

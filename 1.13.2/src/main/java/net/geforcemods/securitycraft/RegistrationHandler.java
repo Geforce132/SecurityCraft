@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -204,12 +204,12 @@ public class RegistrationHandler
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
 		registerItem(event, SCContent.universalBlockRemover);
-		registerItem(event, SCContent.keycardLvl1, () -> ServerConfig.CONFIG.ableToCraftKeycard1.get());
-		registerItem(event, SCContent.keycardLvl2, () -> ServerConfig.CONFIG.ableToCraftKeycard2.get());
-		registerItem(event, SCContent.keycardLvl3, () -> ServerConfig.CONFIG.ableToCraftKeycard3.get());
-		registerItem(event, SCContent.keycardLvl4, () -> ServerConfig.CONFIG.ableToCraftKeycard4.get());
-		registerItem(event, SCContent.keycardLvl5, () -> ServerConfig.CONFIG.ableToCraftKeycard5.get());
-		registerItem(event, SCContent.limitedUseKeycard, () -> ServerConfig.CONFIG.ableToCraftLUKeycard.get());
+		registerItem(event, SCContent.keycardLvl1, () -> CommonConfig.CONFIG.ableToCraftKeycard1.get());
+		registerItem(event, SCContent.keycardLvl2, () -> CommonConfig.CONFIG.ableToCraftKeycard2.get());
+		registerItem(event, SCContent.keycardLvl3, () -> CommonConfig.CONFIG.ableToCraftKeycard3.get());
+		registerItem(event, SCContent.keycardLvl4, () -> CommonConfig.CONFIG.ableToCraftKeycard4.get());
+		registerItem(event, SCContent.keycardLvl5, () -> CommonConfig.CONFIG.ableToCraftKeycard5.get());
+		registerItem(event, SCContent.limitedUseKeycard, () -> CommonConfig.CONFIG.ableToCraftLUKeycard.get());
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});

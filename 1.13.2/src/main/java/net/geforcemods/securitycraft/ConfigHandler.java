@@ -9,12 +9,12 @@ import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 public class ConfigHandler {
 
-	public static class ServerConfig {
+	public static class CommonConfig {
 		public static final ForgeConfigSpec CONFIG_SPEC;
-		public static final ServerConfig CONFIG;
+		public static final CommonConfig CONFIG;
 
 		static {
-			Pair<ServerConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
+			Pair<CommonConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
 
 			CONFIG_SPEC = specPair.getRight();
 			CONFIG = specPair.getLeft();
@@ -43,8 +43,12 @@ public class ConfigHandler {
 		public DoubleValue motionActivatedLightSearchRadius;
 		public BooleanValue debug;
 		public BooleanValue allowBlockClaim;
+		public BooleanValue sayThanksMessage;
+		public BooleanValue checkForUpdates;
+		public DoubleValue alarmSoundVolume;
+		public DoubleValue cameraSpeed;
 
-		public ServerConfig(ForgeConfigSpec.Builder builder)
+		public CommonConfig(ForgeConfigSpec.Builder builder)
 		{
 
 			allowCodebreakerItem = builder
@@ -175,26 +179,7 @@ public class ConfigHandler {
 					.translation("config.securitycraft:allowBlockClaim")
 					.comment("config.securitycraft:allowBlockClaim.tooltip")
 					.define("allowBlockClaim", false);
-		}
-	}
 
-	public static class ClientConfig {
-		public static final ForgeConfigSpec CONFIG_SPEC;
-		public static final ClientConfig CONFIG;
-
-		public BooleanValue sayThanksMessage;
-		public BooleanValue checkForUpdates;
-		public DoubleValue alarmSoundVolume;
-		public DoubleValue cameraSpeed;
-
-		static {
-			Pair<ClientConfig,ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
-
-			CONFIG_SPEC = specPair.getRight();
-			CONFIG = specPair.getLeft();
-		}
-
-		public ClientConfig(ForgeConfigSpec.Builder builder) {
 			sayThanksMessage = builder
 					.translation("config.securitycraft:sayThanksMessage")
 					.comment("config.securitycraft:sayThanksMessage.tooltip")

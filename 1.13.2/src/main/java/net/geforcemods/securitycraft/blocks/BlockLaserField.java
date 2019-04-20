@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
@@ -86,7 +86,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 		{
 			for(EnumFacing facing : EnumFacing.values())
 			{
-				for(int i = 0; i < ServerConfig.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
@@ -121,7 +121,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 		{
 			for(EnumFacing facing : EnumFacing.values())
 			{
-				for(int i = 0; i < ServerConfig.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
 				{
 					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.laserBlock)
 					{

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
@@ -31,7 +31,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	@Override
 	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !ServerConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ServerConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true);
+			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true);
 			cart.remove();
 		}
 	}
@@ -67,7 +67,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ServerConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true);
+			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true);
 		}
 	}
 

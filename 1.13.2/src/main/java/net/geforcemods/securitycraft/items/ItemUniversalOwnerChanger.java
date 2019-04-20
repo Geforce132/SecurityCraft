@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -65,7 +65,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 			if(isDefault)
 			{
-				if(ServerConfig.CONFIG.allowBlockClaim.get())
+				if(CommonConfig.CONFIG.allowBlockClaim.get())
 					newOwner = player.getName().getFormattedText();
 				else
 				{

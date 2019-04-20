@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -79,7 +79,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
 		if(!player.isCreative() && !world.isRemote)
-			if(player != null && player.isCreative() && !ServerConfig.CONFIG.mineExplodesWhenInCreative.get())
+			if(player != null && player.isCreative() && !CommonConfig.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else{
 				explode(world, pos);
@@ -127,7 +127,7 @@ public class BlockMine extends BlockExplosive {
 
 		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
-			if(ServerConfig.CONFIG.smallerMineExplosion.get())
+			if(CommonConfig.CONFIG.smallerMineExplosion.get())
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
 			else
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);

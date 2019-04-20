@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
@@ -63,7 +63,7 @@ public class BlockLaserBlock extends BlockOwnable {
 		{
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
-			inner: for(int i = 1; i <= ServerConfig.CONFIG.laserBlockRange.get(); i++)
+			inner: for(int i = 1; i <= CommonConfig.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 				IBlockState state = world.getBlockState(offsetPos);
@@ -102,7 +102,7 @@ public class BlockLaserBlock extends BlockOwnable {
 		{
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
 
-			for(int i = 1; i <= ServerConfig.CONFIG.laserBlockRange.get(); i++)
+			for(int i = 1; i <= CommonConfig.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 

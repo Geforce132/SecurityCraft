@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -88,6 +88,6 @@ public class BlockLogger extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader reader) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, ServerConfig.CONFIG.usernameLoggerSearchRadius.get(), 80);
+		return new TileEntityLogger().attacks(EntityPlayer.class, CommonConfig.CONFIG.usernameLoggerSearchRadius.get(), 80);
 	}
 }

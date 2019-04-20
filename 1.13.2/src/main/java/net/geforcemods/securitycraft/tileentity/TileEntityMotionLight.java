@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -16,7 +16,7 @@ import net.minecraft.util.text.TextComponentString;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", ServerConfig.CONFIG.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
+	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
 
 	public TileEntityMotionLight()
 	{

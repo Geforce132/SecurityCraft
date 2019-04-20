@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.ConfigHandler.ClientConfig;
-import net.geforcemods.securitycraft.ConfigHandler.ServerConfig;
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
@@ -35,8 +34,8 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 			if(isPowered && cooldown == 0){
 				TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ClientConfig.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
-				te.setCooldown((ServerConfig.CONFIG.alarmTickDelay.get() * 20));
+				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, CommonConfig.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
+				te.setCooldown((CommonConfig.CONFIG.alarmTickDelay.get() * 20));
 				world.setBlockState(pos, world.getBlockState(pos).with(BlockAlarm.FACING, world.getBlockState(pos).get(BlockAlarm.FACING)), 2);
 				world.setTileEntity(pos, te);
 			}
