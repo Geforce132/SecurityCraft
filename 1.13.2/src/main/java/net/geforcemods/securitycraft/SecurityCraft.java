@@ -50,7 +50,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	//********************************* This is v1.8.12 for MC 1.13.2!
-	protected static final String VERSION = "v1.8.12-beta1";
+	protected static final String VERSION = "v1.8.12";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
