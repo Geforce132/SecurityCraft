@@ -317,8 +317,8 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public boolean hasCustomName() {
-		return (getCustomName() != null && !getCustomName().getFormattedText().equals("name"));
+	public boolean hasCustomSCName() {
+		return (getCustomSCName() != null && !getCustomSCName().getFormattedText().equals("name"));
 	}
 
 	@Override

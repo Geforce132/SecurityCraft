@@ -16,7 +16,7 @@ public interface INameable {
 	/**
 	 * @return The TileEntity's custom name.
 	 */
-	public ITextComponent getCustomName();
+	public ITextComponent getCustomSCName();
 
 	/**
 	 * Set the TileEntity's new name. It might be best
@@ -25,12 +25,12 @@ public interface INameable {
 	 *
 	 * @param customName The new name
 	 */
-	public void setCustomName(ITextComponent customName);
+	public void setCustomSCName(ITextComponent customName);
 
 	/**
 	 * @return Does this TileEntity currently have a custom name?
 	 */
-	public boolean hasCustomName();
+	public boolean hasCustomSCName();
 
 	/**
 	 * @return Can this TileEntity be renamed?

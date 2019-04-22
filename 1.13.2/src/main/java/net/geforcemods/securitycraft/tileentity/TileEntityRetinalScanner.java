@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 
@@ -65,6 +66,18 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ activatedByEntities };
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 
 }

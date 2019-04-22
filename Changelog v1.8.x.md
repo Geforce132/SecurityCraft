@@ -24,6 +24,7 @@
 	- Fix: Slider in Security Camera's customization GUI does not work as intended
 	- Fix: Sand and Gravel Mines don't fall
 	- Fix: Comments in configuration don't display correctly
+	- Fix: Several client and server crashes
 	- Removed: Ability to make a portal out of reinforced obsidian
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------

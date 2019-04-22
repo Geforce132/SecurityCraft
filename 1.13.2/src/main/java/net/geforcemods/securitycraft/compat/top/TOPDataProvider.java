@@ -95,9 +95,9 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
-					String name = ((INameable) te).getCustomName().toString();
+					String name = ((INameable) te).getCustomSCName().toString();
 
-					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
 				}
 			}
 		});

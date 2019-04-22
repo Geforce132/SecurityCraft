@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
@@ -73,5 +74,17 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{};
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 }

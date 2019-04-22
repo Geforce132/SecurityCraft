@@ -143,8 +143,8 @@ public class GuiCameraMonitor extends GuiContainer {
 				if(cameraTEs[i] == null)
 					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
 
-				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomName().getFormattedText()), 150), mouseX, mouseY, mc.fontRenderer);
+				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
 	}
 

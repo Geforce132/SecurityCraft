@@ -14,6 +14,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 
@@ -83,5 +84,17 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 }

@@ -73,9 +73,9 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 		}
 
 		if(config.get(SHOW_CUSTOM_NAME) && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
-			String name = ((INameable) data.getTileEntity()).getCustomName().getFormattedText();
+			String name = ((INameable) data.getTileEntity()).getCustomSCName().getFormattedText();
 
-			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
+			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
 		}
 	}
 }

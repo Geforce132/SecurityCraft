@@ -169,15 +169,15 @@ public class SCEventHandler {
 							return;
 						}
 
-					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName().getFormattedText()), TextFormatting.RED);
+					if(((INameable) tileEntity).getCustomSCName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getFormattedText()), TextFormatting.RED);
 						return;
 					}
 
 					if(!event.getEntityPlayer().isCreative())
 						event.getEntityPlayer().inventory.getCurrentItem().shrink(1);
 
-					((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
+					((INameable) tileEntity).setCustomSCName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
 					return;
 				}
 

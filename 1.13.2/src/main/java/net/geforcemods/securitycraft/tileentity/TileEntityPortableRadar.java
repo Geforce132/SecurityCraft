@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
@@ -64,7 +65,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((EntityPlayer)attacked))
 			{
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.portableRadar.getTranslationKey()), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.portableRadar.getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
 				setSentMessage();
 			}
 
@@ -139,6 +140,18 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 
 }

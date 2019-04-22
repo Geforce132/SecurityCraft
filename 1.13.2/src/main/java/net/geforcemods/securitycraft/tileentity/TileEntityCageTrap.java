@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityCageTrap extends CustomizableSCTE {
 
@@ -28,6 +29,18 @@ public class TileEntityCageTrap extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] { shouldCaptureMobsOption };
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 
 }

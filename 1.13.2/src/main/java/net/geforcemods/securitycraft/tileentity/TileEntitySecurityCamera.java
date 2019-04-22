@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 
@@ -75,5 +76,17 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	{
 		super.onLoad();
 		down = world.getBlockState(pos).get(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 }

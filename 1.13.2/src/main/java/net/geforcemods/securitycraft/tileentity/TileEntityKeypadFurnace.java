@@ -124,11 +124,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public ITextComponent getName()
 	{
-		return new TextComponentString(hasCustomName() ? furnaceCustomName : "container.furnace");
+		return new TextComponentString(hasCustomSCName() ? furnaceCustomName : "container.furnace");
 	}
 
 	@Override
-	public boolean hasCustomName()
+	public boolean hasCustomSCName()
 	{
 		return furnaceCustomName != null && furnaceCustomName.length() > 0;
 	}
@@ -187,7 +187,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if (hasCustomName())
+		if (hasCustomSCName())
 			tag.putString("CustomName", furnaceCustomName);
 
 		return tag;
@@ -463,7 +463,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomName() ? getName() : new TextComponentTranslation(getName().getFormattedText(), new Object[0]);
+		return hasCustomSCName() ? getName() : new TextComponentTranslation(getName().getFormattedText(), new Object[0]);
 	}
 
 	@Override
@@ -511,5 +511,17 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 }

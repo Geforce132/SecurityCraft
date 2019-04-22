@@ -13,6 +13,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
@@ -95,6 +96,18 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
+	}
+
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
 	}
 
 }

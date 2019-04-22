@@ -429,18 +429,18 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	@Override
-	public ITextComponent getCustomName() {
+	public ITextComponent getCustomSCName() {
 		return customName;
 	}
 
 	@Override
-	public void setCustomName(ITextComponent customName) {
+	public void setCustomSCName(ITextComponent customName) {
 		this.customName = customName;
 		sync();
 	}
 
 	@Override
-	public boolean hasCustomName() {
+	public boolean hasCustomSCName() {
 		return (customName != null && !customName.getFormattedText().equals("name"));
 	}
 

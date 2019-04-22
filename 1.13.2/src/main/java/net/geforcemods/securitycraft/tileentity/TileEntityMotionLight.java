@@ -72,4 +72,16 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 		return new TextComponentString("Motion-Activated Light");
 	}
 
+	@Override
+	public ITextComponent getCustomName()
+	{
+		return getCustomSCName();
+	}
+
+	@Override
+	public boolean hasCustomName()
+	{
+		return hasCustomSCName();
+	}
+
 }
