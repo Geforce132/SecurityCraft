@@ -1,31 +1,23 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "group": "fake_liquids",
-  "pattern": [
-    "P",
-    "B"
-  ],
-  "key": {
-    "P": [
-      {
-        "type": "forge:nbt",
-        "item": "minecraft:potion",
-        "nbt": {
-          "Potion": "minecraft:healing"
-        }
-      },
-      {
-        "type": "forge:nbt",
-        "item": "minecraft:potion",
-        "nbt": {
-          "Potion": "minecraft:strong_healing"
-        }
-      }
-    ],
-    "B": {
+  "ingredients": [
+    {
       "item": "minecraft:lava_bucket"
+    },
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:glistering_melon_slice"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
     }
-  },
+  ],
   "result": {
     "item": "securitycraft:bucket_f_lava",
     "count": 1
