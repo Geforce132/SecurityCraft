@@ -83,7 +83,7 @@ public class EntityBouncingBetty extends Entity {
 			if (!world.isRemote)
 				explode();
 		}
-		else
+		else if(world.isRemote)
 			world.addParticle(Particles.SMOKE, false, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);
 	}
 

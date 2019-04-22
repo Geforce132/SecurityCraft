@@ -350,6 +350,12 @@
     "help.securitycraft.sentry.info": "Das Geschütz wird, wenn es per Rechtsklick platziert wird, jeden Spieler in seiner Nähe anschiessen. Der Spieler, der das Geschütz platziert hat ist ausgenommen, und kann es mit einem Rechtsklick wieder aufheben.",
 
     "gui.securitycraft:scManual.disabled": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.keycard_lv1": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.keycard_lv2": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.keycard_lv3": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.keycard_lv4": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.keycard_lv5": "Deaktiviert",
+    "gui.securitycraft:scManual.recipe.limited_use_keycard": "Deaktiviert",
     "gui.securitycraft:scManual.intro.1": "Anfangen mit SecurityCraft",
     "gui.securitycraft:scManual.intro.2": "von Geforce und bl4ckscor3",
     "gui.securitycraft:scManual.author": "Übersetzt von bl4ckscor3",

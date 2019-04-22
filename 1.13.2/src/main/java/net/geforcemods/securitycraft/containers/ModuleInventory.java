@@ -12,6 +12,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
 
 public class ModuleInventory implements IInventory {
 
@@ -73,7 +75,9 @@ public class ModuleInventory implements IInventory {
 			}
 
 		tag.put("ItemInventory", items);
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
+
+		if(EffectiveSide.get() == LogicalSide.CLIENT)
+			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
 	@Override

@@ -60,15 +60,9 @@ public class ItemModule extends Item{
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
-
 		try
 		{
 			if(!world.isRemote) {
-				if(!stack.hasTag()) {
-					stack.setTag(new NBTTagCompound());
-					ClientUtils.syncItemNBT(stack);
-				}
-
 				if(canBeCustomized() && player instanceof EntityPlayerMP)
 					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(guiToOpen));
 			}
@@ -95,7 +89,7 @@ public class ItemModule extends Item{
 			if(stack.getTag() != null)
 				for(int i = 1; i <= 10; i++)
 					if(!stack.getTag().getString("Player" + i).isEmpty())
-						list.add(new TextComponentString(stack.getTag().getString("Player" + i)));
+						list.add(new TextComponentString(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
 		}
 
 		if(canBeCustomized()) {

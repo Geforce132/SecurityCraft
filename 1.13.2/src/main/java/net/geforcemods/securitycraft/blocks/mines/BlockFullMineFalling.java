@@ -10,7 +10,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Particles;
 import net.minecraft.particles.BlockParticleData;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,25 +26,21 @@ public class BlockFullMineFalling extends BlockFullMineBase
 		super(material, disguisedBlock, baseHardness);
 	}
 
-	/**
-	 * Called after the block is set in the Chunk data, but before the Tile Entity is set
-	 */
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+	@Override
+	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState)
 	{
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, tickRate(world));
 	}
 
-	/**
-	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
-	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
-	 * block, etc.
-	 */
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	@Override
+	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(currentPos, this, tickRate(world));
+		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
+	@Override
+	public void tick(IBlockState state, World world, BlockPos pos, Random random)
 	{
 		if(!world.isRemote)
 		{

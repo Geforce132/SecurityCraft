@@ -350,6 +350,12 @@
     "help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 
     "gui.securitycraft:scManual.disabled": "Disabled",
+    "gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",
+    "gui.securitycraft:scManual.recipe.keycard_lv2": "Disabled",
+    "gui.securitycraft:scManual.recipe.keycard_lv3": "Disabled",
+    "gui.securitycraft:scManual.recipe.keycard_lv4": "Disabled",
+    "gui.securitycraft:scManual.recipe.keycard_lv5": "Disabled",
+    "gui.securitycraft:scManual.recipe.limited_use_keycard": "Disabled",
     "gui.securitycraft:scManual.intro.1": "Getting started with SecurityCraft",
     "gui.securitycraft:scManual.intro.2": "by Geforce and bl4ckscor3",
     "gui.securitycraft:scManual.ownableBlock": "Ownable: This block is resistant to explosions, and can only be broken by the player who placed it down using the Universal Block Remover.",

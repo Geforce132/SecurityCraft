@@ -16,13 +16,14 @@
 - v1.8.12
 	- New: Disguise Module works with the Keypad again
 	- New: Keycard recipes can be disabled again
-	- Change: Fake Water/Lava recipes are back to normal
 	- Fix: Particles don't appear for certain blocks
 	- Fix: Security Cameras can be placed against each other
 	- Fix: Cannot switch pages in the Camera Monitor
 	- Fix: Removing the Reinforced Door by rightclicking the top part does not work
 	- Fix: Keycard Reader does not work
 	- Fix: Slider in Security Camera's customization GUI does not work as intended
+	- Fix: Sand and Gravel Mines don't fall
+	- Fix: Comments in configuration don't display correctly
 	- Removed: Ability to make a portal out of reinforced obsidian
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------

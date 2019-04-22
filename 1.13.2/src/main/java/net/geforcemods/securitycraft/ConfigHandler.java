@@ -53,151 +53,151 @@ public class ConfigHandler {
 
 			allowCodebreakerItem = builder
 					.translation("config.securitycraft:isCodebreakerAllowed")
-					.comment("config.securitycraft:isCodebreakerAllowed.tooltip")
+					.comment("Can the codebreaker be used?")
 					.define("allowCodebreakerItem", true);
 
 			allowAdminTool = builder
 					.translation("config.securitycraft:allowAdminTool")
-					.comment("config.securitycraft:allowAdminTool.tooltip")
+					.comment("Can the admin tool be used?")
 					.define("allowAdminTool", false);
 
 			shouldSpawnFire = builder
 					.translation("config.securitycraft:shouldSpawnFire")
-					.comment("config.securitycraft:shouldSpawnFire.tooltip")
+					.comment("Should mines spawn fire after exploding?")
 					.define("shouldSpawnFire", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToBreakMines = builder
 					.translation("config.securitycraft:ableToBreakMines")
-					.comment("config.securitycraft:ableToBreakMines.tooltip")
+					.comment("Should players be able to break a mine without it exploding?")
 					.worldRestart()
 					.define("ableToBreakMines", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftKeycard1 = builder
 					.translation("config.securitycraft:ableToCraftKeycard1")
-					.comment("config.securitycraft:ableToCraftKeycard1.tooltip")
+					.comment("Is the level 1 keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftKeycard1", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftKeycard2 = builder
 					.translation("config.securitycraft:ableToCraftKeycard2")
-					.comment("config.securitycraft:ableToCraftKeycard2.tooltip")
+					.comment("Is the level 2 keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftKeycard2", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftKeycard3 = builder
 					.translation("config.securitycraft:ableToCraftKeycard3")
-					.comment("config.securitycraft:ableToCraftKeycard3.tooltip")
+					.comment("Is the level 3 keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftKeycard3", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftKeycard4 = builder
 					.translation("config.securitycraft:ableToCraftKeycard4")
-					.comment("config.securitycraft:ableToCraftKeycard4.tooltip")
+					.comment("Is the level 4 keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftKeycard4", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftKeycard5 = builder
 					.translation("config.securitycraft:ableToCraftKeycard5")
-					.comment("config.securitycraft:ableToCraftKeycard5.tooltip")
+					.comment("Is the level 5 keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftKeycard5", true);
 
 			//TODO: worldRestart() -> mcRestart() once available
 			ableToCraftLUKeycard = builder
 					.translation("config.securitycraft:ableToCraftLUKeycard")
-					.comment("config.securitycraft:ableToCraftLUKeycard.tooltip")
+					.comment("Is the limited use keycard craftable?")
 					.worldRestart()
 					.define("ableToCraftLUKeycard", true);
 
 			smallerMineExplosion = builder
 					.translation("config.securitycraft:smallerMineExplosion")
-					.comment("config.securitycraft:smallerMineExplosion.tooltip")
+					.comment("Should mines' explosions be smaller than usual.")
 					.define("smallerMineExplosion", false);
 
 			mineExplodesWhenInCreative = builder
 					.translation("config.securitycraft:mineExplodesWhenInCreative")
-					.comment("config.securitycraft:mineExplodesWhenInCreative.tooltip")
+					.comment("Should mines explode if broken while in Creative mode?")
 					.define("mineExplodesWhenInCreative", true);
 
 			portableRadarSearchRadius = builder
 					.translation("config.securitycraft:portableRadarSearchRadius")
-					.comment("config.securitycraft:portableRadarSearchRadius.tooltip")
+					.comment("From how many blocks can the portable radar detect players?")
 					.defineInRange("portableRadarSearchRadius", 25.0D, 0.0D, Double.MAX_VALUE);
 
 			usernameLoggerSearchRadius = builder
 					.translation("config.securitycraft:usernameLoggerSearchRadius")
-					.comment("config.securitycraft:usernameLoggerSearchRadius.tooltip")
+					.comment("From how many blocks can the username logger detect players?")
 					.defineInRange("usernameLoggerSearchRadius", 3, 0, Integer.MAX_VALUE);
 
 			laserBlockRange = builder
 					.translation("config.securitycraft:laserBlockRange")
-					.comment("config.securitycraft:laserBlockRange.tooltip")
+					.comment("From how many blocks away can a laser block connect to another laser block?")
 					.defineInRange("laserBlockRange", 5, 0, Integer.MAX_VALUE);
 
 			alarmTickDelay = builder
 					.translation("config.securitycraft:alarmTickDelay")
-					.comment("config.securitycraft:alarmTickDelay.tooltip")
+					.comment("If an alarm is activated, how many seconds in-between alarm sounds effects?")
 					.defineInRange("alarmTickDelay", 2, 0, Integer.MAX_VALUE);
 
 			portableRadarDelay = builder
 					.translation("config.securitycraft:portableRadarDelay")
-					.comment("config.securitycraft:portableRadarDelay.tooltip")
+					.comment("If a portable radar is activated, how many seconds should pass before the radar searches again?")
 					.defineInRange("portableRadarDelay", 4, 0, Integer.MAX_VALUE);
 
 			claymoreRange = builder
 					.translation("config.securitycraft:claymoreRange")
-					.comment("config.securitycraft:claymoreRange.tooltip")
+					.comment("From how many blocks can the claymore mine be tripped from?")
 					.defineInRange("claymoreRange", 5, 0, Integer.MAX_VALUE);
 
 			imsRange = builder
 					.translation("config.securitycraft:imsRange")
-					.comment("config.securitycraft:imsRange.tooltip")
+					.comment("How many blocks away can the I.M.S. detect players from?")
 					.defineInRange("imsRange", 12, 0, Integer.MAX_VALUE);
 
 			inventoryScannerRange = builder
 					.translation("config.securitycraft:inventoryScannerRange")
-					.comment("config.securitycraft:inventoryScannerRange.tooltip")
+					.comment("From how many blocks away can an inventory scanner connect to another inventory scanner?")
 					.defineInRange("inventoryScannerRange", 2, 0, Integer.MAX_VALUE);
 
 			motionActivatedLightSearchRadius = builder
 					.translation("config.securitycraft:motionActivatedLightSearchRadius")
-					.comment("config.securitycraft:motionActivatedLightSearchRadius.tooltip")
+					.comment("How many blocks away can the Motion Activated Light detect entities from?")
 					.defineInRange("motionActivatedLightSearchRadius", 5.0D, 0.0D, Double.MAX_VALUE);
 
 			debug = builder
 					.translation("config.securitycraft:debuggingMode")
-					.comment("config.securitycraft:debuggingMode.tooltip")
+					.comment("Should SecurityCraft run in debug mode? (logs extra things to the console, may add unfinished items/blocks that could be buggy.)")
 					.define("debuggingMode", false);
 
 			allowBlockClaim = builder
 					.translation("config.securitycraft:allowBlockClaim")
-					.comment("config.securitycraft:allowBlockClaim.tooltip")
+					.comment("Allow claiming unowned blocks?")
 					.define("allowBlockClaim", false);
 
 			sayThanksMessage = builder
 					.translation("config.securitycraft:sayThanksMessage")
-					.comment("config.securitycraft:sayThanksMessage.tooltip")
+					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
 
 			checkForUpdates = builder
 					.translation("config.securitycraft:checkForUpdates")
-					.comment("config.securitycraft:checkForUpdates.tooltip")
+					.comment("Should SecurityCraft check for new updates of the mod through SecurityCraft's GitHub repository?")
 					.define("checkForUpdates", true);
 
 			alarmSoundVolume = builder
 					.translation("config.securitycraft:alarmSoundVolume")
-					.comment("config.securitycraft:alarmSoundVolume.tooltip")
+					.comment("What volume should the alarm sound effect be played at?")
 					.defineInRange("alarmSoundVolume", 0.3D, 0.0D, Double.MAX_VALUE);
 
 			cameraSpeed = builder
 					.translation("config.securitycraft:cameraSpeed")
-					.comment("config.securitycraft:cameraSpeed.tooltip")
+					.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
 					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 		}
 	}

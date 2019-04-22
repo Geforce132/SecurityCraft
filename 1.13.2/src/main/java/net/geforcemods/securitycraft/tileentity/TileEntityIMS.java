@@ -89,7 +89,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
-				if(world.isRemote)
+				if(!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "blocks"));
 
 				bombsRemaining--;

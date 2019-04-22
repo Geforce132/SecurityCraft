@@ -111,7 +111,7 @@ public class ItemCameraMonitor extends Item {
 		if(stack.getTag() == null)
 			return;
 
-		tooltip.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
+		tooltip.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
 	}
 
 	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {
