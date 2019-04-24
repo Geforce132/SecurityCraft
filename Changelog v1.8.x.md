@@ -1,3 +1,35 @@
+--------------------------Changelog for v1.8.13 of SecurityCraft--------------------------
+
+- New: [1.13.2] Reinforced blocks
+	- Stripped Oak Log
+	- Stripped Spruce Log
+	- Stripped Birch Log
+	- Stripped Jungle Log
+	- Stripped Acacia Log
+	- Stripped Dark Oak Log
+	- Stripped Oak Wood
+	- Stripped Spruce Wood
+	- Stripped Birch Wood
+	- Stripped Jungle Wood
+	- Stripped Acacia Wood
+	- Stripped Dark Oak Wood
+	- Oak Wood
+	- Spruce Wood
+	- Birch Wood
+	- Jungle Wood
+	- Acacia Wood
+	- Dark Oak Wood
+	- Prismarine Slab
+	- Prismarine Brick Slab
+	- Dark Prismarine Slab
+	- Smooth Quartz
+	- Smooth Red Sandstone
+	- Smooth Sandstone
+	- Smooth Stone
+	- Prismarine Stairs
+	- Prismarine Brick Stairs
+	- Dark Prismarine Stairs
+
 --------------------------Changelog for v1.8.12 of SecurityCraft--------------------------
 
 - New: [1.12.2] The One Probe support (https://minecraft.curseforge.com/projects/the-one-probe)
