@@ -30,6 +30,10 @@
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
 
+--------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
+
+- Fix: [1.8] Crash involving the Security Camera
+
 --------------------------Changelog for v1.8.12 of SecurityCraft--------------------------
 
 - New: [1.12.2] The One Probe support (https://minecraft.curseforge.com/projects/the-one-probe)

@@ -3,8 +3,8 @@
   "promos": {
     "1.7.10-latest": "v1.8.12",
     "1.7.10-recommended": "v1.8.12",
-    "1.8-latest": "v1.8.12",
-    "1.8-recommended": "v1.8.12",
+    "1.8-latest": "v1.8.12.1",
+    "1.8-recommended": "v1.8.12.1",
     "1.8.8-latest": "v1.8.12",
     "1.8.8-recommended": "v1.8.12",
     "1.8.9-latest": "v1.8.12",
@@ -28,7 +28,7 @@
     "v1.8.12": "Fixes"
   },
   "1.8": {
-    "v1.8.12": "Fixes"
+    "v1.8.12": "Fix for a potential crash"
   },
   "1.8.8": {
     "v1.8.12": "Fixes"
