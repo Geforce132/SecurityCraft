@@ -29,6 +29,7 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
+- Fix: [1.13.2] Crash when being targeted by the I.M.S.
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
 
