@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -146,7 +147,11 @@ public class SCClientEventHandler {
 		if(Minecraft.getInstance().world != null)
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
-				event.setCanceled(true);
+			{
+				//fix not being able to interact with the pause menu and camera monitor while mounted to a camera
+				if((Minecraft.getInstance().player.openContainer != null && !(Minecraft.getInstance().player.openContainer instanceof ContainerGeneric)) && !Minecraft.getInstance().isGamePaused())
+					event.setCanceled(true);
+			}
 		}
 	}
 
