@@ -78,7 +78,12 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 		super(soundType, mat, vB, registryPath, 0);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
-		modelBlock = getVanillaBlock();
+
+		if(vB == Blocks.STONE)
+			modelBlock = vB;
+		else
+			modelBlock = getVanillaBlock();
+
 		modelState = modelBlock.getDefaultState();
 	}
 
@@ -155,6 +160,12 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 			else
 				return BlockFaceShape.UNDEFINED;
 		}
+	}
+
+	@Override
+	public Block getVanillaBlock()
+	{
+		return modelBlock == Blocks.STONE ? Blocks.AIR : super.getVanillaBlock();
 	}
 
 	@Override

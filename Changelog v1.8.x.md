@@ -31,6 +31,7 @@
 	- Dark Prismarine Stairs
 - Fix: [1.13.2] Crash when being targeted by the I.M.S.
 - Fix: [1.13.2] Admin Tool recipe description does not show in JEI
+- Fix: [1.13.2] Reinforced Stone is unobtainable
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
 
