@@ -33,6 +33,7 @@
 - Fix: [1.13.2] Admin Tool recipe description does not show in JEI
 - Fix: [1.13.2] Reinforced Stone is unobtainable
 - Fix: [1.13.2] Cannot interact with UI elements when mounted to a camera
+- Fix: [1.13.2] Crash when clicking "Paste" on a whitelist/blacklis module that does not have any data
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
 

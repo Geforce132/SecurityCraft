@@ -141,7 +141,8 @@ public class GuiEditModule extends GuiContainer
 			default: return;
 		}
 
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
+		if(module.getTagCompound() != null)
+			SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 
 	private int getNextSlot(NBTTagCompound tag) {
