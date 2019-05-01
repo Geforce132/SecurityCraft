@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "securitycraft:reinforced_prismarine_bricks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_prismarine_brick_slab",
+    "count": 6
+  }
+}
