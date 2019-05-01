@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -79,6 +80,19 @@ public class GuiEditModule extends GuiContainer
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_)
+	{
+		if(inputField.isFocused())
+		{
+			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
+				return false;
+			else
+				return inputField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+		}
+		else return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 	}
 
 	@Override
