@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.models.ModelDynamicBakedKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -19,6 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
@@ -48,14 +52,20 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
-		if(module == EnumCustomModules.DISGUISE)
+		if(world.isRemote && module == EnumCustomModules.DISGUISE)
+		{
+			ModelDataManager.requestModelDataRefresh(this);
 			world.markBlockRangeForRenderUpdate(pos, pos);
+		}
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
-		if(module == EnumCustomModules.DISGUISE)
+		if(world.isRemote && module == EnumCustomModules.DISGUISE)
+		{
+			ModelDataManager.requestModelDataRefresh(this);
 			world.markBlockRangeForRenderUpdate(pos, pos);
+		}
 	}
 
 	/**
@@ -155,5 +165,23 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	public boolean hasCustomName()
 	{
 		return hasCustomSCName();
+	}
+
+	@Override
+	public IModelData getModelData()
+	{
+		return new ModelDataMap.Builder().withInitial(ModelDynamicBakedKeypad.DISGUISED_BLOCK_RL, ModelDynamicBakedKeypad.DEFAULT_STATE_RL).build();
+	}
+
+	@Override
+	public void onLoad()
+	{
+		super.onLoad();
+
+		if(world != null && world.isRemote)
+		{
+			ModelDataManager.requestModelDataRefresh(this);
+			world.markBlockRangeForRenderUpdate(pos, pos);
+		}
 	}
 }
