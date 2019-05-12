@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -140,7 +139,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				if(!itemStackChecking.isEmpty())
 				{
 					if((hasSmartModule && areItemStacksEqual(entity.inventory.mainInventory.get(i - 1), stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory.get(i - 1), stack))
-							|| (!hasSmartModule && entity.inventory.mainInventory.get(i - 1).getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, hasSmartModule))
+							|| (!hasSmartModule && entity.inventory.mainInventory.get(i - 1).getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule))
 					{
 						updateInventoryScannerPower(te);
 					}
@@ -155,7 +154,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 				if(!itemStackChecking.isEmpty())
 				{
-					checkForShulkerBox(itemStackChecking, stack, hasSmartModule);
+					checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule);
 
 					if((hasSmartModule && areItemStacksEqual(entity.inventory.mainInventory.get(i - 1), stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory.get(i - 1), stack))
 							|| (!hasSmartModule && entity.inventory.mainInventory.get(i - 1).getItem() == stack.getItem()))
@@ -178,14 +177,14 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		if(te.getType().equals("redstone"))
 		{
 			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, hasSmartModule))
+					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule))
 			{
 				updateInventoryScannerPower(te);
 			}
 		}
 		else if(te.getType().equals("check"))
 		{
-			checkForShulkerBox(entity.getItem(), stack, hasSmartModule);
+			checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule);
 
 			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
 					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()))
@@ -198,12 +197,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		}
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, boolean hasSmartModule) {
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, TileEntityInventoryScanner te, boolean hasSmartModule, boolean hasStorageModule) {
 		boolean deletedItem = false;
 
 		if(item != null) {
 			if(!item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
-				System.out.println(item.getTagCompound().getKeySet());
 				NBTTagList list = item.getTagCompound().getCompoundTag("BlockEntityTag").getTagList("Items", NBT.TAG_COMPOUND);
 	
 				for(int i = 0; i < list.tagCount(); i++) {
@@ -211,6 +209,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 					if((hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck) && ItemStack.areItemStackTagsEqual(itemInChest, stackToCheck)) || (!hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck))) {
 						list.removeTag(i);
 						deletedItem = true;
+						
+						if(hasStorageModule)
+							te.addItemToStorage(itemInChest);
 					}
 				}
 			}

@@ -125,7 +125,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				if(!itemStackChecking.isEmpty())
 				{
 					if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
-							|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, hasSmartModule))
+							|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule))
 					{
 						updateInventoryScannerPower(te);
 					}
@@ -140,7 +140,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 				if(!itemStackChecking.isEmpty())
 				{
-					checkForShulkerBox(itemStackChecking, stack, hasSmartModule);
+					checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule);
 
 					if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
 							|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()))
@@ -163,14 +163,14 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		if(te.getScanType().equals("redstone"))
 		{
 			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, hasSmartModule))
+					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule))
 			{
 				updateInventoryScannerPower(te);
 			}
 		}
 		else if(te.getScanType().equals("check"))
 		{
-			checkForShulkerBox(entity.getItem(), stack, hasSmartModule);
+			checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule);
 
 			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
 					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()))
@@ -183,7 +183,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		}
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, boolean hasSmartModule) {
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, TileEntityInventoryScanner te, boolean hasSmartModule, boolean hasStorageModule) {
 		boolean deletedItem = false;
 
 		if(item != null) {
@@ -195,6 +195,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 					if((hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck) && ItemStack.areItemStackTagsEqual(itemInChest, stackToCheck)) || (!hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck))) {
 						list.remove(i);
 						deletedItem = true;
+						
+						if(hasStorageModule)
+							te.addItemToStorage(itemInChest);
 					}
 				}
 			}
