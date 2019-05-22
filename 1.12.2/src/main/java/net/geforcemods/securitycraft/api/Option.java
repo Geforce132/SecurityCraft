@@ -287,6 +287,11 @@ public class Option<T> {
 
 			setValue(slider.getValue());
 			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
+		}
+
+		@Override
+		public void onMouseRelease(int id)
+		{
 			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
 		}
 	}

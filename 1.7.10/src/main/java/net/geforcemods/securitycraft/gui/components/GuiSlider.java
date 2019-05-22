@@ -163,6 +163,7 @@ public class GuiSlider extends GuiButtonExt
 	public void mouseReleased(int mouseX, int mouseY)
 	{
 		dragging = false;
+		parent.onMouseRelease(id);
 	}
 
 	public int getValueInt()
@@ -183,5 +184,7 @@ public class GuiSlider extends GuiButtonExt
 	public static interface ISlider
 	{
 		void onChangeSliderValue(GuiSlider slider, String blockName, int id);
+
+		void onMouseRelease(int id);
 	}
 }
