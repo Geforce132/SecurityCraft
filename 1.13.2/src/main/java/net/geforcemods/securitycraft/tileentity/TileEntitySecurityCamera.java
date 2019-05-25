@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option.OptionFloat;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 
@@ -19,6 +20,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public float cameraRotation = 0.0F;
 	public boolean addToRotation = true;
 	public boolean down = false;
+	public float lastPitch = Float.MAX_VALUE;
+	public float lastYaw = Float.MAX_VALUE;
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
@@ -50,6 +53,22 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	}
 
 	@Override
+	public NBTTagCompound write(NBTTagCompound tag)
+	{
+		tag.putFloat("LastPitch", lastPitch);
+		tag.putFloat("LastYaw", lastYaw);
+		return super.write(tag);
+	}
+
+	@Override
+	public void read(NBTTagCompound tag)
+	{
+		super.read(tag);
+		lastPitch = tag.getFloat("LastPitch");
+		lastYaw = tag.getFloat("LastYaw");
+	}
+
+	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
@@ -63,7 +82,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 
 	@Override
 	public EnumCustomModules[] acceptedModules(){
-		return new EnumCustomModules[] { EnumCustomModules.REDSTONE };
+		return new EnumCustomModules[] { EnumCustomModules.REDSTONE, EnumCustomModules.SMART };
 	}
 
 	@Override

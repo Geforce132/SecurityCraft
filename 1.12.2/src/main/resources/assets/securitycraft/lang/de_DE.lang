@@ -1,4 +1,4 @@
-﻿tile.securitycraft:laserBlock.name=Laser Block
+tile.securitycraft:laserBlock.name=Laser Block
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
 tile.securitycraft:keypad.name=Nummernschloss
@@ -548,6 +548,7 @@ module.securitycraft:portableRadar.redstoneModule.description=Ein Redstone Modul
 module.securitycraft:portableRadar.whitelistModule.description=Ein Whitelist Modul in einem Radar erlaubt gewhitelisteten Spielern sich unerkannt in dem Radius des Radars zu bewegen.
 module.securitycraft:retinalScanner.whitelistModule.description=Ein Whitelist Modul in einem Augenscanner erlaubt gewhitelisteten Spielern den Scanner zu nutzen, wenn sie nicht der Besitzer sind.
 module.securitycraft:securityCamera.redstoneModule.description=Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.
+module.securitycraft:securityCamera.smartModule.description=Ein schlaues Modul lässt jeden die Kamera anschauen. Jedoch kann nur der Besitzer der Kamera entscheiden wohin die Kamera schaut. Jeder andere Spieler schaut in die Richtung, wo der Besitzer zuletzt hingeschaut hat.
 module.securitycraft:protecto.whitelistModule.description=Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?

@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.13 of SecurityCraft--------------------------
 
+- New: [1.12.2+] The Smart Module now works for Security Cameras, enabling others to view cameras at a fixed angle
 - New: [1.13.2] Reinforced blocks
 	- Stripped Oak Log
 	- Stripped Spruce Log
@@ -29,6 +30,7 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
+- Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: [1.13.2] Crash when being targeted by the I.M.S.
 - Fix: [1.13.2] Admin Tool recipe description does not show in JEI
 - Fix: [1.13.2] Reinforced Stone is unobtainable

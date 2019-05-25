@@ -563,6 +563,7 @@
     "module.securitycraft.portable_radar.whitelist_module.description": "Ein Whitelist Modul in einem Radar erlaubt gewhitelisteten Spielern sich unerkannt in dem Radius des Radars zu bewegen.",
     "module.securitycraft.retinal_scanner.whitelist_module.description": "Ein Whitelist Modul in einem Augenscanner erlaubt gewhitelisteten Spielern den Scanner zu nutzen, wenn sie nicht der Besitzer sind.",
     "module.securitycraft.security_camera.redstone_module.description": "Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.",
+    "module.securitycraft:securityCamera.smartModule.description": "Ein schlaues Modul lässt jeden die Kamera anschauen. Jedoch kann nur der Besitzer der Kamera entscheiden wohin die Kamera schaut. Jeder andere Spieler schaut in die Richtung, wo der Besitzer zuletzt hingeschaut hat.",
     "module.securitycraft.protecto.whitelist_module.description": "Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.",
 
     "config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",

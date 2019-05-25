@@ -545,6 +545,7 @@ module.securitycraft:portableRadar.redstoneModule.description=Adding a redstone 
 module.securitycraft:portableRadar.whitelistModule.description=Adding a whitelist module to a portable radar will remove the whitelisted players from the radar's search.
 module.securitycraft:retinalScanner.whitelistModule.description=Adding the whitelist module to a retinal scanner will allow players to use the scanner even if they aren't the player who placed down the block.
 module.securitycraft:securityCamera.redstoneModule.description=Adding the redstone module to a camera lets the camera emit a 15-block redstone signal when enabled.
+module.securitycraft:securityCamera.smartModule.description=Adding the smart module to a camera lets anyone access the camera. However, only the owner can control where the camera is looking. Any other player will look into the same direction as the owner when they last left the camera.
 module.securitycraft:protecto.whitelistModule.description=Adding a whitelist module to a protecto will allow the whitelisted players to walk into the range of the protecto without being targeted.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?

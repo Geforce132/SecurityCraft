@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -53,6 +54,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -581,6 +583,22 @@ public class SCEventHandler {
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
 		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
+	}
+
+	@SubscribeEvent
+	public void onEntityMount(EntityMountEvent event)
+	{
+		if(event.isDismounting() && event.getEntityBeingMounted() instanceof EntitySecurityCamera && event.getEntityMounting() instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer)event.getEntityMounting();
+			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
+
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).hasModule(EnumCustomModules.SMART))
+			{
+				((TileEntitySecurityCamera)te).lastPitch = player.rotationPitch;
+				((TileEntitySecurityCamera)te).lastYaw = player.rotationYaw;
+			}
+		}
 	}
 
 	private static ItemStack fillBucket(World world, BlockPos pos){
