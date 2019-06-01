@@ -29,6 +29,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -80,6 +81,7 @@ public class SCContent
 	@RegisterItemBlock(1) public static BlockMine mine;
 	public static BlockFlowingFluid fakeWaterBlock;
 	public static BlockFlowingFluid fakeLavaBlock;
+	@RegisterItemBlock public static Block trophySystem;
 
 	//Reinforced Blocks (ordered by vanilla building blocks creative tab order)
 	@Reinforced(hasPage=true) public static Block reinforcedStone;
@@ -369,6 +371,7 @@ public class SCContent
 	public static TileEntityType<TileEntitySecretSign> teTypeSecretSign;
 	public static TileEntityType<TileEntityMotionLight> teTypeMotionLight;
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
+	public static TileEntityType<TileEntityTrophySystem> teTypeTrophySystem;
 
 	//Entity types
 	public static EntityType<EntityBouncingBetty> eTypeBouncingBetty;

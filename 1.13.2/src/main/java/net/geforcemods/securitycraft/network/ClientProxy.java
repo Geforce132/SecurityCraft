@@ -19,9 +19,11 @@ import net.geforcemods.securitycraft.renderers.RenderSentry;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -48,6 +50,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrophySystem.class, new TileEntityTrophySystemRenderer());
 	}
 
 	@Override

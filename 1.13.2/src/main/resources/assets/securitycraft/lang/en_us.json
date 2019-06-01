@@ -257,6 +257,7 @@
     "block.securitycraft.reinforced_dark_prismarine_stairs": "Reinforced Dark Prismarine Stairs",
     "block.securitycraft.reinforced_prismarine_stairs": "Reinforced Prismarine Stairs",
     "block.securitycraft.reinforced_prismarine_brick_stairs": "Reinforced Prismarine Brick Stairs",
+    "block.securitycraft.trophy_system": "Trophy System",
 
     "item.securitycraft.codebreaker": "Codebreaker",
     "item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -295,6 +296,7 @@
     "item.securitycraft.scanner_door_item": "Scanner Door",
     "item.securitycraft.secret_sign_item": "Secret Sign",
     "item.securitycraft.sentry": "Sentry",
+    "item.securitycraft.lock_pick": "Lock Pick",
 
     "entity.securitycraft.sentry": "Sentry",
     "entity.securitycraft.bullet": "Bullet",

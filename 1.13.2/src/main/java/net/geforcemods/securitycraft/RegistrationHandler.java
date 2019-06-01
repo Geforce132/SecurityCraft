@@ -58,6 +58,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -139,6 +140,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.gravelMine, false);
 		registerBlock(event, SCContent.fakeLavaBlock, false);
 		registerBlock(event, SCContent.fakeWaterBlock, false);
+		registerBlock(event, SCContent.trophySystem);
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())
@@ -259,6 +261,7 @@ public class RegistrationHandler
 		SCContent.teTypeSecretSign = TileEntityType.register(SecurityCraft.MODID + ":secret_sign", TileEntityType.Builder.create(TileEntitySecretSign::new));
 		SCContent.teTypeMotionLight = TileEntityType.register(SecurityCraft.MODID + ":motion_light", TileEntityType.Builder.create(TileEntityMotionLight::new));
 		SCContent.teTypeTrackMine = TileEntityType.register(SecurityCraft.MODID + ":track_mine", TileEntityType.Builder.create(TileEntityTrackMine::new));
+		SCContent.teTypeTrophySystem = TileEntityType.register(SecurityCraft.MODID + ":trophy_system", TileEntityType.Builder.create(TileEntityTrophySystem::new));
 	}
 
 	@SubscribeEvent
