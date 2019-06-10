@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -26,7 +26,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote) {
-			addPlayerName(((EntityPlayer) entity).getName().getFormattedText());
+			addPlayerName(((PlayerEntity) entity).getName().getFormattedText());
 			sendChangeToClient();
 		}
 
@@ -42,11 +42,11 @@ public class TileEntityLogger extends TileEntityOwnable {
 		double range = CommonConfig.CONFIG.usernameLoggerSearchRadius.get();
 
 		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
-		List<?> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area);
+		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayerName(((EntityPlayer)iterator.next()).getName().getFormattedText());
+			addPlayerName(((PlayerEntity)iterator.next()).getName().getFormattedText());
 
 		sendChangeToClient();
 	}
@@ -73,7 +73,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag){
+	public CompoundNBT write(CompoundNBT tag){
 		super.write(tag);
 
 		for(int i = 0; i < players.length; i++)
@@ -84,7 +84,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	@Override
-	public void read(NBTTagCompound tag){
+	public void read(CompoundNBT tag){
 		super.read(tag);
 
 		for(int i = 0; i < players.length; i++)

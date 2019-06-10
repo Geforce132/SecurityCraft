@@ -12,11 +12,11 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -63,7 +63,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 
@@ -77,7 +77,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 
@@ -89,24 +89,24 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	}
 
 	@Override
-	public void activate(EntityPlayer player) {
+	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad)
 			BlockKeypad.activate(world, pos);
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
+	public void openPasswordGUI(PlayerEntity player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof EntityPlayerMP)
-				NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
+			if(player instanceof ServerPlayerEntity)
+				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
 		}
 		else
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
+				if(player instanceof ServerPlayerEntity)
+					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -114,7 +114,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypad.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockKeypad.POWERED)) {

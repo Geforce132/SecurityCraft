@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -21,13 +23,12 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -65,7 +66,7 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
 			event.setCanceled(true);
 	}
 
@@ -85,7 +86,7 @@ public class SCClientEventHandler {
 		else if(event.getType() == ElementType.HOTBAR)
 		{
 			Minecraft mc = Minecraft.getInstance();
-			EntityPlayerSP player = mc.player;
+			ClientPlayerEntity player = mc.player;
 			World world = player.getEntityWorld();
 			int held = player.inventory.currentItem;
 
@@ -101,9 +102,9 @@ public class SCClientEventHandler {
 				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
 				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
-				if(mop != null && mop.type == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
 				{
-					NBTTagCompound cameras = monitor.getTag();
+					CompoundNBT cameras = monitor.getTag();
 
 					if(cameras != null)
 						for(int i = 1; i < 31; i++)

@@ -66,13 +66,13 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.minecraft.block.BlockFlowingFluid;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.BucketItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.util.ResourceLocation;
 
 public class SetupHandler
@@ -112,8 +112,8 @@ public class SetupHandler
 		SCContent.secretSignStanding = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_standing"));
 		SCContent.secretSignWall = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_wall"));
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_activated_light"));
-		SCContent.fakeWaterBlock = (BlockFlowingFluid)new BlockFakeWater().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
-		SCContent.fakeLavaBlock = (BlockFlowingFluid)new BlockFakeLava().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
+		SCContent.fakeWaterBlock = (FlowingFluidBlock)new BlockFakeWater().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
+		SCContent.fakeLavaBlock = (FlowingFluidBlock)new BlockFakeLava().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
 	}
 
 	public static void setupReinforcedBlocks()
@@ -230,22 +230,22 @@ public class SetupHandler
 		SCContent.reinforcedCoalBlock = new BlockReinforcedBase(Material.ROCK, Blocks.COAL_BLOCK, "reinforced_coal_block");
 		SCContent.reinforcedAcaciaStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.ACACIA_STAIRS, "reinforced_acacia_stairs");
 		SCContent.reinforcedDarkOakStairs = new BlockReinforcedStairs(SoundType.WOOD, Material.WOOD, Blocks.DARK_OAK_STAIRS, "reinforced_dark_oak_stairs");
-		SCContent.reinforcedWhiteStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.WHITE, Blocks.WHITE_STAINED_GLASS, "reinforced_white_stained_glass");
-		SCContent.reinforcedOrangeStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS, "reinforced_orange_stained_glass");
-		SCContent.reinforcedMagentaStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS, "reinforced_magenta_stained_glass");
-		SCContent.reinforcedLightBlueStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS, "reinforced_light_blue_stained_glass");
-		SCContent.reinforcedYellowStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS, "reinforced_yellow_stained_glass");
-		SCContent.reinforcedLimeStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIME, Blocks.LIME_STAINED_GLASS, "reinforced_lime_stained_glass");
-		SCContent.reinforcedPinkStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.PINK, Blocks.PINK_STAINED_GLASS, "reinforced_pink_stained_glass");
-		SCContent.reinforcedGrayStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.GRAY, Blocks.GRAY_STAINED_GLASS, "reinforced_gray_stained_glass");
-		SCContent.reinforcedLightGrayStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS, "reinforced_light_gray_stained_glass");
-		SCContent.reinforcedCyanStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.CYAN, Blocks.CYAN_STAINED_GLASS, "reinforced_cyan_stained_glass");
-		SCContent.reinforcedPurpleStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS, "reinforced_purple_stained_glass");
-		SCContent.reinforcedBlueStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BLUE, Blocks.BLUE_STAINED_GLASS, "reinforced_blue_stained_glass");
-		SCContent.reinforcedBrownStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BROWN, Blocks.BROWN_STAINED_GLASS, "reinforced_brown_stained_glass");
-		SCContent.reinforcedGreenStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.GREEN, Blocks.GREEN_STAINED_GLASS, "reinforced_green_stained_glass");
-		SCContent.reinforcedRedStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.RED, Blocks.RED_STAINED_GLASS, "reinforced_red_stained_glass");
-		SCContent.reinforcedBlackStainedGlass = new BlockReinforcedStainedGlass(EnumDyeColor.BLACK, Blocks.BLACK_STAINED_GLASS, "reinforced_black_stained_glass");
+		SCContent.reinforcedWhiteStainedGlass = new BlockReinforcedStainedGlass(DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS, "reinforced_white_stained_glass");
+		SCContent.reinforcedOrangeStainedGlass = new BlockReinforcedStainedGlass(DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS, "reinforced_orange_stained_glass");
+		SCContent.reinforcedMagentaStainedGlass = new BlockReinforcedStainedGlass(DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS, "reinforced_magenta_stained_glass");
+		SCContent.reinforcedLightBlueStainedGlass = new BlockReinforcedStainedGlass(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS, "reinforced_light_blue_stained_glass");
+		SCContent.reinforcedYellowStainedGlass = new BlockReinforcedStainedGlass(DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS, "reinforced_yellow_stained_glass");
+		SCContent.reinforcedLimeStainedGlass = new BlockReinforcedStainedGlass(DyeColor.LIME, Blocks.LIME_STAINED_GLASS, "reinforced_lime_stained_glass");
+		SCContent.reinforcedPinkStainedGlass = new BlockReinforcedStainedGlass(DyeColor.PINK, Blocks.PINK_STAINED_GLASS, "reinforced_pink_stained_glass");
+		SCContent.reinforcedGrayStainedGlass = new BlockReinforcedStainedGlass(DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS, "reinforced_gray_stained_glass");
+		SCContent.reinforcedLightGrayStainedGlass = new BlockReinforcedStainedGlass(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS, "reinforced_light_gray_stained_glass");
+		SCContent.reinforcedCyanStainedGlass = new BlockReinforcedStainedGlass(DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS, "reinforced_cyan_stained_glass");
+		SCContent.reinforcedPurpleStainedGlass = new BlockReinforcedStainedGlass(DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS, "reinforced_purple_stained_glass");
+		SCContent.reinforcedBlueStainedGlass = new BlockReinforcedStainedGlass(DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS, "reinforced_blue_stained_glass");
+		SCContent.reinforcedBrownStainedGlass = new BlockReinforcedStainedGlass(DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS, "reinforced_brown_stained_glass");
+		SCContent.reinforcedGreenStainedGlass = new BlockReinforcedStainedGlass(DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS, "reinforced_green_stained_glass");
+		SCContent.reinforcedRedStainedGlass = new BlockReinforcedStainedGlass(DyeColor.RED, Blocks.RED_STAINED_GLASS, "reinforced_red_stained_glass");
+		SCContent.reinforcedBlackStainedGlass = new BlockReinforcedStainedGlass(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS, "reinforced_black_stained_glass");
 		SCContent.reinforcedPrismarine = new BlockReinforcedBase(Material.ROCK, Blocks.PRISMARINE, "reinforced_prismarine");
 		SCContent.reinforcedPrismarineBricks = new BlockReinforcedBase(Material.ROCK, Blocks.PRISMARINE_BRICKS, "reinforced_prismarine_bricks");
 		SCContent.reinforcedDarkPrismarine = new BlockReinforcedBase(Material.ROCK, Blocks.DARK_PRISMARINE, "reinforced_dark_prismarine");
@@ -291,22 +291,22 @@ public class SetupHandler
 		SCContent.reinforcedGreenCarpet = new BlockReinforcedCarpet(Blocks.GREEN_CARPET, "reinforced_green_carpet");
 		SCContent.reinforcedRedCarpet = new BlockReinforcedCarpet(Blocks.RED_CARPET, "reinforced_red_carpet");
 		SCContent.reinforcedBlackCarpet = new BlockReinforcedCarpet(Blocks.BLACK_CARPET, "reinforced_black_carpet");
-		SCContent.reinforcedWhiteStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.WHITE, Blocks.WHITE_STAINED_GLASS_PANE, "reinforced_white_stained_glass_pane");
-		SCContent.reinforcedOrangeStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS_PANE, "reinforced_orange_stained_glass_pane");
-		SCContent.reinforcedMagentaStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS_PANE, "reinforced_magenta_stained_glass_pane");
-		SCContent.reinforcedLightBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, "reinforced_light_blue_stained_glass_pane");
-		SCContent.reinforcedYellowStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS_PANE, "reinforced_yellow_stained_glass_pane");
-		SCContent.reinforcedLimeStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIME, Blocks.LIME_STAINED_GLASS_PANE, "reinforced_lime_stained_glass_pane");
-		SCContent.reinforcedPinkStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.PINK, Blocks.PINK_STAINED_GLASS_PANE, "reinforced_pink_stained_glass_pane");
-		SCContent.reinforcedGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.GRAY, Blocks.GRAY_STAINED_GLASS_PANE, "reinforced_gray_stained_glass_pane");
-		SCContent.reinforcedLightGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, "reinforced_light_gray_stained_glass_pane");
-		SCContent.reinforcedCyanStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.CYAN, Blocks.CYAN_STAINED_GLASS_PANE, "reinforced_cyan_stained_glass_pane");
-		SCContent.reinforcedPurpleStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS_PANE, "reinforced_purple_stained_glass_pane");
-		SCContent.reinforcedBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BLUE, Blocks.BLUE_STAINED_GLASS_PANE, "reinforced_blue_stained_glass_pane");
-		SCContent.reinforcedBrownStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BROWN, Blocks.BROWN_STAINED_GLASS_PANE, "reinforced_brown_stained_glass_pane");
-		SCContent.reinforcedGreenStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE, "reinforced_green_stained_glass_pane");
-		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
-		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(EnumDyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
+		SCContent.reinforcedWhiteStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS_PANE, "reinforced_white_stained_glass_pane");
+		SCContent.reinforcedOrangeStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS_PANE, "reinforced_orange_stained_glass_pane");
+		SCContent.reinforcedMagentaStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS_PANE, "reinforced_magenta_stained_glass_pane");
+		SCContent.reinforcedLightBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, "reinforced_light_blue_stained_glass_pane");
+		SCContent.reinforcedYellowStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS_PANE, "reinforced_yellow_stained_glass_pane");
+		SCContent.reinforcedLimeStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.LIME, Blocks.LIME_STAINED_GLASS_PANE, "reinforced_lime_stained_glass_pane");
+		SCContent.reinforcedPinkStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.PINK, Blocks.PINK_STAINED_GLASS_PANE, "reinforced_pink_stained_glass_pane");
+		SCContent.reinforcedGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS_PANE, "reinforced_gray_stained_glass_pane");
+		SCContent.reinforcedLightGrayStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, "reinforced_light_gray_stained_glass_pane");
+		SCContent.reinforcedCyanStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS_PANE, "reinforced_cyan_stained_glass_pane");
+		SCContent.reinforcedPurpleStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS_PANE, "reinforced_purple_stained_glass_pane");
+		SCContent.reinforcedBlueStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS_PANE, "reinforced_blue_stained_glass_pane");
+		SCContent.reinforcedBrownStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS_PANE, "reinforced_brown_stained_glass_pane");
+		SCContent.reinforcedGreenStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE, "reinforced_green_stained_glass_pane");
+		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
+		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
 		//anything else, alphabetical
 		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE, "reinforced_stone_stairs");
 	}
@@ -339,8 +339,8 @@ public class SetupHandler
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "door_indestructible_iron_item"));
 		SCContent.universalBlockRemover = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_block_remover"));
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "remote_access_mine"));
-		SCContent.fWaterBucket = new ItemBucket(SCContent.fakeWater, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_water"));
-		SCContent.fLavaBucket = new ItemBucket(SCContent.fakeLava, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava"));
+		SCContent.fWaterBucket = new BucketItem(SCContent.fakeWater, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_water"));
+		SCContent.fLavaBucket = new BucketItem(SCContent.fakeLava, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava"));
 		SCContent.universalBlockModifier = new Item(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_block_modifier"));
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "redstone_module"));
 		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "whitelist_module"));

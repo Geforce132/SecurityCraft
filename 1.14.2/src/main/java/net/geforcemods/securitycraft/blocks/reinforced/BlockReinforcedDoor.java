@@ -6,41 +6,40 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvider{
+public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvider{
 
 	public BlockReinforcedDoor(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		onNeighborChanged(world, pos, fromPos);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	 */
 	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor)
 	{
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 		Owner previousOwner = null;
 
@@ -61,10 +60,10 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		if (state.get(HALF) == DoubleBlockHalf.UPPER)
 		{
 			BlockPos blockBelow = pos.down();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+			BlockState stateBelow = world.getBlockState(blockBelow);
 
 			if (stateBelow.getBlock() != this)
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 			else if (neighborBlock != this)
 				onNeighborChanged(world, blockBelow, neighbor);
 		}
@@ -72,27 +71,27 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 		{
 			boolean drop = false;
 			BlockPos blockAbove = pos.up();
-			IBlockState stateAbove = world.getBlockState(blockAbove);
+			BlockState stateAbove = world.getBlockState(blockAbove);
 
 			if (stateAbove.getBlock() != this)
 			{
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 				drop = true;
 			}
 
-			if (!world.isTopSolid(pos.down()))
+			if (!BlockUtils.isSideSolid(world, pos.down(), Direction.UP))
 			{
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 				drop = true;
 
 				if (stateAbove.getBlock() == this)
-					world.removeBlock(blockAbove);
+					world.destroyBlock(pos, false);
 			}
 
 			if (drop)
 			{
 				if (!world.isRemote)
-					dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
+					world.destroyBlock(pos, true);
 			}
 			else
 			{
@@ -105,18 +104,18 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 					if (hasActiveSCBlock != state.get(OPEN).booleanValue())
 					{
 						world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(hasActiveSCBlock)), 2);
-						world.markBlockRangeForRenderUpdate(pos, pos);
+						world.markForRerender(pos);
 
-						IBlockState secondDoorState;
+						BlockState secondDoorState;
 
-						if(state.get(FACING) == EnumFacing.WEST)
+						if(state.get(FACING) == Direction.WEST)
 						{
 							secondDoorState = world.getBlockState(pos.north());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+								world.markForRerender(pos.north());
 							}
 							else
 							{
@@ -125,18 +124,18 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+									world.markForRerender(pos.south());
 								}
 							}
 						}
-						else if(state.get(FACING) == EnumFacing.NORTH)
+						else if(state.get(FACING) == Direction.NORTH)
 						{
 							secondDoorState = world.getBlockState(pos.east());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+								world.markForRerender(pos.east());
 							}
 							else
 							{
@@ -145,18 +144,18 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+									world.markForRerender(pos.west());
 								}
 							}
 						}
-						else if(state.get(FACING) == EnumFacing.EAST)
+						else if(state.get(FACING) == Direction.EAST)
 						{
 							secondDoorState = world.getBlockState(pos.south());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
+								world.markForRerender(pos.south());
 							}
 							else
 							{
@@ -165,18 +164,18 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
+									world.markForRerender(pos.north());
 								}
 							}
 						}
-						else if(state.get(FACING) == EnumFacing.SOUTH)
+						else if(state.get(FACING) == Direction.SOUTH)
 						{
 							secondDoorState = world.getBlockState(pos.west());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
+								world.markForRerender(pos.west());
 							}
 							else
 							{
@@ -185,12 +184,12 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
+									world.markForRerender(pos.east());
 								}
 							}
 						}
 
-						world.playEvent((EntityPlayer)null, hasActiveSCBlock ? 1005 : 1011, pos, 0);
+						world.playEvent((PlayerEntity)null, hasActiveSCBlock ? 1005 : 1011, pos, 0);
 					}
 				}
 			}
@@ -201,14 +200,14 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param)
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param)
 	{
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);
@@ -216,12 +215,12 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.reinforcedDoorItem);
 	}
 
 	@Override
-	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune){
+	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune){
 		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.reinforcedDoorItem;
 	}
 

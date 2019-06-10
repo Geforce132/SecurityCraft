@@ -7,11 +7,11 @@ import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
@@ -38,15 +38,15 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public void read(NBTTagCompound tag){
+	public void read(CompoundNBT tag){
 		super.read(tag);
 
-		NBTTagList list = tag.getList("Items", 10);
+		ListNBT list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompound(i);
+			CompoundNBT stackTag = list.getCompound(i);
 			int slot = stackTag.getByte("Slot") & 255;
 
 			if (slot >= 0 && slot < inventoryContents.size())
@@ -63,15 +63,15 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag){
+	public CompoundNBT write(CompoundNBT tag){
 		super.write(tag);
 
-		NBTTagList list = new NBTTagList();
+		ListNBT list = new ListNBT();
 
 		for (int i = 0; i < inventoryContents.size(); ++i)
 			if (!inventoryContents.get(i).isEmpty())
 			{
-				NBTTagCompound stackTag = new NBTTagCompound();
+				CompoundNBT stackTag = new CompoundNBT();
 				stackTag.putByte("Slot", (byte)i);
 				inventoryContents.get(i).write(stackTag);
 				list.add(stackTag);
@@ -118,7 +118,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	/**
-	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
+	 * When some containers are closed they call this on each slot, then drop whatever it returns as an ItemEntity -
 	 * like when you close a workbench GUI.
 	 */
 	public ItemStack getStackInSlotOnClosing(int index)
@@ -227,15 +227,15 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {}
+	public void openInventory(PlayerEntity player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {}
+	public void closeInventory(PlayerEntity player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {

@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockReinforcedCarpet extends BlockReinforcedBase
@@ -20,38 +20,27 @@ public class BlockReinforcedCarpet extends BlockReinforcedBase
 
 	public BlockReinforcedCarpet(Block block, String registryPath)
 	{
-		super(SoundType.CLOTH, Material.CLOTH, block, registryPath);
+		super(SoundType.CLOTH, Material.WOOL, block, registryPath);
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState stateIn, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		return !stateIn.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase worldIn, BlockPos pos) {
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		return !worldIn.isAirBlock(pos.down());
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		//needed so reinforced carpets do not drop when the block below them is broken
 	}

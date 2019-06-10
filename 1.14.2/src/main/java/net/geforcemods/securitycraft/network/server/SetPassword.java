@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -59,7 +59,7 @@ public class SetPassword {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			String password = message.password;
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 
 			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
 				((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
@@ -70,7 +70,7 @@ public class SetPassword {
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkForAdjacentChest(BlockPos pos, String codeToSet, EntityPlayer player) {
+	private static void checkForAdjacentChest(BlockPos pos, String codeToSet, PlayerEntity player) {
 		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
 			if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
@@ -82,7 +82,7 @@ public class SetPassword {
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
 	}
 
-	private static World getWorld(EntityPlayer player) //i'm lazy
+	private static World getWorld(PlayerEntity player) //i'm lazy
 	{
 		return player.world;
 	}

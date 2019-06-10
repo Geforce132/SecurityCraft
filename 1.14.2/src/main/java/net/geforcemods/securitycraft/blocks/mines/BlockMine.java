@@ -6,27 +6,29 @@ import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockMine extends BlockExplosive {
@@ -39,18 +41,9 @@ public class BlockMine extends BlockExplosive {
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	/**
@@ -58,7 +51,7 @@ public class BlockMine extends BlockExplosive {
 	 * their own) Args: x, y, z, neighbor blockID
 	 */
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos){
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
 		else
@@ -69,7 +62,7 @@ public class BlockMine extends BlockExplosive {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(world, pos.down()) == Material.PLANTS)
 			return false;
 		else
@@ -77,7 +70,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
 		if(!player.isCreative() && !world.isRemote)
 			if(player != null && player.isCreative() && !CommonConfig.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -90,7 +83,7 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
 	}
@@ -99,12 +92,12 @@ public class BlockMine extends BlockExplosive {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity){
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity){
 		if(world.isRemote)
 			return;
-		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
+		else if(entity instanceof CreeperEntity || entity instanceof OcelotEntity || entity instanceof EndermanEntity || entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 			explode(world, pos);
 	}
 
@@ -128,9 +121,9 @@ public class BlockMine extends BlockExplosive {
 		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
 			if(CommonConfig.CONFIG.smallerMineExplosion.get())
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true, Mode.BREAK);
 			else
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true, Mode.BREAK);
 		}
 	}
 
@@ -138,7 +131,7 @@ public class BlockMine extends BlockExplosive {
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune){
+	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune){
 		return SCContent.mine.asItem();
 	}
 
@@ -146,12 +139,12 @@ public class BlockMine extends BlockExplosive {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.mine.asItem());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}

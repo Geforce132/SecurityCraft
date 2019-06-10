@@ -7,34 +7,37 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Items;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockClaymore extends BlockContainer implements IExplosive {
+public class BlockClaymore extends ContainerBlock implements IExplosive {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
@@ -49,56 +52,41 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	public BlockClaymore(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(1F, 6000000.0F));
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(DEACTIVATED, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(DEACTIVATED, false));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
 		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
-		return false;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader access, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx)
 	{
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos)
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
 	{
-		return world.getBlockState(pos.down()).isTopSolid();
+		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		if(!world.isRemote)
 			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
 				world.setBlockState(pos, SCContent.claymore.getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, true));
@@ -112,11 +100,11 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest, IFluidState fluid){
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(BlockClaymore.DEACTIVATED))
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true, Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -131,17 +119,17 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 				return;
 
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true, Mode.BREAK);
 		}
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(FACING, placer.getHorizontalFacing()).with(DEACTIVATED, false);
 	}
@@ -162,12 +150,12 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true);
+			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true, Mode.BREAK);
 		}
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		switch(state.get(FACING))
 		{
@@ -196,7 +184,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(DEACTIVATED);

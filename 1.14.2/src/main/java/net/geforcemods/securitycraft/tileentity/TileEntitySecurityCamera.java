@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Option.OptionFloat;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.text.ITextComponent;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
@@ -75,7 +75,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public void onLoad()
 	{
 		super.onLoad();
-		down = world.getBlockState(pos).get(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
+		down = world.getBlockState(pos).get(BlockSecurityCamera.FACING) == Direction.DOWN;
 	}
 
 	@Override

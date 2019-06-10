@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockDoor;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -23,17 +23,17 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	}
 
 	@Override
-	public void entityViewed(EntityLivingBase entity)
+	public void entityViewed(LivingEntity entity)
 	{
-		IBlockState upperState = world.getBlockState(pos);
-		IBlockState lowerState = world.getBlockState(pos.down());
+		BlockState upperState = world.getBlockState(pos);
+		BlockState lowerState = world.getBlockState(pos.down());
 
 		if(!world.isRemote && upperState.get(BlockDoor.HALF) == DoubleBlockHalf.UPPER)
 		{
-			if(!(entity instanceof EntityPlayer))
+			if(!(entity instanceof PlayerEntity))
 				return;
 
-			EntityPlayer player = (EntityPlayer)entity;
+			PlayerEntity player = (PlayerEntity)entity;
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;

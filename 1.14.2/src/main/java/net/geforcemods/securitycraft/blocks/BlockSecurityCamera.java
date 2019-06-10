@@ -13,13 +13,13 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -27,21 +27,21 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockSecurityCamera extends BlockContainer{
+public class BlockSecurityCamera extends ContainerBlock{
 
-	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != EnumFacing.UP);
+	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F));
 	private static final VoxelShape SHAPE_NORTH = VoxelShapes.create(new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F));
@@ -51,45 +51,28 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public BlockSecurityCamera(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
-		stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false);
+		stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader access, BlockPos pos){
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx){
 		return VoxelShapes.empty();
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return state.get(FACING) == EnumFacing.DOWN ? EnumBlockRenderType.MODEL : EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	public BlockRenderType getRenderType(BlockState state){
+		return state.get(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		return BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public boolean isBlockNormalCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state){
-		return false;
-	}
-
-	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 
@@ -100,86 +83,86 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+		Direction dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
 
-		if(dir == EnumFacing.SOUTH)
+		if(dir == Direction.SOUTH)
 			return SHAPE_SOUTH;
-		else if(dir == EnumFacing.NORTH)
+		else if(dir == Direction.NORTH)
 			return SHAPE_NORTH;
-		else if(dir == EnumFacing.WEST)
+		else if(dir == Direction.WEST)
 			return SHAPE_WEST;
-		else if(dir == EnumFacing.DOWN)
+		else if(dir == Direction.DOWN)
 			return SHAPE_DOWN;
 		else
 			return SHAPE;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return ctx.getFace() != EnumFacing.UP ? getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer()) : null;
+		return ctx.getFace() != Direction.UP ? getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer()) : null;
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		IBlockState state = getDefaultState().with(POWERED, Boolean.valueOf(false));
+		BlockState state = getDefaultState().with(POWERED, Boolean.valueOf(false));
 
 		if(BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing))
 			return state.with(FACING, facing).with(POWERED, false);
 		else{
-			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-			EnumFacing iFacing;
+			Iterator<?> iterator = Direction.Plane.HORIZONTAL.iterator();
+			Direction iFacing;
 
 			do{
 				if(!iterator.hasNext())
 					return state;
 
-				iFacing = (EnumFacing)iterator.next();
+				iFacing = (Direction)iterator.next();
 			}while (!BlockUtils.isSideSolid(world, pos.offset(iFacing.getOpposite()), iFacing));
 
 			return state.with(FACING, facing).with(POWERED, false);
 		}
 	}
 
-	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
+	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
 		if(!world.isRemote && player.getRidingEntity() == null)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.securityCamera.getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted"), TextFormatting.GREEN);
 
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
+			WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
 		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
-		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
+		WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
 		for(Object e : world.loadedEntityList)
-			if(e instanceof EntityLiving)
-				if(((EntityLiving)e).getAttackTarget() == player)
-					((EntityLiving)e).setAttackTarget(null);
+			if(e instanceof MobEntity)
+				if(((MobEntity)e).getAttackTarget() == player)
+					((MobEntity)e).setAttackTarget(null);
 	}
 
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		EnumFacing facing = state.get(FACING);
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		Direction facing = state.get(FACING);
 		BlockPos placeOnPos = pos.offset(facing.getOpposite());
-		IBlockState placeOnState = world.getBlockState(placeOnPos);
+		BlockState placeOnState = world.getBlockState(placeOnPos);
 
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) && !isExceptBlockForAttachWithPiston(placeOnState.getBlock());
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing));
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state){
+	public boolean canProvidePower(BlockState state){
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
 		if(blockState.get(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
@@ -187,7 +170,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
 		if(blockState.get(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
@@ -195,15 +178,13 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos)) {
-			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
-			world.removeBlock(pos);
-		}
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!isValidPosition(world.getBlockState(pos), world, pos) && !isValidPosition(state, world, pos))
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(POWERED);

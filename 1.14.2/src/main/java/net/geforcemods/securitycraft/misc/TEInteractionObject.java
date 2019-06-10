@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +36,7 @@ public class TEInteractionObject extends BaseInteractionObject
 	}
 
 	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer player)
+	public Container createContainer(InventoryPlayer playerInventory, PlayerEntity player)
 	{
 		TileEntity te = world.getTileEntity(pos);
 

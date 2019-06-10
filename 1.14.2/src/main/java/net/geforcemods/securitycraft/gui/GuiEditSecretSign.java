@@ -5,14 +5,14 @@ import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CPacketUpdateSign;
 import net.minecraft.util.SharedConstants;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -63,7 +63,7 @@ public class GuiEditSecretSign extends GuiScreen
 			if(SharedConstants.isAllowedCharacter(typedChar) && this.fontRenderer.getStringWidth(line + typedChar) <= 90)
 				line += typedChar;
 
-			te.setText(editLine, new TextComponentString(line));
+			te.setText(editLine, new StringTextComponent(line));
 			return true;
 		}
 
@@ -94,7 +94,7 @@ public class GuiEditSecretSign extends GuiScreen
 				if(!line.isEmpty())
 				{
 					line = line.substring(0, line.length() - 1);
-					te.setText(editLine, new TextComponentString(line));
+					te.setText(editLine, new StringTextComponent(line));
 				}
 
 				return true;
@@ -112,7 +112,7 @@ public class GuiEditSecretSign extends GuiScreen
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		IBlockState state = te.getBlockState();
+		BlockState state = te.getBlockState();
 		float angle;
 
 		drawDefaultBackground();

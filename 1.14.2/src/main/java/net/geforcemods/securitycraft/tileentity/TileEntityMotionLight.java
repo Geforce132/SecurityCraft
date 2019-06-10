@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
 
@@ -25,9 +25,9 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if(entity instanceof EntityPlayer)
+		if(entity instanceof PlayerEntity)
 		{
-			if(PlayerUtils.isPlayerMountedOnCamera((EntityPlayer)entity))
+			if(PlayerUtils.isPlayerMountedOnCamera((PlayerEntity)entity))
 				BlockMotionActivatedLight.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), false);
 			else if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 				BlockMotionActivatedLight.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), true);
@@ -69,7 +69,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	@Override
 	public ITextComponent getName() {
-		return new TextComponentString("Motion-Activated Light");
+		return new StringTextComponent("Motion-Activated Light");
 	}
 
 	@Override

@@ -24,17 +24,17 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockUtils{
 
-	public static boolean isSideSolid(IWorldReaderBase world, BlockPos pos, EnumFacing side)
+	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
 	{
 		return world.getBlockState(pos).getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
 	}
@@ -195,7 +195,7 @@ public class BlockUtils{
 		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, EnumProperty<EnumFacing> property, EnumFacing value) {
+	public static void setBlockProperty(World world, BlockPos pos, EnumProperty<Direction> property, Direction value) {
 		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
@@ -220,19 +220,19 @@ public class BlockUtils{
 		return world.getBlockState(pos).get(property).intValue();
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(World world, BlockPos pos, EnumProperty<?> property){
-		return ((EnumFacing) world.getBlockState(pos).get(property));
+	public static Direction getBlockPropertyAsEnum(World world, BlockPos pos, EnumProperty<?> property){
+		return ((Direction) world.getBlockState(pos).get(property));
 	}
 
-	public static EnumFacing getBlockPropertyAsEnum(IBlockReader world, BlockPos pos, EnumProperty<?> property){
-		return ((EnumFacing) world.getBlockState(pos).get(property));
+	public static Direction getBlockPropertyAsEnum(IBlockReader world, BlockPos pos, EnumProperty<?> property){
+		return ((Direction) world.getBlockState(pos).get(property));
 	}
 
-	public static EnumFacing getBlockProperty(World world, BlockPos pos, DirectionProperty property) {
+	public static Direction getBlockProperty(World world, BlockPos pos, DirectionProperty property) {
 		return world.getBlockState(pos).get(property);
 	}
 
-	public static Material getBlockMaterial(IWorldReaderBase world, BlockPos pos){
+	public static Material getBlockMaterial(IWorldReader world, BlockPos pos){
 		return world.getBlockState(pos).getMaterial();
 	}
 

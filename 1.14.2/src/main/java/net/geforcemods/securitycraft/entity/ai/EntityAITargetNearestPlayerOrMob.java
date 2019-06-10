@@ -6,21 +6,21 @@ import java.util.List;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * Attacks any player who is not the owner, or any mob
  */
-public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableTarget<EntityLivingBase>
+public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoal<LivingEntity>
 {
 	private EntitySentry sentry;
 
 	public EntityAITargetNearestPlayerOrMob(EntitySentry sentry)
 	{
-		super(sentry, EntityLivingBase.class, true);
+		super(sentry, LivingEntity.class, true);
 
 		this.sentry = sentry;
 	}
@@ -28,7 +28,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	@Override
 	public boolean shouldExecute()
 	{
-		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), targetEntitySelector);
+		List<LivingEntity> list = field_75299_d.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), field_220779_d);
 
 		if(list.isEmpty())
 			return false;
@@ -36,16 +36,24 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 		{
 			int i;
 
-			Collections.sort(list, sorter);
+			Collections.sort(list, (e1, e2) -> {
+				double d0 = sentry.getDistanceSq(e1);
+				double d1 = sentry.getDistanceSq(e2);
+				if (d0 < d1) {
+					return -1;
+				} else {
+					return d0 > d1 ? 1 : 0;
+				}
+			});
 
 			//get the nearest target that is either a mob or a player
 			for(i = 0; i < list.size(); i++)
 			{
-				EntityLivingBase potentialTarget = list.get(i);
+				LivingEntity potentialTarget = list.get(i);
 
-				if(potentialTarget instanceof EntityPlayer && !((EntityPlayer)potentialTarget).isSpectator() && !((EntityPlayer)potentialTarget).isCreative() && !((EntitySentry)taskOwner).getOwner().isOwner(((EntityPlayer)potentialTarget)))
+				if(potentialTarget instanceof PlayerEntity && !((PlayerEntity)potentialTarget).isSpectator() && !((PlayerEntity)potentialTarget).isCreative() && !((EntitySentry)field_75299_d).getOwner().isOwner(((PlayerEntity)potentialTarget)))
 					break;
-				else if(potentialTarget instanceof EntityMob && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
+				else if(potentialTarget instanceof MobEntity && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
 			}
 
@@ -53,8 +61,8 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 			{
 				if(isCloseEnough(list.get(i)))
 				{
-					targetEntity = list.get(i);
-					taskOwner.setAttackTarget(targetEntity);
+					field_75309_a = list.get(i);
+					field_75299_d.setAttackTarget(field_75309_a);
 					return true;
 				}
 			}
@@ -66,12 +74,12 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (targetEntity instanceof EntityMob || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && super.shouldContinueExecuting();
+		return (field_75309_a instanceof MobEntity || field_75309_a instanceof PlayerEntity) && isCloseEnough(field_75309_a) && shouldExecute() && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)
 	{
-		return entity != null && taskOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
+		return entity != null && field_75299_d.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
 	}
 
 	@Override

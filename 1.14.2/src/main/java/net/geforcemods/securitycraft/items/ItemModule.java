@@ -9,20 +9,20 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -58,13 +58,13 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		try
 		{
 			if(!world.isRemote) {
-				if(canBeCustomized() && player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(guiToOpen));
+				if(canBeCustomized() && player instanceof ServerPlayerEntity)
+					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(guiToOpen));
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}
@@ -76,39 +76,39 @@ public class ItemModule extends Item{
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.modifiable").getFormattedText()));
+			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.modifiable").getFormattedText()));
 		else
-			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.notModifiable").getFormattedText()));
+			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
 
 		if(nbtCanBeModified) {
-			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.usage").getFormattedText()));
+			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.usage").getFormattedText()));
 
-			list.add(new TextComponentString(" "));
-			list.add(new TextComponentString(TextFormatting.GRAY + new TextComponentTranslation("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
+			list.add(new StringTextComponent(" "));
+			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
 
 			if(stack.getTag() != null)
 				for(int i = 1; i <= 10; i++)
 					if(!stack.getTag().getString("Player" + i).isEmpty())
-						list.add(new TextComponentString(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
+						list.add(new StringTextComponent(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
 		}
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + "")));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + "")));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + "")));
 
 			if(getNumberOfAddons() > 0) {
-				list.add(new TextComponentString(" "));
+				list.add(new StringTextComponent(" "));
 
-				list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new TextComponentString(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey())));
+					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey())));
 			}
 		}
 	}
@@ -133,21 +133,21 @@ public class ItemModule extends Item{
 		return numberOfBlockAddons;
 	}
 
-	public ArrayList<Item> getItemAddons(NBTTagCompound tag){
+	public ArrayList<Item> getItemAddons(CompoundNBT tag){
 		ArrayList<Item> list = new ArrayList<Item>();
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			NBTTagCompound item = items.getCompound(i);
+			CompoundNBT item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfItemAddons) {
 				ItemStack stack;
 
-				if(!((stack = ItemStack.read(item)).getItem() instanceof ItemBlock))
+				if(!((stack = ItemStack.read(item)).getItem() instanceof BlockItem))
 					list.add(stack.getItem());
 			}
 		}
@@ -155,21 +155,21 @@ public class ItemModule extends Item{
 		return list;
 	}
 
-	public ArrayList<Block> getBlockAddons(NBTTagCompound tag){
+	public ArrayList<Block> getBlockAddons(CompoundNBT tag){
 		ArrayList<Block> list = new ArrayList<Block>();
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			NBTTagCompound item = items.getCompound(i);
+			CompoundNBT item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons) {
 				ItemStack stack;
 
-				if((stack = ItemStack.read(item)).getItem() instanceof ItemBlock)
+				if((stack = ItemStack.read(item)).getItem() instanceof BlockItem)
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}
@@ -177,15 +177,15 @@ public class ItemModule extends Item{
 		return list;
 	}
 
-	public ArrayList<ItemStack> getAddons(NBTTagCompound tag){
+	public ArrayList<ItemStack> getAddons(CompoundNBT tag){
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
 		if(tag == null) return list;
 
-		NBTTagList items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+		ListNBT items = tag.getList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.size(); i++) {
-			NBTTagCompound item = items.getCompound(i);
+			CompoundNBT item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons)

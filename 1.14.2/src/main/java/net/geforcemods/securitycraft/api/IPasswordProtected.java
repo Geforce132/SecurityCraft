@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.gui.GuiCheckPassword;
 import net.geforcemods.securitycraft.gui.GuiSetPassword;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -28,7 +28,7 @@ public interface IPasswordProtected {
 	 *
 	 * @param player The player who entered the password.
 	 */
-	public void activate(EntityPlayer player);
+	public void activate(PlayerEntity player);
 
 	/**
 	 * Open the correct password GUI depending on if a password is already set or not. <p>
@@ -41,17 +41,17 @@ public interface IPasswordProtected {
 	 *
 	 * @param player The player who the GUI should be opened to.
 	 */
-	public void openPasswordGUI(EntityPlayer player);
+	public void openPasswordGUI(PlayerEntity player);
 
 	/**
 	 * Called when a codebreaker is used on a password-protected block.
 	 *
-	 * @param blockState The IBlockState of the block.
+	 * @param blockState The BlockState of the block.
 	 * @param player The player who used the codebreaker.
 	 * @param isCodebreakerDisabled If the codebreaker is disabled through the SC configuration file.
 	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
 	 */
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled);
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled);
 
 	/**
 	 * Return your TileEntity's password variable here.
@@ -64,7 +64,7 @@ public interface IPasswordProtected {
 	/**
 	 * Save newly created passwords to your TileEntity here.
 	 * You are responsible for reading and writing the password
-	 * to your NBTTagCompound in writeToNBT() and readFromNBT().
+	 * to your CompoundNBT in writeToNBT() and readFromNBT().
 	 *
 	 * @param password The new password to be saved.
 	 */

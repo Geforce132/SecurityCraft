@@ -16,11 +16,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -67,13 +67,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 			double range = CommonConfig.CONFIG.imsRange.get();
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
-			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area);
-			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area);
+			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area);
+			List<?> mobs = world.getEntitiesWithinAABB(MobEntity.class, area);
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 
 			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
-				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
+				LivingEntity entity = (LivingEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -100,7 +100,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 			}
 
 			while(!launchedMine && playerIterator.hasNext()){
-				EntityPlayer entity = (EntityPlayer) playerIterator.next();
+				PlayerEntity entity = (PlayerEntity) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -129,21 +129,21 @@ public class TileEntityIMS extends CustomizableSCTE {
 	/**
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
-	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
+	private void spawnMine(PlayerEntity target, double x, double y, double z, int launchHeight){
 		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
 		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
 
-		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
+		world.addEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
-	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
+	private void spawnMine(LivingEntity target, double x, double y, double z, int launchHeight){
 		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
 		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
 
-		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
+		world.addEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 		for(height = 1; height <= 9; height++)
 		{
-			IBlockState state = getWorld().getBlockState(getPos().up(height));
+			BlockState state = getWorld().getBlockState(getPos().up(height));
 
 			if(state == null || state.isAir(getWorld(), getPos()))
 				continue;
@@ -170,7 +170,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag){
+	public CompoundNBT write(CompoundNBT tag){
 		super.write(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
@@ -183,7 +183,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag){
+	public void read(CompoundNBT tag){
 		super.read(tag);
 
 		if (tag.contains("bombsRemaining"))

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
@@ -27,7 +27,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 	@Override
 	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
-		IBlockState state = te.getBlockState();
+		BlockState state = te.getBlockState();
 		FontRenderer fontRenderer = getFontRenderer();
 
 		GlStateManager.pushMatrix();

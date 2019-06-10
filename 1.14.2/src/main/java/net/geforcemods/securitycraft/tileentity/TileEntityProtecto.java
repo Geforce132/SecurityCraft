@@ -8,11 +8,11 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 
@@ -25,13 +25,13 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public boolean attackEntity(Entity entity){
-		if (entity instanceof EntityLivingBase) {
-			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().getFormattedText().toLowerCase())))) ||
+		if (entity instanceof LivingEntity) {
+			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
-					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))
+					(entity instanceof CreeperEntity && ((CreeperEntity) entity).getPowered()))
 				return false;
 
-			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);
+			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.posX, entity.posY, entity.posZ, false);
 
 			world.addWeatherEffect(lightning);
 			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
@@ -56,7 +56,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public boolean shouldAttackEntityType(Entity entity)
 	{
-		return !(entity instanceof EntityPlayer) && entity instanceof EntityLivingBase;
+		return !(entity instanceof PlayerEntity) && entity instanceof LivingEntity;
 	}
 
 	@Override

@@ -2,23 +2,24 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockProtecto extends BlockOwnable {
@@ -32,41 +33,41 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		return world.getBlockState(pos.down()).isTopSolid();
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		return Block.hasSolidSide(world.getBlockState(pos.down()), world, pos.down(), Direction.UP);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(ACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(ACTIVATED);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
+		return new TileEntityProtecto().attacks(LivingEntity.class, 10, 200);
 	}
 
 }

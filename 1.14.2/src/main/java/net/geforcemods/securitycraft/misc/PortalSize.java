@@ -2,42 +2,42 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPortal;
+import net.minecraft.block.PortalBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 /**
  * Vanilla code adapted to allow reinforced obsidian
- * Borrowed from BlockPortal$Size
+ * Borrowed from PortalBlock$Size
  */
 public class PortalSize
 {
 	private final IWorld world;
-	private final EnumFacing.Axis axis;
-	private final EnumFacing rightDir;
-	private final EnumFacing leftDir;
+	private final Direction.Axis axis;
+	private final Direction rightDir;
+	private final Direction leftDir;
 	private int portalBlockCount;
 	private BlockPos bottomLeft;
 	private int height;
 	private int width;
 
-	public PortalSize(IWorld world, BlockPos pos, EnumFacing.Axis axis)
+	public PortalSize(IWorld world, BlockPos pos, Direction.Axis axis)
 	{
 		this.world = world;
 		this.axis = axis;
 
-		if (axis == EnumFacing.Axis.X)
+		if (axis == Direction.Axis.X)
 		{
-			this.leftDir = EnumFacing.EAST;
-			this.rightDir = EnumFacing.WEST;
+			this.leftDir = Direction.EAST;
+			this.rightDir = Direction.WEST;
 		}
 		else
 		{
-			this.leftDir = EnumFacing.NORTH;
-			this.rightDir = EnumFacing.SOUTH;
+			this.leftDir = Direction.NORTH;
+			this.rightDir = Direction.SOUTH;
 		}
 
 		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down())
@@ -65,7 +65,7 @@ public class PortalSize
 		}
 	}
 
-	protected int getDistanceUntilEdge(BlockPos pos, EnumFacing facing)
+	protected int getDistanceUntilEdge(BlockPos pos, Direction facing)
 	{
 		int distance;
 
@@ -175,7 +175,7 @@ public class PortalSize
 
 			for (int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(BlockPortal.AXIS, this.axis), 2 | 16);
+				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(PortalBlock.AXIS, this.axis), 2 | 16);
 			}
 		}
 	}

@@ -58,20 +58,20 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
-import net.geforcemods.securitycraft.util.RegisterItemBlock;
+import net.geforcemods.securitycraft.util.RegisterBlockItem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class RegistrationHandler
@@ -95,10 +95,10 @@ public class RegistrationHandler
 		SetupHandler.setupReinforcedBlocks();
 		SetupHandler.setupMines();
 
-		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_water"), SCContent.flowingFakeWater);
-		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "fake_water"), SCContent.fakeWater);
-		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_lava"), SCContent.flowingFakeLava);
-		IRegistry.FLUID.put(new ResourceLocation(SecurityCraft.MODID, "fake_lava"), SCContent.fakeLava);
+		ForgeRegistries.FLUIDS.register(SCContent.flowingFakeWater.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_water")));
+		ForgeRegistries.FLUIDS.register(SCContent.fakeWater.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water")));
+		ForgeRegistries.FLUIDS.register(SCContent.flowingFakeLava.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_lava")));
+		ForgeRegistries.FLUIDS.register(SCContent.fakeLava.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava")));
 
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
@@ -167,12 +167,12 @@ public class RegistrationHandler
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 					event.getRegistry().register(new ItemReinforcedBlock((Block)field.get(null)));
-				else if(field.isAnnotationPresent(RegisterItemBlock.class))
+				else if(field.isAnnotationPresent(RegisterBlockItem.class))
 				{
-					int tab = field.getAnnotation(RegisterItemBlock.class).value();
+					int tab = field.getAnnotation(RegisterBlockItem.class).value();
 					Block block = (Block)field.get(null);
 
-					event.getRegistry().register(new ItemBlock(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
+					event.getRegistry().register(new BlockItem(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
 				}
 
 			}
@@ -311,7 +311,7 @@ public class RegistrationHandler
 	}
 
 	/**
-	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 * Registers a block and its BlockItem and adds the help info for the block to the SecurityCraft manual item
 	 * @param block The block to register
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
@@ -320,7 +320,7 @@ public class RegistrationHandler
 	}
 
 	/**
-	 * Registers a block and its ItemBlock
+	 * Registers a block and its BlockItem
 	 * @param block The Block to register
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
 	 */

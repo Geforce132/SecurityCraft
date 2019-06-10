@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -71,7 +71,7 @@ public class RequestTEOwnableUpdate
 	{
 		TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
 		boolean customizable = te instanceof CustomizableSCTE;
-		NBTTagCompound tag = customizable ? ((CustomizableSCTE)te).write(new NBTTagCompound()) : null;
+		CompoundNBT tag = customizable ? ((CustomizableSCTE)te).write(new CompoundNBT()) : null;
 
 		if(te != null && te instanceof IOwnable)
 			SecurityCraft.channel.reply(new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag), ctx.get());

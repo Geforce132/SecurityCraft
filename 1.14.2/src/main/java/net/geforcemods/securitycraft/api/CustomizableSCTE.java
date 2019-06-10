@@ -9,15 +9,13 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -32,7 +30,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();
-	private NBTTagList nbtTagStorage = null;
+	private ListNBT nbtTagStorage = null;
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
@@ -54,16 +52,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 
-		NBTTagList list = tag.getList("Modules", 10);
+		ListNBT list = tag.getList("Modules", 10);
 		modules = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompound(i);
+			CompoundNBT stackTag = list.getCompound(i);
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if (slot >= 0 && slot < modules.size())
@@ -89,16 +87,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 
-		NBTTagList list = new NBTTagList();
+		ListNBT list = new ListNBT();
 
 		for(int i = 0; i < modules.size(); i++)
 			if (!modules.get(i).isEmpty())
 			{
-				NBTTagCompound stackTag = new NBTTagCompound();
+				CompoundNBT stackTag = new CompoundNBT();
 				stackTag.putByte("ModuleSlot", (byte)i);
 				modules.get(i).write(stackTag);
 				list.add(stackTag);
@@ -113,14 +111,14 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		tag.putBoolean("linkable", linkable);
 
 		if(linkable && hasWorld() && linkedBlocks.size() > 0) {
-			NBTTagList tagList = new NBTTagList();
+			ListNBT tagList = new ListNBT();
 
 			WorldUtils.addScheduledTask(world, () -> {
 				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
 
 				while(iterator.hasNext()) {
 					LinkedBlock block = iterator.next();
-					NBTTagCompound toAppend = new NBTTagCompound();
+					CompoundNBT toAppend = new CompoundNBT();
 
 					if(block != null) {
 						if(!block.validate(world)) {
@@ -144,7 +142,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return tag;
 	}
 
-	private void readLinkedBlocks(NBTTagList list) {
+	private void readLinkedBlocks(ListNBT list) {
 		if(!linkable) return;
 
 		for(int i = 0; i < list.size(); i++) {
@@ -155,7 +153,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 
 			LinkedBlock block = new LinkedBlock(name, x, y, z);
 			if(hasWorld() && !block.validate(world)) {
-				list.removeTag(i);
+				list.remove(i);
 				continue;
 			}
 
@@ -307,16 +305,6 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public ITextComponent getDisplayName() {
-		return getName();
-	}
-
-	@Override
-	public ITextComponent getName(){
-		return new TextComponentString("Customize");
-	}
-
-	@Override
 	public boolean hasCustomSCName() {
 		return (getCustomSCName() != null && !getCustomSCName().getFormattedText().equals("name"));
 	}
@@ -327,16 +315,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player)
+	public boolean isUsableByPlayer(PlayerEntity player)
 	{
 		return true;
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {}
+	public void openInventory(PlayerEntity player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {}
+	public void closeInventory(PlayerEntity player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -351,21 +339,6 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				return false;
 
 		return true;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
 	}
 
 	@Override

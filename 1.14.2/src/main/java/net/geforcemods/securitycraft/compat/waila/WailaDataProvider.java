@@ -21,7 +21,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
@@ -56,26 +56,26 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 		if(data.getBlock() instanceof IOverlayDisplay && !((IOverlayDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
 
 		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable)
-			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));
+			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));
 
 		if(config.get(SHOW_MODULES) && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty())
-				body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:equipped")));
+				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
 			for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules())
-				body.add(new TextComponentString("- " + module.getName()));
+				body.add(new StringTextComponent("- " + module.getName()));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
 
-			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
+			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
 		}
 
 		if(config.get(SHOW_CUSTOM_NAME) && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
 			String name = ((INameable) data.getTileEntity()).getCustomSCName().getFormattedText();
 
-			body.add(new TextComponentString(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
+			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
 		}
 	}
 }

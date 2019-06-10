@@ -9,10 +9,10 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -31,7 +31,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag){
+	public CompoundNBT write(CompoundNBT tag){
 		super.write(tag);
 		tag.putInt("passLV", passLV);
 		tag.putBoolean("requiresExactKeycard", requiresExactKeycard);
@@ -42,7 +42,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag){
+	public void read(CompoundNBT tag){
 		super.read(tag);
 
 		if (tag.contains("passLV"))
@@ -62,19 +62,19 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	}
 
 	@Override
-	public void activate(EntityPlayer player) {
+	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader)
 			BlockKeycardReader.activate(world, getPos());
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
-		if(getPassword() == null && player instanceof EntityPlayerMP)
-			NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.SETUP_KEYCARD_READER), pos);
+	public void openPasswordGUI(PlayerEntity player) {
+		if(getPassword() == null && player instanceof ServerPlayerEntity)
+			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_KEYCARD_READER), pos);
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		return false;
 	}
 

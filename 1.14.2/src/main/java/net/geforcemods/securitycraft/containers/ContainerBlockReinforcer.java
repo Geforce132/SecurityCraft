@@ -2,22 +2,21 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
 
 public class ContainerBlockReinforcer extends Container
 {
 	private ItemStack blockReinforcer;
-	private InventoryBasic itemventory = new InventoryBasic(new TextComponentString("BlockReinforcer"), 1);
+	private Inventory itemventory = new Inventory(1);
 
-	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory)
+	public ContainerBlockReinforcer(PlayerEntity player, PlayerInventory inventory)
 	{
 		blockReinforcer = player.inventory.getCurrentItem();
 		addSlot(new SlotBlockReinforcer(itemventory, 0, 79, 20)); //input & output slot
@@ -33,13 +32,13 @@ public class ContainerBlockReinforcer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player)
+	public boolean canInteractWith(PlayerEntity player)
 	{
 		return true;
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer player)
+	public void onContainerClosed(PlayerEntity player)
 	{
 		ItemStack stack = itemventory.getStackInSlot(0);
 
@@ -60,14 +59,14 @@ public class ContainerBlockReinforcer extends Container
 			{
 				newStack.setDamage(stack.getDamage());
 				newStack.setCount(stack.getCount());
-				blockReinforcer.damageItem(stack.getCount(), player);
+				blockReinforcer.damageItem(stack.getCount(), player, p -> {});
 				player.dropItem(newStack, false);
 			}
 		}
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int id)
+	public ItemStack transferStackInSlot(PlayerEntity player, int id)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(id);

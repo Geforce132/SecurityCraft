@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -12,13 +12,13 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class SyncTENBTTag {
 
 	private int x, y, z;
-	private NBTTagCompound tag;
+	private CompoundNBT tag;
 
 	public SyncTENBTTag(){
 
 	}
 
-	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
+	public SyncTENBTTag(int x, int y, int z, CompoundNBT tag){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -56,8 +56,8 @@ public class SyncTENBTTag {
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-			NBTTagCompound tag = message.tag;
-			EntityPlayer player = ctx.get().getSender();
+			CompoundNBT tag = message.tag;
+			PlayerEntity player = ctx.get().getSender();
 
 			if(player.world.getTileEntity(pos) != null)
 				player.world.getTileEntity(pos).read(tag);

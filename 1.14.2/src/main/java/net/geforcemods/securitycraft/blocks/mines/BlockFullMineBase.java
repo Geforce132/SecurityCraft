@@ -6,19 +6,21 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -28,25 +30,25 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	private final Block blockDisguisedAs;
 
 	public BlockFullMineBase(Material material, Block disguisedBlock, float baseHardness) {
-		super(material == Material.SAND ? SoundType.SAND : (material == Material.GROUND ? SoundType.GROUND : SoundType.STONE), material, baseHardness);
+		super(material == Material.SAND ? SoundType.SAND : (material == Material.EARTH ? SoundType.GROUND : SoundType.STONE), material, baseHardness);
 		blockDisguisedAs = disguisedBlock;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader access, BlockPos pos){
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx){
 		return VoxelShapes.empty();
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
-		if(entity instanceof EntityItem)
+		if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 			explode(world, pos);
 	}
 
@@ -65,7 +67,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state){
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state){
 		if (!world.isRemote() && world instanceof World)
 			explode((World)world, pos);
 	}
@@ -81,9 +83,9 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 		world.destroyBlock(pos, false);
 
 		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true, Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true, Mode.BREAK);
 	}
 
 	/**
@@ -115,12 +117,12 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
 		return new ItemStack(blockDisguisedAs);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return false;
 	}
 

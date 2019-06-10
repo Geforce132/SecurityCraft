@@ -3,17 +3,17 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 
 public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 {
-	public static final EnumProperty<EnumFacing.Axis> AXIS = BlockStateProperties.AXIS;
+	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
 	public BlockReinforcedRotatedPillar(Material mat, Block vB, String registryPath)
 	{
@@ -24,11 +24,11 @@ public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 	{
 		super(soundType, mat, vB, registryPath);
 
-		setDefaultState(stateContainer.getBaseState().with(AXIS, EnumFacing.Axis.Y));
+		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
 	}
 
 	@Override
-	public IBlockState rotate(IBlockState state, Rotation rot)
+	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		switch(rot)
 		{
@@ -37,9 +37,9 @@ public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 				switch(state.get(AXIS))
 				{
 					case X:
-						return state.with(AXIS, EnumFacing.Axis.Z);
+						return state.with(AXIS, Direction.Axis.Z);
 					case Z:
-						return state.with(AXIS, EnumFacing.Axis.X);
+						return state.with(AXIS, Direction.Axis.X);
 					default:
 						return state;
 				}
@@ -49,13 +49,13 @@ public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(AXIS);
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext context)
+	public BlockState getStateForPlacement(BlockItemUseContext context)
 	{
 		return getDefaultState().with(AXIS, context.getFace().getAxis());
 	}

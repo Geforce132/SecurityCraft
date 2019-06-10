@@ -12,23 +12,24 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.ParticleTypes.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -42,40 +43,40 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 	public BlockKeycardReader(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		IBlockState north = world.getBlockState(pos.north());
-		IBlockState south = world.getBlockState(pos.south());
-		IBlockState west = world.getBlockState(pos.west());
-		IBlockState east = world.getBlockState(pos.east());
-		EnumFacing facing = state.get(FACING);
+		//		BlockState north = world.getBlockState(pos.north());
+		//		BlockState south = world.getBlockState(pos.south());
+		//		BlockState west = world.getBlockState(pos.west());
+		//		BlockState east = world.getBlockState(pos.east());
+		Direction facing = state.get(FACING);
 
-		if (facing == EnumFacing.NORTH && north.isFullCube() && !south.isFullCube())
-			facing = EnumFacing.SOUTH;
-		else if (facing == EnumFacing.SOUTH && south.isFullCube() && !north.isFullCube())
-			facing = EnumFacing.NORTH;
-		else if (facing == EnumFacing.WEST && west.isFullCube() && !east.isFullCube())
-			facing = EnumFacing.EAST;
-		else if (facing == EnumFacing.EAST && east.isFullCube() && !west.isFullCube())
-			facing = EnumFacing.WEST;
+		if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
+			facing = Direction.SOUTH;
+		else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
+			facing = Direction.NORTH;
+		else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
+			facing = Direction.EAST;
+		else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
+			facing = Direction.WEST;
 
 		world.setBlockState(pos, state.with(FACING, facing), 2);
 	}
 
-	public void insertCard(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
+	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {
 		if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST))
 			return;
 
@@ -106,7 +107,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) world.getTileEntity(pos)).openPasswordGUI(player);
 		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)
@@ -124,7 +125,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	@Override
-	public void tick(IBlockState state, World world, BlockPos pos, Random random){
+	public void tick(BlockState state, World world, BlockPos pos, Random random){
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
@@ -132,11 +133,11 @@ public class BlockKeycardReader extends BlockOwnable  {
 	}
 
 	/**
-	 * A randomly called display update to be able to add particles or other items for display
+	 * A randomly called display update to be able to add ParticleTypes or other items for display
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand){
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand){
 		if((state.get(POWERED))){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -161,7 +162,7 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side)
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 	{
 		if((blockState.get(POWERED)))
 			return 15;
@@ -173,24 +174,24 @@ public class BlockKeycardReader extends BlockOwnable  {
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
 	 */
 	@Override
-	public boolean canProvidePower(IBlockState state)
+	public boolean canProvidePower(BlockState state)
 	{
 		return true;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(POWERED);

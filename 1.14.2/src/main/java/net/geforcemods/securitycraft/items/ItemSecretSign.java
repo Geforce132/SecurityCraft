@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.TEInteractionObject;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWallOrFloor;
@@ -37,7 +37,7 @@ public class ItemSecretSign extends ItemWallOrFloor
 	}
 	//
 	@Override
-	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable EntityPlayer player, ItemStack stack, IBlockState state)
+	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
 	{
 		boolean flag = super.onBlockPlaced(pos, world, player, stack, state);
 
@@ -46,7 +46,7 @@ public class ItemSecretSign extends ItemWallOrFloor
 			((TileEntitySecretSign)world.getTileEntity(pos)).setPlayer(player);
 
 			if(!world.isRemote)
-				NetworkHooks.openGui((EntityPlayerMP)player, new TEInteractionObject(GuiHandler.EDIT_SECRET_SIGN, world, pos), pos);
+				NetworkHooks.openGui((ServerPlayerEntity)player, new TEInteractionObject(GuiHandler.EDIT_SECRET_SIGN, world, pos), pos);
 		}
 
 		return flag;

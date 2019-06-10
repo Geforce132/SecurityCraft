@@ -4,15 +4,15 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -26,13 +26,13 @@ public class ItemBriefcase extends Item {
 	@Override
 	public EnumActionResult onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ());
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, float hitX, float hitY, float hitZ) {
 		if(world.isRemote) {
 			if(!stack.hasTag()) {
-				stack.setTag(new NBTTagCompound());
+				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
 			}
 
@@ -46,12 +46,12 @@ public class ItemBriefcase extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(world.isRemote) {
 			if(!stack.hasTag()) {
-				stack.setTag(new NBTTagCompound());
+				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
 			}
 

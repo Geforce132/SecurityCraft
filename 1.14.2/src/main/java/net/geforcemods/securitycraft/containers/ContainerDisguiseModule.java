@@ -1,18 +1,18 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
 public class ContainerDisguiseModule extends Container {
 
 	private ModuleInventory inventory;
 
-	public ContainerDisguiseModule(EntityPlayer player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(PlayerEntity player, PlayerInventory playerInventory, ModuleInventory moduleInventory) {
 		inventory = moduleInventory;
 		addSlot(new AddonSlot(inventory, 0, 79, 20));
 
@@ -25,7 +25,7 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
@@ -58,7 +58,7 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player)
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
 			return ItemStack.EMPTY;
@@ -67,7 +67,7 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(PlayerEntity player) {
 		return true;
 	}
 
@@ -85,11 +85,11 @@ public class ContainerDisguiseModule extends Container {
 		public boolean isItemValid(ItemStack itemStack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = itemStack.getItem() instanceof ItemBlock;
+			boolean isStackBlock = itemStack.getItem() instanceof BlockItem;
 
 			for(ItemStack stack : inventory.moduleInventory)
 				if(!stack.isEmpty() && stack.getItem() != null)
-					if(stack.getItem() instanceof ItemBlock)
+					if(stack.getItem() instanceof BlockItem)
 						numberOfBlocks++;
 					else
 						numberOfItems++;

@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.util.text.ITextComponent;
 
 /**
@@ -13,7 +13,7 @@ import net.minecraft.util.text.ITextComponent;
  * @author Geforce
  */
 public class Owner {
-	public static final DataSerializer<Owner> SERIALIZER = new DataSerializer<Owner>()
+	public static final IDataSerializer<Owner> SERIALIZER = new IDataSerializer<Owner>()
 	{
 		@Override
 		public void write(PacketBuffer buf, Owner value)
@@ -79,7 +79,7 @@ public class Owner {
 	/**
 	 * @return If this person is the same person as the given player.
 	 */
-	public boolean isOwner(EntityPlayer player) {
+	public boolean isOwner(PlayerEntity player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
 		String owner = player.getName().getFormattedText();

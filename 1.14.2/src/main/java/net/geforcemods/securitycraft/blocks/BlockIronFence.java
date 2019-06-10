@@ -3,36 +3,37 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSixWay;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -41,11 +42,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BlockIronFence extends Block implements IIntersectable {
-	public static final BooleanProperty NORTH = BlockSixWay.NORTH;
-	public static final BooleanProperty EAST = BlockSixWay.EAST;
-	public static final BooleanProperty SOUTH = BlockSixWay.SOUTH;
-	public static final BooleanProperty WEST = BlockSixWay.WEST;
-	protected static final Map<EnumFacing, BooleanProperty> FACING_TO_PROPERTY_MAP = BlockSixWay.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
+	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
+	public static final BooleanProperty EAST = SixWayBlock.EAST;
+	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
+	public static final BooleanProperty WEST = SixWayBlock.WEST;
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
 		return p_199775_0_.getKey().getAxis().isHorizontal();
 	}).collect(Util.toMapCollector());
 	protected final VoxelShape[] collisionShapes;
@@ -63,13 +64,7 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public VoxelShape getRenderShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return renderShapes[getIndex(state)];
 	}
@@ -98,49 +93,49 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return shapes[getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return collisionShapes[getIndex(state)];
 	}
 
-	private static int getMask(EnumFacing facing)
+	private static int getMask(Direction facing)
 	{
 		return 1 << facing.getHorizontalIndex();
 	}
 
-	protected int getIndex(IBlockState state)
+	protected int getIndex(BlockState state)
 	{
 		int i = 0;
 
 		if (state.get(NORTH))
-			i |= getMask(EnumFacing.NORTH);
+			i |= getMask(Direction.NORTH);
 
 		if (state.get(EAST))
-			i |= getMask(EnumFacing.EAST);
+			i |= getMask(Direction.EAST);
 
 		if (state.get(SOUTH))
-			i |= getMask(EnumFacing.SOUTH);
+			i |= getMask(Direction.SOUTH);
 
 		if (state.get(WEST))
-			i |= getMask(EnumFacing.WEST);
+			i |= getMask(Direction.WEST);
 
 		return i;
 	}
 
 	@Override
-	public boolean allowsMovement(IBlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
 	{
 		return false;
 	}
 
 	@Override
-	public IBlockState rotate(IBlockState state, Rotation rot)
+	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		switch(rot)
 		{
@@ -156,7 +151,7 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public IBlockState mirror(IBlockState state, Mirror mirror)
+	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		switch(mirror)
 		{
@@ -170,91 +165,81 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
 		IBlockReader world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 
 		return super.getStateForPlacement(ctx)
-				.with(NORTH, canFenceConnectTo(world, pos, EnumFacing.NORTH))
-				.with(EAST, canFenceConnectTo(world, pos, EnumFacing.EAST))
-				.with(SOUTH, canFenceConnectTo(world, pos, EnumFacing.SOUTH))
-				.with(WEST, canFenceConnectTo(world, pos, EnumFacing.WEST));
+				.with(NORTH, canFenceConnectTo(world, pos, Direction.NORTH))
+				.with(EAST, canFenceConnectTo(world, pos, Direction.EAST))
+				.with(SOUTH, canFenceConnectTo(world, pos, Direction.SOUTH))
+				.with(WEST, canFenceConnectTo(world, pos, Direction.WEST));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH);
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		return face != EnumFacing.UP && face != EnumFacing.DOWN ? BlockFaceShape.MIDDLE_POLE : BlockFaceShape.CENTER;
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canFenceConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
-	{
-		return facing.getAxis().getPlane() == EnumFacing.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canFenceConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
-	}
-
-	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		return false;
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public boolean canBeConnectedTo(IBlockState state, IBlockReader world, BlockPos pos, EnumFacing facing)
+	public boolean canBeConnectedTo(BlockState state, IBlockReader world, BlockPos pos, Direction facing)
 	{
-		IBlockState other = world.getBlockState(pos.offset(facing));
-		return attachesTo(other, other.getBlockFaceShape(world, pos.offset(facing), facing.getOpposite()));
+		BlockState other = world.getBlockState(pos.offset(facing));
+		return attachesTo(other, Block.hasSolidSide(other, world, pos.offset(facing), facing.getOpposite()), facing.getOpposite());
 	}
 
-	public boolean attachesTo(IBlockState state, BlockFaceShape faceShape)
+	public boolean attachesTo(BlockState p_220111_1_, boolean hasSolidSide, Direction dir)
 	{
-		Block block = state.getBlock();
-		boolean flag = faceShape == BlockFaceShape.MIDDLE_POLE && (state.getMaterial() == this.material || block instanceof BlockReinforcedFenceGate);
-		return !isExceptBlockForAttachWithPiston(block) && faceShape == BlockFaceShape.SOLID || flag;
+		Block block = p_220111_1_.getBlock();
+		boolean sameFenceOrMaterial = block.isIn(BlockTags.FENCES) && p_220111_1_.getMaterial() == this.material;
+		boolean isValidGate = block instanceof FenceGateBlock && FenceGateBlock.isParallel(p_220111_1_, dir);
+		return !cannotAttach(block) && hasSolidSide || sameFenceOrMaterial || isValidGate;
 	}
 
-	private boolean canFenceConnectTo(IBlockReader world, BlockPos pos, EnumFacing facing)
+	private boolean canFenceConnectTo(IBlockReader world, BlockPos pos, Direction facing)
 	{
 		BlockPos offset = pos.offset(facing);
-		IBlockState other = world.getBlockState(offset);
+		BlockState other = world.getBlockState(offset);
 		return other.canBeConnectedTo(world, offset, facing.getOpposite()) || getDefaultState().canBeConnectedTo(world, pos, facing);
-	}
-
-	public static boolean isExcepBlockForAttachWithPiston(Block block)
-	{
-		return Block.isExceptBlockForAttachWithPiston(block) || block == Blocks.BARRIER || block == Blocks.MELON || block == Blocks.PUMPKIN || block == Blocks.CARVED_PUMPKIN || block == Blocks.JACK_O_LANTERN || block == Blocks.FROSTED_ICE || block == Blocks.TNT;
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
-		if(entity instanceof EntityItem)
+		if(entity instanceof ItemEntity)
 			return;
 		//owner check
-		else if(entity instanceof EntityPlayer)
+		else if(entity instanceof PlayerEntity)
 		{
-			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity))
+			if(((TileEntityOwnable) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
 				return;
 		}
-		else if(entity instanceof EntityCreeper)
+		else if(entity instanceof CreeperEntity)
 		{
-			EntityCreeper creeper = (EntityCreeper)entity;
-			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
+			CreeperEntity creeper = (CreeperEntity)entity;
+			LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
 			creeper.onStruckByLightning(lightning);
 			creeper.extinguish();
@@ -265,14 +250,14 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int eventID, int eventParam)
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
 	{
 		super.eventReceived(state, world, pos, eventID, eventParam);
 		TileEntity tileentity = world.getTileEntity(pos);

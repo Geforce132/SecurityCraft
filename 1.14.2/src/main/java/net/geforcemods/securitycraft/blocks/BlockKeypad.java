@@ -16,14 +16,14 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -32,45 +32,46 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPasswordConvertible {
+public class BlockKeypad extends ContainerBlock implements IOverlayDisplay, IPasswordConvertible {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public BlockKeypad(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(POWERED, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		IBlockState extendedState = getExtendedState(state, world, pos);
+		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
 			return extendedState.getShape(world, pos);
-		else return super.getShape(state, world, pos);
+		else return super.getShape(state, world, pos, ctx);
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		IBlockState extendedState = getExtendedState(state, world, pos);
+		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
 			return extendedState.getCollisionShape(world, pos);
-		else return super.getCollisionShape(state, world, pos);
+		else return super.getCollisionShape(state, world, pos, ctx);
 	}
 
 	@Override
@@ -79,28 +80,13 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		TileEntity te = world.getTileEntity(pos);
-
-		if(te instanceof TileEntityKeypad && ((TileEntityKeypad)te).hasModule(EnumCustomModules.DISGUISE))
-		{
-			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
-
-			return ((ItemModule)module.getItem()).getBlockAddons(module.getTag()).get(0).getDefaultState().getBlockFaceShape(world, pos, face);
-		}
-
-		return BlockFaceShape.SOLID;
-	}
-
-	public boolean shouldSideBeRendered(IBlockReader world, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(IBlockReader world, BlockPos pos, Direction side) {
 		if(world.getTileEntity(pos) == null)
 			return true;
 
@@ -116,7 +102,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 				Block blockToDisguiseAs = blocks.get(0);
 
 				// If the keypad has a disguise module added with a transparent block inserted.
-				if(!blockToDisguiseAs.getDefaultState().getShape(world, pos).equals(VoxelShapes.fullCube()) || !blockToDisguiseAs.getDefaultState().isFullCube())
+				if(!blockToDisguiseAs.getDefaultState().getShape(world, pos).equals(VoxelShapes.fullCube()))
 					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)), side);
 			}
 		}
@@ -124,7 +110,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockReader world, BlockPos keypadPos, IBlockState neighborState, EnumFacing side) {
+	public boolean checkForSideTransparency(IBlockReader world, BlockPos keypadPos, BlockState neighborState, Direction side) {
 		if(neighborState.isAir(world, keypadPos.offset(side)))
 			return true;
 
@@ -133,19 +119,19 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
 		// and a vanilla block instead of checking for specific blocks, since all vanilla
 		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:"))
+		if(neighborBlock instanceof BreakableBlock && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:"))
 			return false;
 
 		return true;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		if(world.isRemote)
 			return true;
 		else {
@@ -171,7 +157,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public void tick(IBlockState state, World world, BlockPos pos, Random random){
+	public void tick(BlockState state, World world, BlockPos pos, Random random){
 		BlockUtils.setBlockProperty(world, pos, POWERED, false);
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 	}
@@ -180,32 +166,32 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState)
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
 	{
 		setDefaultFacing(world, pos, state);
 	}
 
-	private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
-		IBlockState north = world.getBlockState(pos.north());
-		IBlockState south = world.getBlockState(pos.south());
-		IBlockState west = world.getBlockState(pos.west());
-		IBlockState east = world.getBlockState(pos.east());
-		EnumFacing facing = state.get(FACING);
+	private void setDefaultFacing(World world, BlockPos pos, BlockState state) {
+		//		BlockState north = world.getBlockState(pos.north());
+		//		BlockState south = world.getBlockState(pos.south());
+		//		BlockState west = world.getBlockState(pos.west());
+		//		BlockState east = world.getBlockState(pos.east());
+		Direction facing = state.get(FACING);
 
-		if (facing == EnumFacing.NORTH && north.isFullCube() && !south.isFullCube())
-			facing = EnumFacing.SOUTH;
-		else if (facing == EnumFacing.SOUTH && south.isFullCube() && !north.isFullCube())
-			facing = EnumFacing.NORTH;
-		else if (facing == EnumFacing.WEST && west.isFullCube() && !east.isFullCube())
-			facing = EnumFacing.EAST;
-		else if (facing == EnumFacing.EAST && east.isFullCube() && !west.isFullCube())
-			facing = EnumFacing.WEST;
+		if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
+			facing = Direction.SOUTH;
+		else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
+			facing = Direction.NORTH;
+		else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
+			facing = Direction.EAST;
+		else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
+			facing = Direction.WEST;
 
 		world.setBlockState(pos, state.with(FACING, facing), 2);
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state){
+	public boolean canProvidePower(BlockState state){
 		return true;
 	}
 
@@ -215,7 +201,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
 		if(blockState.get(POWERED))
 			return 15;
 		else
@@ -227,7 +213,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	 * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockReader blockAccess, BlockPos pos, EnumFacing side){
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
 		if(blockState.get(POWERED))
 			return 15;
 		else
@@ -235,25 +221,25 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
 	}
 
 	@Override
-	public IBlockState getExtendedState(IBlockState state, IBlockReader world, BlockPos pos)
+	public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
+		BlockState disguisedState = getDisguisedBlockState(world, pos);
 
 		return disguisedState != null ? disguisedState : state;
 	}
 
-	public IBlockState getDisguisedBlockState(IBlockReader world, BlockPos pos) {
+	public BlockState getDisguisedBlockState(IBlockReader world, BlockPos pos) {
 		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
 			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
 			ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
@@ -282,12 +268,12 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(POWERED);
@@ -302,17 +288,17 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos).getItem() == asItem();
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return getDisguisedStack(world, pos);
 	}
@@ -324,7 +310,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public boolean convert(EntityPlayer player, World world, BlockPos pos)
+	public boolean convert(PlayerEntity player, World world, BlockPos pos)
 	{
 		world.setBlockState(pos, SCContent.keypad.getDefaultState().with(BlockKeypad.FACING, world.getBlockState(pos).get(BlockFrame.FACING)).with(BlockKeypad.POWERED, false));
 		((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());

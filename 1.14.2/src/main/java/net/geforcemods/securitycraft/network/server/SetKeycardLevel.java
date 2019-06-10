@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -63,7 +63,7 @@ public class SetKeycardLevel {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			int level = message.level;
 			boolean exactCard = message.exactCard;
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
 			((TileEntityKeycardReader) world.getTileEntity(pos)).setPassword(String.valueOf(level));

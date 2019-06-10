@@ -1,18 +1,18 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerBriefcase extends Container {
 
 	private BriefcaseInventory inventory;
 
-	public ContainerBriefcase(EntityPlayer player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
+	public ContainerBriefcase(PlayerEntity player, PlayerInventory playerInventory, BriefcaseInventory briefcaseInventory) {
 		inventory = briefcaseInventory;
 
 		for(int i = 0; i < 3; i++)
@@ -28,7 +28,7 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
@@ -61,7 +61,7 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
 			return ItemStack.EMPTY;
 
@@ -69,7 +69,7 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(PlayerEntity player) {
 		return true;
 	}
 

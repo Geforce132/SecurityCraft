@@ -14,19 +14,19 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -43,9 +43,9 @@ public class ItemMineRemoteAccessTool extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
-		if(!world.isRemote && player instanceof EntityPlayerMP)
-			NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.MRAT));
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
+		if(!world.isRemote && player instanceof ServerPlayerEntity)
+			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
 
 		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
@@ -53,10 +53,10 @@ public class ItemMineRemoteAccessTool extends Item {
 	@Override
 	public EnumActionResult onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ());
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ){
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, float hitX, float hitY, float hitZ){
 
 		if(!world.isRemote)
 			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
@@ -74,18 +74,18 @@ public class ItemMineRemoteAccessTool extends Item {
 					}
 
 					if(stack.getTag() == null)
-						stack.setTag(new NBTTagCompound());
+						stack.setTag(new CompoundNBT());
 
 					stack.getTag().putIntArray(("mine" + availSlot), new int[]{BlockUtils.fromPos(pos)[0], BlockUtils.fromPos(pos)[1], BlockUtils.fromPos(pos)[2]});
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos, player);
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 				}
 			}
-			else if(player instanceof EntityPlayerMP)
-				NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.MRAT));
+			else if(player instanceof ServerPlayerEntity)
+				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
 
 		return EnumActionResult.SUCCESS;
 	}
@@ -101,17 +101,17 @@ public class ItemMineRemoteAccessTool extends Item {
 				int[] coords = par1ItemStack.getTag().getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
-					list.add(new TextComponentString("---"));
+					list.add(new StringTextComponent("---"));
 					continue;
 				}
 				else
-					list.add(new TextComponentString(ClientUtils.localize("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]));
+					list.add(new StringTextComponent(ClientUtils.localize("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]));
 			}
 			else
-				list.add(new TextComponentString("---"));
+				list.add(new StringTextComponent("---"));
 	}
 
-	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, EntityPlayer player) {
+	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, PlayerEntity player) {
 		if(stack.getTag() == null)
 			return;
 
@@ -121,7 +121,7 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new UpdateNBTTagOnClient(stack));
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 					return;
 				}
 			}

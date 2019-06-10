@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -29,7 +29,7 @@ public class CommandSC {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new TextComponentString("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
+			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))));
 			return 0;
 		});
 	}

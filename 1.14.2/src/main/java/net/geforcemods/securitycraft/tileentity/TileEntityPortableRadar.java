@@ -16,9 +16,9 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -41,7 +41,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
 	@Override
 	public boolean attackEntity(Entity attacked) {
-		if (attacked instanceof EntityPlayer)
+		if (attacked instanceof PlayerEntity)
 		{
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
 			List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
@@ -57,13 +57,13 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				}
 			}
 
-			EntityPlayerMP owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
+			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
 			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
 				return false;
 
 
-			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((EntityPlayer)attacked))
+			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((PlayerEntity)attacked))
 			{
 				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.portableRadar.getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
 				setSentMessage();
@@ -78,7 +78,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 
@@ -88,7 +88,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 
@@ -99,7 +99,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			lastPlayerName = tag.getString("lastPlayerName");
 	}
 
-	public boolean shouldSendMessage(EntityPlayer player) {
+	public boolean shouldSendMessage(PlayerEntity player) {
 		if(!player.getName().getFormattedText().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
 			lastPlayerName = player.getName().getFormattedText();

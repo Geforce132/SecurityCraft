@@ -8,11 +8,11 @@ import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerFurnace;
@@ -21,15 +21,15 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -124,7 +124,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public ITextComponent getName()
 	{
-		return new TextComponentString(hasCustomSCName() ? furnaceCustomName : "container.furnace");
+		return new StringTextComponent(hasCustomSCName() ? furnaceCustomName : "container.furnace");
 	}
 
 	@Override
@@ -139,15 +139,15 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
-		NBTTagList list = tag.getList("Items", 10);
+		ListNBT list = tag.getList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
 		{
-			NBTTagCompound stackTag = list.getCompound(i);
+			CompoundNBT stackTag = list.getCompound(i);
 			byte slot = stackTag.getByte("Slot");
 
 			if (slot >= 0 && slot < furnaceItemStacks.size())
@@ -165,18 +165,18 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 		tag.putShort("BurnTime", (short)furnaceBurnTime);
 		tag.putShort("CookTime", (short)cookTime);
 		tag.putShort("CookTimeTotal", (short)totalCookTime);
-		NBTTagList list = new NBTTagList();
+		ListNBT list = new ListNBT();
 
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			if (!furnaceItemStacks.get(i).isEmpty())
 			{
-				NBTTagCompound stackTag = new NBTTagCompound();
+				CompoundNBT stackTag = new CompoundNBT();
 				stackTag.putByte("Slot", (byte)i);
 				furnaceItemStacks.get(i).write(stackTag);
 				list.add(stackTag);
@@ -338,7 +338,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		} else {
 			Item item = stack.getItem();
 			int ret = stack.getBurnTime();
-			return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? TileEntityFurnace.getBurnTimes().getOrDefault(item, 0) : ret);
+			return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? FurnaceTileEntity.getBurnTimes().getOrDefault(item, 0) : ret);
 		}
 	}
 
@@ -348,16 +348,16 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player)
+	public boolean isUsableByPlayer(PlayerEntity player)
 	{
 		return world.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {}
+	public void openInventory(PlayerEntity player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {}
+	public void closeInventory(PlayerEntity player) {}
 
 	@Override
 	public boolean isEmpty()
@@ -376,21 +376,21 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing side)
+	public int[] getSlotsForFace(Direction side)
 	{
-		return side == EnumFacing.DOWN ? slotsBottom : (side == EnumFacing.UP ? slotsTop : slotsSides);
+		return side == Direction.DOWN ? slotsBottom : (side == Direction.UP ? slotsTop : slotsSides);
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction)
+	public boolean canInsertItem(int index, ItemStack stack, Direction direction)
 	{
 		return isItemValidForSlot(index, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+	public boolean canExtractItem(int index, ItemStack stack, Direction direction)
 	{
-		if (direction == EnumFacing.DOWN && index == 1)
+		if (direction == Direction.DOWN && index == 1)
 		{
 			Item item = stack.getItem();
 
@@ -406,7 +406,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return "minecraft:furnace";
 	}
 
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer player)
+	public Container createContainer(InventoryPlayer playerInventory, PlayerEntity player)
 	{
 		return new ContainerFurnace(playerInventory, this);
 	}
@@ -463,28 +463,28 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomSCName() ? getName() : new TextComponentTranslation(getName().getFormattedText(), new Object[0]);
+		return hasCustomSCName() ? getName() : new TranslationTextComponent(getName().getFormattedText(), new Object[0]);
 	}
 
 	@Override
-	public void activate(EntityPlayer player) {
+	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace)
 			BlockKeypadFurnace.activate(world, pos, player);
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
+	public void openPasswordGUI(PlayerEntity player) {
 		if(getPassword() != null)
 		{
-			if(player instanceof EntityPlayerMP)
-				NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
+			if(player instanceof ServerPlayerEntity)
+				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
 		}
 		else
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
+				if(player instanceof ServerPlayerEntity)
+					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -492,7 +492,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadFurnace.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else {

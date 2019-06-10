@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -140,7 +140,7 @@ public class GuiBriefcase extends GuiContainer {
 				break;
 			case 8:
 				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
+					CompoundNBT nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))

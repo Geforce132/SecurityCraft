@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -135,7 +135,7 @@ public class ModuleUtils{
 		return list;
 	}
 
-	public static boolean checkForModule(World world, BlockPos pos, EntityPlayer player, EnumCustomModules module){
+	public static boolean checkForModule(World world, BlockPos pos, PlayerEntity player, EnumCustomModules module){
 		TileEntity te = world.getTileEntity(pos);
 
 		if(te == null || !(te instanceof CustomizableSCTE))

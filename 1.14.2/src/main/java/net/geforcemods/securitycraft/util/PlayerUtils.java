@@ -6,10 +6,10 @@ import java.util.List;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSource;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
@@ -19,17 +19,17 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 public class PlayerUtils{
 
 	/**
-	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p>
+	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
 	 *
 	 * Args: playerName.
 	 */
-	public static EntityPlayer getPlayerFromName(String name){
+	public static PlayerEntity getPlayerFromName(String name){
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
 			List<?> players = Minecraft.getInstance().world.playerEntities;
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
 				if(tempPlayer.getName().getFormattedText().equals(name))
 					return tempPlayer;
 			}
@@ -40,7 +40,7 @@ public class PlayerUtils{
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
 				if(tempPlayer.getName().getFormattedText().equals(name))
 					return tempPlayer;
 			}
@@ -57,7 +57,7 @@ public class PlayerUtils{
 	public static boolean isPlayerOnline(String name) {
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
 			for(int i = 0; i < Minecraft.getInstance().world.playerEntities.size(); i++){
-				EntityPlayer player = Minecraft.getInstance().world.playerEntities.get(i);
+				PlayerEntity player = Minecraft.getInstance().world.playerEntities.get(i);
 
 				if(player != null && player.getName().getFormattedText().equals(name))
 					return true;
@@ -69,8 +69,8 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
-		player.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+	public static void sendMessageToPlayer(PlayerEntity player, String prefix, String text, TextFormatting color){
+		player.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class PlayerUtils{
 	 * Args: sender, prefix, text, link, color.
 	 */
 	public static void sendMessageEndingWithLink(ICommandSource sender, String prefix, String text, String link, TextFormatting color){
-		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+		sender.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class PlayerUtils{
 	 *
 	 * Args: player, item.
 	 */
-	public static boolean isHoldingItem(EntityPlayer player, Item item){
+	public static boolean isHoldingItem(PlayerEntity player, Item item){
 		if(item == null && player.inventory.getCurrentItem().isEmpty())
 			return true;
 
@@ -99,7 +99,7 @@ public class PlayerUtils{
 	 *
 	 * Args: entity.
 	 */
-	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
+	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
 		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
 	}
 }

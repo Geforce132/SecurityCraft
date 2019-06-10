@@ -1,39 +1,39 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
-public class EntityBullet extends EntityArrow
+public class EntityBullet extends ArrowEntity
 {
 	public EntityBullet(World world)
 	{
 		super(SCContent.eTypeBullet, world);
-		setSize(0.15F, 0.1F);
 	}
 
-	public EntityBullet(World world, EntityLivingBase shooter)
+	public EntityBullet(World world, LivingEntity shooter)
 	{
 		super(SCContent.eTypeBullet, shooter, world);
-		setSize(0.15F, 0.1F);
 	}
 
 	@Override
 	protected void onHit(RayTraceResult raytraceResult)
 	{
-		if(raytraceResult.entity!= null)
-			raytraceResult.entity.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ) * 2.0D));
+		if(raytraceResult.getType() == Type.ENTITY)
+			((EntityRayTraceResult)raytraceResult).getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
 
 		remove();
 	}
 
 	@Override
-	protected void arrowHit(EntityLivingBase entity)
+	protected void arrowHit(LivingEntity entity)
 	{
 		remove();
 	}

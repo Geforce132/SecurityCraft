@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class TileEntityTrackMine extends TileEntityOwnable
 {
@@ -36,14 +36,14 @@ public class TileEntityTrackMine extends TileEntityOwnable
 	}
 
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		tag.putBoolean("TrackMineEnabled", active);
 		return super.write(tag);
 	}
 
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 		active = tag.getBoolean("TrackMineEnabled");

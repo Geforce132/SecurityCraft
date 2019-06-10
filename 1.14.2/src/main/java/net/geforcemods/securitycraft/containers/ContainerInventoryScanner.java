@@ -4,11 +4,11 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerInventoryScanner extends Container {
@@ -40,7 +40,7 @@ public class ContainerInventoryScanner extends Container {
 	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index)
+	public ItemStack transferStackInSlot(PlayerEntity player, int index)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
@@ -71,7 +71,7 @@ public class ContainerInventoryScanner extends Container {
 	 * Called when the container is closed.
 	 */
 	@Override
-	public void onContainerClosed(EntityPlayer player)
+	public void onContainerClosed(PlayerEntity player)
 	{
 		super.onContainerClosed(player);
 
@@ -79,12 +79,12 @@ public class ContainerInventoryScanner extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public ItemStack slotClick(int slotId, int dragType, ClickType clickType, EntityPlayer player)
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickType, PlayerEntity player)
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof SlotOwnerRestricted && ((SlotOwnerRestricted)getSlot(slotId)).isGhostSlot())
 		{

@@ -15,7 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -187,7 +187,7 @@ public class GuiMRAT extends GuiContainer{
 			return new int[] {0,0,0};
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player)
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, PlayerEntity player)
 	{
 		if(stack.getTag() == null)
 			return;

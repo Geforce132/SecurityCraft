@@ -6,24 +6,24 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.BlockFlowingFluid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Particles;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -69,7 +69,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 				double y = pos.getY() + 1;
 				double z = pos.getZ() + random.nextFloat();
 
-				world.addParticle(Particles.LAVA, x, y, z, 0.0D, 0.0D, 0.0D);
+				world.addParticle(ParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D);
 				world.playSound(x, y, z, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 			}
 
@@ -97,9 +97,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 					if(!world.isBlockPresent(blockpos))
 						return;
 
-					IBlockState iblockstate = world.getBlockState(blockpos);
+					BlockState BlockState = world.getBlockState(blockpos);
 
-					if(iblockstate.isAir())
+					if(BlockState.isAir())
 					{
 						if(isSurroundingBlockFlammable(world, blockpos))
 						{
@@ -107,7 +107,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 							return;
 						}
 					}
-					else if(iblockstate.getMaterial().blocksMovement())
+					else if(BlockState.getMaterial().blocksMovement())
 						return;
 				}
 			}
@@ -127,18 +127,18 @@ public abstract class FakeLavaFluid extends FlowingFluid
 		}
 	}
 
-	private boolean isSurroundingBlockFlammable(IWorldReaderBase world, BlockPos pos)
+	private boolean isSurroundingBlockFlammable(IWorldReader world, BlockPos pos)
 	{
-		for(EnumFacing enumfacing : EnumFacing.values())
+		for(Direction Direction : Direction.values())
 		{
-			if(this.getCanBlockBurn(world, pos.offset(enumfacing)))
+			if(this.getCanBlockBurn(world, pos.offset(Direction)))
 				return true;
 		}
 
 		return false;
 	}
 
-	private boolean getCanBlockBurn(IWorldReaderBase world, BlockPos pos)
+	private boolean getCanBlockBurn(IWorldReader world, BlockPos pos)
 	{
 		return pos.getY() >= 0 && pos.getY() < 256 && !world.isBlockLoaded(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
 	}
@@ -148,23 +148,23 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public IParticleData getDripParticleData()
 	{
-		return Particles.DRIPPING_LAVA;
+		return ParticleTypes.DRIPPING_LAVA;
 	}
 
 	@Override
-	protected void beforeReplacingBlock(IWorld world, BlockPos pos, IBlockState state)
+	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state)
 	{
 		triggerEffects(world, pos);
 	}
 
 	@Override
-	public int getSlopeFindDistance(IWorldReaderBase world)
+	public int getSlopeFindDistance(IWorldReader world)
 	{
 		return world.getDimension().doesWaterVaporize() ? 4 : 2;
 	}
 
 	@Override
-	public IBlockState getBlockState(IFluidState state)
+	public BlockState getBlockState(IFluidState state)
 	{
 		return SCContent.fakeLavaBlock.getDefaultState().with(BlockFlowingFluid.LEVEL, getLevelFromState(state));
 	}
@@ -176,19 +176,19 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public int getLevelDecreasePerBlock(IWorldReaderBase world)
+	public int getLevelDecreasePerBlock(IWorldReader world)
 	{
 		return world.getDimension().doesWaterVaporize() ? 1 : 2;
 	}
 
 	@Override
-	public boolean canOtherFlowInto(IFluidState state, Fluid fluid, EnumFacing direction)
+	public boolean canOtherFlowInto(IFluidState state, Fluid fluid, Direction direction)
 	{
 		return state.getHeight() >= 0.44444445F && fluid.isIn(FluidTags.WATER);
 	}
 
 	@Override
-	public int getTickRate(IWorldReaderBase world)
+	public int getTickRate(IWorldReader world)
 	{
 		return world.getDimension().isNether() ? 10 : 30;
 	}
@@ -210,11 +210,11 @@ public abstract class FakeLavaFluid extends FlowingFluid
 		double y = p_205581_2_.getY();
 		double z = p_205581_2_.getZ();
 
-		p_205581_1_.playSound((EntityPlayer)null, p_205581_2_, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (p_205581_1_.getRandom().nextFloat() - p_205581_1_.getRandom().nextFloat()) * 0.8F);
+		p_205581_1_.playSound((PlayerEntity)null, p_205581_2_, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (p_205581_1_.getRandom().nextFloat() - p_205581_1_.getRandom().nextFloat()) * 0.8F);
 
 		for(int i = 0; i < 8; ++i)
 		{
-			p_205581_1_.addParticle(Particles.LARGE_SMOKE, x + Math.random(), y + 1.2D, z + Math.random(), 0.0D, 0.0D, 0.0D);
+			p_205581_1_.addParticle(ParticleTypes.LARGE_SMOKE, x + Math.random(), y + 1.2D, z + Math.random(), 0.0D, 0.0D, 0.0D);
 		}
 
 	}
@@ -226,9 +226,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	protected void flowInto(IWorld world, BlockPos pos, IBlockState blockState, EnumFacing direction, IFluidState fluidState)
+	protected void flowInto(IWorld world, BlockPos pos, BlockState blockState, Direction direction, IFluidState fluidState)
 	{
-		if(direction == EnumFacing.DOWN)
+		if(direction == Direction.DOWN)
 		{
 			IFluidState ifluidstate = world.getFluidState(pos);
 

@@ -7,26 +7,25 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockMotionActivatedLight extends BlockOwnable {
@@ -40,26 +39,16 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	public BlockMotionActivatedLight(Material material) {
 		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(LIT, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state){
-		return false;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
-		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos){
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
 		switch(state.get(FACING))
 		{
 			case NORTH: return SHAPE_NORTH;
@@ -71,12 +60,12 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IWorldReader world, BlockPos pos) {
-		if(BlockUtils.getBlock(world, pos) != SCContent.motionActivatedLight)
+	public int getLightValue(BlockState state) {
+		if(state.getBlock() != SCContent.motionActivatedLight)
 			return 0; //Weird if statement I had to include because Waila kept
 		//crashing if I looked at one of these lights then looked away quickly.
 
-		return world.getBlockState(pos).get(LIT) ? 15 : 0;
+		return state.get(LIT) ? 15 : 0;
 	}
 
 	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
@@ -104,39 +93,31 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		Direction side = state.get(FACING);
+
+		return side != Direction.UP && side != Direction.DOWN && BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return BlockFaceShape.UNDEFINED;
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		EnumFacing side = state.get(FACING);
-
-		return side != EnumFacing.UP && side != EnumFacing.DOWN && BlockUtils.isSideSolid(world, pos.offset(side.getOpposite()), side);
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
-	}
-
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
-	{
-		return facing != EnumFacing.UP && facing != EnumFacing.DOWN && BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
+		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if (!isValidPosition(state, world, pos)) {
-			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
-			world.removeBlock(pos);
-		}
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+		if (!isValidPosition(state, world, pos))
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(LIT);
@@ -144,7 +125,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new TileEntityMotionLight().attacks(EntityPlayer.class, CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 1);
+		return new TileEntityMotionLight().attacks(PlayerEntity.class, CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 1);
 	}
 
 }

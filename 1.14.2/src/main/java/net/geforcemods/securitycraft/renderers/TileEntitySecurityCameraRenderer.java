@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -49,15 +49,15 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 		GlStateManager.pushMatrix();
 
 		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
+			Direction side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
 
-			if(side == EnumFacing.EAST)
+			if(side == Direction.EAST)
 				rotation = -1F;
-			else if(side == EnumFacing.SOUTH)
+			else if(side == Direction.SOUTH)
 				rotation = -10000F;
-			else if(side == EnumFacing.WEST)
+			else if(side == Direction.WEST)
 				rotation = 1F;
-			else if(side == EnumFacing.NORTH)
+			else if(side == Direction.NORTH)
 				rotation = 0F;
 		}
 		else

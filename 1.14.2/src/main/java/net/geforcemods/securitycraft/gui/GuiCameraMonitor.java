@@ -19,7 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,7 +32,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	private InventoryPlayer playerInventory;
 	private ItemCameraMonitor cameraMonitor;
-	private NBTTagCompound nbtTag;
+	private CompoundNBT nbtTag;
 
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
@@ -44,14 +44,14 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	private int page = 1;
 
-	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag) {
+	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag) {
 		super(new ContainerGeneric());
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
 	}
 
-	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag, int page) {
+	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag, int page) {
 		this(inventory, item, itemNBTTag);
 		this.page = page;
 	}

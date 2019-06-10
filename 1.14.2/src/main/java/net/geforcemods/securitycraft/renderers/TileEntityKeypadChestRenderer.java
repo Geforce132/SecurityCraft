@@ -3,16 +3,16 @@ package net.geforcemods.securitycraft.renderers;
 import java.util.Calendar;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.model.ModelChest;
 import net.minecraft.client.renderer.entity.model.ModelLargeChest;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.IChestLid;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -43,8 +43,8 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 		GlStateManager.enableDepthTest();
 		GlStateManager.depthFunc(515);
 		GlStateManager.depthMask(true);
-		IBlockState iblockstate = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : Blocks.CHEST.getDefaultState().with(BlockChest.FACING, EnumFacing.SOUTH);
-		ChestType chesttype = iblockstate.has(BlockChest.TYPE) ? iblockstate.get(BlockChest.TYPE) : ChestType.SINGLE;
+		BlockState BlockState = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
+		ChestType chesttype = BlockState.has(ChestBlock.TYPE) ? BlockState.get(ChestBlock.TYPE) : ChestType.SINGLE;
 		if (chesttype != ChestType.LEFT) {
 			boolean flag = chesttype != ChestType.SINGLE;
 			ModelChest modelchest = this.getChestModel(tileEntityIn, destroyStage, flag);
@@ -62,7 +62,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 			GlStateManager.enableRescaleNormal();
 			GlStateManager.translatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
 			GlStateManager.scalef(1.0F, -1.0F, -1.0F);
-			float f = iblockstate.get(BlockChest.FACING).getHorizontalAngle();
+			float f = BlockState.get(ChestBlock.FACING).getHorizontalAngle();
 			if (Math.abs(f) > 1.0E-5D) {
 				GlStateManager.translatef(0.5F, 0.5F, 0.5F);
 				GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);

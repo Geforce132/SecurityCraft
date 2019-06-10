@@ -3,29 +3,31 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockButton;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockPanicButton extends BlockButton implements ITileEntityProvider {
+public class BlockPanicButton extends AbstractButtonBlock implements ITileEntityProvider {
 	private static final VoxelShape FLOOR_NS_POWERED = Block.makeCuboidShape(3, 0, 5, 13, 1, 11);
 	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.makeCuboidShape(3, 0, 5, 13, 2, 11);
 	private static final VoxelShape FLOOR_EW_POWERED = Block.makeCuboidShape(5, 0, 3, 11, 1, 13);
@@ -47,59 +49,50 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 		super(false, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
 	@Override
-	public boolean isNormalCube(IBlockState state)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		return false;
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
-	}
-
-	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
-		world.markBlockRangeForRenderUpdate(pos, pos);
+		world.markForRerender(pos);
 
 		if(state.get(FACE) == AttachFace.WALL)
 			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));
 		else if(state.get(FACE) == AttachFace.CEILING)
-			notifyNeighbors(world, pos, EnumFacing.DOWN);
+			notifyNeighbors(world, pos, Direction.DOWN);
 		else if(state.get(FACE) == AttachFace.FLOOR)
-			notifyNeighbors(world, pos, EnumFacing.UP);
+			notifyNeighbors(world, pos, Direction.UP);
 
 		return true;
 	}
 
-	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing)
+	private void notifyNeighbors(World world, BlockPos pos, Direction facing)
 	{
 		world.notifyNeighborsOfStateChange(pos, this);
 		world.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param){
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param){
 		super.eventReceived(state, world, pos, id, param);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		switch(state.get(FACE))
 		{
@@ -166,7 +159,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return VoxelShapes.empty();
 	}

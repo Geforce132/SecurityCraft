@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.ClientPlayerEntity;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -47,7 +47,7 @@ public class GuiHandler {
 	@OnlyIn(Dist.CLIENT)
 	public static GuiScreen getClientGuiElement(OpenContainer message)
 	{
-		EntityPlayerSP player = Minecraft.getInstance().player;
+		ClientPlayerEntity player = Minecraft.getInstance().player;
 
 		if(message.getId().equals(SETUP_KEYCARD_READER))
 		{

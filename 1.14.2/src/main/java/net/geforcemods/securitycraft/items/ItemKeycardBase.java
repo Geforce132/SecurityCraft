@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -46,11 +46,11 @@ public class ItemKeycardBase extends Item{
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(level == 3){
 			if(stack.getTag() == null){
-				stack.setTag(new NBTTagCompound());
+				stack.setTag(new CompoundNBT());
 				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(new TextComponentString(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
+			list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
 
 		}
 	}

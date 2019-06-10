@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class GivePotionEffect {
@@ -49,7 +49,7 @@ public class GivePotionEffect {
 
 	public static void onMessage(GivePotionEffect message, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() -> ctx.get().getSender().addPotionEffect(new PotionEffect(Potion.getPotionById(message.potionID), message.duration, message.amplifier, false, true)));
+		ctx.get().enqueueWork(() -> ctx.get().getSender().addPotionEffect(new EffectInstance(Effect.getPotionById(message.potionID), message.duration, message.amplifier, false, true)));
 		ctx.get().setPacketHandled(true);
 	}
 

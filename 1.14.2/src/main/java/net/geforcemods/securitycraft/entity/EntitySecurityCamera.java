@@ -19,11 +19,11 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Effect;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -60,11 +60,9 @@ public class EntitySecurityCamera extends Entity{
 	public EntitySecurityCamera(World world){
 		super(SCContent.eTypeSecurityCamera, world);
 		noClip = true;
-		height = 0.0001F;
-		width = 0.0001F;
 	}
 
-	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntityPlayer player){
+	public EntitySecurityCamera(World world, double x, double y, double z, int id, PlayerEntity player){
 		this(world);
 		blockPosX = (int) x;
 		blockPosY = (int) y;
@@ -80,17 +78,17 @@ public class EntitySecurityCamera extends Entity{
 
 		rotationPitch = 30F;
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == EnumFacing.NORTH)
+		if(facing == Direction.NORTH)
 			rotationYaw = 180F;
-		else if(facing == EnumFacing.WEST)
+		else if(facing == Direction.WEST)
 			rotationYaw = 90F;
-		else if(facing == EnumFacing.SOUTH)
+		else if(facing == Direction.SOUTH)
 			rotationYaw = 0F;
-		else if(facing == EnumFacing.EAST)
+		else if(facing == Direction.EAST)
 			rotationYaw = 270F;
-		else if(facing == EnumFacing.DOWN)
+		else if(facing == Direction.DOWN)
 			rotationPitch = 75;
 	}
 
@@ -110,23 +108,23 @@ public class EntitySecurityCamera extends Entity{
 
 		rotationPitch = 30.0F;
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-		if(facing == EnumFacing.NORTH)
+		if(facing == Direction.NORTH)
 			rotationYaw = 180F;
-		else if(facing == EnumFacing.WEST)
+		else if(facing == Direction.WEST)
 			rotationYaw = 90F;
-		else if(facing == EnumFacing.SOUTH)
+		else if(facing == Direction.SOUTH)
 			rotationYaw = 0F;
-		else if(facing == EnumFacing.EAST)
+		else if(facing == Direction.EAST)
 			rotationYaw = 270F;
-		else if(facing == EnumFacing.DOWN)
+		else if(facing == Direction.DOWN)
 			rotationPitch = 75;
 	}
 
 	@Override
 	public double getMountedYOffset(){
-		return height * -7500D;
+		return -0.75D;
 	}
 
 	@Override
@@ -142,7 +140,7 @@ public class EntitySecurityCamera extends Entity{
 	@Override
 	public void tick(){
 		if(world.isRemote && isBeingRidden()){
-			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
+			PlayerEntity lowestEntity = (PlayerEntity)getPassengers().get(0);
 
 			if(screenshotCooldown > 0)
 				screenshotCooldown -= 1;
@@ -176,7 +174,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GivePotionEffect(Potion.getIdFromPotion(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
+				SecurityCraft.channel.sendToServer(new GivePotionEffect(Effect.getIdFromPotion(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
 		}
 
 		if(!world.isRemote)
@@ -243,30 +241,30 @@ public class EntitySecurityCamera extends Entity{
 
 	public void moveViewLeft() {
 		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-			if(facing == EnumFacing.EAST)
+			if(facing == Direction.EAST)
 			{
 				if((rotationYaw - CAMERA_SPEED) > -180F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.WEST)
+			else if(facing == Direction.WEST)
 			{
 				if((rotationYaw - CAMERA_SPEED) > 0F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.NORTH)
+			else if(facing == Direction.NORTH)
 			{
 				// Handles some problems the occurs from the way the rotationYaw value works in MC
 				if((((rotationYaw - CAMERA_SPEED) > 90F) && ((rotationYaw - CAMERA_SPEED) < 185F)) || (((rotationYaw - CAMERA_SPEED) > -190F) && ((rotationYaw - CAMERA_SPEED) < -90F)))
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.SOUTH)
+			else if(facing == Direction.SOUTH)
 			{
 				if((rotationYaw - CAMERA_SPEED) > -90F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.DOWN)
+			else if(facing == Direction.DOWN)
 				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 
 			updateServerRotation();
@@ -275,29 +273,29 @@ public class EntitySecurityCamera extends Entity{
 
 	public void moveViewRight(){
 		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-			if(facing == EnumFacing.EAST)
+			if(facing == Direction.EAST)
 			{
 				if((rotationYaw + CAMERA_SPEED) < 0F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.WEST)
+			else if(facing == Direction.WEST)
 			{
 				if((rotationYaw + CAMERA_SPEED) < 180F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.NORTH)
+			else if(facing == Direction.NORTH)
 			{
 				if((((rotationYaw + CAMERA_SPEED) > 85F) && ((rotationYaw + CAMERA_SPEED) < 185F)) || ((rotationYaw + CAMERA_SPEED) < -95F) && ((rotationYaw + CAMERA_SPEED) > -180F))
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.SOUTH)
+			else if(facing == Direction.SOUTH)
 			{
 				if((rotationYaw + CAMERA_SPEED) < 90F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 			}
-			else if(facing == EnumFacing.DOWN)
+			else if(facing == Direction.DOWN)
 				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 
 			updateServerRotation();
@@ -357,9 +355,9 @@ public class EntitySecurityCamera extends Entity{
 		super.remove();
 
 		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
-			EntityPlayer player = PlayerUtils.getPlayerFromName(playerViewingName);
+			PlayerEntity player = PlayerUtils.getPlayerFromName(playerViewingName);
 			player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (EntityPlayerMP)player), new SetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch));
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch));
 		}
 	}
 
@@ -367,7 +365,7 @@ public class EntitySecurityCamera extends Entity{
 	protected void registerData(){}
 
 	@Override
-	public void writeAdditional(NBTTagCompound tag){
+	public void writeAdditional(CompoundNBT tag){
 		tag.putInt("CameraID", id);
 
 		if(playerViewingName != null)
@@ -390,7 +388,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	@Override
-	public void readAdditional(NBTTagCompound tag){
+	public void readAdditional(CompoundNBT tag){
 		id = tag.getInt("CameraID");
 
 		if(tag.contains("playerName"))

@@ -8,25 +8,26 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -40,8 +41,8 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos){
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
 		return state.get(DEACTIVATED) ? VoxelShapes.fullCube() : VoxelShapes.empty();
 	}
 
@@ -59,11 +60,11 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!world.isRemote){
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
-			boolean isPlayer = entity instanceof EntityPlayer;
+			boolean isPlayer = entity instanceof PlayerEntity;
 			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
 
-			if(isPlayer || (entity instanceof EntityMob && shouldCaptureMobs)){
-				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
+			if(isPlayer || (entity instanceof MobEntity && shouldCaptureMobs)){
+				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
 					return;
 
 				if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
@@ -82,24 +83,24 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer)
-					entity.sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.cageTrap.getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName().getFormattedText()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					entity.sendMessage(new TranslationTextComponent("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.cageTrap.getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((PlayerEntity) entity).getName().getFormattedText()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(DEACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}

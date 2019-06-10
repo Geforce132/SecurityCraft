@@ -1,25 +1,25 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStandingSign;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Fluids;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.StandingSignBlock;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockSecretSignStanding extends BlockSecretSign
 {
-	public static final IntegerProperty ROTATION = BlockStandingSign.ROTATION;
+	public static final IntegerProperty ROTATION = StandingSignBlock.ROTATION;
 
 	public BlockSecretSignStanding()
 	{
@@ -28,50 +28,47 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	}
 
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos)
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
 	{
 		return world.getBlockState(pos.down()).getMaterial().isSolid();
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
 		return getDefaultState().with(ROTATION, MathHelper.floor((180.0F + ctx.getPlacementYaw()) * 16.0F / 360.0F + 0.5D) & 15).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
 	{
-		return facing == EnumFacing.DOWN && !isValidPosition(state, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, currentPos, facingPos);
+		return facing == Direction.DOWN && !isValidPosition(state, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		if(!world.getBlockState(pos.down()).getMaterial().isSolid())
-		{
-			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
-			world.removeBlock(pos);
-		}
+			world.destroyBlock(pos, true);
 
-		super.neighborChanged(state, world, pos, block, fromPos);
+		super.neighborChanged(state, world, pos, block, fromPos, flag);
 	}
 
 	@Override
-	public IBlockState rotate(IBlockState state, Rotation rot)
+	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		return state.with(ROTATION, rot.rotate(state.get(ROTATION), 16));
 	}
 
 
 	@Override
-	public IBlockState mirror(IBlockState state, Mirror mirror)
+	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		return state.with(ROTATION, mirror.mirrorRotation(state.get(ROTATION), 16));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(ROTATION, WATERLOGGED);
 	}

@@ -5,24 +5,24 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
@@ -35,14 +35,14 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
  *
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
+public class TileEntitySCTE extends TileEntity implements ITickableTileEntity, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private boolean canBeNamed = false;
 
-	private ITextComponent customName = new TextComponentString("name");
+	private ITextComponent customName = new StringTextComponent("name");
 
 	private double attackRange = 0.0D;
 
@@ -96,15 +96,15 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			int y = pos.getY();
 			int z = pos.getZ();
 			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).grow(5, 5, 5));
-			List<?> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
+			List<?> entities = world.getEntitiesWithinAABB(LivingEntity.class, area);
 			Iterator<?> iterator = entities.iterator();
-			EntityLivingBase entity;
+			LivingEntity entity;
 
 			while (iterator.hasNext())
 			{
-				entity = (EntityLivingBase)iterator.next();
+				entity = (LivingEntity)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
-				boolean isPlayer = (entity instanceof EntityPlayer);
+				boolean isPlayer = (entity instanceof PlayerEntity);
 				Vec3d lookVec = new Vec3d((entity.posX + (entity.getLookVec().x * 5)), ((eyeHeight + entity.posY) + (entity.getLookVec().y * 5)), (entity.posZ + (entity.getLookVec().z * 5)));
 
 				RayTraceResult mop = getWorld().rayTraceBlocks(new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ), lookVec);
@@ -137,7 +137,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 					while (iterator.hasNext()) {
 						Entity mobToAttack = (Entity) iterator.next();
 
-						if (mobToAttack == null || mobToAttack instanceof EntityItem || !shouldAttackEntityType(mobToAttack))
+						if (mobToAttack == null || mobToAttack instanceof ItemEntity || !shouldAttackEntityType(mobToAttack))
 							continue;
 
 						if (attackEntity(mobToAttack))
@@ -163,7 +163,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	/**
 	 * Called when {@link TileEntitySCTE}.isViewActivated(), and when an entity looks directly at this block.
 	 */
-	public void entityViewed(EntityLivingBase entity) {}
+	public void entityViewed(LivingEntity entity) {}
 
 	/**
 	 * Handle your TileEntity's attack to entities here.
@@ -181,7 +181,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 *
 	 * These reasons may include: <p>
 	 * - There are no Entities in this block's attack range. <p>
-	 * - Only EntityItems are in the attack range. <p>
+	 * - Only ItemEntitys are in the attack range. <p>
 	 * - The Entities in this block's attack range are not of the type set in entityTypeToAttack().
 	 */
 	public void attackFailed() {}
@@ -195,8 +195,8 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	public boolean shouldAttackEntityType(Entity entity) {
-		if(entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class)
-			return (entity.getClass() == EntityPlayer.class || entity.getClass() == EntityPlayerMP.class || entity.getClass() == EntityPlayerSP.class);
+		if(entity.getClass() == PlayerEntity.class || entity.getClass() == ServerPlayerEntity.class)
+			return (entity.getClass() == PlayerEntity.class || entity.getClass() == ServerPlayerEntity.class || entity.getClass() == ClientPlayerEntity.class);
 		else
 			return (entity.getClass() == typeToAttack);
 	}
@@ -205,7 +205,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 
@@ -224,7 +224,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 
@@ -250,24 +250,18 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			ticksBetweenAttacks = tag.getInt("ticksBetweenAttacks");
 
 		if (tag.contains("customName"))
-			customName = new TextComponentString(tag.getString("customName"));
+			customName = new StringTextComponent(tag.getString("customName"));
 	}
 
 	@Override
-	public boolean shouldRenderInPass(int pass)
-	{
-		return super.shouldRenderInPass(pass);
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		CompoundNBT tag = new CompoundNBT();
 		write(tag);
-		return new SPacketUpdateTileEntity(pos, 1, tag);
+		return new SUpdateTileEntityPacket(pos, 1, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		read(packet.getNbtCompound());
 	}
 
@@ -282,7 +276,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	/**
 	 * Automatically detects the side this method was called on, and
-	 * sends the client-side value of this TileEntity's NBTTagCompound
+	 * sends the client-side value of this TileEntity's CompoundNBT
 	 * to the server-side, or the server-side value to the client-side,
 	 * respectively.
 	 */
@@ -298,7 +292,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	/**
 	 * Sets the TileEntity able to be intersected with.
 	 * <p>
-	 * Calls {@link IIntersectable}.onEntityIntersected(World, BlockPos, EntityLivingBase) when a {@link EntityLivingBase} comes into contact with this block.
+	 * Calls {@link IIntersectable}.onEntityIntersected(World, BlockPos, LivingEntity) when a {@link LivingEntity} comes into contact with this block.
 	 * <p>
 	 * Implement IIntersectable in your Block class in order to do stuff with that event.
 	 */
@@ -314,7 +308,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	/**
 	 * Sets this TileEntity able to be activated when a player looks at the block.
 	 * <p>
-	 * Calls {@link TileEntitySCTE}.entityViewed(EntityLivingBase) when an {@link EntityLivingBase} looks at this block.
+	 * Calls {@link TileEntitySCTE}.entityViewed(LivingEntity) when an {@link LivingEntity} looks at this block.
 	 * <p>
 	 * Implement IViewActivated in your Block class in order to do stuff with that event.
 	 */
@@ -332,7 +326,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	/**
-	 * @return Can this TileEntity can only be activated by an EntityPlayer?
+	 * @return Can this TileEntity can only be activated by an PlayerEntity?
 	 */
 	public boolean activatedOnlyByPlayer() {
 		return true;

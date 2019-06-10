@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -62,7 +62,7 @@ public class MountCamera {
 			int y = message.y;
 			int z = message.z;
 			int id = message.id;
-			EntityPlayerMP player = ctx.get().getSender();
+			ServerPlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
 			if((BlockUtils.getBlock(world, BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))

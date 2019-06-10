@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +31,7 @@ public class ItemAdminTool extends Item {
 	public EnumActionResult onItemUse(ItemUseContext ctx) {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
-		EntityPlayer player = ctx.getPlayer();
+		PlayerEntity player = ctx.getPlayer();
 		if(!world.isRemote && CommonConfig.CONFIG.allowAdminTool.get()) {
 			if(world.getTileEntity(pos) != null) {
 				TileEntity te = world.getTileEntity(pos);

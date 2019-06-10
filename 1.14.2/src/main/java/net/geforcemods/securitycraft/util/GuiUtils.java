@@ -11,7 +11,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public class GuiUtils{
 	private static final ResourceLocation nightVis = new ResourceLocation("minecraft:night_vision");
 	private static ItemRenderer itemRender = Minecraft.getInstance().getItemRenderer();
 
-	public static void drawCameraOverlay(Minecraft mc, Gui gui, MainWindow resolution, EntityPlayer player, World world, BlockPos pos) {
+	public static void drawCameraOverlay(Minecraft mc, Gui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(Minecraft.getInstance().gameSettings.keyBindSneak.getKey().getName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getInstance().fontRenderer.getStringWidth(Minecraft.getInstance().gameSettings.keyBindSneak.getKey().getName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraZoomIn.getKey().getName() + "/" + KeyBindings.cameraZoomOut.getKey().getName() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraZoomIn.getKey().getName() + "/" + KeyBindings.cameraZoomOut.getKey().getName() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);

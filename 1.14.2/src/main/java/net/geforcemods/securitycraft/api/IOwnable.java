@@ -19,7 +19,7 @@ public interface IOwnable {
 	/**
 	 * @return An Owner object containing the player's name and UUID.
 	 *         You are responsible for reading and writing the name and UUID variables
-	 *         to your TileEntity's NBTTagCompound in writeToNBT() and readFromNBT().
+	 *         to your TileEntity's CompoundNBT in writeToNBT() and readFromNBT().
 	 */
 	public Owner getOwner();
 

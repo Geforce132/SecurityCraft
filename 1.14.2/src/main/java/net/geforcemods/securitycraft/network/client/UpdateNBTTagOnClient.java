@@ -4,13 +4,13 @@ import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateNBTTagOnClient{
 
-	private NBTTagCompound stackTag;
+	private CompoundNBT stackTag;
 	private String itemName;
 
 	public UpdateNBTTagOnClient(){

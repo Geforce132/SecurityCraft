@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.NamedSlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
 
@@ -85,7 +85,7 @@ public class Option<T> {
 		return (Float) value;
 	}
 
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readFromNBT(CompoundNBT tag) {
 		if(value instanceof Boolean)
 			value = (T) ((Boolean) tag.getBoolean(name));
 		else if(value instanceof Integer)
@@ -96,7 +96,7 @@ public class Option<T> {
 			value = (T) ((Float) tag.getFloat(name));
 	}
 
-	public void writeToNBT(NBTTagCompound tag) {
+	public void writeToNBT(CompoundNBT tag) {
 		if(value instanceof Boolean)
 			tag.putBoolean(name, asBoolean());
 		else if(value instanceof Integer)
@@ -287,7 +287,7 @@ public class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString());
+			slider.dispString = (ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString());
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), slider.id, getValue()));
 		}
 	}

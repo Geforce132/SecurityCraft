@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -65,7 +65,7 @@ public class OpenGui {
 			int x = message.x;
 			int y = message.y;
 			int z = message.z;
-			EntityPlayerMP player = ctx.get().getSender();
+			ServerPlayerEntity player = ctx.get().getSender();
 
 			NetworkHooks.openGui(player, new BaseInteractionObject(id), new BlockPos(x, y, z));
 		});

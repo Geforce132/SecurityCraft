@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +18,7 @@ public class UpdateTEOwnable
 	private String name;
 	private String uuid;
 	private boolean customizable;
-	private NBTTagCompound tag;
+	private CompoundNBT tag;
 
 	public UpdateTEOwnable() {}
 
@@ -28,10 +28,10 @@ public class UpdateTEOwnable
 	 */
 	public UpdateTEOwnable(TileEntityOwnable te)
 	{
-		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID(), te instanceof CustomizableSCTE, te instanceof CustomizableSCTE ? ((CustomizableSCTE)te).write(new NBTTagCompound()) : null);
+		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID(), te instanceof CustomizableSCTE, te instanceof CustomizableSCTE ? ((CustomizableSCTE)te).write(new CompoundNBT()) : null);
 	}
 
-	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, NBTTagCompound tag)
+	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, CompoundNBT tag)
 	{
 		this.pos = pos;
 		this.name = name;

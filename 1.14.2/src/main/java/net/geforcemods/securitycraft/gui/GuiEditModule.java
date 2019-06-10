@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -105,7 +105,7 @@ public class GuiEditModule extends GuiContainer
 					return;
 
 				if(module.getTag() == null)
-					module.setTag(new NBTTagCompound());
+					module.setTag(new CompoundNBT());
 
 				for(int i = 1; i <= 10; i++)
 				{
@@ -120,7 +120,7 @@ public class GuiEditModule extends GuiContainer
 					return;
 
 				if(module.getTag() == null)
-					module.setTag(new NBTTagCompound());
+					module.setTag(new CompoundNBT());
 
 				for(int i = 1; i <= 10; i++)
 				{
@@ -136,7 +136,7 @@ public class GuiEditModule extends GuiContainer
 				SecurityCraft.instance.setSavedModule(null);
 				break;
 			case 4:
-				module.setTag(new NBTTagCompound());
+				module.setTag(new CompoundNBT());
 				break;
 			default: return;
 		}
@@ -144,7 +144,7 @@ public class GuiEditModule extends GuiContainer
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
-	private int getNextSlot(NBTTagCompound tag) {
+	private int getNextSlot(CompoundNBT tag) {
 		for(int i = 1; i <= 10; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;

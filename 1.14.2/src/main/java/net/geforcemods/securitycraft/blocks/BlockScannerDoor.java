@@ -4,17 +4,17 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
+public class BlockScannerDoor extends DoorBlock implements ITileEntityProvider
 {
 	public BlockScannerDoor(Material material)
 	{
@@ -30,16 +30,16 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
 		onNeighborChanged(world, pos, fromPos);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
@@ -52,16 +52,16 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	 */
 	public void onNeighborChanged(World world, BlockPos pos, BlockPos neighbor)
 	{
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
 		if(state.get(HALF) == DoubleBlockHalf.UPPER)
 		{
 			BlockPos blockBelow = pos.down();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+			BlockState stateBelow = world.getBlockState(blockBelow);
 
 			if(stateBelow.getBlock() != this)
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 			else if (neighborBlock != this)
 				onNeighborChanged(world, blockBelow, neighbor);
 		}
@@ -69,38 +69,38 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 		{
 			boolean drop = false;
 			BlockPos blockBelow = pos.up();
-			IBlockState stateBelow = world.getBlockState(blockBelow);
+			BlockState stateBelow = world.getBlockState(blockBelow);
 
 			if(stateBelow.getBlock() != this)
 			{
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 				drop = true;
 			}
 
-			if(!world.isTopSolid(pos.down()))
+			if(!Block.hasSolidSide(world.getBlockState(pos.down()), world, pos.down(), Direction.UP))
 			{
-				world.removeBlock(pos);
+				world.destroyBlock(pos, false);
 				drop = true;
 
 				if(stateBelow.getBlock() == this)
-					world.removeBlock(blockBelow);
+					world.destroyBlock(blockBelow, false);
 			}
 
 			if(drop)
 				if(!world.isRemote)
-					dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
+					world.destroyBlock(pos, true);
 		}
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param)
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param)
 	{
 		super.eventReceived(state, world, pos, id, param);
 
@@ -110,13 +110,13 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return new ItemStack(SCContent.scannerDoorItem);
 	}
 
 	@Override
-	public IItemProvider getItemDropped(IBlockState state, World world, BlockPos pos, int fortune)
+	public IItemProvider getItemDropped(BlockState state, World world, BlockPos pos, int fortune)
 	{
 		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.scannerDoorItem;
 	}

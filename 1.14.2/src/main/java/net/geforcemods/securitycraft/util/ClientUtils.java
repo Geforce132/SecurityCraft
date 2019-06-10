@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -58,19 +58,19 @@ public class ClientUtils{
 	}
 
 	/**
-	 * Sends the client-side NBTTagCompound of a block's TileEntity to the server.
+	 * Sends the client-side CompoundNBT of a block's TileEntity to the server.
 	 *
 	 * Only works on the CLIENT side.
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static void syncTileEntity(TileEntity tileEntity){
-		NBTTagCompound tag = new NBTTagCompound();
+		CompoundNBT tag = new CompoundNBT();
 		tileEntity.write(tag);
 		SecurityCraft.channel.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
 	/**
-	 * Sends the client-side NBTTagCompound of a player's held item to the server.
+	 * Sends the client-side CompoundNBT of a player's held item to the server.
 	 *
 	 * Only works on the CLIENT side.
 	 */
@@ -108,6 +108,6 @@ public class ClientUtils{
 	 */
 	public static String localize(String key, Object... params)
 	{
-		return new TextComponentTranslation(key, params).getFormattedText();
+		return new TranslationTextComponent(key, params).getFormattedText();
 	}
 }

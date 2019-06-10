@@ -3,15 +3,15 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlowingFluid;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockFakeWater extends BlockFlowingFluid
+public class BlockFakeWater extends FlowingFluidBlock
 {
 	public BlockFakeWater()
 	{
@@ -19,11 +19,11 @@ public class BlockFakeWater extends BlockFlowingFluid
 	}
 
 	@Override
-	public void onEntityCollision(IBlockState state, World world, BlockPos pos, Entity entity)
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
 		if(!world.isRemote)
-			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).isCreative())
-				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+			if(entity instanceof PlayerEntity && !((PlayerEntity) entity).isCreative())
+				((PlayerEntity) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 			else
 				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
 	}

@@ -1,14 +1,14 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.api.Owner;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
-public class EntityFallingOwnableBlock extends EntityFallingBlock
+public class EntityFallingOwnableBlock extends FallingBlockEntity
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityFallingOwnableBlock.class, Owner.SERIALIZER);
 
@@ -17,7 +17,7 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 		super(world);
 	}
 
-	public EntityFallingOwnableBlock(World world, double x, double y, double z, IBlockState fallingBlockState, Owner owner)
+	public EntityFallingOwnableBlock(World world, double x, double y, double z, BlockState fallingBlockState, Owner owner)
 	{
 		super(world, x, y, z, fallingBlockState);
 
@@ -34,15 +34,15 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	}
 
 	@Override
-	protected void writeAdditional(NBTTagCompound tag)
+	protected void writeAdditional(CompoundNBT tag)
 	{
 		tag.put("TileEntityData", getOwnerTag());
 		super.writeAdditional(tag);
 	}
 
-	public NBTTagCompound getOwnerTag()
+	public CompoundNBT getOwnerTag()
 	{
-		NBTTagCompound tag = new NBTTagCompound();
+		CompoundNBT tag = new CompoundNBT();
 		Owner owner = dataManager.get(OWNER);
 
 		tag.putString("owner", owner.getName());
@@ -51,9 +51,9 @@ public class EntityFallingOwnableBlock extends EntityFallingBlock
 	}
 
 	@Override
-	protected void readAdditional(NBTTagCompound tag)
+	protected void readAdditional(CompoundNBT tag)
 	{
-		NBTTagCompound teTag = tag.getCompound("TileEntityData");
+		CompoundNBT teTag = tag.getCompound("TileEntityData");
 		String name = teTag.getString("owner");
 		String uuid = teTag.getString("ownerUUID");
 

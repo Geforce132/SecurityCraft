@@ -12,22 +12,23 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -35,7 +36,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.LogicalSide;
 
-public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
+public class BlockInventoryScannerField extends ContainerBlock implements IIntersectable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
@@ -43,11 +44,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public BlockInventoryScannerField(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return VoxelShapes.empty();
 	}
@@ -58,24 +59,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -86,31 +72,31 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		if(connectedScanner == null)
 			return;
 
-		if(entity instanceof EntityPlayer)
+		if(entity instanceof PlayerEntity)
 		{
-			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumCustomModules.WHITELIST))
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, EnumCustomModules.WHITELIST))
 				return;
 
 			for(int i = 0; i < 10; i++)
 			{
-				for(int j = 0; j < ((EntityPlayer)entity).inventory.mainInventory.size(); j++)
+				for(int j = 0; j < ((PlayerEntity)entity).inventory.mainInventory.size(); j++)
 				{
-					if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityPlayer)entity).inventory.mainInventory.get(j).isEmpty())
-						checkInventory((EntityPlayer)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+					if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((PlayerEntity)entity).inventory.mainInventory.get(j).isEmpty())
+						checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
 				}
 			}
 		}
-		else if(entity instanceof EntityItem)
+		else if(entity instanceof ItemEntity)
 		{
 			for(int i = 0; i < 10; i++)
 			{
-				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((EntityItem)entity).getItem().isEmpty())
-					checkEntityItem((EntityItem)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
+					checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
 			}
 		}
 	}
 
-	public static void checkInventory(EntityPlayer entity, TileEntityInventoryScanner te, ItemStack stack)
+	public static void checkInventory(PlayerEntity entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
 		if(te.getScanType().equals("redstone"))
 		{
@@ -145,7 +131,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		}
 	}
 
-	public static void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
+	public static void checkItemEntity(ItemEntity entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
 		if(te.getScanType().equals("redstone"))
 		{
@@ -209,7 +195,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state)
 	{
 		if(!world.isRemote())
 		{
@@ -268,25 +254,25 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		EnumFacing facing = source.getBlockState(pos).get(FACING);
+		Direction facing = source.getBlockState(pos).get(FACING);
 
-		if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
+		if (facing == Direction.EAST || facing == Direction.WEST)
 			return SHAPE_EW; //ew
-		else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
+		else if (facing == Direction.NORTH || facing == Direction.SOUTH)
 			return SHAPE_NS; //ns
 		return VoxelShapes.fullCube();
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return ItemStack.EMPTY;
 	}

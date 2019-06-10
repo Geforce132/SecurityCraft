@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.particles.IParticleData;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.ParticleTypes.IParticleData;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.IChunk;
 public class SCWorldListener implements IWorldEventListener
 {
 	@Override
-	public void notifyBlockUpdate(IBlockReader world, BlockPos pos, IBlockState oldState, IBlockState newState, int flags)
+	public void notifyBlockUpdate(IBlockReader world, BlockPos pos, BlockState oldState, BlockState newState, int flags)
 	{
 		if(world instanceof IChunk)
 		{
@@ -48,7 +48,7 @@ public class SCWorldListener implements IWorldEventListener
 	public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {}
 
 	@Override
-	public void playSoundToAllNearExcept(EntityPlayer player, SoundEvent sound, SoundCategory category, double x, double y, double z, float volume, float pitch) {}
+	public void playSoundToAllNearExcept(PlayerEntity player, SoundEvent sound, SoundCategory category, double x, double y, double z, float volume, float pitch) {}
 
 	@Override
 	public void playRecord(SoundEvent sound, BlockPos pos) {}
@@ -69,7 +69,7 @@ public class SCWorldListener implements IWorldEventListener
 	public void broadcastSound(int soundID, BlockPos pos, int data) {}
 
 	@Override
-	public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data) {}
+	public void playEvent(PlayerEntity player, int type, BlockPos blockPosIn, int data) {}
 
 	@Override
 	public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {}

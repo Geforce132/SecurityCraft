@@ -10,10 +10,10 @@ import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -49,30 +49,30 @@ public class TileEntityClaymore extends TileEntitySCTE{
 				return;
 			}
 
-			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
+			Direction dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
-			if(dir == EnumFacing.NORTH)
+			if(dir == Direction.NORTH)
 				area = area.contract(-0, -0, CommonConfig.CONFIG.claymoreRange.get());
-			else if(dir == EnumFacing.SOUTH)
-				area = area.contract(-0, -0, -CommonConfig.CONFIG.claymoreRange.get());if(dir == EnumFacing.EAST)
+			else if(dir == Direction.SOUTH)
+				area = area.contract(-0, -0, -CommonConfig.CONFIG.claymoreRange.get());if(dir == Direction.EAST)
 					area = area.contract(-CommonConfig.CONFIG.claymoreRange.get(), -0, -0);
-				else if(dir == EnumFacing.WEST)
+				else if(dir == Direction.WEST)
 					area = area.contract(CommonConfig.CONFIG.claymoreRange.get(), -0, -0);
 
-				List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+				List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area);
 				Iterator<?> iterator = entities.iterator();
-				EntityLivingBase entityliving;
+				LivingEntity MobEntity;
 
 				while(iterator.hasNext()){
-					entityliving = (EntityLivingBase) iterator.next();
+					MobEntity = (LivingEntity) iterator.next();
 
-					if(PlayerUtils.isPlayerMountedOnCamera(entityliving))
+					if(PlayerUtils.isPlayerMountedOnCamera(MobEntity))
 						continue;
 
-					entityX = entityliving.posX;
-					entityY = entityliving.posY;
-					entityZ = entityliving.posZ;
+					entityX = MobEntity.posX;
+					entityY = MobEntity.posY;
+					entityZ = MobEntity.posZ;
 					cooldown = 20;
 					getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 					break;
@@ -86,7 +86,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 		tag.putInt("cooldown", cooldown);
@@ -100,7 +100,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 

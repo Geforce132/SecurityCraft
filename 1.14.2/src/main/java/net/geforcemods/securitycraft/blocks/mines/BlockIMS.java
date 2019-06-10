@@ -10,22 +10,24 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.BaseInteractionObject;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Particles;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.ParticleTypes.ParticleTypes;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -49,23 +51,18 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public float getBlockHardness(IBlockState blockState, IBlockReader world, BlockPos pos)
+	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
 		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
-		return false;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		switch(state.get(MINES))
 		{
@@ -78,7 +75,7 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote)
 		{
@@ -95,8 +92,8 @@ public class BlockIMS extends BlockOwnable {
 					world.setBlockState(pos, state.with(MINES, mines + 1));
 					((TileEntityIMS)world.getTileEntity(pos)).setBombsRemaining(mines + 1);
 				}
-				else if(player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.IMS), pos);
+				else if(player instanceof ServerPlayerEntity)
+					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.IMS), pos);
 
 				return true;
 			}
@@ -106,11 +103,11 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	/**
-	 * A randomly called display update to be able to add particles or other items for display
+	 * A randomly called display update to be able to add ParticleTypes or other items for display
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(IBlockState state, World world, BlockPos pos, Random random){
+	public void animateTick(BlockState state, World world, BlockPos pos, Random random){
 		if(state.get(MINES) == 0){
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -118,19 +115,19 @@ public class BlockIMS extends BlockOwnable {
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
 
-			world.addParticle(Particles.SMOKE, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(Particles.SMOKE, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(Particles.SMOKE, false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(Particles.SMOKE, false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			world.addParticle(Particles.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
 
-			world.addParticle(Particles.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			world.addParticle(Particles.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	@Override
-	public void getDrops(IBlockState state, NonNullList<ItemStack> drops, World world, BlockPos pos, int fortune)
+	public void getDrops(BlockState state, NonNullList<ItemStack> drops, World world, BlockPos pos, int fortune)
 	{
 		int mines = state.get(MINES);
 
@@ -139,18 +136,18 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(MINES, 4);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(MINES);
 	}

@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.LogicalSide;
@@ -47,7 +47,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 		tag.putInt("cooldown", cooldown);
@@ -59,7 +59,7 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 

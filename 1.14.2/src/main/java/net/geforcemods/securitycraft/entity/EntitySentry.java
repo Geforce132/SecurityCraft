@@ -13,34 +13,38 @@ import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.Pose;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
+public class EntitySentry extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.SERIALIZER);
-	private static final DataParameter<NBTTagCompound> MODULE = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<CompoundNBT> MODULE = EntityDataManager.<CompoundNBT>createKey(EntitySentry.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -53,13 +57,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public EntitySentry(World world)
 	{
 		super(SCContent.eTypeSentry, world);
-		setSize(1.0F, 1.0F);
 	}
 
-	public void setupSentry(EntityPlayer owner)
+	public void setupSentry(PlayerEntity owner)
 	{
-		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
-		dataManager.set(MODULE, new NBTTagCompound());
+		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
+		dataManager.set(MODULE, new CompoundNBT());
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -69,16 +72,16 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
-		dataManager.register(MODULE, new NBTTagCompound());
+		dataManager.register(MODULE, new CompoundNBT());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
 
 	@Override
-	protected void initEntityAI()
+	protected void registerGoals()
 	{
-		tasks.addTask(1, new EntityAIAttackRangedIfEnabled(this, 0.0F, 5, 10.0F));
-		targetTasks.addTask(1, new EntityAITargetNearestPlayerOrMob(this));
+		goalSelector.addGoal(1, new EntityAIAttackRangedIfEnabled(this, 0.0F, 5, 10.0F));
+		targetSelector.addGoal(1, new EntityAITargetNearestPlayerOrMob(this));
 	}
 
 	@Override
@@ -112,9 +115,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand)
+	public boolean processInteract(PlayerEntity player, Hand hand)
 	{
-		if(getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND)
+		if(getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
 		{
 			player.closeScreen();
 
@@ -130,18 +133,18 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				setModule(player.getHeldItemMainhand());
 
 				if(!player.isCreative())
-					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
 			else if(player.getHeldItemMainhand().getItem() == SCContent.universalBlockModifier)
 			{
-				world.removeBlock(getPosition());
+				world.destroyBlock(getPosition(), false);
 				Block.spawnAsEntity(world, getPosition(), getModule());
-				dataManager.set(MODULE, new NBTTagCompound());
+				dataManager.set(MODULE, new CompoundNBT());
 			}
 			else
 				toggleMode(player);
 
-			player.swingArm(EnumHand.MAIN_HAND);
+			player.swingArm(Hand.MAIN_HAND);
 			return true;
 		}
 
@@ -170,7 +173,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 * Sets this sentry's mode to the next one and sends the player a message about the switch
 	 * @param player The player to send the message to
 	 */
-	public void toggleMode(EntityPlayer player)
+	public void toggleMode(PlayerEntity player)
 	{
 		int mode = dataManager.get(MODE) + 1;
 
@@ -197,7 +200,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public void setAttackTarget(EntityLivingBase target)
+	public void setAttackTarget(LivingEntity target)
 	{
 		if(getMode() != EnumSentryMode.AGGRESSIVE && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId())))
 		{
@@ -211,16 +214,16 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public float getEyeHeight() //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
+	public float getEyeHeight(Pose pose) //the sentry's eyes are higher so that it can see players even if it's inside a block when disguised - this also makes bullets spawn higher
 	{
 		return 1.5F;
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor)
 	{
 		//don't shoot if somehow a non player is a target, or if the player is in spectator or creative mode
-		if(target instanceof EntityPlayer && (((EntityPlayer)target).isSpectator() || ((EntityPlayer)target).isCreative()))
+		if(target instanceof PlayerEntity && (((PlayerEntity)target).isSpectator() || ((PlayerEntity)target).isCreative()))
 			return;
 
 		//also don't shoot if the target is too far away
@@ -237,22 +240,22 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
-		world.spawnEntity(throwableEntity);
+		world.addEntity(throwableEntity);
 	}
 
 	@Override
-	public void writeAdditional(NBTTagCompound tag)
+	public void writeAdditional(CompoundNBT tag)
 	{
 		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledModule", getModule().write(new NBTTagCompound()));
+		tag.put("InstalledModule", getModule().write(new CompoundNBT()));
 		tag.putInt("SentryMode", dataManager.get(MODE));
 		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeAdditional(tag);
 	}
 
-	private NBTTagCompound getOwnerTag()
+	private CompoundNBT getOwnerTag()
 	{
-		NBTTagCompound tag = new NBTTagCompound();
+		CompoundNBT tag = new CompoundNBT();
 		Owner owner = dataManager.get(OWNER);
 
 		tag.putString("owner", owner.getName());
@@ -261,14 +264,14 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public void readAdditional(NBTTagCompound tag)
+	public void readAdditional(CompoundNBT tag)
 	{
-		NBTTagCompound teTag = tag.getCompound("TileEntityData");
+		CompoundNBT teTag = tag.getCompound("TileEntityData");
 		String name = teTag.getString("owner");
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, (NBTTagCompound)tag.get("InstalledModule"));
+		dataManager.set(MODULE, (CompoundNBT)tag.get("InstalledModule"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);
@@ -293,12 +296,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		if(blocks.size() > 0)
 		{
 			ItemStack disguiseStack = blocks.get(0);
-			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
+			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
-			world.setBlockState(getPosition(), state.isFullCube() ? state : Blocks.AIR.getDefaultState());
+			world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
-		dataManager.set(MODULE, module.write(new NBTTagCompound()));
+		dataManager.set(MODULE, module.write(new CompoundNBT()));
 	}
 
 	/**
@@ -306,7 +309,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 */
 	public ItemStack getModule()
 	{
-		NBTTagCompound tag = dataManager.get(MODULE);
+		CompoundNBT tag = dataManager.get(MODULE);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -359,7 +362,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean canSpawn(IWorld world, boolean aBoolean)
+	public boolean canSpawn(IWorld world, SpawnReason reason)
 	{
 		return false;
 	}
@@ -377,17 +380,17 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	protected void checkDespawn() {} //sentries don't despawn
 
 	@Override
-	public boolean canDespawn()
+	public boolean canDespawn(double distanceClosestToPlayer)
 	{
 		return false; //sentries don't despawn
 	}
 
 	//sentries are heavy, so don't push them around!
 	@Override
-	public void onCollideWithPlayer(EntityPlayer entity) {}
+	public void onCollideWithPlayer(PlayerEntity entity) {}
 
 	@Override
-	public void move(MoverType type, double x, double y, double z) {} //no moving sentries!
+	public void move(MoverType type, Vec3d vec) {} //no moving sentries!
 
 	@Override
 	protected void collideWithEntity(Entity entity) {}
@@ -414,16 +417,13 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	@Override
-	public EnumPushReaction getPushReaction()
+	public PushReaction getPushReaction()
 	{
-		return EnumPushReaction.IGNORE;
+		return PushReaction.IGNORE;
 	}
 
 	@Override
 	public void updateLeashedState() {} //no leashing for sentry
-
-	@Override
-	public void setSwingingArms(boolean swingingArms) {} //sentrys don't have arms, do they?
 
 	//this last code is here so the ai task gets executed, which it doesn't for some weird reason
 	@Override

@@ -11,23 +11,24 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -35,7 +36,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BlockLaserField extends BlockContainer implements IIntersectable{
+public class BlockLaserField extends ContainerBlock implements IIntersectable{
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
 	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 4, 4, 16, 12, 12);
@@ -48,7 +49,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState blockState, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return VoxelShapes.empty();
 	}
@@ -59,32 +60,17 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
 	@Override
-	public boolean isNormalCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
-		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) entity, ForgeRegistries.POTIONS.getValue(new ResourceLocation("minecraft:invisibility"))))
+		if(!world.isRemote && entity instanceof LivingEntity && !EntityUtils.doesMobHavePotionEffect((LivingEntity) entity, ForgeRegistries.POTIONS.getValue(new ResourceLocation("minecraft:invisibility"))))
 		{
-			for(EnumFacing facing : EnumFacing.values())
+			for(Direction facing : Direction.values())
 			{
 				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
 				{
@@ -95,7 +81,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().getFormattedText().toLowerCase()))
+						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumCustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase()))
 							return;
 
 						BlockUtils.setBlockProperty(world, offsetPos, BlockLaserBlock.POWERED, true, true);
@@ -103,7 +89,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.HARMING))
-							((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
+							((LivingEntity) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
 
 					}
 				}
@@ -115,11 +101,11 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	 * Called right before the block is destroyed by a player.  Args: world, pos, state
 	 */
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state)
 	{
 		if(!world.isRemote())
 		{
-			for(EnumFacing facing : EnumFacing.values())
+			for(Direction facing : Direction.values())
 			{
 				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
 				{
@@ -136,7 +122,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		if(source.getBlockState(pos).getBlock() instanceof BlockLaserField)
 		{
@@ -154,24 +140,24 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(BOUNDTYPE, 1);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(BOUNDTYPE);
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return ItemStack.EMPTY;
 	}

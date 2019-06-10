@@ -7,23 +7,25 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -38,17 +40,12 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 
 	@Override
-	public boolean isNormalCube(IBlockState state){
-		return false;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
 	}
@@ -57,18 +54,18 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		return world.getBlockState(pos.down()).isTopSolid();
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(entity instanceof EntityLivingBase)
-			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		if(entity instanceof LivingEntity)
+			if(!PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 				explode(world, pos);
 	}
 	@Override
-	public void onBlockClicked(IBlockState state, World world, BlockPos pos, EntityPlayer player){
+	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player){
 		if(!player.isCreative())
 			explode(world, pos);
 	}
@@ -90,11 +87,11 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
 			return;
 
-		world.removeBlock(pos);
+		world.destroyBlock(pos, false);
 		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
-		entitytntprimed.motionY = 0.50D;
-		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitytntprimed));
+		entitytntprimed.setMotion(entitytntprimed.getMotion().mul(1, 0, 1).add(0, 0.05D, 0));
+		WorldUtils.addScheduledTask(world, () -> world.addEntity(entitytntprimed));
 		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
 	}
 
@@ -102,7 +99,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 * Returns the ID of the items to drop on destruction.
 	 */
 	@Override
-	public IItemProvider getItemDropped(IBlockState state, World world, BlockPos pos, int fortune)
+	public IItemProvider getItemDropped(BlockState state, World world, BlockPos pos, int fortune)
 	{
 		return asItem();
 	}
@@ -111,12 +108,12 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(asItem());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}

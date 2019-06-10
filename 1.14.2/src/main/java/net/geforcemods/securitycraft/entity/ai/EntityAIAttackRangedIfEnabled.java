@@ -1,16 +1,18 @@
 package net.geforcemods.securitycraft.entity.ai;
 
+import java.util.EnumSet;
+
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIAttackRangedIfEnabled extends EntityAIBase
+public class EntityAIAttackRangedIfEnabled extends Goal
 {
 	private EntitySentry sentry;
-	private EntityLivingBase attackTarget;
+	private LivingEntity attackTarget;
 	private int rangedAttackTime;
 	private final int attackIntervalMin;
 	private final int maxRangedAttackTime;
@@ -23,13 +25,13 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 		attackIntervalMin = maxAttackTime;
 		maxRangedAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;
-		setMutexBits(3);
+		setMutexFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
 	public boolean shouldExecute()
 	{
-		EntityLivingBase potentialTarget = sentry.getAttackTarget();
+		LivingEntity potentialTarget = sentry.getAttackTarget();
 
 		if(potentialTarget == null)
 			return false;

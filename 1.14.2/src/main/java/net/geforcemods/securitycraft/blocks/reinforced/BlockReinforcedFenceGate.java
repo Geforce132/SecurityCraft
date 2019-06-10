@@ -11,27 +11,27 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEntityProvider, IIntersectable {
+public class BlockReinforcedFenceGate extends FenceGateBlock implements ITileEntityProvider, IIntersectable {
 
 	public BlockReinforcedFenceGate(){
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
@@ -41,22 +41,22 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		return false;
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		if(placer instanceof EntityPlayer)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)placer));
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
@@ -64,19 +64,19 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN))
 			return;
 
-		if(entity instanceof EntityItem)
+		if(entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof EntityPlayer)
+		else if(entity instanceof PlayerEntity)
 		{
-			EntityPlayer player = (EntityPlayer)entity;
+			PlayerEntity player = (PlayerEntity)entity;
 
 			if(((TileEntityOwnable)world.getTileEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(entity instanceof EntityCreeper)
+		else if(entity instanceof CreeperEntity)
 		{
-			EntityCreeper creeper = (EntityCreeper)entity;
-			EntityLightningBolt lightning = new EntityLightningBolt(world, pos.getX(), pos.getY(), pos.getZ(), true);
+			CreeperEntity creeper = (CreeperEntity)entity;
+			LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), true);
 
 			creeper.onStruckByLightning(lightning);
 			return;
@@ -86,18 +86,18 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if(!world.isRemote) {
 			boolean isPoweredSCBlock = isSCBlock(block) && world.isBlockPowered(pos);
 
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
 				if (isPoweredSCBlock && !state.get(OPEN).booleanValue() && !state.get(POWERED).booleanValue()) {
 					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(true)).with(POWERED, Boolean.valueOf(true)), 2);
-					world.playEvent((EntityPlayer)null, 1008, pos, 0);
+					world.playEvent((PlayerEntity)null, 1008, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.get(OPEN).booleanValue() && state.get(POWERED).booleanValue()) {
 					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(false)).with(POWERED, Boolean.valueOf(false)), 2);
-					world.playEvent((EntityPlayer)null, 1014, pos, 0);
+					world.playEvent((PlayerEntity)null, 1014, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.get(POWERED).booleanValue())
 					world.setBlockState(pos, state.with(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
@@ -110,7 +110,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int par5, int par6){
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int par5, int par6){
 		super.eventReceived(state, world, pos, par5, par6);
 		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;

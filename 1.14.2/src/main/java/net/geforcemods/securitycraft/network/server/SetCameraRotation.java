@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -47,7 +47,7 @@ public class SetCameraRotation {
 	public static void onMessage(SetCameraRotation message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 
 			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
 				player.getRidingEntity().rotationYaw = message.rotationYaw;

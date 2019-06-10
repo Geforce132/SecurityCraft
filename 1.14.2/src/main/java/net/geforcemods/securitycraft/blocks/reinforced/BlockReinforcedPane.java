@@ -3,30 +3,30 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockShulkerBox;
-import net.minecraft.block.BlockSixWay;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
+import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
@@ -36,12 +36,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketPickupHandler, ILiquidContainer
 {
-	public static final BooleanProperty NORTH = BlockSixWay.NORTH;
-	public static final BooleanProperty EAST = BlockSixWay.EAST;
-	public static final BooleanProperty SOUTH = BlockSixWay.SOUTH;
-	public static final BooleanProperty WEST = BlockSixWay.WEST;
+	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
+	public static final BooleanProperty EAST = SixWayBlock.EAST;
+	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
+	public static final BooleanProperty WEST = SixWayBlock.WEST;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final Map<EnumFacing, BooleanProperty> FACING_TO_PROPERTY_MAP = BlockSixWay.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
 		return p_199775_0_.getKey().getAxis().isHorizontal();
 	}).collect(Util.toMapCollector());
 	protected final VoxelShape[] field_196410_A;
@@ -78,7 +78,7 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		return avoxelshape;
 	}
 
-	public Fluid pickupFluid(IWorld world, BlockPos pos, IBlockState state)
+	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state)
 	{
 		if(state.get(WATERLOGGED))
 		{
@@ -89,17 +89,17 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 			return Fluids.EMPTY;
 	}
 
-	public IFluidState getFluidState(IBlockState state)
+	public IFluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
-	public boolean canContainFluid(IBlockReader world, BlockPos pos, IBlockState state, Fluid fluid)
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
 	{
 		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
 	}
 
-	public boolean receiveFluid(IWorld world, BlockPos pos, IBlockState state, IFluidState fluidState)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
 	{
 		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
 		{
@@ -116,49 +116,49 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return field_196412_B[getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return field_196410_A[getIndex(state)];
 	}
 
-	private static int getMask(EnumFacing facing)
+	private static int getMask(Direction facing)
 	{
 		return 1 << facing.getHorizontalIndex();
 	}
 
-	protected int getIndex(IBlockState p_196406_1_)
+	protected int getIndex(BlockState p_196406_1_)
 	{
 		int i = 0;
 
 		if(p_196406_1_.get(NORTH))
-			i |= getMask(EnumFacing.NORTH);
+			i |= getMask(Direction.NORTH);
 
 		if(p_196406_1_.get(EAST))
-			i |= getMask(EnumFacing.EAST);
+			i |= getMask(Direction.EAST);
 
 		if(p_196406_1_.get(SOUTH))
-			i |= getMask(EnumFacing.SOUTH);
+			i |= getMask(Direction.SOUTH);
 
 		if(p_196406_1_.get(WEST))
-			i |= getMask(EnumFacing.WEST);
+			i |= getMask(Direction.WEST);
 
 		return i;
 	}
 
 	@Override
-	public boolean allowsMovement(IBlockState state, IBlockReader worldIn, BlockPos pos, PathType type)
+	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type)
 	{
 		return false;
 	}
 
 	@Override
-	public IBlockState rotate(IBlockState state, Rotation rot)
+	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		switch(rot) {
 			case CLOCKWISE_180:
@@ -173,7 +173,7 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 	}
 
 	@Override
-	public IBlockState mirror(IBlockState state, Mirror mirror)
+	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		switch(mirror)
 		{
@@ -186,21 +186,21 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		}
 	}
 
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
 		IBlockReader iblockreader = ctx.getWorld();
 		BlockPos blockpos = ctx.getPos();
 		IFluidState ifluidstate = ctx.getWorld().getFluidState(ctx.getPos());
 		return this.getDefaultState()
-				.with(NORTH, canPaneConnectTo(iblockreader, blockpos, EnumFacing.NORTH))
-				.with(SOUTH, canPaneConnectTo(iblockreader, blockpos, EnumFacing.SOUTH))
-				.with(WEST, canPaneConnectTo(iblockreader, blockpos, EnumFacing.WEST))
-				.with(EAST, canPaneConnectTo(iblockreader, blockpos, EnumFacing.EAST))
+				.with(NORTH, canPaneConnectTo(iblockreader, blockpos, Direction.NORTH))
+				.with(SOUTH, canPaneConnectTo(iblockreader, blockpos, Direction.SOUTH))
+				.with(WEST, canPaneConnectTo(iblockreader, blockpos, Direction.WEST))
+				.with(EAST, canPaneConnectTo(iblockreader, blockpos, Direction.EAST))
 				.with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
 		if (state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
@@ -208,15 +208,9 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canPaneConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public boolean isSideInvisible(IBlockState state, IBlockState adjacentBlockState, EnumFacing side)
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
 	{
 		if(adjacentBlockState.getBlock() == this)
 		{
@@ -230,21 +224,14 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		return super.isSideInvisible(state, adjacentBlockState, side);
 	}
 
-	public final boolean attachesTo(IBlockState p_196417_1_, BlockFaceShape p_196417_2_)
-	{
-		Block block = p_196417_1_.getBlock();
-		return !shouldSkipAttachment(block) && p_196417_2_ == BlockFaceShape.SOLID || p_196417_2_ == BlockFaceShape.MIDDLE_POLE_THIN;
+	public final boolean canAttachTo(BlockState p_220112_1_, boolean p_220112_2_) {
+		Block block = p_220112_1_.getBlock();
+		return !cannotAttach(block) && p_220112_2_ || block instanceof BlockReinforcedPane;
 	}
 
 	public static boolean shouldSkipAttachment(Block p_196418_0_)
 	{
-		return p_196418_0_ instanceof BlockShulkerBox || p_196418_0_ instanceof BlockLeaves || p_196418_0_ == Blocks.BEACON || p_196418_0_ == Blocks.CAULDRON || p_196418_0_ == Blocks.GLOWSTONE || p_196418_0_ == Blocks.ICE || p_196418_0_ == Blocks.SEA_LANTERN || p_196418_0_ == Blocks.PISTON || p_196418_0_ == Blocks.STICKY_PISTON || p_196418_0_ == Blocks.PISTON_HEAD || p_196418_0_ == Blocks.MELON || p_196418_0_ == Blocks.PUMPKIN || p_196418_0_ == Blocks.CARVED_PUMPKIN || p_196418_0_ == Blocks.JACK_O_LANTERN || p_196418_0_ == Blocks.BARRIER;
-	}
-
-	@Override
-	protected boolean canSilkHarvest()
-	{
-		return true;
+		return p_196418_0_ instanceof ShulkerBoxBlock || p_196418_0_ instanceof LeavesBlock || p_196418_0_ == Blocks.BEACON || p_196418_0_ == Blocks.CAULDRON || p_196418_0_ == Blocks.GLOWSTONE || p_196418_0_ == Blocks.ICE || p_196418_0_ == Blocks.SEA_LANTERN || p_196418_0_ == Blocks.PISTON || p_196418_0_ == Blocks.STICKY_PISTON || p_196418_0_ == Blocks.PISTON_HEAD || p_196418_0_ == Blocks.MELON || p_196418_0_ == Blocks.PUMPKIN || p_196418_0_ == Blocks.CARVED_PUMPKIN || p_196418_0_ == Blocks.JACK_O_LANTERN || p_196418_0_ == Blocks.BARRIER;
 	}
 
 	@Override
@@ -254,28 +241,15 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
 	}
 
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		return face != EnumFacing.UP && face != EnumFacing.DOWN ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
-	}
-
-	@Override
-	public boolean canBeConnectedTo(IBlockState state, IBlockReader world, BlockPos pos, EnumFacing facing)
-	{
-		IBlockState other = world.getBlockState(pos.offset(facing));
-		return attachesTo(other, other.getBlockFaceShape(world, pos.offset(facing), facing.getOpposite()));
-	}
-
-	private boolean canPaneConnectTo(IBlockReader world, BlockPos pos, EnumFacing facing)
+	private boolean canPaneConnectTo(IBlockReader world, BlockPos pos, Direction facing)
 	{
 		BlockPos offset = pos.offset(facing);
-		IBlockState other = world.getBlockState(offset);
+		BlockState other = world.getBlockState(offset);
 		return other.canBeConnectedTo(world, offset, facing.getOpposite()) || getDefaultState().canBeConnectedTo(world, pos, facing);
 	}
 }

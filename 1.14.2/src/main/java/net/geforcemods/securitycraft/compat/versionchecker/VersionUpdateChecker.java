@@ -13,12 +13,12 @@ import com.google.gson.JsonSyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class VersionUpdateChecker {
 
-	public static NBTTagCompound getNBTTagCompound() {
-		NBTTagCompound tag = new NBTTagCompound();
+	public static CompoundNBT getCompoundNBT() {
+		CompoundNBT tag = new CompoundNBT();
 		Gson gson = new GsonBuilder().create();
 
 		try{

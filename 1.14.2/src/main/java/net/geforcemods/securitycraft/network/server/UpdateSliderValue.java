@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -55,7 +55,7 @@ public class UpdateSliderValue {
 			BlockPos pos = message.pos;
 			int id = message.id;
 			double value = message.value;
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 
 			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableSCTE) {
 				((OptionDouble)((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id]).setValue(value);

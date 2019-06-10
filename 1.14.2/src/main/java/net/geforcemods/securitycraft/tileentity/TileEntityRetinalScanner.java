@@ -10,8 +10,8 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -27,24 +27,24 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 	}
 
 	@Override
-	public void entityViewed(EntityLivingBase entity){
+	public void entityViewed(LivingEntity entity){
 		if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockRetinalScanner.POWERED)){
-			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
+			if(!(entity instanceof PlayerEntity) && !activatedByEntities.asBoolean())
 				return;
 
-			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
+			if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity))
 				return;
 
-			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(world, pos, (EntityPlayer)entity, EnumCustomModules.WHITELIST)) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize(SCContent.retinalScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+			if(entity instanceof PlayerEntity && !getOwner().isOwner((PlayerEntity) entity) && !ModuleUtils.checkForModule(world, pos, (PlayerEntity)entity, EnumCustomModules.WHITELIST)) {
+				PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.retinalScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
 			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
 			world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.retinalScanner, 60);
 
-			if(entity instanceof EntityPlayer)
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize(SCContent.retinalScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName().getFormattedText()), TextFormatting.GREEN);
+			if(entity instanceof PlayerEntity)
+				PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.retinalScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName().getFormattedText()), TextFormatting.GREEN);
 		}
 	}
 

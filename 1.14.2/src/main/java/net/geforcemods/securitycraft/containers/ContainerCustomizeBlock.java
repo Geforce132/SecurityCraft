@@ -6,17 +6,17 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCustomizeBlock extends Container{
 
 	private CustomizableSCTE tileEntity;
 
-	public ContainerCustomizeBlock(InventoryPlayer inventory, CustomizableSCTE tileEntity) {
+	public ContainerCustomizeBlock(PlayerInventory inventory, CustomizableSCTE tileEntity) {
 		this.tileEntity = tileEntity;
 
 		if(tileEntity.getNumberOfCustomizableOptions() == 1)
@@ -39,7 +39,7 @@ public class ContainerCustomizeBlock extends Container{
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index)
+	public ItemStack transferStackInSlot(PlayerEntity player, int index)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
@@ -83,7 +83,7 @@ public class ContainerCustomizeBlock extends Container{
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer player) {
+	public boolean canInteractWith(PlayerEntity player) {
 		return true;
 	}
 

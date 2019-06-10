@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -57,7 +57,7 @@ public class SetCameraPowered
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
 			NonNullList<ItemStack> modules = ((CustomizableSCTE) te).modules;

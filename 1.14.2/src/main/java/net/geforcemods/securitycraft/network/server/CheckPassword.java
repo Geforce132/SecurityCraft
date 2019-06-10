@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -58,11 +58,11 @@ public class CheckPassword {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			String password = message.password;
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 
 			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof IPasswordProtected)
 				if(((IPasswordProtected) player.world.getTileEntity(pos)).getPassword().equals(password)){
-					((EntityPlayerMP) player).closeScreen();
+					((ServerPlayerEntity) player).closeScreen();
 					((IPasswordProtected) player.world.getTileEntity(pos)).activate(player);
 				}
 		});

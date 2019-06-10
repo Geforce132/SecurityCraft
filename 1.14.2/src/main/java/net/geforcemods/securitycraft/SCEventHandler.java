@@ -33,23 +33,22 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPortal;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.PortalBlock;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -93,9 +92,9 @@ public class SCEventHandler {
 		ITextComponent message;
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		else
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
+			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
 		event.getPlayer().sendMessage(message);
 	}
@@ -110,7 +109,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.getEntityLiving() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
+		if(event.getEntity() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntity())){
 			event.setCanceled(true);
 			return;
 		}
@@ -133,7 +132,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onRightClickBlock(RightClickBlock event){
-		if(event.getHand() == EnumHand.MAIN_HAND)
+		if(event.getHand() == Hand.MAIN_HAND)
 		{
 			World world = event.getWorld();
 
@@ -154,8 +153,8 @@ public class SCEventHandler {
 						return;
 					}
 
-					if(event.getEntityPlayer() instanceof EntityPlayerMP)
-						NetworkHooks.openGui((EntityPlayerMP)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()), event.getPos());
+					if(event.getEntityPlayer() instanceof ServerPlayerEntity)
+						NetworkHooks.openGui((ServerPlayerEntity)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()), event.getPos());
 
 					return;
 				}
@@ -192,7 +191,7 @@ public class SCEventHandler {
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
 						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
+						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer(), p -> {});
 					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(BlockCageTrap.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
 						BlockPos pos = originalPos.east().up();
@@ -348,7 +347,7 @@ public class SCEventHandler {
 					}else{
 						world.destroyBlock(event.getPos(), true);
 						world.removeTileEntity(event.getPos());
-						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
+						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer(), p -> {});
 					}
 
 					return;
@@ -397,13 +396,13 @@ public class SCEventHandler {
 	//		//reinforced obsidian portal handling
 	//		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
 	//		{
-	//			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
+	//			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
 	//
 	//			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
 	//				portalSize.placePortalBlocks();
 	//			else
 	//			{
-	//				portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
+	//				portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
 	//
 	//				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
 	//					portalSize.placePortalBlocks();
@@ -415,7 +414,7 @@ public class SCEventHandler {
 	//	public static void onEntityJoinWorld(EntityJoinWorldEvent event)
 	//	{
 	//		//fix for spawning under the portal
-	//		if(event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) //nether
+	//		if(event.getEntity() instanceof PlayerEntity && !event.getWorld().isRemote) //nether
 	//		{
 	//			BlockPos pos = event.getEntity().getPosition();
 	//
@@ -425,7 +424,7 @@ public class SCEventHandler {
 	//				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
 	//				{
 	//					//check if the block is part of a valid portal, and if so move the entity down
-	//					BlockPortal.Size portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.X);
+	//					PortalBlock.Size portalSize = new PortalBlock.Size(event.getWorld(), pos, Direction.Axis.X);
 	//
 	//					if (portalSize.isValid())
 	//					{
@@ -439,7 +438,7 @@ public class SCEventHandler {
 	//					}
 	//					else //check other axis
 	//					{
-	//						portalSize = new BlockPortal.Size(event.getWorld(), pos, EnumFacing.Axis.Z);
+	//						portalSize = new PortalBlock.Size(event.getWorld(), pos, Direction.Axis.Z);
 	//
 	//						if (portalSize.isValid())
 	//						{
@@ -455,7 +454,7 @@ public class SCEventHandler {
 	//				}
 	//				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
 	//				{
-	//					PortalSize portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.X);
+	//					PortalSize portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.X);
 	//
 	//					if (portalSize.isValid())
 	//					{
@@ -469,7 +468,7 @@ public class SCEventHandler {
 	//					}
 	//					else
 	//					{
-	//						portalSize = new PortalSize(event.getWorld(), pos, EnumFacing.Axis.Z);
+	//						portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.Z);
 	//
 	//						if (portalSize.isValid())
 	//						{
@@ -495,18 +494,18 @@ public class SCEventHandler {
 		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
 		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
 		{
-			EnumFacing.Axis axis = event.getState().get(BlockPortal.AXIS);
+			Direction.Axis axis = event.getState().get(PortalBlock.AXIS);
 
-			if (axis == EnumFacing.Axis.X)
+			if (axis == Direction.Axis.X)
 			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.X);
+				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
 
 				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
 					event.setCanceled(true);
 			}
-			else if (axis == EnumFacing.Axis.Z)
+			else if (axis == Direction.Axis.Z)
 			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), EnumFacing.Axis.Z);
+				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
 
 				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
 					event.setCanceled(true);
@@ -523,7 +522,7 @@ public class SCEventHandler {
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
 					if(!te.modules.get(i).isEmpty()){
 						ItemStack stack = te.modules.get(i);
-						EntityItem item = new EntityItem((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
+						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
@@ -538,13 +537,13 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
+		if(event.getTarget() instanceof PlayerEntity && event.getTarget() != event.getEntity().getAttackingEntity())
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
-				((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
+				((MobEntity)event.getEntity()).setAttackTarget(null);
 		}
 		else if(event.getTarget() instanceof EntitySentry)
-			((EntityLiving)event.getEntityLiving()).setAttackTarget(null);
+			((MobEntity)event.getEntity()).setAttackTarget(null);
 	}
 
 	@SubscribeEvent
@@ -580,7 +579,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingDestroyEvent(LivingDestroyBlockEvent event)
 	{
-		event.setCanceled(event.getEntity() instanceof EntityWither && event.getState().getBlock() instanceof IReinforcedBlock);
+		event.setCanceled(event.getEntity() instanceof WitherEntity && event.getState().getBlock() instanceof IReinforcedBlock);
 	}
 
 	private static ItemStack fillBucket(World world, BlockPos pos){
@@ -611,7 +610,7 @@ public class SCEventHandler {
 		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
 		if(CommonConfig.CONFIG.allowCodebreakerItem.get() && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
-			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
+			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer(), p -> {});
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
 			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !CommonConfig.CONFIG.allowCodebreakerItem.get());

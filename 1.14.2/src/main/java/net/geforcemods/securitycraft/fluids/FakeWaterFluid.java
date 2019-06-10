@@ -6,22 +6,22 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.BlockFlowingFluid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Particles;
+import net.minecraft.init.ParticleTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.particles.IParticleData;
+import net.minecraft.ParticleTypes.IParticleData;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -63,7 +63,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 				world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.BLOCK_WATER_AMBIENT, SoundCategory.BLOCKS, random.nextFloat() * 0.25F + 0.75F, random.nextFloat() + 0.5F, false);
 		}
 		else if(random.nextInt(10) == 0)
-			world.addParticle(Particles.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.UNDERWATER, pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 	}
 
 	@Nullable
@@ -71,7 +71,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	@Override
 	public IParticleData getDripParticleData()
 	{
-		return Particles.DRIPPING_WATER;
+		return ParticleTypes.DRIPPING_WATER;
 	}
 
 	@Override
@@ -81,19 +81,19 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	}
 
 	@Override
-	protected void beforeReplacingBlock(IWorld world, BlockPos pos, IBlockState state)
+	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state)
 	{
 		state.dropBlockAsItem(world.getWorld(), pos, 0);
 	}
 
 	@Override
-	public int getSlopeFindDistance(IWorldReaderBase world)
+	public int getSlopeFindDistance(IWorldReader world)
 	{
 		return 4;
 	}
 
 	@Override
-	public IBlockState getBlockState(IFluidState state)
+	public BlockState getBlockState(IFluidState state)
 	{
 		return SCContent.fakeWaterBlock.getDefaultState().with(BlockFlowingFluid.LEVEL, getLevelFromState(state));
 	}
@@ -105,21 +105,21 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	}
 
 	@Override
-	public int getLevelDecreasePerBlock(IWorldReaderBase world)
+	public int getLevelDecreasePerBlock(IWorldReader world)
 	{
 		return 1;
 	}
 
 	@Override
-	public int getTickRate(IWorldReaderBase world)
+	public int getTickRate(IWorldReader world)
 	{
 		return 5;
 	}
 
 	@Override
-	public boolean canOtherFlowInto(IFluidState state, Fluid fluid, EnumFacing direction)
+	public boolean canOtherFlowInto(IFluidState state, Fluid fluid, Direction direction)
 	{
-		return direction == EnumFacing.DOWN && !fluid.isIn(FluidTags.WATER);
+		return direction == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
 	}
 
 	@Override

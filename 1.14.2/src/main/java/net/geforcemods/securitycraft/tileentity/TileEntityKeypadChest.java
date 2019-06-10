@@ -13,19 +13,19 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
+public class TileEntityKeypadChest extends ChestTileEntity implements IPasswordProtected, IOwnable {
 
 	private String passcode;
 	private Owner owner = new Owner();
@@ -40,7 +40,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound write(NBTTagCompound tag)
+	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
 
@@ -59,7 +59,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(NBTTagCompound tag)
+	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
 
@@ -77,14 +77,14 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		CompoundNBT tag = new CompoundNBT();
 		write(tag);
-		return new SPacketUpdateTileEntity(pos, 1, tag);
+		return new SUpdateTileEntityPacket(pos, 1, tag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		read(packet.getNbtCompound());
 	}
 
@@ -94,31 +94,31 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public ITextComponent getName()
 	{
-		return new TextComponentString("Protected chest");
+		return new StringTextComponent("Protected chest");
 	}
 
 	@Override
-	public void activate(EntityPlayer player) {
+	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest && !isBlocked())
 			BlockKeypadChest.activate(world, pos, player);
 	}
 
 	@Override
-	public void openPasswordGUI(EntityPlayer player) {
+	public void openPasswordGUI(PlayerEntity player) {
 		if(isBlocked())
 			return;
 
 		if(getPassword() != null)
 		{
-			if(player instanceof EntityPlayerMP)
-				NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
+			if(player instanceof ServerPlayerEntity)
+				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
 		}
 		else
 		{
 			if(getOwner().isOwner(player))
 			{
-				if(player instanceof EntityPlayerMP)
-					NetworkHooks.openGui((EntityPlayerMP)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
+				if(player instanceof ServerPlayerEntity)
+					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -126,7 +126,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadChest.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else {

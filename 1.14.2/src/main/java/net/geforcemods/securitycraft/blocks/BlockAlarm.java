@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -18,15 +18,14 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockAlarm extends BlockOwnable {
@@ -43,58 +42,45 @@ public class BlockAlarm extends BlockOwnable {
 	public BlockAlarm() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
 
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.UP).with(LIT, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP).with(LIT, false));
 	}
 
 	@Override
-	public int getLightValue(IBlockState state, IWorldReader world, BlockPos pos)
+	public int getLightValue(BlockState state)
 	{
 		return state.get(LIT) ? 15 : 0;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state){
-		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
+	public BlockRenderType getRenderType(BlockState state)
 	{
-		return EnumBlockRenderType.MODEL;
+		return BlockRenderType.MODEL;
 	}
 
 	/**
 	 * Check whether this Block can be placed on the given side
 	 */
 	@Override
-	public boolean isValidPosition(IBlockState state, IWorldReaderBase world, BlockPos pos){
-		EnumFacing facing = state.get(FACING);
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		Direction facing = state.get(FACING);
 
-		return facing == EnumFacing.UP && world.getBlockState(pos.down()).isTopSolid() ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
+		return facing == Direction.UP && world.getBlockState(pos.down()).isTopSolid() ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
 	{
-		return BlockFaceShape.UNDEFINED;
+		if (!isValidPosition(state, world, pos))
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		if (!isValidPosition(state, world, pos)) {
-			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
-			world.removeBlock(pos);
-		}
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
-	}
-
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
 	}
@@ -103,7 +89,7 @@ public class BlockAlarm extends BlockOwnable {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState) {
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag) {
 		if(world.isRemote)
 			return;
 		else
@@ -114,7 +100,7 @@ public class BlockAlarm extends BlockOwnable {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void tick(IBlockState state, World world, BlockPos pos, Random random){
+	public void tick(BlockState state, World world, BlockPos pos, Random random){
 		if(!world.isRemote){
 			playSoundAndUpdate(world, pos);
 
@@ -123,7 +109,7 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor){
+	public void onNeighborChange(BlockState state, IWorldReader w, BlockPos pos, BlockPos neighbor){
 		if(w.isRemote() || !(w instanceof World))
 			return;
 
@@ -131,19 +117,16 @@ public class BlockAlarm extends BlockOwnable {
 
 		playSoundAndUpdate((world), pos);
 
-		EnumFacing facing = world.getBlockState(pos).get(FACING);
+		Direction facing = world.getBlockState(pos).get(FACING);
 
 		if (!BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing))
-		{
-			dropBlockAsItemWithChance(world.getBlockState(pos), world, pos, 1.0F, 0);
-			world.removeBlock(pos);
-		}
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		EnumFacing facing = state.get(FACING);
+		Direction facing = state.get(FACING);
 
 		switch(facing){
 			case EAST:
@@ -189,19 +172,19 @@ public class BlockAlarm extends BlockOwnable {
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader world, BlockPos pos, IBlockState state)
+	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
 	{
 		return new ItemStack(SCContent.alarm.asItem());
 	}
 
 	@Override
-	public IItemProvider getItemDropped(IBlockState state, World worldIn, BlockPos pos, int fortune)
+	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune)
 	{
 		return SCContent.alarm.asItem();
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder){
+	protected void fillStateContainer(Builder<Block, BlockState> builder){
 		builder.add(FACING);
 		builder.add(LIT);
 	}

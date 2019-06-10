@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -61,7 +61,7 @@ public class SetScanType{
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
 			((TileEntityInventoryScanner) world.getTileEntity(pos)).setScanType(message.type);

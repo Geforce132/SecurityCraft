@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 
-public class ItemReinforcedBlock extends ItemBlock
+public class ItemReinforcedBlock extends BlockItem
 {
 	public ItemReinforcedBlock(Block block)
 	{

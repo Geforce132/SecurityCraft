@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -54,7 +54,7 @@ public class SetExplosiveState{
 	public static void onMessage(SetExplosiveState message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			EntityPlayer player = ctx.get().getSender();
+			PlayerEntity player = ctx.get().getSender();
 
 			if(BlockUtils.getBlock(player.world, message.x, message.y, message.z) != null && BlockUtils.getBlock(player.world, message.x, message.y, message.z) instanceof IExplosive)
 				if(message.state.equalsIgnoreCase("activate"))

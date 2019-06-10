@@ -5,12 +5,11 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntityFallingOwnableBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Particles;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.ParticleTypes.BlockParticleData;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -27,20 +26,20 @@ public class BlockFullMineFalling extends BlockFullMineBase
 	}
 
 	@Override
-	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState)
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
 	{
 		world.getPendingBlockTicks().scheduleTick(pos, this, tickRate(world));
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
 		world.getPendingBlockTicks().scheduleTick(currentPos, this, tickRate(world));
 		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public void tick(IBlockState state, World world, BlockPos pos, Random random)
+	public void tick(BlockState state, World world, BlockPos pos, Random random)
 	{
 		if(!world.isRemote)
 		{
@@ -49,13 +48,13 @@ public class BlockFullMineFalling extends BlockFullMineBase
 				if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
 				{
 					if(!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
-						world.spawnEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()));
+						world.addEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()))
 				}
 				else
 				{
 					BlockPos blockpos;
 
-					world.removeBlock(pos);
+					world.destroyBlock(pos, false);
 
 					for(blockpos = pos.down(); (world.isAirBlock(blockpos) || canFallThrough(world.getBlockState(blockpos))) && blockpos.getY() > 0; blockpos = blockpos.down()) {}
 
@@ -74,7 +73,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 		return 2;
 	}
 
-	public static boolean canFallThrough(IBlockState state)
+	public static boolean canFallThrough(BlockState state)
 	{
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
@@ -83,13 +82,13 @@ public class BlockFullMineFalling extends BlockFullMineBase
 	}
 
 	/**
-	 * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that
+	 * Called periodically clientside on blocks near the player to show effects (like furnace fire ParticleTypes). Note that
 	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
 	 * of whether the block can receive random update ticks
 	 */
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(IBlockState state, World world, BlockPos pos, Random rand)
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
 	{
 		if(rand.nextInt(16) == 0)
 		{
@@ -99,7 +98,7 @@ public class BlockFullMineFalling extends BlockFullMineBase
 				double particleY = pos.getY() - 0.05D;
 				double particleZ = pos.getZ() + rand.nextFloat();
 
-				world.addParticle(new BlockParticleData(Particles.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+				world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

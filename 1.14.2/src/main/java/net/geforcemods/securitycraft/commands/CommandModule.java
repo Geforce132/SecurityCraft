@@ -14,9 +14,9 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
 
 public class CommandModule {
@@ -33,7 +33,7 @@ public class CommandModule {
 	private static ArgumentBuilder<CommandSource, ?> copy()
 	{
 		return Commands.literal("copy").executes(ctx -> {
-			EntityPlayer player = ctx.getSource().asPlayer();
+			PlayerEntity player = ctx.getSource().asPlayer();
 
 			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
 				SecurityCraft.instance.setSavedModule(player.inventory.getCurrentItem().getTag());
@@ -49,7 +49,7 @@ public class CommandModule {
 	private static ArgumentBuilder<CommandSource, ?> paste()
 	{
 		return Commands.literal("paste").executes(ctx -> {
-			EntityPlayer player = ctx.getSource().asPlayer();
+			PlayerEntity player = ctx.getSource().asPlayer();
 
 			if(SecurityCraft.instance.getSavedModule() == null){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:module.manager"), ClientUtils.localize("messages.securitycraft:module.nothingSaved"), TextFormatting.RED);
@@ -71,16 +71,16 @@ public class CommandModule {
 		return Commands.literal("add")
 				.then(Commands.argument("target", EntityArgument.players()))
 				.executes(ctx -> {
-					EntityPlayer player = ctx.getSource().asPlayer();
-					Collection<EntityPlayerMP> players = EntityArgument.getPlayers(ctx, "target");
+					PlayerEntity player = ctx.getSource().asPlayer();
+					Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(ctx, "target");
 
-					for(EntityPlayerMP arg : players)
+					for(ServerPlayerEntity arg : players)
 					{
 						String name = arg.getName().getFormattedText();
 
 						if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
 							if(player.inventory.getCurrentItem().getTag() == null)
-								player.inventory.getCurrentItem().setTag(new NBTTagCompound());
+								player.inventory.getCurrentItem().setTag(new CompoundNBT());
 
 							for(int i = 1; i <= 10; i++)
 								if(player.inventory.getCurrentItem().getTag().contains("Player" + i) && player.inventory.getCurrentItem().getTag().getString("Player" + i).equals(name)){
@@ -106,16 +106,16 @@ public class CommandModule {
 		return Commands.literal("remove")
 				.then(Commands.argument("target", EntityArgument.players()))
 				.executes(ctx -> {
-					EntityPlayer player = ctx.getSource().asPlayer();
-					Collection<EntityPlayerMP> players = EntityArgument.getPlayers(ctx, "target");
+					PlayerEntity player = ctx.getSource().asPlayer();
+					Collection<ServerPlayerEntity> players = EntityArgument.getPlayers(ctx, "target");
 
-					for(EntityPlayerMP arg : players)
+					for(ServerPlayerEntity arg : players)
 					{
 						String name = arg.getName().getFormattedText();
 
 						if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() instanceof ItemModule && ((ItemModule) player.inventory.getCurrentItem().getItem()).canNBTBeModified()){
 							if(player.inventory.getCurrentItem().getTag() == null)
-								player.inventory.getCurrentItem().setTag(new NBTTagCompound());
+								player.inventory.getCurrentItem().setTag(new CompoundNBT());
 
 							for(int i = 1; i <= 10; i++)
 								if(player.inventory.getCurrentItem().getTag().contains("Player" + i) && player.inventory.getCurrentItem().getTag().getString("Player" + i).equals(name))
@@ -133,7 +133,7 @@ public class CommandModule {
 				});
 	}
 
-	private static int getNextSlot(NBTTagCompound tag) {
+	private static int getNextSlot(CompoundNBT tag) {
 		for(int i = 1; i <= 10; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;

@@ -24,7 +24,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -122,15 +122,15 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemStackToGui(mc, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+			GuiUtils.drawItemStackToGui(mc, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
+			Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-			if(itemBlock != null){
-				if(itemBlock instanceof IExplosive)
+			if(BlockItem != null){
+				if(BlockItem instanceof IExplosive)
 					this.drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
@@ -157,10 +157,10 @@ public class GuiSCManual extends GuiScreen {
 						if(recipe.get((i * 3) + j).getMatchingStacks().length == 0 || recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
 							continue;
 
-						if(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock)
-							GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem()), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
+						if(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof BlockItem)
+							GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem()), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof BlockItem));
 						else
-							GuiUtils.drawItemStackToGui(mc, recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
+							GuiUtils.drawItemStackToGui(mc, recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof BlockItem));
 					}
 			}
 
@@ -340,8 +340,8 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+		TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
+		Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
 		if(te != null){
 			if(te instanceof IOwnable)
@@ -353,7 +353,7 @@ public class GuiSCManual extends GuiScreen {
 			if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-			if(itemBlock instanceof IExplosive)
+			if(BlockItem instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableSCTE)

@@ -24,7 +24,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -57,7 +57,7 @@ public class SecurityCraft {
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
-	private NBTTagCompound savedModule;
+	private CompoundNBT savedModule;
 	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
 	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
 	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
@@ -87,7 +87,7 @@ public class SecurityCraft {
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
 		//		if(ClientConfig.CONFIG.checkForUpdates.get()) {
-		//			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
+		//			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 		//			if(vcUpdateTag != null)
 		//				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
 		//		}
@@ -141,11 +141,11 @@ public class SecurityCraft {
 		cameraUsePositions.remove(playerName);
 	}
 
-	public NBTTagCompound getSavedModule() {
+	public CompoundNBT getSavedModule() {
 		return savedModule;
 	}
 
-	public void setSavedModule(NBTTagCompound savedModule) {
+	public void setSavedModule(CompoundNBT savedModule) {
 		this.savedModule = savedModule;
 	}
 

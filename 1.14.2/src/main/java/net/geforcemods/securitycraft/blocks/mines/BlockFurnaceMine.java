@@ -4,22 +4,24 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -29,15 +31,15 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 
 	public BlockFurnaceMine(Material material, float baseHardness) {
 		super(SoundType.STONE, material, baseHardness);
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 
 	/**
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
+	public BlockRenderType getRenderType(BlockState state){
+		return BlockRenderType.MODEL;
 	}
 
 
@@ -53,13 +55,13 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld world, BlockPos pos, IBlockState state){
+	public void onPlayerDestroy(IWorld world, BlockPos pos, BlockState state){
 		if (!world.isRemote() && world instanceof World)
 			explode((World)world, pos);
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(world.isRemote)
 			return true;
 		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
@@ -71,12 +73,12 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitX(), ctx.getHitY(), ctx.getHitZ(), ctx.getPlayer());
+		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getPlayer());
 	}
 
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, EntityPlayer placer)
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
 	}
@@ -92,9 +94,9 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 		world.destroyBlock(pos, false);
 
 		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true, Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true, Mode.BREAK);
 
 	}
 
@@ -107,7 +109,7 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 	}
@@ -123,12 +125,12 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 	}
 
 	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
+	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos) {
 		return new ItemStack(Blocks.FURNACE);
 	}
 
 	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return false;
 	}
 

@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -71,7 +71,7 @@ public class UpdateLogger {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			int i = message.i;
 			String username = message.username;
-			EntityPlayer player = Minecraft.getInstance().player;
+			PlayerEntity player = Minecraft.getInstance().player;
 
 			TileEntityLogger te = (TileEntityLogger) player.world.getTileEntity(pos);
 

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -24,10 +24,10 @@ public class GuiInventoryScanner extends GuiContainer {
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 
 	private TileEntityInventoryScanner tileEntity;
-	private EntityPlayer playerObj;
+	private PlayerEntity playerObj;
 	private boolean hasStorageModule = false;
 
-	public GuiInventoryScanner(IInventory inventory, TileEntityInventoryScanner te, EntityPlayer player){
+	public GuiInventoryScanner(IInventory inventory, TileEntityInventoryScanner te, PlayerEntity player){
 		super(new ContainerInventoryScanner(inventory, te));
 		tileEntity = te;
 		playerObj = player;

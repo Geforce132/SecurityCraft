@@ -4,19 +4,18 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
@@ -27,25 +26,27 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucketPickupHandler, ILiquidContainer
 {
-	public static final DirectionProperty FACING = BlockHorizontal.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -71,13 +72,13 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	protected static final VoxelShape[] field_196521_J = func_199779_a(AABB_SLAB_BOTTOM, field_196514_C, field_196518_G, field_196515_D, field_196519_H);
 	private static final int[] field_196522_K = new int[]{12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
 	private final Block modelBlock;
-	private final IBlockState modelState;
+	private final BlockState modelState;
 
 	public BlockReinforcedStairs(SoundType soundType, Material mat, Block vB, String registryPath)
 	{
 		super(soundType, mat, vB, registryPath, 0);
 
-		setDefaultState(stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
 		modelBlock = getVanillaBlock();
 		modelState = modelBlock.getDefaultState();
 	}
@@ -111,80 +112,44 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public int getOpacity(IBlockState state, IBlockReader world, BlockPos pos)
+	public int getOpacity(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return world.getMaxLightLevel();
 	}
 
 	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return (state.get(HALF) == Half.TOP ? field_196520_I : field_196521_J)[field_196522_K[func_196511_x(state)]];
 	}
 
-	private int func_196511_x(IBlockState p_196511_1_)
+	private int func_196511_x(BlockState p_196511_1_)
 	{
 		return p_196511_1_.get(SHAPE).ordinal() * 4 + p_196511_1_.get(FACING).getHorizontalIndex();
 	}
 
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockReader world, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		if (face.getAxis() == EnumFacing.Axis.Y)
-			return face == EnumFacing.UP == (state.get(HALF) == Half.TOP) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-		else
-		{
-			StairsShape stairsshape = state.get(SHAPE);
-
-			if(stairsshape != StairsShape.OUTER_LEFT && stairsshape != StairsShape.OUTER_RIGHT)
-			{
-				EnumFacing enumfacing = state.get(FACING);
-
-				switch(stairsshape)
-				{
-					case STRAIGHT:
-						return enumfacing == face ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-					case INNER_LEFT:
-						return enumfacing != face && enumfacing != face.rotateY() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
-					case INNER_RIGHT:
-						return enumfacing != face && enumfacing != face.rotateYCCW() ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
-					default:
-						return BlockFaceShape.UNDEFINED;
-				}
-			}
-			else
-				return BlockFaceShape.UNDEFINED;
-		}
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state)
-	{
-		return false;
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 	{
 		modelBlock.animateTick(stateIn, worldIn, pos, rand);
 	}
 
 	@Override
-	public void onBlockClicked(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player)
+	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
 	{
 		modelState.onBlockClicked(worldIn, pos, player);
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
 	{
 		modelBlock.onPlayerDestroy(worldIn, pos, state);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public int getPackedLightmapCoords(IBlockState state, IWorldReader source, BlockPos pos)
+	public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader source, BlockPos pos)
 	{
 		return modelState.getPackedLightmapCoords(source, pos);
 	}
@@ -202,35 +167,23 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public int tickRate(IWorldReaderBase world)
+	public int tickRate(IWorldReader world)
 	{
 		return modelBlock.tickRate(world);
 	}
 
 	@Override
-	public boolean isCollidable()
-	{
-		return modelBlock.isCollidable();
-	}
-
-	@Override
-	public boolean isCollidable(IBlockState state)
-	{
-		return modelBlock.isCollidable(state);
-	}
-
-	@Override
-	public void onBlockAdded(IBlockState state, World world, BlockPos pos, IBlockState oldState)
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
 	{
 		if(state.getBlock() != state.getBlock())
 		{
-			modelState.neighborChanged(world, pos, Blocks.AIR, pos);
-			modelBlock.onBlockAdded(modelState, world, pos, oldState);
+			modelState.neighborChanged(world, pos, Blocks.AIR, pos, flag);
+			modelBlock.onBlockAdded(modelState, world, pos, oldState, flag);
 		}
 	}
 
 	@Override
-	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
 			modelState.onReplaced(world, pos, newState, isMoving);
@@ -243,15 +196,15 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public void tick(IBlockState state, World world, BlockPos pos, Random random)
+	public void tick(BlockState state, World world, BlockPos pos, Random random)
 	{
 		modelBlock.tick(state, world, pos, random);
 	}
 
 	@Override
-	public boolean onBlockActivated(IBlockState state, World world, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return modelState.onBlockActivated(world, pos, player, hand, EnumFacing.DOWN, 0.0F, 0.0F, 0.0F);
+		return modelState.onBlockActivated(world, player, hand, hit);
 	}
 
 	@Override
@@ -261,22 +214,16 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public boolean isTopSolid(IBlockState state)
+	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return state.get(HALF) == Half.TOP;
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
-		EnumFacing enumfacing = ctx.getFace();
+		Direction direction = ctx.getFace();
 		IFluidState ifluidstate = ctx.getWorld().getFluidState(ctx.getPos());
-		IBlockState iblockstate = getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, enumfacing != EnumFacing.DOWN && (enumfacing == EnumFacing.UP || !(ctx.getHitY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
-		return iblockstate.with(SHAPE, func_208064_n(iblockstate, ctx.getWorld(), ctx.getPos()));
+		BlockState BlockState = getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, direction != Direction.DOWN && (direction == Direction.UP || !(ctx.func_221532_j().y > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+		return BlockState.with(SHAPE, func_208064_n(BlockState, ctx.getWorld(), ctx.getPos()));
 	}
 
 	@Override
-	public IBlockState updatePostPlacement(IBlockState state, EnumFacing facing, IBlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
 		if(state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
@@ -284,33 +231,33 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 		return facing.getAxis().isHorizontal() ? state.with(SHAPE, func_208064_n(state, world, currentPos)) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
-	private static StairsShape func_208064_n(IBlockState state, IBlockReader world, BlockPos pos)
+	private static StairsShape func_208064_n(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		EnumFacing enumfacing = state.get(FACING);
-		IBlockState iblockstate = world.getBlockState(pos.offset(enumfacing));
+		Direction Direction = state.get(FACING);
+		BlockState BlockState = world.getBlockState(pos.offset(Direction));
 
-		if(isBlockStairs(iblockstate) && state.get(HALF) == iblockstate.get(HALF))
+		if(isBlockStairs(BlockState) && state.get(HALF) == BlockState.get(HALF))
 		{
-			EnumFacing enumfacing1 = iblockstate.get(FACING);
+			Direction Direction1 = BlockState.get(FACING);
 
-			if(enumfacing1.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, enumfacing1.getOpposite()))
+			if(Direction1.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, Direction1.getOpposite()))
 			{
-				if(enumfacing1 == enumfacing.rotateYCCW())
+				if(Direction1 == Direction.rotateYCCW())
 					return StairsShape.OUTER_LEFT;
 
 				return StairsShape.OUTER_RIGHT;
 			}
 		}
 
-		IBlockState iblockstate1 = world.getBlockState(pos.offset(enumfacing.getOpposite()));
+		BlockState BlockState1 = world.getBlockState(pos.offset(Direction.getOpposite()));
 
-		if (isBlockStairs(iblockstate1) && state.get(HALF) == iblockstate1.get(HALF))
+		if (isBlockStairs(BlockState1) && state.get(HALF) == BlockState1.get(HALF))
 		{
-			EnumFacing enumfacing2 = iblockstate1.get(FACING);
+			Direction Direction2 = BlockState1.get(FACING);
 
-			if(enumfacing2.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, enumfacing2))
+			if(Direction2.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, Direction2))
 			{
-				if(enumfacing2 == enumfacing.rotateYCCW())
+				if(Direction2 == Direction.rotateYCCW())
 					return StairsShape.INNER_LEFT;
 
 				return StairsShape.INNER_RIGHT;
@@ -320,33 +267,33 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 		return StairsShape.STRAIGHT;
 	}
 
-	private static boolean isDifferentStairs(IBlockState state, IBlockReader world, BlockPos pos, EnumFacing face)
+	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face)
 	{
-		IBlockState iblockstate = world.getBlockState(pos.offset(face));
-		return !isBlockStairs(iblockstate) || iblockstate.get(FACING) != state.get(FACING) || iblockstate.get(HALF) != state.get(HALF);
+		BlockState BlockState = world.getBlockState(pos.offset(face));
+		return !isBlockStairs(BlockState) || BlockState.get(FACING) != state.get(FACING) || BlockState.get(HALF) != state.get(HALF);
 	}
 
-	public static boolean isBlockStairs(IBlockState state)
+	public static boolean isBlockStairs(BlockState state)
 	{
 		return state.getBlock() instanceof BlockReinforcedStairs;
 	}
 
 	@Override
-	public IBlockState rotate(IBlockState state, Rotation rot)
+	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		return state.with(FACING, rot.rotate(state.get(FACING)));
 	}
 
 	@Override
-	public IBlockState mirror(IBlockState state, Mirror mirror)
+	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		EnumFacing enumfacing = state.get(FACING);
+		Direction direction = state.get(FACING);
 		StairsShape stairsshape = state.get(SHAPE);
 
 		switch(mirror)
 		{
 			case LEFT_RIGHT:
-				if(enumfacing.getAxis() == EnumFacing.Axis.Z)
+				if(direction.getAxis() == Direction.Axis.Z)
 				{
 					switch(stairsshape)
 					{
@@ -364,7 +311,7 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 				}
 				break;
 			case FRONT_BACK:
-				if(enumfacing.getAxis() == EnumFacing.Axis.X)
+				if(direction.getAxis() == Direction.Axis.X)
 				{
 					switch(stairsshape)
 					{
@@ -388,13 +335,13 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder)
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING, HALF, SHAPE, WATERLOGGED);
 	}
 
 	@Override
-	public Fluid pickupFluid(IWorld world, BlockPos pos, IBlockState state)
+	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state)
 	{
 		if(state.get(WATERLOGGED))
 		{
@@ -405,19 +352,19 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public IFluidState getFluidState(IBlockState state)
+	public IFluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean canContainFluid(IBlockReader world, BlockPos pos, IBlockState state, Fluid fluid)
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
 	{
 		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
 	}
 
 	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, IBlockState state, IFluidState fluidState)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
 	{
 		if (!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
 		{
@@ -434,7 +381,7 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	}
 
 	@Override
-	public boolean allowsMovement(IBlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
 	{
 		return false;
 	}
