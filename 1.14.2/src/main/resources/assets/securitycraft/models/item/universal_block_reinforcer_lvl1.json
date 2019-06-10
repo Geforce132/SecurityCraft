@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "securitycraft:item/universal_block_reinforcer_lvl1"
+	}
+}

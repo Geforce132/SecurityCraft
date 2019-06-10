@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "universal_block_reinforcer",
+  "pattern": [
+    " EG",
+    "RNE",
+    "SR "
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_pink_stained_glass"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_reinforcer_lvl3",
+    "count": 1
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=y":  { "model": "securitycraft:block/reinforced_logs_spruce" },
+        "axis=z":   { "model": "securitycraft:block/reinforced_logs_spruce_side" },
+        "axis=x":   { "model": "securitycraft:block/reinforced_logs_spruce_side", "y": 90 }
+    }
+}

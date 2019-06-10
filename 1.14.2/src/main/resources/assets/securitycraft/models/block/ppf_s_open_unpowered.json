@@ -1,0 +1,228 @@
+{
+	"parent": "block/block",
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "keypadUnpowered": "securitycraft:block/keypad_unactive",
+        "particle": "block/iron_block",
+        "furnaceSides": "block/furnace_side",
+        "ironBlock": "block/iron_block",
+        "furnaceFrontOn": "block/furnace_front_on",
+        "furnaceFrontOff": "block/furnace_front",
+        "furnaceTop": "block/furnace_top"
+    },
+    "elements": [
+        {
+            "from": [2,3,1],
+            "to": [14,15,12],
+            "faces": {
+                "up": {
+                    "texture": "#furnaceTop"
+                },
+                "down": {
+                    "texture": "#furnaceTop"
+                },
+                "west": {
+                    "texture": "#furnaceSides"
+                },
+                "east": {
+                    "texture": "#furnaceSides"
+                },
+                "north": {
+                    "texture": "#furnaceSides"
+                },
+                "south": {
+                    "texture": "#furnaceFrontOff"
+                }
+            }
+        },
+        {
+            "from": [0,0,0],
+            "to": [16,16,12],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "uv": [0,0,16,12],
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "uv": [0,0,12,16],
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [0,15,12],
+            "to": [16,16,13],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [15,1,12],
+            "to": [16,15,13],
+            "faces": {
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [0,1,12],
+            "to": [1,15,13],
+            "faces": {
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [0,0,12],
+            "to": [16,1,13],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [1,1,13],
+            "to": [15,3,14],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#keypadUnpowered"
+                }
+            }
+        },
+        {
+            "from": [4,2,15],
+            "to": [12,3,16],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                },
+                "north": {
+                    "texture": "#ironBlock"
+                },
+                "south": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [4,2,14],
+            "to": [5,3,15],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                }
+            }
+        },
+        {
+            "from": [11,2,14],
+            "to": [12,3,15],
+            "faces": {
+                "up": {
+                    "texture": "#ironBlock"
+                },
+                "down": {
+                    "texture": "#ironBlock"
+                },
+                "west": {
+                    "texture": "#ironBlock"
+                },
+                "east": {
+                    "texture": "#ironBlock"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_keycards",
+  "conditions": [
+    {
+      "type": "securitycraft:toggle_keycard_3"
+    }
+  ],
+  "pattern": [
+    "III",
+    "BBB"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:nether_brick"
+    }
+  },
+  "result": {
+    "item": "securitycraft:keycard_lv3",
+    "count": 1
+  }
+}

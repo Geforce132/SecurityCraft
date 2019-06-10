@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_keycards",
+  "conditions": [
+    {
+      "type": "securitycraft:toggle_keycard_4"
+    }
+  ],
+  "pattern": [
+    "III",
+    "BBB"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:magenta_dye"
+    }
+  },
+  "result": {
+    "item": "securitycraft:keycard_lv4",
+    "count": 1
+  }
+}

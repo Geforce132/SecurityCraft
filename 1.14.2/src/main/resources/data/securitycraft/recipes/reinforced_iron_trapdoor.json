@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ITI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "T": [
+      {
+      	"item": "minecraft:oak_trapdoor"
+      },
+      {
+      	"item": "minecraft:spruce_trapdoor"
+      },
+      {
+      	"item": "minecraft:birch_trapdoor"
+      },
+      {
+      	"item": "minecraft:jungle_trapdoor"
+      },
+      {
+      	"item": "minecraft:acacia_trapdoor"
+      },
+      {
+      	"item": "minecraft:dark_oak_trapdoor"
+      }
+    ]
+  },
+  "result": {
+    "item": "securitycraft:reinforced_iron_trapdoor",
+    "count": 1
+  }
+}

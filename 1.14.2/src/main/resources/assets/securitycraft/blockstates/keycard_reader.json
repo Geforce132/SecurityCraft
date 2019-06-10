@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,powered=true": { "model": "securitycraft:block/keycard_reader" },
+        "facing=south,powered=true": { "model": "securitycraft:block/keycard_reader", "y": 180 },
+        "facing=west,powered=true":  { "model": "securitycraft:block/keycard_reader", "y": 270 },
+        "facing=east,powered=true":  { "model": "securitycraft:block/keycard_reader", "y": 90 },
+        "facing=north,powered=false": { "model": "securitycraft:block/keycard_reader" },
+        "facing=south,powered=false": { "model": "securitycraft:block/keycard_reader", "y": 180 },
+        "facing=west,powered=false":  { "model": "securitycraft:block/keycard_reader", "y": 270 },
+        "facing=east,powered=false":  { "model": "securitycraft:block/keycard_reader", "y": 90 }
+    }
+}

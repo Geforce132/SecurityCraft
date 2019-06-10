@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SII"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:shears"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_remover",
+    "count": 1
+  }
+}

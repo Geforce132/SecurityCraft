@@ -1,0 +1,35 @@
+{
+	"parent": "block/block",
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "mine": "securitycraft:block/mine",
+        "particle": "securitycraft:block/mine"
+    },
+    "elements": [
+        {
+            "from": [5,0,5],
+            "to": [11,3,11],
+            "faces": {
+                "up": {
+                    "texture": "#mine"
+                },
+                "down": {
+                    "texture": "#mine"
+                },
+                "west": {
+                    "texture": "#mine"
+                },
+                "east": {
+                    "texture": "#mine"
+                },
+                "north": {
+                    "texture": "#mine"
+                },
+                "south": {
+                    "texture": "#mine"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "deactivated=false": { "model": "securitycraft:block/bouncing_betty_active" },
+        "deactivated=true": { "model": "securitycraft:block/bouncing_betty_defused" }
+    }
+}

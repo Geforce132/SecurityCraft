@@ -1,0 +1,7 @@
+{
+    "parent": "block/glass_pane_post",
+    "textures": {
+        "edge": "securitycraft:block/glass_reinforced_pane_top_brown",
+        "pane": "securitycraft:block/glass_reinforced_brown"
+    }
+}

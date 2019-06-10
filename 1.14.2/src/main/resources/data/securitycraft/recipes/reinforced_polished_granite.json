@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GG",
+    "GG"
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_granite"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_granite",
+    "count": 4
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": [
+            { "model": "securitycraft:block/reinforced_end_stone_bricks" }
+        ]
+    }
+}

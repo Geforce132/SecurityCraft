@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_top_slab",
+    "textures": {
+        "bottom": "block/dark_oak_planks",
+        "top": "block/dark_oak_planks",
+        "side": "block/dark_oak_planks"
+    }
+}

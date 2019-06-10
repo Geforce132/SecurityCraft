@@ -1,0 +1,6 @@
+{
+    "parent": "block/fence_post",
+    "textures": {
+        "texture": "securitycraft:block/reinforced_door_lower"
+    }
+}

@@ -1,0 +1,40 @@
+package net.geforcemods.securitycraft.renderers;
+
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.entity.EntityBullet;
+import net.geforcemods.securitycraft.models.ModelBullet;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
+public class RenderBullet extends Render<EntityBullet>
+{
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
+	private static final ModelBullet MODEL = new ModelBullet();
+
+	public RenderBullet(RenderManager renderManager)
+	{
+		super(renderManager);
+	}
+
+	@Override
+	public void doRender(EntityBullet entity, double x, double y, double z, float entityYaw, float partialTicks)
+	{
+		GlStateManager.pushMatrix();
+		GlStateManager.translated(x, y, z);
+		GlStateManager.rotatef(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
+		bindEntityTexture(entity);
+		MODEL.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		GlStateManager.popMatrix();
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityBullet entity)
+	{
+		return TEXTURE;
+	}
+}

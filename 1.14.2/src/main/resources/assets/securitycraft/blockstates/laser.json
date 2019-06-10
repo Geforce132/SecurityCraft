@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "boundtype=1": { "model": "securitycraft:block/laser_up"},
+        "boundtype=2": { "model": "securitycraft:block/laser_sideways", "y": 90},
+        "boundtype=3": { "model": "securitycraft:block/laser_sideways"}
+    }
+}

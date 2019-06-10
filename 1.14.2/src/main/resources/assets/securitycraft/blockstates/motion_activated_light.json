@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "facing=north,lit=false": { "model": "securitycraft:block/motion_activated_light", "y": 180 },
+        "facing=south,lit=false": { "model": "securitycraft:block/motion_activated_light" },
+        "facing=west,lit=false":  { "model": "securitycraft:block/motion_activated_light", "y": 90 },
+        "facing=east,lit=false":  { "model": "securitycraft:block/motion_activated_light", "y": 270 },
+        "facing=north,lit=true": { "model": "securitycraft:block/motion_activated_light", "y": 180 },
+        "facing=south,lit=true": { "model": "securitycraft:block/motion_activated_light" },
+        "facing=west,lit=true":  { "model": "securitycraft:block/motion_activated_light", "y": 90 },
+        "facing=east,lit=true":  { "model": "securitycraft:block/motion_activated_light", "y": 270 }
+    }
+}

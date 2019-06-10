@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft_stairs",
+  "pattern": [
+    "S  ",
+    "SS ",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_dark_oak_planks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_dark_oak_stairs",
+    "count": 4
+  }
+}

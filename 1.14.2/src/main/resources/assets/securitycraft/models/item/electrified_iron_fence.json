@@ -1,0 +1,6 @@
+{
+    "parent": "block/fence_inventory",
+    "textures": {
+        "texture": "securitycraft:block/reinforced_door_lower"
+    }
+}

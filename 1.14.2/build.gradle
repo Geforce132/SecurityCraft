@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+
+version = '1.0'
+group = 'net.geforcemods.securitycraft'
+archivesBaseName = 'securitycraft'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'stable', version: '47-1.13.2'
+	
+    runs {
+        client = {
+            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+            properties 'forge.logging.console.level': 'debug'
+            workingDirectory project.file('run').canonicalPath
+            source sourceSets.main
+        }
+        server = {
+            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+            properties 'forge.logging.console.level': 'debug'
+            workingDirectory project.file('run').canonicalPath
+            source sourceSets.main
+        }
+    }
+}
+
+repositories {  
+    maven { // HWYLA
+		url "http://tehnut.info/maven"
+	}
+	maven { // TOP
+		name 'tterrag maven'
+		url "http://maven.tterrag.com/"
+	}
+    maven { // JEI
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+//    maven { // JEI fallback
+//        name = "ModMaven"
+//        url = "https://modmaven.k-4u.nl"
+//    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.13.2-25.0.219'
+	compile "mcp.mobius.waila:Hwyla:1.10.1-B53_1.13.2"
+    compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
+    compile "mezz.jei:jei-1.13.2:5.0.0.25:api"
+}
+
+jar {
+    manifest {
+        attributes(["Specification-Title": "SecurityCraft",
+                    "Specification-Vendor": "Geforce, bl4ckscor3",
+                    "Specification-Version": "v1.8.12",
+                    "Implementation-Title": "SecurityCraft",
+                    "Implementation-Version": "v1.8.12",
+                    "Implementation-Vendor" :"Geforce, bl4ckscor3",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
+    }
+}
